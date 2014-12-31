@@ -150,10 +150,8 @@ test_that("pk.calc.kel", {
 
 test_that("pk.calc.cl", {
   ## Ensure that dose and auc are required
-  expect_error(pk.calc.cl(auc=NA),
-               regexp="'dose' is missing")
-  expect_error(pk.calc.cl(dose=NA),
-               regexp="'auc' is missing")
+  expect_error(pk.calc.cl(auc=NA))
+  expect_error(pk.calc.cl(dose=NA))
 
   ## Estimate a single CL
   expect_equal(pk.calc.cl(10, 100), 0.1)
@@ -176,12 +174,9 @@ test_that("pk.calc.mrt", {
 
 test_that("pk.calc.vz", {
   ## Ensure that dose, auc, and kel are required
-  expect_error(pk.calc.vz(auc=NA, kel=NA),
-               regexp="'dose' is missing")
-  expect_error(pk.calc.vz(dose=NA, kel=NA),
-               regexp="'auc' is missing")
-  expect_error(pk.calc.vz(auc=NA, dose=NA),
-               regexp="'kel' is missing")
+  expect_error(pk.calc.vz(auc=NA, kel=NA))
+  expect_error(pk.calc.vz(dose=NA, kel=NA))
+  expect_error(pk.calc.vz(auc=NA, dose=NA))
 
   ## Ensure that dose is either 1 or the same length as AUC
   expect_error(pk.calc.vz(dose=c(1, 2), auc=1:4, kel=1:4),

@@ -8,7 +8,9 @@ test_that("check.auc.specification", {
   expect_equal(check.auc.specification(good), good)
 
   ## A non-data.frame gets coerced but is otherwise unharmed
-  expect_warning(check.auc.specification(as.matrix(good)),
+  good.matrix <- as.matrix(good)
+  good.matrix[,'half.life'] <- rep(c("F", "T"), each=3)
+  expect_warning(check.auc.specification(good.matrix),
                  regexp="AUC specification must be a data.frame")
   ## Missing the start column is an error
   expect_error(check.auc.specification(good[,setdiff(names(good), "start")]),

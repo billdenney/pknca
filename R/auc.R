@@ -40,7 +40,7 @@ check.auc.specification <- function(x) {
     ## Just a warning and let as.data.frame make it an error if
     ## it can't be coerced.
     warning("AUC specification must be a data.frame")
-    x <- as.data.frame(x)
+    x <- as.data.frame(x, stringsAsFactors=FALSE)
   }
   if (nrow(x) == 0) {
     ## Return it as is-- nothing is requested

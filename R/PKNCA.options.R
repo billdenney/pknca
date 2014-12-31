@@ -301,9 +301,9 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE) {
 
 ## FIXME: Which of the below is needed for a package?
 .PKNCAEnv <- new.env()
-assign("options",
-       lapply(.PKNCA.option.check, FUN=function(x) x(default=TRUE)),
-       envir=.PKNCAEnv)
+## assign("options",
+##        lapply(.PKNCA.option.check, FUN=function(x) x(default=TRUE)),
+##        envir=.PKNCAEnv)
 
 .onLoad <- function(libname, pkgname) {
   PKNCA.options(default=TRUE)

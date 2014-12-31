@@ -2,7 +2,7 @@
 #'
 #' For one subject/time range, compute all available PK parameters.
 #' All the internal options should be set by
-#' \code{\link{PKNCA.options} prior to running.  The only part that
+#' \code{\link{PKNCA.options}} prior to running.  The only part that
 #' changes with a call to this function is the \code{conc}entration
 #' and \code{time}.
 #'
@@ -158,7 +158,7 @@ pk.nca.groups.formula <- function(formula.conc, data.conc,
   if (length(conc.column$groups) == length(dose.column$groups)) {
     if (!all(dose.column$groups %in% conc.column.groups))
       stop("Some groups for the dose are not in the concentration groups")
-  } else if (length(dose.column$groups) > length(conc.con
+  } else if (length(dose.column$groups) > length(conc.column$groups)) {
     
   }
 }
