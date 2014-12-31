@@ -1,0 +1,388 @@
+test_that("check.auc.specification", {
+  ## Test that all valid combinations pass through without error or
+  ## change
+  good <-
+    merge(merge(data.frame(start=0, end=1),
+                data.frame(auc.type=c("AUClast", "AUCinf", "AUCall"))),
+          data.frame(half.life=c(FALSE, TRUE)))
+  expect_equal(check.auc.specification(good), good)
+
+  ## A non-data.frame gets coerced but is otherwise unharmed
+  expect_warning(check.auc.specification(as.matrix(good)),
+                 regexp="AUC specification must be a data.frame")
+  ## Missing the start column is an error
+  expect_error(check.auc.specification(good[,setdiff(names(good), "start")]),
+               regexp="AUC specification must have columns for start, end, auc.type, half.life Column\\(s\\) missing: start")
+  ## Additional columns provide a warning
+  almost <- good
+  almost$more <- "Shouldn't be here"
+  expect_warning(check.auc.specification(almost),
+                 regexp="Removing extraneous AUC specification columns: more")
+
+  ## half.life not as a logical is a warning.  Not coercable is an
+  ## error
+  for (n in c("half.life")) {
+    almost <- good
+    almost[,n] <- 0
+    expect_warning(
+      check.auc.specification(almost),
+      regexp=sprintf("AUC specification for '%s' must be a logical vector, attempting conversion", n),
+      info=n)
+    almost[,n] <- "B"
+    expect_error(check.auc.specification(almost),
+                 regexp="6 new NA value\\(s\\) created during conversion",
+                 info=n)
+  }
+
+  ## start and end not as a number is a warning.  Not coercable is an
+  ## error
+  for (n in c("start", "end")) {
+    almost <- good
+    almost[,n] <- "0.5"
+    expect_warning(
+      check.auc.specification(almost),
+      regexp=sprintf("AUC specification for '%s' time must be numeric( or NA)?, attempting conversion", n),
+      info=n)
+    almost[,n] <- "B"
+    expect_error(check.auc.specification(almost),
+                 regexp="6 new NA value\\(s\\) created during conversion",
+                 info=n)
+  }
+
+  ## Start can't be NA
+  bad <- good
+  bad$start <- NA
+  expect_error(check.auc.specification(bad),
+               regexp="AUC specification may not have NA for the starting time")
+
+  ## end can't be NA when either last or all is specified
+  for (n in c("AUClast", "AUCinf", "AUCall")) {
+    bad <- data.frame(start=1, end=NA, auc.type=n, half.life=TRUE)
+    expect_error(
+      check.auc.specification(bad),
+      regexp="AUC specification may not have NA for the end time and request an auc.type")
+  }
+
+  ## Can't have end=NA and half.life=FALSE
+  bad <- data.frame(start=1, end=NA, auc.type=NA, half.life=FALSE)
+  expect_error(
+    check.auc.specification(bad),
+    regexp="AUC specification may not have NA for the end time and not request half.life")
+
+  ## Start after end is an error
+  bad <- data.frame(start=1, end=0, auc.type="AUCinf", half.life=FALSE)
+  expect_error(check.auc.specification(bad),
+               regexp="AUC specification end must be after the start when end is given")
+})
+
+test_that("pk.calc.auxc", {
+  ## #####
+  ## Verify input checks
+
+  ## Interval is decreasing
+  expect_error(pk.calc.auxc(conc=1:2, time=0:1, interval=2:1, method="linear"),
+               regexp="The AUC interval must be increasing")
+  ## AUC should start at or after the first measurement and should be
+  ## before the last measurement
+  expect_warning(pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
+                              method="linear"),
+                 regexp="Requesting an AUC range starting \\(1\\) before the first measurement \\(2\\) is not allowed")
+  ## But starting before the beginning does return NA (not an error)
+  expect_equal(pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
+                            method="linear"),
+               NA)
+
+  ## All concentrations are NA, return NA
+  expect_equal(pk.calc.auxc(conc=c(NA, NA), time=2:3, interval=c(1, 3),
+                            method="linear"),
+               NA)
+  ## All concentrations are 0, return 0
+  expect_equal(pk.calc.auxc(conc=c(0, 0), time=2:3, interval=c(2, 3),
+                            method="linear"),
+               0)
+  ## Concentrations mix 0 and NA, return 0
+  expect_equal(pk.calc.auxc(conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
+                            method="linear"),
+               0)
+})
+
+test_that("pk.calc.auc", {
+  ## Linear AUC when the conc at the end of the interval is above LOQ;
+  ## lambda.z is unused
+  tests <- list(AUCinf=as.numeric(NA),
+                AUClast=1.5,
+                AUCall=1.5)
+  for (t in names(tests))
+    expect_equal(pk.calc.auc(conc=c(0, 1, 1),
+                             time=0:2,
+                             interval=c(0, 2),
+                             lambda.z=NA,
+                             auc.type=t,
+                             method="linear"),
+                 tests[[t]],
+                 info=t)
+
+  ## Linear AUC when the conc at the end of the interval is BLQ;
+  ## lambda.z is used to extrapolate to the end of the interval.
+  ## Since lambda.z is NA, the result is NA.
+  tests <- list(AUCinf=as.numeric(NA),
+                AUClast=0.5,
+                AUCall=1)
+  for (t in names(tests))
+    expect_equal(pk.calc.auc(conc=c(0, 1, 0),
+                             time=0:2,
+                             interval=c(0, 2),
+                             lambda.z=NA,
+                             auc.type=t,
+                             method="linear"),
+                 tests[[t]],
+                 info=t)
+
+  ## The same when lambda.z is given
+  tests <- list(AUCinf=1.5,
+                AUClast=0.5,
+                AUCall=1)
+  for (t in names(tests))
+    expect_equal(pk.calc.auc(conc=c(0, 1, 0),
+                             time=0:2,
+                             interval=c(0, 2),
+                             lambda.z=1,
+                             auc.type=t,
+                             method="linear"),
+                 tests[[t]],
+                 info=t)
+
+  ## And when there are multiple BLQ values at the end
+  tests <- list(AUCinf=1.5,
+                AUClast=0.5,
+                AUCall=1)
+  for (t in names(tests))
+    expect_equal(pk.calc.auc(conc=c(0, 1, rep(0, 5)),
+                             time=0:6,
+                             interval=c(0, 6),
+                             lambda.z=1,
+                             auc.type=t,
+                             method="linear"),
+                 tests[[t]],
+                 info=t)
+
+  ## Confirm that center BLQ points are dropped, kept, or imputed
+  ## correctly.  Do this with both "linear" and "lin up/log down"
+  tests <- list(
+    "linear"=list(
+      AUCinf=1+1+0.5+1.5+1.5+1,
+      AUClast=1+1+0.5+1.5+1.5,
+      AUCall=1+1+0.5+1.5+1.5),
+    "lin up/log down"=list(
+      AUCinf=1+1+0.5+1.5+1/log(2)+1,
+      AUClast=1+1+0.5+1.5+1/log(2),
+      AUCall=1+1+0.5+1.5+1/log(2)))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1),
+                               time=0:5,
+                               interval=c(0, 5),
+                               lambda.z=1,
+                               auc.type=n,
+                               conc.blq="keep",
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## AUCall looks different when there are BLQs at the end
+  tests <- list(
+    "linear"=list(
+      AUCinf=1+1+0.5+1.5+1.5+1,
+      AUClast=1+1+0.5+1.5+1.5,
+      AUCall=1+1+0.5+1.5+1.5+0.5),
+    "lin up/log down"=list(
+      AUCinf=1+1+0.5+1.5+1/log(2)+1,
+      AUClast=1+1+0.5+1.5+1/log(2),
+      AUCall=1+1+0.5+1.5+1/log(2)+0.5))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
+                               time=0:7,
+                               interval=c(0, 7),
+                               lambda.z=1,
+                               auc.type=n,
+                               conc.blq="keep",
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## When BLQ in the middle and end are dropped, you get different
+  ## answers.  (Note that first BLQ dropping would cause errors due to
+  ## starting times differing, so not tested here.)
+  tests <- list(
+    "linear"=list(
+      AUCinf=1+3+1.5+1.5+1,
+      AUClast=1+3+1.5+1.5,
+      AUCall=1+3+1.5+1.5+0.5),
+    "lin up/log down"=list(
+      AUCinf=1+2/log(2)+1.5+1/log(2)+1,
+      AUClast=1+2/log(2)+1.5+1/log(2),
+      AUCall=1+2/log(2)+1.5+1/log(2)+0.5))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
+                               time=0:7,
+                               interval=c(0, 7),
+                               lambda.z=1,
+                               auc.type=n,
+                               conc.blq=list(
+                                 first="keep",
+                                 middle="drop",
+                                 last="keep"),
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+  
+  ## When AUCinf is requested with NA for lambda.z, the result is NA.
+  tests <- list(
+    "linear"=list(
+      AUCinf=as.numeric(NA),
+      AUClast=1+3+1.5+1.5,
+      AUCall=1+3+1.5+1.5+0.5),
+    "lin up/log down"=list(
+      AUCinf=as.numeric(NA),
+      AUClast=1+2/log(2)+1.5+1/log(2),
+      AUCall=1+2/log(2)+1.5+1/log(2)+0.5))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
+                               time=0:7,
+                               interval=c(0, 7),
+                               lambda.z=NA,
+                               auc.type=n,
+                               conc.blq=list(
+                                 first="keep",
+                                 middle="drop",
+                                 last="keep"),
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## Test NA at the beginning
+
+  ## Test NA at the end
+  tests <- list(
+    "linear"=list(
+      AUCinf=as.numeric(NA),
+      AUClast=1+3+1.5+1.5,
+      AUCall=1+3+1.5+1.5+1),
+    "lin up/log down"=list(
+      AUCinf=as.numeric(NA),
+      AUClast=1+2/log(2)+1.5+1/log(2),
+      AUCall=1+2/log(2)+1.5+1/log(2)+1))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, NA, 0),
+                               time=0:7,
+                               interval=c(0, 7),
+                               lambda.z=NA,
+                               auc.type=n,
+                               conc.blq=list(
+                                 first="keep",
+                                 middle="drop",
+                                 last="keep"),
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## Test interpolation of times within the time interval
+  tests <- list(
+    "linear"=list(
+      AUCinf=1+3+1.5+1.5+1,
+      AUClast=1+3+1.5+1.5,
+      AUCall=1+3+1.5+1.5+0.75),
+    "lin up/log down"=list(
+      AUCinf=1+2/log(2)+1.5+1/log(2)+1,
+      AUClast=1+2/log(2)+1.5+1/log(2),
+      AUCall=1+2/log(2)+1.5+1/log(2)+0.5/log(2)))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
+                               time=c(0:5, 7),
+                               interval=c(0, 6),
+                               lambda.z=1,
+                               auc.type=n,
+                               conc.blq=list(
+                                 first="keep",
+                                 middle="drop",
+                                 last="keep"),
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## Confirm warning with beginning of interval before the beginning of
+  ## time
+  tests <- list(
+    "linear"=list(
+      AUCinf=NA,
+      AUClast=NA,
+      AUCall=NA),
+    "lin up/log down"=list(
+      AUCinf=NA,
+      AUClast=NA,
+      AUCall=NA))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
+                               time=c(0:5, 7),
+                               interval=c(-1, 6),
+                               lambda.z=1,
+                               auc.type=n,
+                               conc.blq=list(
+                                 first="keep",
+                                 middle="drop",
+                                 last="keep"),
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## Requesting an AUC interval that starts after the last measurement
+  ## results in a warning, but will provide an answer (to be tested
+  ## elsewhere).
+  expect_warning(pk.calc.auc(conc=1:2, time=0:1, interval=2:3,
+                             method="linear"),
+                 regexp="AUC start time \\(2\\) is after the maximum observed time \\(1\\)")
+
+  ## Confirm error with NA at the same time as the beginning of the
+  ## interval
+  tests <- list(
+    "linear"=list(
+      AUCinf=NA,
+      AUClast=NA,
+      AUCall=NA),
+    "lin up/log down"=list(
+      AUCinf=NA,
+      AUClast=NA,
+      AUCall=NA))
+  for (t in names(tests))
+    for (n in names(tests[[t]]))
+      expect_equal(pk.calc.auc(conc=c(NA, 2, 0, 1, 2, 1, 0),
+                               time=c(0:5, 7),
+                               interval=c(0, 6),
+                               lambda.z=1,
+                               auc.type=n,
+                               conc.blq=list(
+                                 first="keep",
+                                 middle="drop",
+                                 last="keep"),
+                               method=t),
+                   tests[[t]][[n]],
+                   info=paste(t, n))
+
+  ## Confirm error with concentration and time not of equal lengths
+  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2)),
+               regexp="Conc and time must be the same length")
+
+  ## Confirm error with time not monotonically increasing (less than)
+  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 1)),
+               regexp="Time must be monotonically increasing")
+
+  ## Confirm error with time not monotonically increasing (equal)
+  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 2)),
+               regexp="Time must be monotonically increasing")
+})
