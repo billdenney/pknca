@@ -13,6 +13,6 @@ Description: This package computes standard Non-Compartmental Analysis (NCA)
     provides standardized plotting routines, basic assessments for
     biocomparison or drug interaction, and model-based estimation routines for
     calculating doses to reach specific values of AUC or Cmax.
-License: GPL3
+License: GPL-3
 Acknowledgement: Sridhar Duvvuri for significant help
 NeedsCompilation: no
