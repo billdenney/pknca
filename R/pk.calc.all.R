@@ -1,3 +1,85 @@
+#' Compute NCA parameters for each interval for each subject.
+#'
+#' The computations assume that all calculation options are set in
+#' \code{\link{PKNCA.options}}.
+#'
+#' @param data A PKNCAdata object
+#' @return A data frame with a row for each interval for each grouping
+#' in the concentration data.
+#' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}}
+#' @export
+pk.nca <- function(data) {
+  tmp.data <- splitBy(parseFormula(data$conc)$groupFormula,
+                      data=model.frame(data))
+  if (nrow(data$intervals) == 0) {
+    warning("No intervals given; no calculations done.")
+    ret <- data.frame()
+  } else {
+    tmp.ret <- mclapply(X=tmp.data,
+                        FUN=pk.calc.intervals,
+                        intervals=data$intervals)
+    ## Put the group parameters with the results
+    for (i in seq_len(length(tmp.ret)))
+      tmp.ret[[i]] <- cbind(attributes(tmp.data, "groupid")[i,],
+                            tmp.ret[[i]])
+    ## Generate the outputs
+    ret <- do.call(rbind, tmp.ret)
+  }
+  rownames(ret) <- NULL
+  class(ret) <- c("PKNCAresults", class(ret))
+  ret
+}
+
+## Subset data down to just the times of interest and then pass it
+## further to the calculation routines.
+##
+## This is simply a helper for pk.nca
+pk.nca.intervals <- function(data, intervals) {
+  ## Merge the intervals with the group columns from the data
+  if (ncol(data) >= 3) {
+    ret <- merge(unique(data[, 3:ncol(data), drop=FALSE]),
+                     intervals)
+  } else {
+    ## Likely single-subject data
+    ret <- intervals
+  }
+  ## Column names to use
+  col.conc <- names(data)[1]
+  col.time <- names(data)[2]
+  shared.names <- intersect(names(interval.data), names(ret))
+  ## The half.life column will be filled with the computed half-life.
+  ## Change its name
+  ret$calculate.half.life <- ret$half.life
+  ret$half.life <- NULL
+  for (i in seq_len(nrow(ret))) {
+    ## Subset the data down to the group of current interest
+    tmpdata <-
+      merge(data, interval.data[i,shared.names])[,c(col.conc, col.time)]
+    mask.keep <- (ret$auc.start[i] <= tmpdata[,col.time] &
+                  tmpdata[,col.time] <= ret$auc.end[i])
+    tmpdata <- tmpdata[mask.keep,]
+    if (nrow(tmpdata) == 0) {
+      ## TODO: Improve this error message with additional information
+      ## on the specific interval that has no data.
+      warning("No data for interval")
+    } else {
+      calculated.interval <-
+        pk.nca.interval(conc=tmpdata[,col.conc],
+                        time=tmpdata[,col.time],
+                        auc.start=ret$auc.start[i],
+                        auc.end=ret$auc.end[i],
+                        half.life=ret$calculate.half.life[i])
+      ## Add new columns to the return dataset
+      for (n in setdiff(names(calculated.interval),
+                        names(ret)))
+        ret[,n] <- NA
+      ## Add all the new data into the output
+      ret[i,names(calculated.interval)] <- calculated.interval
+    }
+  }
+  ret
+}
+
 #' Compute all PK parameters
 #'
 #' For one subject/time range, compute all available PK parameters.

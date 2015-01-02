@@ -87,6 +87,7 @@ interp.extrap.conc <- function(conc, time, time.out, lambda.z=NA,
 
 #' @describeIn interp.extrap.conc Interpolate concentrations through
 #' Tlast (inclusive)
+#' @export
 interpolate.conc <- function(conc, time, time.out,
                              interp.method=PKNCA.options("auc.method"),
                              conc.blq=PKNCA.options("conc.blq"),
@@ -146,6 +147,7 @@ interpolate.conc <- function(conc, time, time.out,
 }
 
 #' @describeIn interp.extrap.conc Extrapolate concentrations after Tlast
+#' @export
 extrapolate.conc <- function(conc, time, time.out,
                              lambda.z=NA, extrap.method="AUCinf",
                              conc.na=PKNCA.options("conc.na"),

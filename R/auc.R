@@ -64,9 +64,8 @@ check.auc.specification <- function(x) {
   ## If there are additional columns, remove them
   addl.cols <- setdiff(names(x), required.cols)
   if (length(addl.cols) > 0) {
-    warning(paste("Removing extraneous AUC specification columns:",
+    message(paste("AUC specification columns to specify the group(s):",
                   paste(addl.cols, collapse=", ")))
-    x <- x[,required.cols]
   }
   ## Ensure that all columns have the right edit(s)
   if (!is.logical(x$half.life)) {
@@ -292,6 +291,7 @@ fun.auc.inf <- function(conc, time, lambda.z)
   pk.calc.clast.obs(conc, time, check=FALSE)/lambda.z
 
 #' @describeIn pk.calc.auxc Compute the area under the curve
+#' @export
 pk.calc.auc <- function(...)
   pk.calc.auxc(...,
                fun.linear=fun.auc.linear,
@@ -303,18 +303,21 @@ pk.calc.auc <- function(...)
 ## lambda.z should not be used, and if it is used, that should be
 ## caught as an error.
 #' @describeIn pk.calc.auxc Compute the AUClast.
+#' @export
 pk.calc.auc.last <- function(...)
   pk.calc.auc(...,
               auc.type="AUClast",
               lambda.z=NA)
 
 #' @describeIn pk.calc.auxc Compute the AUCall.
+#' @export
 pk.calc.auc.all <- function(...)
   pk.calc.auc(...,
               auc.type="AUCall",
               lambda.z=NA)
 
 #' @describeIn pk.calc.auxc Compute the area under the moment curve
+#' @export
 pk.calc.aumc <- function(...)
   pk.calc.auxc(...,
     fun.linear=function(conc.1, conc.2, time.1, time.2) {

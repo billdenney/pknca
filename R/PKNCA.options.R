@@ -229,7 +229,6 @@
 #' @param default (re)sets all default options
 #' @param check check a single option given, but do not set it (for
 #' validation of the values when used in another function)
-#' @export
 #' @return
 #' If...
 #' \describe{
@@ -244,6 +243,7 @@
 #' PKNCA.options(default=TRUE)
 #' PKNCA.options("auc.method")
 #' PKNCA.options(auc.method="lin up/log down", min.hl.points=3)
+#' @export
 PKNCA.options <- function(..., default=FALSE, check=FALSE) {
   current <- get("options", envir=.PKNCAEnv)
   args <- list(...)

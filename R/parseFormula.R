@@ -28,6 +28,7 @@
 #' ## parseFormula("a~b", require.groups=TRUE) # This is an error
 #' parseFormula("a~b|c")
 #' parseFormula("a~b|c")$groups
+#' @export
 parseFormula <- function (form,
                           require.groups=FALSE,
                           require.two.sided=FALSE) {
@@ -37,7 +38,7 @@ parseFormula <- function (form,
     try({
       form <- as.formula(form)
       made.formula <- TRUE
-    })
+    }, silent=TRUE)
     if (!made.formula)
       stop("form must be a formula object or coercable into one")
   }
@@ -46,7 +47,7 @@ parseFormula <- function (form,
   n.sides <- length(form) - 1
   if (n.sides == 1) {
     if (require.two.sided)
-      stop("formula is one-sided with require.two.sided as TRUE")
+      stop("formula is one-sided with require.two.sided set to TRUE")
     lhs <- NA
     rhs <- form[[2]]
   } else if (n.sides == 2) {
@@ -104,14 +105,23 @@ print.parseFormula <- function(x, ...) {
   cat(deparse(formula(x)), "\n")
 }
 
-## Convert the parsed formula back into the original
+#' Convert the parsed formula back into the original
+#'
+#' @param x The parsed formula object to revert to the original
+#' @param drop.groups logical. Should the returned formula drop the
+#' groups?
+#' @param drop.lhs logical. Should the returned formula be one-sided
+#' dropping the left hand side?
+#' @return A formula (optionally with portions removed)
+#' @export
 formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
   if (identical(x$lhs, NA) | drop.lhs) {
-    ret <- as.formula(paste0("~", deparse(x$rhs)))
+    ret <- as.formula(call("~", x$rhs))
   } else {
-    ret <- as.formula(paste0(deparse(x$lhs), "~", deparse(x$rhs)))
+    ret <- as.formula(call("~", x$lhs, x$rhs))
   }
   if (!identical(x$groups, NA) & !drop.groups)
     ret <- as.formula(paste0(deparse(ret), "|", deparse(x$groups)))
+  environment(ret) <- x$env
   ret
 }
