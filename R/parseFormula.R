@@ -1,31 +1,36 @@
 #' Parse a formula into its component parts.
 #'
+#' This function supports parsing 
+#'
 #' This function extracts the left hand side (\code{lhs}), right hand
 #' side (\code{rhs}), groups (\code{groups} and as a formula,
 #' \code{grpFormula}), the environment (\code{env}, and the original
 #' left/right hand side of the model (\code{model}).
 #'
+#' This function borrows heavily from the \code{parseGroupFormula}
+#' function in the doBy package.
+#'
 #' @param form the formula to extract into its parts 
 #' @param require.groups is it an error not to have groups?
 #' @param require.two.sided is it an error to have a one-sided
 #' formula?
-#' @return A parseGroupFormula class list with elements of
+#' @return A parseFormula class list with elements of
 #' \itemize{
 #'   \describe{model}{The left~right side of the model (excluding groups)}
 #'   \describe{lhs}{The call for the left hand side}
 #'   \describe{rhs}{The call for the right hand side (excluding groups)}
 #'   \describe{groups}{The call for the groups}
-#'   \describe{grpFormula}{A formula form of the groups}
+#'   \describe{groupFormula}{A formula form of the groups}
 #'   \describe{env}{The original formula's environment}
 #' }
 #' @examples
-#' parseGroupFormula("a~b", require.groups=FALSE)
-#' ## parseGroupFormula("a~b", require.groups=TRUE) # This is an error
-#' parseGroupFormula("a~b|c")
-#' parseGroupFormula("a~b|c")$groups
-parseGroupFormula <- function (form,
-                               require.groups=TRUE,
-                               require.two.sided=TRUE) {
+#' parseFormula("a~b", require.groups=FALSE)
+#' ## parseFormula("a~b", require.groups=TRUE) # This is an error
+#' parseFormula("a~b|c")
+#' parseFormula("a~b|c")$groups
+parseFormula <- function (form,
+                          require.groups=FALSE,
+                          require.two.sided=FALSE) {
   ## If it is not a formula, make it a formula if possible
   if (class(form) != "formula") {
     made.formula <- FALSE
@@ -34,7 +39,7 @@ parseGroupFormula <- function (form,
       made.formula <- TRUE
     })
     if (!made.formula)
-      stop("formula must be coercable into a formula object")
+      stop("form must be a formula object or coercable into one")
   }
   ## Check how many sides the formula has and extract the left and
   ## right sides
@@ -51,7 +56,8 @@ parseGroupFormula <- function (form,
   ## Extract the environment
   model <- form
   ## Extract the groups
-  if (class(rhs) != "call" || rhs[[1]] != as.symbol("|")) {
+  if (class(rhs) != "call" ||
+      rhs[[1]] != as.symbol("|")) {
     ## If there are no groups
     if (require.groups) {
       stop("rhs of formula must be a conditioning expression")
@@ -65,20 +71,26 @@ parseGroupFormula <- function (form,
     model[[3]] <- rhs[[2]]
     groups <- rhs[[3]]
     model.rhs <- rhs[[2]]
-    grpFormula <- as.formula(paste("~", deparse(groups)))
+    grpFormula <- as.formula(paste("~", deparse(groups)),
+                             env=environment(form))
   }
-  ret <- 
+  if (identical(lhs, NA)) {
+    model <- as.formula(call("~", model.rhs), env=environment(form))
+  } else {
+    model <- as.formula(call("~", lhs, model.rhs), env=environment(form))
+  }
+  ret <-
     list(model = model,
-         lhs = form[[2]],
+         lhs = lhs,
          rhs = model.rhs,
          groups = groups,
          groupFormula = grpFormula,
          env=environment(form))
-  class(ret) <- c("parseGroupFormula", class(ret))
+  class(ret) <- c("parseFormula", class(ret))
   ret
 }
 
-print.parseGroupFormula <- function(x, ...) {
+print.parseFormula <- function(x, ...) {
   if (identical(x$lhs, NA)) {
     cat("A one-sided formula ")
   } else {
@@ -93,7 +105,7 @@ print.parseGroupFormula <- function(x, ...) {
 }
 
 ## Convert the parsed formula back into the original
-formula.parseGroupFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
+formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
   if (identical(x$lhs, NA) | drop.lhs) {
     ret <- as.formula(paste0("~", deparse(x$rhs)))
   } else {
