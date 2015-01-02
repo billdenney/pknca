@@ -25,26 +25,31 @@ business <- function(FUN, zero.missing=FALSE)
 #' Compute the geometric mean, sd, and CV
 #'
 #' @param x A vector to compute the geometric mean of
-#' @param ... Values passed to the sum or standard deviation function
+#' @param na.rm Should missing values be removed?
 #' @return The scalar value of the geometric mean, geometric standard
 #' deviation, or geometric coefficient of variation.
 #' @aliases geosd, geocv
 #' @export
-geomean <- function(x, ...)
-  if (any(x == 0)) {
+geomean <- function(x, na.rm=FALSE) {
+  if (na.rm)
+    x <- na.omit(x)
+  if (any(is.na(x))) {
+    as.numeric(NA)
+  } else if (any(x == 0)) {
     0
   } else if (any(x < 0)) {
     ## Protect from overflows by using the logarithm
-    prod(sign(x))*exp(sum(log(abs(x)), ...)/length(x))
+    prod(sign(x))*exp(sum(log(abs(x)))/length(x))
   } else {
-    exp(sum(log(x), ...)/length(x))
+    exp(sum(log(x))/length(x))
   }
+}
 
-geosd <- function(x, ...)
-  exp(sd(log(x), ...))
+geosd <- function(x, na.rm=FALSE)
+  exp(sd(log(x), na.rm=na.rm))
 
-geocv <- function(x, ...)
-  sqrt(exp(sd(log(x), ...)^2)-1)*100
+geocv <- function(x, na.rm=FALSE)
+  sqrt(exp(sd(log(x), na.rm=na.rm)^2)-1)*100
 
 #' Generate functions to do the named function (e.g. mean) applying
 #' the business rules.

@@ -6,12 +6,12 @@
 \alias{geosd,}
 \title{Compute the geometric mean, sd, and CV}
 \usage{
-geomean(x, ...)
+geomean(x, na.rm = FALSE)
 }
 \arguments{
 \item{x}{A vector to compute the geometric mean of}
 
-\item{...}{Values passed to the sum or standard deviation function}
+\item{na.rm}{Should missing values be removed?}
 }
 \value{
 The scalar value of the geometric mean, geometric standard
