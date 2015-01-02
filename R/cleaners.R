@@ -8,8 +8,7 @@
 #' @param \dots Additional items to add to the data frame
 #' @param conc.na How to handle NA concentrations?  Either 'drop' or a
 #' number to impute.
-#' @param check Should the inputs be checked?  This is used to prevent
-#' multiply reporting the same warning.
+#' @param check Run \code{\link{check.conc.time}}?
 #' @return The concentration and time measurements (data frame)
 #' filtered and cleaned as requested relative to NA in the concentration.
 #' @export
@@ -41,8 +40,7 @@ clean.conc.na <- function(conc, time, ..., conc.na=PKNCA.options("conc.na"),
 #' values?  See details for description.
 #' @param conc.na How to handle NA concentrations.  (See
 #' \code{\link{clean.conc.na}})
-#' @param check Should the inputs be checked?  This is used to prevent
-#' multiply reporting the same warning.
+#' @param check Run \code{\link{check.conc.time}}?
 #' @return The concentration and time measurements (data frame)
 #' filtered and cleaned as requested relative to BLQ in the middle.
 #'

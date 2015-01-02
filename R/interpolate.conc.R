@@ -14,6 +14,8 @@
 #' @param time Time of the concentration measurement
 #' @param time.out Time when interpolation is requested (vector for
 #' \code{interp.extrap.conc}, scalar otherwise)
+#' @param lambda.z The elimination rate constant.  \code{NA} will
+#' prevent extrapolation.
 #' @param interp.method The method for interpolation (either
 #' 'lin up/log down' or 'linear')
 #' @param extrap.method The method for extrapolation: "AUCinf",
@@ -22,8 +24,8 @@
 #' \code{\link{clean.conc.blq}} for usage instructions.)
 #' @param conc.na How to handle NA concentrations.  (See
 #' \code{\link{clean.conc.na}})
-#' @param check Should the inputs be checked?  This is used to prevent
-#' multiply reporting the same warning.
+#' @param check Run \code{\link{check.conc.time}},
+#' \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
 #' @return The interpolated or extrapolated concentration value as a
 #' scalar float.
 #'

@@ -16,8 +16,7 @@ pk.calc.tmax(conc, time, use.first = PKNCA.options("first.tmax"),
 maximum concentration, should the first be considered as Tmax?  If
 not, then the last is considered Tmax.  (Default: TRUE)}
 
-\item{check}{Should the inputs be checked?  This is used to not
-multiply report the same warning.}
+\item{check}{Run \code{\link{check.conc.time}}?}
 }
 \value{
 the time of the maximum concentration

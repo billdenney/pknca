@@ -15,8 +15,7 @@ adj.r.squared <- function(r.sq, n) {
 #' Determine maximum observed PK concentration
 #'
 #' @param conc Concentration measured
-#' @param check Should the inputs be checked?  This is used to not
-#' multiply report the same warning.
+#' @param check Run \code{\link{check.conc.time}}?
 #' @return a number for the maximum concentration or NA if all
 #' concentrations are missing
 #' @export
@@ -60,8 +59,7 @@ pk.calc.cmin <- function(conc, check=TRUE) {
 #' @param use.first If there is more than time that matches the
 #' maximum concentration, should the first be considered as Tmax?  If
 #' not, then the last is considered Tmax.  (Default: TRUE)
-#' @param check Should the inputs be checked?  This is used to not
-#' multiply report the same warning.
+#' @param check Run \code{\link{check.conc.time}}?
 #' @return the time of the maximum concentration
 #' @export
 pk.calc.tmax <- function(conc, time,
@@ -92,8 +90,7 @@ pk.calc.tmax <- function(conc, time,
 #'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param check Should the inputs be checked?  This is used to not
-#' multiply report the same warning.
+#' @param check Run \code{\link{check.conc.time}}?
 #' @return The time of the last observed concentration measurement
 #' @export
 pk.calc.tlast <- function(conc, time, check=TRUE) {
@@ -133,8 +130,7 @@ pk.calc.tfirst <- function(conc, time, check=TRUE) {
 #' will return NA.
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param check Should the inputs be checked?  This is used to not
-#' multiply report the same warning.
+#' @param check Run \code{\link{check.conc.time}}?
 #' @return The last observed concentration above the LOQ
 #' @export
 pk.calc.clast.obs <- function(conc, time, check=TRUE) {
@@ -198,11 +194,12 @@ pk.calc.cl <- function(dose, auc, unitconv)
 
 #' Calculate the absolute (or relative) bioavailability
 #'
-#' @param dose1
-#' @param dose2 the dose administered in route or method 1, 2
-#' @param auc1
-#' @param auc2 the AUC from 0 to infinity or 0 to tau administered in
-#' route or method 1, 2
+#' @param dose1 The dose administered in route or method 1
+#' @param dose2 The dose administered in route or method 2
+#' @param auc1 The AUC from 0 to infinity or 0 to tau administered in
+#' route or method 1
+#' @param auc2 The AUC from 0 to infinity or 0 to tau administered in
+#' route or method 2
 #' @export
 pk.calc.f <- function(dose1, auc1, dose2, auc2)
   (auc2/dose2)/(auc1/dose1)

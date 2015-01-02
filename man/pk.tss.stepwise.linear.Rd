@@ -14,10 +14,13 @@ pk.tss.stepwise.linear(..., min.points = 3, level = 0.95, verbose = FALSE,
 \item{level}{The confidence level required for assessment of
 steady-state}
 
-\item{{\dots,}{check} See \code{\link{pk.tss.data.prep}}}
+\item{verbose}{Describe models as they are run, show convergence of
+the model (passed to the nlme function), and additional details
+while running.}
 
-\item{tss.fraction}{The fraction of steady-state required for
-monoexponential fit}
+\item{check}{See \code{\link{pk.tss.data.prep}}}
+
+\item{\dots}{See \code{\link{pk.tss.data.prep}}}
 }
 \value{
 A scalar float for the first time when steady-state is

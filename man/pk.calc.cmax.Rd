@@ -12,8 +12,7 @@ pk.calc.cmin(conc, check = TRUE)
 \arguments{
 \item{conc}{Concentration measured}
 
-\item{check}{Should the inputs be checked?  This is used to not
-multiply report the same warning.}
+\item{check}{Run \code{\link{check.conc.time}}?}
 }
 \value{
 a number for the maximum concentration or NA if all

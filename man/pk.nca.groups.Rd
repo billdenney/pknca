@@ -8,6 +8,8 @@ treatments, studies, analytes, etc.) simultaneously.}
 pk.nca.groups(...)
 }
 \arguments{
+\item{...}{Parameters passed to other methods.}
+
 \item{formula.conc}{the formula defining which columns in the data
 correspond to \code{concentration~time|group1+group2+...}}
 
@@ -16,8 +18,10 @@ correspond to \code{concentration~time|group1+group2+...}}
 \item{formula.dose}{the formula defining which columns in the data
 correspond to \code{~time.dose|group1+group2+...}}
 
+\item{data.dose}{the data corresponding with \code{formula.dose}}
+
 \item{auc.intervals}{specifications for calculation of AUC and
-half-life as defined in \code{\link{check.auc.interval}}}
+half-life as defined in \code{\link{check.auc.specification}}}
 }
 \value{
 a data.frame with columns for each concentration group

@@ -14,8 +14,9 @@
 #'         calculate the half life after the last dose.
 #'  }
 #' 
-#' @param time Time of concentration measurement
+#' @param time.conc Time of concentration measurement
 #' @param time.dosing Time of dosing
+#' @param single.dose.aucs The AUC specification for single dosing.
 #' @return A data frame with columns for \code{start}, \code{end},
 #' \code{auc.type}, and \code{half.life}.  See
 #' \code{\link{check.auc.specification}} for column definitions.  The
@@ -97,6 +98,7 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' rule unique(mod(x, interval)) is minimized.
 #'
 #' @param x the vector to find the interval within
+#' @param na.action What to do with NAs in \code{x}
 #' @param tau.choices the intervals to look for if the doses are not
 #' all equally spaced.
 #' @return A scalar indicating the repeating interval with the most

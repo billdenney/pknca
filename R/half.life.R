@@ -4,11 +4,11 @@
 #' available sets of points.  The best one is chosen by the following
 #' rules in order:
 #'
-#' \describe{
-#' \item At least \code{min.hl.points} points included
-#' \item A \code{lambda.z} > 0
-#' \item The best adjusted r-squared (within \code{adj.r.squared.factor})
-#' \item The one with the most points included
+#' \itemize{
+#' \item{At least \code{min.hl.points} points included}
+#' \item{A \code{lambda.z} > 0}
+#' \item{The best adjusted r-squared (within \code{adj.r.squared.factor})}
+#' \item{The one with the most points included}
 #' }
 #'
 #' @param conc Concentration measured
@@ -17,6 +17,11 @@
 #' included to calculate the half-life
 #' @param adj.r.squared.factor The allowance in adjusted r-squared for
 #' adding another point.
+#' @param conc.blq See \code{\link{clean.conc.blq}}
+#' @param conc.na See \code{\link{clean.conc.na}}
+#' @param check Run \code{\link{check.conc.time}},
+#' \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
+#' @param use.first See \code{\link{pk.calc.tmax}}.
 #' @return A data frame with one row and columns for
 #' \describe{
 #'   \item{tmax}{Time of maximum observed concentration}

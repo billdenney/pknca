@@ -4,10 +4,10 @@
 \alias{AIC.list}
 \title{Assess the AIC for all models in a list of models}
 \usage{
-\method{AIC}{list}(x, ..., assess.best = TRUE)
+\method{AIC}{list}(object, ..., assess.best = TRUE)
 }
 \arguments{
-\item{x}{the list of models}
+\item{object}{the list of models}
 
 \item{assess.best}{determine which model is the best (by lowest
 AIC)}
@@ -23,5 +23,8 @@ another column \code{isBest}.
 }
 \description{
 Assess the AIC for all models in a list of models
+}
+\seealso{
+\code{\link{get.best.model}}
 }
 

@@ -28,7 +28,7 @@ are assumed to be on the same treatment)}
 
 \item{conc.na}{See \code{\link{clean.conc.na}}}
 
-\item{check}{Check the concentration/time part of the input}
+\item{check}{Run \code{\link{check.conc.time}}?}
 
 \item{\dots}{Discarded inputs to allow generic calls between tss
 methods.}

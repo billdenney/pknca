@@ -3,12 +3,23 @@
 \name{pk.nca.individual}
 \alias{pk.nca.individual}
 \title{This differs from pk.nca.interval because it allows many intervals
-to be calculated for a single individual}
+to be calculated for a single individual.}
 \usage{
 pk.nca.individual(conc, time, auc.intervals = data.frame(), ...)
 }
+\arguments{
+\item{conc}{The plasma concentration}
+
+\item{time}{The time of plasma concentration measurement}
+
+\item{auc.intervals}{The AUC intervals (see
+\code{\link{check.auc.specification}})}
+}
+\value{
+A data frame with the NCA parameters calculated.
+}
 \description{
 This differs from pk.nca.interval because it allows many intervals
-to be calculated for a single individual
+to be calculated for a single individual.
 }
 

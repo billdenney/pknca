@@ -29,6 +29,9 @@ extrapolate.conc(conc, time, time.out, lambda.z = NA,
 \item{time.out}{Time when interpolation is requested (vector for
 \code{interp.extrap.conc}, scalar otherwise)}
 
+\item{lambda.z}{The elimination rate constant.  \code{NA} will
+prevent extrapolation.}
+
 \item{interp.method}{The method for interpolation (either
 'lin up/log down' or 'linear')}
 
@@ -41,8 +44,8 @@ extrapolate.conc(conc, time, time.out, lambda.z = NA,
 \item{conc.na}{How to handle NA concentrations.  (See
 \code{\link{clean.conc.na}})}
 
-\item{check}{Should the inputs be checked?  This is used to prevent
-multiply reporting the same warning.}
+\item{check}{Run \code{\link{check.conc.time}},
+\code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
 }
 \value{
 The interpolated or extrapolated concentration value as a

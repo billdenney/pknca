@@ -62,7 +62,14 @@ pk.nca.interval <- function(conc, time,
 }
 
 #' This differs from pk.nca.interval because it allows many intervals
-#' to be calculated for a single individual
+#' to be calculated for a single individual.
+#'
+#' @param conc The plasma concentration
+#' @param time The time of plasma concentration measurement
+#' @param auc.intervals The AUC intervals (see
+#' \code{\link{check.auc.specification}})
+#' @return A data frame with the NCA parameters calculated.
+#' @export
 pk.nca.individual <- function(conc, time,
                               auc.intervals=data.frame(),
                               ...) {
@@ -107,8 +114,10 @@ pk.nca.individual <- function(conc, time,
 #' @param data.conc the data corresponding with \code{formula.conc}
 #' @param formula.dose the formula defining which columns in the data
 #' correspond to \code{~time.dose|group1+group2+...}
+#' @param data.dose the data corresponding with \code{formula.dose}
 #' @param auc.intervals specifications for calculation of AUC and
-#' half-life as defined in \code{\link{check.auc.interval}}
+#' half-life as defined in \code{\link{check.auc.specification}}
+#' @param ... Parameters passed to other methods.
 #' @return a data.frame with columns for each concentration group
 #' (rows change slowest in the first group and fastest in the last
 #' group) and for each calculated PK parameter.

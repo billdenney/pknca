@@ -9,6 +9,8 @@ find.tau(x, na.action = na.omit, tau.choices = PKNCA.options("tau.choices"))
 \arguments{
 \item{x}{the vector to find the interval within}
 
+\item{na.action}{What to do with NAs in \code{x}}
+
 \item{tau.choices}{the intervals to look for if the doses are not
 all equally spaced.}
 }

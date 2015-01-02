@@ -19,8 +19,7 @@ values?  See details for description.}
 \item{conc.na}{How to handle NA concentrations.  (See
 \code{\link{clean.conc.na}})}
 
-\item{check}{Should the inputs be checked?  This is used to prevent
-multiply reporting the same warning.}
+\item{check}{Run \code{\link{check.conc.time}}?}
 
 \item{\dots}{Additional arguments passed to clean.conc.na}
 }

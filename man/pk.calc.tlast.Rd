@@ -15,8 +15,7 @@ pk.calc.tfirst(conc, time, check = TRUE)
 
 \item{time}{Time of concentration measurement}
 
-\item{check}{Should the inputs be checked?  This is used to not
-multiply report the same warning.}
+\item{check}{Run \code{\link{check.conc.time}}?}
 }
 \value{
 The time of the last observed concentration measurement

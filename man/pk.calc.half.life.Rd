@@ -19,6 +19,15 @@ included to calculate the half-life}
 
 \item{adj.r.squared.factor}{The allowance in adjusted r-squared for
 adding another point.}
+
+\item{conc.blq}{See \code{\link{clean.conc.blq}}}
+
+\item{conc.na}{See \code{\link{clean.conc.na}}}
+
+\item{use.first}{See \code{\link{pk.calc.tmax}}.}
+
+\item{check}{Run \code{\link{check.conc.time}},
+\code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
 }
 \value{
 A data frame with one row and columns for
@@ -43,11 +52,11 @@ available sets of points.  The best one is chosen by the following
 rules in order:
 }
 \details{
-\describe{
-\item At least \code{min.hl.points} points included
-\item A \code{lambda.z} > 0
-\item The best adjusted r-squared (within \code{adj.r.squared.factor})
-\item The one with the most points included
+\itemize{
+\item{At least \code{min.hl.points} points included}
+\item{A \code{lambda.z} > 0}
+\item{The best adjusted r-squared (within \code{adj.r.squared.factor})}
+\item{The one with the most points included}
 }
 }
 \references{

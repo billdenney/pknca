@@ -11,7 +11,7 @@
 #' @param time.dosing Time of dosing
 #' @param conc.blq See \code{\link{clean.conc.blq}}
 #' @param conc.na See \code{\link{clean.conc.na}}
-#' @param check Check the concentration/time part of the input
+#' @param check Run \code{\link{check.conc.time}}?
 #' @param \dots Discarded inputs to allow generic calls between tss
 #' methods.
 #' @return a data frame with columns for \code{conc}entration,
@@ -82,13 +82,13 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
   ret
 }
 
-#' Compute the time to steady-state
+#' Compute the time to steady-state (tss)
 #'
-#' @param {\dots, check} See \code{\link{pk.tss.monoexponential}} or
+#' @param \dots Passed to \code{\link{pk.tss.monoexponential}} or
 #' \code{\link{pk.tss.stepwise.linear}}.
+#' @param check See \code{\link{pk.tss.data.prep}}
 #' @param type The type of Tss to calculate, either
 #' \code{stepwise.linear} or \code{monoexponential}
-#' @param output See \code{link{pk.tss.monoexponential}}
 #' @return A data frame with columns as defined from
 #' \code{pk.tss.monoexponential} and/or \code{pk.tss.stepwise.linear}.
 #' @seealso \code{\link{pk.tss.monoexponential}},

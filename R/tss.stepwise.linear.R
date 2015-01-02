@@ -11,12 +11,14 @@
 #' if given) and a random slope by subject (if given).  A minimum of
 #' \code{min.points} is required to fit the model.
 #' 
-#' @param {\dots, check} See \code{\link{pk.tss.data.prep}}
+#' @param \dots See \code{\link{pk.tss.data.prep}}
+#' @param check See \code{\link{pk.tss.data.prep}}
 #' @param min.points The minimum number of points required for the fit
 #' @param level The confidence level required for assessment of
 #' steady-state
-#' @param tss.fraction The fraction of steady-state required for
-#' monoexponential fit
+#' @param verbose Describe models as they are run, show convergence of
+#' the model (passed to the nlme function), and additional details
+#' while running.
 #' @return A scalar float for the first time when steady-state is
 #' achieved or \code{NA} if it is not observed.
 #' @seealso \code{\link{pk.tss.monoexponential}}

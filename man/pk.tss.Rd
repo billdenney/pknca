@@ -2,7 +2,7 @@
 % Please edit documentation in R/tss.R
 \name{pk.tss}
 \alias{pk.tss}
-\title{Compute the time to steady-state}
+\title{Compute the time to steady-state (tss)}
 \usage{
 pk.tss(..., type = c("monoexponential", "stepwise.linear"), check = TRUE)
 }
@@ -10,17 +10,17 @@ pk.tss(..., type = c("monoexponential", "stepwise.linear"), check = TRUE)
 \item{type}{The type of Tss to calculate, either
 \code{stepwise.linear} or \code{monoexponential}}
 
-\item{{\dots,}{check} See \code{\link{pk.tss.monoexponential}} or
-\code{\link{pk.tss.stepwise.linear}}.}
+\item{check}{See \code{\link{pk.tss.data.prep}}}
 
-\item{output}{See \code{link{pk.tss.monoexponential}}}
+\item{\dots}{Passed to \code{\link{pk.tss.monoexponential}} or
+\code{\link{pk.tss.stepwise.linear}}.}
 }
 \value{
 A data frame with columns as defined from
 \code{pk.tss.monoexponential} and/or \code{pk.tss.stepwise.linear}.
 }
 \description{
-Compute the time to steady-state
+Compute the time to steady-state (tss)
 }
 \seealso{
 \code{\link{pk.tss.monoexponential}},

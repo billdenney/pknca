@@ -44,6 +44,12 @@ or 'linear')}
 last above LOQ concentrations. (See \code{\link{clean.conc.blq}}
 for usage instructions.)}
 
+\item{conc.na}{How to handle missing concentration values.  (See
+\code{\link{clean.conc.na}} for usage instructions.)}
+
+\item{check}{Run \code{\link{check.conc.time}},
+\code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
+
 \item{fun.linear}{The function to use for integration of the linear
 part of the curve (not required for AUC or AUMC functions)}
 
@@ -54,6 +60,9 @@ required for AUC or AUMC functions)}
 \item{fun.inf}{The function to use for extrapolation from the final
 measurement to infinite time (not required for AUC or AUMC
 functions.}
+
+\item{...}{For functions other than \code{pk.calc.auxc}, these
+values are passed to \code{pk.calc.auxc}}
 }
 \value{
 A numeric value for the AU(M)C

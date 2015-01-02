@@ -8,9 +8,11 @@ choose.auc.intervals(time.conc, time.dosing,
   single.dose.aucs = PKNCA.options("single.dose.aucs"))
 }
 \arguments{
+\item{time.conc}{Time of concentration measurement}
+
 \item{time.dosing}{Time of dosing}
 
-\item{time}{Time of concentration measurement}
+\item{single.dose.aucs}{The AUC specification for single dosing.}
 }
 \value{
 A data frame with columns for \code{start}, \code{end},

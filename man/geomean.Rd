@@ -11,7 +11,7 @@ geomean(x, ...)
 \arguments{
 \item{x}{A vector to compute the geometric mean of}
 
-\item{...}{Values passed to the mean or standard deviation function}
+\item{...}{Values passed to the sum or standard deviation function}
 }
 \value{
 The scalar value of the geometric mean, geometric standard

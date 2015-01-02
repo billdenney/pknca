@@ -10,14 +10,20 @@
 #' @param \dots See \code{\link{pk.tss.data.prep}}
 #' @param tss.fraction The fraction of steady-state required for
 #' calling steady-state
-#' @param random.effects A list of random effects formula passed to
-#' the nlme function.  Potential fixed effects for inclusion are
-#' \code{tss} and \code{ctrough.ss}.  The first model fit is the one
-#' used.
+#' @param output Which types of outputs should be produced?
+#' \code{population} is the population estimate for time to
+#' steady-state (from an nlme model), \code{popind} is the individual
+#' estimate (from an nlme model), \code{individual} fits each
+#' individual separately with a gnls model, and \code{single} fits all
+#' the data to a single gnls model.
+#' @param check See \code{\link{pk.tss.data.prep}}.
+#' @param verbose Describe models as they are run, show convergence of
+#' the model (passed to the nlme function), and additional details
+#' while running.
 #' 
 #' @return A scalar float for the first time when steady-state is
 #' achieved or \code{NA} if it is not observed.
-#' @seealso \code{\link{pk.tss.stepwise.linear}}
+#' @seealso \code{\link{pk.tss}}, \code{\link{pk.tss.stepwise.linear}}
 #' @references
 #' Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
 #' Estimating Time to Steady State with Examples from Phase 1 Studies.
@@ -32,8 +38,6 @@ pk.tss.monoexponential <- function(...,
                                      "single"),
                                    check=TRUE,
                                    verbose=FALSE) {
-  require(nlme)
-  require(doBy)
   ## Check inputs
   modeldata <- pk.tss.data.prep(..., check=check)
   if (is.factor(tss.fraction) |
@@ -270,7 +274,7 @@ pk.tss.monoexponential.individual <- function(data,
     try({
       current.model <-
         gnls(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
-             param=list(
+             params=list(
                ctrough.ss~1,
                tss~1),
              start=c(

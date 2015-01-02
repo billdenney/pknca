@@ -25,13 +25,20 @@ business <- function(FUN, zero.missing=FALSE)
 #' Compute the geometric mean, sd, and CV
 #'
 #' @param x A vector to compute the geometric mean of
-#' @param ... Values passed to the mean or standard deviation function
+#' @param ... Values passed to the sum or standard deviation function
 #' @return The scalar value of the geometric mean, geometric standard
 #' deviation, or geometric coefficient of variation.
 #' @aliases geosd, geocv
 #' @export
 geomean <- function(x, ...)
-  exp(mean(log(x), ...))
+  if (any(x == 0)) {
+    0
+  } else if (any(x < 0)) {
+    ## Protect from overflows by using the logarithm
+    prod(sign(x))*exp(sum(log(abs(x)), ...)/length(x))
+  } else {
+    exp(sum(log(x), ...)/length(x))
+  }
 
 geosd <- function(x, ...)
   exp(sd(log(x), ...))
@@ -43,6 +50,8 @@ geocv <- function(x, ...)
 #' the business rules.
 #'
 #' @param x vector to be passed to the various functions
+#' @param ... Additional arguments to be passed to the underlying
+#' function.
 #' @return The value of the various functions or NA if too many values
 #' are missing
 #' @seealso business

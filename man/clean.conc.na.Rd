@@ -16,8 +16,7 @@ clean.conc.na(conc, time, ..., conc.na = PKNCA.options("conc.na"),
 \item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}
 
-\item{check}{Should the inputs be checked?  This is used to prevent
-multiply reporting the same warning.}
+\item{check}{Run \code{\link{check.conc.time}}?}
 
 \item{\dots}{Additional items to add to the data frame}
 }
