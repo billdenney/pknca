@@ -33,7 +33,7 @@ parseFormula <- function (form,
                           require.groups=FALSE,
                           require.two.sided=FALSE) {
   ## If it is not a formula, make it a formula if possible
-  if (class(form) != "formula") {
+  if (!inherits(form, "formula")) {
     made.formula <- FALSE
     try({
       form <- as.formula(form)

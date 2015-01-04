@@ -15,11 +15,6 @@ test_that("check.auc.specification", {
   ## Missing the start column is an error
   expect_error(check.auc.specification(good[,setdiff(names(good), "start")]),
                regexp="AUC specification must have columns for start, end, auc.type, half.life Column\\(s\\) missing: start")
-  ## Additional columns provide a warning
-  almost <- good
-  almost$more <- "Shouldn't be here"
-  expect_warning(check.auc.specification(almost),
-                 regexp="Removing extraneous AUC specification columns: more")
 
   ## half.life not as a logical is a warning.  Not coercable is an
   ## error

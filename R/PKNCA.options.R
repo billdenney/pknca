@@ -229,6 +229,9 @@
 #' @param default (re)sets all default options
 #' @param check check a single option given, but do not set it (for
 #' validation of the values when used in another function)
+#' @param name An option name to use with the \code{value}.
+#' @param value An option value (paired with the \code{name}) to set
+#' or check.
 #' @return
 #' If...
 #' \describe{
@@ -237,16 +240,32 @@
 #'   \item{a single value is requested}{the current value of that option is returned as a scalar}
 #'   \item{multiple values are requested}{the current values of those options are returned as a list}
 #' }
+#' @seealso \code{\link{PKNCA.choose.option}}
 #' @examples
 #'
 #' PKNCA.options()
 #' PKNCA.options(default=TRUE)
 #' PKNCA.options("auc.method")
+#' PKNCA.options(name="auc.method")
 #' PKNCA.options(auc.method="lin up/log down", min.hl.points=3)
 #' @export
-PKNCA.options <- function(..., default=FALSE, check=FALSE) {
+PKNCA.options <- function(..., default=FALSE, check=FALSE, name, value) {
   current <- get("options", envir=.PKNCAEnv)
   args <- list(...)
+  ## Put the name/value pair into the args as if they were specified
+  ## like another argument.
+  if (missing(name)) {
+    if (!missing(value))
+      stop("Cannot have a value without a name")
+  } else {
+    if (name %in% names(args))
+      stop("Cannot give an option name both with the name argument and as a named argument.")
+    if (!missing(value)) {
+      args[[name]] <- value
+    } else {
+      args <- append(args, name)
+    }
+  }
   if (default & check)
     stop("Cannot request both default and check")
   if (default) {
@@ -298,6 +317,22 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE) {
     return(current)
   }
 }
+
+#' Choose either the value from an option list or the current set
+#' value for an option.
+#'
+#' @param name The option name requested.
+#' @param options The non-default options to choose from.
+#' @return The value of the option first from the \code{options} list
+#' and if it is not there then from the current settings.
+#' @seealso \code{\link{PKNCA.options}}
+#' @export
+PKNCA.choose.option <- function(name, options=list())
+  if (name %in% names(options)) {
+    PKNCA.options(name=name, value=options[[name]], check=TRUE)
+  } else {
+    PKNCA.options(name)
+  }
 
 ## FIXME: Which of the below is needed for a package?
 .PKNCAEnv <- new.env()

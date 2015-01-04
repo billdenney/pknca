@@ -21,6 +21,25 @@ test_that("PKNCA.options", {
                list(min.hl.points=3,
                     min.hl.r.squared=0.9))
 
+  ## Asking for an option using the name argument works the same as
+  ## asking for one with a string.
+  expect_equal(PKNCA.options(name="single.dose.aucs"),
+               PKNCA.options("single.dose.aucs"))
+  ## You can request more than one option by using string inputs
+  ## combined with a single "name" argument.
+  expect_equal(PKNCA.options("first.tmax", name="single.dose.aucs"),
+               PKNCA.options("first.tmax", name="single.dose.aucs"))
+  ## You cannot both set an option and give it with a name.
+  expect_error(PKNCA.options(foo="var", name="foo", value="bar"),
+               regexp="Cannot give an option name both with the name argument and as a named argument.")
+  ## You cannot both set an option (with a value) and request an
+  ## option
+  expect_error(PKNCA.options("first.tmax", name="min.span.ratio", value=2),
+               regexp="Invalid setting for PKNCA")
+  ## You cannot give a value without a name.
+  expect_error(PKNCA.options(value=5),
+               regexp="Cannot have a value without a name")
+
   ## Cannot both check and default at the same time
   expect_error(PKNCA.options("adj.r.squared.factor", default=TRUE, check=TRUE),
                regexp="Cannot request both default and check")
@@ -234,4 +253,33 @@ test_that("PKNCA.options", {
   ## Reset all options to their default to ensure that any subsequent
   ## tests work correctly.
   PKNCA.options(default=TRUE)
+})
+
+test_that("PKNCA.choose.option", {
+  current.options <- PKNCA.options()
+  ## If nothing is given for the non-default options, the default
+  ## option is returned.
+  expect_equal(PKNCA.choose.option("conc.na"),
+               current.options[["conc.na"]])
+  ## If an invalid option is requested, it gives an error
+  expect_error(PKNCA.choose.option("foo"),
+               regexp="PKNCA.options does not have value\\(s\\) for foo.")
+  ## It gives an error even if there is a value in the option list.
+  ## Note that the error is different because it checks the passed-in
+  ## options while it just extracts the default options.
+  expect_error(PKNCA.choose.option("foo", options=list(foo="bar")),
+               regexp="Invalid setting for PKNCA: foo")
+  ## When given in the options list, it will choose that instead of
+  ## the default value.
+  expect_equal(PKNCA.choose.option("max.aucinf.pext",
+                                   options=list(max.aucinf.pext=10)),
+               10)
+  ## When multiple values are given in the options, it chooses the
+  ## right one and ignores all the others (so invalid options can be
+  ## listed as long as they are not used).
+  expect_equal(PKNCA.choose.option("max.aucinf.pext",
+                                   options=list(
+                                     foo="bar",
+                                     max.aucinf.pext=10)),
+               10)
 })

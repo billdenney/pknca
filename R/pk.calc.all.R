@@ -13,28 +13,30 @@ pk.nca <- function(data) {
                       data=model.frame(data))
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
-    ret <- data.frame()
+    results <- data.frame()
   } else {
-    tmp.ret <- mclapply(X=tmp.data,
-                        FUN=pk.calc.intervals,
-                        intervals=data$intervals)
+    tmp.results <- mclapply(X=tmp.data,
+                            FUN=pk.calc.intervals,
+                            intervals=data$intervals,
+                            options=data$options)
     ## Put the group parameters with the results
-    for (i in seq_len(length(tmp.ret)))
-      tmp.ret[[i]] <- cbind(attributes(tmp.data, "groupid")[i,],
-                            tmp.ret[[i]])
+    for (i in seq_len(length(tmp.results)))
+      tmp.results[[i]] <- cbind(attributes(tmp.data, "groupid")[i,],
+                                tmp.results[[i]])
     ## Generate the outputs
-    ret <- do.call(rbind, tmp.ret)
+    results <- do.call(rbind, tmp.results)
+    rownames(results) <- NULL
   }
-  rownames(ret) <- NULL
-  class(ret) <- c("PKNCAresults", class(ret))
-  ret
+  PKNCAresults(result=results,
+               formula=formula(data$conc),
+               options=data$options)
 }
 
 ## Subset data down to just the times of interest and then pass it
 ## further to the calculation routines.
 ##
 ## This is simply a helper for pk.nca
-pk.nca.intervals <- function(data, intervals) {
+pk.nca.intervals <- function(data, intervals, options) {
   ## Merge the intervals with the group columns from the data
   if (ncol(data) >= 3) {
     ret <- merge(unique(data[, 3:ncol(data), drop=FALSE]),
@@ -55,6 +57,7 @@ pk.nca.intervals <- function(data, intervals) {
     ## Subset the data down to the group of current interest
     tmpdata <-
       merge(data, interval.data[i,shared.names])[,c(col.conc, col.time)]
+    ## Choose only times between the start and end.
     mask.keep <- (ret$auc.start[i] <= tmpdata[,col.time] &
                   tmpdata[,col.time] <= ret$auc.end[i])
     tmpdata <- tmpdata[mask.keep,]
@@ -80,7 +83,7 @@ pk.nca.intervals <- function(data, intervals) {
   ret
 }
 
-#' Compute all PK parameters
+#' Compute all PK parameters for a single concentration-time data set
 #'
 #' For one subject/time range, compute all available PK parameters.
 #' All the internal options should be set by
@@ -99,10 +102,11 @@ pk.nca.intervals <- function(data, intervals) {
 pk.nca.interval <- function(conc, time,
                             auc.start, auc.end, auc.type,
                             half.life,
-                            method=PKNCA.options("auc.method"),
-                            conc.blq=PKNCA.options("conc.blq"),
-                            conc.na=PKNCA.options("conc.na"),
-                            first.tmax=PKNCA.options("first.tmax")) {
+                            options=list(),
+                            method=PKNCA.choose.option("auc.method", options),
+                            conc.blq=PKNCA.choose.option("conc.blq", options),
+                            conc.na=PKNCA.choose.option("conc.na", options),
+                            first.tmax=PKNCA.choose.option("first.tmax", options)) {
   if (half.life | auc.type %in% "AUCinf") {
     ret <- pk.calc.half.life(conc, time - auc.start)
   } else {

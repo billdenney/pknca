@@ -73,7 +73,7 @@ getDepVar <- function(x, ...)
 
 #' @export
 getDepVar.PKNCAconc <- function(x, ...) {
-  x[, parseFormula(formula(x))$lhs]
+  x$data[, all.vars(parseFormula(formula(x))$lhs)]
 }
 
 #' @export
@@ -91,7 +91,7 @@ getIndepVar <- function(x, ...)
 
 #' @export
 getIndepVar.PKNCAconc <- function(x, ...) {
-  x[, parseFormula(formula(x))$rhs]
+  x$data[, all.vars(parseFormula(formula(x))$rhs)]
 }
 
 #' @export
@@ -245,17 +245,17 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' as defined in \code{\link{check.auc.specification}}.  If missing,
 #' this will be automatically chosen by
 #' \code{\link{choose.auc.intervals}}.
-#' @param single.dose.aucs A data frame of AUCs to use for single dose
-#' data (see \code{\link{choose.acu.intervals}}).
-#' @return A data frame with a row for each interval for each grouping
-#' in the concentration data.
+#' @param options Changes to the default \code{\link{PKNCA.options}}
+#' for calculations (see that .
+#' @return A PKNCAdata object with concentration, dose, interval, and
+#' calculation options stored (note that PKNCAdata objects can also
+#' have results after a NCA calculations are done to the data).
 #' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
 #' \code{\link{choose.auc.intervals}}
 #' @export
 PKNCAdata <- function(data.conc, formula.conc,
                       data.dose, formula.dose,
-                      intervals,
-                      single.dose.aucs=PKNCA.options("single.dose.aucs")) {
+                      intervals, options=list()) {
   ret <- list()
   ## Generate the conc element
   if (inherits(data.conc, "PKNCAconc")) {
@@ -273,6 +273,19 @@ PKNCAdata <- function(data.conc, formula.conc,
   } else {
     ret$dose <- PKNCAdose(data.dose, formula.dose)
   }
+  ## Check the options
+  if (!is.list(options))
+    stop("options must be a list.")
+  if (length(options) > 0) {
+    if (is.null(names(options)))
+      stop("options must have names.")
+    for (n in names(options)) {
+      tmp.opt <- list(options[[n]], TRUE)
+      names(tmp.opt) <- c(n, "check")
+      do.call(PKNCA.options, tmp.opt)
+    }
+  }
+  ret$options <- options
   ## Check the AUC intervals
   if (missing(intervals)) {
     ret$intervals <-
@@ -292,8 +305,41 @@ print.PKNCAdata <- function(x, ...) {
   print.PKNCAdose(x$dose, ...)
   cat(sprintf("\nWith %d rows of AUC specifications.\n",
               nrow(x$intervals)))
+  if (length(x$options) == 0) {
+    cat("No options are set differently than default.\n")
+  } else {
+    cat("Options changed from default are:\n")
+    print(x$options)
+  }
 }
 
 #' @export
 summary.PKNCAdata <- function(x, ...)
   print.PKNCAdata(x, summarize=TRUE, ...)
+
+#' Generate a PKNCAresults object
+#'
+#' This function should not be run directly.  The object is created
+#' for summarization and plotting.
+#'
+#' @param result a data frame with NCA calculation results and groups.
+#' Each row is one interval and each column is a group name or the
+#' name of an NCA parameter.
+#' @param formula The formula used for concentration data in the
+#' calculations.  The groups are verified to be column names in the
+#' \code{result} parameter.
+#' @param options Options that are different from the defaults.  All
+#' options (default and custom) are stored with the results.
+#' @return A PKNCA object with each of the above within.
+#' @export
+PKNCAresults <- function(result, formula, options=list()) {
+  ## Merge the options into the default options.
+  tmp.opt <- PKNCA.options()
+  tmp.opt[names(options)] <- options
+  ## Add all the parts into the object
+  ret <- list(result=results,
+              formula=formula,
+              options=tmp.opt)
+  class(ret) <- c("PKNCAresults", class(ret))
+  ret
+}
