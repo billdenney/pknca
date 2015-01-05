@@ -159,11 +159,11 @@ test_that("formula.parseFormula", {
 
 test_that("print.parseFormula", {
   expect_output(print(parseFormula("~a")),
-                regexp="A one-sided formula without groups.\n  ~a")
+                regexp="A one-sided formula without groups[. \n]+~a")
   expect_output(print(parseFormula("~a|b")),
-                regexp="A one-sided formula with groups.\n  ~a \\| b")
+                regexp="A one-sided formula with groups[. \n]+~a \\| b")
   expect_output(print(parseFormula("a~b")),
-                regexp="A two-sided formula without groups.\n  a ~ b")
+                regexp="A two-sided formula without groups[. \n]+a ~ b")
   expect_output(print(parseFormula("a~b|c")),
-                regexp="A two-sided formula with groups.\n  a ~ b \\| c")
+                regexp="A two-sided formula with groups.[. \n]+a ~ b \\| c")
 })

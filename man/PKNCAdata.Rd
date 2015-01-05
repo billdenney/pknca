@@ -5,7 +5,7 @@
 \title{Create a PKNCAdata object.}
 \usage{
 PKNCAdata(data.conc, formula.conc, data.dose, formula.dose, intervals,
-  single.dose.aucs = PKNCA.options("single.dose.aucs"))
+  options = list())
 }
 \arguments{
 \item{data.conc}{Concentration data as a \code{PKNCAconc} object or
@@ -28,12 +28,13 @@ as defined in \code{\link{check.auc.specification}}.  If missing,
 this will be automatically chosen by
 \code{\link{choose.auc.intervals}}.}
 
-\item{single.dose.aucs}{A data frame of AUCs to use for single dose
-data (see \code{\link{choose.acu.intervals}}).}
+\item{options}{Changes to the default \code{\link{PKNCA.options}}
+for calculations (see that .}
 }
 \value{
-A data frame with a row for each interval for each grouping
-in the concentration data.
+A PKNCAdata object with concentration, dose, interval, and
+calculation options stored (note that PKNCAdata objects can also
+have results after a NCA calculations are done to the data).
 }
 \description{
 \code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and

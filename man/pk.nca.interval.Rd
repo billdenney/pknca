@@ -2,12 +2,13 @@
 % Please edit documentation in R/pk.calc.all.R
 \name{pk.nca.interval}
 \alias{pk.nca.interval}
-\title{Compute all PK parameters}
+\title{Compute all PK parameters for a single concentration-time data set}
 \usage{
 pk.nca.interval(conc, time, auc.start, auc.end, auc.type, half.life,
-  method = PKNCA.options("auc.method"),
-  conc.blq = PKNCA.options("conc.blq"), conc.na = PKNCA.options("conc.na"),
-  first.tmax = PKNCA.options("first.tmax"))
+  options = list(), method = PKNCA.choose.option("auc.method", options),
+  conc.blq = PKNCA.choose.option("conc.blq", options),
+  conc.na = PKNCA.choose.option("conc.na", options),
+  first.tmax = PKNCA.choose.option("first.tmax", options))
 }
 \arguments{
 \item{conc}{Concentration measured}

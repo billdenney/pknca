@@ -1,16 +1,17 @@
 #' Merge lists of data to make a list of lists.
 #'
-#' @param \dots Lists of class \code{splitByData}
+#' @param \dots Lists of class \code{splitByData}.  If the arguments
+#' are named, the names will be used for the output lists.
 #' @param missing.value The value to place when there is not a
 #' matching value.  If not given, set to NULL.
 #' @return A list the length of merging all the \code{groupid}
 #' attributes where each element is a list with the first element
 #' coming from the first input list, the second from the second imput
-#' list, and proceeding until all inputs are completed.  Note that the
-#' order of the output will be defined by the order returned from
-#' merging the \code{groupid} attributes in order.
+#' list, and proceeding until all inputs are completed.  The order of
+#' the output changes most slowly with the first and faster with each
+#' subsequent argument.
 #' @export
-merge.splitByData <- function(..., missing.value) {
+merge.splitByData <- function(..., missing.value=NULL) {
   args <- list(...)
   if (length(args) < 2)
     stop("Must give at least two lists to merge")
@@ -18,6 +19,8 @@ merge.splitByData <- function(..., missing.value) {
   all.groupids <- lapply(args, FUN=function(x) attr(x, "groupid"))
   ## Get the maximum name to ensure that temporary column names for
   ## ordering the inputs don't interfere.
+  if (any(sapply(all.groupids, is.null)))
+    stop("All inputs must have a groupid attribute")
   col.order <-
     paste(max(sapply(all.groupids, names, USE.NAMES=FALSE)),
           1:length(args), sep=".")
@@ -28,6 +31,11 @@ merge.splitByData <- function(..., missing.value) {
     intermediate.merge <- merge(intermediate.merge,
                                 all.groupids[[i]],
                                 all=TRUE)
+  ## Sort the output so that it is in the order of the inputs (first
+  ## arg changing most slowly).
+  intermediate.merge <-
+    intermediate.merge[do.call(order,
+                               as.list(intermediate.merge[,col.order])),]
   ## Put together the names for all the items to go in the sub-lists.
   listnames <- 1:length(args)
   if (!is.null(names(args))) {
@@ -41,12 +49,19 @@ merge.splitByData <- function(..., missing.value) {
     ## element of the outer list for the output), put a new list in as
     ## its main element.
     ret[[i]] <- list()
-    for (j in length(col.order)) {
+    for (j in seq_len(length(col.order))) {
       ## For each inner list, give it the name from the names of the
       ## input arguments and keeping them in order.  Then, pull the
       ## sub-list from the input arguments as chosen by the merging.
-      ret[[i]][[listnames[j]]] <-
-        args[[j]][[intermediate.merge[i,col.order[j]]]]
+      list.idx <- intermediate.merge[i,col.order[j]]
+      if (is.na(list.idx)) {
+        ## Note the different number of brackets on the left side to
+        ## allow assignment of list(NULL)
+        ret[[i]][listnames[j]] <- list(missing.value)
+      } else {
+        ret[[i]][[listnames[j]]] <- 
+          args[[j]][[intermediate.merge[i,col.order[j]]]]
+      }
     }
   }
   ## Give back the data.

@@ -4,13 +4,18 @@
 \alias{PKNCA.options}
 \title{Set default options for PKNCA functions}
 \usage{
-PKNCA.options(..., default = FALSE, check = FALSE)
+PKNCA.options(..., default = FALSE, check = FALSE, name, value)
 }
 \arguments{
 \item{default}{(re)sets all default options}
 
 \item{check}{check a single option given, but do not set it (for
 validation of the values when used in another function)}
+
+\item{name}{An option name to use with the \code{value}.}
+
+\item{value}{An option value (paired with the \code{name}) to set
+or check.}
 
 \item{\dots}{options to set or get the value for}
 }
@@ -42,6 +47,10 @@ assessing what values are included in the summary.
 PKNCA.options()
 PKNCA.options(default=TRUE)
 PKNCA.options("auc.method")
+PKNCA.options(name="auc.method")
 PKNCA.options(auc.method="lin up/log down", min.hl.points=3)
+}
+\seealso{
+\code{\link{PKNCA.choose.option}}
 }
 
