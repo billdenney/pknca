@@ -112,6 +112,7 @@ print.parseFormula <- function(x, ...) {
 #' groups?
 #' @param drop.lhs logical. Should the returned formula be one-sided
 #' dropping the left hand side?
+#' @param \dots Unused.
 #' @return A formula (optionally with portions removed)
 #' @export
 formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {

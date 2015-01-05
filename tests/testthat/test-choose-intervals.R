@@ -71,10 +71,12 @@ test_that("choose.auc.intervals", {
                regexp="time.dosing may not have any NA values")
   ## The below test is a bit of a non-sequeter-- essentially, it just
   ## needs to return a 0-row data frame.
-  expect_equal(choose.auc.intervals(1, 1, data.frame()),
+  expect_equal(choose.auc.intervals(1, 1,
+                                    single.dose.aucs=data.frame()),
                data.frame(start=1, end=1)[-1,])
   ## It adjusts single dose AUCs by the starting time
-  expect_equal(choose.auc.intervals(1, 1, tmp.single.dose.auc),
+  expect_equal(choose.auc.intervals(1, 1,
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=1,
                           end=c(25, Inf),
                           auc.type=c("AUClast", "AUCinf"),
@@ -83,7 +85,7 @@ test_that("choose.auc.intervals", {
   ## Find intervals for two doses with PK at both points and one in
   ## between.
   expect_equal(choose.auc.intervals(c(1, 2, 3), c(1, 3),
-                                    tmp.single.dose.auc),
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=1,
                           end=3,
                           auc.type="AUClast",
@@ -93,7 +95,7 @@ test_that("choose.auc.intervals", {
   ## between, and one after asking for AUClast after the second dose
   ## but no half-life.
   expect_equal(choose.auc.intervals(1:5, c(1, 3),
-                                    tmp.single.dose.auc),
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=c(1, 3),
                           end=c(3, 5),
                           auc.type="AUClast",
@@ -103,7 +105,7 @@ test_that("choose.auc.intervals", {
   ## between, and one after asking for AUClast after the second dose
   ## with half-life.
   expect_equal(choose.auc.intervals(1:6, c(1, 3),
-                                    tmp.single.dose.auc),
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=c(1, 3, 3),
                           end=c(3, 5, NA),
                           auc.type=c("AUClast", "AUClast", NA),
@@ -111,7 +113,7 @@ test_that("choose.auc.intervals", {
                           stringsAsFactors=FALSE))
   ## Some doses have PK betwen them, some not.
   expect_equal(choose.auc.intervals(1:6, c(1, 3, 5, 7, 9),
-                                    tmp.single.dose.auc),
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=c(1, 3),
                           end=c(3, 5),
                           auc.type=c("AUClast", "AUClast"),
@@ -121,7 +123,7 @@ test_that("choose.auc.intervals", {
   ## (pairs of doses with trough but no PK between)  
   expect_equal(choose.auc.intervals(c(1, 2, 3, 5, 6, 7),
                                     c(1, 3, 5, 7, 9),
-                                    tmp.single.dose.auc),
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=c(1, 5),
                           end=c(3, 7),
                           auc.type=c("AUClast", "AUClast"),
@@ -132,7 +134,7 @@ test_that("choose.auc.intervals", {
   ## with half-life.  Since tau is not detectable, no half-life at the
   ## end.
   expect_equal(choose.auc.intervals(1:6, c(1, 3, 5, 9),
-                                    tmp.single.dose.auc),
+                                    single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=c(1, 3),
                           end=c(3, 5),
                           auc.type=c("AUClast", "AUClast"),

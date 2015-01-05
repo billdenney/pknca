@@ -21,7 +21,7 @@ pk.nca <- function(data) {
                             options=data$options)
     ## Put the group parameters with the results
     for (i in seq_len(length(tmp.results)))
-      tmp.results[[i]] <- cbind(attributes(tmp.data, "groupid")[i,],
+      tmp.results[[i]] <- cbind(attr(tmp.data, "groupid")[i,],
                                 tmp.results[[i]])
     ## Generate the outputs
     results <- do.call(rbind, tmp.results)
@@ -95,6 +95,8 @@ pk.nca.intervals <- function(data, intervals, options) {
 #' @param time Time of concentration measurement
 #' @param auc.start The start time for the calculations.
 #' @param auc.end The end time for the calculations.
+#' @param auc.type The type of AUC to calculate.  See
+#' \code{\link{pk.calc.auc}}
 #' @param half.life logical. Should the half-life be calculated?
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.

@@ -9,11 +9,11 @@
 \usage{
 \method{print}{PKNCAconc}(x, n = 6, summarize = FALSE, ...)
 
-\method{summary}{PKNCAconc}(x, n = 0, summarize = TRUE)
+\method{summary}{PKNCAconc}(object, n = 0, summarize = TRUE, ...)
 
 \method{print}{PKNCAdose}(x, n = 6, summarize = FALSE, ...)
 
-\method{summary}{PKNCAdose}(x, n = 0, summarize = TRUE)
+\method{summary}{PKNCAdose}(object, n = 0, summarize = TRUE, ...)
 }
 \arguments{
 \item{x}{The object to print}

@@ -6,7 +6,7 @@
 the user.}
 \usage{
 clean.conc.blq(conc, time, ..., options = list(),
-  conc.blq = PKNCA.choose.options("conc.blq", options),
+  conc.blq = PKNCA.choose.option("conc.blq", options),
   conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
 }
 \arguments{

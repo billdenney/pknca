@@ -19,6 +19,9 @@ pk.nca.interval(conc, time, auc.start, auc.end, auc.type, half.life,
 
 \item{auc.end}{The end time for the calculations.}
 
+\item{auc.type}{The type of AUC to calculate.  See
+\code{\link{pk.calc.auc}}}
+
 \item{half.life}{logical. Should the half-life be calculated?}
 
 \item{options}{List of changes to the default

@@ -2,12 +2,13 @@ Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
 Version: 0.1
-Date: 2015-01-02
+Date: 2015-01-05
 Author: Bill Denney <william.s.denney@pfizer.com>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
 Maintainer: Bill Denney <william.s.denney@pfizer.com>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
-Depends: doBy, nlme, testthat, parallel
+Depends: doBy, nlme, parallel
+Suggests: testthat
 Description: This package computes standard Non-Compartmental Analysis (NCA)
     parameters and summarizes them.  In addition to this core work, it also
     provides standardized plotting routines, basic assessments for

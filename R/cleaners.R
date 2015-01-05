@@ -81,7 +81,7 @@ clean.conc.na <- function(conc, time, ...,
 clean.conc.blq <- function(conc, time,
                            ...,
                            options=list(),
-                           conc.blq=PKNCA.choose.options("conc.blq", options),
+                           conc.blq=PKNCA.choose.option("conc.blq", options),
                            conc.na=PKNCA.choose.option("conc.na", options),
                            check=TRUE) {
   conc.blq <- PKNCA.options(conc.blq=conc.blq, check=TRUE)

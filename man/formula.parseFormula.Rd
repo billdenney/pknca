@@ -15,6 +15,8 @@ groups?}
 
 \item{drop.lhs}{logical. Should the returned formula be one-sided
 dropping the left hand side?}
+
+\item{\dots}{Unused.}
 }
 \value{
 A formula (optionally with portions removed)

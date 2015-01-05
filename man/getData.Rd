@@ -6,6 +6,12 @@
 \usage{
 getData(object)
 }
+\arguments{
+\item{object}{Object to extract data from}
+}
+\value{
+Data from the object
+}
 \description{
 See \code{getData} in the nlme package.
 }

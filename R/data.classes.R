@@ -97,7 +97,7 @@ getIndepVar.PKNCAconc <- function(x, ...) {
 #' @export
 getIndepVar.PKNCAdose <- getIndepVar.PKNCAconc
 
-#' See \code{getGroups} in the nlme package.
+## See \code{getGroups} in the nlme package.
 getGroups <- function(object, form, level, data, sep)
   UseMethod("getGroups")
 
@@ -182,8 +182,8 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
 
 #' @rdname print.PKNCAconc
 #' @export
-summary.PKNCAconc <- function(x, n=0, summarize=TRUE)
-  print.PKNCAconc(x, n=n, summarize=summarize)
+summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...)
+  print.PKNCAconc(object, n=n, summarize=summarize)
 
 #' @rdname print.PKNCAconc
 #' @export
@@ -194,6 +194,9 @@ print.PKNCAdose <- print.PKNCAconc
 summary.PKNCAdose <- summary.PKNCAconc
 
 #' See \code{getData} in the nlme package.
+#'
+#' @param object Object to extract data from
+#' @return Data from the object
 getData <- function(object)
   UseMethod("getData")
 
@@ -314,8 +317,8 @@ print.PKNCAdata <- function(x, ...) {
 }
 
 #' @export
-summary.PKNCAdata <- function(x, ...)
-  print.PKNCAdata(x, summarize=TRUE, ...)
+summary.PKNCAdata <- function(object, ...)
+  print.PKNCAdata(object, summarize=TRUE, ...)
 
 #' Generate a PKNCAresults object
 #'
