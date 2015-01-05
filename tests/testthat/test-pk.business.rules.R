@@ -27,5 +27,4 @@ test_that("business.mean", {
   PKNCA.options(max.missing=0.3)
   expect_equal(business.mean(c(NA, 1, 2, 3)), 2)
   expect_equal(business.mean(c(NA, NA, 1, 2)), NA)
-  expect_equal(business.mean(c(NA, NA, 1, 2)), NA)
 })
