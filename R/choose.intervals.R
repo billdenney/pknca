@@ -16,6 +16,8 @@
 #' 
 #' @param time.conc Time of concentration measurement
 #' @param time.dosing Time of dosing
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param single.dose.aucs The AUC specification for single dosing.
 #' @return A data frame with columns for \code{start}, \code{end},
 #' \code{auc.type}, and \code{half.life}.  See
@@ -26,7 +28,8 @@
 #' \code{\link{check.auc.specification}}, \code{\link{PKNCA.options}}
 #' @export
 choose.auc.intervals <- function(time.conc, time.dosing,
-                                 single.dose.aucs=PKNCA.options("single.dose.aucs")) {
+                                 options=list(),
+                                 single.dose.aucs=PKNCA.choose.option("single.dose.aucs", options)) {
   if (any(is.na(time.conc)))
     stop("time.conc may not have any NA values")
   if (any(is.na(time.dosing)))
@@ -101,6 +104,8 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' @param na.action What to do with NAs in \code{x}
 #' @param tau.choices the intervals to look for if the doses are not
 #' all equally spaced.
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @return A scalar indicating the repeating interval with the most
 #' repetition.
 #' \enumerate{
@@ -115,7 +120,8 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' }
 #' @export
 find.tau <- function(x, na.action=na.omit,
-                     tau.choices=PKNCA.options("tau.choices")) {
+                     options=list(),
+                     tau.choices=PKNCA.choose.option("tau.choices", options)) {
   ret <- NA
   x <- na.action(x)
   if (length(unique(x)) == 1) {

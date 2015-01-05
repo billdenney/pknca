@@ -6,8 +6,8 @@
 frame for use by the tss calculators.}
 \usage{
 pk.tss.data.prep(conc, time, subject, treatment, subject.dosing, time.dosing,
-  conc.blq = PKNCA.options("conc.blq"), conc.na = PKNCA.options("conc.na"),
-  check = TRUE, ...)
+  options = list(), conc.blq = PKNCA.choose.option("conc.blq", options),
+  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE, ...)
 }
 \arguments{
 \item{conc}{Concentration measured}
@@ -23,6 +23,9 @@ are assumed to be on the same treatment)}
 \item{subject.dosing}{Subject number for dosing}
 
 \item{time.dosing}{Time of dosing}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
 
 \item{conc.blq}{See \code{\link{clean.conc.blq}}}
 

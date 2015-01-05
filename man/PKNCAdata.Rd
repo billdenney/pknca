@@ -28,8 +28,8 @@ as defined in \code{\link{check.auc.specification}}.  If missing,
 this will be automatically chosen by
 \code{\link{choose.auc.intervals}}.}
 
-\item{options}{Changes to the default \code{\link{PKNCA.options}}
-for calculations (see that .}
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
 }
 \value{
 A PKNCAdata object with concentration, dose, interval, and

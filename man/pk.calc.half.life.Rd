@@ -4,15 +4,20 @@
 \alias{pk.calc.half.life}
 \title{Compute the half-life and associated parameters}
 \usage{
-pk.calc.half.life(conc, time, min.hl.points = PKNCA.options("min.hl.points"),
-  adj.r.squared.factor = PKNCA.options("adj.r.squared.factor"),
-  conc.blq = PKNCA.options("conc.blq"), conc.na = PKNCA.options("conc.na"),
-  use.first = PKNCA.options("first.tmax"), check = TRUE)
+pk.calc.half.life(conc, time, options = list(),
+  min.hl.points = PKNCA.choose.option("min.hl.points", options),
+  adj.r.squared.factor = PKNCA.choose.option("adj.r.squared.factor", options),
+  conc.blq = PKNCA.choose.option("conc.blq", options),
+  conc.na = PKNCA.choose.option("conc.na", options),
+  use.first = PKNCA.choose.option("first.tmax", options), check = TRUE)
 }
 \arguments{
 \item{conc}{Concentration measured}
 
 \item{time}{Time of concentration measurement}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
 
 \item{min.hl.points}{The minimum number of points that must be
 included to calculate the half-life}

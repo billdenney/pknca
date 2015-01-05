@@ -16,6 +16,8 @@
 #' \code{interp.extrap.conc}, scalar otherwise)
 #' @param lambda.z The elimination rate constant.  \code{NA} will
 #' prevent extrapolation.
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param interp.method The method for interpolation (either
 #' 'lin up/log down' or 'linear')
 #' @param extrap.method The method for extrapolation: "AUCinf",
@@ -48,10 +50,11 @@
 #' }
 #' @export
 interp.extrap.conc <- function(conc, time, time.out, lambda.z=NA,
-                               interp.method=PKNCA.options("auc.method"),
+                               options=list(),
+                               interp.method=PKNCA.choose.option("auc.method", options),
                                extrap.method="AUCinf",
-                               conc.blq=PKNCA.options("conc.blq"),
-                               conc.na=PKNCA.options("conc.na"),
+                               conc.blq=PKNCA.choose.option("conc.blq", options),
+                               conc.na=PKNCA.choose.option("conc.na", options),
                                check=TRUE) {
   if (check) {
     check.conc.time(conc, time)
@@ -89,9 +92,10 @@ interp.extrap.conc <- function(conc, time, time.out, lambda.z=NA,
 #' Tlast (inclusive)
 #' @export
 interpolate.conc <- function(conc, time, time.out,
-                             interp.method=PKNCA.options("auc.method"),
-                             conc.blq=PKNCA.options("conc.blq"),
-                             conc.na=PKNCA.options("conc.na"),
+                             options=list(),
+                             interp.method=PKNCA.choose.option("auc.method", options),
+                             conc.blq=PKNCA.choose.option("conc.blq", options),
+                             conc.na=PKNCA.choose.option("conc.na", options),
                              check=TRUE) {
   ## Check the inputs
   if (check) {
@@ -150,8 +154,9 @@ interpolate.conc <- function(conc, time, time.out,
 #' @export
 extrapolate.conc <- function(conc, time, time.out,
                              lambda.z=NA, extrap.method="AUCinf",
-                             conc.na=PKNCA.options("conc.na"),
-                             conc.blq=PKNCA.options("conc.blq"),
+                             options=list(),
+                             conc.na=PKNCA.choose.option("conc.na", options),
+                             conc.blq=PKNCA.choose.option("conc.blq", options),
                              check=TRUE) {
   if (check) {
     check.conc.time(conc, time)

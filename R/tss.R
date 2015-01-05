@@ -9,6 +9,8 @@
 #' are assumed to be on the same treatment)
 #' @param subject.dosing Subject number for dosing 
 #' @param time.dosing Time of dosing
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param conc.blq See \code{\link{clean.conc.blq}}
 #' @param conc.na See \code{\link{clean.conc.na}}
 #' @param check Run \code{\link{check.conc.time}}?
@@ -18,8 +20,9 @@
 #' \code{time}, \code{subject}, and \code{treatment}.
 pk.tss.data.prep <- function(conc, time, subject, treatment,
                              subject.dosing, time.dosing,
-                             conc.blq=PKNCA.options("conc.blq"),
-                             conc.na=PKNCA.options("conc.na"),
+                             options=list(),
+                             conc.blq=PKNCA.choose.option("conc.blq", options),
+                             conc.na=PKNCA.choose.option("conc.na", options),
                              check=TRUE, ...) {
   ## Check inputs
   if (check) {

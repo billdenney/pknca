@@ -25,8 +25,6 @@ tmpconc <- splitBy(parseFormula(myconc)$groupFormula, myconc$data)
 tmpdose <- splitBy(parseFormula(mydose)$groupFormula, mydose$data)
 tmpmerge2 <- merge(conc=tmpconc, dose=tmpdose)
 
-
-
 mydat <- 
   PKNCAdata(as.data.frame(Theoph),
             conc~Time|Subject,

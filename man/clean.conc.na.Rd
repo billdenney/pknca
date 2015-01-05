@@ -5,13 +5,16 @@
 \title{Handle NA values in the concentration measurements as requested by
 the user.}
 \usage{
-clean.conc.na(conc, time, ..., conc.na = PKNCA.options("conc.na"),
-  check = TRUE)
+clean.conc.na(conc, time, ..., options = list(),
+  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}
 
 \item{time}{Time of the concentration measurement}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
 
 \item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}

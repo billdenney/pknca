@@ -15,8 +15,26 @@ pk.nca.interval(conc, time, auc.start, auc.end, auc.type, half.life,
 
 \item{time}{Time of concentration measurement}
 
-\item{auc.intervals}{A list of intervals to compute AUCs.  See
-details for a description of the \code{auc.intervals} list.}
+\item{auc.start}{The start time for the calculations.}
+
+\item{auc.end}{The end time for the calculations.}
+
+\item{half.life}{logical. Should the half-life be calculated?}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
+
+\item{method}{The AUC integration method.  See
+\code{\link{pk.calc.auc}}.}
+
+\item{conc.blq}{The handling instructions for BLQ concentration
+values.  See \code{\link{clean.conc.blq}}.}
+
+\item{conc.na}{The handling instructions for missing concentration
+values.  See \code{\link{clean.conc.na}}.}
+
+\item{first.tmax}{The calculation instructions for using the first
+or last Tmax.  See \code{\link{pk.calc.tmax}}.}
 }
 \value{
 A data frame with all PK parameters

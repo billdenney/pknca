@@ -4,12 +4,16 @@
 \alias{find.tau}
 \title{Find the repeating interval within a vector of doses}
 \usage{
-find.tau(x, na.action = na.omit, tau.choices = PKNCA.options("tau.choices"))
+find.tau(x, na.action = na.omit, options = list(),
+  tau.choices = PKNCA.choose.option("tau.choices", options))
 }
 \arguments{
 \item{x}{the vector to find the interval within}
 
 \item{na.action}{What to do with NAs in \code{x}}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
 
 \item{tau.choices}{the intervals to look for if the doses are not
 all equally spaced.}

@@ -245,8 +245,8 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' as defined in \code{\link{check.auc.specification}}.  If missing,
 #' this will be automatically chosen by
 #' \code{\link{choose.auc.intervals}}.
-#' @param options Changes to the default \code{\link{PKNCA.options}}
-#' for calculations (see that .
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @return A PKNCAdata object with concentration, dose, interval, and
 #' calculation options stored (note that PKNCAdata objects can also
 #' have results after a NCA calculations are done to the data).

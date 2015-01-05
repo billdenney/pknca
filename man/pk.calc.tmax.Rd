@@ -4,17 +4,20 @@
 \alias{pk.calc.tmax}
 \title{Determine time of maximum observed PK concentration}
 \usage{
-pk.calc.tmax(conc, time, use.first = PKNCA.options("first.tmax"),
-  check = TRUE)
+pk.calc.tmax(conc, time, options = list(),
+  use.first = PKNCA.choose.option("first.tmax", options), check = TRUE)
 }
 \arguments{
 \item{conc}{Concentration measured}
 
 \item{time}{Time of concentration measurement}
 
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
+
 \item{use.first}{If there is more than time that matches the
 maximum concentration, should the first be considered as Tmax?  If
-not, then the last is considered Tmax.  (Default: TRUE)}
+not, then the last is considered Tmax.}
 
 \item{check}{Run \code{\link{check.conc.time}}?}
 }

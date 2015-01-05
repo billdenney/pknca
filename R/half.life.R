@@ -13,6 +13,8 @@
 #'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param min.hl.points The minimum number of points that must be
 #' included to calculate the half-life
 #' @param adj.r.squared.factor The allowance in adjusted r-squared for
@@ -45,11 +47,12 @@
 #' Pharmaceutical Press, 2000.  167-9.
 #' @export
 pk.calc.half.life <- function(conc, time,
-                              min.hl.points=PKNCA.options("min.hl.points"),
-                              adj.r.squared.factor=PKNCA.options("adj.r.squared.factor"),
-                              conc.blq=PKNCA.options("conc.blq"),
-                              conc.na=PKNCA.options("conc.na"),
-                              use.first=PKNCA.options("first.tmax"),
+                              options=list(),
+                              min.hl.points=PKNCA.choose.option("min.hl.points", options),
+                              adj.r.squared.factor=PKNCA.choose.option("adj.r.squared.factor", options),
+                              conc.blq=PKNCA.choose.option("conc.blq", options),
+                              conc.na=PKNCA.choose.option("conc.na", options),
+                              use.first=PKNCA.choose.option("first.tmax", options),
                               check=TRUE) {
   ## Check inputs
   min.hl.points <-

@@ -6,13 +6,17 @@
 #' @param conc Measured concentrations
 #' @param time Time of the concentration measurement
 #' @param \dots Additional items to add to the data frame
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param conc.na How to handle NA concentrations?  Either 'drop' or a
 #' number to impute.
 #' @param check Run \code{\link{check.conc.time}}?
 #' @return The concentration and time measurements (data frame)
 #' filtered and cleaned as requested relative to NA in the concentration.
 #' @export
-clean.conc.na <- function(conc, time, ..., conc.na=PKNCA.options("conc.na"),
+clean.conc.na <- function(conc, time, ...,
+                          options=list(),
+                          conc.na=PKNCA.choose.option("conc.na", options),
                           check=TRUE) {
   conc.na <- PKNCA.options(conc.na=conc.na, check=TRUE)
   if (check)
@@ -36,6 +40,8 @@ clean.conc.na <- function(conc, time, ..., conc.na=PKNCA.options("conc.na"),
 #' @param conc Measured concentrations
 #' @param time Time of the concentration measurement
 #' @param \dots Additional arguments passed to clean.conc.na
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param conc.blq How to handle a BLQ value that is between above LOQ
 #' values?  See details for description.
 #' @param conc.na How to handle NA concentrations.  (See
@@ -74,8 +80,9 @@ clean.conc.na <- function(conc, time, ..., conc.na=PKNCA.options("conc.na"),
 #' @export
 clean.conc.blq <- function(conc, time,
                            ...,
-                           conc.blq=PKNCA.options("conc.blq"),
-                           conc.na=PKNCA.options("conc.na"),
+                           options=list(),
+                           conc.blq=PKNCA.choose.options("conc.blq", options),
+                           conc.na=PKNCA.choose.option("conc.na", options),
                            check=TRUE) {
   conc.blq <- PKNCA.options(conc.blq=conc.blq, check=TRUE)
   if (check)

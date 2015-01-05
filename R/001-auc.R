@@ -117,6 +117,8 @@ check.auc.specification <- function(x) {
 #' 'AUClast', and 'AUCall'.
 #' @param lambda.z The elimination rate (in units of inverse time) for
 #' extrapolation
+#' @param options List of changes to the default
+#' \code{\link{PKNCA.options}} for calculations.
 #' @param method The method for integration (either 'lin up/log down'
 #' or 'linear')
 #' @param conc.blq How to handle BLQ values in between the first and
@@ -160,9 +162,10 @@ check.auc.specification <- function(x) {
 pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                          lambda.z=NA,
                          auc.type="AUClast",
-                         method=PKNCA.options("auc.method"),
-                         conc.blq=PKNCA.options("conc.blq"),
-                         conc.na=PKNCA.options("conc.na"),
+                         options=list(),
+                         method=PKNCA.choose.option("auc.method", options),
+                         conc.blq=PKNCA.choose.option("conc.blq", options),
+                         conc.na=PKNCA.choose.option("conc.na", options),
                          check=TRUE,
                          fun.linear, fun.log, fun.inf) {
   ## Check the inputs

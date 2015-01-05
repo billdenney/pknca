@@ -5,7 +5,8 @@
 \title{Run any function with a maximum missing fraction of X and 0s
 possibly counting as missing.}
 \usage{
-business(FUN, zero.missing = FALSE)
+business(FUN, zero.missing = FALSE, options = list(),
+  max.missing = PKNCA.choose.option("max.missing", options))
 }
 \arguments{
 \item{FUN}{function to run.  The function is called as FUN(x, ...)
@@ -13,6 +14,12 @@ with missing values removed.}
 
 \item{zero.missing}{Are zeros counted as missing?  If \code{TRUE}
 then include them in the missing count.}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
+
+\item{max.missing}{The maximum fraction of values that can be
+missing to report a value.  Must be between 0 and 1, inclusive.}
 }
 \value{
 A version of FUN that can be called with parameters that

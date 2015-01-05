@@ -5,13 +5,17 @@
 \title{Handle BLQ values in the concentration measurements as requested by
 the user.}
 \usage{
-clean.conc.blq(conc, time, ..., conc.blq = PKNCA.options("conc.blq"),
-  conc.na = PKNCA.options("conc.na"), check = TRUE)
+clean.conc.blq(conc, time, ..., options = list(),
+  conc.blq = PKNCA.choose.options("conc.blq", options),
+  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}
 
 \item{time}{Time of the concentration measurement}
+
+\item{options}{List of changes to the default
+\code{\link{PKNCA.options}} for calculations.}
 
 \item{conc.blq}{How to handle a BLQ value that is between above LOQ
 values?  See details for description.}
