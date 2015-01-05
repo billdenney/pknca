@@ -73,7 +73,7 @@ getDepVar <- function(x, ...)
 
 #' @export
 getDepVar.PKNCAconc <- function(x, ...) {
-  x$data[, all.vars(parseFormula(formula(x))$lhs)]
+  x$data[, all.vars(parseFormula(x)$lhs)]
 }
 
 #' @export
@@ -87,15 +87,15 @@ getDepVar.PKNCAdose <- getDepVar.PKNCAconc
 #' @return The vector of the independent variable from the object.
 #' @export
 getIndepVar <- function(x, ...)
-  UseMethod("getDepVar", x)
+  UseMethod("getIndepVar", x)
 
 #' @export
 getIndepVar.PKNCAconc <- function(x, ...) {
-  x$data[, all.vars(parseFormula(formula(x))$rhs)]
+  x$data[, all.vars(parseFormula(x)$rhs)]
 }
 
 #' @export
-getIndepVar.PKNCAdose <- getDepVar.PKNCAconc
+getIndepVar.PKNCAdose <- getIndepVar.PKNCAconc
 
 #' See \code{getGroups} in the nlme package.
 getGroups <- function(object, form, level, data, sep)
