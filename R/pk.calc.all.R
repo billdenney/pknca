@@ -10,13 +10,13 @@
 #' @export
 pk.nca <- function(data) {
   tmp.data <- splitBy(parseFormula(data$conc)$groupFormula,
-                      data=model.frame(data))
+                      data=model.frame(data$conc))
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
     tmp.results <- mclapply(X=tmp.data,
-                            FUN=pk.calc.intervals,
+                            FUN=pk.nca.intervals,
                             intervals=data$intervals,
                             options=data$options)
     ## Put the group parameters with the results
@@ -48,7 +48,7 @@ pk.nca.intervals <- function(data, intervals, options) {
   ## Column names to use
   col.conc <- names(data)[1]
   col.time <- names(data)[2]
-  shared.names <- intersect(names(interval.data), names(ret))
+  shared.names <- intersect(names(intervals), names(ret))
   ## The half.life column will be filled with the computed half-life.
   ## Change its name
   ret$calculate.half.life <- ret$half.life
@@ -56,7 +56,7 @@ pk.nca.intervals <- function(data, intervals, options) {
   for (i in seq_len(nrow(ret))) {
     ## Subset the data down to the group of current interest
     tmpdata <-
-      merge(data, interval.data[i,shared.names])[,c(col.conc, col.time)]
+      merge(data, intervals[i,shared.names])[,c(col.conc, col.time)]
     ## Choose only times between the start and end.
     mask.keep <- (ret$auc.start[i] <= tmpdata[,col.time] &
                   tmpdata[,col.time] <= ret$auc.end[i])

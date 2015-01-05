@@ -151,7 +151,14 @@ getGroups.PKNCAdose <- getGroups.PKNCAconc
 #' \code{print.data.frame}
 #' @export
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
-  cat("Formula:\n ")
+  if (inherits(x, "PKNCAconc")) {
+    data.type <- "concentration"
+  } else if (inherits(x, "PKNCAdose")) {
+    data.type <- "dosing"
+  } else {
+    stop("Unknown data type")
+  }
+  cat(sprintf("Formula for %s:\n ", data.type))
   print(formula(x), ...)
   if (summarize) {
     cat("\n")
@@ -170,11 +177,13 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   }
   if (n != 0) {
     if (n >= nrow(x$data)) {
-      cat("\nData:\n")
+      cat(sprintf("\nData for %s:\n", data.type))
     } else if (n < 0) {
-      cat(sprintf("\nFirst %d rows of data:\n", nrow(x$data)+n))
+      cat(sprintf("\nFirst %d rows of %s data:\n",
+                  nrow(x$data)+n, data.type))
     } else {
-      cat(sprintf("\nFirst %d rows of data:\n", n))
+      cat(sprintf("\nFirst %d rows of %s data:\n",
+                  n, data.type))
     }
     print.data.frame(head(x$data, n=n), ..., row.names=FALSE)
   }
@@ -291,13 +300,32 @@ PKNCAdata <- function(data.conc, formula.conc,
   ret$options <- options
   ## Check the AUC intervals
   if (missing(intervals)) {
-    ret$intervals <-
-      choose.auc.intervals(getIndepVar(ret$conc),
-                           getIndepVar(ret$dose),
-                           single.dose.aucs=single.dose.aucs)
-  } else {
-    ret$intervals <- check.auc.specification(intervals)
+    ## Generate the intervals for each grouping of concentration and
+    ## dosing.
+    tmp.conc.dose <-
+      merge(conc=splitBy(parseFormula(ret$conc)$groupFormula, ret$conc$data),
+            dose=splitBy(parseFormula(ret$dose)$groupFormula, ret$dose$data))
+    groupid <- attributes(tmp.conc.dose)$groupid
+    rownames(groupid) <- NULL
+    intervals <- data.frame()
+    indep.var.conc <- all.vars(parseFormula(ret$conc)$rhs)
+    indep.var.dose <- all.vars(parseFormula(ret$dose)$rhs)
+    for (i in 1:nrow(groupid)) {
+      tmp.group <- groupid[i,,drop=FALSE]
+      rownames(tmp.group) <- NULL
+      new.intervals <-
+        cbind(
+          tmp.group,
+          choose.auc.intervals(tmp.conc.dose[[i]]$conc[,indep.var.conc],
+                               tmp.conc.dose[[i]]$dose[,indep.var.dose],
+                               single.dose.aucs=PKNCA.choose.option("single.dose.aucs",
+                                 options)))
+      intervals <-
+        rbind(intervals, new.intervals)
+    }
   }
+  ret$intervals <- check.auc.specification(intervals)
+  ## Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret
 }

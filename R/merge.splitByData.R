@@ -65,5 +65,9 @@ merge.splitByData <- function(..., missing.value=NULL) {
     }
   }
   ## Give back the data.
+  attr(ret, "groupid") <- intermediate.merge[,
+                                             setdiff(names(intermediate.merge), col.order),
+                                             drop=FALSE]
+  class(ret) <- c("mergedSplitByData", class(ret))
   ret
 }

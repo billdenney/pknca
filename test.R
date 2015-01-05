@@ -16,20 +16,22 @@ check(".")
 plot(Theoph)
 theoph <- as.data.frame(Theoph)
 
-myconc <- PKNCAconc(as.data.frame(Theoph), conc~Time|Subject)
-mydose <- PKNCAdose(data.frame(Subject=unique(Theoph$Subject),
-                       Time=0),
-                    ~Time|Subject)
+## myconc <- PKNCAconc(as.data.frame(Theoph), conc~Time|Subject)
+## mydose <- PKNCAdose(data.frame(Subject=unique(Theoph$Subject),
+##                        Time=0),
+##                     ~Time|Subject)
+##
+## tmpconc <- splitBy(parseFormula(myconc)$groupFormula, myconc$data)
+## tmpdose <- splitBy(parseFormula(mydose)$groupFormula, mydose$data)
+## tmpmerge2 <- merge(conc=tmpconc, dose=tmpdose)
 
-tmpconc <- splitBy(parseFormula(myconc)$groupFormula, myconc$data)
-tmpdose <- splitBy(parseFormula(mydose)$groupFormula, mydose$data)
-tmpmerge2 <- merge(conc=tmpconc, dose=tmpdose)
-
-mydat <- 
+mydat <-
   PKNCAdata(as.data.frame(Theoph),
             conc~Time|Subject,
             data.frame(Subject=unique(Theoph$Subject),
                        Time=0),
             ~Time|Subject)
+
+myres <- pk.nca(mydat)
 
 q(save="no")
