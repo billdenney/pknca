@@ -44,46 +44,34 @@ parseFormula <- function (form,
   }
   ## Check how many sides the formula has and extract the left and
   ## right sides
-  n.sides <- length(form) - 1
-  if (n.sides == 1) {
-    if (require.two.sided)
-      stop("formula is one-sided with require.two.sided set to TRUE")
-    lhs <- NA
-    rhs <- form[[2]]
-  } else if (n.sides == 2) {
-    lhs <- form[[2]]
-    rhs <- form[[3]]
-  }
-  ## Extract the environment
-  model <- form
-  ## Extract the groups
-  if (class(rhs) != "call" ||
-      rhs[[1]] != as.symbol("|")) {
-    ## If there are no groups
-    if (require.groups) {
-      stop("rhs of formula must be a conditioning expression")
-    } else {
-      groups <- NA
-      grpFormula <- NA
-      model.rhs <- rhs
-    }
+  lhs <- findOperator(form, "~", "left")
+  rhs <- findOperator(form, "~", "right")
+  groups <- findOperator(rhs, "|", "right")
+  if (identical(groups, NULL)) {
+    groups <- NA
+    grpFormula <- NA
   } else {
-    ## Set the RHS of the model to exclude the groups
-    model[[3]] <- rhs[[2]]
-    groups <- rhs[[3]]
-    model.rhs <- rhs[[2]]
-    grpFormula <- as.formula(paste("~", deparse(groups)),
-                             env=environment(form))
+    grpFormula <- call("~", groups)
+    rhs <- findOperator(rhs, "|", "left")
+  }
+  if (require.two.sided &
+      identical(lhs, NA))
+    stop("formula is one-sided with require.two.sided set to TRUE")
+  if (require.groups &
+      identical(groups, NA)) {
+    stop("rhs of formula must be a conditioning expression")
   }
   if (identical(lhs, NA)) {
-    model <- as.formula(call("~", model.rhs), env=environment(form))
+    model <- as.formula(call("~", rhs),
+                        env=environment(form))
   } else {
-    model <- as.formula(call("~", lhs, model.rhs), env=environment(form))
+    model <- as.formula(call("~", lhs, rhs),
+                        env=environment(form))
   }
   ret <-
     list(model = model,
          lhs = lhs,
-         rhs = model.rhs,
+         rhs = rhs,
          groups = groups,
          groupFormula = grpFormula,
          env=environment(form))
@@ -124,5 +112,73 @@ formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
   if (!identical(x$groups, NA) & !drop.groups)
     ret <- as.formula(paste0(deparse(ret), "|", deparse(x$groups)))
   environment(ret) <- x$env
+  ret
+}
+
+#' Find the first occurrence of an operator in a formula and return
+#' the left, right, or both sides of the operator.
+#'
+#' @param x The formula to parse
+#' @param op The operator to search for (e.g. \code{+}, \code{-},
+#' \code{*}, \code{/}, ...)
+#' @param side Which side of the operator would you like to see:
+#' 'left', 'right', or 'both'.
+#' @return The side of the operator requested, NA if requesting the
+#' left side of a unary operator, and NULL if the operator is not
+#' found.
+#' @export
+findOperator <- function(x, op, side) {
+  side <- match.arg(tolower(side),
+                    choices=c("left", "right", "both"))
+  if (inherits(x, "name")) {
+    ## This is a specific variable, we never found the operator going
+    ## down this branch of the tree.
+    return(NULL)
+  } else if (inherits(x, "call") |
+             inherits(x, "formula") |
+             inherits(x, "(")) {
+    ## This is all or part of a formula
+    op <- as.name(op)
+    if (identical(x[[1]], op)) {
+      ## We found the operator
+      if (length(x) == 1) {
+        stop("call or formula with length 1 found after finding the operator, unknown how to proceed")
+      } else if (length(x) == 2) {
+        ## Unary operators have a right hand side only
+        if (side == "left") {
+          return(NA)
+        } else if (side == "right") {
+          return(x[[2]])
+        } else if (side == "both") {
+          return(x)
+        }
+        stop("Unknown side with a found unary operator")
+      } else if (length(x) == 3) {
+        ## Binary operator
+        if (side == "left") {
+          return(x[[2]])
+        } else if (side == "right") {
+          return(x[[3]])
+        } else if (side == "both") {
+          return(x)
+        }
+        stop("Unknown side with a found binary operator")
+      }
+    } else {
+      ## Go down the left then right side of the tree
+      if (length(x) == 1)
+        stop("call or formula with length 1 found without finding the operator, unknown how to proceed")
+      ## First search the left side
+      ret <- findOperator(x[[2]], op, side)
+      if ((identical(ret, NA) |
+           is.null(ret)) &
+          length(x) == 3)
+        ret <- findOperator(x[[3]], op, side)
+    }
+  } else {
+    ## This should not happen-- find the class that the object is
+    stop(sprintf("Cannot handle class %s",
+         paste(class(x), sep=", ")))
+  }
   ret
 }
