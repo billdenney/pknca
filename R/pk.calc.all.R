@@ -24,7 +24,7 @@ pk.nca <- function(data) {
       tmp.results[[i]] <- cbind(attr(tmp.data, "groupid")[i,],
                                 tmp.results[[i]])
     ## Generate the outputs
-    results <- do.call(rbind, tmp.results)
+    results <- do.call(rbind.fill, tmp.results)
     rownames(results) <- NULL
   }
   PKNCAresults(result=results,
@@ -39,16 +39,18 @@ pk.nca <- function(data) {
 pk.nca.intervals <- function(data, intervals, options) {
   ## Merge the intervals with the group columns from the data
   if (ncol(data) >= 3) {
-    ret <- merge(unique(data[, 3:ncol(data), drop=FALSE]),
-                     intervals)
+    ## Subset the intervals down to the intervals for the current group.
+    shared.names <- names(data)[3:ncol(data)]
+    ret <- merge(unique(data[, shared.names, drop=FALSE]),
+                 intervals)
   } else {
     ## Likely single-subject data
     ret <- intervals
+    shared.names <- c()
   }
   ## Column names to use
   col.conc <- names(data)[1]
   col.time <- names(data)[2]
-  shared.names <- intersect(names(intervals), names(ret))
   ## The half.life column will be filled with the computed half-life.
   ## Change its name
   ret$calculate.half.life <- ret$half.life
@@ -56,10 +58,10 @@ pk.nca.intervals <- function(data, intervals, options) {
   for (i in seq_len(nrow(ret))) {
     ## Subset the data down to the group of current interest
     tmpdata <-
-      merge(data, intervals[i,shared.names])[,c(col.conc, col.time)]
+      merge(data, ret[i,shared.names])[,c(col.conc, col.time)]
     ## Choose only times between the start and end.
-    mask.keep <- (ret$auc.start[i] <= tmpdata[,col.time] &
-                  tmpdata[,col.time] <= ret$auc.end[i])
+    mask.keep <- (ret$start[i] <= tmpdata[,col.time] &
+                  tmpdata[,col.time] <= ret$end[i])
     tmpdata <- tmpdata[mask.keep,]
     if (nrow(tmpdata) == 0) {
       ## TODO: Improve this error message with additional information
@@ -69,8 +71,9 @@ pk.nca.intervals <- function(data, intervals, options) {
       calculated.interval <-
         pk.nca.interval(conc=tmpdata[,col.conc],
                         time=tmpdata[,col.time],
-                        auc.start=ret$auc.start[i],
-                        auc.end=ret$auc.end[i],
+                        auc.start=ret$start[i],
+                        auc.end=ret$end[i],
+                        auc.type=ret$auc.type[i],
                         half.life=ret$calculate.half.life[i])
       ## Add new columns to the return dataset
       for (n in setdiff(names(calculated.interval),

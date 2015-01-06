@@ -368,7 +368,7 @@ PKNCAresults <- function(result, formula, options=list()) {
   tmp.opt <- PKNCA.options()
   tmp.opt[names(options)] <- options
   ## Add all the parts into the object
-  ret <- list(result=results,
+  ret <- list(result=result,
               formula=formula,
               options=tmp.opt)
   class(ret) <- c("PKNCAresults", class(ret))
