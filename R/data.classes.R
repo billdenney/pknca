@@ -4,9 +4,19 @@
 #' defined in \code{formula}.
 #' @param formula The formula defining the
 #' \code{concentration~time|groups}
+#' @param subject The column indicating the subject number (used for
+#' plotting).  If not provided, this defaults to the beginning of the
+#' inner groups: For example with
+#' \code{concentration~time|Study+Subject/Analyte}, the inner groups
+#' start with the first grouping variable before a \code{/},
+#' \code{Subject}.  If there is only one grouping variable, it is
+#' assumed to be the subject (e.g. \code{concentration~time|Subject}),
+#' and if there are multiple grouping variables without a \code{/},
+#' subject is assumed to be the last one.  For single-subject data, it
+#' is assigned as \code{NULL}.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @export
-PKNCAconc <- function(data, formula) {
+PKNCAconc <- function(data, formula, subject) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -17,8 +27,37 @@ PKNCAconc <- function(data, formula) {
     stop("The left hand side of the formula must have exactly one variable")
   if (length(all.vars(parsedForm$rhs)) != 1)
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
+  ## Assign the subject
+  if (missing(subject)) {
+    tmp.groups <- all.vars(parsedForm$groupFormula)
+    if (length(tmp.groups) == 1) {
+      subject <- tmp.groups
+    } else {
+      subject <- all.vars(findOperator(parsedForm$groupFormula,
+                                       "/",
+                                       side="left"))
+      if (length(subject) == 0) {
+        ## There is no / in the group formula, use the last element
+        subject <- tmp.groups[length(tmp.groups)]
+      } else if (length(subject) == 1) {
+        ## There is a subject given; use it as is.
+      } else {
+        stop("Unknown how to handle subject definition from the fromula")
+      }
+    }
+  } else {
+    ## Ensure that the subject is part of the data definition and a
+    ## scalar character string.
+    if (!is.character(subject))
+      stop("subject must be a character string")
+    if (!(length(subject) == 1))
+      stop("subject must be a scalar")
+    if (!(subject %in% names(data)))
+      stop("The subject parameter must map to a name in the data")
+  }
   ret <- list(data=data,
-              formula=formula)
+              formula=formula,
+              subject=subject)
   class(ret) <- c("PKNCAconc", class(ret))
   ret
 }
@@ -151,14 +190,53 @@ getGroups.PKNCAdose <- getGroups.PKNCAconc
 #' \code{print.data.frame}
 #' @export
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
-  if (inherits(x, "PKNCAconc")) {
-    data.type <- "concentration"
-  } else if (inherits(x, "PKNCAdose")) {
-    data.type <- "dosing"
+  cat(sprintf("Formula for concentration:\n "))
+  print(formula(x), ...)
+  if (is.na(x$subject)) {
+    cat("As a single-subject dataset.\n")
   } else {
-    stop("Unknown data type")
+    cat(sprintf("With %d subjects defined in the '%s' column.\n",
+                length(unique(x$data[,x$subject])),
+                x$subject))
   }
-  cat(sprintf("Formula for %s:\n ", data.type))
+  if (summarize) {
+    cat("\n")
+    grp <- getGroups(x)
+    if (ncol(grp) > 0) {
+      tmp.summary <- data.frame(Group.Name=names(grp),
+                                Count=0)
+      for (i in 1:ncol(grp))
+        tmp.summary$Count[i] <- nrow(unique(grp[,1:i,drop=FALSE]))
+      cat("Group summary:\n")
+      names(tmp.summary) <- gsub("\\.", " ", names(tmp.summary))
+      print.data.frame(tmp.summary, row.names=FALSE)
+    } else {
+      cat("No groups.\n")
+    }
+  }
+  if (n != 0) {
+    if (n >= nrow(x$data)) {
+      cat("\nData for concentration:\n")
+    } else if (n < 0) {
+      cat(sprintf("\nFirst %d rows of concentration data:\n",
+                  nrow(x$data)+n))
+    } else {
+      cat(sprintf("\nFirst %d rows of concentration data:\n",
+                  n))
+    }
+    print.data.frame(head(x$data, n=n), ..., row.names=FALSE)
+  }
+}
+
+#' @rdname print.PKNCAconc
+#' @export
+summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...)
+  print.PKNCAconc(object, n=n, summarize=summarize)
+
+#' @rdname print.PKNCAconc
+#' @export
+print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
+  cat("Formula for dosing:\n ")
   print(formula(x), ...)
   if (summarize) {
     cat("\n")
@@ -177,26 +255,17 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   }
   if (n != 0) {
     if (n >= nrow(x$data)) {
-      cat(sprintf("\nData for %s:\n", data.type))
+      cat("\nData for dosing:\n")
     } else if (n < 0) {
-      cat(sprintf("\nFirst %d rows of %s data:\n",
-                  nrow(x$data)+n, data.type))
+      cat(sprintf("\nFirst %d rows of dosing data:\n",
+                  nrow(x$data)+n))
     } else {
-      cat(sprintf("\nFirst %d rows of %s data:\n",
-                  n, data.type))
+      cat(sprintf("\nFirst %d rows of dosing data:\n",
+                  n))
     }
     print.data.frame(head(x$data, n=n), ..., row.names=FALSE)
   }
 }
-
-#' @rdname print.PKNCAconc
-#' @export
-summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...)
-  print.PKNCAconc(object, n=n, summarize=summarize)
-
-#' @rdname print.PKNCAconc
-#' @export
-print.PKNCAdose <- print.PKNCAconc
 
 #' @rdname print.PKNCAconc
 #' @export

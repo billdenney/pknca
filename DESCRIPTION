@@ -7,7 +7,7 @@ Author: Bill Denney <william.s.denney@pfizer.com>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
 Maintainer: Bill Denney <william.s.denney@pfizer.com>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
-Depends: doBy, plyr, nlme, parallel
+Depends: doBy, plyr, nlme, parallel, lattice
 Suggests: testthat
 Description: This package computes standard Non-Compartmental Analysis (NCA)
     parameters and summarizes them.  In addition to this core work, it also

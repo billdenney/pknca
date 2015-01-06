@@ -17,8 +17,9 @@ findOperator(x, op, side)
 'left', 'right', or 'both'.}
 }
 \value{
-The side of the operator or NA if the operator is not found
-in the function.
+The side of the operator requested, NA if requesting the
+left side of a unary operator, and NULL if the operator is not
+found.
 }
 \description{
 Find the first occurrence of an operator in a formula and return

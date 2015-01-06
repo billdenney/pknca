@@ -4,7 +4,7 @@
 \alias{PKNCAconc}
 \title{Create a PKNCAconc object}
 \usage{
-PKNCAconc(data, formula)
+PKNCAconc(data, formula, subject)
 }
 \arguments{
 \item{data}{A data frame with concentration, time, and the groups
@@ -12,6 +12,17 @@ defined in \code{formula}.}
 
 \item{formula}{The formula defining the
 \code{concentration~time|groups}}
+
+\item{subject}{The column indicating the subject number (used for
+plotting).  If not provided, this defaults to the beginning of the
+inner groups: For example with
+\code{concentration~time|Study+Subject/Analyte}, the inner groups
+start with the first grouping variable before a \code{/},
+\code{Subject}.  If there is only one grouping variable, it is
+assumed to be the subject (e.g. \code{concentration~time|Subject}),
+and if there are multiple grouping variables without a \code{/},
+subject is assumed to be the last one.  For single-subject data, it
+is assigned as \code{NULL}.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.
