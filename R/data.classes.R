@@ -14,9 +14,15 @@
 #' and if there are multiple grouping variables without a \code{/},
 #' subject is assumed to be the last one.  For single-subject data, it
 #' is assigned as \code{NULL}.
+#' @param labels (optional) Labels for use when plotting.  They are a
+#' named list where the names correspond to the names in the data
+#' frame and the values are used for xlab and/or ylab as appropriate.
+#' @param units (optional) Units for use when plotting and calculating
+#' parameters.  Note that unit conversions and simplifications are not
+#' done; the text is used as-is.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @export
-PKNCAconc <- function(data, formula, subject) {
+PKNCAconc <- function(data, formula, subject, labels, units) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -58,7 +64,24 @@ PKNCAconc <- function(data, formula, subject) {
   ret <- list(data=data,
               formula=formula,
               subject=subject)
+  ## check and add labels and units
+  if (!missing(labels))
+    ret <- set.name.matching(ret, "labels", labels, data)
+  if (!missing(units))
+    ret <- set.name.matching(ret, "units", units, data)
   class(ret) <- c("PKNCAconc", class(ret))
+  ret
+}
+
+## Used for setting labels and units
+set.name.matching <- function(ret, name, value, data) {
+  if (!missing(value)) {
+    if (is.null(names(value)))
+      stop(paste(name, "must be a named list"))
+    if (!(all(names(labels) %in% names(data))))
+      stop(paste(name, "names must match data names"))
+    ret[[name]] <- value
+  }
   ret
 }
 
@@ -68,9 +91,15 @@ PKNCAconc <- function(data, formula, subject) {
 #' defined in \code{formula}.
 #' @param formula The formula defining the \code{~time|groups} where
 #' \code{time} is the time of the dosing.
+#' @param labels (optional) Labels for use when plotting.  They are a
+#' named list where the names correspond to the names in the data
+#' frame and the values are used for xlab and/or ylab as appropriate.
+#' @param units (optional) Units for use when plotting and calculating
+#' parameters.  Note that unit conversions and simplifications are not
+#' done; the text is used as-is.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @export
-PKNCAdose <- function(data, formula) {
+PKNCAdose <- function(data, formula, labels, units) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -83,6 +112,11 @@ PKNCAdose <- function(data, formula) {
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
   ret <- list(data=data,
               formula=formula)
+  ## check and add labels and units
+  if (!missing(labels))
+    ret <- set.name.matching(ret, "labels", labels, data)
+  if (!missing(units))
+    ret <- set.name.matching(ret, "units", units, data)
   class(ret) <- c("PKNCAdose", class(ret))
   ret
 }

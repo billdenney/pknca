@@ -4,6 +4,7 @@ rm(list=ls())
 ## install.packages("devtools")
 ## install.packages("testthat")
 ## install.packages("roxygen2")
+## install.packages("plyr")
 
 ## library(nlme)
 library(devtools)
@@ -26,12 +27,22 @@ theoph <- as.data.frame(Theoph)
 ## tmpmerge2 <- merge(conc=tmpconc, dose=tmpdose)
 
 mydat <-
-  PKNCAdata(as.data.frame(Theoph),
-            conc~Time|Subject,
-            data.frame(Subject=unique(Theoph$Subject),
-                       Time=0),
-            ~Time|Subject)
+  PKNCAdata(data.conc=PKNCAconc(
+              data=as.data.frame(Theoph),
+              formula=conc~Time|Subject,
+              labels=list(
+                conc="Plasma Concentration",
+                Time="Time Since First Dose"),
+              units=list(conc="mg/L", Time="hr")),
+            data.dose=PKNCAdose(
+              data=data.frame(Subject=unique(Theoph$Subject),
+                Time=0),
+              formula=~Time|Subject,
+              labels=list(Time="Time Since First Dose"),
+              units=list(Dose="mg/kg")))
 
 myres <- pk.nca(mydat)
+
+plot(mydat$conc)
 
 q(save="no")

@@ -51,7 +51,8 @@ parseFormula <- function (form,
     groups <- NA
     grpFormula <- NA
   } else {
-    grpFormula <- call("~", groups)
+    grpFormula <- as.formula(call("~", groups),
+                             env=environment(form))
     rhs <- findOperator(rhs, "|", "left")
   }
   if (require.two.sided &
