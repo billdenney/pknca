@@ -115,6 +115,10 @@ check.auc.specification <- function(x) {
 #' end time of integration
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf',
 #' 'AUClast', and 'AUCall'.
+#' @param clast The last concentration above the limit of
+#' quantification; this is used for AUCinf calculations.  If provided
+#' as clast.obs (observed clast value, default), AUCinf is AUCinf,obs.
+#' If provided as clast.pred, AUCinf is AUCinf,pred.
 #' @param lambda.z The elimination rate (in units of inverse time) for
 #' extrapolation
 #' @param options List of changes to the default
@@ -160,6 +164,7 @@ check.auc.specification <- function(x) {
 #' pk.calc.auc(myconc, mytime, interval=c(0, Inf))
 #' @export
 pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
+                         clast=pk.calc.clast.obs(conc, time, check=FALSE),
                          lambda.z=NA,
                          auc.type="AUClast",
                          options=list(),
@@ -255,7 +260,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     ## Compute the AUxC
     ## Compute it in linear space from the start to Tlast
     if (auc.type %in% "AUCall" &
-          tlast != max(data$time)) {
+        tlast != max(data$time)) {
       ## Include the first point after tlast if it exists and we are
       ## looking for AUCall
       idx.1 <- 1:sum(data$time <= tlast)
@@ -277,9 +282,9 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
       stop("Invalid AUC integration method")
     }
     if (auc.type %in% "AUCinf") {
-      ## Extrapolate to infinity using C.last.obs
-      ## FIXME: should allow for C.last.pred, too.
-      ret[length(ret)+1] <- fun.inf(data$conc, data$time, lambda.z)
+      ## Whether AUCinf,obs or AUCinf,pred is calculated depends on if
+      ## clast,obs or clast,pred is passed in.
+      ret[length(ret)+1] <- fun.inf(clast, tlast, lambda.z)
     }
     ret <- sum(ret)
   }
@@ -290,8 +295,8 @@ fun.auc.linear <- function(conc.1, conc.2, time.1, time.2)
   (time.2-time.1)*(conc.2+conc.1)/2
 fun.auc.log <- function(conc.1, conc.2, time.1, time.2)
   (time.2-time.1)*(conc.2-conc.1)/log(conc.2/conc.1)
-fun.auc.inf <- function(conc, time, lambda.z)
-  pk.calc.clast.obs(conc, time, check=FALSE)/lambda.z
+fun.auc.inf <- function(clast, tlast, lambda.z)
+  clast/lambda.z
 
 #' @describeIn pk.calc.auxc Compute the area under the curve
 #' @export

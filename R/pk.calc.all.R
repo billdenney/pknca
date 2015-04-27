@@ -152,7 +152,13 @@ pk.nca.interval <- function(conc, time,
                    method=method,
                    conc.blq=conc.blq,
                    conc.na=conc.na)
-    ret$cmin <- pk.calc.cmin(conc)
+    ## Do not calculate Cmin for infinite intervals (because the
+    ## theoretical answer is asymptotically 0)
+    if (!is.infinite(auc.end)) {
+      ret$cmin <- pk.calc.cmin(conc)
+    } else {
+      ret$cmin <- NA
+    }
   }
   ret$cmax <- pk.calc.cmax(conc)
   ret$tmax <-

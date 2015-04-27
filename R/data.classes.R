@@ -192,7 +192,7 @@ getGroups <- function(object, form, level, data, sep)
 #' @export
 getGroups.PKNCAconc <- function(object, form=formula(object), level,
                                 data=getData(object), sep) {
-  grpnames <- all.vars(parseFormula(formula(object))$groups)
+  grpnames <- all.vars(parseFormula(form)$groups)
   if (!missing(level))
     if (is.factor(level) | is.character(level)) {
       level <- as.character(level)
@@ -213,6 +213,29 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
 #' @rdname getGroups.PKNCAconc
 #' @export
 getGroups.PKNCAdose <- getGroups.PKNCAconc
+
+#' @rdname getGroups.PKNCAconc
+#' @export
+getGroups.PKNCAresults <- function(object, form=formula(object), level,
+                                   data=object$result, sep) {
+  ## Include the start time as a group; this may be dropped later
+  grpnames <- c(all.vars(parseFormula(form)$groups), "start")
+  if (!missing(level))
+    if (is.factor(level) | is.character(level)) {
+      level <- as.character(level)
+      if (any(!(level %in% grpnames)))
+        stop("Not all levels are listed in the group names.  Missing levels are: ",
+             paste(setdiff(level, grpnames), collapse=", "))
+      grpnames <- level
+    } else if (is.numeric(level)) {
+      if (length(level) == 1) {
+        grpnames <- grpnames[1:level]
+      } else {
+        grpnames <- grpnames[level]
+      }
+    }
+  data[, grpnames, drop=FALSE]
+}
 
 #' Print and/or summarize a PKNCAconc or PKNCAdose object.
 #'
@@ -476,4 +499,54 @@ PKNCAresults <- function(result, formula, options=list()) {
               options=tmp.opt)
   class(ret) <- c("PKNCAresults", class(ret))
   ret
+}
+
+count.non.missing <- function(x)
+  length(na.omit(x))
+
+summary.PKNCAresults <- function(object, simplify.start=TRUE,
+                                 drop.group="Subject",
+                                 summary.cols=list(
+                                   N=list(
+                                     point=count.non.missing,
+                                     col.regex="^cmax$",
+                                     use.column.name=FALSE),
+                                   n=list(
+                                     point=count.non.missing,
+                                     col.regex="^half.life$",
+                                     use.column.name=FALSE),
+                                   cmax=list(
+                                     point=business.geomean,
+                                     spread=business.geocv),
+                                   tmax=list(
+                                     point=business.median,
+                                     spread=business.range),
+                                   auc.last=list(
+                                     point=business.geomean,
+                                     spread=business.geocv,
+                                     col.regex="^auc\\.last.*$"),
+                                   auc.inf=list(
+                                     point=business.geomean,
+                                     spread=business.geocv,
+                                     col.regex="^auc.inf.*$"),
+                                   half.life=list(
+                                     point=business.mean,
+                                     spread=business.sd))
+                                 ...) {
+  groups <- setdiff(getGroups(object), drop.group)
+  if (simplify.start) {
+    groups <- unique(groups)
+  }
+  ## Make sure that all the summary.cols arguments have all the values
+  ## that are needed.
+  for (n in names(summary.cols)) {
+    if (!("col.regex" %in% names(summary.cols[[n]])))
+      summary.cols[[n]]$col.regex <- paste0("^", n, "$")
+    if (!("use.column.name" %in% names(summary.cols[[n]])))
+      summary.cols[[n]]$use.column.name <- TRUE
+  }
+  ## Do all the calculations
+  for (n in names(summary.cols)) {
+    
+  }
 }
