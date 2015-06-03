@@ -11,17 +11,33 @@
 #' \code{AIC}.  If \code{assess.best} is true, then there will be
 #' another column \code{isBest}.
 #' @export
-AIC.list <- function(object, ..., assess.best=TRUE) {
+AIC.list <- function(object, ..., assess.best=TRUE,
+                     reference.model=get.first.model(object)) {
   ret <- data.frame()
   for (i in 1:length(object)) {
     if (identical(object[[i]], NA)) {
-      tmp <- data.frame(df=NA, AIC=NA)
+      tmp <- data.frame(df=NA, AIC=NA, indentation=0)
+      rownames(tmp) <- names(object)[i]
+      ret <- rbind(ret, tmp)
     } else {
-      tmp <- AIC(object[[1]], object[[i]], ...)
+      if (is.list(object[[i]])) {
+        tmp <- AIC.list(object[[i]], ..., reference.model=reference.model)
+      } else {
+        tmp <- AIC(reference.model, object[[i]], ...)
+        rownames(tmp) <- names(object)[i]
+      }
+      if ("indentation" %in% names(tmp)) {
+        ## If the object was another list, then add to the indentation
+        ## level
+        tmp$indentation <- tmp$indentation + 1
+      } else {
+        ## Otherwise, this is the first time that the indentation is
+        ## being assessed.
+        tmp$indentation <- 0
+      }
+      ret <- rbind(ret, tmp[-1,])
     }
-    ret <- rbind(ret, tmp[2,])
   }
-  rownames(ret) <- names(object)
   if (assess.best) {
     ret$isBest <- ""
     ret$isBest[ret$AIC %in% min(ret$AIC, na.rm=TRUE)] <- "Best Model"
@@ -39,3 +55,31 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
 #' @export
 get.best.model <- function(object, ...)
   object[AIC(object, ...)$isBest %in% "Best Model"][[1]]
+
+#' Get the first model from a list of models
+#'
+#' @param object the list of (lists of, ...) models
+#' @return The first item in the \code{object} that is not a list or
+#' \code{NA}.  If \code{NA} is passed in or the list (of lists) is all
+#' \code{NA}, then \code{NA} is returned.
+get.first.model <- function(object) {
+  ret <- NA
+  if (is.list(object)) {
+    idx <- 0
+    while (is.na(ret) & idx < length(object)) {
+      idx <- idx + 1
+      if (identical(NA, object[[idx]])) {
+        ## Do nothing
+      } else if (is.list(object[[idx]])) {
+        ret <- get.first.model(object[[idx]])
+      } else {
+        ## It is neither NA or a list, it's our first usable object;
+        ## return it.
+        ret <- object[[idx]]
+      }
+    }
+  } else {
+    ret <- object
+  }
+  ret
+}
