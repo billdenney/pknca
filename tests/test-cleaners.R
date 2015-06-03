@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("clean.conc.na", {
   ## Check that it gives errors for invalid conc.na values
   expect_error(clean.conc.na(conc=1, time=1, conc.na="foo"),

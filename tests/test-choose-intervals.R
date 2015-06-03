@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("find.tau", {
   ## Regularly spaced intervals give the regular spacing
   expect_equal(

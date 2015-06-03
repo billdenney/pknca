@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("merge.splitByData", {
   ## Simple example
   d1 <- splitBy(

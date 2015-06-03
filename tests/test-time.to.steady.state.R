@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("pk.tss.data.prep", {
   conc.test <- 1:5
   time.test <- 0:4

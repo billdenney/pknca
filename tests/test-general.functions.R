@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("check.conversion", {
   good <- LETTERS
   expect_equal(check.conversion(good, as.character), good)

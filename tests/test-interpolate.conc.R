@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("extrapolate.conc", {
   ## Confirm that the ecxtrap.method must be AUCinf, AUClast, AUCall
   expect_error(extrapolate.conc(conc=1,

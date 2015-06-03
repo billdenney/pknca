@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("adj.r.squared", {
   ## Ensure correct calculation
   expect_equal(adj.r.squared(1, 5), 1)

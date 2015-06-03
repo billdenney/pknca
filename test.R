@@ -5,14 +5,22 @@ rm(list=ls())
 ## install.packages("testthat")
 ## install.packages("roxygen2")
 ## install.packages("plyr")
+## install.packages("covr")
 
 ## library(nlme)
 library(devtools)
+library(covr)
+library(testthat)
 
 load_all(".")
 test(".")
 document(".")
 check(".")
+
+mycoverage <- package_coverage()
+mycoverage
+coveralls()
+shine(mycoverage)
 
 plot(Theoph)
 theoph <- as.data.frame(Theoph)

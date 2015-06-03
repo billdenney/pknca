@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("check.auc.specification", {
   ## Test that all valid combinations pass through without error or
   ## change

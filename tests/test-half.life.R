@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("pk.calc.half.life", {
   ## Confirm that half-life is correctly calculated with a simple
   ## exponential decay

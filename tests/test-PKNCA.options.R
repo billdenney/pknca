@@ -1,3 +1,5 @@
+library(testthat)
+
 test_that("PKNCA.options", {
   ## Missing/incorrect option names give an error indicating all the
   ## options that are missing.

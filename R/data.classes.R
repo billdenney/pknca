@@ -531,7 +531,7 @@ summary.PKNCAresults <- function(object, simplify.start=TRUE,
                                      col.regex="^auc.inf.*$"),
                                    half.life=list(
                                      point=business.mean,
-                                     spread=business.sd))
+                                     spread=business.sd)),
                                  ...) {
   groups <- setdiff(getGroups(object), drop.group)
   if (simplify.start) {
