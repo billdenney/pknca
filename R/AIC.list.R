@@ -24,12 +24,14 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
     }
     ret
   }
-  ret <-
+  allAICs <-
     lapply(object, FUN=function(subobject, ...) {
       ## Return the AIC of the new model relative to the reference model 
       ret <- AIC(subobject, ...)
       if (is.numeric(ret)) {
-        ret <- data.frame(AIC=ret, df=attr(subobject, "df"), indentation=0)
+        ret <- data.frame(AIC=ret,
+                          df=attr(logLik(subobject), "df"),
+                          indentation=0)
       } else if (is.data.frame(ret)) {
         if ("indentation" %in% names(ret)) {
           ret$indentation <- ret$indentation + 1
@@ -39,7 +41,26 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
       }
       ret
     })
-  ret <- do.call(rbind, ret)
+  retnames <- names(allAICs)
+  if (is.null(retnames))
+    retnames <- rep("", length(allAICs))
+  ret <- data.frame()
+  for (i in seq_len(length(allAICs))) {
+    tmpAICs <- allAICs[[i]]
+    ## If the best value has already been established, drop it for
+    ## assessment later.
+    tmpAICs$isBest <- NULL
+    ## Assign the corret rownames to tmpAICs
+    if (!(retnames[i] %in% ""))
+      if (nrow(tmpAICs) > 1 |
+          !identical(rownames(tmpAICs), as.character(1:nrow(tmpAICs)))) {
+        rownames(tmpAICs) <- paste(retnames[i], rownames(tmpAICs))
+      } else {
+        rownames(tmpAICs) <- retnames[i]
+      }
+    ## Add tmpAICs to the data frame to return
+    ret <- rbind(ret, tmpAICs)
+  }
   if (assess.best) {
     ret$isBest <- ""
     ## The next row prevents warnings about no data when na.rm=TRUE

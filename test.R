@@ -11,6 +11,7 @@ rm(list=ls())
 library(devtools)
 library(covr)
 library(testthat)
+library(shiny)
 
 load_all(".")
 test(".")
@@ -19,7 +20,6 @@ check(".")
 
 mycoverage <- package_coverage()
 mycoverage
-coveralls()
 shine(mycoverage)
 
 plot(Theoph)

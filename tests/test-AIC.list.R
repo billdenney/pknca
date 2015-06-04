@@ -4,7 +4,42 @@ test_that("AIC.list", {
   tmpdat <- data.frame(x=c(1, 2, 3), y=c(1, 2.02, 3), z=c(0, 0.01, 0))
   mod1 <- glm(y~x, data=tmpdat)
   mod2 <- glm(y~x+z, data=tmpdat)
-  AIC.list(list(mod1, mod2))
+  d1 <- list(list(mod1), mod2)
+  result1 <- data.frame(AIC=c(-13.47, -198.22),
+                       df=c(3, 4),
+                       indentation=c(1, 0),
+                       isBest=c("", "Best Model"),
+                       stringsAsFactors=FALSE)
+  expect_equal(AIC.list(d1), result1, tolerance=0.001)
+
+  ## Check that simple names apply correctly
+  d2 <- list(list("A"=mod1), "B"=mod2)
+  result2 <- data.frame(AIC=c(-13.47, -198.22),
+                        df=c(3, 4),
+                        indentation=c(1, 0),
+                        isBest=c("", "Best Model"),
+                        stringsAsFactors=FALSE,
+                        row.names=c("A", "B"))
+  expect_equal(AIC.list(d2), result2, tolerance=0.001)
+
+  d3 <- list("A"=mod1, "B"=mod2)
+  result3 <- data.frame(AIC=c(-13.47, -198.22),
+                        df=c(3, 4),
+                        indentation=c(0, 0),
+                        isBest=c("", "Best Model"),
+                        stringsAsFactors=FALSE,
+                        row.names=c("A", "B"))
+  expect_equal(AIC.list(d3), result3, tolerance=0.001)
+  
+  d4 <- list("C"=list("A"=mod1), "B"=mod2)
+  result4 <- data.frame(AIC=c(-13.47, -198.22),
+                        df=c(3, 4),
+                        indentation=c(1, 0),
+                        isBest=c("", "Best Model"),
+                        stringsAsFactors=FALSE,
+                        row.names=c("C A", "B"))
+  expect_equal(AIC.list(d4), result4, tolerance=0.001)
+
 })
 
 test_that("get.first.model", {
