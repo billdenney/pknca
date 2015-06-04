@@ -11,31 +11,40 @@
 #' \code{AIC}.  If \code{assess.best} is true, then there will be
 #' another column \code{isBest}.
 #' @export
-AIC.list <- function(object, ..., assess.best=TRUE,
-                     reference.model=get.first.model(object)) {
-  ret <- data.frame()
-  for (i in 1:length(object)) {
-    if (identical(object[[i]], NA)) {
-      tmp <- data.frame(df=NA, AIC=NA, indentation=0)
-      rownames(tmp) <- names(object)[i]
-      ret <- rbind(ret, tmp)
+AIC.list <- function(object, ..., assess.best=TRUE) {
+  ## This logLik function is not something that we want generally
+  ## available, but it makes AIC.list much more able to gracefully
+  ## handle models that do not converge.
+  logLik.logical <- function(x) {
+    if (identical(x, NA)) {
+      ret <- NA
+      attr(ret, "df") <- NA
     } else {
-      tmp <- AIC(object[[i]], ..., reference.model=reference.model)
-      if ("indentation" %in% names(tmp)) {
-        ## If the object was another list, then add to the indentation
-        ## level
-        tmp$indentation <- tmp$indentation + 1
-      } else {
-        ## Otherwise, this is the first time that the indentation is
-        ## being assessed.
-        tmp$indentation <- 0
-      }
-      ret <- rbind(ret, tmp[-1,])
+      stop("Cannot assess log likelihood for logical variable that is not NA")
     }
+    ret
   }
+  ret <-
+    lapply(object, FUN=function(subobject, ...) {
+      ## Return the AIC of the new model relative to the reference model 
+      ret <- AIC(subobject, ...)
+      if (is.numeric(ret)) {
+        ret <- data.frame(AIC=ret, df=attr(subobject, "df"), indentation=0)
+      } else if (is.data.frame(ret)) {
+        if ("indentation" %in% names(ret)) {
+          ret$indentation <- ret$indentation + 1
+        } else {
+          ret$indentation <- 0
+        }
+      }
+      ret
+    })
+  ret <- do.call(rbind, ret)
   if (assess.best) {
     ret$isBest <- ""
-    ret$isBest[ret$AIC %in% min(ret$AIC, na.rm=TRUE)] <- "Best Model"
+    ## The next row prevents warnings about no data when na.rm=TRUE
+    if (any(!is.na(ret$AIC)))
+      ret$isBest[ret$AIC %in% min(ret$AIC, na.rm=TRUE)] <- "Best Model"
   }
   ret
 }
