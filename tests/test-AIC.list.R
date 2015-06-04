@@ -1,7 +1,10 @@
 library(testthat)
 
 test_that("AIC.list", {
-  
+  tmpdat <- data.frame(x=c(1, 2, 3), y=c(1, 2.02, 3), z=c(0, 0.01, 0))
+  mod1 <- glm(y~x, data=tmpdat)
+  mod2 <- glm(y~x+z, data=tmpdat)
+  AIC.list(list(mod1, mod2))
 })
 
 test_that("get.first.model", {
@@ -30,4 +33,10 @@ test_that("get.first.model", {
   expect_equal(get.first.model(list(NA, "A")), "A")
   expect_equal(get.first.model(list(NA, list("A"))), "A")
   expect_equal(get.first.model(list(list(NA, "A"), "B")), "A")
+
+  ## Ensure that we do not recurse into items that are not of the list
+  ## class (but are lists internally)
+  tmpdat <- data.frame(x=c(1, 2, 3), y=c(1, 2.02, 3), z=c(0, 0.01, 0))
+  mod1 <- glm(y~x, data=tmpdat)
+  expect_equal(get.first.model(list(list(NA, mod1), "B")), mod1)
 })

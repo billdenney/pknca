@@ -20,12 +20,7 @@ AIC.list <- function(object, ..., assess.best=TRUE,
       rownames(tmp) <- names(object)[i]
       ret <- rbind(ret, tmp)
     } else {
-      if (is.list(object[[i]])) {
-        tmp <- AIC.list(object[[i]], ..., reference.model=reference.model)
-      } else {
-        tmp <- AIC(reference.model, object[[i]], ...)
-        rownames(tmp) <- names(object)[i]
-      }
+      tmp <- AIC(object[[i]], ..., reference.model=reference.model)
       if ("indentation" %in% names(tmp)) {
         ## If the object was another list, then add to the indentation
         ## level
@@ -64,13 +59,13 @@ get.best.model <- function(object, ...)
 #' \code{NA}, then \code{NA} is returned.
 get.first.model <- function(object) {
   ret <- NA
-  if (is.list(object)) {
+  if (inherits(object, "list")) {
     idx <- 0
-    while (is.na(ret) & idx < length(object)) {
+    while (identical(NA, ret) & idx < length(object)) {
       idx <- idx + 1
       if (identical(NA, object[[idx]])) {
         ## Do nothing
-      } else if (is.list(object[[idx]])) {
+      } else if (inherits(object[[idx]], "list")) {
         ret <- get.first.model(object[[idx]])
       } else {
         ## It is neither NA or a list, it's our first usable object;
