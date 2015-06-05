@@ -2,11 +2,11 @@ library(testthat)
 
 test_that("merge.splitByData", {
   ## Simple example
-  d1 <- splitBy(
+  d1 <- doBy::splitBy(
     ~a,
     data=data.frame(a=rep(1:3, each=2),
       b=11:16))
-  d2 <- splitBy(
+  d2 <- doBy::splitBy(
     ~a,
     data.frame(a=1:3, d=4:6))
 
@@ -30,11 +30,11 @@ test_that("merge.splitByData", {
                check.attributes=FALSE)
 
   ## Missing value in data frame 1
-  d3 <- splitBy(
+  d3 <- doBy::splitBy(
     ~a,
     data=data.frame(a=rep(c(1, 3), each=2),
       b=c(11:12, 15:16)))
-  d4 <- splitBy(
+  d4 <- doBy::splitBy(
     ~a,
     data.frame(a=1:3, d=4:6))
 
@@ -48,11 +48,11 @@ test_that("merge.splitByData", {
                check.attributes=FALSE)
 
   ## Missing value in data frame 2
-  d5 <- splitBy(
+  d5 <- doBy::splitBy(
     ~a,
     data=data.frame(a=rep(1:3, each=2),
       b=11:16))
-  d6 <- splitBy(
+  d6 <- doBy::splitBy(
     ~a,
     data.frame(a=c(1, 3), d=c(4, 6)))
 

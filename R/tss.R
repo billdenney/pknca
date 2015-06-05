@@ -100,18 +100,26 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
 pk.tss <- function(...,
                    type=c("monoexponential", "stepwise.linear"),
                    check=TRUE) {
-  type <- match.args(type, several.ok=TRUE)
-  ret <- data.frame()
+  type <- match.arg(type, several.ok=TRUE)
+  ret <- NA
   if ("monoexponential" %in% type) {
-    ret <- cbind(ret, pk.tss.monoexponential(..., check=check))
+    tmp <- pk.tss.monoexponential(..., check=check)
+    if (identical(NA, ret)) {
+      ret <- tmp
+    } else {
+      stop("Bug in pk.tss where ret is set to non-NA too early")
+    }
     ## Set check to FALSE if it has already been checked (so that it
     ## doesn't happen again in stepwise.linear)
     check <- FALSE
   }
   if ("stepwise.linear" %in% type) {
-    ret <- merge(ret,
-                 pk.tss.stepwise.linear(..., check=check),
-                 all=TRUE)
+    tmp <- pk.tss.stepwise.linear(..., check=check)
+    if (identical(NA, ret)) {
+      ret <- tmp
+    } else {
+      ret <- merge(ret, tmp, all=TRUE)
+    }
   }
   ret
 }

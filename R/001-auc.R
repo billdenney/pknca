@@ -312,17 +312,27 @@ pk.calc.auc <- function(...)
 ## caught as an error.
 #' @describeIn pk.calc.auxc Compute the AUClast.
 #' @export
-pk.calc.auc.last <- function(...)
+pk.calc.auc.last <- function(..., auc.type, lambda.z) {
+  if (!missing(auc.type))
+    if (!(length(auc.type) == 1 &
+          tolower(auc.type) == "auclast"))
+      warning("auc.type cannot be changed when calling pk.calc.auc.last, please use pk.calc.auc")
   pk.calc.auc(...,
               auc.type="AUClast",
               lambda.z=NA)
+}
 
 #' @describeIn pk.calc.auxc Compute the AUCall.
 #' @export
-pk.calc.auc.all <- function(...)
+pk.calc.auc.all <- function(..., auc.type, lambda.z) {
+  if (!missing(auc.type))
+    if (!(length(auc.type) == 1 &
+          tolower(auc.type) == "aucall"))
+      warning("auc.type cannot be changed when calling pk.calc.auc.all, please use pk.calc.auc")
   pk.calc.auc(...,
               auc.type="AUCall",
               lambda.z=NA)
+}
 
 #' @describeIn pk.calc.auxc Compute the area under the moment curve
 #' @export

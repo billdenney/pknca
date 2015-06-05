@@ -299,3 +299,30 @@ test_that("interpolate.conc", {
   ## FIXME: Future feature: Interpolation backward in time from a 0
   ## starting value can be 0.
 })
+
+test_that("interp.extrap.conc", {
+  ## Ensure that data checking works correctly
+  expect_equal(
+    interp.extrap.conc(conc=c(0, 1, 0.5, 1, 0),
+                       time=0:4,
+                       time.out=1.5,
+                       interp.method="lin up/log down"),
+    exp(mean(log(c(1, 0.5)))))
+
+  ## Ensure that NA for time.out results in NA output
+  expect_equal(
+    interp.extrap.conc(conc=c(0, 1, 0.5, 1, 0),
+                       time=0:4,
+                       time.out=c(1.5, NA),
+                       interp.method="lin up/log down"),
+    c(exp(mean(log(c(1, 0.5)))), NA))
+
+  ## Ensure a warning with NA for time.out
+  expect_warning(
+    interp.extrap.conc(conc=c(0, 1, 0.5, 1, 0),
+                       time=0:4,
+                       time.out=c(1.5, NA),
+                       interp.method="lin up/log down"),
+    regexp="An interpolation/extrapolation time is NA")
+
+})

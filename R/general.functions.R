@@ -77,7 +77,7 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
 #' column will be named "FUN".
 #' @export
 sapplyBy <- function(formula, data=parent.frame(), FUN) {
-  sb <- splitBy(formula, data = data)
+  sb <- doBy::splitBy(formula, data = data)
   gr <- unique(attr(sb, "grps"))
   ret <- attr(sb, "groupid")
   if (is.function(FUN))
@@ -85,8 +85,8 @@ sapplyBy <- function(formula, data=parent.frame(), FUN) {
   for (n in names(FUN)) {
     ddd <- sapply(sb, FUN[[n]])
     ret <- cbind(ret,
-                 renameCol(data.frame(result=ddd[gr]),
-                           "result", n))
+                 doBy::renameCol(data.frame(result=ddd[gr]),
+                                 "result", n))
   }
   ret
 }

@@ -124,13 +124,121 @@ generate.data <- function() {
 
 test_that("pk.tss.stepwise.linear", {
   tmpdata <- generate.data()
-  expect_equal(pk.tss.stepwise.linear(conc=tmpdata$conc,
-                                      time=tmpdata$time,
-                                      subject=tmpdata$subject,
-                                      treatment=tmpdata$treatment,
-                                      time.dosing=0:14,
-                                      verbose=FALSE),
-               data.frame(tss.stepwise.linear=7))
+  expect_equal(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           verbose=FALSE),
+    data.frame(tss.stepwise.linear=7),
+    info="pk.tss.stepwise.linear 1")
+
+  expect_warning(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           min.points=c(3, 4),
+                           time.dosing=0:14,
+                           verbose=FALSE),
+    regex="Only first value of min.points is used",
+    info="pk.tss.stepwise.linear 2")
+
+  ## Check the level input
+  expect_error(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level="A",
+                           verbose=FALSE),
+    regex="level must be a number",
+    info="pk.tss.stepwise.linear 3")
+
+  expect_error(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=2,
+                           verbose=FALSE),
+    regex="level must be between 0 and 1, exclusive",
+    info="pk.tss.stepwise.linear 4")
+  
+  expect_error(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=-1,
+                           verbose=FALSE),
+    regex="level must be between 0 and 1, exclusive",
+    info="pk.tss.stepwise.linear 5")
+  expect_error(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=0,
+                           verbose=FALSE),
+    regex="level must be between 0 and 1, exclusive",
+    info="pk.tss.stepwise.linear 6")
+  expect_error(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=1,
+                           verbose=FALSE),
+    regex="level must be between 0 and 1, exclusive",
+    info="pk.tss.stepwise.linear 7")
+
+  expect_warning(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=c(0.95, 0.99),
+                           verbose=FALSE),
+    regex="Only first value of level is being used",
+    info="pk.tss.stepwise.linear 8")
+
+  ## This is mainly to test verbosity
+  expect_warning(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=c(0.95, 0.99),
+                           verbose=TRUE),
+    regex="Only first value of level is being used",
+    info="pk.tss.stepwise.linear 9")
+
+  ## Ensure that the first value really is used
+  expect_equal(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=c(0.8, 0.99),
+                           verbose=FALSE),
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           level=0.8,
+                           verbose=FALSE),
+    info="pk.tss.stepwise.linear 10")
 })
 
 test_that("pk.tss.monoexponential", {
@@ -140,7 +248,8 @@ test_that("pk.tss.monoexponential", {
                            time=tmpdata$time,
                            subject=tmpdata$subject,
                            treatment=tmpdata$treatment,
-                           time.dosing=0:14),
+                           time.dosing=0:14,
+                           verbose=TRUE),
     data.frame(subject=factor(c(1, 10, 2:9)),
                tss.monoexponential.population=4.57618156812974,
                tss.monoexponential.popind=c(
@@ -160,6 +269,64 @@ test_that("pk.tss.monoexponential", {
                  4.49364716304018, 4.49364716304018, 4.49364716304018,
                  4.5987103152447, 4.5987103152447, 4.5987103152447,
                  4.5987103152447)),
-    tolerance=1e-7,
-    check.attributes=FALSE)
+    tolerance=1e-4,
+    check.attributes=FALSE,
+    info="pk.tss.monoexponential 1")
+})
+
+test_that("pk.tss", {
+  ## Ensure that pk.tss will go to the correct type of model
+  tmpdata <- generate.data()
+  expect_equal(
+    pk.tss(conc=tmpdata$conc,
+           time=tmpdata$time,
+           subject=tmpdata$subject,
+           treatment=tmpdata$treatment,
+           time.dosing=0:14,
+           verbose=FALSE,
+           type="monoexponential"),
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           verbose=FALSE))
+
+  expect_equal(
+    pk.tss(conc=tmpdata$conc,
+           time=tmpdata$time,
+           subject=tmpdata$subject,
+           treatment=tmpdata$treatment,
+           time.dosing=0:14,
+           verbose=FALSE,
+           type="stepwise.linear"),
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           verbose=FALSE))
+
+  ## pk.tss will calculate both if requested
+  expect_equal(
+    pk.tss(conc=tmpdata$conc,
+           time=tmpdata$time,
+           subject=tmpdata$subject,
+           treatment=tmpdata$treatment,
+           time.dosing=0:14,
+           verbose=FALSE,
+           type=c("monoexponential", "stepwise.linear")),
+    merge(pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           verbose=FALSE),
+          pk.tss.stepwise.linear(conc=tmpdata$conc,
+                                 time=tmpdata$time,
+                                 subject=tmpdata$subject,
+                                 treatment=tmpdata$treatment,
+                                 time.dosing=0:14,
+                                 verbose=FALSE),
+          all=TRUE))
 })

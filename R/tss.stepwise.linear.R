@@ -35,12 +35,12 @@ pk.tss.stepwise.linear <- function(...,
   if (is.factor(min.points) |
       !is.numeric(min.points))
     stop("min.points must be a number")
-  if (min.points < 3)
-    stop("min.points must be at least 3")
   if (!length(min.points) == 1) {
     warning("Only first value of min.points is used")
     min.points <- min.points[1]
   }
+  if (min.points < 3)
+    stop("min.points must be at least 3")
   if (is.factor(level) |
       !is.numeric(level)) {
     stop("level must be a number")
@@ -77,10 +77,10 @@ pk.tss.stepwise.linear <- function(...,
           ## If we have a subject column, try to fit a linear
           ## mixed-effects model.
           current.model <-
-            lme(formula.to.fit,
-                random=~time|subject,
-                data=subset(modeldata, time >= min(remaining.time)))
-          intervals(current.model, level=level, which="fixed")$fixed["time",]
+            nlme::lme(formula.to.fit,
+                      random=~time|subject,
+                      data=subset(modeldata, time >= min(remaining.time)))
+          nlme::intervals(current.model, level=level, which="fixed")$fixed["time",]
         } else {
           ## If we do not have a subject column, fit a linear model.
           current.model <-

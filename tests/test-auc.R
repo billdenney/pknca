@@ -384,4 +384,40 @@ test_that("pk.calc.auc", {
   ## Confirm error with time not monotonically increasing (equal)
   expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 2)),
                regexp="Time must be monotonically increasing")
+
+  ## Confirm that AUC method checking works
+  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 3), method="wrong"),
+               regex='should be one of "lin up/log down", "linear"')
+})
+
+test_that("pk.calc.auc.last", {
+  expect_equal(
+    pk.calc.auc.last(conc=c(0, 1, 1, 0),
+                     time=0:3,
+                     interval=c(0, 3),
+                     method="linear"),
+    1.5)
+  expect_warning(
+    pk.calc.auc.last(conc=c(0, 1, 1, 0),
+                     time=0:3,
+                     interval=c(0, 3),
+                     auc.type="foo",
+                     method="linear"),
+    regexp="auc.type cannot be changed when calling pk.calc.auc.last, please use pk.calc.auc")
+})
+
+test_that("pk.calc.auc.all", {
+  expect_equal(
+    pk.calc.auc.all(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    method="linear"),
+    2)
+  expect_warning(
+    pk.calc.auc.all(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    auc.type="foo",
+                    method="linear"),
+    regexp="auc.type cannot be changed when calling pk.calc.auc.all, please use pk.calc.auc")
 })

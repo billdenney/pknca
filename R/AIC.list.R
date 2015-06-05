@@ -12,31 +12,23 @@
 #' another column \code{isBest}.
 #' @export
 AIC.list <- function(object, ..., assess.best=TRUE) {
-  ## This logLik function is not something that we want generally
-  ## available, but it makes AIC.list much more able to gracefully
-  ## handle models that do not converge.
-  logLik.logical <- function(x) {
-    if (identical(x, NA)) {
-      ret <- NA
-      attr(ret, "df") <- NA
-    } else {
-      stop("Cannot assess log likelihood for logical variable that is not NA")
-    }
-    ret
-  }
   allAICs <-
     lapply(object, FUN=function(subobject, ...) {
-      ## Return the AIC of the new model relative to the reference model 
-      ret <- AIC(subobject, ...)
-      if (is.numeric(ret)) {
-        ret <- data.frame(AIC=ret,
-                          df=attr(logLik(subobject), "df"),
-                          indentation=0)
-      } else if (is.data.frame(ret)) {
-        if ("indentation" %in% names(ret)) {
-          ret$indentation <- ret$indentation + 1
-        } else {
-          ret$indentation <- 0
+      ## Return the AIC of the new model relative to the reference model
+      if (identical(NA, subobject)) {
+        ret <- data.frame(AIC=NA, df=NA, indentation=0)
+      } else {
+        ret <- AIC(subobject, ...)
+        if (is.numeric(ret)) {
+          ret <- data.frame(AIC=ret,
+                            df=attr(logLik(subobject), "df"),
+                            indentation=0)
+        } else if (is.data.frame(ret)) {
+          if ("indentation" %in% names(ret)) {
+            ret$indentation <- ret$indentation + 1
+          } else {
+            stop("Unknown way to get a data.frame without indentation set.  This is likely a bug.")
+          }
         }
       }
       ret

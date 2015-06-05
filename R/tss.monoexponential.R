@@ -99,7 +99,7 @@ tss.monoexponential.generate.formula <- function(data) {
              formula=ctrough.ss~treatment-1,
              ## Set the starting values for the ctrough.ss as the mean
              ## concentration by treatment
-             start=summaryBy(conc~treatment,
+             start=doBy::summaryBy(conc~treatment,
                data=data,
                FUN=mean)$conc.mean))
   } else {
@@ -180,16 +180,16 @@ pk.tss.monoexponential.population <- function(data,
         try({
           ## Test the current model
           current.model <-
-            nlme(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
-                 fixed=list(
-                   test.formula$ctrough.by[[myctrough.ss]]$formula,
-                   test.formula$tss.by[[mytss]]$formula),
-                 random=test.formula$ranef.by[[myranef]]$formula,
-                 start=c(
-                   test.formula$ctrough.by[[myctrough.ss]]$start,
-                   test.formula$tss.by[[mytss]]$start),
-                 data=data,
-                 verbose=verbose)
+            nlme::nlme(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
+                       fixed=list(
+                         test.formula$ctrough.by[[myctrough.ss]]$formula,
+                         test.formula$tss.by[[mytss]]$formula),
+                       random=test.formula$ranef.by[[myranef]]$formula,
+                       start=c(
+                         test.formula$ctrough.by[[myctrough.ss]]$start,
+                         test.formula$tss.by[[mytss]]$start),
+                       data=data,
+                       verbose=verbose)
           ## If the model converges, get the summary and AIC out.
           current.model.summary <- summary(current.model)
           current.aic <- AIC(current.model)
@@ -221,8 +221,8 @@ pk.tss.monoexponential.population <- function(data,
     best.model <-
       models[all.model.summary$AIC %in%
              min(all.model.summary$AIC, na.rm=TRUE)][[1]]$model
-    ret <- data.frame(tss.monoexponential.population=fixef(best.model)[["tss"]])
-    best.ranef <- ranef(best.model)
+    ret <- data.frame(tss.monoexponential.population=nlme::fixef(best.model)[["tss"]])
+    best.ranef <- nlme::ranef(best.model)
     if ("tss" %in% names(best.ranef)) {
       ret <- merge(
         ret,
@@ -273,15 +273,15 @@ pk.tss.monoexponential.individual <- function(data,
     tss <- NA
     try({
       current.model <-
-        gnls(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
-             params=list(
-               ctrough.ss~1,
-               tss~1),
-             start=c(
-               mean(d$conc),
-               median(unique(d$time))),
-             data=d,
-             verbose=verbose)
+        nlme::gnls(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
+                   params=list(
+                     ctrough.ss~1,
+                     tss~1),
+                   start=c(
+                     mean(d$conc),
+                     median(unique(d$time))),
+                   data=d,
+                   verbose=verbose)
       tss <- coef(current.model)[["tss"]]
     }, silent=!verbose)
     tss
