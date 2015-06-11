@@ -225,3 +225,11 @@ test_that("pk.calc.vss", {
   expect_equal(pk.calc.vss(2, 1), 2)
   expect_equal(pk.calc.vss(1, 2), 2)
 })
+
+test_that("pk.calc.aucpext", {
+  expect_equal(pk.calc.aucpext(1, 2), 50)
+  expect_equal(pk.calc.aucpext(1.8, 2), 10)
+  expect_equal(pk.calc.aucpext(2, 1), -100)
+  expect_warning(pk.calc.aucpext(2, 1),
+                 regexp="auclast should be less than aucinf")
+})

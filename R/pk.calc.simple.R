@@ -162,8 +162,11 @@ pk.calc.thalf.eff <- function(mrt)
 #' @param aucinf the area under the curve from time 0 to infinity
 #' @return the numeric value of the AUC percent extrapolated
 #' @export
-pk.calc.aucpext <- function(auclast, aucinf)
+pk.calc.aucpext <- function(auclast, aucinf) {
+  if (auclast >= aucinf)
+    warning("auclast should be less than aucinf")
   100*(1-auclast/aucinf)
+}
 
 #' Calculate the elimination rate (Kel)
 #'
