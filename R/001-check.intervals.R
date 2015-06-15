@@ -1,19 +1,104 @@
+#' Check the column edits for the given column.  This is not exported.
+interval_checkers <- list(
+  logical=make.logical,
+  numeric=function(x) {
+    if ((!is.factor(x)) & is.numeric(x))
+      return(x)
+    stop("Must be numeric and not a factor")
+  },
+  character=function(x) {
+    if (is.factor(x))
+      x <- as.character(x)
+    if (!is.character(x))
+      stop("Must be a character or a factor")
+    x
+  },
+  force=function(x) {
+    if (is.factor(x))
+      x <- as.character(x)
+    ret <- rep(NA, length(x))
+    if (any(mask.force <- tolower(x) %in% 'force'))
+      ret[mask.force] <- 'force'
+    if (any(!mask.force))
+      ret[!mask.force] <- make.logical(x[!mask.force])
+    ret
+  })
+interval_defaults <- list(
+  logical=FALSE,
+  numeric=NA,
+  character=as.character(NA),
+  force=FALSE)
+
+interval_edits <- list(
+  start="numeric",
+  end="numeric",
+  auc.type="character",
+  half.life="logical",
+  tfirst="logical",
+  tmax="logical",
+  tlast="logical",
+  cmin="logical",
+  cmax="logical",
+  clast.obs="logical",
+  clast.pred="logical",
+  thalf.eff="logical",
+  aucpext="logical",
+  cl="force",
+  mrt="logical",
+  vz="logical",
+  vss="logical")
+
 #' Check the formatting of a calculation interval specification data
 #' frame.
 #'
-#' Calculation interval specifications are data frames with four
-#' columns: \code{start}, \code{end}, \code{end.text},
-#' \code{half.life}.
-#'
-#' The columns are defined as:
+#' Calculation interval specifications are data frames defining what
+#' calculations will be required and summarized from all time
+#' intervals.  Note: parameters which are not requested may be
+#' calculated if it is required for (or computed at the same time as)
+#' a requested parameter.
+#' 
+#' The data frame columns (with variable type in parentheses) are:
 #' \describe{
-#'   \item{\code{start}}{The starting time as a number}
-#'   \item{\code{end}}{The ending time as either NA or a number (including Inf)}
+#'   \item{\code{start}}{The starting time (numeric)}
+#'   \item{\code{end}}{The ending time (numeric including Inf)}
 #'   \item{\code{auc.type}}{What type of AUC should be computed: 'AUCinf',
-#'     'AUClast', 'AUCall', or NA (for half-life only)}
-#'   \item{\code{half.life}}{Compute the half-life for the interval (logical variable)}
+#'     'AUClast', 'AUCall', or NA (no AUC computed during the current
+#'     interval)}
+#'   \item{\code{half.life}}{The half-life (logical)}
+#'   \item{\code{tfirst}}{The time of the first concentration above the limit
+#'     of quantification (logical)}
+#'   \item{\code{tmax}}{The time of observed maximum concentration (logical)}
+#'   \item{\code{tlast}}{The time of the last concentration above the limit
+#'     of quantification (logical)}
+#'   \item{\code{cmin}}{The observed minimum concentration during the interval
+#'     (logical)}
+#'   \item{\code{cmax}}{The observed maximum concentration (logical)}
+#'   \item{\code{clast.obs}}{The observed last concentration (logical)}
+#'   \item{\code{clast.pred}}{The concentration at \code{tlast} predicted by
+#'     the half life (logical)}
+#'   \item{\code{thalf.eff}}{The effective half-life (logical)}
+#'   \item{\code{aucpext}}{The percent of the AUCinf that is extrapolated after
+#'     the AUClast (logical)}
+#'   \item{\code{cl}}{The clearance (force: 'force' indicates that
+#'     clearance should be calculated even if it is a multiple-dose study
+#'     and the drug has not reached steady-state.)}
+#'   \item{\code{mrt}}{The mean residence time (logical)}
+#'   \item{\code{vz}}{Terminal volume of distribution (logical)}
+#'   \item{\code{vss}}{Steady-state volume of distribution (logical)}
 #' }
 #'
+#' The variable types for each column are:
+#' \describe{
+#'   \item{logical}{A logical variable, as interpreted with the
+#'     \code{\link{make.logical}} function.}
+#'   \item{numeric}{A numeric (non-factor) column}
+#'   \item{force}{logical or the text \code{'force'}.  \code{'force'}
+#'     indicates that checking if the calculation is appropriate should be
+#'     skipped.}
+#'   \item{character or factor}{The text suggested as either a character or
+#'     a factor}
+#' }
+#' 
 #' They are interpreted with the following rules:
 #'
 #' \itemize{
@@ -49,6 +134,35 @@ check.interval.specification <- function(x) {
     ## Return it as is-- nothing is requested
     return(x)
   }
+  ## Check for extra columns
+  if (length(new.names <- setdiff(names(x), names(interval_edits))) > 0) {
+    warning("Some names in the interval specification are given though not required: ",
+            paste(new.names, collapse=", "))
+  }
+  ## Check the edit of each column
+  for (n in names(interval_edits))
+    if (!(n %in% names(x))) {
+      ## Set missing columns to the default value
+      x[,n] <- interval_defaults[[interval_edit[[n]]]]
+    } else {
+      ## Confirm the edits of the given columns
+      x[,n] <- interval_checkers[[interval_edits[[n]]]](x[,n])
+    }
+  ## Now check specific columns
+  ## ##############################
+  ## start and end
+  if (any(x$start %in% NA))
+    stop("start may not be NA")
+  if (any(x$end %in% NA))
+    stop("end may not be NA")
+  if (any(is.infinite(x$start)))
+    stop("start may not be infinite")
+  if (any(x$start >= x$end))
+    stop("start must be < end")
+  ## auc.type
+  if (!all(tolower(x$auc.type) %in% c("aucinf", "auclast", "aucall", NA)))
+    stop("auc.type must be one of 'aucinf', 'auclast', 'aucall', or NA")
+  ## 
   ## If end, last, all, or half.life is missing, add it as all NA.
   ## Inappropriate combinations will be checked later.
   added.cols <- list(end=NA, auc.type="AUClast", half.life=FALSE)
@@ -96,4 +210,61 @@ check.interval.specification <- function(x) {
   if (any(!is.na(x$end) & x$end <= x$start))
     stop("AUC specification end must be after the start when end is given")
   x
+}
+
+#' Make a into a logical variable interpreting more than just
+#' TRUE/FALSE.
+#'
+#' This function will take a vector (logical, numeric, character, or
+#' factor) and convert it into a logical vector.
+#'
+#' The values in the vector will be interpreted as follows:
+#'
+#' \itemize{
+#'   \item TRUE
+#'   \itemize{
+#'     \item TRUE (as a logical value)
+#'     \item "TRUE" as a character string or factor level
+#'     \item "T" as a character string or factor level
+#'     \item "YES" as a character string or factor level
+#'     \item "Y" as a character string or factor level
+#'     \item nonzero as a numeric (non-factor) value
+#'   }
+#'   \item FALSE
+#'   \itemize{
+#'     \item FALSE (as a logical value)
+#'     \item "FALSE" as a character string or factor level
+#'     \item "F" as a character string or factor level
+#'     \item "NO" as a character string or factor level
+#'     \item "N" as a character string or factor level
+#'     \item zero as a numeric (non-factor) value
+#'   }
+#' }
+#'
+#' Factors are converted to characters.  Characters and factor levels
+#' are compared case-insensitively.  Character strings that are not in
+#' the specified list are considered to be NAs.  Logical vectors are
+#' returned with \code{NA} values converted to the \code{na.value}.
+#'
+#' @param x The vector to convert to a logical value
+#' @param na.value What should NA be converted into?
+#' @return A logical vector
+#' @export
+make.logical <- function(x, na.value=FALSE) {
+  ## Handle factors
+  if (is.factor(x))
+    x <- as.character(x)
+  if (is.logical(x)) {
+    ret <- x
+  } else if (is.numeric(x)) {
+    ret <- !(x %in% 0)
+  } else if (is.character(x)) {
+    ret <- rep(NA, length(x))
+    ret[toupper(x) %in% c("TRUE", "T", "YES", "Y")] <- TRUE
+    ret[toupper(x) %in% c("FALSE", "F", "NO", "N")] <- FALSE
+  } else {
+    stop("Cannot handle class:", class(x))
+  }
+  ret[is.na(x)] <- na.value
+  ret
 }
