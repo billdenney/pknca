@@ -380,8 +380,8 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' data.frame, and it must not be given if \code{data.dose} is a
 #' \code{PKNCAdose} object.
 #' @param intervals A data frame with the AUC interval specifications
-#' as defined in \code{\link{check.auc.specification}}.  If missing,
-#' this will be automatically chosen by
+#' as defined in \code{\link{check.interval.specification}}.  If
+#' missing, this will be automatically chosen by
 #' \code{\link{choose.auc.intervals}}.
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.
@@ -450,7 +450,7 @@ PKNCAdata <- function(data.conc, formula.conc,
         rbind(intervals, new.intervals)
     }
   }
-  ret$intervals <- check.auc.specification(intervals)
+  ret$intervals <- check.interval.specification(intervals)
   ## Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret

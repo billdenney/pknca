@@ -1,77 +1,258 @@
 library(testthat)
 
-test_that("check.interval.specification", {
-  ## Test that all valid combinations pass through without error or
-  ## change
-  good <-
-    merge(merge(data.frame(start=0, end=1),
-                data.frame(auc.type=c("AUClast", "AUCinf", "AUCall"))),
-          data.frame(half.life=c(FALSE, TRUE)))
-  expect_equal(check.interval.specification(good), good)
+test_that(
+  "check.interval.specification", {
 
-  ## A non-data.frame gets coerced but is otherwise unharmed
-  good.matrix <- as.matrix(good)
-  good.matrix[,'half.life'] <- rep(c("F", "T"), each=3)
-  expect_warning(check.interval.specification(good.matrix),
-                 regexp="AUC specification must be a data.frame")
-  ## Missing the start column is an error
-  expect_error(check.interval.specification(good[,setdiff(names(good), "start")]),
-               regexp="AUC specification must have columns for start, end, auc.type, half.life Column\\(s\\) missing: start")
+    ## Expand a minimal data frame
+    d1 <- data.frame(start=0, end=1)
+    r1 <- data.frame(start=0,
+                     end=1,
+                     auc.type=as.character(NA),
+                     half.life=FALSE,
+                     tfirst=FALSE,
+                     tmax=FALSE,
+                     tlast=FALSE,
+                     cmin=FALSE,
+                     cmax=FALSE,
+                     clast.obs=FALSE,
+                     clast.pred=FALSE,
+                     thalf.eff=FALSE,
+                     aucpext=FALSE,
+                     cl=FALSE,
+                     mrt=FALSE,
+                     vz=FALSE,
+                     vss=FALSE,
+                     stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d1),
+                 r1)
+    expect_warning(check.interval.specification(d1),
+                   regexp="Nothing to be calculated in interval specification number\\(s\\): 1")
 
-  ## half.life not as a logical is a warning.  Not coercable is an
-  ## error
-  for (n in c("half.life")) {
-    almost <- good
-    almost[,n] <- 0
-    expect_warning(
-      check.interval.specification(almost),
-      regexp=sprintf("AUC specification for '%s' must be a logical vector, attempting conversion", n),
-      info=n)
-    almost[,n] <- "B"
-    expect_error(check.interval.specification(almost),
-                 regexp="6 new NA value\\(s\\) created during conversion",
-                 info=n)
-  }
+    ## AUC specifications that go in as factors come out as characters
+    d2 <- data.frame(start=0, end=1,
+                     auc.type=factor("auclast"))
+    r2 <- data.frame(start=0,
+                     end=1,
+                     auc.type="auclast",
+                     half.life=FALSE,
+                     tfirst=FALSE,
+                     tmax=FALSE,
+                     tlast=FALSE,
+                     cmin=FALSE,
+                     cmax=FALSE,
+                     clast.obs=FALSE,
+                     clast.pred=FALSE,
+                     thalf.eff=FALSE,
+                     aucpext=FALSE,
+                     cl=FALSE,
+                     mrt=FALSE,
+                     vz=FALSE,
+                     vss=FALSE,
+                     stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d2),
+                 r2)
 
-  ## start and end not as a number is a warning.  Not coercable is an
-  ## error
-  for (n in c("start", "end")) {
-    almost <- good
-    almost[,n] <- "0.5"
-    expect_warning(
-      check.interval.specification(almost),
-      regexp=sprintf("AUC specification for '%s' time must be numeric( or NA)?, attempting conversion", n),
-      info=n)
-    almost[,n] <- "B"
-    expect_error(check.interval.specification(almost),
-                 regexp="6 new NA value\\(s\\) created during conversion",
-                 info=n)
-  }
+    ## start and end must both be specified
+    d3 <- data.frame(start=0)
+    expect_error(check.interval.specification(d3),
+                 regexp="Column\\(s\\) 'end' missing from interval specification")
+    d4 <- data.frame(end=1)
+    expect_error(check.interval.specification(d4),
+                 regexp="Column\\(s\\) 'start' missing from interval specification")
+    d5 <- data.frame(blah=5)
+    expect_error(check.interval.specification(d5),
+                 regexp="Column\\(s\\) 'start', 'end' missing from interval specification")
 
-  ## Start can't be NA
-  bad <- good
-  bad$start <- NA
-  expect_error(check.interval.specification(bad),
-               regexp="AUC specification may not have NA for the starting time")
+    ## Ensure that there are data
+    d6 <- data.frame()
+    expect_error(check.interval.specification(d6),
+                 regexp="interval specification has no rows")
 
-  ## end can't be NA when either last or all is specified
-  for (n in c("AUClast", "AUCinf", "AUCall")) {
-    bad <- data.frame(start=1, end=NA, auc.type=n, half.life=TRUE)
+    ## Confirm specific column values required
+    d7 <- data.frame(start=as.numeric(NA), end=1)
     expect_error(
-      check.interval.specification(bad),
-      regexp="AUC specification may not have NA for the end time and request an auc.type")
-  }
+      check.interval.specification(d7),
+      regexp="AUC specification may not have NA for the starting time")
+    d8 <- data.frame(start=0, end=as.numeric(NA))
+    expect_error(
+      check.interval.specification(d8),
+      regexp="AUC specification may not have NA for the end time")
+    d9 <- data.frame(start=1, end=1)
+    expect_error(check.interval.specification(d9),
+                 regexp="start must be < end")
+    d10 <- data.frame(start=1, end=0)
+    expect_error(check.interval.specification(d10),
+                 regexp="start must be < end")
+    d11 <- data.frame(start=Inf, end=1)
+    expect_error(check.interval.specification(d11),
+                 regexp="start may not be infinite")
+    d12 <- data.frame(start=-Inf, end=1)
+    expect_error(check.interval.specification(d12),
+                 regexp="start may not be infinite")
+    ## But it is OK to have an infinite end
+    d13 <- data.frame(start=0, end=Inf)
+    r13 <- data.frame(start=0,
+                     end=Inf,
+                     auc.type=as.character(NA),
+                     half.life=FALSE,
+                     tfirst=FALSE,
+                     tmax=FALSE,
+                     tlast=FALSE,
+                     cmin=FALSE,
+                     cmax=FALSE,
+                     clast.obs=FALSE,
+                     clast.pred=FALSE,
+                     thalf.eff=FALSE,
+                     aucpext=FALSE,
+                     cl=FALSE,
+                     mrt=FALSE,
+                     vz=FALSE,
+                     vss=FALSE,
+                     stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d13), r13)
+    
+    ## Test that all valid combinations pass through without error or
+    ## change
+    d13 <- data.frame(start=0, end=Inf)
+    r13 <- data.frame(start=0,
+                      end=Inf,
+                      auc.type=as.character(NA),
+                      half.life=FALSE,
+                      tfirst=FALSE,
+                      tmax=FALSE,
+                      tlast=FALSE,
+                      cmin=FALSE,
+                      cmax=FALSE,
+                      clast.obs=FALSE,
+                      clast.pred=FALSE,
+                      thalf.eff=FALSE,
+                      aucpext=FALSE,
+                      cl=FALSE,
+                      mrt=FALSE,
+                      vz=FALSE,
+                      vss=FALSE,
+                      stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d13), r13)
 
-  ## Can't have end=NA and half.life=FALSE
-  bad <- data.frame(start=1, end=NA, auc.type=NA, half.life=FALSE)
-  expect_error(
-    check.interval.specification(bad),
-    regexp="AUC specification may not have NA for the end time and not request half.life")
+    ## All valid auc.type values succeed
+    d14 <- data.frame(start=0, end=Inf,
+                      auc.type=c("AUClast", "AUCinf", "AUCall", NA))
+    r14 <- data.frame(start=0,
+                      end=Inf,
+                      auc.type=c("AUClast", "AUCinf", "AUCall", NA),
+                      half.life=FALSE,
+                      tfirst=FALSE,
+                      tmax=FALSE,
+                      tlast=FALSE,
+                      cmin=FALSE,
+                      cmax=FALSE,
+                      clast.obs=FALSE,
+                      clast.pred=FALSE,
+                      thalf.eff=FALSE,
+                      aucpext=FALSE,
+                      cl=FALSE,
+                      mrt=FALSE,
+                      vz=FALSE,
+                      vss=FALSE,
+                      stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d14), r14)
 
-  ## Start after end is an error
-  bad <- data.frame(start=1, end=0, auc.type="AUCinf", half.life=FALSE)
-  expect_error(check.interval.specification(bad),
-               regexp="AUC specification end must be after the start when end is given")
+    ## When the no-calculation interval specification is not the first,
+    ## ensure that is warned correctly
+    expect_warning(check.interval.specification(d14),
+                   regexp="Nothing to be calculated in interval specification number\\(s\\): 4")
+
+    ## An invalid auc.type is an error
+    d15 <- data.frame(start=0, end=Inf, auc.type="foo")
+    expect_error(check.interval.specification(d15),
+                 regexp="auc.type must be one of 'aucinf', 'auclast', 'aucall', or NA")
+
+    ## A matrix is converted into a data frame and used
+    d16 <- data.frame(start=0, end=1, half.life=c(FALSE, TRUE))
+    d16.m <- as.matrix(d16)
+    r16 <- data.frame(start=0,
+                      end=1,
+                      auc.type=as.character(NA),
+                      half.life=c(FALSE, TRUE),
+                      tfirst=FALSE,
+                      tmax=FALSE,
+                      tlast=FALSE,
+                      cmin=FALSE,
+                      cmax=FALSE,
+                      clast.obs=FALSE,
+                      clast.pred=FALSE,
+                      thalf.eff=FALSE,
+                      aucpext=FALSE,
+                      cl=FALSE,
+                      mrt=FALSE,
+                      vz=FALSE,
+                      vss=FALSE,
+                      stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d16), r16)
+    expect_equal(check.interval.specification(d16.m), r16)
+
+    ## Each column that should be logical can also be numeric or
+    ## yes/no
+    for (n in c("half.life", "tfirst", "tmax", "tlast",
+                "cmin", "cmax", "clast.obs", "clast.pred",
+                "thalf.eff", "aucpext", "cl", "mrt", "vz", "vss")) {
+      d17 <- data.frame(start=0, end=1)
+      r17 <- data.frame(
+        start=0,
+        end=1,
+        auc.type=as.character(NA),
+        half.life=FALSE,
+        tfirst=FALSE,
+        tmax=FALSE,
+        tlast=FALSE,
+        cmin=FALSE,
+        cmax=FALSE,
+        clast.obs=FALSE,
+        clast.pred=FALSE,
+        thalf.eff=FALSE,
+        aucpext=FALSE,
+        cl=FALSE,
+        mrt=FALSE,
+        vz=FALSE,
+        vss=FALSE,
+        stringsAsFactors=FALSE)
+      d17[,n] <- TRUE
+      r17[,n] <- TRUE
+      expect_equal(check.interval.specification(d17), r17,
+                   label=paste(n, "set to TRUE"))
+      d17[,n] <- 1
+      expect_equal(check.interval.specification(d17), r17,
+                   label=paste(n, "set to 1"))
+      d17[,n] <- -1
+      expect_equal(check.interval.specification(d17), r17,
+                   label=paste(n, "set to -1"))
+      d17[,n] <- "yes"
+      expect_equal(check.interval.specification(d17), r17,
+                   label=paste(n, "set to yes"))
+    }
+
+    ## cl can be set to force
+    d18 <- data.frame(start=0, end=1, cl='force')
+    r18 <- data.frame(
+      start=0,
+      end=1,
+      auc.type=as.character(NA),
+      half.life=FALSE,
+      tfirst=FALSE,
+      tmax=FALSE,
+      tlast=FALSE,
+      cmin=FALSE,
+      cmax=FALSE,
+      clast.obs=FALSE,
+      clast.pred=FALSE,
+      thalf.eff=FALSE,
+      aucpext=FALSE,
+      cl='force',
+      mrt=FALSE,
+      vz=FALSE,
+      vss=FALSE,
+      stringsAsFactors=FALSE)
+    expect_equal(check.interval.specification(d18), r18)
 })
 
 test_that("make.logical", {
@@ -101,5 +282,4 @@ test_that("make.logical", {
   ## Default na.value is FALSE
   expect_equal(make.logical(c(0, NA, 1)),
                c(FALSE, FALSE, TRUE))
-
 })

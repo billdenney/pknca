@@ -205,9 +205,11 @@
       x <- data.frame(start=0,
                       end=c(24, Inf),
                       auc.type=c("AUClast", "AUCinf"),
+                      cmax=c(FALSE, TRUE),
+                      tmax=c(FALSE, TRUE),
                       half.life=c(FALSE, TRUE))
     }
-    check.auc.specification(x)
+    check.interval.specification(x)
   })
 
 #' Set default options for PKNCA functions

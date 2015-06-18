@@ -55,8 +55,7 @@ make.label <- function(side, data, parsed.formula, labels, units) {
   label
 }
 
-#' @describeIn plot.PKNCAconc Plot the concentration/time data from
-#' the PKNCAdata
+#' @rdname plot.PKNCAconc
 #' @export
 plot.PKNCAdata <- function(x, ...)
   plot(x$conc, ...)

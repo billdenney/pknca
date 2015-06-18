@@ -64,7 +64,8 @@ test_that("choose.auc.intervals", {
   tmp.single.dose.auc <- data.frame(start=0,
                                     end=c(24, Inf),
                                     auc.type=c("AUClast", "AUCinf"),
-                                    half.life=c(FALSE, TRUE))
+                                    half.life=c(FALSE, TRUE),
+                                    stringsAsFactors=FALSE)
 
   ## Check the inputs
   expect_error(choose.auc.intervals(NA, 1, tmp.single.dose.auc),
@@ -73,16 +74,30 @@ test_that("choose.auc.intervals", {
                regexp="time.dosing may not have any NA values")
   ## The below test is a bit of a non-sequeter-- essentially, it just
   ## needs to return a 0-row data frame.
-  expect_equal(choose.auc.intervals(1, 1,
+  expect_error(choose.auc.intervals(1, 1,
                                     single.dose.aucs=data.frame()),
-               data.frame(start=1, end=1)[-1,])
+               regexp="interval specification has no rows")
   ## It adjusts single dose AUCs by the starting time
   expect_equal(choose.auc.intervals(1, 1,
                                     single.dose.aucs=tmp.single.dose.auc),
                data.frame(start=1,
                           end=c(25, Inf),
                           auc.type=c("AUClast", "AUCinf"),
-                          half.life=c(FALSE, TRUE)))
+                          half.life=c(FALSE, TRUE),
+                          tfirst=FALSE,
+                          tmax=FALSE,
+                          tlast=FALSE,
+                          cmin=FALSE,
+                          cmax=FALSE,
+                          clast.obs=FALSE,
+                          clast.pred=FALSE,
+                          thalf.eff=FALSE,
+                          aucpext=FALSE,
+                          cl=FALSE,
+                          mrt=FALSE,
+                          vz=FALSE,
+                          vss=FALSE,
+                          stringsAsFactors=FALSE))
 
   ## Find intervals for two doses with PK at both points and one in
   ## between.

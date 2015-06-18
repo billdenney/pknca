@@ -21,11 +21,11 @@
 #' @param single.dose.aucs The AUC specification for single dosing.
 #' @return A data frame with columns for \code{start}, \code{end},
 #' \code{auc.type}, and \code{half.life}.  See
-#' \code{\link{check.auc.specification}} for column definitions.  The
-#' data frame may have zero rows if no intervals could be found.
+#' \code{\link{check.interval.specification}} for column definitions.
+#' The data frame may have zero rows if no intervals could be found.
 #' @seealso \code{\link{pk.calc.auc}}, \code{\link{pk.calc.aumc}},
 #' \code{\link{pk.calc.half.life}}, \code{\link{find.tau}},
-#' \code{\link{check.auc.specification}}, \code{\link{PKNCA.options}}
+#' \code{\link{check.interval.specification}}, \code{\link{PKNCA.options}}
 #' @export
 choose.auc.intervals <- function(time.conc, time.dosing,
                                  options=list(),
@@ -38,7 +38,7 @@ choose.auc.intervals <- function(time.conc, time.dosing,
     ## If it is single-dose data, use the time of dosing and then
     ## offset it by the dosing time (allowing the case where dosing
     ## time is not 0).
-    ret <- check.auc.specification(single.dose.aucs)
+    ret <- check.interval.specification(single.dose.aucs)
     ## If there is an offset from 0, use that offset
     ret$start <- ret$start + unique(time.dosing)
     ret$end <- ret$end + unique(time.dosing)
