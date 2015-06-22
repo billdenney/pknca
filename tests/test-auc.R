@@ -347,3 +347,29 @@ test_that("pk.calc.auc.all", {
                     method="linear"),
     regexp="auc.type cannot be changed when calling pk.calc.auc.all, please use pk.calc.auc")
 })
+
+test_that("pk.calc.aumc", {
+  expect_equal(
+    pk.calc.aumc(
+      conc=c(0, 1, 1, 0.5),
+      time=0:3,
+      interval=c(0, 3),
+      method="linear"),
+    3.75)
+  expect_equal(
+    pk.calc.aumc(
+      conc=c(0, 1, 1, 0.5),
+      time=0:3,
+      interval=c(0, 3),
+      method="lin up/log down"),
+    2-0.5/log(0.5)+0.5/(log(0.5)^2))
+  expect_equal(
+    pk.calc.aumc(
+      conc=c(0, 1, 1, 0.5),
+      time=0:3,
+      interval=c(0, Inf),
+      auc.type="AUCinf",
+      lambda.z=1,
+      method="lin up/log down"),
+    2-0.5/log(0.5)+0.5/(log(0.5)^2)+1.5+0.5)
+})

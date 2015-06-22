@@ -49,7 +49,7 @@ make.logical <- function(x, na.value=FALSE) {
     ret[toupper(x) %in% c("TRUE", "T", "YES", "Y")] <- TRUE
     ret[toupper(x) %in% c("FALSE", "F", "NO", "N")] <- FALSE
   } else {
-    stop("Cannot handle class:", class(x))
+    stop("Cannot handle class: ", class(x))
   }
   ret[is.na(x)] <- na.value
   ret

@@ -40,20 +40,35 @@ test_that("pk.tss.data.prep", {
   ## If removed down to one treatment, treatment is not a column of
   ## the output.
   expect_equal(pk.tss.data.prep(conc=conc.test,
-                                  time=time.test,
-                                  subject=subject.test,
-                                  treatment=treatment.test,
-                                  time.dosing=time.dosing.test),
+                                time=time.test,
+                                subject=subject.test,
+                                treatment=treatment.test,
+                                time.dosing=time.dosing.test),
                data.frame(conc=1, time=0))
 
+  ## If no treatment is given, it still works.
+  expect_equal(pk.tss.data.prep(conc=conc.test,
+                                time=time.test,
+                                subject=subject.test,
+                                time.dosing=time.dosing.test),
+               data.frame(conc=1, time=0))
+
+  ## If no subject is given, it still works
+  expect_equal(pk.tss.data.prep(conc=conc.test,
+                                time=time.test,
+                                treatment=treatment.test,
+                                time.dosing=time.dosing.test),
+               data.frame(conc=1, time=0))
+  
   ## What do we actually expect to get out?
   ## Check a single row output dropping treatment
   expect_equal(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
                                 treatment=treatment.test,
-                                time.dosing=time.dosing.test),
-               data.frame(conc=1, time=0))
+                                time.dosing=time.dosing.test,
+                                subject.dosing=subject.test),
+               data.frame(time=0, conc=1))
 
   ## Check a single row output with no treatment given
   expect_equal(pk.tss.data.prep(conc=conc.test,
@@ -239,6 +254,38 @@ test_that("pk.tss.stepwise.linear", {
                            level=0.8,
                            verbose=FALSE),
     info="pk.tss.stepwise.linear 10")
+
+  ## Confirm testing for minimum number of data points
+  expect_equal(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:1,
+                           min.points=3,
+                           level=0.99,
+                           verbose=FALSE),
+    NA)
+  expect_warning(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:1,
+                           min.points=3,
+                           level=0.99,
+                           verbose=FALSE),
+    regexp="After removing non-dosing time points, insufficient data remains for tss calculation")
+
+  ## Confirm the glm model works when subject-level data is not given.
+  expect_equal(
+    pk.tss.stepwise.linear(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           verbose=FALSE),
+    data.frame(tss.stepwise.linear=5),
+    info="pk.tss.stepwise.linear no subject")
 })
 
 test_that("pk.tss.monoexponential", {
@@ -272,6 +319,56 @@ test_that("pk.tss.monoexponential", {
     tolerance=1e-4,
     check.attributes=FALSE,
     info="pk.tss.monoexponential 1")
+
+  ## Warnings and errors
+  expect_warning(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=c(0.5, 0.8)),
+    regexp="Only first value of tss.fraction is being used")
+  expect_error(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=0),
+    regexp="tss.fraction must be between 0 and 1, exclusive")
+  expect_error(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=1),
+    regexp="tss.fraction must be between 0 and 1, exclusive")
+  expect_error(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=-1),
+    regexp="tss.fraction must be between 0 and 1, exclusive")
+  expect_error(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=2),
+    regexp="tss.fraction must be between 0 and 1, exclusive")
+  expect_warning(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=0.5),
+    regexp="tss.fraction is usually >= 0.8")
 })
 
 test_that("pk.tss", {

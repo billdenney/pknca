@@ -52,16 +52,18 @@ pk.tss.stepwise.linear <- function(...,
   if (level <= 0 | level >= 1) {
     stop("level must be between 0 and 1, exclusive")
   }
+  ## Confirm that we may have sufficient data to complete the
+  ## modeling.  Because of the variety of methods used for estimating
+  ## time to steady-state, assurance that we have enough data is more
+  ## simply determined by model convergence.
+  if (length(unique(modeldata$time)) < min.points) {
+    warning("After removing non-dosing time points, insufficient data remains for tss calculation")
+    return(NA)
+  }
   ## Assign treatment if given and with multiple levels
   formula.to.fit <- as.formula("conc~time")
   if ("treatment" %in% names(modeldata))
     formula.to.fit <- as.formula("conc~time+treatment")
-  if (nrow(modeldata) < min.points) {
-    ## min.points is not the precise classification, but it is close
-    ## to accurate and it will be rare that it is incorrect.
-    warning("After removing non-dosing time points, insufficient data remains for tss calculation")
-    return(NA)
-  }
   ## Ensure that the dosing times are in order to allow us to kick
   ## them out in order.
   remaining.time <- sort(unique(modeldata$time))

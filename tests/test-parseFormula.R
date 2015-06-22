@@ -255,4 +255,8 @@ test_that("findOperator", {
 
   ## The side can only be "left", "right", or "both"
   expect_error(findOperator(f1, "~", "neither"))
+
+  ## When given an invalid class, return an error
+  expect_error(findOperator(list(), side="both"),
+               regexp="Cannot handle class list")
 })

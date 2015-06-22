@@ -52,6 +52,8 @@ pk.tss.monoexponential <- function(...,
   } else if (tss.fraction < 0.8) {
     warning("tss.fraction is usually >= 0.8")
   }
+  ## Note that this will by default choose "population" if nothing is
+  ## requested.
   output <- match.arg(output, several.ok=TRUE)
   if (!("subject" %in% names(modeldata))) {
     if (any(c("population", "popind", "individual") %in% output)) {
@@ -59,9 +61,6 @@ pk.tss.monoexponential <- function(...,
               "output without multiple subjects of data")
       output <- setdiff(output, c("population", "popind", "individual"))
     }
-  }
-  if (length(output) == 0) {
-    warning("No output types requested, ")
   }
   ## Set the tss.constant so that exp(tss.constant) == tss.fraction so
   ## that the model below solves for the requested tss.
@@ -210,7 +209,8 @@ pk.tss.monoexponential.population <- function(data,
   rownames(all.model.summary) <- sapply(models, function(x) x$desc)
   if (verbose)
     print(all.model.summary)
-  if (all(is.na(all.model.summary$AIC))) {
+  if (all(is.na(all.model.summary$AIC)) |
+      length(all.model.summary) == 0) {
     warning("No population model for monoexponential Tss converged, no results given")
     ret <- merge(
       data.frame(tss.monoexponential.population=NA,
@@ -240,7 +240,9 @@ pk.tss.monoexponential.population <- function(data,
     }
   }
   ## Return the requested columns
-  ret[,c("subject", paste("tss.monoexponential", output, sep="."))]
+  ret[,intersect(c("subject", "treatment",
+                   paste("tss.monoexponential", output, sep=".")),
+                 names(ret))]
 }
 
 #' A helper function to estimate individual and single outputs for

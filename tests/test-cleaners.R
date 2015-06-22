@@ -53,7 +53,6 @@ test_that("clean.conc.na", {
                           time=c(1, 3),
                           extra=c("a", "c")),
                check.attributes=FALSE)
-                             
 })
 
 test_that("clean.conc.blq", {

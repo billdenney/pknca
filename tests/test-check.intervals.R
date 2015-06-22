@@ -253,6 +253,10 @@ test_that(
       vss=FALSE,
       stringsAsFactors=FALSE)
     expect_equal(check.interval.specification(d18), r18)
+
+    d19 <- data.frame(start=factor(0), end=1)
+    expect_error(check.interval.specification(d19),
+                 regexp="Must be numeric and not a factor")
 })
 
 test_that("make.logical", {
@@ -282,4 +286,7 @@ test_that("make.logical", {
   ## Default na.value is FALSE
   expect_equal(make.logical(c(0, NA, 1)),
                c(FALSE, FALSE, TRUE))
+  ## Give a class that cannot be used
+  expect_error(make.logical(list()),
+               regexp="Cannot handle class: list")
 })
