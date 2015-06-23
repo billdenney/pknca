@@ -225,6 +225,18 @@ pk.calc.auc.last <- function(..., auc.type, lambda.z) {
               lambda.z=NA)
 }
 
+#' @describeIn pk.calc.auxc Compute the AUCinf.
+#' @export
+pk.calc.auc.inf <- function(..., auc.type, lambda.z) {
+  if (!missing(auc.type))
+    if (!(length(auc.type) == 1 &
+          tolower(auc.type) == "aucinf"))
+      warning("auc.type cannot be changed when calling pk.calc.auc.inf, please use pk.calc.auc")
+  pk.calc.auc(...,
+              auc.type="AUCinf",
+              lambda.z=lambda.z)
+}
+
 #' @describeIn pk.calc.auxc Compute the AUCall.
 #' @export
 pk.calc.auc.all <- function(..., auc.type, lambda.z) {
@@ -251,3 +263,72 @@ pk.calc.aumc <- function(...)
     fun.inf=function(conc.last, time.last, lambda.z) {
       (conc.last*time.last/lambda.z) + conc.last/(lambda.z^2)
     })
+
+#' @describeIn pk.calc.auxc Compute the AUMClast.
+#' @export
+pk.calc.aumc.last <- function(..., auc.type, lambda.z) {
+  if (!missing(auc.type))
+    if (!(length(auc.type) == 1 &
+          tolower(auc.type) == "auclast"))
+      warning("auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.auc")
+  pk.calc.aumc(...,
+               auc.type="AUClast",
+               lambda.z=NA)
+}
+
+#' @describeIn pk.calc.auxc Compute the AUMCinf.
+#' @export
+pk.calc.aumc.inf <- function(..., auc.type, lambda.z) {
+  if (!missing(auc.type))
+    if (!(length(auc.type) == 1 &
+          tolower(auc.type) == "aucinf"))
+      warning("auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.auc")
+  pk.calc.aumc(...,
+               auc.type="AUCinf",
+               lambda.z=lambda.z)
+}
+
+#' @describeIn pk.calc.auxc Compute the AUMCall.
+#' @export
+pk.calc.aumc.all <- function(..., auc.type, lambda.z) {
+  if (!missing(auc.type))
+    if (!(length(auc.type) == 1 &
+          tolower(auc.type) == "aucall"))
+      warning("auc.type cannot be changed when calling pk.calc.aumc.all, please use pk.calc.auc")
+  pk.calc.aumc(...,
+               auc.type="AUCall",
+               lambda.z=NA)
+}
+
+## Add the columns to the interval specification
+add.interval.col("aucinf",
+                 FUN="pk.calc.auc.inf",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve from the beginning of the interval to infinity",
+                 depends="half.life")
+add.interval.col("auclast",
+                 FUN="pk.calc.auc.last",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification",
+                 depends=c())
+add.interval.col("aucall",
+                 FUN="pk.calc.auc.all",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification",
+                 depends=c())
+
+add.interval.col("aumcinf",
+                 FUN="pk.calc.aumc.inf",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time moment curve from the beginning of the interval to infinity",
+                 depends="half.life")
+add.interval.col("aumclast",
+                 FUN="pk.calc.aumc.last",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time moment curve from the beginning of the interval to the last concentration above the limit of quantification",
+                 depends=c())
+add.interval.col("aumcall",
+                 FUN="pk.calc.aumc.all",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time moment curve from the beginning of the interval to the last concentration above the limit of quantification plus the moment of the triangle from that last concentration to 0 at the first concentration below the limit of quantification",
+                 depends=c())

@@ -28,6 +28,12 @@ pk.calc.cmax <- function(conc, check=TRUE) {
     max(conc, na.rm=TRUE)
   }
 }
+## Add the column to the interval specification
+add.interval.col("cmax",
+                 FUN="pk.calc.cmax",
+                 values=c(FALSE, TRUE),
+                 desc="Maximum observed concentration",
+                 depends=c())
 
 #' @describeIn pk.calc.cmax Determine the minimum observed PK
 #' concentration
@@ -40,6 +46,12 @@ pk.calc.cmin <- function(conc, check=TRUE) {
     min(conc, na.rm=TRUE)
   }
 }
+## Add the column to the interval specification
+add.interval.col("cmin",
+                 FUN="pk.calc.cmin",
+                 values=c(FALSE, TRUE),
+                 desc="Minimum observed concentration",
+                 depends=c())
 
 #' Determine time of maximum observed PK concentration
 #'
@@ -85,6 +97,12 @@ pk.calc.tmax <- function(conc, time,
     }
   }
 }
+## Add the column to the interval specification
+add.interval.col("tmax",
+                 FUN="pk.calc.tmax",
+                 values=c(FALSE, TRUE),
+                 desc="Time of the maximum observed concentration",
+                 depends=c())
 
 #' Determine time of last observed concentration above the limit of
 #' quantification.
@@ -109,6 +127,12 @@ pk.calc.tlast <- function(conc, time, check=TRUE) {
     max(time[!(conc %in% c(NA, 0))])
   }
 }
+## Add the column to the interval specification
+add.interval.col("tlast",
+                 FUN="pk.calc.tlast",
+                 values=c(FALSE, TRUE),
+                 desc="Time of the last concentration observed above the limit of quantification",
+                 depends=c())
 
 #' @describeIn pk.calc.tlast Determine the first concentration above
 #' the limit of quantification.
@@ -125,6 +149,12 @@ pk.calc.tfirst <- function(conc, time, check=TRUE) {
     min(time[!(conc %in% c(NA, 0))])
   }
 }
+## Add the column to the interval specification
+add.interval.col("tfirst",
+                 FUN="pk.calc.tfirst",
+                 values=c(FALSE, TRUE),
+                 desc="Time of the first concentration above the limit of quantification",
+                 depends=c())
 
 #' Determine the last observed concentration above the limit of
 #' quantification (LOQ).
@@ -146,6 +176,12 @@ pk.calc.clast.obs <- function(conc, time, check=TRUE) {
     NA
   }
 }
+## Add the column to the interval specification
+add.interval.col("clast.obs",
+                 FUN="pk.calc.clast.obs",
+                 values=c(FALSE, TRUE),
+                 desc="The last concentration observed above the limit of quantification",
+                 depends=c())
 
 #' Calculate the effective half-life
 #'
@@ -154,6 +190,12 @@ pk.calc.clast.obs <- function(conc, time, check=TRUE) {
 #' @export
 pk.calc.thalf.eff <- function(mrt)
   log(2)*mrt
+## Add the column to the interval specification
+add.interval.col("thalf.eff",
+                 FUN="pk.calc.thalf.eff",
+                 values=c(FALSE, TRUE),
+                 desc="The effective half-life (as determined from the MRT)",
+                 depends=c("mrt"))
 
 #' Calculate the AUC percent extrapolated
 #'
@@ -167,6 +209,12 @@ pk.calc.aucpext <- function(auclast, aucinf) {
     warning("auclast should be less than aucinf")
   100*(1-auclast/aucinf)
 }
+## Add the column to the interval specification
+add.interval.col("aucpext",
+                 FUN="pk.calc.aucpext",
+                 values=c(FALSE, TRUE),
+                 desc="Percent of the AUCinf that is extrapolated after Tlast",
+                 depends=c("auclast", "aucinf"))
 
 #' Calculate the elimination rate (Kel)
 #'
@@ -175,6 +223,12 @@ pk.calc.aucpext <- function(auclast, aucinf) {
 #' @export
 pk.calc.kel <- function(mrt)
   1/mrt
+## Add the column to the interval specification
+add.interval.col("kel",
+                 FUN="pk.calc.kel",
+                 values=c(FALSE, TRUE),
+                 desc="Elimination rate (as calculated from the MRT)",
+                 depends=c("mrt"))
 
 #' Calculate the (observed oral) clearance
 #'
@@ -197,6 +251,12 @@ pk.calc.cl <- function(dose, auc, unitconv)
   } else {
     unitconv*dose/auc
   }
+## Add the column to the interval specification
+add.interval.col("cl",
+                 FUN="pk.calc.cl",
+                 values=c(FALSE, TRUE),
+                 desc="Clearance or observed oral clearance",
+                 depends=list("auclast", "aucinf"))
 
 #' Calculate the absolute (or relative) bioavailability
 #'
@@ -218,6 +278,13 @@ pk.calc.f <- function(dose1, auc1, dose2, auc2)
 #' @export
 pk.calc.mrt <- function(auc, aumc)
   aumc/auc
+## Add the column to the interval specification
+add.interval.col("mrt",
+                 FUN="pk.calc.mrt",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time",
+                 depends=list(c("auclast", "aumclast"),
+                              c("aucinf", "aumcinf")))
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
@@ -233,7 +300,7 @@ pk.calc.vz <- function(dose, auc, kel, unitconv) {
   ## (more complex repeating patterns while valid for general R are
   ## likely errors here).
   if ((length(dose) != 1) & (length(dose) != length(auc)))
-      stop("'dose' and 'auc' must be the same length")
+    stop("'dose' and 'auc' must be the same length")
   ## While dose may be the same for many measurements, it is highly
   ## unlikely that kel and auc are the same.  Ensure that kel and auc
   ## are the same length.
@@ -245,6 +312,13 @@ pk.calc.vz <- function(dose, auc, kel, unitconv) {
     dose*unitconv/(auc*kel)
   }
 }
+## Add the column to the interval specification
+add.interval.col("vz",
+                 FUN="pk.calc.vz",
+                 values=c(FALSE, TRUE),
+                 desc="The terminal volume of distribution",
+                 depends=list(c("aucinf", "kel"),
+                              c("auclast", "kel")))
 
 #' Calculate the steady-state volume of distribution (Vss)
 #'
@@ -254,3 +328,9 @@ pk.calc.vz <- function(dose, auc, kel, unitconv) {
 #' @export
 pk.calc.vss <- function(cl, mrt)
   cl*mrt
+## Add the column to the interval specification
+add.interval.col("vss",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution",
+                 depends=c("cl", "mrt"))

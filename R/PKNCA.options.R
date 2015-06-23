@@ -339,8 +339,3 @@ PKNCA.choose.option <- function(name, options=list())
   } else {
     PKNCA.options(name)
   }
-
-## Setup the default options
-.PKNCAEnv <- new.env(parent=emptyenv())
-assign("options", NULL, envir=.PKNCAEnv)
-

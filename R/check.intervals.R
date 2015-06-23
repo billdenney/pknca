@@ -1,60 +1,3 @@
-#' Make a into a logical variable interpreting more than just
-#' TRUE/FALSE.
-#'
-#' This function will take a vector (logical, numeric, character, or
-#' factor) and convert it into a logical vector.
-#'
-#' The values in the vector will be interpreted as follows:
-#'
-#' \itemize{
-#'   \item TRUE
-#'   \itemize{
-#'     \item TRUE (as a logical value)
-#'     \item "TRUE" as a character string or factor level
-#'     \item "T" as a character string or factor level
-#'     \item "YES" as a character string or factor level
-#'     \item "Y" as a character string or factor level
-#'     \item nonzero as a numeric (non-factor) value
-#'   }
-#'   \item FALSE
-#'   \itemize{
-#'     \item FALSE (as a logical value)
-#'     \item "FALSE" as a character string or factor level
-#'     \item "F" as a character string or factor level
-#'     \item "NO" as a character string or factor level
-#'     \item "N" as a character string or factor level
-#'     \item zero as a numeric (non-factor) value
-#'   }
-#' }
-#'
-#' Factors are converted to characters.  Characters and factor levels
-#' are compared case-insensitively.  Character strings that are not in
-#' the specified list are considered to be NAs.  Logical vectors are
-#' returned with \code{NA} values converted to the \code{na.value}.
-#'
-#' @param x The vector to convert to a logical value
-#' @param na.value What should NA be converted into?
-#' @return A logical vector
-#' @export
-make.logical <- function(x, na.value=FALSE) {
-  ## Handle factors
-  if (is.factor(x))
-    x <- as.character(x)
-  if (is.logical(x)) {
-    ret <- x
-  } else if (is.numeric(x)) {
-    ret <- !(x %in% 0)
-  } else if (is.character(x)) {
-    ret <- rep(NA, length(x))
-    ret[toupper(x) %in% c("TRUE", "T", "YES", "Y")] <- TRUE
-    ret[toupper(x) %in% c("FALSE", "F", "NO", "N")] <- FALSE
-  } else {
-    stop("Cannot handle class: ", class(x))
-  }
-  ret[is.na(x)] <- na.value
-  ret
-}
-
 #' Check the formatting of a calculation interval specification data
 #' frame.
 #'
@@ -68,10 +11,12 @@ make.logical <- function(x, na.value=FALSE) {
 #' \describe{
 #'   \item{\code{start}}{The starting time (numeric)}
 #'   \item{\code{end}}{The ending time (numeric including Inf)}
-#'   \item{\code{auc.type}}{What type of AUC should be computed: 'AUCinf',
-#'     'AUClast', 'AUCall', or NA (no AUC computed during the current
-#'     interval)}
-#'   \item{\code{half.life}}{The half-life (logical)}
+#'   \item{\code{aucinf}}{Compute AUCinf (logical)}
+#'   \item{\code{auclast}}{Compute AUClast (logical)}
+#'   \item{\code{aucall}}{Compute AUCall (logical)}
+#'   \item{\code{aumcinf}}{Compute AUMCinf (logical)}
+#'   \item{\code{aumclast}}{Compute AUMClast (logical)}
+#'   \item{\code{aumcall}}{Compute AUMCall (logical)}
 #'   \item{\code{tfirst}}{The time of the first concentration above the limit
 #'     of quantification (logical)}
 #'   \item{\code{tmax}}{The time of observed maximum concentration (logical)}
@@ -83,6 +28,7 @@ make.logical <- function(x, na.value=FALSE) {
 #'   \item{\code{clast.obs}}{The observed last concentration (logical)}
 #'   \item{\code{clast.pred}}{The concentration at \code{tlast} predicted by
 #'     the half life (logical)}
+#'   \item{\code{half.life}}{The half-life (logical)}
 #'   \item{\code{thalf.eff}}{The effective half-life (logical)}
 #'   \item{\code{aucpext}}{The percent of the AUCinf that is extrapolated after
 #'     the AUClast (logical)}
@@ -106,24 +52,8 @@ make.logical <- function(x, na.value=FALSE) {
 #'     a factor}
 #' }
 #' 
-#' They are interpreted with the following rules:
-#'
-#' \itemize{
-#'   \item The \code{start} time must always be given.
-#'   \item The \code{start} must be before the \code{end} (if \code{end} is
-#'         given)
-#'   \item If the \code{end} time is given, then the other
-#'         specifications (i.e. \code{auc.type} and
-#'         \code{half.life} will only be done in that interval.
-#'   \item If the \code{end} time is NA, then
-#'   \itemize{
-#'     \item No AUCs will be calculated.
-#'     \item It is an error to set \code{auc.type} to anything other than NA.
-#'     \item It is an error to set \code{half.life} to FALSE.
-#'     \item \code{half.life} is computed from the \code{start} to the last
-#'           available measurement.
-#'   }
-#' }
+#' \code{start} and \code{end} time must always be given, and the
+#' \code{start} must be before the \code{end}.
 #'
 #' @param x The data frame specifying what to calculate during each
 #' time interval
@@ -131,56 +61,6 @@ make.logical <- function(x, na.value=FALSE) {
 #' calculation specification.
 #' @export
 check.interval.specification <- function(x) {
-  ## General setup
-  #' Check the column edits for the given column.  This is not exported.
-  interval_checkers <- list(
-    logical=make.logical,
-    numeric=function(x) {
-      if ((!is.factor(x)) & is.numeric(x))
-        return(x)
-      stop("Must be numeric and not a factor")
-    },
-    character=function(x) {
-      if (is.factor(x))
-        x <- as.character(x)
-      if (!is.character(x))
-        stop("Must be a character or a factor")
-      x
-    },
-    force=function(x) {
-      if (is.factor(x))
-        x <- as.character(x)
-      ret <- rep(NA, length(x))
-      if (any(mask.force <- tolower(x) %in% 'force'))
-        ret[mask.force] <- 'force'
-      if (any(!mask.force))
-        ret[!mask.force] <- make.logical(x[!mask.force])
-      ret
-    })
-  interval_defaults <- list(
-    logical=FALSE,
-    numeric=NA,
-    character=as.character(NA),
-    force=FALSE)
-  interval_edits <- list(
-    start="numeric",
-    end="numeric",
-    auc.type="character",
-    half.life="logical",
-    tfirst="logical",
-    tmax="logical",
-    tlast="logical",
-    cmin="logical",
-    cmax="logical",
-    clast.obs="logical",
-    clast.pred="logical",
-    thalf.eff="logical",
-    aucpext="logical",
-    cl="force",
-    mrt="logical",
-    vz="logical",
-    vss="logical")
-
   if (!is.data.frame(x)) {
     ## Just a warning and let as.data.frame make it an error if
     ## it can't be coerced.
@@ -194,16 +74,28 @@ check.interval.specification <- function(x) {
     stop(sprintf("Column(s) %s missing from interval specification",
                  paste0("'", missing.required.cols, "'",
                         collapse=", ")))
+  interval.cols <- get.interval.cols()
   ## Check the edit of each column
-  for (n in names(interval_edits))
+  for (n in names(interval.cols))
     if (!(n %in% names(x))) {
-      ## Set missing columns to the default value
-      x[,n] <- interval_defaults[[interval_edits[[n]]]]
+      if (is.vector(interval.cols[[n]]$values)) {
+        ## Set missing columns to the default value
+        x[,n] <- interval.cols[[n]]$values[1]
+      } else {
+        stop("Cannot assign default value for interval column", n)
+      }
     } else {
       ## Confirm the edits of the given columns
-      x[,n] <-
-        check.conversion(x[,n],
-                         interval_checkers[[interval_edits[[n]]]])
+      if (is.vector(interval.cols[[n]]$values)) {
+        if (!all(x[,n] %in% interval.cols[[n]]$values))
+          stop(sprintf("Invalid value(s) in column %s:", n),
+               paste(unique(setdiff(x[,n], interval.cols[[n]]$values)),
+                     collapse=", "))
+      } else if (is.function(interval.cols[[n]]$values)) {
+        interval.cols[[n]]$values(x[,n])
+      } else {
+        stop("Invalid 'values' for column specification", n)
+      }
     }
   ## Now check specific columns
   ## ##############################
@@ -216,13 +108,10 @@ check.interval.specification <- function(x) {
     stop("start may not be infinite")
   if (any(x$start >= x$end))
     stop("start must be < end")
-  ## auc.type
-  if (!all(tolower(x$auc.type) %in% c("aucinf", "auclast", "aucall", NA)))
-    stop("auc.type must be one of 'aucinf', 'auclast', 'aucall', or NA")
   ## Confirm that something is being calculated for each interval (and
   ## warn if not)
   mask.calculated <- rep(FALSE, nrow(x))
-  for (n in setdiff(names(interval_edits), c("start", "end")))
+  for (n in setdiff(names(interval.cols), c("start", "end")))
     mask.calculated <-
       (mask.calculated |
        !(x[,n] %in% c(NA, FALSE)))
@@ -231,6 +120,6 @@ check.interval.specification <- function(x) {
             paste((1:nrow(x))[!mask.calculated], collapse=", "))
   ## Put the columns in the right order and return the checked data
   ## frame
-  x[,c(names(interval_edits),
-       setdiff(names(x), names(interval_edits)))]
+  x[,c(names(interval.cols),
+       setdiff(names(x), names(interval.cols)))]
 }

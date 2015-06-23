@@ -258,35 +258,3 @@ test_that(
     expect_error(check.interval.specification(d19),
                  regexp="Must be numeric and not a factor")
 })
-
-test_that("make.logical", {
-  ## Simple identities
-  expect_equal(make.logical(TRUE), TRUE)
-  expect_equal(make.logical("TRUE"), TRUE)
-  expect_equal(make.logical(factor("TRUE")), TRUE)
-  expect_equal(make.logical("T"), TRUE)
-  expect_equal(make.logical("YES"), TRUE)
-  expect_equal(make.logical("Y"), TRUE)
-  expect_equal(make.logical(1), TRUE)
-  expect_equal(make.logical(Inf), TRUE)
-  expect_equal(make.logical(FALSE), FALSE)
-  expect_equal(make.logical("FALSE"), FALSE)
-  expect_equal(make.logical(factor("FALSE")), FALSE)
-  expect_equal(make.logical("F"), FALSE)
-  expect_equal(make.logical("NO"), FALSE)
-  expect_equal(make.logical("N"), FALSE)
-  expect_equal(make.logical(0), FALSE)
-  ## NA conversion works in all types
-  expect_equal(make.logical(c(0, NA, 1), na.value=NA),
-               c(FALSE, NA, TRUE))
-  expect_equal(make.logical(c(0, NA, 1), na.value=FALSE),
-               c(FALSE, FALSE, TRUE))
-  expect_equal(make.logical(c(0, NA, 1), na.value=TRUE),
-               c(FALSE, TRUE, TRUE))
-  ## Default na.value is FALSE
-  expect_equal(make.logical(c(0, NA, 1)),
-               c(FALSE, FALSE, TRUE))
-  ## Give a class that cannot be used
-  expect_error(make.logical(list()),
-               regexp="Cannot handle class: list")
-})
