@@ -54,42 +54,48 @@ choose.auc.intervals <- function(time.conc, time.dosing,
       (1:(length(time.dosing)-1))[mask.dose.conc[-1] &
                                   mask.dose.conc[-length(mask.dose.conc)]]
     ## A data frame with all the right columns and classes but no data
-    ret <- data.frame(start=1, end=1, auc.type="", half.life=FALSE,
-                      stringsAsFactors=FALSE)[-1,]
+    ret <- check.interval.specification(data.frame(start=0, end=1, auclast=TRUE))[-1,]
     ## Find the pairs that have at least one measurement between them
     for (n in idx.paired.dose) {
       if (any(time.dosing[n] < time.conc &
               time.conc < time.dosing[n+1])) {
         ## If there are measurements between the doses, add it to the
         ## output.
-        ret <- rbind(ret,
-                     data.frame(start=time.dosing[n],
-                                end=time.dosing[n+1],
-                                auc.type="AUClast",
-                                half.life=FALSE,
-                                stringsAsFactors=FALSE))
+        ret <- rbind(
+          ret,
+          check.interval.specification(
+            data.frame(start=time.dosing[n],
+                       end=time.dosing[n+1],
+                       auclast=TRUE,
+                       cmax=TRUE,
+                       tmax=TRUE)))
       }
     }
     ## Find the repeating dosing interval if possible and add it to
     ## the last dose if there is PK beyond the last dose to that time.
     tau <- find.tau(time.dosing)
-    if ((max(time.dosing) + tau) %in% time.conc) {
-      ret <- rbind(ret,
-                   data.frame(start=max(time.dosing),
-                              end=max(time.dosing) + tau,
-                              auc.type="AUClast",
-                              half.life=FALSE,
-                              stringsAsFactors=FALSE))
-    }
-    if (!is.na(tau))
+    if (!is.na(tau)) {
+      if ((max(time.dosing) + tau) %in% time.conc) {
+        ret <- rbind(
+          ret,
+          check.interval.specification(
+            data.frame(start=max(time.dosing),
+                       end=max(time.dosing) + tau,
+                       cmax=TRUE,
+                       tmax=TRUE,
+                       auclast=TRUE,
+                       stringsAsFactors=FALSE)))
+      }
       ## If the maximum concentration measurement time is beyond the
       ## max dosing time + tau, calculate a half-life.
       if ((max(time.dosing) + tau) < max(time.conc)) {
-        ret <- rbind(ret,
-                     data.frame(start=max(time.dosing),
-                                end=NA,
-                                auc.type=NA,
-                                half.life=TRUE))
+        ret <- rbind(
+          ret,
+          check.interval.specification(
+            data.frame(start=max(time.dosing),
+                       end=Inf,
+                       half.life=TRUE)))
+      }
     }
   }
   ret

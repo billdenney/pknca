@@ -7,47 +7,70 @@ test_that(
     d1 <- data.frame(start=0, end=1)
     r1 <- data.frame(start=0,
                      end=1,
-                     auc.type=as.character(NA),
-                     half.life=FALSE,
-                     tfirst=FALSE,
+                     auclast=FALSE,
+                     aucall=FALSE,
+                     aumclast=FALSE,
+                     aumcall=FALSE,
+                     cmax=FALSE,
+                     cmin=FALSE,
                      tmax=FALSE,
                      tlast=FALSE,
-                     cmin=FALSE,
-                     cmax=FALSE,
+                     tfirst=FALSE,
                      clast.obs=FALSE,
+                     half.life=FALSE,
+                     r.squared=FALSE,
+                     adj.r.squared=FALSE,
+                     lambda.z=FALSE,
+                     lambda.z.time.first=FALSE,
+                     lambda.z.n.points=FALSE,
                      clast.pred=FALSE,
-                     thalf.eff=FALSE,
+                     span.ratio=FALSE,
+                     aucinf=FALSE,
+                     aumcinf=FALSE,
                      aucpext=FALSE,
                      cl=FALSE,
                      mrt=FALSE,
-                     vz=FALSE,
                      vss=FALSE,
+                     thalf.eff=FALSE,
+                     kel=FALSE,
+                     vz=FALSE,
                      stringsAsFactors=FALSE)
     expect_equal(check.interval.specification(d1),
                  r1)
     expect_warning(check.interval.specification(d1),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 1")
 
-    ## AUC specifications that go in as factors come out as characters
-    d2 <- data.frame(start=0, end=1,
-                     auc.type=factor("auclast"))
+    ## Giving one parameter will fill in everything else as false
+    d2 <- data.frame(start=0, end=1, auclast=TRUE)
     r2 <- data.frame(start=0,
                      end=1,
-                     auc.type="auclast",
-                     half.life=FALSE,
-                     tfirst=FALSE,
+                     auclast=TRUE,
+                     aucall=FALSE,
+                     aumclast=FALSE,
+                     aumcall=FALSE,
+                     cmax=FALSE,
+                     cmin=FALSE,
                      tmax=FALSE,
                      tlast=FALSE,
-                     cmin=FALSE,
-                     cmax=FALSE,
+                     tfirst=FALSE,
                      clast.obs=FALSE,
+                     half.life=FALSE,
+                     r.squared=FALSE,
+                     adj.r.squared=FALSE,
+                     lambda.z=FALSE,
+                     lambda.z.time.first=FALSE,
+                     lambda.z.n.points=FALSE,
                      clast.pred=FALSE,
-                     thalf.eff=FALSE,
+                     span.ratio=FALSE,
+                     aucinf=FALSE,
+                     aumcinf=FALSE,
                      aucpext=FALSE,
                      cl=FALSE,
                      mrt=FALSE,
-                     vz=FALSE,
                      vss=FALSE,
+                     thalf.eff=FALSE,
+                     kel=FALSE,
+                     vz=FALSE,
                      stringsAsFactors=FALSE)
     expect_equal(check.interval.specification(d2),
                  r2)
@@ -89,172 +112,89 @@ test_that(
     d12 <- data.frame(start=-Inf, end=1)
     expect_error(check.interval.specification(d12),
                  regexp="start may not be infinite")
+
     ## But it is OK to have an infinite end
     d13 <- data.frame(start=0, end=Inf)
     r13 <- data.frame(start=0,
-                     end=Inf,
-                     auc.type=as.character(NA),
-                     half.life=FALSE,
-                     tfirst=FALSE,
-                     tmax=FALSE,
-                     tlast=FALSE,
-                     cmin=FALSE,
-                     cmax=FALSE,
-                     clast.obs=FALSE,
-                     clast.pred=FALSE,
-                     thalf.eff=FALSE,
-                     aucpext=FALSE,
-                     cl=FALSE,
-                     mrt=FALSE,
-                     vz=FALSE,
-                     vss=FALSE,
-                     stringsAsFactors=FALSE)
+                      end=Inf,
+                      auclast=FALSE,
+                      aucall=FALSE,
+                      aumclast=FALSE,
+                      aumcall=FALSE,
+                      cmax=FALSE,
+                      cmin=FALSE,
+                      tmax=FALSE,
+                      tlast=FALSE,
+                      tfirst=FALSE,
+                      clast.obs=FALSE,
+                      half.life=FALSE,
+                      r.squared=FALSE,
+                      adj.r.squared=FALSE,
+                      lambda.z=FALSE,
+                      lambda.z.time.first=FALSE,
+                      lambda.z.n.points=FALSE,
+                      clast.pred=FALSE,
+                      span.ratio=FALSE,
+                      aucinf=FALSE,
+                      aumcinf=FALSE,
+                      aucpext=FALSE,
+                      cl=FALSE,
+                      mrt=FALSE,
+                      vss=FALSE,
+                      thalf.eff=FALSE,
+                      kel=FALSE,
+                      vz=FALSE,
+                      stringsAsFactors=FALSE)
     expect_equal(check.interval.specification(d13), r13)
     
-    ## Test that all valid combinations pass through without error or
-    ## change
-    d13 <- data.frame(start=0, end=Inf)
-    r13 <- data.frame(start=0,
-                      end=Inf,
-                      auc.type=as.character(NA),
-                      half.life=FALSE,
-                      tfirst=FALSE,
-                      tmax=FALSE,
-                      tlast=FALSE,
-                      cmin=FALSE,
-                      cmax=FALSE,
-                      clast.obs=FALSE,
-                      clast.pred=FALSE,
-                      thalf.eff=FALSE,
-                      aucpext=FALSE,
-                      cl=FALSE,
-                      mrt=FALSE,
-                      vz=FALSE,
-                      vss=FALSE,
-                      stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d13), r13)
-
-    ## All valid auc.type values succeed
-    d14 <- data.frame(start=0, end=Inf,
-                      auc.type=c("AUClast", "AUCinf", "AUCall", NA))
-    r14 <- data.frame(start=0,
-                      end=Inf,
-                      auc.type=c("AUClast", "AUCinf", "AUCall", NA),
-                      half.life=FALSE,
-                      tfirst=FALSE,
-                      tmax=FALSE,
-                      tlast=FALSE,
-                      cmin=FALSE,
-                      cmax=FALSE,
-                      clast.obs=FALSE,
-                      clast.pred=FALSE,
-                      thalf.eff=FALSE,
-                      aucpext=FALSE,
-                      cl=FALSE,
-                      mrt=FALSE,
-                      vz=FALSE,
-                      vss=FALSE,
-                      stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d14), r14)
-
     ## When the no-calculation interval specification is not the first,
     ## ensure that is warned correctly
+    d14 <- data.frame(start=0, end=24, auclast=c(rep(FALSE, 3), TRUE))
+    expect_warning(check.interval.specification(d14),
+                   regexp="Nothing to be calculated in interval specification number\\(s\\): 1, 2, 3")
+
+    d14 <- data.frame(start=0, end=24, auclast=c(rep(TRUE, 3), FALSE))
     expect_warning(check.interval.specification(d14),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 4")
 
-    ## An invalid auc.type is an error
-    d15 <- data.frame(start=0, end=Inf, auc.type="foo")
-    expect_error(check.interval.specification(d15),
-                 regexp="auc.type must be one of 'aucinf', 'auclast', 'aucall', or NA")
-
-    ## A matrix is converted into a data frame and used
-    d16 <- data.frame(start=0, end=1, half.life=c(FALSE, TRUE))
-    d16.m <- as.matrix(d16)
-    r16 <- data.frame(start=0,
-                      end=1,
-                      auc.type=as.character(NA),
-                      half.life=c(FALSE, TRUE),
-                      tfirst=FALSE,
+    ## Other information is passed through untouched after all the
+    ## calculation columns
+    d15 <- data.frame(start=0, end=Inf, treatment="foo",
+                      stringsAsFactors=FALSE)
+    r15 <- data.frame(start=0,
+                      end=Inf,
+                      auclast=FALSE,
+                      aucall=FALSE,
+                      aumclast=FALSE,
+                      aumcall=FALSE,
+                      cmax=FALSE,
+                      cmin=FALSE,
                       tmax=FALSE,
                       tlast=FALSE,
-                      cmin=FALSE,
-                      cmax=FALSE,
+                      tfirst=FALSE,
                       clast.obs=FALSE,
+                      half.life=FALSE,
+                      r.squared=FALSE,
+                      adj.r.squared=FALSE,
+                      lambda.z=FALSE,
+                      lambda.z.time.first=FALSE,
+                      lambda.z.n.points=FALSE,
                       clast.pred=FALSE,
-                      thalf.eff=FALSE,
+                      span.ratio=FALSE,
+                      aucinf=FALSE,
+                      aumcinf=FALSE,
                       aucpext=FALSE,
                       cl=FALSE,
                       mrt=FALSE,
-                      vz=FALSE,
                       vss=FALSE,
+                      thalf.eff=FALSE,
+                      kel=FALSE,
+                      vz=FALSE,
+                      treatment="foo",
                       stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d16), r16)
-    expect_equal(check.interval.specification(d16.m), r16)
+    expect_equal(check.interval.specification(d15), r15)
 
-    ## Each column that should be logical can also be numeric or
-    ## yes/no
-    for (n in c("half.life", "tfirst", "tmax", "tlast",
-                "cmin", "cmax", "clast.obs", "clast.pred",
-                "thalf.eff", "aucpext", "cl", "mrt", "vz", "vss")) {
-      d17 <- data.frame(start=0, end=1)
-      r17 <- data.frame(
-        start=0,
-        end=1,
-        auc.type=as.character(NA),
-        half.life=FALSE,
-        tfirst=FALSE,
-        tmax=FALSE,
-        tlast=FALSE,
-        cmin=FALSE,
-        cmax=FALSE,
-        clast.obs=FALSE,
-        clast.pred=FALSE,
-        thalf.eff=FALSE,
-        aucpext=FALSE,
-        cl=FALSE,
-        mrt=FALSE,
-        vz=FALSE,
-        vss=FALSE,
-        stringsAsFactors=FALSE)
-      d17[,n] <- TRUE
-      r17[,n] <- TRUE
-      expect_equal(check.interval.specification(d17), r17,
-                   label=paste(n, "set to TRUE"))
-      d17[,n] <- 1
-      expect_equal(check.interval.specification(d17), r17,
-                   label=paste(n, "set to 1"))
-      d17[,n] <- -1
-      expect_equal(check.interval.specification(d17), r17,
-                   label=paste(n, "set to -1"))
-      d17[,n] <- "yes"
-      expect_equal(check.interval.specification(d17), r17,
-                   label=paste(n, "set to yes"))
-    }
-
-    ## cl can be set to force
-    d18 <- data.frame(start=0, end=1, cl='force')
-    r18 <- data.frame(
-      start=0,
-      end=1,
-      auc.type=as.character(NA),
-      half.life=FALSE,
-      tfirst=FALSE,
-      tmax=FALSE,
-      tlast=FALSE,
-      cmin=FALSE,
-      cmax=FALSE,
-      clast.obs=FALSE,
-      clast.pred=FALSE,
-      thalf.eff=FALSE,
-      aucpext=FALSE,
-      cl='force',
-      mrt=FALSE,
-      vz=FALSE,
-      vss=FALSE,
-      stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d18), r18)
-
-    d19 <- data.frame(start=factor(0), end=1)
-    expect_error(check.interval.specification(d19),
-                 regexp="Must be numeric and not a factor")
+    d16 <- data.frame(start=factor(0), end=1)
+    expect_error(check.interval.specification(d16),
+                 regexp="Interval column 'start' should not be a factor")
 })

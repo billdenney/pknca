@@ -64,25 +64,15 @@ test_that("PKNCA.options", {
                     max.aucinf.pext=20,
                     min.hl.r.squared=0.9,
                     tau.choices=NA,
-                    single.dose.aucs=data.frame(
-                      start=0,
-                      end=c(24, Inf),
-                      auc.type=c("AUClast", "AUCinf"),
-                      half.life=c(FALSE, TRUE),
-                      tfirst=FALSE,
-                      tmax=c(FALSE, TRUE),
-                      tlast=FALSE,
-                      cmin=FALSE,
-                      cmax=c(FALSE, TRUE),
-                      clast.obs=FALSE,
-                      clast.pred=FALSE,
-                      thalf.eff=FALSE,
-                      aucpext=FALSE,
-                      cl=FALSE,
-                      mrt=FALSE,
-                      vz=FALSE,
-                      vss=FALSE,
-                      stringsAsFactors=FALSE)))
+                    single.dose.aucs=check.interval.specification(
+                      data.frame(
+                        start=0,
+                        end=c(24, Inf),
+                        auclast=c(TRUE, FALSE),
+                        aucinf=c(FALSE, TRUE),
+                        half.life=c(FALSE, TRUE),
+                        tmax=c(FALSE, TRUE),
+                        cmax=c(FALSE, TRUE)))))
 
   ## Check all the checks on options
 

@@ -202,12 +202,14 @@
       ## It is good to put this through the specification checker in
       ## case they get out of sync during development.  (A free test
       ## case!)
-      x <- data.frame(start=0,
-                      end=c(24, Inf),
-                      auc.type=c("AUClast", "AUCinf"),
-                      cmax=c(FALSE, TRUE),
-                      tmax=c(FALSE, TRUE),
-                      half.life=c(FALSE, TRUE))
+      x <- data.frame(
+        start=0,
+        end=c(24, Inf),
+        auclast=c(TRUE, FALSE),
+        aucinf=c(FALSE, TRUE),
+        half.life=c(FALSE, TRUE),
+        tmax=c(FALSE, TRUE),
+        cmax=c(FALSE, TRUE))
     }
     check.interval.specification(x)
   })

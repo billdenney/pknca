@@ -61,11 +61,14 @@ test_that("find.tau", {
 })
 
 test_that("choose.auc.intervals", {
-  tmp.single.dose.auc <- data.frame(start=0,
-                                    end=c(24, Inf),
-                                    auc.type=c("AUClast", "AUCinf"),
-                                    half.life=c(FALSE, TRUE),
-                                    stringsAsFactors=FALSE)
+  tmp.single.dose.auc <-
+    check.interval.specification(
+      data.frame(start=0,
+                 end=c(24, Inf),
+                 auclast=c(TRUE, FALSE),
+                 aucinf=c(FALSE, TRUE),
+                 half.life=c(FALSE, TRUE),
+                 stringsAsFactors=FALSE))
 
   ## Check the inputs
   expect_error(choose.auc.intervals(NA, 1, tmp.single.dose.auc),
@@ -80,81 +83,76 @@ test_that("choose.auc.intervals", {
   ## It adjusts single dose AUCs by the starting time
   expect_equal(choose.auc.intervals(1, 1,
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=1,
-                          end=c(25, Inf),
-                          auc.type=c("AUClast", "AUCinf"),
-                          half.life=c(FALSE, TRUE),
-                          tfirst=FALSE,
-                          tmax=FALSE,
-                          tlast=FALSE,
-                          cmin=FALSE,
-                          cmax=FALSE,
-                          clast.obs=FALSE,
-                          clast.pred=FALSE,
-                          thalf.eff=FALSE,
-                          aucpext=FALSE,
-                          cl=FALSE,
-                          mrt=FALSE,
-                          vz=FALSE,
-                          vss=FALSE,
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=1,
+                            end=c(25, Inf),
+                            auclast=c(TRUE, FALSE),
+                            aucinf=c(FALSE, TRUE),
+                            half.life=c(FALSE, TRUE))))
 
   ## Find intervals for two doses with PK at both points and one in
   ## between.
   expect_equal(choose.auc.intervals(c(1, 2, 3), c(1, 3),
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=1,
-                          end=3,
-                          auc.type="AUClast",
-                          half.life=FALSE,
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=1,
+                            end=3,
+                            cmax=TRUE,
+                            tmax=TRUE,
+                            auclast=TRUE)))
   ## Find intervals for two doses with PK at both points, one in
   ## between, and one after asking for AUClast after the second dose
   ## but no half-life.
   expect_equal(choose.auc.intervals(1:5, c(1, 3),
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=c(1, 3),
-                          end=c(3, 5),
-                          auc.type="AUClast",
-                          half.life=FALSE,
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=c(1, 3),
+                            end=c(3, 5),
+                            cmax=TRUE,
+                            tmax=TRUE,
+                            auclast=TRUE)))
   ## Find intervals for two doses with PK at both points, one in
   ## between, and one after asking for AUClast after the second dose
   ## with half-life.
   expect_equal(choose.auc.intervals(1:6, c(1, 3),
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=c(1, 3, 3),
-                          end=c(3, 5, NA),
-                          auc.type=c("AUClast", "AUClast", NA),
-                          half.life=c(FALSE, FALSE, TRUE),
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=c(1, 3, 3),
+                            end=c(3, 5, Inf),
+                            auclast=c(TRUE, TRUE, FALSE),
+                            cmax=c(TRUE, TRUE, FALSE),
+                            tmax=c(TRUE, TRUE, FALSE),
+                            half.life=c(FALSE, FALSE, TRUE))))
   ## Some doses have PK betwen them, some not.
   expect_equal(choose.auc.intervals(1:6, c(1, 3, 5, 7, 9),
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=c(1, 3),
-                          end=c(3, 5),
-                          auc.type=c("AUClast", "AUClast"),
-                          half.life=FALSE,
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=c(1, 3),
+                            end=c(3, 5),
+                            auclast=TRUE,
+                            cmax=TRUE,
+                            tmax=TRUE)))
   ## Find intervals when some doses do not have AUCs between them
   ## (pairs of doses with trough but no PK between)  
   expect_equal(choose.auc.intervals(c(1, 2, 3, 5, 6, 7),
                                     c(1, 3, 5, 7, 9),
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=c(1, 5),
-                          end=c(3, 7),
-                          auc.type=c("AUClast", "AUClast"),
-                          half.life=FALSE,
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=c(1, 5),
+                            end=c(3, 7),
+                            cmax=TRUE,
+                            tmax=TRUE,
+                            auclast=TRUE)))
   ## Find intervals for two doses with PK at both points, one in
   ## between, and one after asking for AUClast after the second dose
   ## with half-life.  Since tau is not detectable, no half-life at the
   ## end.
   expect_equal(choose.auc.intervals(1:6, c(1, 3, 5, 9),
                                     single.dose.aucs=tmp.single.dose.auc),
-               data.frame(start=c(1, 3),
-                          end=c(3, 5),
-                          auc.type=c("AUClast", "AUClast"),
-                          half.life=FALSE,
-                          stringsAsFactors=FALSE))
+               check.interval.specification(
+                 data.frame(start=c(1, 3),
+                            end=c(3, 5),
+                            auclast=TRUE,
+                            cmax=TRUE,
+                            tmax=TRUE)))
 })

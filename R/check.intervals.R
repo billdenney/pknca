@@ -92,6 +92,8 @@ check.interval.specification <- function(x) {
                paste(unique(setdiff(x[,n], interval.cols[[n]]$values)),
                      collapse=", "))
       } else if (is.function(interval.cols[[n]]$values)) {
+        if (is.factor(x[,n]))
+          stop(sprintf("Interval column '%s' should not be a factor", n))
         interval.cols[[n]]$values(x[,n])
       } else {
         stop("Invalid 'values' for column specification", n)
