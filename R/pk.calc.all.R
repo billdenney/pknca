@@ -96,33 +96,27 @@ pk.nca.intervals <- function(data, intervals, options) {
 #'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param auc.start The start time for the calculations.
-#' @param auc.end The end time for the calculations.
-#' @param auc.type The type of AUC to calculate.  See
-#' \code{\link{pk.calc.auc}}
-#' @param half.life logical. Should the half-life be calculated?
+#' @param interval One row of an interval definition (see
+#' \code{\link{check.interval.specification}} for how to define the
+#' interval.
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.
-#' @param method The AUC integration method.  See
-#' \code{\link{pk.calc.auc}}.
-#' @param conc.blq The handling instructions for BLQ concentration
-#' values.  See \code{\link{clean.conc.blq}}.
-#' @param conc.na The handling instructions for missing concentration
-#' values.  See \code{\link{clean.conc.na}}.
-#' @param first.tmax The calculation instructions for using the first
-#' or last Tmax.  See \code{\link{pk.calc.tmax}}.
-#' @return A data frame with all PK parameters
+#' @return A data frame with the start and end time along with all PK
+#' parameters for the \code{interval}
 #' 
-#' @seealso \code{\link{pk.calc.half.life}}
+#' @seealso \code{\link{check.interval.specification}}
 #' @export
-pk.nca.interval <- function(conc, time,
-                            auc.start, auc.end, auc.type,
-                            half.life,
-                            options=list(),
-                            method=PKNCA.choose.option("auc.method", options),
-                            conc.blq=PKNCA.choose.option("conc.blq", options),
-                            conc.na=PKNCA.choose.option("conc.na", options),
-                            first.tmax=PKNCA.choose.option("first.tmax", options)) {
+pk.nca.interval <- function(conc, time, interval, options=list()) {
+  if (!is.data.frame(interval))
+    stop("interval must be a data.frame")
+  if (nrow(interval) != 1)
+    stop("interval must be a one-row data.frame")
+  ## Determine exactly what needs to be calculated in what order.
+  ## Start with the interval specification and find any dependencies
+  ## that are not listed for calculation.  Then loop over the
+  ## calculations in order confirming what needs to be passed from a
+  ## previous calculation to a later calculation.
+  
   if (half.life | auc.type %in% "AUCinf") {
     ret <- pk.calc.half.life(conc, time - auc.start)
   } else {

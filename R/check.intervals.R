@@ -59,6 +59,8 @@
 #' time interval
 #' @return x The potentially updated data frame with the interval
 #' calculation specification.
+#'
+#' @seealso \code{\link{check.interval.deps}}
 #' @export
 check.interval.specification <- function(x) {
   if (!is.data.frame(x)) {
@@ -124,4 +126,28 @@ check.interval.specification <- function(x) {
   ## frame
   x[,c(names(interval.cols),
        setdiff(names(x), names(interval.cols)))]
+}
+
+#' Take in a single row of an interval specification and return that
+#' row updated with any additional calculations that must be done to
+#' fulfil all dependencies.
+#'
+#' @param x A data frame with one or morw rows of the PKNCA interval
+#' @return The interval specification with additional calculations
+#' added where requested outputs require them.
+#' @seealso \code{\link{check.interval.specification}
+check.interval.deps <- function(x) {
+  ## Ensure that the input is a valid interval specification
+  ret <- check.interval.specification(x)
+  colspec <- get.interval.cols()
+  for (n in names(colspec)) {
+    if (is.logical(ret[,n])) {
+      ## This is a calculation to complete, otherwise it's something
+      ## informative but not caluclated.
+      mask.calculated <- ret[,n]
+      for (deps in colspec[[n]]$depends)
+        ret[,deps] <- mask.calculated | ret[,deps]
+    }
+  }
+  ret
 }
