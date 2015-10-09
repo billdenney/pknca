@@ -323,7 +323,7 @@ test_that("pk.calc.auc.last", {
                      interval=c(0, 3),
                      method="linear"),
     1.5)
-  expect_warning(
+  expect_error(
     pk.calc.auc.last(conc=c(0, 1, 1, 0),
                      time=0:3,
                      interval=c(0, 3),
@@ -339,7 +339,7 @@ test_that("pk.calc.auc.all", {
                     interval=c(0, 3),
                     method="linear"),
     2)
-  expect_warning(
+  expect_error(
     pk.calc.auc.all(conc=c(0, 1, 1, 0),
                     time=0:3,
                     interval=c(0, 3),

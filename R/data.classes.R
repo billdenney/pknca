@@ -429,8 +429,10 @@ PKNCAdata <- function(data.conc, formula.conc,
     ## Generate the intervals for each grouping of concentration and
     ## dosing.
     tmp.conc.dose <-
-      merge(conc=splitBy(parseFormula(ret$conc)$groupFormula, ret$conc$data),
-            dose=splitBy(parseFormula(ret$dose)$groupFormula, ret$dose$data))
+      merge(conc=doBy::splitBy(parseFormula(ret$conc)$groupFormula,
+              ret$conc$data),
+            dose=doBy::splitBy(parseFormula(ret$dose)$groupFormula,
+              ret$dose$data))
     groupid <- attributes(tmp.conc.dose)$groupid
     rownames(groupid) <- NULL
     intervals <- data.frame()

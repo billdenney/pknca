@@ -9,6 +9,8 @@
 #' with missing values removed.
 #' @param zero.missing Are zeros counted as missing?  If \code{TRUE}
 #' then include them in the missing count.
+#' @param max.missing The maximum fraction of the data allowed to be
+#' missing (a number between 0 and 1, inclusive).
 #' @return A version of FUN that can be called with parameters that
 #' are checked for missingness (and zeros) with missing (and zeros)
 #' removed before the call.  If \code{max.missing} is exceeded, then
@@ -67,13 +69,22 @@ geocv <- function(x, na.rm=FALSE)
 #' @seealso pk.business
 #' @export
 business.mean <- pk.business(mean, max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.sd <- pk.business(sd, max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.cv <- pk.business(function(x, ...) {100*sd(x, ...)/mean(x, ...)},
-                           max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.geomean <- pk.business(geomean, zero.missing=TRUE,
-                                max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.geocv <- pk.business(geocv, zero.missing=TRUE,
-                              max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.min <- pk.business(min, max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.max <- pk.business(max, max.missing=~PKNCA::PKNCA.Options('max.missing'))
-business.median <- pk.business(median, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.sd <-
+  pk.business(sd, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.cv <-
+  pk.business(function(x, ...) {100*sd(x, ...)/mean(x, ...)},
+              max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.geomean <-
+  pk.business(geomean, zero.missing=TRUE,
+              max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.geocv <-
+  pk.business(geocv, zero.missing=TRUE,
+              max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.min <-
+  pk.business(min, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.max <-
+  pk.business(max, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.median <-
+  pk.business(median, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.range <-
+  pk.business(range, max.missing=~PKNCA::PKNCA.Options('max.missing'))

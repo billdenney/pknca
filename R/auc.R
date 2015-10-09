@@ -203,8 +203,9 @@ fun.auc.inf <- function(clast, tlast, lambda.z)
 
 #' @describeIn pk.calc.auxc Compute the area under the curve
 #' @export
-pk.calc.auc <- function(...)
-  pk.calc.auxc(...,
+pk.calc.auc <- function(conc, time, ..., options=list())
+  pk.calc.auxc(conc=conc, time=time, ...,
+               options=options,
                fun.linear=fun.auc.linear,
                fun.log=fun.auc.log,
                fun.inf=fun.auc.inf)
@@ -215,44 +216,41 @@ pk.calc.auc <- function(...)
 ## caught as an error.
 #' @describeIn pk.calc.auxc Compute the AUClast.
 #' @export
-pk.calc.auc.last <- function(..., auc.type, lambda.z) {
-  if (!missing(auc.type))
-    if (!(length(auc.type) == 1 &
-          tolower(auc.type) == "auclast"))
-      warning("auc.type cannot be changed when calling pk.calc.auc.last, please use pk.calc.auc")
-  pk.calc.auc(...,
+pk.calc.auc.last <- function(conc, time, ..., options=list()) {
+  if ("auc.type" %in% names(list(...)))
+    stop("auc.type cannot be changed when calling pk.calc.auc.last, please use pk.calc.auc")
+  pk.calc.auc(conc=conc, time=time, ...,
+              options=options,
               auc.type="AUClast",
               lambda.z=NA)
 }
 
 #' @describeIn pk.calc.auxc Compute the AUCinf.
 #' @export
-pk.calc.auc.inf <- function(..., auc.type, lambda.z) {
-  if (!missing(auc.type))
-    if (!(length(auc.type) == 1 &
-          tolower(auc.type) == "aucinf"))
-      warning("auc.type cannot be changed when calling pk.calc.auc.inf, please use pk.calc.auc")
-  pk.calc.auc(...,
+pk.calc.auc.inf <- function(conc, time, ..., options=list(),
+                            lambda.z) {
+  if ("auc.type" %in% names(list(...)))
+    stop("auc.type cannot be changed when calling pk.calc.auc.inf, please use pk.calc.auc")
+  pk.calc.auc(conc=conc, time=time, ...,
+              options=options,
               auc.type="AUCinf",
               lambda.z=lambda.z)
 }
 
 #' @describeIn pk.calc.auxc Compute the AUCall.
 #' @export
-pk.calc.auc.all <- function(..., auc.type, lambda.z) {
-  if (!missing(auc.type))
-    if (!(length(auc.type) == 1 &
-          tolower(auc.type) == "aucall"))
-      warning("auc.type cannot be changed when calling pk.calc.auc.all, please use pk.calc.auc")
-  pk.calc.auc(...,
+pk.calc.auc.all <- function(conc, time, ..., options=list()) {
+  if ("auc.type" %in% names(list(...)))
+    stop("auc.type cannot be changed when calling pk.calc.auc.all, please use pk.calc.auc")
+  pk.calc.auc(conc=conc, time=time, ..., options=options,
               auc.type="AUCall",
               lambda.z=NA)
 }
 
 #' @describeIn pk.calc.auxc Compute the area under the moment curve
 #' @export
-pk.calc.aumc <- function(...)
-  pk.calc.auxc(...,
+pk.calc.aumc <- function(conc, time, ..., options=list())
+  pk.calc.auxc(conc=conc, time=time, ..., options=options,
     fun.linear=function(conc.1, conc.2, time.1, time.2) {
       (time.2-time.1)*(conc.2*time.2+conc.1*time.1)/2
     },
@@ -266,36 +264,31 @@ pk.calc.aumc <- function(...)
 
 #' @describeIn pk.calc.auxc Compute the AUMClast.
 #' @export
-pk.calc.aumc.last <- function(..., auc.type, lambda.z) {
-  if (!missing(auc.type))
-    if (!(length(auc.type) == 1 &
-          tolower(auc.type) == "auclast"))
-      warning("auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.auc")
-  pk.calc.aumc(...,
+pk.calc.aumc.last <- function(conc, time, ..., options=list()) {
+  if ("auc.type" %in% names(list(...)))
+    stop("auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.auc")
+  pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUClast",
                lambda.z=NA)
 }
 
 #' @describeIn pk.calc.auxc Compute the AUMCinf.
 #' @export
-pk.calc.aumc.inf <- function(..., auc.type, lambda.z) {
-  if (!missing(auc.type))
-    if (!(length(auc.type) == 1 &
-          tolower(auc.type) == "aucinf"))
-      warning("auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.auc")
-  pk.calc.aumc(...,
+pk.calc.aumc.inf <- function(conc, time, ..., options=list(),
+                             lambda.z) {
+  if ("auc.type" %in% names(list(...)))
+    stop("auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.auc")
+  pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUCinf",
                lambda.z=lambda.z)
 }
 
 #' @describeIn pk.calc.auxc Compute the AUMCall.
 #' @export
-pk.calc.aumc.all <- function(..., auc.type, lambda.z) {
-  if (!missing(auc.type))
-    if (!(length(auc.type) == 1 &
-          tolower(auc.type) == "aucall"))
-      warning("auc.type cannot be changed when calling pk.calc.aumc.all, please use pk.calc.auc")
-  pk.calc.aumc(...,
+pk.calc.aumc.all <- function(conc, time, ..., options=list()) {
+  if ("auc.type" %in% names(list(...)))
+    stop("auc.type cannot be changed when calling pk.calc.aumc.all, please use pk.calc.auc")
+  pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUCall",
                lambda.z=NA)
 }

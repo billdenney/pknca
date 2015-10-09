@@ -16,7 +16,7 @@ library(testthat)
 library(shiny)
 
 load_all(".")
-test_dir("tests/")
+results <- test_dir("tests/")
 test(".")
 document(".")
 check(".")

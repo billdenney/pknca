@@ -9,24 +9,26 @@
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}}
 #' @export
 pk.nca <- function(data) {
-  tmp.data <- splitBy(parseFormula(data$conc)$groupFormula,
-                      data=model.frame(data$conc))
+  tmp.data <- doBy::splitBy(parseFormula(data$conc)$groupFormula,
+                            data=model.frame(data$conc))
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
-    tmp.results <- mclapply(X=tmp.data,
-                            FUN=pk.nca.intervals,
-                            intervals=data$intervals,
-                            options=data$options)
+    tmp.results <-
+      parallel::mclapply(X=tmp.data,
+                         FUN=pk.nca.intervals,
+                         intervals=data$intervals,
+                         options=data$options)
     ## Put the group parameters with the results
     for (i in seq_len(length(tmp.results)))
       tmp.results[[i]] <- cbind(attr(tmp.data, "groupid")[i,],
                                 tmp.results[[i]])
     ## Generate the outputs
-    results <- do.call(rbind.fill, tmp.results)
+    results <- do.call(plyr::rbind.fill, tmp.results)
     rownames(results) <- NULL
   }
+  ## FIXME: Add sessionInfo, username, computer name, date/time
   PKNCAresults(result=results,
                formula=formula(data$conc),
                options=data$options)
@@ -42,19 +44,15 @@ pk.nca.intervals <- function(data, intervals, options) {
     ## Subset the intervals down to the intervals for the current group.
     shared.names <- names(data)[3:ncol(data)]
     ret <- merge(unique(data[, shared.names, drop=FALSE]),
-                 intervals)
+                 intervals[,c("start", "end", shared.names)])
   } else {
     ## Likely single-subject data
-    ret <- intervals
+    ret <- intervals[,c("start", "end")]
     shared.names <- c()
   }
   ## Column names to use
   col.conc <- names(data)[1]
   col.time <- names(data)[2]
-  ## The half.life column will be filled with the computed half-life.
-  ## Change its name
-  ret$calculate.half.life <- ret$half.life
-  ret$half.life <- NULL
   for (i in seq_len(nrow(ret))) {
     ## Subset the data down to the group of current interest
     tmpdata <-
@@ -71,10 +69,8 @@ pk.nca.intervals <- function(data, intervals, options) {
       calculated.interval <-
         pk.nca.interval(conc=tmpdata[,col.conc],
                         time=tmpdata[,col.time],
-                        auc.start=ret$start[i],
-                        auc.end=ret$end[i],
-                        auc.type=ret$auc.type[i],
-                        half.life=ret$calculate.half.life[i])
+                        interval=intervals[i,],
+                        options=options)
       ## Add new columns to the return dataset
       for (n in setdiff(names(calculated.interval),
                         names(ret)))
@@ -111,54 +107,45 @@ pk.nca.interval <- function(conc, time, interval, options=list()) {
     stop("interval must be a data.frame")
   if (nrow(interval) != 1)
     stop("interval must be a one-row data.frame")
+  ## Prepare the return value
+  ret <- data.frame()
   ## Determine exactly what needs to be calculated in what order.
   ## Start with the interval specification and find any dependencies
   ## that are not listed for calculation.  Then loop over the
   ## calculations in order confirming what needs to be passed from a
   ## previous calculation to a later calculation.
-  
-  if (half.life | auc.type %in% "AUCinf") {
-    ret <- pk.calc.half.life(conc, time - auc.start)
-  } else {
-    ret <- data.frame(lambda.z=NA)
-  }
-  if (!is.na(auc.type)) {
-    ## Compute the AUCs
-    auc.name <- paste("auc", substr(auc.type, 4, 100),
-                      0, auc.end - auc.start, sep=".")
-    aumc.name <- paste("aumc", substr(auc.type, 4, 100),
-                       0, auc.end - auc.start, sep=".")
-    lambda.z <- NA
-    if ("lambda.z" %in% names(ret))
-      lambda.z <- ret$lambda.z
-    ## Do the AUC computation
-    ret[1,auc.name] <-
-      pk.calc.auc(conc, time - auc.start,
-                  interval=c(auc.start, auc.end) - auc.start,
-                  lambda.z=lambda.z,
-                  method=method,
-                  conc.blq=conc.blq,
-                  conc.na=conc.na)
-    ret[1,aumc.name] <-
-      pk.calc.aumc(conc, time - auc.start,
-                   interval=c(auc.start, auc.end) - auc.start,
-                   lambda.z=lambda.z,
-                   method=method,
-                   conc.blq=conc.blq,
-                   conc.na=conc.na)
-    ## Do not calculate Cmin for infinite intervals (because the
-    ## theoretical answer is asymptotically 0)
-    if (!is.infinite(auc.end)) {
-      ret$cmin <- pk.calc.cmin(conc)
-    } else {
-      ret$cmin <- NA
+  all.intervals <- get.interval.cols()
+  for (n in names(all.intervals))
+    if (interval[1,n] & !is.na(all.intervals[[n]]$FUN)) {
+      call.args <- list()
+      ## Prepare to call the function by setting up its arguments.
+      ## Ignore the "..." argument if it exists.
+      for (arg in setdiff(names(formals(get(all.intervals[[n]]$FUN))),
+                          "...")) {
+        if (arg == "conc") {
+          call.args[[arg]] <- conc
+        } else if (arg == "time") {
+          call.args[[arg]] <- time
+        } else if (arg == "options") {
+          call.args[[arg]] <- options
+        } else if (arg %in% names(ret)) {
+          call.args[[arg]] <- ret[1,arg]
+        } else {
+          ## Give an error if there is not a default argument
+          if (formals(get(all.intervals[[n]]$FUN))[[arg]] == "")
+            stop(sprintf(
+              "Cannot find argument '%s' for NCA function '%s'",
+              arg, all.intervals[[n]]$FUN))
+        }
+      }
+      tmp.result <- do.call(all.intervals[[n]]$FUN, call.args)
+      ## If the function returns a data frame, save all the returned
+      ## values, otherwise, save the value returned.
+      if (is.data.frame(tmp.result)) {
+        ret <- cbind(ret, tmp.result)
+      } else {
+        ret[1,n] <- tmp.result
+      }
     }
-  }
-  ret$cmax <- pk.calc.cmax(conc)
-  ret$tmax <-
-    pk.calc.tmax(conc, time, use.first=first.tmax) - auc.start
-  ret$tfirst <- pk.calc.tfirst(conc, time) - auc.start
-  ret$tlast <- pk.calc.tlast(conc, time) - auc.start
-  ret$clast.obs <- pk.calc.clast.obs(conc, time)
   ret
 }

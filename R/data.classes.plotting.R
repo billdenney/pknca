@@ -39,7 +39,7 @@ plot.PKNCAconc <- function(x, ...,
     call.args[["xlab"]] <- xlab
   if (!("ylab" %in% names(call.args)))
     call.args[["ylab"]] <- ylab
-  do.call(xyplot, call.args)
+  do.call(lattice::xyplot, call.args)
 }
 
 ## Make plotting labels from data, a formula, labels, and units.

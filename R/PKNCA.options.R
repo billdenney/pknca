@@ -257,8 +257,10 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE, name, value) {
   current <- get("options", envir=.PKNCAEnv)
   ## If the options have not been initialized, initialize them and
   ## then proceed.
-  if (is.null(current) & !default)
+  if (is.null(current) & !default) {
     PKNCA.options(default=TRUE)
+    current <- get("options", envir=.PKNCAEnv)
+  }
   args <- list(...)
   ## Put the name/value pair into the args as if they were specified
   ## like another argument.

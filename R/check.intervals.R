@@ -42,8 +42,7 @@
 #'
 #' The variable types for each column are:
 #' \describe{
-#'   \item{logical}{A logical variable, as interpreted with the
-#'     \code{\link{make.logical}} function.}
+#'   \item{logical}{A logical variable.}
 #'   \item{numeric}{A numeric (non-factor) column}
 #'   \item{force}{logical or the text \code{'force'}.  \code{'force'}
 #'     indicates that checking if the calculation is appropriate should be
@@ -135,7 +134,7 @@ check.interval.specification <- function(x) {
 #' @param x A data frame with one or morw rows of the PKNCA interval
 #' @return The interval specification with additional calculations
 #' added where requested outputs require them.
-#' @seealso \code{\link{check.interval.specification}
+#' @seealso \code{\link{check.interval.specification}}
 check.interval.deps <- function(x) {
   ## Ensure that the input is a valid interval specification
   ret <- check.interval.specification(x)
