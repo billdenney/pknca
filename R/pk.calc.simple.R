@@ -70,7 +70,7 @@ add.interval.col("cmin",
 #' @param time Time of concentration measurement
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.
-#' @param use.first If there is more than time that matches the
+#' @param first.tmax If there is more than time that matches the
 #' maximum concentration, should the first be considered as Tmax?  If
 #' not, then the last is considered Tmax.
 #' @param check Run \code{\link{check.conc.time}}?
@@ -78,7 +78,7 @@ add.interval.col("cmin",
 #' @export
 pk.calc.tmax <- function(conc, time,
                          options=list(),
-                         use.first=PKNCA.choose.option("first.tmax", options),
+                         first.tmax=PKNCA.choose.option("first.tmax", options),
                          check=TRUE) {
   if (missing(conc))
     stop("conc must be given")
@@ -90,7 +90,7 @@ pk.calc.tmax <- function(conc, time,
     NA
   } else {
     ret <- time[conc %in% pk.calc.cmax(conc, check=FALSE)]
-    if (use.first) {
+    if (first.tmax) {
       ret[1]
     } else {
       ret[length(ret)]

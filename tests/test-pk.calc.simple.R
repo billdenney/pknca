@@ -59,13 +59,13 @@ test_that("pk.calc.tmax", {
                regexp="conc must be given")
 
   ## It calculates tmax correctly based on the use.first option
-  expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), use.first=TRUE),
+  expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), first.tmax=TRUE),
                1)
-  expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), use.first=FALSE),
+  expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), first.tmax=FALSE),
                1)
-  expect_equal(pk.calc.tmax(c(1, 1), c(0, 1), use.first=TRUE),
+  expect_equal(pk.calc.tmax(c(1, 1), c(0, 1), first.tmax=TRUE),
                0)
-  expect_equal(pk.calc.tmax(c(1, 1), c(0, 1), use.first=FALSE),
+  expect_equal(pk.calc.tmax(c(1, 1), c(0, 1), first.tmax=FALSE),
                1)
 })
 

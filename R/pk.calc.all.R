@@ -43,23 +43,24 @@ pk.nca.intervals <- function(data, intervals, options) {
   if (ncol(data) >= 3) {
     ## Subset the intervals down to the intervals for the current group.
     shared.names <- names(data)[3:ncol(data)]
-    ret <- merge(unique(data[, shared.names, drop=FALSE]),
-                 intervals[,c("start", "end", shared.names)])
+    all.intervals <- merge(unique(data[, shared.names, drop=FALSE]),
+                           intervals[,c("start", "end", shared.names)])
   } else {
     ## Likely single-subject data
-    ret <- intervals[,c("start", "end")]
+    all.intervals <- intervals[,c("start", "end")]
     shared.names <- c()
   }
+  ret <- data.frame()
   ## Column names to use
   col.conc <- names(data)[1]
   col.time <- names(data)[2]
-  for (i in seq_len(nrow(ret))) {
+  for (i in seq_len(nrow(all.intervals))) {
     ## Subset the data down to the group of current interest
     tmpdata <-
-      merge(data, ret[i,shared.names])[,c(col.conc, col.time)]
+      merge(data, all.intervals[i,shared.names])[,c(col.conc, col.time)]
     ## Choose only times between the start and end.
-    mask.keep <- (ret$start[i] <= tmpdata[,col.time] &
-                  tmpdata[,col.time] <= ret$end[i])
+    mask.keep <- (all.intervals$start[i] <= tmpdata[,col.time] &
+                  tmpdata[,col.time] <= all.intervals$end[i])
     tmpdata <- tmpdata[mask.keep,]
     if (nrow(tmpdata) == 0) {
       ## TODO: Improve this error message with additional information
@@ -71,12 +72,11 @@ pk.nca.intervals <- function(data, intervals, options) {
                         time=tmpdata[,col.time],
                         interval=intervals[i,],
                         options=options)
-      ## Add new columns to the return dataset
-      for (n in setdiff(names(calculated.interval),
-                        names(ret)))
-        ret[,n] <- NA
       ## Add all the new data into the output
-      ret[i,names(calculated.interval)] <- calculated.interval
+      ret <- rbind(ret,
+                   cbind(all.intervals[,c("start", "end", shared.names)],
+                         calculated.interval,
+                         row.names=NULL))
     }
   }
   ret
@@ -108,13 +108,20 @@ pk.nca.interval <- function(conc, time, interval, options=list()) {
   if (nrow(interval) != 1)
     stop("interval must be a one-row data.frame")
   ## Prepare the return value
-  ret <- data.frame()
+  ret <- data.frame(PPTESTCD=NA, PPORRES=NA)[-1,]
   ## Determine exactly what needs to be calculated in what order.
   ## Start with the interval specification and find any dependencies
   ## that are not listed for calculation.  Then loop over the
   ## calculations in order confirming what needs to be passed from a
   ## previous calculation to a later calculation.
   all.intervals <- get.interval.cols()
+  ## Make sure that we calculate all of the dependencies.  Do this in
+  ## reverse order for dependencies of dependencies.
+  for (n in rev(names(all.intervals)))
+    if (interval[1,n])
+      for (deps in all.intervals[[n]]$depends)
+        interval[1,deps] <- TRUE
+  ## Do the calculations
   for (n in names(all.intervals))
     if (interval[1,n] & !is.na(all.intervals[[n]]$FUN)) {
       call.args <- list()
@@ -128,8 +135,8 @@ pk.nca.interval <- function(conc, time, interval, options=list()) {
           call.args[[arg]] <- time
         } else if (arg == "options") {
           call.args[[arg]] <- options
-        } else if (arg %in% names(ret)) {
-          call.args[[arg]] <- ret[1,arg]
+        } else if (any(mask.arg <- ret$PPTESTCD %in% arg)) {
+          call.args[[arg]] <- ret$PPORRES[mask.arg]
         } else {
           ## Give an error if there is not a default argument
           if (formals(get(all.intervals[[n]]$FUN))[[arg]] == "")
@@ -142,9 +149,11 @@ pk.nca.interval <- function(conc, time, interval, options=list()) {
       ## If the function returns a data frame, save all the returned
       ## values, otherwise, save the value returned.
       if (is.data.frame(tmp.result)) {
-        ret <- cbind(ret, tmp.result)
+        ret <- rbind(ret, data.frame(PPTESTCD=names(tmp.result),
+                                     PPORRES=unlist(tmp.result, use.names=FALSE)))
       } else {
-        ret[1,n] <- tmp.result
+        ret <- rbind(ret, data.frame(PPTESTCD=n,
+                                     PPORRES=tmp.result))
       }
     }
   ret

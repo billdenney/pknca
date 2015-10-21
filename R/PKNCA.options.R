@@ -116,6 +116,23 @@
     }
     x
   },
+  allow.tmax.in.half.life=function(x, default=FALSE) {
+    if (default)
+      return(FALSE)
+    if (length(x) != 1)
+      stop("allow.tmax.in.half.life must be a scalar")
+    if (is.na(x))
+      stop("allow.tmax.in.half.life may not be NA")
+    if (!is.logical(x)) {
+      x <- as.logical(x)
+      if (is.na(x)) {
+        stop("Could not convert allow.tmax.in.half.life to a logical value")
+      } else {
+        warning("Converting allow.tmax.in.half.life to a logical value: ", ret)
+      }
+    }
+    x
+  },
   min.hl.points=function(x, default=FALSE) {
     if (default)
       return(3)

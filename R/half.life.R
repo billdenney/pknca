@@ -23,7 +23,9 @@
 #' @param conc.na See \code{\link{clean.conc.na}}
 #' @param check Run \code{\link{check.conc.time}},
 #' \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
-#' @param use.first See \code{\link{pk.calc.tmax}}.
+#' @param first.tmax See \code{\link{pk.calc.tmax}}.
+#' @param allow.tmax.in.half.life Allow the concentration point for
+#' tmax to be included in the half-life slope calculation.
 #' @return A data frame with one row and columns for
 #' \describe{
 #'   \item{tmax}{Time of maximum observed concentration}
@@ -46,13 +48,14 @@
 #' Concepts and Applications, 4th Edition.  Stockholm, Sweden: Swedish
 #' Pharmaceutical Press, 2000.  167-9.
 #' @export
-pk.calc.half.life <- function(conc, time,
+pk.calc.half.life <- function(conc, time, tmax, tlast,
                               options=list(),
                               min.hl.points=PKNCA.choose.option("min.hl.points", options),
                               adj.r.squared.factor=PKNCA.choose.option("adj.r.squared.factor", options),
                               conc.blq=PKNCA.choose.option("conc.blq", options),
                               conc.na=PKNCA.choose.option("conc.na", options),
-                              use.first=PKNCA.choose.option("first.tmax", options),
+                              first.tmax=PKNCA.choose.option("first.tmax", options),
+                              allow.tmax.in.half.life=PKNCA.choose.option("allow.tmax.in.half.life", options),
                               check=TRUE) {
   ## Check inputs
   min.hl.points <-
@@ -68,9 +71,6 @@ pk.calc.half.life <- function(conc, time,
   }
   ## Prepare the return values
   ret <- data.frame(
-    tmax=pk.calc.tmax(data$conc, data$time,
-      use.first=use.first, check=FALSE),
-    tlast=pk.calc.tlast(data$conc, data$time, check=FALSE),
     ## Terminal elimination slope
     lambda.z=NA,
     ## R-squared of terminal elimination slope
@@ -88,8 +88,23 @@ pk.calc.half.life <- function(conc, time,
     half.life=NA,
     ## T1/2 span range
     span.ratio=NA)
+  if (missing(tmax)) {
+    ret$tmax <- pk.calc.tmax(data$conc, data$time,
+                             first.tmax=first.tmax, check=FALSE)
+  } else {
+    ret$tmax <- tmax
+  }
+  if (missing(tlast)) {
+    ret$tlast <- pk.calc.tlast(data$conc, data$time, check=FALSE)
+  } else {
+    ret$tlast <- tlast
+  }
   ## Data frame to use for computation of half-life
-  dfK <- data[data$time >= ret$tmax & data$conc != 0,]
+  if (allow.tmax.in.half.life) {
+    dfK <- data[data$time >= ret$tmax & data$conc != 0,]
+  } else {
+    dfK <- data[data$time > ret$tmax & data$conc != 0,]
+  }
   dfK$logDV <- log(dfK$conc)
   if (nrow(dfK) >= min.hl.points) {
     ## If we have enough data to estimate a slope, then
@@ -142,6 +157,11 @@ pk.calc.half.life <- function(conc, time,
       "Too few points for half-life calculation (min.hl.points=%g with only %g points)",
       min.hl.points, nrow(dfK)))
   }
+  ## Drop the inputs of tmax and tlast, if given.
+  if (!missing(tmax))
+    ret$tmax <- NULL
+  if (!missing(tlast))
+    ret$tlast <- NULL
   ret
 }
 
