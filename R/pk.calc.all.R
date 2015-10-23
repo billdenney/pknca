@@ -21,9 +21,15 @@ pk.nca <- function(data) {
                          intervals=data$intervals,
                          options=data$options)
     ## Put the group parameters with the results
-    for (i in seq_len(length(tmp.results)))
-      tmp.results[[i]] <- cbind(attr(tmp.data, "groupid")[i,],
-                                tmp.results[[i]])
+    for (i in seq_len(length(tmp.results))) {
+      keep.group.names <- setdiff(names(attr(tmp.data, "groupid")),
+                                  names(tmp.results[[i]]))
+      if (length(keep.group.names) > 0) {
+        tmp.results[[i]] <-
+          cbind(attr(tmp.data, "groupid")[i,keep.group.names,drop=FALSE],
+                tmp.results[[i]])
+      }
+    }
     ## Generate the outputs
     results <- do.call(plyr::rbind.fill, tmp.results)
     rownames(results) <- NULL
@@ -74,7 +80,7 @@ pk.nca.intervals <- function(data, intervals, options) {
                         options=options)
       ## Add all the new data into the output
       ret <- rbind(ret,
-                   cbind(all.intervals[,c("start", "end", shared.names)],
+                   cbind(all.intervals[i,c("start", "end", shared.names)],
                          calculated.interval,
                          row.names=NULL))
     }
