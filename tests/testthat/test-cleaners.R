@@ -1,4 +1,4 @@
-library(testthat)
+context("Missing and BLQ data cleaners")
 
 test_that("clean.conc.na", {
   ## Check that it gives errors for invalid conc.na values

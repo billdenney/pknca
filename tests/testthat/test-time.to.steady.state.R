@@ -1,4 +1,4 @@
-library(testthat)
+context("Time to steady-state")
 
 test_that("pk.tss.data.prep", {
   conc.test <- 1:5

@@ -1,4 +1,4 @@
-library(testthat)
+context("Formula parsing")
 
 test_that("parseFormula", {
   tmp.env <- new.env()

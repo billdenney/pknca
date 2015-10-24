@@ -1,4 +1,4 @@
-library(testthat)
+context("Business rule functions")
 
 test_that("geomean", {
   ## Test normal, nonzero scalars

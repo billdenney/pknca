@@ -1,3 +1,5 @@
+context("Superposition")
+
 ## The requirements for superposition are defined below to enable
 ## test-driven development.
 

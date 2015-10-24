@@ -1,4 +1,4 @@
-library(testthat)
+context("Simple NCA functions")
 
 test_that("adj.r.squared", {
   ## Ensure correct calculation

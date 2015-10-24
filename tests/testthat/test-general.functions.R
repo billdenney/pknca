@@ -1,4 +1,4 @@
-library(testthat)
+context("Check Conversion")
 
 test_that("check.conversion", {
   good <- LETTERS
@@ -9,6 +9,8 @@ test_that("check.conversion", {
   expect_equal(check.conversion(good, as.character),
                as.character(good))
 })
+
+context("Check concentration and time inputs")
 
 test_that("check.conc.time", {
   ## Check all the invalid cases

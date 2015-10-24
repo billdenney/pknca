@@ -1,4 +1,4 @@
-library(testthat)
+context("PKNCA option setting")
 
 test_that("PKNCA.options", {
   ## Missing/incorrect option names give an error indicating all the

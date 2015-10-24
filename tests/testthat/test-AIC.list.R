@@ -1,4 +1,5 @@
-library(testthat)
+context("AIC.list testing")
+library(PKNCA)
 
 test_that("AIC.list", {
   tmpdat <- data.frame(x=c(1, 2, 3), y=c(1, 2.02, 3), z=c(0, 0.01, 0))

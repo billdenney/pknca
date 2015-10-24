@@ -1,4 +1,4 @@
-library(testthat)
+context("Determining tau for AUCs")
 
 test_that("find.tau", {
   ## Regularly spaced intervals give the regular spacing

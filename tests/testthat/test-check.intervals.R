@@ -1,4 +1,4 @@
-library(testthat)
+context("AUC interval checking")
 
 test_that(
   "check.interval.specification", {

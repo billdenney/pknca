@@ -1,4 +1,4 @@
-library(testthat)
+context("Interpolation and extrapolation of concentration")
 
 test_that("extrapolate.conc", {
   ## Confirm that the ecxtrap.method must be AUCinf, AUClast, AUCall

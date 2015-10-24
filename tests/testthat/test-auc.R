@@ -1,4 +1,4 @@
-library(testthat)
+context("AUC and AUMC")
 
 test_that("pk.calc.auxc", {
   ## #####

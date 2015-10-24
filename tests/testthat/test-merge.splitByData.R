@@ -1,4 +1,4 @@
-library(testthat)
+context("splitBy merging")
 
 test_that("merge.splitByData", {
   ## Simple example
