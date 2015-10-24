@@ -10,8 +10,8 @@ PKNCA computes pharmacokinetic (PK) noncompartmental analysis (NCA)
 parameters.
 }
 \details{
-Typically, you will start with the \code{\link{pk.calc.nca}}
-function and then use the \code{\link{summarize.nca}} function to
+Typically, you will start with the \code{\link{pk.nca}}
+function and then use the \code{\link{summary}} function to
 generate tables for reporting.
 }
 

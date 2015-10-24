@@ -16,6 +16,12 @@
 \item{groups}{The grouping variable for the plot (typically the
 subject column)}
 
+\item{panel.formula}{The formula used for the call to xyplot
+(defaults to the group formula of \code{x})}
+
+\item{panel.formula.update}{Updates to the \code{panel.formula} to
+simplify modifications without having to fully specify the formula.}
+
 \item{\dots}{Additional arguments passed to \code{xyplot}}
 }
 \value{

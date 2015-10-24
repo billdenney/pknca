@@ -10,6 +10,8 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' @param values Valid values for the column
 #' @param depends Character vector of columns that must be run before
 #' this column.
+#' @param desc A human-readable description of the parameter (<=40
+#' characters to comply with SDTM)
 #' @param datatype The type of data 
 add.interval.col <- function(name, FUN, values, depends=c(),
                              desc="",

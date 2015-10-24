@@ -18,6 +18,13 @@ pk.calc.half.life(conc, time, tmax, tlast, options = list(),
 
 \item{time}{Time of concentration measurement}
 
+\item{tmax}{Time of maximum concentration (will be calculated and
+included in the return data frame if not given)}
+
+\item{tlast}{Time of last concentration above the limit of
+quantification (will be calculated and included in the return data
+frame if not given)}
+
 \item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}
 
@@ -42,8 +49,8 @@ tmax to be included in the half-life slope calculation.}
 \value{
 A data frame with one row and columns for
 \describe{
-  \item{tmax}{Time of maximum observed concentration}
-  \item{tlast}{Time of last observed concentration above the LOQ}
+  \item{tmax}{Time of maximum observed concentration (only included if not given as an input)}
+  \item{tlast}{Time of last observed concentration above the LOQ (only included if not given as an input)}
   \item{r.squared}{coefficient of determination}
   \item{adj.r.squared}{adjusted coefficient of determination}
   \item{lambda.z}{elimination rate}

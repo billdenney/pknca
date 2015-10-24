@@ -17,6 +17,9 @@ add.interval.col(name, FUN, values, depends = c(), desc = "",
 \item{depends}{Character vector of columns that must be run before
 this column.}
 
+\item{desc}{A human-readable description of the parameter (<=40
+characters to comply with SDTM)}
+
 \item{datatype}{The type of data}
 }
 \description{

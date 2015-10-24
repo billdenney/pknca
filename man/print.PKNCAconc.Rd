@@ -23,6 +23,8 @@
 
 \item{summarize}{Summarize the nested number of groups}
 
+\item{object}{The object to summarize}
+
 \item{\dots}{Arguments passed to \code{print.formula} and
 \code{print.data.frame}}
 }

@@ -13,6 +13,11 @@
 #'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
+#' @param tmax Time of maximum concentration (will be calculated and
+#' included in the return data frame if not given)
+#' @param tlast Time of last concentration above the limit of
+#' quantification (will be calculated and included in the return data
+#' frame if not given)
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.
 #' @param min.hl.points The minimum number of points that must be
@@ -28,8 +33,8 @@
 #' tmax to be included in the half-life slope calculation.
 #' @return A data frame with one row and columns for
 #' \describe{
-#'   \item{tmax}{Time of maximum observed concentration}
-#'   \item{tlast}{Time of last observed concentration above the LOQ}
+#'   \item{tmax}{Time of maximum observed concentration (only included if not given as an input)}
+#'   \item{tlast}{Time of last observed concentration above the LOQ (only included if not given as an input)}
 #'   \item{r.squared}{coefficient of determination}
 #'   \item{adj.r.squared}{adjusted coefficient of determination}
 #'   \item{lambda.z}{elimination rate}

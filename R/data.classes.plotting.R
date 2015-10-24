@@ -4,6 +4,10 @@
 #' @param groups The grouping variable for the plot (typically the
 #' subject column)
 #' @param \dots Additional arguments passed to \code{xyplot}
+#' @param panel.formula The formula used for the call to xyplot
+#' (defaults to the group formula of \code{x})
+#' @param panel.formula.update Updates to the \code{panel.formula} to
+#' simplify modifications without having to fully specify the formula.
 #' @return A trellis object of the plot(s)
 #' @export
 plot.PKNCAconc <- function(x, ...,

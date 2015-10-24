@@ -3,19 +3,25 @@
 \name{getData.PKNCAconc}
 \alias{getData.PKNCAconc}
 \alias{getData.PKNCAdose}
-\title{Extract all the original data from a PKNCAconc or PKNCAdose object}
+\title{##See \code{getData} in the nlme package.
+##
+##}
 \usage{
 \method{getData}{PKNCAconc}(object)
 
 \method{getData}{PKNCAdose}(object)
 }
 \arguments{
-\item{object}{The object to extract data from}
+\item{object}{Object to extract data from
+##}
 }
 \value{
-The data from the object
+Data from the object
+Extract all the original data from a PKNCAconc or PKNCAdose object
 }
 \description{
-Extract all the original data from a PKNCAconc or PKNCAdose object
+##See \code{getData} in the nlme package.
+##
+##
 }
 
