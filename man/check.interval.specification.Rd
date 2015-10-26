@@ -24,7 +24,7 @@ a requested parameter.
 }
 \details{
 The data frame columns (with variable type in parentheses) are:
-\describe{
+\itemize{
   \item{\code{start}}{The starting time (numeric)}
   \item{\code{end}}{The ending time (numeric including Inf)}
   \item{\code{aucinf}}{Compute AUCinf (logical)}
@@ -57,7 +57,7 @@ The data frame columns (with variable type in parentheses) are:
 }
 
 The variable types for each column are:
-\describe{
+\itemize{
   \item{logical}{A logical variable.}
   \item{numeric}{A numeric (non-factor) column}
   \item{force}{logical or the text \code{'force'}.  \code{'force'}

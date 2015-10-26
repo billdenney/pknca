@@ -17,7 +17,6 @@ library(shiny)
 
 load_all(".")
 results <- test()
-test()
 document(".")
 check(".")
 
