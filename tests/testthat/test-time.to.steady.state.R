@@ -233,7 +233,7 @@ test_that("pk.tss.stepwise.linear", {
                            treatment=tmpdata$treatment,
                            time.dosing=0:14,
                            level=c(0.95, 0.99),
-                           verbose=TRUE),
+                           verbose=FALSE),
     regex="Only first value of level is being used",
     info="pk.tss.stepwise.linear 9")
 
@@ -296,7 +296,7 @@ test_that("pk.tss.monoexponential", {
                            subject=tmpdata$subject,
                            treatment=tmpdata$treatment,
                            time.dosing=0:14,
-                           verbose=TRUE),
+                           verbose=FALSE),
     data.frame(subject=factor(c(1, 10, 2:9)),
                tss.monoexponential.population=4.57618156812974,
                tss.monoexponential.popind=c(

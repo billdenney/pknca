@@ -4,7 +4,7 @@ test_that("parseFormula", {
   tmp.env <- new.env()
   
   ## Parse a rhs-only formula
-  f1 <- as.formula(~a, env=tmp.env)
+  f1 <- as.formula("~a", env=tmp.env)
   r1 <- list(model=~a,
              lhs=NA,
              rhs=as.name("a"),
@@ -16,7 +16,7 @@ test_that("parseFormula", {
                check.attributes=FALSE)
 
   ## Parse a lhs and rhs formula
-  f2 <- as.formula(a~b, env=tmp.env)
+  f2 <- as.formula("a~b", env=tmp.env)
   r2 <- list(model=a~b,
              lhs=as.name("a"),
              rhs=as.name("b"),
@@ -28,7 +28,7 @@ test_that("parseFormula", {
                check.attributes=FALSE)
 
   ## Parse a rhs formula with groups
-  f3 <- as.formula(~a|b, env=tmp.env)
+  f3 <- as.formula("~a|b", env=tmp.env)
   r3 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
              rhs=as.name("a"),
@@ -40,7 +40,7 @@ test_that("parseFormula", {
                check.attributes=FALSE)
 
   ## Parse a rhs formula with nested groups
-  f4 <- as.formula(~a|b/c, env=tmp.env)
+  f4 <- as.formula("~a|b/c", env=tmp.env)
   r4 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
              rhs=as.name("a"),
@@ -52,7 +52,7 @@ test_that("parseFormula", {
                check.attributes=FALSE)
   
   ## Parse a rhs formula with crossed groups
-  f5 <- as.formula(~a|b+c, env=tmp.env)
+  f5 <- as.formula("~a|b+c", env=tmp.env)
   r5 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
              rhs=as.name("a"),
@@ -64,7 +64,7 @@ test_that("parseFormula", {
                check.attributes=FALSE)
 
   ## Parse a rhs formula with crossed and nested groups
-  f6 <- as.formula(~a|b/c+d/e, env=tmp.env)
+  f6 <- as.formula("~a|b/c+d/e", env=tmp.env)
   r6 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
              rhs=as.name("a"),
@@ -78,7 +78,7 @@ test_that("parseFormula", {
                check.attributes=FALSE)
 
   ## Parse a lhs and rhs formula with crossed and nested groups
-  f7 <- as.formula(a~b+c|d/e+f/g, env=tmp.env)
+  f7 <- as.formula("a~b+c|d/e+f/g", env=tmp.env)
   r7 <- list(model=as.formula(a~b+c, env=tmp.env),
              lhs=as.name("a"),
              rhs=call("+", quote(b), quote(c)),
@@ -91,15 +91,17 @@ test_that("parseFormula", {
                r7,
                check.attributes=FALSE)
 
-  ## Ensure that things can be coerced into formulas
+  ## Ensure that things can be coerced into formulas (ignoring the
+  ## environment of the response)
   f8 <- "a~b|c"
   r8 <- list(model=as.formula(a~b),
              lhs=as.name("a"),
              rhs=as.name("b"),
              groups=as.name("c"),
-             groupFormula=as.formula(~c),
-             env=tmp.env)
-  expect_equal(parseFormula(f8),
+             groupFormula=as.formula(~c))
+  expect_equal({t1 <- parseFormula(f8)
+                t1$env <- NULL
+                t1},
                r8,
                check.attributes=FALSE)
 

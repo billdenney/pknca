@@ -326,6 +326,7 @@ print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
 summary.PKNCAdose <- summary.PKNCAconc
 
 #' Extract all the original data from a PKNCAconc or PKNCAdose object
+#' @param object R object to extract the data from.
 #' @export
 getData.PKNCAconc <- function(object)
   object$data

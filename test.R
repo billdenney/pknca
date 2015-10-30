@@ -8,6 +8,8 @@ rm(list=ls())
 ## install.packages("covr")
 ## install.packages("knitr")
 ## install.packages("Rcpp")
+## install.packages("shiny")
+## install.packages("doBy")
 
 ## library(nlme)
 library(devtools)
