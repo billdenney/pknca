@@ -15,6 +15,11 @@ pk.nca <- function(data) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
+    ## Merge the options into the default options.
+    tmp.opt <- PKNCA.options()
+    tmp.opt[names(options)] <- data$options
+    data$options <- tmp.opt
+    ## Calculate the results
     tmp.results <-
       parallel::mclapply(X=tmp.data,
                          FUN=pk.nca.intervals,
@@ -34,10 +39,13 @@ pk.nca <- function(data) {
     results <- do.call(plyr::rbind.fill, tmp.results)
     rownames(results) <- NULL
   }
-  ## FIXME: Add sessionInfo, username, computer name, date/time
   PKNCAresults(result=results,
-               formula=formula(data$conc),
-               options=data$options)
+               data=data,
+               provenance=list(
+                 hash=digest::digest(list(results, data)),
+                 sessionInfo=sessionInfo(),
+                 datetime=Sys.time(),
+                 sysInfo=Sys.info()))
 }
 
 ## Subset data down to just the times of interest and then pass it

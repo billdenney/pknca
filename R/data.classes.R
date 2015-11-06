@@ -212,7 +212,7 @@ getGroups.PKNCAdose <- getGroups.PKNCAconc
 
 #' @rdname getGroups.PKNCAconc
 #' @export
-getGroups.PKNCAresults <- function(object, form=formula(object), level,
+getGroups.PKNCAresults <- function(object, form=formula(object$data$conc), level,
                                    data=object$result, sep) {
   ## Include the start time as a group; this may be dropped later
   grpnames <- c(all.vars(parseFormula(form)$groups), "start")
@@ -475,68 +475,44 @@ summary.PKNCAdata <- function(object, ...)
 #' @param formula The formula used for concentration data in the
 #' calculations.  The groups are verified to be column names in the
 #' \code{result} parameter.
-#' @param options Options that are different from the defaults.  All
-#' options (default and custom) are stored with the results.
-#' @return A PKNCA object with each of the above within.
+#' @param data The PKNCAdata used to generate the result
+#' @param provenance Data and calculation provenance
+#' @return A PKNCAresults object with each of the above within.
 #' @export
-PKNCAresults <- function(result, formula, options=list()) {
-  ## Merge the options into the default options.
-  tmp.opt <- PKNCA.options()
-  tmp.opt[names(options)] <- options
+PKNCAresults <- function(result, data, provenance) {
   ## Add all the parts into the object
   ret <- list(result=result,
-              formula=formula,
-              options=tmp.opt)
+              data=data,
+              provenance=provenance)
   class(ret) <- c("PKNCAresults", class(ret))
   ret
+}
+
+#' Extract the parameter results from a PKNCAresults and return them
+#' as a data frame.
+#'
+#' @param x The object to extract results from
+#' @param ... Ignored (for compatibility with generic
+#' \code{\link{as.data.frame}}
+#' @return A data frame of results
+#' @export
+as.data.frame.PKNCAresults <- function(x, ...) {
+  x$result
 }
 
 count.non.missing <- function(x)
   length(na.omit(x))
 
 summary.PKNCAresults <- function(object, simplify.start=TRUE,
-                                 drop.group="Subject",
-                                 summary.cols=list(
-                                   N=list(
-                                     point=count.non.missing,
-                                     col.regex="^cmax$",
-                                     use.column.name=FALSE),
-                                   n=list(
-                                     point=count.non.missing,
-                                     col.regex="^half.life$",
-                                     use.column.name=FALSE),
-                                   cmax=list(
-                                     point=business.geomean,
-                                     spread=business.geocv),
-                                   tmax=list(
-                                     point=business.median,
-                                     spread=business.range),
-                                   auc.last=list(
-                                     point=business.geomean,
-                                     spread=business.geocv,
-                                     col.regex="^auc\\.last.*$"),
-                                   auc.inf=list(
-                                     point=business.geomean,
-                                     spread=business.geocv,
-                                     col.regex="^auc.inf.*$"),
-                                   half.life=list(
-                                     point=business.mean,
-                                     spread=business.sd)),
-                                 ...) {
-  groups <- setdiff(getGroups(object), drop.group)
+                                 drop.group="Subject") {
+  groups <- unique(c("start", "end",
+                     setdiff(getGroups(object), drop.group)))
   if (simplify.start) {
-    groups <- unique(groups)
+    groups$end <- NULL
   }
-  ## Make sure that all the summary.cols arguments have all the values
-  ## that are needed.
-  for (n in names(summary.cols)) {
-    if (!("col.regex" %in% names(summary.cols[[n]])))
-      summary.cols[[n]]$col.regex <- paste0("^", n, "$")
-    if (!("use.column.name" %in% names(summary.cols[[n]])))
-      summary.cols[[n]]$use.column.name <- TRUE
-  }
+  ret <- groups <- unique(groups)
   ## Do all the calculations
-  for (n in names(summary.cols)) {
+  for (n in names(groups)) {
     
   }
 }

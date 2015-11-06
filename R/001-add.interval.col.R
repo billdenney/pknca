@@ -1,6 +1,7 @@
 ## Setup the default options
 .PKNCAEnv <- new.env(parent=emptyenv())
 assign("options", NULL, envir=.PKNCAEnv)
+assign("summary", list(), envir=.PKNCAEnv)
 assign("interval.cols", list(), envir=.PKNCAEnv)
 
 #' Add columns for calculations within PKNCA intervals

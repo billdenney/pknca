@@ -14,4 +14,5 @@
 #' @importFrom nlme fixef getData getGroups gnls intervals lme nlme ranef
 #' @importFrom parallel mclapply
 #' @importFrom plyr rbind.fill
+#' @importFrom digest digest
 NULL

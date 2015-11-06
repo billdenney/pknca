@@ -34,6 +34,7 @@ add.interval.col("cmax",
                  values=c(FALSE, TRUE),
                  desc="Maximum observed concentration",
                  depends=c())
+PKNCA.set.summary("cmax", business.geomean, business.geocv)
 
 #' @describeIn pk.calc.cmax Determine the minimum observed PK
 #' concentration
@@ -52,6 +53,7 @@ add.interval.col("cmin",
                  values=c(FALSE, TRUE),
                  desc="Minimum observed concentration",
                  depends=c())
+PKNCA.set.summary("cmin", business.geomean, business.geocv)
 
 #' Determine time of maximum observed PK concentration
 #'
@@ -103,6 +105,7 @@ add.interval.col("tmax",
                  values=c(FALSE, TRUE),
                  desc="Time of the maximum observed concentration",
                  depends=c())
+PKNCA.set.summary("tmax", business.median, business.range)
 
 #' Determine time of last observed concentration above the limit of
 #' quantification.
@@ -133,6 +136,7 @@ add.interval.col("tlast",
                  values=c(FALSE, TRUE),
                  desc="Time of the last concentration observed above the limit of quantification",
                  depends=c())
+PKNCA.set.summary("tlast", business.median, business.range)
 
 #' @describeIn pk.calc.tlast Determine the first concentration above
 #' the limit of quantification.
@@ -155,6 +159,7 @@ add.interval.col("tfirst",
                  values=c(FALSE, TRUE),
                  desc="Time of the first concentration above the limit of quantification",
                  depends=c())
+PKNCA.set.summary("tfirst", business.median, business.range)
 
 #' Determine the last observed concentration above the limit of
 #' quantification (LOQ).
@@ -182,6 +187,7 @@ add.interval.col("clast.obs",
                  values=c(FALSE, TRUE),
                  desc="The last concentration observed above the limit of quantification",
                  depends=c())
+PKNCA.set.summary("clast.obs", business.geomean, business.geocv)
 
 #' Calculate the effective half-life
 #'
@@ -196,6 +202,7 @@ add.interval.col("thalf.eff",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRT)",
                  depends=c("mrt"))
+PKNCA.set.summary("thalf.eff", business.geomean, business.geocv)
 
 #' Calculate the AUC percent extrapolated
 #'
@@ -215,6 +222,7 @@ add.interval.col("aucpext",
                  values=c(FALSE, TRUE),
                  desc="Percent of the AUCinf that is extrapolated after Tlast",
                  depends=c("auclast", "aucinf"))
+PKNCA.set.summary("aucpext", business.mean, business.sd)
 
 #' Calculate the elimination rate (Kel)
 #'
@@ -229,6 +237,7 @@ add.interval.col("kel",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the MRT)",
                  depends=c("mrt"))
+PKNCA.set.summary("kel", business.geomean, business.geocv)
 
 #' Calculate the (observed oral) clearance
 #'
@@ -257,6 +266,7 @@ add.interval.col("cl",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance",
                  depends=list("auclast", "aucinf"))
+PKNCA.set.summary("cl", business.geomean, business.geocv)
 
 #' Calculate the absolute (or relative) bioavailability
 #'
@@ -269,6 +279,12 @@ add.interval.col("cl",
 #' @export
 pk.calc.f <- function(dose1, auc1, dose2, auc2)
   (auc2/dose2)/(auc1/dose1)
+add.interval.col("f",
+                 FUN="pk.calc.f",
+                 values=c(FALSE, TRUE),
+                 desc="Bioavailability or relative bioavailability",
+                 depends=c())
+PKNCA.set.summary("f", business.geomean, business.geocv)
 
 #' Calcuate the mean residence time (MRT)
 #'
@@ -285,6 +301,7 @@ add.interval.col("mrt",
                  desc="The mean residence time",
                  depends=list(c("auclast", "aumclast"),
                               c("aucinf", "aumcinf")))
+PKNCA.set.summary("mrt", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
@@ -319,6 +336,7 @@ add.interval.col("vz",
                  desc="The terminal volume of distribution",
                  depends=list(c("aucinf", "kel"),
                               c("auclast", "kel")))
+PKNCA.set.summary("vz", business.geomean, business.geocv)
 
 #' Calculate the steady-state volume of distribution (Vss)
 #'
@@ -334,3 +352,4 @@ add.interval.col("vss",
                  values=c(FALSE, TRUE),
                  desc="The steady-state volume of distribution",
                  depends=c("cl", "mrt"))
+PKNCA.set.summary("vss", business.geomean, business.geocv)

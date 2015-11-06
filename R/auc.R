@@ -299,29 +299,39 @@ add.interval.col("aucinf",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve from the beginning of the interval to infinity",
                  depends="half.life")
+PKNCA.set.summary("aucinf", business.geomean, business.geocv)
+
 add.interval.col("auclast",
                  FUN="pk.calc.auc.last",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification",
                  depends=c())
+PKNCA.set.summary("auclast", business.geomean, business.geocv)
+
 add.interval.col("aucall",
                  FUN="pk.calc.auc.all",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification",
                  depends=c())
+PKNCA.set.summary("aucall", business.geomean, business.geocv)
 
 add.interval.col("aumcinf",
                  FUN="pk.calc.aumc.inf",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time moment curve from the beginning of the interval to infinity",
                  depends="half.life")
+PKNCA.set.summary("aumcinf", business.geomean, business.geocv)
+
 add.interval.col("aumclast",
                  FUN="pk.calc.aumc.last",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time moment curve from the beginning of the interval to the last concentration above the limit of quantification",
                  depends=c())
+PKNCA.set.summary("aumclast", business.geomean, business.geocv)
+
 add.interval.col("aumcall",
                  FUN="pk.calc.aumc.all",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time moment curve from the beginning of the interval to the last concentration above the limit of quantification plus the moment of the triangle from that last concentration to 0 at the first concentration below the limit of quantification",
                  depends=c())
+PKNCA.set.summary("aumcall", business.geomean, business.geocv)

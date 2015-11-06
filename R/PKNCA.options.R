@@ -360,3 +360,66 @@ PKNCA.choose.option <- function(name, options=list())
   } else {
     PKNCA.options(name)
   }
+
+#' Define how NCA parameters are summarized.
+#'
+#' @param name The parameter name.  It must have already been defined
+#' (see \code{\link{add.interval.col}}).
+#' @param point The function to calculate the point estimate for the
+#' summary.  The function will be called as \code{point(x)} and must
+#' return a scalar value (typically a number, NA, or a string).
+#' @param spread Optional.  The function to calculate the spread (or
+#' variability).  The function will be called as \code{spread(x)} and
+#' must return a scalar or two-long vector (typically a number, NA, or
+#' a string).
+#' @param rounding Instructions for how to round the value of point
+#' and spread.  It may either be a list or a function.  If it is a
+#' list, then it must have a single entry with a name of either
+#' "signif" or "round" and a value of the digits to round.  If a
+#' function, it is expected to return a scalar number or character
+#' string with the correct results for an input of either a scalar or
+#' a two-long vector.
+#' @param reset Reset all the summary instructions
+#' @return All current summary settings (invisibly)
+#' @export
+PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
+                              reset=FALSE) {
+  if (reset) {
+    current <- list()
+  } else {
+    current <- get("summary", envir=.PKNCAEnv)
+  }
+  if (missing(name) & missing(point) & missing(spread)) {
+    if (reset)
+      assign("summary", current, envir=.PKNCAEnv)
+    return(invisible(current))
+  }
+  ## Confirm that the name exists
+  if (!(name %in% names(get("interval.cols", envir=.PKNCAEnv))))
+    stop("You must first define the parameter name with add.interval.col")
+  ## Confirm that point is a function
+  if (!is.function(point))
+    stop("point must be a function")
+  current[[name]] <- list(point=point)
+  ## Confirm that spread is a function (if given)
+  if (!missing(spread)) {
+    if (!is.function(spread))
+      stop("spread must be a function")
+    current[[name]]$spread <- spread
+  }
+  ## Confirm that rounding is either a single-entry list or a function
+  if (is.list(rounding)) {
+    if (length(rounding) != 1)
+      stop("rounding must have a single value in the list")
+    if (!(names(rounding) %in% c("signif", "round")))
+      stop("When a list, rounding must have a name of either 'signif' or 'round'")
+    current[[name]]$rounding <- rounding
+  } else if (is.function(rounding)) {
+    current[[name]]$rounding <- rounding
+  } else {
+    stop("rounding must be either a list or a function")
+  }
+  ## Set the summary parameters
+  assign("summary", current, envir=.PKNCAEnv)
+  invisible(current)
+}

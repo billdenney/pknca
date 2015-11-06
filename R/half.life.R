@@ -176,6 +176,7 @@ add.interval.col("half.life",
                  values=c(FALSE, TRUE),
                  desc="The (terminal) half-life",
                  depends=c("tmax", "tlast"))
+PKNCA.set.summary("half.life", business.mean, business.sd)
 add.interval.col("r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
@@ -191,6 +192,7 @@ add.interval.col("lambda.z",
                  values=c(FALSE, TRUE),
                  desc="The elimination rate of the terminal half-life",
                  depends=c("half.life"))
+PKNCA.set.summary("lambda.z", business.geomean, business.geocv)
 add.interval.col("lambda.z.time.first",
                  FUN=NA,
                  values=c(FALSE, TRUE),
@@ -201,13 +203,16 @@ add.interval.col("lambda.z.n.points",
                  values=c(FALSE, TRUE),
                  desc="The number of points used for the calculation of half-life",
                  depends=c("half.life"))
+PKNCA.set.summary("lambda.z.n.points", business.median, business.range)
 add.interval.col("clast.pred",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The concentration at Tlast as predicted by the half-life",
                  depends=c("half.life"))
+PKNCA.set.summary("clast.pred", business.geomean, business.geocv)
 add.interval.col("span.ratio",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The ratio of the half-life to the duration used for half-life calculation",
                  depends=c("half.life"))
+PKNCA.set.summary("span.ratio", business.geomean, business.geocv)

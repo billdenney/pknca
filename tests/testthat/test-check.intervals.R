@@ -17,6 +17,7 @@ test_that(
                      tlast=FALSE,
                      tfirst=FALSE,
                      clast.obs=FALSE,
+                     f=FALSE,
                      half.life=FALSE,
                      r.squared=FALSE,
                      adj.r.squared=FALSE,
@@ -35,10 +36,9 @@ test_that(
                      kel=FALSE,
                      vz=FALSE,
                      stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d1),
-                 r1)
-    expect_warning(check.interval.specification(d1),
+    expect_warning(d1.check <- check.interval.specification(d1),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 1")
+    expect_equal(d1.check, r1)
 
     ## Giving one parameter will fill in everything else as false
     d2 <- data.frame(start=0, end=1, auclast=TRUE)
@@ -54,6 +54,7 @@ test_that(
                      tlast=FALSE,
                      tfirst=FALSE,
                      clast.obs=FALSE,
+                     f=FALSE,
                      half.life=FALSE,
                      r.squared=FALSE,
                      adj.r.squared=FALSE,
@@ -127,6 +128,7 @@ test_that(
                       tlast=FALSE,
                       tfirst=FALSE,
                       clast.obs=FALSE,
+                      f=FALSE,
                       half.life=FALSE,
                       r.squared=FALSE,
                       adj.r.squared=FALSE,
@@ -145,7 +147,8 @@ test_that(
                       kel=FALSE,
                       vz=FALSE,
                       stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d13), r13)
+    expect_warning(d13.check <- check.interval.specification(d13))
+    expect_equal(d13.check, r13)
     
     ## When the no-calculation interval specification is not the first,
     ## ensure that is warned correctly
@@ -173,6 +176,7 @@ test_that(
                       tlast=FALSE,
                       tfirst=FALSE,
                       clast.obs=FALSE,
+                      f=FALSE,
                       half.life=FALSE,
                       r.squared=FALSE,
                       adj.r.squared=FALSE,
