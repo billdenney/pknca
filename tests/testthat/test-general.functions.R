@@ -31,3 +31,34 @@ test_that("check.conc.time", {
   expect_error(check.conc.time(conc=1:2, time=2),
                regexp="Conc and time must be the same length")  
 })
+
+context("Rounding to string values")
+
+test_that("Rounding", {
+            expect_equal(roundString(11), "11")
+            expect_equal(roundString(5), "5")
+            expect_equal(roundString(0.05), "0")
+            expect_equal(roundString(NA), "NA")
+            expect_equal(roundString(NaN), "NaN")
+            expect_equal(roundString(Inf), "Inf")
+            expect_equal(roundString(-Inf), "-Inf")
+            ## Respecting the digits
+            expect_equal(roundString(0.05, 3), "0.050")
+            expect_equal(roundString(123.05, 3), "123.050")
+          })
+
+test_that("Significance", {
+            expect_equal(signifString(11), "11.0000")
+            expect_equal(signifString(5), "5.00000")
+            expect_equal(signifString(0.05), "0.0500000")
+            expect_equal(signifString(NA), "NA")
+            expect_equal(signifString(NaN), "NaN")
+            expect_equal(signifString(Inf), "Inf")
+            expect_equal(signifString(-Inf), "-Inf")
+            ## Respecting the digits
+            expect_equal(signifString(0.05, 3), "0.0500")
+            expect_equal(signifString(123.05, 3), "123")
+            expect_equal(signifString(123456.05, 3), "123000")
+            expect_equal(signifString(-123000.05, 3), "-123000")
+            expect_equal(signifString(-.05, 3), "-0.0500")
+          })

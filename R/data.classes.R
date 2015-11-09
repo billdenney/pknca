@@ -500,19 +500,112 @@ as.data.frame.PKNCAresults <- function(x, ...) {
   x$result
 }
 
+#' Count the number of values that are not NA
+#'
+#' @param x The object to count non-NA values within.
+#' @return A scalar count of the non-NA values.
+#' @export
 count.non.missing <- function(x)
-  length(na.omit(x))
+  sum(!is.na(x))
 
+#' During the summarization of PKNCAresults, do the rounding of values
+#' based on the instructions given.
+#'
+#' @param x The values to summarize
+#' @param name The NCA parameter name (matching a parameter name in
+#' \code{\link{PKNCA.set.summary}})
+#' @return A string of the rounded value
+#' @export
+roundingSummarize <- function(x, name) {
+  summaryInstructions <- PKNCA.set.summary()
+  if (!(name %in% names(summaryInstructions)))
+    stop(name, "is not in the summarization instructions from PKNCA.set.summary")
+  roundingInstructions <- summaryInstructions[[name]]$rounding
+  if (is.function(roundingInstructions)) {
+    ret <- roundingInstructions(x)
+  } else if (is.list(roundingInstructions)) {
+    if (length(roundingInstructions) != 1)
+      stop("Cannot interpret rounding instructions for ", name)
+    if ("signif" == names(roundingInstructions)) {
+      ret <- signifString(x, roundingInstructions$signif)
+    } else if ("round" == names(roundingInstructions)) {
+      ret <- roundString(x, roundingInstructions$round)
+    } else {
+      stop("Invalid rounding instruction list name for ", name)
+    }
+  }
+  if (!is.character(ret))
+    ret <- as.character(ret)
+  ret
+}
+
+#' Summarize PKNCA results
+#'
+#' @param object The results to summarize
+#' @param simplify.start Should all results with the same starting
+#' time for the interval be summarized together?  (I.e. If TRUE,
+#' AUC[0-24] and AUC[0-Inf] are both summarized in the same row.)
+#' @param drop.group Which group(s) should be dropped from the
+#' formula?
+#' @return A data frame of NCA parameter results summarized according
+#' to the summarization settings.
+#' @seealso \code{\link{PKNCA.set.summary}}
 summary.PKNCAresults <- function(object, simplify.start=TRUE,
                                  drop.group="Subject") {
+  allGroups <- getGroups(object)
   groups <- unique(c("start", "end",
-                     setdiff(getGroups(object), drop.group)))
-  if (simplify.start) {
-    groups$end <- NULL
-  }
-  ret <- groups <- unique(groups)
-  ## Do all the calculations
-  for (n in names(groups)) {
-    
-  }
+                     setdiff(allGroups, drop.group)))
+  if (simplify.start)
+    groups['end'] <- NULL
+  summaryFormula <- as.formula(paste0("~", paste(groups, sep="+")))
+  groupsToSummarize <-
+    splitBy(formula=summaryFormula,
+            data=unique(object$data$intervals[, groups, drop=FALSE]))
+  dataToSummarize <-
+    splitBy(formula=summaryFormula,
+            data=unique(object$result[, groups, drop=FALSE]))
+  browser()
+  summaryInstructions <- PKNCA.set.summary()
+  ## Find any parameters that request any summaries
+  resultDataCols <- 
+    lapply(object$data$intervals[,setdiff(names(object$data$intervals),
+                                          c(groups, "start", "end")),
+                                 drop=FALSE],
+           FUN=any)
+  resultDataCols <- as.data.frame(resultDataCols[unlist(resultDataCols)])
+  resultDataCols[,] <- NA
+  ret <- cbind(unique(object$data$intervals[, groups, drop=FALSE]),
+               resultDataCols)
+  ## FIXME: This could be more efficient
+  ## Loop over every group that needs summarization
+  for (ngroup in names(groupsToSummarize))
+    ## Loop over every column that may need summarization
+    for (ncol in setdiff(names(groupsToSummarize[[ngroup]]),
+                         c(allGroups, "start", "end")))
+      ## Loop over every row that may need summarization
+      for (irow in seq_len(nrow(groupsToSummarize[[ngroup]])))
+        if (groupsToSummarize[[ngroup]][irow,ncol]) {
+          if (ncol %in% names(summaryInstructions)) {
+            point <- summaryFormula[[ncol]]$point(
+              resultDataCols[[ngroup]]$PPORRES)
+            ## Round the point estimate
+            point <- roundingSummarize(point, ncol)
+            current <- point
+            if ("spread" %in% names(summaryFormula[[ncol]])) {
+              spread <- summaryFormula[[ncol]]$spread(
+                resultDataCols[[ngroup]]$PPORRES)
+              ## Round the spread
+              spread <- roundingSummarize(spread, ncol)
+              ## Collapse the spread into a usable form if it is
+              ## longer than one (e.g. a range or a confidence
+              ## interval) and put brackets around it.
+              spread <- paste0(" [", paste(spread, collapse=", "), "]")
+              current <- paste0(current, spread)
+            }
+            ret[ncol,ngroup] <- current
+          } else {
+            stop("No instructions on how to summarize the parameter: ", ncol)
+          }
+        }
+  ret
 }

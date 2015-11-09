@@ -381,6 +381,7 @@ PKNCA.choose.option <- function(name, options=list())
 #' a two-long vector.
 #' @param reset Reset all the summary instructions
 #' @return All current summary settings (invisibly)
+#' @seealso \code{\link{summary.PKNCAresults}}
 #' @export
 PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
                               reset=FALSE) {

@@ -90,3 +90,39 @@ sapplyBy <- function(formula, data=parent.frame(), FUN) {
   }
   ret
 }
+
+#' Round a value to a defined number of digits printing out trailing
+#' zeros, if applicable.
+#'
+#' @param x The number to round
+#' @param digits integer indicating the number of decimal places
+#' @return A string with the value
+#' @seealso \code{\link{round}}, \code{\link{signifString}}
+#' @export
+roundString <- function(x, digits=0)
+  if (digits < 0) {
+    formatC(round(x, digits), format='f', digits=0)
+  } else {
+    formatC(round(x, digits), format='f', digits=digits)
+  }
+
+#' Round a value to a defined number of significant digits printing
+#' out trailing zeros, if applicable.
+#'
+#' @param x The number to round
+#' @param digits integer indicating the number of significant digits
+#' @return A string with the value
+#' @seealso \code{\link{signif}}, \code{\link{roundString}}
+#' @export
+signifString <- function(x, digits=6) {
+  if (x %in% 0) {
+    bottomlog <- digits
+  } else if (x %in% c(NA, NaN) |
+             is.infinite(x)) {
+    bottomlog <- 0
+  } else {
+    toplog <- ceiling(log10(abs(x)))
+    bottomlog <- digits-toplog
+  }
+  roundString(signif(x, digits), digits=bottomlog)
+}
