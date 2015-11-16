@@ -99,12 +99,19 @@ sapplyBy <- function(formula, data=parent.frame(), FUN) {
 #' @return A string with the value
 #' @seealso \code{\link{round}}, \code{\link{signifString}}
 #' @export
-roundString <- function(x, digits=0)
-  if (digits < 0) {
-    formatC(round(x, digits), format='f', digits=0)
+roundString <- function(x, digits=0) {
+  if (length(digits) == 1) {
+    if (digits < 0) {
+      formatC(round(x, digits), format='f', digits=0)
+    } else {
+      formatC(round(x, digits), format='f', digits=digits)
+    }
+  } else if (length(x) == length(digits)) {
+    mapply(roundString, x, digits)
   } else {
-    formatC(round(x, digits), format='f', digits=digits)
+    stop("digits must either be a scalar or the same length as x")
   }
+}
 
 #' Round a value to a defined number of significant digits printing
 #' out trailing zeros, if applicable.
@@ -115,14 +122,21 @@ roundString <- function(x, digits=0)
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
 signifString <- function(x, digits=6) {
-  if (x %in% 0) {
-    bottomlog <- digits
-  } else if (x %in% c(NA, NaN) |
-             is.infinite(x)) {
-    bottomlog <- 0
-  } else {
-    toplog <- ceiling(log10(abs(x)))
-    bottomlog <- digits-toplog
-  }
-  roundString(signif(x, digits), digits=bottomlog)
+  toplog <- bottomlog <- rep(NA, length(x))
+  ## When 0 give the digits as the output
+  bottomlog[x %in% 0] <- digits
+  ## When missing, NaN, or infinite, set digits to 0
+  bottomlog[x %in% c(NA, NaN) |
+            is.infinite(x)] <- 0
+  ## Otherwise set it to digits orders of magnitude lower than the
+  ## current value
+  toplog <- log10(abs(x))
+  ## When the order of magnitude is an exact log 10, move up one so
+  ## that the math works for determing the lower log.
+  mask.exact.log <- (toplog %% 1) == 0
+  toplog[mask.exact.log] <- toplog[mask.exact.log] + 1
+  toplog <- ceiling(toplog)
+  bottomlog[is.na(bottomlog)] <- digits-toplog[is.na(bottomlog)]
+  ## Do the rounding
+  roundString(x, digits=bottomlog)
 }

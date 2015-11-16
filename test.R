@@ -60,6 +60,9 @@ mydat <-
 
 myres <- pk.nca(mydat)
 
+summary(myres, simplify.start=FALSE)
+
+
 plot(mydat$conc)
 
 q(save="no")
