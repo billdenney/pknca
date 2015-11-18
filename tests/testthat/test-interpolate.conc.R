@@ -17,11 +17,12 @@ test_that("extrapolate.conc", {
 
   ## Ensure that if Clast is NA that the extrapolated concentration is
   ## NA.
-  expect_equal(extrapolate.conc(conc=NA,
-                                time=1,
-                                time.out=2,
-                                extrap.method="AUCinf"),
-               NA)
+  expect_warning(v1 <-
+    extrapolate.conc(conc=NA,
+                     time=1,
+                     time.out=2,
+                     extrap.method="AUCinf"))
+  expect_equal(v1, NA)
 
   ## Confirm that it is an error to extrapolate at or before Tlast
   expect_error(extrapolate.conc(conc=1,
@@ -96,12 +97,13 @@ test_that("extrapolate.conc", {
                as.numeric(NA))
 
   ## Extrapolating with all NA is NA.
-  expect_equal(extrapolate.conc(conc=rep(NA, 3),
-                                time=1:3,
-                                time.out=2.5,
-                                lambda.z=NA,
-                                extrap.method="AUCinf"),
-               NA)
+  expect_warning(v1 <-
+    extrapolate.conc(conc=rep(NA, 3),
+                     time=1:3,
+                     time.out=2.5,
+                     lambda.z=NA,
+                     extrap.method="AUCinf"))
+  expect_equal(v1, NA)
 
   ## Ensure that extrapolation beyond the last point works if the last
   ## point is 0
@@ -310,12 +312,12 @@ test_that("interp.extrap.conc", {
     exp(mean(log(c(1, 0.5)))))
 
   ## Ensure that NA for time.out results in NA output
-  expect_equal(
+  expect_warning(v1 <-
     interp.extrap.conc(conc=c(0, 1, 0.5, 1, 0),
                        time=0:4,
                        time.out=c(1.5, NA),
-                       interp.method="lin up/log down"),
-    c(exp(mean(log(c(1, 0.5)))), NA))
+                       interp.method="lin up/log down"))
+  expect_equal(v1, c(exp(mean(log(c(1, 0.5)))), NA))
 
   ## Ensure a warning with NA for time.out
   expect_warning(

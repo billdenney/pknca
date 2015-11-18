@@ -266,7 +266,7 @@ pk.calc.aumc <- function(conc, time, ..., options=list())
 #' @export
 pk.calc.aumc.last <- function(conc, time, ..., options=list()) {
   if ("auc.type" %in% names(list(...)))
-    stop("auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.auc")
+    stop("auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.aumc")
   pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUClast",
                lambda.z=NA)
@@ -277,7 +277,7 @@ pk.calc.aumc.last <- function(conc, time, ..., options=list()) {
 pk.calc.aumc.inf <- function(conc, time, ..., options=list(),
                              lambda.z) {
   if ("auc.type" %in% names(list(...)))
-    stop("auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.auc")
+    stop("auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.aumc")
   pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUCinf",
                lambda.z=lambda.z)
@@ -287,7 +287,7 @@ pk.calc.aumc.inf <- function(conc, time, ..., options=list(),
 #' @export
 pk.calc.aumc.all <- function(conc, time, ..., options=list()) {
   if ("auc.type" %in% names(list(...)))
-    stop("auc.type cannot be changed when calling pk.calc.aumc.all, please use pk.calc.auc")
+    stop("auc.type cannot be changed when calling pk.calc.aumc.all, please use pk.calc.aumc")
   pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUCall",
                lambda.z=NA)

@@ -238,14 +238,16 @@ test_that("pk.tss.stepwise.linear", {
     info="pk.tss.stepwise.linear 9")
 
   ## Ensure that the first value really is used
-  expect_equal(
+  expect_warning(v1 <-
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
                            subject=tmpdata$subject,
                            treatment=tmpdata$treatment,
                            time.dosing=0:14,
                            level=c(0.8, 0.99),
-                           verbose=FALSE),
+                           verbose=FALSE))
+  expect_equal(
+    v1,
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
                            subject=tmpdata$subject,
@@ -256,16 +258,17 @@ test_that("pk.tss.stepwise.linear", {
     info="pk.tss.stepwise.linear 10")
 
   ## Confirm testing for minimum number of data points
-  expect_equal(
-    pk.tss.stepwise.linear(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:1,
-                           min.points=3,
-                           level=0.99,
-                           verbose=FALSE),
-    NA)
+  expect_warning(
+    v1 <- pk.tss.stepwise.linear(conc=tmpdata$conc,
+                                 time=tmpdata$time,
+                                 subject=tmpdata$subject,
+                                 treatment=tmpdata$treatment,
+                                 time.dosing=0:1,
+                                 min.points=3,
+                                 level=0.99,
+                                 verbose=FALSE),
+    regexp="After removing non-dosing time points, insufficient data remains for tss calculation")
+  expect_equal(v1, NA)
   expect_warning(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,

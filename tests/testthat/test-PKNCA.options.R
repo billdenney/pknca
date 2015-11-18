@@ -86,8 +86,8 @@ test_that("PKNCA.options", {
                regexp="adj.r.squared.factor must be between 0 and 1, exclusive")
   expect_error(PKNCA.options(adj.r.squared.factor="A", check=TRUE),
                regexp="adj.r.squared.factor must be numeric \\(and not a factor\\)")
-  expect_equal(PKNCA.options(adj.r.squared.factor=0.9, check=TRUE),
-               0.9)
+  expect_warning(v1 <- PKNCA.options(adj.r.squared.factor=0.9, check=TRUE))
+  expect_equal(v1, 0.9)
   expect_warning(PKNCA.options(adj.r.squared.factor=0.9, check=TRUE),
                  regexp="adj.r.squared.factor is usually <0.01")
 
@@ -119,14 +119,16 @@ test_that("PKNCA.options", {
   ## conc.na
   expect_equal(PKNCA.options(conc.na="drop", check=TRUE),
                "drop")
-  expect_equal(PKNCA.options(conc.na=factor("drop"), check=TRUE),
-               "drop")
+  expect_warning(v1 <- PKNCA.options(conc.na=factor("drop"), check=TRUE),
+                 regexp="conc.na may not be a factor; attempting conversion")
+  expect_equal(v1, "drop")
   expect_warning(PKNCA.options(conc.na=factor("drop"), check=TRUE),
                  regexp="conc.na may not be a factor; attempting conversion")
   expect_equal(PKNCA.options(conc.na=1, check=TRUE),
                1)
-  expect_equal(PKNCA.options(conc.na=-1, check=TRUE),
-               -1)
+  expect_warning(v1 <- PKNCA.options(conc.na=-1, check=TRUE),
+                 regexp="conc.na is usually not < 0")
+  expect_equal(v1, -1)
   expect_warning(PKNCA.options(conc.na=-1, check=TRUE),
                  regexp="conc.na is usually not < 0")
   expect_error(PKNCA.options(conc.na=Inf, check=TRUE),
@@ -144,13 +146,10 @@ test_that("PKNCA.options", {
                0)
   expect_equal(PKNCA.options(conc.blq=1, check=TRUE),
                1)
-  expect_equal(PKNCA.options(conc.blq=factor("drop"), check=TRUE),
-               "drop")
-  expect_warning(PKNCA.options(conc.blq=factor("drop"), check=TRUE),
-                 regexp="conc.blq may not be a factor; attempting conversion")
+  expect_warning(v1 <- PKNCA.options(conc.blq=factor("drop"), check=TRUE),
+                 "conc.blq may not be a factor; attempting conversion")
+  expect_equal(v1, "drop")
   expect_error(PKNCA.options(conc.blq="foo", check=TRUE),
-               regexp="conc.blq must either be a finite number or the text 'drop' or 'keep'")
-  expect_error(PKNCA.options(conc.blq=factor("foo"), check=TRUE),
                regexp="conc.blq must either be a finite number or the text 'drop' or 'keep'")
   expect_error(PKNCA.options(conc.blq=c(1, 2), check=TRUE),
                regexp="conc.blq must be a scalar")
@@ -175,12 +174,12 @@ test_that("PKNCA.options", {
   expect_error(PKNCA.options(first.tmax=c(FALSE, TRUE), check=TRUE),
                regexp="first.tmax must be a scalar")
   ## Conversion works
-  expect_equal(PKNCA.options(first.tmax="T", check=TRUE),
-               TRUE)
-  expect_warning(PKNCA.options(first.tmax="T", check=TRUE),
+  expect_warning(v1 <- PKNCA.options(first.tmax="T", check=TRUE),
                  regexp="Converting first.tmax to a logical value: TRUE")
-  expect_equal(PKNCA.options(first.tmax=1, check=TRUE),
-               TRUE)
+  expect_equal(v1, TRUE)
+  expect_warning(v1 <- PKNCA.options(first.tmax=1, check=TRUE),
+                 regexp="Converting first.tmax to a logical value: TRUE")
+  expect_equal(v1, TRUE)
   expect_error(PKNCA.options(first.tmax=NA, check=TRUE),
                regexp="first.tmax may not be NA")
   expect_error(PKNCA.options(first.tmax="x", check=TRUE),
@@ -197,11 +196,10 @@ test_that("PKNCA.options", {
                regexp="min.hl.points must be a number")
   expect_error(PKNCA.options(min.hl.points=1.5, check=TRUE),
                regexp="min.hl.points must be >=2")
-  expect_warning(PKNCA.options(min.hl.points=2.5, check=TRUE),
+  expect_warning(v1 <- PKNCA.options(min.hl.points=2.5, check=TRUE),
                  regexp="Non-integer given for min.hl.points; rounding to nearest integer")
   ## Note that R uses the engineer's rule of rounding
-  expect_equal(PKNCA.options(min.hl.points=2.5, check=TRUE),
-               2)
+  expect_equal(v1, 2)
 
   ## min.span.ratio
   expect_equal(PKNCA.options(min.span.ratio=2, check=TRUE),

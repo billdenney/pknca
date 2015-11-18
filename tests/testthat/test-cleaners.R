@@ -6,9 +6,14 @@ test_that("clean.conc.na", {
                regexp="conc.na must either be a finite number or the text 'drop'")
 
   ## It drops NA values if requested (even if they are the only value)
-  expect_equal(clean.conc.na(conc=as.numeric(NA), time=1, conc.na="drop"),
+  expect_warning(v1 <-
+    clean.conc.na(conc=as.numeric(NA), time=1, conc.na="drop"))
+  expect_equal(v1,
                data.frame(conc=numeric(), time=numeric()))
-  expect_equal(clean.conc.na(conc=as.numeric(c(NA, NA)), time=1:2, conc.na="drop"),
+  expect_warning(v2 <- 
+    clean.conc.na(conc=as.numeric(c(NA, NA)), time=1:2,
+                  conc.na="drop"))
+  expect_equal(v2,
                data.frame(conc=numeric(), time=numeric()))
   expect_equal(clean.conc.na(conc=c(1, NA), time=1:2, conc.na="drop"),
                data.frame(conc=1, time=1))
@@ -17,9 +22,13 @@ test_that("clean.conc.na", {
                check.attributes=FALSE)
 
   ## It also works with a number as the conc.na value
-  expect_equal(clean.conc.na(conc=as.numeric(NA), time=1, conc.na=5),
+  expect_warning(v3 <-
+    clean.conc.na(conc=as.numeric(NA), time=1, conc.na=5))
+  expect_equal(v3,
                data.frame(conc=5, time=1))
-  expect_equal(clean.conc.na(conc=c(NA, NA), time=1:2, conc.na=5),
+  expect_warning(v4 <-
+    clean.conc.na(conc=c(NA, NA), time=1:2, conc.na=5))
+  expect_equal(v4,
                data.frame(conc=c(5, 5), time=1:2))
   expect_equal(clean.conc.na(conc=c(1, NA), time=1:2, conc.na=5),
                data.frame(conc=c(1, 5), time=1:2))
@@ -83,6 +92,30 @@ test_that("clean.conc.blq", {
                                 last="drop"),
                               conc.na="drop"),
                d.test)
+
+  ## Errors in how to handle first/middle/last rules are caught.
+  d.test <- data.frame(conc=c(0, 1), time=1:2)
+  expect_error(clean.conc.blq(d.test$conc, d.test$time,
+                              conc.blq=list(
+                                first="foo",
+                                middle="drop",
+                                last="drop"),
+                              conc.na="drop"),
+               regexp="conc.blq must either be a finite number or the text 'drop' or 'keep'")
+  expect_error(clean.conc.blq(d.test$conc, d.test$time,
+                              conc.blq=list(
+                                first="keep",
+                                middle="foo",
+                                last="drop"),
+                              conc.na="drop"),
+               regexp="conc.blq must either be a finite number or the text 'drop' or 'keep'")
+  expect_error(clean.conc.blq(d.test$conc, d.test$time,
+                              conc.blq=list(
+                                first="keep",
+                                middle="drop",
+                                last="foo"),
+                              conc.na="drop"),
+               regexp="conc.blq must either be a finite number or the text 'drop' or 'keep'")
 
   ## If there are BLQ values at the end, it drops them if the
   ## instructions are generic drop.

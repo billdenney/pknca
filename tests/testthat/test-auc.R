@@ -13,14 +13,14 @@ test_that("pk.calc.auxc", {
                               method="linear"),
                  regexp="Requesting an AUC range starting \\(1\\) before the first measurement \\(2\\) is not allowed")
   ## But starting before the beginning does return NA (not an error)
-  expect_equal(pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
-                            method="linear"),
-               NA)
+  expect_warning(v1 <- pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
+                                    method="linear"))
+  expect_equal(v1, NA)
 
   ## All concentrations are NA, return NA
-  expect_equal(pk.calc.auxc(conc=c(NA, NA), time=2:3, interval=c(1, 3),
-                            method="linear"),
-               NA)
+  expect_warning(v2 <- pk.calc.auxc(conc=c(NA, NA), time=2:3, interval=c(1, 3),
+                                    method="linear"))
+  expect_equal(v2, NA)
   ## All concentrations are 0, return 0
   expect_equal(pk.calc.auxc(conc=c(0, 0), time=2:3, interval=c(2, 3),
                             method="linear"),
@@ -32,64 +32,94 @@ test_that("pk.calc.auxc", {
 })
 
 test_that("pk.calc.auc", {
+  nullfun <- function(x) x
   ## Linear AUC when the conc at the end of the interval is above LOQ;
   ## lambda.z is unused
   tests <- list(AUCinf=as.numeric(NA),
                 AUClast=1.5,
                 AUCall=1.5)
-  for (t in names(tests))
-    expect_equal(pk.calc.auc(conc=c(0, 1, 1),
+  for (t in names(tests)) {
+    ## Note: using this structure ensures that there will not be
+    ## excessive warnings during testing.
+    if (t == "AUCinf") {
+      runner <- expect_warning
+    } else {
+      runner <- nullfun
+    }
+    runner(v1 <- pk.calc.auc(conc=c(0, 1, 1),
                              time=0:2,
                              interval=c(0, 2),
                              lambda.z=NA,
                              auc.type=t,
-                             method="linear"),
-                 tests[[t]],
-                 info=t)
+                             method="linear"))
+    expect_equal(v1, tests[[t]], info=t)
+  }
 
+  
   ## Linear AUC when the conc at the end of the interval is BLQ;
   ## lambda.z is used to extrapolate to the end of the interval.
   ## Since lambda.z is NA, the result is NA.
   tests <- list(AUCinf=as.numeric(NA),
                 AUClast=0.5,
                 AUCall=1)
-  for (t in names(tests))
-    expect_equal(pk.calc.auc(conc=c(0, 1, 0),
+  for (t in names(tests)) {
+    ## Note: using this structure ensures that there will not be
+    ## excessive warnings during testing.
+    if (t == "AUCinf") {
+      runner <- expect_warning
+    } else {
+      runner <- nullfun
+    }
+    runner(v1 <- pk.calc.auc(conc=c(0, 1, 0),
                              time=0:2,
                              interval=c(0, 2),
                              lambda.z=NA,
                              auc.type=t,
-                             method="linear"),
-                 tests[[t]],
-                 info=t)
+                             method="linear"))
+    expect_equal(v1, tests[[t]], info=t)
+  }
 
   ## The same when lambda.z is given
   tests <- list(AUCinf=1.5,
                 AUClast=0.5,
                 AUCall=1)
-  for (t in names(tests))
-    expect_equal(pk.calc.auc(conc=c(0, 1, 0),
+  for (t in names(tests)) {
+    ## Note: using this structure ensures that there will not be
+    ## excessive warnings during testing.
+    if (t == "AUCinf") {
+      runner <- expect_warning
+    } else {
+      runner <- nullfun
+    }
+    runner(v1 <- pk.calc.auc(conc=c(0, 1, 0),
                              time=0:2,
                              interval=c(0, 2),
                              lambda.z=1,
                              auc.type=t,
-                             method="linear"),
-                 tests[[t]],
-                 info=t)
+                             method="linear"))
+    expect_equal(v1, tests[[t]], info=t)
+  }
 
   ## And when there are multiple BLQ values at the end
   tests <- list(AUCinf=1.5,
                 AUClast=0.5,
                 AUCall=1)
-  for (t in names(tests))
-    expect_equal(pk.calc.auc(conc=c(0, 1, rep(0, 5)),
+  for (t in names(tests)) {
+    ## Note: using this structure ensures that there will not be
+    ## excessive warnings during testing.
+    if (t == "AUCinf") {
+      runner <- expect_warning
+    } else {
+      runner <- nullfun
+    }
+    runner(v1 <- pk.calc.auc(conc=c(0, 1, rep(0, 5)),
                              time=0:6,
                              interval=c(0, 6),
                              lambda.z=1,
                              auc.type=t,
-                             method="linear"),
-                 tests[[t]],
-                 info=t)
+                             method="linear"))
+    expect_equal(v1, tests[[t]], info=t)
+  }
 
   ## Confirm that center BLQ points are dropped, kept, or imputed
   ## correctly.  Do this with both "linear" and "lin up/log down"
@@ -103,16 +133,23 @@ test_that("pk.calc.auc", {
       AUClast=1+1+0.5+1.5+1/log(2),
       AUCall=1+1+0.5+1.5+1/log(2)))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1),
                                time=0:5,
                                interval=c(0, 5),
                                lambda.z=1,
                                auc.type=n,
                                conc.blq="keep",
-                               method=t),
-                   tests[[t]][[n]],
-                   info=paste(t, n))
+                               method=t))
+      expect_equal(v1, tests[[t]][[n]], info=paste(t, n))
+    }
 
   ## AUCall looks different when there are BLQs at the end
   tests <- list(
@@ -125,16 +162,23 @@ test_that("pk.calc.auc", {
       AUClast=1+1+0.5+1.5+1/log(2),
       AUCall=1+1+0.5+1.5+1/log(2)+0.5))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
                                time=0:7,
                                interval=c(0, 7),
                                lambda.z=1,
                                auc.type=n,
                                conc.blq="keep",
-                               method=t),
-                   tests[[t]][[n]],
-                   info=paste(t, n))
+                               method=t))
+      expect_equal(v1, tests[[t]][[n]], info=paste(t, n))
+    }
 
   ## When BLQ in the middle and end are dropped, you get different
   ## answers.  (Note that first BLQ dropping would cause errors due to
@@ -149,8 +193,15 @@ test_that("pk.calc.auc", {
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
                                time=0:7,
                                interval=c(0, 7),
                                lambda.z=1,
@@ -159,9 +210,11 @@ test_that("pk.calc.auc", {
                                  first="keep",
                                  middle="drop",
                                  last="keep"),
-                               method=t),
+                               method=t))
+      expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
+    }
   
   ## When AUCinf is requested with NA for lambda.z, the result is NA.
   tests <- list(
@@ -174,8 +227,15 @@ test_that("pk.calc.auc", {
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
                                time=0:7,
                                interval=c(0, 7),
                                lambda.z=NA,
@@ -184,10 +244,11 @@ test_that("pk.calc.auc", {
                                  first="keep",
                                  middle="drop",
                                  last="keep"),
-                               method=t),
+                               method=t))
+      expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
-
+    }
   ## Test NA at the beginning
 
   ## Test NA at the end
@@ -201,8 +262,15 @@ test_that("pk.calc.auc", {
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+1))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, NA, 0),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, NA, 0),
                                time=0:7,
                                interval=c(0, 7),
                                lambda.z=NA,
@@ -211,10 +279,12 @@ test_that("pk.calc.auc", {
                                  first="keep",
                                  middle="drop",
                                  last="keep"),
-                               method=t),
+                               method=t))
+      expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
-
+    }
+  
   ## Test interpolation of times within the time interval
   tests <- list(
     "linear"=list(
@@ -226,8 +296,15 @@ test_that("pk.calc.auc", {
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5/log(2)))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
                                time=c(0:5, 7),
                                interval=c(0, 6),
                                lambda.z=1,
@@ -236,10 +313,12 @@ test_that("pk.calc.auc", {
                                  first="keep",
                                  middle="drop",
                                  last="keep"),
-                               method=t),
+                               method=t))
+      expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
-
+    }
+  
   ## Confirm warning with beginning of interval before the beginning of
   ## time
   tests <- list(
@@ -252,20 +331,25 @@ test_that("pk.calc.auc", {
       AUClast=NA,
       AUCall=NA))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
-                               time=c(0:5, 7),
-                               interval=c(-1, 6),
-                               lambda.z=1,
-                               auc.type=n,
-                               conc.blq=list(
-                                 first="keep",
-                                 middle="drop",
-                                 last="keep"),
-                               method=t),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      expect_warning(
+        v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
+                          time=c(0:5, 7),
+                          interval=c(-1, 6),
+                          lambda.z=1,
+                          auc.type=n,
+                          conc.blq=list(
+                            first="keep",
+                            middle="drop",
+                            last="keep"),
+                          method=t))
+      expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
-
+    }
+  
   ## Requesting an AUC interval that starts after the last measurement
   ## results in a warning, but will provide an answer (to be tested
   ## elsewhere).
@@ -285,19 +369,29 @@ test_that("pk.calc.auc", {
       AUClast=NA,
       AUCall=NA))
   for (t in names(tests))
-    for (n in names(tests[[t]]))
-      expect_equal(pk.calc.auc(conc=c(NA, 2, 0, 1, 2, 1, 0),
-                               time=c(0:5, 7),
-                               interval=c(0, 6),
-                               lambda.z=1,
-                               auc.type=n,
-                               conc.blq=list(
-                                 first="keep",
-                                 middle="drop",
-                                 last="keep"),
-                               method=t),
+    for (n in names(tests[[t]])) {
+      ## Note: using this structure ensures that there will not be
+      ## excessive warnings during testing.
+      if (n == "AUCinf") {
+        runner <- expect_warning
+      } else {
+        runner <- nullfun
+      }
+      expect_warning(
+        v1 <- pk.calc.auc(conc=c(NA, 2, 0, 1, 2, 1, 0),
+                          time=c(0:5, 7),
+                          interval=c(0, 6),
+                          lambda.z=1,
+                          auc.type=n,
+                          conc.blq=list(
+                            first="keep",
+                            middle="drop",
+                            last="keep"),
+                          method=t))
+      expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
+    }
 
   ## Confirm error with concentration and time not of equal lengths
   expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2)),
@@ -314,6 +408,20 @@ test_that("pk.calc.auc", {
   ## Confirm that AUC method checking works
   expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 3), method="wrong"),
                regex='should be one of "lin up/log down", "linear"')
+
+  ## Confirm that everything works even when check is FALSE
+  expect_equal(
+    pk.calc.auc.inf(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, Inf),
+                    lambda.z=1,
+                    check=FALSE,
+                    method="linear"),
+    pk.calc.auc.inf(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, Inf),
+                    lambda.z=1,
+                    method="linear"))
 })
 
 test_that("pk.calc.auc.last", {
@@ -322,7 +430,11 @@ test_that("pk.calc.auc.last", {
                      time=0:3,
                      interval=c(0, 3),
                      method="linear"),
-    1.5)
+    pk.calc.auc(conc=c(0, 1, 1, 0),
+                time=0:3,
+                interval=c(0, 3),
+                auc.type="AUClast",
+                method="linear"))
   expect_error(
     pk.calc.auc.last(conc=c(0, 1, 1, 0),
                      time=0:3,
@@ -332,13 +444,43 @@ test_that("pk.calc.auc.last", {
     regexp="auc.type cannot be changed when calling pk.calc.auc.last, please use pk.calc.auc")
 })
 
+test_that("pk.calc.auc.inf", {
+  ## Just ensuring that it is a simple wrapper.  Computation testing
+  ## is done elsewhere.
+  expect_equal(
+    pk.calc.auc.inf(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, Inf),
+                    lambda.z=1,
+                    method="linear"),
+    pk.calc.auc(conc=c(0, 1, 1, 0),
+                time=0:3,
+                interval=c(0, Inf),
+                lambda.z=1,
+                auc.type="AUCinf",
+                method="linear"))
+  expect_error(
+    pk.calc.auc.inf(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    auc.type="foo",
+                    method="linear"),
+    regexp="auc.type cannot be changed when calling pk.calc.auc.inf, please use pk.calc.auc")
+})
+
 test_that("pk.calc.auc.all", {
+  ## Just ensuring that it is a simple wrapper.  Computation testing
+  ## is done elsewhere.
   expect_equal(
     pk.calc.auc.all(conc=c(0, 1, 1, 0),
                     time=0:3,
                     interval=c(0, 3),
                     method="linear"),
-    2)
+    pk.calc.auc(conc=c(0, 1, 1, 0),
+                time=0:3,
+                interval=c(0, 3),
+                auc.type="AUCall",
+                method="linear"))
   expect_error(
     pk.calc.auc.all(conc=c(0, 1, 1, 0),
                     time=0:3,
@@ -372,4 +514,73 @@ test_that("pk.calc.aumc", {
       lambda.z=1,
       method="lin up/log down"),
     2-0.5/log(0.5)+0.5/(log(0.5)^2)+1.5+0.5)
+})
+
+
+test_that("pk.calc.aumc.inf", {
+  ## Just ensuring that it is a simple wrapper.  Computation testing
+  ## is done elsewhere.
+  expect_equal(
+    pk.calc.aumc.inf(conc=c(0, 1, 1, 0),
+                     time=0:3,
+                     interval=c(0, Inf),
+                     lambda.z=1,
+                     method="linear"),
+    pk.calc.aumc(conc=c(0, 1, 1, 0),
+                 time=0:3,
+                 interval=c(0, Inf),
+                 lambda.z=1,
+                 auc.type="AUCinf",
+                 method="linear"))
+  expect_error(
+    pk.calc.aumc.inf(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    auc.type="foo",
+                    method="linear"),
+    regexp="auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.aumc")
+})
+
+test_that("pk.calc.aumc.all", {
+  ## Just ensuring that it is a simple wrapper.  Computation testing
+  ## is done elsewhere.
+  expect_equal(
+    pk.calc.aumc.all(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    method="linear"),
+    pk.calc.aumc(conc=c(0, 1, 1, 0),
+                 time=0:3,
+                 interval=c(0, 3),
+                 auc.type="AUCall",
+                 method="linear"))
+  expect_error(
+    pk.calc.aumc.all(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    auc.type="foo",
+                    method="linear"),
+    regexp="auc.type cannot be changed when calling pk.calc.aumc.all, please use pk.calc.aumc")
+})
+
+test_that("pk.calc.aumc.last", {
+  ## Just ensuring that it is a simple wrapper.  Computation testing
+  ## is done elsewhere.
+  expect_equal(
+    pk.calc.aumc.last(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    method="linear"),
+    pk.calc.aumc(conc=c(0, 1, 1, 0),
+                 time=0:3,
+                 interval=c(0, 3),
+                 auc.type="AUClast",
+                 method="linear"))
+  expect_error(
+    pk.calc.aumc.last(conc=c(0, 1, 1, 0),
+                    time=0:3,
+                    interval=c(0, 3),
+                    auc.type="foo",
+                    method="linear"),
+    regexp="auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.aumc")
 })

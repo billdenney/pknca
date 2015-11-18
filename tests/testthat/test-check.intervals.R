@@ -196,9 +196,46 @@ test_that(
                       vz=FALSE,
                       treatment="foo",
                       stringsAsFactors=FALSE)
-    expect_equal(check.interval.specification(d15), r15)
+    expect_warning(v15 <- check.interval.specification(d15))
+    expect_equal(v15, r15)
 
     d16 <- data.frame(start=factor(0), end=1)
     expect_error(check.interval.specification(d16),
                  regexp="Interval column 'start' should not be a factor")
 })
+
+test_that("check.interval.deps", {
+  ## Confirm that the interval dependencies are accurately added
+  expect_equal(check.interval.deps(data.frame(start=0, end=24, aucinf=TRUE)),
+               data.frame(start=0,
+                          end=24,
+                          auclast=FALSE,
+                          aucall=FALSE,
+                          aumclast=FALSE,
+                          aumcall=FALSE,
+                          cmax=FALSE,
+                          cmin=FALSE,
+                          tmax=FALSE,
+                          tlast=FALSE,
+                          tfirst=FALSE,
+                          clast.obs=FALSE,
+                          f=FALSE,
+                          half.life=TRUE,
+                          r.squared=FALSE,
+                          adj.r.squared=FALSE,
+                          lambda.z=FALSE,
+                          lambda.z.time.first=FALSE,
+                          lambda.z.n.points=FALSE,
+                          clast.pred=FALSE,
+                          span.ratio=FALSE,
+                          aucinf=TRUE,
+                          aumcinf=FALSE,
+                          aucpext=FALSE,
+                          cl=FALSE,
+                          mrt=FALSE,
+                          vss=FALSE,
+                          thalf.eff=FALSE,
+                          kel=FALSE,
+                          vz=FALSE))
+            
+          })

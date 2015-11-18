@@ -12,8 +12,10 @@ test_that("adj.r.squared", {
 
 test_that("pk.calc.cmax", {
   ## Confirm that all NAs give NA as an output
-  expect_equal(pk.calc.cmax(NA), NA)
-  expect_equal(pk.calc.cmax(c(NA, NA)), NA)
+  expect_warning(v1 <- pk.calc.cmax(NA))
+  expect_equal(v1, NA)
+  expect_warning(v2 <- pk.calc.cmax(c(NA, NA)))
+  expect_equal(v2, NA)
 
   ## Confirm that no NAs give the max value
   expect_equal(pk.calc.cmax(c(1, 2)), 2)
@@ -26,13 +28,16 @@ test_that("pk.calc.cmax", {
   expect_equal(pk.calc.cmax(c(1, NA, 3, NA)), 3)
 
   ## Confirm that no data gives NA with a warning
-  expect_equal(pk.calc.cmax(c()), NA)
+  expect_warning(v3 <- pk.calc.cmax(c()))
+  expect_equal(v3, NA)
 })
 
 test_that("pk.calc.cmin", {
   ## Confirm that all NAs give NA as an output
-  expect_equal(pk.calc.cmin(NA), NA)
-  expect_equal(pk.calc.cmin(c(NA, NA)), NA)
+  expect_warning(v1 <- pk.calc.cmin(NA))
+  expect_equal(v1, NA)
+  expect_warning(v2 <- pk.calc.cmin(c(NA, NA)))
+  expect_equal(v2, NA)
 
   ## Confirm that no NAs give the min value
   expect_equal(pk.calc.cmin(c(1, 2)), 1)
@@ -45,12 +50,14 @@ test_that("pk.calc.cmin", {
   expect_equal(pk.calc.cmin(c(1, NA, 3, NA)), 1)
 
   ## Confirm that no data gives NA with a warning
-  expect_equal(pk.calc.cmin(c()), NA)
+  expect_warning(v3 <- pk.calc.cmin(c()))
+  expect_equal(v3, NA)
 })
 
 test_that("pk.calc.tmax", {
   ## No data give a warning and NA
-  expect_equal(pk.calc.tmax(c(), c()), NA)
+  expect_warning(v1 <- pk.calc.tmax(c(), c()))
+  expect_equal(v1, NA)
 
   ## Either concentration or time is missing, give an error
   expect_error(pk.calc.tmax(conc=c()),
@@ -111,7 +118,8 @@ test_that("pk.calc.clast.obs", {
 
   c1 <- c(NA, NA, NA, NA)
   t1 <- c(0, 1, 2, 3)
-  expect_equal(pk.calc.clast.obs(c1, t1), NA)
+  expect_warning(v1 <- pk.calc.clast.obs(c1, t1))
+  expect_equal(v1, NA)
 
   c1 <- rep(0, 4)
   t1 <- c(0, 1, 2, 3)
@@ -229,7 +237,8 @@ test_that("pk.calc.vss", {
 test_that("pk.calc.aucpext", {
   expect_equal(pk.calc.aucpext(1, 2), 50)
   expect_equal(pk.calc.aucpext(1.8, 2), 10)
-  expect_equal(pk.calc.aucpext(2, 1), -100)
+  expect_warning(v1 <- pk.calc.aucpext(2, 1))
+  expect_equal(v1, -100)
   expect_warning(pk.calc.aucpext(2, 1),
                  regexp="auclast should be less than aucinf")
 })
