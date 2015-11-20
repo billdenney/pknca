@@ -1,4 +1,4 @@
-Design of the PKNCA R Package
+The PKNCA R Package
 =====
 
 The PKNCA R package is designed to perform all noncompartmental
@@ -13,118 +13,43 @@ automation would leave ambiguity or make a choice that the analyst may
 have an alternate preference for, it is either not used or is possible
 to override.
 
-# Function Groups
+# Installation
 
-## Housekeeping and Option Setting
+To install the development version from github, install the devtools
+package and then type the following commands:
 
-So that each session can be simplified, many of the options passed to
-a function on calculation or summary choices have their defaults set
-in the `PKNCA.options` function.  Any option that is set in
-`PKNCA.options` can be overridden on an individual function call, but
-consistency is maximized by setting them once.
+library(devtools)
+install_github("billdenney/pknca")
 
-Two data cleaning functions handle missing (concentration=NA) and
-below limit of quantification (BLQ, concentration=0) concentrations.
-These enable 0 and NA to be handled equivalently across all
-calculations and summaries.
+# Calculating parameters
 
-# Calculation Functions
+    # Load the package
+    library(PKNCA)
+    # Set the business rule options with the PKNCA.options() function
+    # Load your concentration-time data
+    myrawconcdata <- read.csv("myconc.csv", stringsAsFactors=FALSE)
+    # Load your dose data
+    myrawdosedata <- read.csv("mydose.csv", stringsAsFactors=FALSE)
+    # Put your concentration data into a PKNCAconc object
+    myconc <- PKNCAconc(data=myrawconcdata,
+                        formula=conc~time|subject+analyte)
+    # Put your dose data into a PKNCAdose object
+    mydose <- PKNCAdose(data=myrawdosedata,
+                        formula=~time|subject)
+    # Combine the two (and automatically determine the intervals of
+    # interest
+    mydata <- PKNCAdata(myconc, mydose)
+    # Compute the NCA parameters
+    myresults <- pk.nca(mydata)
+    # Summarize the results
+    summary(myresults)
 
-Each calculation function is a generic function that can accept
-numeric vectors, a data frame and a grouped formula, or groupedData
-(from the nlme package).  Each of the functions that accepts numeric
-vectors assumes that it is for a single subject in a single interval
-for summary (e.g. the pk.calc.tmax function for numeric vectors
-assumes that you want the Tmax of all measurements passed in, and it
-does not subset the data further).
+More help is available in the function help files, and be sure to look
+at the PKNCA.options function for many choices to make PKNCA conform
+to your company's business rules for calculations and summarization.
 
-The groupedData and grouped formula with data frame methods separate
-the subjects based on the groups specified and then passes the data
-into the numeric vector methods.  The grouped formulae are written as
-`concentration~time|groups`.  The groups are specified where a plus
-sign (`+`) separates parameters between subjects and a front slash
-(`/`) separates parameters within a subject.  The parameters within a
-subject should always start with the subject identifier column.  For
-example, the groups may be written as `study+subject/analyte/day`.
+# Feature requests
 
-Dosing data is specified equivalently to `concentration~time` data
-with an addition if there are multiple analytes and/or drugs given.
-With multiple analytes and dosing of more than one drug (e.g. in a
-drug interaction study), a data frame mapping the drug name to the
-analyte name must be given if the names are not identical.  An example
-of this when running a midazolam drug interaction study where
-midazolam and 5-OH midazolam are measured with DRUG1 can be
-data.frame(drug=c("midazolam", "midazolam", "DRUG1"),
-analyte=c("midazolam", "5-OH midazolam", "DRUG1")).
-
-The numeric vector methods return a number or data frame, as
-appropriate.  The other methods return a data frame that has the
-additional class of PKNCAresults to assist with summaries.
-
-# Summary Functions
-
-The summary functions take input of parameters to summarize on the
-left hand side (assuming all if none are specified), and the right
-hand side indicates which groups to remove (with minus signs) or which
-groups to keep (with plus signs).  Two equivalent summaries from a
-calculation input of "concentration~time|study+subject/analyte/day"
-are "~-subject" and "~study+analytes/day", or to just summarize the
-AUC0_24, write "AUC0_24~-subject".  The right hand side for removal
-and keeping groups cannot be mixed.  If no removal or addition is
-specified, then the output is designed to be appropriate for
-generation of listings of all parameters as calculated; keeping
-everything can be written as ".~.".
-
-# Calculation Details
-
-## Cmax
-
-## Cmin
-
-## Clast observed
-
-## Clast predicted
-
-## Tmax
-
-## Tlast
-
-## Tfirst
-
-## Half-Life
-
-## Area Under the Curve (AUC)
-
-### Automatically Choosing AUC Intervals
-
-### AUC with a Specific Interval
-
-### AUCall
-
-### AUClast
-
-### AUCinf
-
-### AUC percent extrapolated
-
-## Observed Systemic Clearance (CL)
-
-## Mean Residence Time (MRT)
-
-## Volume of Distribution
-
-### Terminal Volume of Distribution (Vz)
-
-### Steady-State Volume of Distribution (Vss)
-
-## Time to Steady-State (TSS)
-
-### Monoexponential Time to Steady-State
-
-### Stepwise-Linear Time to Steady-State
-
-## Concentration Interpolation
-
-# Summary Details
-
-# Business Rules
+Please use the github issues page
+(https://github.com/billdenney/pknca/issues) to make feature requests
+and bug reports.
