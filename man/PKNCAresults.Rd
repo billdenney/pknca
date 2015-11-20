@@ -13,10 +13,6 @@ name of an NCA parameter.}
 \item{data}{The PKNCAdata used to generate the result}
 
 \item{provenance}{Data and calculation provenance}
-
-\item{formula}{The formula used for concentration data in the
-calculations.  The groups are verified to be column names in the
-\code{result} parameter.}
 }
 \value{
 A PKNCAresults object with each of the above within.

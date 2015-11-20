@@ -16,6 +16,14 @@ AUC[0-24] and AUC[0-Inf] are both summarized in the same row.)}
 
 \item{drop.group}{Which group(s) should be dropped from the
 formula?}
+
+\item{not.requested.string}{A character string to use when a
+parameter summary was not requested for a parameter within an
+interval.}
+
+\item{not.calculated.string}{A character string to use when a
+parameter summary was requested, but the point estimate AND spread
+calculations (if applicable) returned \code{NA}.}
 }
 \value{
 A data frame of NCA parameter results summarized according

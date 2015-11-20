@@ -6,7 +6,8 @@
 \title{Interpolate concentrations between measurements or extrapolate
 concentrations after the last measurement.}
 \usage{
-interp.extrap.conc(conc, time, time.out, lambda.z = NA, options = list(),
+interp.extrap.conc(conc, time, time.out, lambda.z = NA,
+  clast = pk.calc.clast.obs(conc, time), options = list(),
   interp.method = PKNCA.choose.option("auc.method", options),
   extrap.method = "AUCinf", conc.blq = PKNCA.choose.option("conc.blq",
   options), conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
@@ -17,8 +18,8 @@ interpolate.conc(conc, time, time.out, options = list(),
   conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
 
 extrapolate.conc(conc, time, time.out, lambda.z = NA,
-  extrap.method = "AUCinf", options = list(),
-  conc.na = PKNCA.choose.option("conc.na", options),
+  clast = pk.calc.clast.obs(conc, time), extrap.method = "AUCinf",
+  options = list(), conc.na = PKNCA.choose.option("conc.na", options),
   conc.blq = PKNCA.choose.option("conc.blq", options), check = TRUE)
 }
 \arguments{
@@ -31,6 +32,9 @@ extrapolate.conc(conc, time, time.out, lambda.z = NA,
 
 \item{lambda.z}{The elimination rate constant.  \code{NA} will
 prevent extrapolation.}
+
+\item{clast}{The last observed concentration above the limit of
+quantification.  If not given, \code{clast} is calculated from \code{\link{pk.calc.clast.obs}}}
 
 \item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}
@@ -89,4 +93,8 @@ Tlast (inclusive)
 
 \item \code{}: Extrapolate concentrations after Tlast
 }}
+\seealso{
+\code{\link{pk.calc.clast.obs}}
+\code{\link{pk.calc.half.life}}
+}
 

@@ -446,6 +446,10 @@ PKNCAdata <- function(data.conc, formula.conc,
   ret
 }
 
+#' Print a PKNCAdata object
+#' @param x The object to print
+#' @param ... Arguments passed on to \code{\link{print.PKNCAconc}} and
+#' \code{\link{print.PKNCAdose}}
 #' @export
 print.PKNCAdata <- function(x, ...) {
   print.PKNCAconc(x$conc, ...)
@@ -460,6 +464,10 @@ print.PKNCAdata <- function(x, ...) {
   }
 }
 
+#' Summarize a PKNCAdata object showing important details about the
+#' concentration, dosing, and interval information.
+#' @param object The PKNCAdata object to summarize.
+#' @param ... arguments passed on to \code{\link{print.PKNCAdata}}
 #' @export
 summary.PKNCAdata <- function(object, ...)
   print.PKNCAdata(object, summarize=TRUE, ...)
@@ -472,9 +480,6 @@ summary.PKNCAdata <- function(object, ...)
 #' @param result a data frame with NCA calculation results and groups.
 #' Each row is one interval and each column is a group name or the
 #' name of an NCA parameter.
-#' @param formula The formula used for concentration data in the
-#' calculations.  The groups are verified to be column names in the
-#' \code{result} parameter.
 #' @param data The PKNCAdata used to generate the result
 #' @param provenance Data and calculation provenance
 #' @return A PKNCAresults object with each of the above within.
@@ -547,6 +552,12 @@ roundingSummarize <- function(x, name) {
 #' AUC[0-24] and AUC[0-Inf] are both summarized in the same row.)
 #' @param drop.group Which group(s) should be dropped from the
 #' formula?
+#' @param not.requested.string A character string to use when a
+#' parameter summary was not requested for a parameter within an
+#' interval.
+#' @param not.calculated.string A character string to use when a
+#' parameter summary was requested, but the point estimate AND spread
+#' calculations (if applicable) returned \code{NA}.
 #' @return A data frame of NCA parameter results summarized according
 #' to the summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}
