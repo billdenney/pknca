@@ -21,7 +21,7 @@ Description: This package computes standard Non-Compartmental Analysis (NCA)
     provides standardized plotting routines, basic assessments for
     biocomparison or drug interaction, and model-based estimation routines for
     calculating doses to reach specific values of AUC or Cmax.
-License: AGPL-3
+License: AGPL-3 + file LICENSE
 Acknowledgement: Sridhar Duvvuri for significant help
 NeedsCompilation: no
 RoxygenNote: 5.0.0

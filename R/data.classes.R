@@ -594,8 +594,9 @@ summary.PKNCAresults <- function(object, simplify.start=TRUE,
       current.interval <- merge(ret[i, groups, drop=FALSE],
                                 object$data$intervals[,c(groups, n)])
       if (any(current.interval[,n])) {
-        currentData <- merge(ret[i, groups, drop=FALSE],
-                             subset(object$result, PPTESTCD %in% n))
+        currentData <- merge(
+          ret[i, groups, drop=FALSE],
+          object$result[object$result$PPTESTCD %in% n,,drop=FALSE])
         if (nrow(currentData) == 0) {
           warning("No results to summarize for ", n, " in result row ", i)
         } else {

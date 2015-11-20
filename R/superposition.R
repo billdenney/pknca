@@ -51,16 +51,7 @@
 superposition <- function(conc, ...)
   UseMethod("superposition", conc)
 
-#' Superposition for PKNCAconc objects.  One superposition will be
-#' calculated for each grouping interval.  Since this does not have
-#' dosing information, single-dosing cannot be confirmed.
-#'
-#' @param conc PKNCAconc object to perform superposition on
-#' @param ... Arguments passed to \code{\link{superposition.numeric}}
-#' @return A data frame with columns named for each of the grouping
-#' parameters along with \code{conc} and \code{time}.
-#' @seealso \code{\link{superposition}}
-#' @export
+#' @rdname superposition
 superposition.PKNCAconc <- function(conc, ...) {
   conc.col <- as.character(parseFormula(conc)$lhs)
   time.col <- as.character(parseFormula(conc)$rhs)
@@ -91,8 +82,7 @@ superposition.PKNCAconc <- function(conc, ...) {
   ret
 }
 
-#' Standard superposition for numeric vectors of inputs
-#' @describeIn superposition
+#' @rdname superposition
 superposition.numeric <- function(conc, time, dose.input,
                                   tau, dose.times=0, dose.amount, n.tau=Inf,
                                   options=list(),
