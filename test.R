@@ -62,6 +62,8 @@ myres <- pk.nca(mydat)
 
 summary(myres, simplify.start=FALSE)
 
+myconc$data$conc[myconc$data$Time == 0] <- 0
+tmp.superposition <- superposition(myconc, tau=24)
 
 plot(mydat$conc)
 

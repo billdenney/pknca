@@ -16,6 +16,8 @@
 #' \code{interp.extrap.conc}, scalar otherwise)
 #' @param lambda.z The elimination rate constant.  \code{NA} will
 #' prevent extrapolation.
+#' @param clast The last observed concentration above the limit of
+#' quantification.  If not given, \code{clast} is calculated from \code{\link{pk.calc.clast.obs}}
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.
 #' @param interp.method The method for interpolation (either
@@ -48,8 +50,12 @@
 #'     }
 #'   }
 #' }
+#' @seealso \code{\link{pk.calc.clast.obs}}
+#' \code{\link{pk.calc.half.life}}
 #' @export
-interp.extrap.conc <- function(conc, time, time.out, lambda.z=NA,
+interp.extrap.conc <- function(conc, time, time.out,
+                               lambda.z=NA,
+                               clast=pk.calc.clast.obs(conc, time),
                                options=list(),
                                interp.method=PKNCA.choose.option("auc.method", options),
                                extrap.method="AUCinf",
@@ -82,6 +88,7 @@ interp.extrap.conc <- function(conc, time, time.out, lambda.z=NA,
       ret[i] <- extrapolate.conc(data$conc, data$time,
                                  time.out[i],
                                  lambda.z=lambda.z,
+                                 clast=clast,
                                  extrap.method=extrap.method,
                                  check=FALSE)
     }
@@ -153,7 +160,8 @@ interpolate.conc <- function(conc, time, time.out,
 #' @describeIn interp.extrap.conc Extrapolate concentrations after Tlast
 #' @export
 extrapolate.conc <- function(conc, time, time.out,
-                             lambda.z=NA, extrap.method="AUCinf",
+                             lambda.z=NA, clast=pk.calc.clast.obs(conc, time),
+                             extrap.method="AUCinf",
                              options=list(),
                              conc.na=PKNCA.choose.option("conc.na", options),
                              conc.blq=PKNCA.choose.option("conc.blq", options),
@@ -180,7 +188,6 @@ extrapolate.conc <- function(conc, time, time.out,
     ## Start the interpolation
     if (extrap.method %in% "aucinf") {
       ## If AUCinf is requested, extrapolate using the half-life
-      clast <- pk.calc.clast.obs(data$conc, data$time)
       ret <- clast*exp(-lambda.z*(time.out - tlast))
     } else if (extrap.method %in% "auclast" |
                  (extrap.method %in% "aucall" &
