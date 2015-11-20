@@ -18,8 +18,8 @@ to override.
 To install the development version from github, install the devtools
 package and then type the following commands:
 
-library(devtools)
-install_github("billdenney/pknca")
+    library(devtools)
+    install_github("billdenney/pknca")
 
 # Calculating parameters
 
