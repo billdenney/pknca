@@ -36,7 +36,7 @@ parseFormula <- function (form,
   if (!inherits(form, "formula")) {
     made.formula <- FALSE
     try({
-      form <- as.formula(form)
+      form <- stats::as.formula(form)
       made.formula <- TRUE
     }, silent=TRUE)
     if (!made.formula)
@@ -51,8 +51,8 @@ parseFormula <- function (form,
     groups <- NA
     grpFormula <- NA
   } else {
-    grpFormula <- as.formula(call("~", groups),
-                             env=environment(form))
+    grpFormula <- stats::as.formula(call("~", groups),
+                                    env=environment(form))
     rhs <- findOperator(rhs, "|", "left")
   }
   if (require.two.sided &
@@ -63,11 +63,11 @@ parseFormula <- function (form,
     stop("rhs of formula must be a conditioning expression")
   }
   if (identical(lhs, NA)) {
-    model <- as.formula(call("~", rhs),
-                        env=environment(form))
+    model <- stats::as.formula(call("~", rhs),
+                               env=environment(form))
   } else {
-    model <- as.formula(call("~", lhs, rhs),
-                        env=environment(form))
+    model <- stats::as.formula(call("~", lhs, rhs),
+                               env=environment(form))
   }
   ret <-
     list(model = model,
@@ -91,7 +91,7 @@ print.parseFormula <- function(x, ...) {
   } else {
     cat("with groups.\n  ")
   }
-  cat(deparse(formula(x)), "\n")
+  cat(deparse(stats::formula(x)), "\n")
 }
 
 #' Convert the parsed formula back into the original
@@ -106,12 +106,12 @@ print.parseFormula <- function(x, ...) {
 #' @export
 formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
   if (identical(x$lhs, NA) | drop.lhs) {
-    ret <- as.formula(call("~", x$rhs))
+    ret <- stats::as.formula(call("~", x$rhs))
   } else {
-    ret <- as.formula(call("~", x$lhs, x$rhs))
+    ret <- stats::as.formula(call("~", x$lhs, x$rhs))
   }
   if (!identical(x$groups, NA) & !drop.groups)
-    ret <- as.formula(paste0(deparse(ret), "|", deparse(x$groups)))
+    ret <- stats::as.formula(paste0(deparse(ret), "|", deparse(x$groups)))
   environment(ret) <- x$env
   ret
 }

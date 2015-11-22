@@ -113,11 +113,11 @@ tss.monoexponential.generate.formula <- function(data) {
   tss.by <- list(
     "Single value for Tss"=list(
       formula=tss~1,
-      start=median(unique(data$time))))
+      start=stats::median(unique(data$time))))
   if ("treatment" %in% names(data))
     tss.by[["Tss by treatment"]] <- list(
       formula=tss~treatment,
-      start=rep(median(unique(data$time)),
+      start=rep(stats::median(unique(data$time)),
         length(unique(data$treatment))))
   ## Try combinations of random effects with Ctrough.ss and
   ## Tss. (These are returned even if they aren't always used)
@@ -191,7 +191,7 @@ pk.tss.monoexponential.population <- function(data,
                        verbose=verbose)
           ## If the model converges, get the summary and AIC out.
           current.model.summary <- summary(current.model)
-          current.aic <- AIC(current.model)
+          current.aic <- stats::AIC(current.model)
         }, silent=!verbose)
         ## Put the current model (or model attempt) into the list of
         ## models.
@@ -281,10 +281,10 @@ pk.tss.monoexponential.individual <- function(data,
                      tss~1),
                    start=c(
                      mean(d$conc),
-                     median(unique(d$time))),
+                     stats::median(unique(d$time))),
                    data=d,
                    verbose=verbose)
-      tss <- coef(current.model)[["tss"]]
+      tss <- stats::coef(current.model)[["tss"]]
     }, silent=!verbose)
     tss
   }

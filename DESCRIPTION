@@ -5,23 +5,25 @@ Version: 0.6
 Date: 2015-11-19
 Author: Bill Denney <bill@denney.ws>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
-Maintainer: Bill Denney <bill@denney.ws>, Clare Buckeridge
-    <clare.buckeridge@pfizer.com>
-Depends:
+Maintainer: Bill Denney <bill@denney.ws>
+Imports:
     digest,
     doBy,
     plyr,
     nlme,
     parallel,
-    lattice
+    lattice,
+    stats,
+    utils
 Suggests:
     testthat
-Description: This package computes standard Non-Compartmental Analysis (NCA)
-    parameters and summarizes them.  In addition to this core work, it also
-    provides standardized plotting routines, basic assessments for
-    biocomparison or drug interaction, and model-based estimation routines for
-    calculating doses to reach specific values of AUC or Cmax.
-License: AGPL-3 + file LICENSE
+Description: Compute standard Non-Compartmental Analysis (NCA)
+    parameters and summarizes them.  In addition to this core work, it
+    also provides standardized plotting routines, basic assessments
+    for biocomparison or drug interaction, and model-based estimation
+    routines for calculating doses to reach specific values of AUC or
+    Cmax.
+License: AGPL-3
 Acknowledgement: Sridhar Duvvuri for significant help
 NeedsCompilation: no
 RoxygenNote: 5.0.0

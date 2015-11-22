@@ -18,10 +18,10 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
       if (identical(NA, subobject)) {
         ret <- data.frame(AIC=NA, df=NA, indentation=0)
       } else {
-        ret <- AIC(subobject, ...)
+        ret <- stats::AIC(subobject, ...)
         if (is.numeric(ret)) {
           ret <- data.frame(AIC=ret,
-                            df=attr(logLik(subobject), "df"),
+                            df=attr(stats::logLik(subobject), "df"),
                             indentation=0)
         } else if (is.data.frame(ret)) {
           if ("indentation" %in% names(ret)) {
@@ -71,7 +71,7 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
 #' equal, the first is chosen.
 #' @export
 get.best.model <- function(object, ...)
-  object[AIC(object, ...)$isBest %in% "Best Model"][[1]]
+  object[stats::AIC(object, ...)$isBest %in% "Best Model"][[1]]
 
 #' Get the first model from a list of models
 #'

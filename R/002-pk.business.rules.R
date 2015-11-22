@@ -39,7 +39,7 @@ pk.business <- function(FUN,
 #' @export
 geomean <- function(x, na.rm=FALSE) {
   if (na.rm)
-    x <- na.omit(x)
+    x <- stats::na.omit(x)
   if (any(is.na(x))) {
     as.numeric(NA)
   } else if (any(x == 0)) {
@@ -53,10 +53,10 @@ geomean <- function(x, na.rm=FALSE) {
 }
 
 geosd <- function(x, na.rm=FALSE)
-  exp(sd(log(x), na.rm=na.rm))
+  exp(stats::sd(log(x), na.rm=na.rm))
 
 geocv <- function(x, na.rm=FALSE)
-  sqrt(exp(sd(log(x), na.rm=na.rm)^2)-1)*100
+  sqrt(exp(stats::sd(log(x), na.rm=na.rm)^2)-1)*100
 
 #' Generate functions to do the named function (e.g. mean) applying
 #' the business rules.
@@ -68,11 +68,12 @@ geocv <- function(x, na.rm=FALSE)
 #' are missing
 #' @seealso pk.business
 #' @export
-business.mean <- pk.business(mean, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+business.mean <-
+  pk.business(mean, max.missing=~PKNCA::PKNCA.Options('max.missing'))
 business.sd <-
-  pk.business(sd, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+  pk.business(stats::sd, max.missing=~PKNCA::PKNCA.Options('max.missing'))
 business.cv <-
-  pk.business(function(x, ...) {100*sd(x, ...)/mean(x, ...)},
+  pk.business(function(x, ...) {100*stats::sd(x, ...)/mean(x, ...)},
               max.missing=~PKNCA::PKNCA.Options('max.missing'))
 business.geomean <-
   pk.business(geomean, zero.missing=TRUE,
@@ -85,6 +86,6 @@ business.min <-
 business.max <-
   pk.business(max, max.missing=~PKNCA::PKNCA.Options('max.missing'))
 business.median <-
-  pk.business(median, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+  pk.business(stats::median, max.missing=~PKNCA::PKNCA.Options('max.missing'))
 business.range <-
   pk.business(range, max.missing=~PKNCA::PKNCA.Options('max.missing'))

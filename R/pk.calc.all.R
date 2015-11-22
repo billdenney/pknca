@@ -10,7 +10,7 @@
 #' @export
 pk.nca <- function(data) {
   tmp.data <- doBy::splitBy(parseFormula(data$conc)$groupFormula,
-                            data=model.frame(data$conc))
+                            data=stats::model.frame(data$conc))
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
@@ -43,7 +43,7 @@ pk.nca <- function(data) {
                data=data,
                provenance=list(
                  hash=digest::digest(list(results, data)),
-                 sessionInfo=sessionInfo(),
+                 sessionInfo=utils::sessionInfo(),
                  datetime=Sys.time(),
                  sysInfo=Sys.info()))
 }

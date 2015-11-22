@@ -61,9 +61,9 @@ pk.tss.stepwise.linear <- function(...,
     return(NA)
   }
   ## Assign treatment if given and with multiple levels
-  formula.to.fit <- as.formula("conc~time")
+  formula.to.fit <- stats::as.formula("conc~time")
   if ("treatment" %in% names(modeldata))
-    formula.to.fit <- as.formula("conc~time+treatment")
+    formula.to.fit <- stats::as.formula("conc~time+treatment")
   ## Ensure that the dosing times are in order to allow us to kick
   ## them out in order.
   remaining.time <- sort(unique(modeldata$time))
@@ -79,18 +79,20 @@ pk.tss.stepwise.linear <- function(...,
           ## If we have a subject column, try to fit a linear
           ## mixed-effects model.
           current.model <-
-            nlme::lme(formula.to.fit,
-                      random=~time|subject,
-                      data=subset(modeldata, time >= min(remaining.time)))
+            nlme::lme(
+              formula.to.fit,
+              random=~time|subject,
+              data=modeldata[modeldata$time >= min(remaining.time),,drop=FALSE])
           nlme::intervals(current.model, level=level, which="fixed")$fixed["time",]
         } else {
           ## If we do not have a subject column, fit a linear model.
           current.model <-
-            glm(formula.to.fit,
-                data=subset(modeldata, time >= min(remaining.time)))
+            stats::glm(
+              formula.to.fit,
+              data=modeldata[modeldata$time >= min(remaining.time),,drop=FALSE])
           ## There is no intervals function for glm, so build one
-          ci <- as.vector(confint(current.model, "time", level=level))
-          c(ci[1], coef(current.model)[["time"]], ci[2])
+          ci <- as.vector(stats::confint(current.model, "time", level=level))
+          c(ci[1], stats::coef(current.model)[["time"]], ci[2])
         }
       if (verbose)
         cat(sprintf("Current interval %g [%g, %g]",

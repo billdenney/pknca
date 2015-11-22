@@ -126,13 +126,13 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       ## Fit the terminal slopes until the adjusted r-squared value
       ## is not improving (or it only gets worse by a small factor).
       DF2 <- data.frame(Y=log(EQP$DV[1:i]),X=EQP$lambda.z.time.first[1:i])
-      fit <- lm(Y~X, data=DF2, na.action=na.exclude)
+      fit <- stats::lm(Y~X, data=DF2, na.action=stats::na.exclude)
       sfit <- summary(fit)
       EQP$r.squared[i] <- sfit$r.squared
       EQP$adj.r.squared[i] <- adj.r.squared(sfit$r.squared, i)
       EQP$PROB[i] <- sfit$coefficients["X", "Pr(>|t|)"]
-      EQP$lambda.z[i] <- -coef(fit)["X"]
-      EQP$clast.pred[i] <- exp(predict(fit, newdata=data.frame(X=ret$tlast)))
+      EQP$lambda.z[i] <- -stats::coef(fit)["X"]
+      EQP$clast.pred[i] <- exp(stats::predict(fit, newdata=data.frame(X=ret$tlast)))
       EQP$lambda.z.n.points[i] <- i
     }
     ## Find the best model

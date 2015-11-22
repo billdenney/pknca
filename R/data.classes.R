@@ -212,7 +212,8 @@ getGroups.PKNCAdose <- getGroups.PKNCAconc
 
 #' @rdname getGroups.PKNCAconc
 #' @export
-getGroups.PKNCAresults <- function(object, form=formula(object$data$conc), level,
+getGroups.PKNCAresults <- function(object,
+                                   form=formula(object$data$conc), level,
                                    data=object$result, sep) {
   ## Include the start time as a group; this may be dropped later
   grpnames <- c(all.vars(parseFormula(form)$groups), "start")
@@ -245,7 +246,7 @@ getGroups.PKNCAresults <- function(object, form=formula(object$data$conc), level
 #' @export
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))
-  print(formula(x), ...)
+  print(stats::formula(x), ...)
   if (is.na(x$subject)) {
     cat("As a single-subject dataset.\n")
   } else {
@@ -278,7 +279,7 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
       cat(sprintf("\nFirst %d rows of concentration data:\n",
                   n))
     }
-    print.data.frame(head(x$data, n=n), ..., row.names=FALSE)
+    print.data.frame(utils::head(x$data, n=n), ..., row.names=FALSE)
   }
 }
 
@@ -291,7 +292,7 @@ summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...)
 #' @export
 print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
   cat("Formula for dosing:\n ")
-  print(formula(x), ...)
+  print(stats::formula(x), ...)
   if (summarize) {
     cat("\n")
     grp <- getGroups(x)
@@ -317,7 +318,7 @@ print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
       cat(sprintf("\nFirst %d rows of dosing data:\n",
                   n))
     }
-    print.data.frame(head(x$data, n=n), ..., row.names=FALSE)
+    print.data.frame(utils::head(x$data, n=n), ..., row.names=FALSE)
   }
 }
 
@@ -572,7 +573,7 @@ summary.PKNCAresults <- function(object, simplify.start=TRUE,
     groups <- setdiff(groups, "end")
     drop.group <- c(drop.group, "end")
   }
-  summaryFormula <- as.formula(paste0("~", paste(groups, collapse="+")))
+  summaryFormula <- stats::as.formula(paste0("~", paste(groups, collapse="+")))
   summaryInstructions <- PKNCA.set.summary()
   ## Find any parameters that request any summaries
   resultDataCols <- 

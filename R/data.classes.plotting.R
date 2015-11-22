@@ -23,22 +23,22 @@ plot.PKNCAconc <- function(x, ...,
   call.args[set.defaults] <- default.args[set.defaults]
   ## Update the panel formula if applicable
   if (!missing(panel.formula.update)) {
-    panel.formula <- update(panel.formula, panel.formula.update)
+    panel.formula <- stats::update(panel.formula, panel.formula.update)
   }
   conc.formula <- parseFormula(x)
   ## If the groups are given, make sure that they are not in the
   ## panel.formula.
   if (!is.null(groups)) {
     conc.formula$groupFormula <-
-      update(panel.formula,
-             as.formula(sprintf(".~-%s", groups)))
+      stats::update(panel.formula,
+                    stats::as.formula(sprintf(".~-%s", groups)))
   }
-  call.args[["x"]] <- formula(conc.formula)
+  call.args[["x"]] <- stats::formula(conc.formula)
   call.args[["data"]] <- x$data
   ## If labels and/or units are given for the x and y variables, use
   ## them.
-  xlab <- make.label("rhs", data, conc.formula, x$labels, x$units)
-  ylab <- make.label("lhs", data, conc.formula, x$labels, x$units)
+  xlab <- make.label("rhs", x$data, conc.formula, x$labels, x$units)
+  ylab <- make.label("lhs", x$data, conc.formula, x$labels, x$units)
   if (!("xlab" %in% names(call.args)))
     call.args[["xlab"]] <- xlab
   if (!("ylab" %in% names(call.args)))
@@ -62,4 +62,4 @@ make.label <- function(side, data, parsed.formula, labels, units) {
 #' @rdname plot.PKNCAconc
 #' @export
 plot.PKNCAdata <- function(x, ...)
-  plot(x$conc, ...)
+  graphics::plot(x$conc, ...)

@@ -6,8 +6,8 @@
 \alias{PKNCA-package}
 \title{Compute noncompartmental pharmacokinetics}
 \description{
-PKNCA computes pharmacokinetic (PK) noncompartmental analysis (NCA)
-parameters.
+This package computes pharmacokinetic (PK) noncompartmental
+analysis (NCA) parameters.
 }
 \details{
 Typically, you will start with the \code{\link{pk.nca}}
