@@ -3,9 +3,9 @@ Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
 Version: 0.6
 Date: 2015-11-19
-Author: Bill Denney <william.s.denney@pfizer.com>, Clare Buckeridge
+Author: Bill Denney <bill@denney.ws>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
-Maintainer: Bill Denney <william.s.denney@pfizer.com>, Clare Buckeridge
+Maintainer: Bill Denney <bill@denney.ws>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
 Depends:
     digest,

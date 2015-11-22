@@ -353,3 +353,87 @@ add.interval.col("vss",
                  desc="The steady-state volume of distribution",
                  depends=c("cl", "mrt"))
 PKNCA.set.summary("vss", business.geomean, business.geocv)
+
+#' Calculate the average concentration during an interval.
+#'
+#' @param auclast The area under the curve during the interval
+#' @param start The starting time of the interval
+#' @param end The ending time of the interval
+#' @return The Cav (average concentration during the interval)
+#' @export
+pk.calc.cav <- function(auclast, start, end)
+  auclast/(end-start)
+add.interval.col("cav",
+                 FUN="pk.calc.cav",
+                 values=c(FALSE, TRUE),
+                 desc="The average concentration during an interval",
+                 depends="auclast")
+PKNCA.set.summary("cav", business.geomean, business.geocv)
+
+#' Determine the trough (predose) concentration
+#'
+#' @param conc Observed concentrations during the interval
+#' @param time Times of \code{conc} observations
+#' @param start Starting time of the interval
+#' @return The concentration when \code{time == start}.  If none
+#' match, then \code{NA}
+#' @export
+pk.calc.ctrough <- function(conc, time, start) {
+  check.conc.time(conc, time)
+  mask.start <- time %in% start
+  if (sum(mask.start) == 1) {
+    conc[mask.start]
+  } else if (sum(mask.start) == 0) {
+    NA
+  } else {
+    stop("More than one time matches the starting time")
+  }
+}
+add.interval.col("ctrough",
+                 FUN="pk.calc.ctrough",
+                 values=c(FALSE, TRUE),
+                 desc="The trough (predose) concentration",
+                 depends=c())
+PKNCA.set.summary("ctrough", business.geomean, business.geocv)
+
+#' Determine the peak-to-trough ratio
+#'
+#' @param cmax The maximum observed concentration
+#' @param cmin The minimum observed concentration
+#' @return The ratio of cmax to cmin (if cmin == 0, NA)
+#' @export
+pk.calc.ptr <- function(cmax, cmin) {
+  ret <- cmax/cmin
+  ret[cmin %in% 0] <- NA
+  ret
+}
+add.interval.col("ptr",
+                 FUN="pk.calc.ptr",
+                 values=c(FALSE, TRUE),
+                 desc="Peak-to-Trough ratio (fraction)",
+                 depends=c("cmax", "cmin"))
+PKNCA.set.summary("ptr", business.geomean, business.geocv)
+
+#' Determine the observed lag time (time before the first
+#' concentration above the limit of quantification or above the first
+#' concentration in the interval)
+#'
+#' @param conc The observed concentrations
+#' @param time The observed times
+#' @return The time associated with the first increasing concentration
+#' @export
+pk.calc.tlag <- function(conc, time) {
+  check.conc.time(conc, time)
+  mask.increase <- conc[-1] > conc[-length(conc)]
+  if (any(mask.increase)) {
+    time[c(mask.increase, FALSE)][1]
+  } else {
+    NA
+  }
+}
+add.interval.col("tlag",
+                 FUN="pk.calc.tlag",
+                 values=c(FALSE, TRUE),
+                 desc="Lag time",
+                 depends=c())
+PKNCA.set.summary("tlag", business.median, business.range)
