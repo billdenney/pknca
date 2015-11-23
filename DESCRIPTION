@@ -1,8 +1,8 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.6
-Date: 2015-11-19
+Version: 0.6.0.9000
+Date: 2015-11-22
 Author: Bill Denney <bill@denney.ws>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
 Maintainer: Bill Denney <bill@denney.ws>
@@ -18,7 +18,7 @@ Imports:
 Suggests:
     testthat
 Description: Compute standard Non-Compartmental Analysis (NCA)
-    parameters and summarizes them.  In addition to this core work, it
+    parameters and summarize them.  In addition to this core work, it
     also provides standardized plotting routines, basic assessments
     for biocomparison or drug interaction, and model-based estimation
     routines for calculating doses to reach specific values of AUC or
