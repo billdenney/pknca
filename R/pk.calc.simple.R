@@ -354,6 +354,24 @@ add.interval.col("vss",
                  depends=c("cl", "mrt"))
 PKNCA.set.summary("vss", business.geomean, business.geocv)
 
+#' Calculate the volume of distribution (Vd) or observed volume of
+#' distribution (Vd/F)
+#'
+#' @param dose Dose given
+#' @param aucinf Area under the curve to infinity (either predicted or
+#' observed).
+#' @param lambda.z Elimination rate constant
+#' @return The observed volume of distribution
+#' @export
+pk.calc.vd <- function(dose, aucinf, lambda.z)
+  dose/(aucinf * lambda.z)
+add.interval.col("vd",
+                 FUN="pk.calc.vd",
+                 values=c(FALSE, TRUE),
+                 desc="Apparent observed volume of distribution",
+                 depends=c("aucinf", "lambda.z"))
+PKNCA.set.summary("vd", business.geomean, business.geocv)
+
 #' Calculate the average concentration during an interval.
 #'
 #' @param auclast The area under the curve during the interval

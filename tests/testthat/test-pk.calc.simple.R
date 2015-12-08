@@ -178,6 +178,15 @@ test_that("pk.calc.f", {
   expect_equal(pk.calc.f(1, 1, 1, 2), 2)
 })
 
+test_that("pk.calc.aucpext", {
+  expect_equal(pk.calc.aucpext(1, 2), 50)
+  expect_equal(pk.calc.aucpext(1.8, 2), 10)
+  expect_warning(v1 <- pk.calc.aucpext(2, 1))
+  expect_equal(v1, -100)
+  expect_warning(pk.calc.aucpext(2, 1),
+                 regexp="auclast should be less than aucinf")
+})
+
 test_that("pk.calc.mrt", {
   expect_equal(pk.calc.mrt(1, 2), 2)
 })
@@ -234,11 +243,43 @@ test_that("pk.calc.vss", {
   expect_equal(pk.calc.vss(1, 2), 2)
 })
 
-test_that("pk.calc.aucpext", {
-  expect_equal(pk.calc.aucpext(1, 2), 50)
-  expect_equal(pk.calc.aucpext(1.8, 2), 10)
-  expect_warning(v1 <- pk.calc.aucpext(2, 1))
-  expect_equal(v1, -100)
-  expect_warning(pk.calc.aucpext(2, 1),
-                 regexp="auclast should be less than aucinf")
+test_that("pk.calc.vd", {
+  expect_equal(pk.calc.vd(1, 2, 3), 1/6)
+  expect_equal(pk.calc.vd(NA, 2, 3), as.numeric(NA))
+  expect_equal(pk.calc.vd(1, NA, 3), as.numeric(NA))
+  expect_equal(pk.calc.vd(1, 2, NA), as.numeric(NA))
+})
+
+test_that("pk.calc.cav", {
+  expect_equal(pk.calc.cav(2, 0, 1), 2)
+  expect_equal(pk.calc.cav(NA, 0, 1), as.numeric(NA))
+})
+
+test_that("pk.calc.ctrough", {
+  expect_equal(pk.calc.ctrough(1:5, 0:4, 0), 1,
+               info="Found and it's the first time")
+  expect_equal(pk.calc.ctrough(1:5, 0:4, 1), 2,
+               info="Found and it's not the first time")
+  expect_equal(pk.calc.ctrough(1:5, 0:4, 1.5), NA,
+               info="Not found")
+  expect_error(pk.calc.ctrough(1:5, c(0, 0:3), 0),
+               regexp="Time must be monotonically increasing")
+})
+
+test_that("pk.calc.ptr", {
+  expect_equal(pk.calc.ptr(cmax=2, cmin=1), 2,
+               info="Confirm that the ratio goes the right way")
+  expect_equal(pk.calc.ptr(2, 0), as.numeric(NA),
+               info="Division by zero returns NA")
+})
+
+test_that("pk.calc.tlag", {
+  expect_equal(pk.calc.tlag(1:5, 0:4), 0,
+               info="find the first point")
+  expect_equal(pk.calc.tlag(c(0, 0, 0, 0, 1), 0:4), 3,
+               info="find the next to last point")
+  expect_equal(pk.calc.tlag(c(0, 0, 0, 0, 0), 0:4), NA,
+               info="No increase gives NA")
+  expect_equal(pk.calc.tlag(5:1, 0:4), NA,
+               info="No increase gives NA")
 })
