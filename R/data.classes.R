@@ -397,7 +397,7 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' \code{\link{choose.auc.intervals}}
 #' @export
 PKNCAdata <- function(data.conc, ...)
-  UseMethod("PKNCAdata", data.conc)
+  UseMethod("PKNCAdata")
 
 ## Ensure that arguments are reversible
 PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...)
