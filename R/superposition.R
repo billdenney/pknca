@@ -227,7 +227,7 @@ superposition.numeric <- function(conc, time, dose.input,
   } else {
     ## Check if we will need to extrapolate
     tlast <- pk.calc.tlast(conc, time, check=FALSE)
-    if (tau*n.tau > tlast) {
+    if ((tau*n.tau) > tlast) {
       if (missing(lambda.z)) {
         tmp <- pk.calc.half.life(conc, time, options=options,
                                  ..., check=FALSE)
@@ -237,40 +237,53 @@ superposition.numeric <- function(conc, time, dose.input,
         clast <- pk.calc.clast.obs(conc, time, check=FALSE)
       } else if (identical(clast.pred, TRUE)) {
         clast <- tmp$clast.pred
+      } else {
+        ## Use the provided clast.pred
+        clast <- clast.pred
+      }
+    } else {
+      ## We don't need lambda.z for calculations, but it is simpler to
+      ## define it.
+      lambda.z <- NA
+    }
+  }
+  ## cannot continue extrapolating due to missing data (likely due to
+  ## half-life not calculable)
+  if ((n.tau * tau) > tlast & is.na(lambda.z)) {
+    ret$conc <- NA
+  } else {
+    ## Do the math! (Finally)
+    current.tol <- steady.state.tol + 1
+    tau.count <- 0
+    ## Stop either for reaching steady-state or for reaching the requested number of doses
+    while (tau.count < n.tau &
+           !is.na(current.tol) & 
+           current.tol >= steady.state.tol) {
+      prev.conc <- ret$conc
+      ## Perform the dosing for a single dosing interval.
+      for (i in seq_along(dose.times)) {
+        tmp.time <- ret$time - dose.times[i] + (tau * tau.count)
+        ## For the first dosing interval, make sure that we do not
+        ## assign concentrations before the dose is given.
+        mask.time <- tmp.time >= 0
+        ## Update the current concentration (previous concentration +
+        ## new concentration scaled by the relative dose)
+        ret$conc[mask.time] <-
+          (ret$conc[mask.time] +
+           dose.scaling[i]*
+           interp.extrap.conc(conc, time, time.out=tmp.time[mask.time],
+                              lambda.z=lambda.z, clast=clast,
+                              options=options, check=FALSE))
+      }
+      tau.count <- tau.count + 1
+      if (any(ret$conc %in% 0)) {
+        ## prevent division by 0.  Since not all concentrations are 0,
+        ## all values will eventually be nonzero.
+        current.tol <- steady.state.tol + 1
+      } else {
+        current.tol <- max(1-(prev.conc/ret$conc))
       }
     }
   }
-
-  ## Do the math! (Finally)
-  current.tol <- steady.state.tol + 1
-  tau.count <- 0
-  ## Stop either for reaching steady-state or for reaching the requested number of doses
-  while (tau.count < n.tau &
-         current.tol >= steady.state.tol) {
-    prev.conc <- ret$conc
-    ## Perform the dosing for a single dosing interval.
-    for (i in seq_along(dose.times)) {
-      tmp.time <- ret$time - dose.times[i] + (tau * tau.count)
-      ## For the first dosing interval, make sure that we do not
-      ## assign concentrations before the dose is given.
-      mask.time <- tmp.time >= 0
-      ## Update the current concentration (previous concentration +
-      ## new concentration scaled by the relative dose)
-      ret$conc[mask.time] <-
-        (ret$conc[mask.time] +
-         dose.scaling[i]*
-         interp.extrap.conc(conc, time, time.out=tmp.time[mask.time],
-                            lambda.z=lambda.z, clast=clast,
-                            options=options, check=FALSE))
-    }
-    tau.count <- tau.count + 1
-    if (any(ret$conc %in% 0)) {
-      ## prevent division by 0.  Since not all concentrations are 0,
-      ## all values will eventually be nonzero.
-      current.tol <- steady.state.tol + 1
-    } else {
-      current.tol <- max(1-(prev.conc/ret$conc))
-    }
-  }
-  return(ret)
+  ret
 }

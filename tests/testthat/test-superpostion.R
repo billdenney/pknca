@@ -360,7 +360,8 @@ test_that("superposition math", {
                             4.6047e-06),
                           time=c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                             5, 5.5, 6, 6.5, 24)),
-               tol=0.001)
+               tol=0.001,
+               info="Dose scaling with matching input and output doses")
 
   expect_warning(v2 <- superposition(conc=c1, time=t1, dose.input=1, tau=24,
                                      dose.times=c(0, 0.5),
@@ -386,6 +387,23 @@ test_that("superposition math", {
                             1.444e-05),
                           time=c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                             5, 5.5, 6, 6.5, 24)),
-               tol=0.001)
+               tol=0.001,
+               info="Dose scaling with different input and output doses")
 
+  expect_warning(v3 <- superposition(conc=c(0, 2, 3, 5, 6, 3, 1, 0),
+                                     time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24),
+                                     tau=24),
+                 regexp="Too few points for half-life calculation \\(min.hl.points=3 with only 2 points\\)")
+  expect_equal(v3,
+               data.frame(conc=NA, time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24)),
+               info="Uncalculable lambda.z with extrapolation to steady-state gives NA conc")
+
+  expect_equal(superposition(conc=c(0, 2, 3, 5, 6, 3, 1, 0),
+                             time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24),
+                             tau=24,
+                             lambda.z=1, clast.pred=1, tlast=12),
+               data.frame(conc=c(6.144e-6, 2, 3, 5, 6, 3, 1, 6.144e-6),
+                          time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24)),
+               tol=0.001,
+               info="Uncalculable lambda.z with extrapolation to steady-state with lambda.z given, gives conc values")
 })
