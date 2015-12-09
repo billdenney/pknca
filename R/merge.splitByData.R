@@ -22,8 +22,8 @@ merge.splitByData <- function(..., missing.value=NULL) {
   if (any(sapply(all.groupids, is.null)))
     stop("All inputs must have a groupid attribute")
   col.order <-
-    paste(max(sapply(all.groupids, names, USE.NAMES=FALSE)),
-          1:length(args), sep=".")
+    paste(max(do.call(c, lapply(X=all.groupids, FUN=names))),
+          seq_along(args), sep=".")
   for (i in seq_len(length(args)))
     all.groupids[[i]][,col.order[i]] <- 1:nrow(all.groupids[[i]])
   intermediate.merge <- all.groupids[[1]]

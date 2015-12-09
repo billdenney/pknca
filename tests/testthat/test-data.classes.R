@@ -122,6 +122,9 @@ test_that("PKNCAdata", {
   expect_equal(PKNCAdata(obj.conc, obj.dose),
                PKNCAdata(obj.dose, obj.conc),
                info="Input arguments are reversible")
+  expect_equal(PKNCAdata(obj.conc.analyte, obj.dose),
+               PKNCAdata(obj.dose, obj.conc.analyte),
+               info="Combination of dose and analyte works")
   expect_equal(PKNCAdata(data.conc=tmp.conc, formula.conc=conc~time|treatment+ID,
                          data.dose=tmp.dose, formula.dose=dose~time|treatment+ID),
                PKNCAdata(obj.conc, obj.dose),

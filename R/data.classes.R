@@ -589,7 +589,7 @@ roundingSummarize <- function(x, name) {
 #' to the summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}
 summary.PKNCAresults <- function(object, simplify.start=TRUE,
-                                 drop.group="Subject",
+                                 drop.group=object$data$conc$subject,
                                  not.requested.string=".",
                                  not.calculated.string="NC") {
   allGroups <- getGroups(object)
