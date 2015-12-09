@@ -33,6 +33,14 @@ PKNCAconc <- function(data, formula, subject, labels, units) {
     stop("The left hand side of the formula must have exactly one variable")
   if (length(all.vars(parsedForm$rhs)) != 1)
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
+  ## Values must be unique (one value per measurement)
+  key.cols <- c(all.vars(parsedForm$rhs),
+                all.vars(parsedForm$groupFormula))
+  if (any(mask.dup <- duplicated(data[,key.cols])))
+    stop("Rows that are not unique per group and time (column names: ",
+         paste(key.cols, collapse=", "),
+         ") found within concentration data.  Row numbers: ",
+         paste(seq_along(mask.dup)[mask.dup], collapse=", "))
   ## Assign the subject
   if (missing(subject)) {
     tmp.groups <- all.vars(parsedForm$groupFormula)
@@ -106,10 +114,18 @@ PKNCAdose <- function(data, formula, labels, units) {
     stop("All of the variables in the formula must be in the data")
   }
   parsedForm <- parseFormula(formula, require.two.sided=FALSE)
-  if (length(all.vars(parsedForm$lhs)) != 0)
-    stop("The formula must be one-sided")
+  if (!(length(all.vars(parsedForm$lhs)) %in% c(0, 1)))
+    stop("The left hand side of the formula must have zero or one variable")
   if (length(all.vars(parsedForm$rhs)) != 1)
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
+  ## Values must be unique (one value per measurement)
+  key.cols <- c(all.vars(parsedForm$rhs),
+                all.vars(parsedForm$groupFormula))
+  if (any(mask.dup <- duplicated(data[,key.cols])))
+    stop("Rows that are not unique per group and time (column names: ",
+         paste(key.cols, collapse=", "),
+         ") found within dosing data.  Row numbers: ",
+         paste(seq_along(mask.dup)[mask.dup], collapse=", "))
   ret <- list(data=data,
               formula=formula)
   ## check and add labels and units
@@ -359,11 +375,11 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' 
 #' @param data.conc Concentration data as a \code{PKNCAconc} object or
 #' a data frame
+#' @param data.dose Dosing data as a \code{PKNCAdose} object
 #' @param formula.conc Formula for making a \code{PKNCAconc} object
 #' with \code{data.conc}.  This must be given if \code{data.conc} is a
 #' data.frame, and it must not be given if \code{data.conc} is a
 #' \code{PKNCAconc} object.
-#' @param data.dose Dosing data as a \code{PKNCAdose} object
 #' @param formula.dose Formula for making a \code{PKNCAdose} object
 #' with \code{data.dose}.  This must be given if \code{data.dose} is a
 #' data.frame, and it must not be given if \code{data.dose} is a
@@ -380,9 +396,19 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
 #' \code{\link{choose.auc.intervals}}
 #' @export
-PKNCAdata <- function(data.conc, formula.conc,
-                      data.dose, formula.dose,
-                      intervals, options=list()) {
+PKNCAdata <- function(data.conc, ...)
+  UseMethod("PKNCAdata", data.conc)
+
+## Ensure that arguments are reversible
+PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...)
+  PKNCAdata.default(data.conc=data.conc, data.dose=data.dose, ...)
+
+PKNCAdata.PKNCAdose <- function(data.dose, data.conc, ...)
+  PKNCAdata.default(data.dose=data.dose, data.conc=data.conc, ...)
+
+PKNCAdata.default <- function(data.conc, data.dose,
+                              formula.conc, formula.dose,
+                              intervals, options=list()) {
   ret <- list()
   ## Generate the conc element
   if (inherits(data.conc, "PKNCAconc")) {

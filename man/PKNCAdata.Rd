@@ -4,19 +4,18 @@
 \alias{PKNCAdata}
 \title{Create a PKNCAdata object.}
 \usage{
-PKNCAdata(data.conc, formula.conc, data.dose, formula.dose, intervals,
-  options = list())
+PKNCAdata(data.conc, ...)
 }
 \arguments{
 \item{data.conc}{Concentration data as a \code{PKNCAconc} object or
 a data frame}
 
+\item{data.dose}{Dosing data as a \code{PKNCAdose} object}
+
 \item{formula.conc}{Formula for making a \code{PKNCAconc} object
 with \code{data.conc}.  This must be given if \code{data.conc} is a
 data.frame, and it must not be given if \code{data.conc} is a
 \code{PKNCAconc} object.}
-
-\item{data.dose}{Dosing data as a \code{PKNCAdose} object}
 
 \item{formula.dose}{Formula for making a \code{PKNCAdose} object
 with \code{data.dose}.  This must be given if \code{data.dose} is a
