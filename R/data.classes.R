@@ -460,17 +460,22 @@ PKNCAdata.default <- function(data.conc, data.dose,
     indep.var.conc <- all.vars(parseFormula(ret$conc)$rhs)
     indep.var.dose <- all.vars(parseFormula(ret$dose)$rhs)
     for (i in 1:nrow(groupid)) {
-      tmp.group <- groupid[i,,drop=FALSE]
-      rownames(tmp.group) <- NULL
-      new.intervals <-
-        cbind(
-          tmp.group,
-          choose.auc.intervals(tmp.conc.dose[[i]]$conc[,indep.var.conc],
-                               tmp.conc.dose[[i]]$dose[,indep.var.dose],
-                               single.dose.aucs=PKNCA.choose.option("single.dose.aucs",
-                                 options)))
-      intervals <-
-        rbind(intervals, new.intervals)
+      if (!is.null(tmp.conc.dose[[i]]$conc)) {
+        tmp.group <- groupid[i,,drop=FALSE]
+        rownames(tmp.group) <- NULL
+        new.intervals <-
+          cbind(
+            tmp.group,
+            choose.auc.intervals(tmp.conc.dose[[i]]$conc[,indep.var.conc],
+                                 tmp.conc.dose[[i]]$dose[,indep.var.dose],
+                                 single.dose.aucs=PKNCA.choose.option("single.dose.aucs",
+                                   options)))
+        intervals <-
+          rbind(intervals, new.intervals)
+      } else {
+        warning("No concentration data for ",
+                paste(names(tmp.group), unlist(tmp.group), sep="=", collapse=", "))
+      }
     }
   }
   ret$intervals <- check.interval.specification(intervals)
