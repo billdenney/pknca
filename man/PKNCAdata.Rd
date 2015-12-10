@@ -2,9 +2,19 @@
 % Please edit documentation in R/data.classes.R
 \name{PKNCAdata}
 \alias{PKNCAdata}
+\alias{PKNCAdata.PKNCAconc}
+\alias{PKNCAdata.PKNCAdose}
+\alias{PKNCAdata.default}
 \title{Create a PKNCAdata object.}
 \usage{
 PKNCAdata(data.conc, ...)
+
+\method{PKNCAdata}{PKNCAconc}(data.conc, data.dose, ...)
+
+\method{PKNCAdata}{PKNCAdose}(data.dose, data.conc, ...)
+
+\method{PKNCAdata}{default}(data.conc, data.dose, formula.conc, formula.dose,
+  intervals, options = list())
 }
 \arguments{
 \item{data.conc}{Concentration data as a \code{PKNCAconc} object or

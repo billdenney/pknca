@@ -1,8 +1,8 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.6.0.9002
-Date: 2015-12-09
+Version: 0.6.0.9003
+Date: 2015-12-10
 Author: Bill Denney <bill@denney.ws>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
 Maintainer: Bill Denney <bill@denney.ws>
@@ -26,4 +26,4 @@ Description: Compute standard Non-Compartmental Analysis (NCA)
 License: AGPL-3
 Acknowledgement: Sridhar Duvvuri for significant help
 NeedsCompilation: no
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1

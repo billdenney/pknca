@@ -5,7 +5,7 @@
 \title{Summarize PKNCA results}
 \usage{
 \method{summary}{PKNCAresults}(object, simplify.start = TRUE,
-  drop.group = "Subject", not.requested.string = ".",
+  drop.group = object$data$conc$subject, not.requested.string = ".",
   not.calculated.string = "NC")
 }
 \arguments{
