@@ -155,3 +155,31 @@ test_that("PKNCAdata", {
                },
                info="Selection of single dose AUCs")
 })
+
+test_that("findOverlap", {
+  ## Calculation checks
+  expect_equal(findOverlap(c(0, 1, 2), c(1, 2, 3)),
+               c(1, 2, 3),
+               info="no overlap")
+  expect_equal(findOverlap(c(0, 0, 1), c(0.5, 1, 2)),
+               c(1, 1, 2),
+               info="some overlap")
+  expect_equal(findOverlap(c(0, 1, 2), c(1.1, 2.1, 3)),
+               c(1, 1, 1),
+               info="chaining overlap")
+  expect_equal(findOverlap(as.numeric(c(NA, NA, NA)),
+                           as.numeric(c(NA, NA, NA))),
+               rep(NA, 3),
+               info="all missing")
+  expect_equal(findOverlap(c(NA, 1, 2), c(1, NA, NA)),
+               rep(NA, 3),
+               info="all missing but split by start and end")
+
+  ## Input checks
+  expect_error(findOverlap(1, 1:2),
+               regexp="start and end must be the same length")
+  expect_error(findOverlap("a", 1),
+               regexp="start must be numeric")
+  expect_error(findOverlap(1, "a"),
+               regexp="end must be numeric")
+})

@@ -1,7 +1,7 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.6.0.9003
+Version: 0.6.0.9004
 Date: 2015-12-10
 Author: Bill Denney <bill@denney.ws>, Clare Buckeridge
     <clare.buckeridge@pfizer.com>
