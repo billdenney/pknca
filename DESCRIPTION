@@ -24,6 +24,8 @@ Description: Compute standard Non-Compartmental Analysis (NCA)
     routines for calculating doses to reach specific values of AUC or
     Cmax.
 License: AGPL-3
+URL: https://github.com/billdenney/pknca
+BugReports: https://github.com/billdenney/pknca/issues
 Acknowledgement: Sridhar Duvvuri for significant help
 NeedsCompilation: no
 RoxygenNote: 5.0.1
