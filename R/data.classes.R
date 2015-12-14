@@ -585,9 +585,6 @@ roundingSummarize <- function(x, name) {
 #' Summarize PKNCA results
 #'
 #' @param object The results to summarize
-#' @param simplify.overlapping Should all results with overlapping
-#' times for the interval be summarized together?  (I.e. If TRUE,
-#' AUC[0-24] and AUC[0-Inf] are both summarized in the same row.)
 #' @param drop.group Which group(s) should be dropped from the
 #' formula?
 #' @param not.requested.string A character string to use when a
@@ -599,7 +596,7 @@ roundingSummarize <- function(x, name) {
 #' @return A data frame of NCA parameter results summarized according
 #' to the summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}
-summary.PKNCAresults <- function(object, simplify.overlapping=TRUE,
+summary.PKNCAresults <- function(object,
                                  drop.group=object$data$conc$subject,
                                  not.requested.string=".",
                                  not.calculated.string="NC") {
@@ -664,108 +661,5 @@ summary.PKNCAresults <- function(object, simplify.overlapping=TRUE,
         }
       }
     }
-  ## If the overlapping intervals should be simplified, do it here.
-  if (simplify.overlapping) {
-    top.groups <- setdiff(groups, c("start", "end"))
-    splitRet <-
-      doBy::splitBy(as.formula(paste0("~", paste(top.groups, collapse="+"))),
-                    data=ret)
-    ret <- do.call(plyr::rbind.fill,
-                   lapply(splitRet, compressSummary))
-  }
-  ret
-}
-
-#' Collapse the values from a summary into one row when given a set
-#' that should go together.
-#'
-#' @param rowset A set of rows to be compressed
-#' @return A data frame compressing the rows and 
-compressSummary <- function(rowset) {
-  current.groups <- findOverlap(rowset$start, rowset$end)
-  ## Within one set of values that should be on the same row, move
-  ## everything to the first row and if a column has more than one
-  ## value, separate them by start/end time into new columns
-  ret <- rowset[1,]
-  ret$start <- min(ret$start)
-  ret$end <- max(ret$end)
-  for (j in seq_len(max(current.groups, na.rm=TRUE))) {
-    for (n in names(rowset)) {
-      mask.found <- !(rowset[,n] %in% not.requested.string)
-      if (sum(mask.found) == 1) {
-        ret[1,n] <- rowset[mask.found,n]
-      } else if (sum(mask.found) > 1) {
-        ## Rename the columns and drop the original column name
-        new.names <- paste(n,
-                           rowset$start[mask.found],
-                           rowset$end[mask.found],
-                           sep="_")
-        ret[1,new.names] <- rowset[mask.found,n]
-        ret <- ret[,setdiff(names(ret),n)]
-      }
-    }
-  }
-  ret
-}
-
-#' Find starting and ending intervals that overlap each other.
-#'
-#' @param start The starting time
-#' @param end The ending time
-#' @return A vector of groups the same length as \code{start} and
-#' \code{end}
-#' @details Note that overlaps that chain will be connected.  Chaining
-#' means that while interval A and interval C may not overlap, if
-#' interval B overlaps with both A and C, then they will be combined
-#' into a single group.  (See examples)
-#' @examples
-#' # Intervals 1 and 2 overlap, but interval 3 does not
-#' findOverlap(c(0, 0, 1), c(0.5, 1, 2)) # c(1, 1, 2)
-#' # All three intervals overlap by chaining
-#' findOverlap(c(0, 1, 2), c(1.1, 2.1, 3)) # c(1, 1, 1)
-#' # No intervals overlap
-#' findOverlap(c(0, 1, 2), c(1, 2, 3)) # c(1, 2, 3)
-findOverlap <- function(start, end) {
-  if (length(start) != length(end))
-    stop("start and end must be the same length")
-  if (!is.numeric(start) | is.factor(start))
-    stop("start must be numeric")
-  if (!is.numeric(end) | is.factor(end))
-    stop("end must be numeric")
-  mask.provided <- !is.na(start) & !is.na(end)
-  ret <- rep(NA, length(start))
-  ## Find the overlapping groups
-  if (any(mask.provided)) {
-    if (any(start[mask.provided] > end[mask.provided]))
-      stop("start must always be <= end")
-    ## Simplify life by working only with the provided values
-    ret.tmp <- rep(NA, sum(mask.provided))
-    start <- start[mask.provided]
-    end <- end[mask.provided]
-    ## Starting at the earliest start and working through all the
-    ## remaining groups
-    mask.current.group <- start %in% min(start)
-    current.start <- start[mask.current.group][1]
-    current.end <- max(end[mask.current.group])
-    current.group <- 1
-    while (any(is.na(ret.tmp))) {
-      mask.within <- (start >= current.start &
-                      start < current.end)
-      if (any(is.na(ret.tmp[mask.within]))) {
-        ret.tmp[mask.within] <- current.group
-        current.end <- max(end[mask.within])
-      } else if (any(is.na(ret.tmp))) {
-        current.group <- current.group + 1
-        mask.within <- start %in% min(start[is.na(ret.tmp)])
-        current.start <- min(start[mask.within])
-        current.end <- max(end[mask.within])
-      } else {
-        stop("Error determining the current group")
-      }
-    }
-    ## Put the non-missing return values into the same format as the
-    ## output.
-    ret[mask.provided] <- ret.tmp
-  }
   ret
 }

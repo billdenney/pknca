@@ -4,16 +4,11 @@
 \alias{summary.PKNCAresults}
 \title{Summarize PKNCA results}
 \usage{
-\method{summary}{PKNCAresults}(object, simplify.start = TRUE,
-  drop.group = object$data$conc$subject, not.requested.string = ".",
-  not.calculated.string = "NC")
+\method{summary}{PKNCAresults}(object, drop.group = object$data$conc$subject,
+  not.requested.string = ".", not.calculated.string = "NC")
 }
 \arguments{
 \item{object}{The results to summarize}
-
-\item{simplify.start}{Should all results with the same starting
-time for the interval be summarized together?  (I.e. If TRUE,
-AUC[0-24] and AUC[0-Inf] are both summarized in the same row.)}
 
 \item{drop.group}{Which group(s) should be dropped from the
 formula?}
