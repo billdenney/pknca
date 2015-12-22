@@ -146,7 +146,9 @@ pk.nca.interval <- function(conc, time, interval, options=list()) {
         if (arg == "conc") {
           call.args[[arg]] <- conc
         } else if (arg == "time") {
-          call.args[[arg]] <- time
+          ## Realign the time to be relative to the start of the
+          ## interval
+          call.args[[arg]] <- time - interval$start[1]
         } else if (arg == "options") {
           call.args[[arg]] <- options
         } else if (any(mask.arg <- ret$PPTESTCD %in% arg)) {
