@@ -634,17 +634,22 @@ summary.PKNCAresults <- function(object,
           ## Calculation is required
           point <- summaryInstructions[[n]]$point(
             currentData$PPORRES)
+          na.point <- is.na(point)
+          na.spread <- NA
           ## Round the point estimate
           point <- roundingSummarize(point, n)
           current <- point
-          na.point <- is.na(point)
-          na.spread <- NA
           if ("spread" %in% names(summaryInstructions[[n]])) {
             spread <- summaryInstructions[[n]]$spread(
               currentData$PPORRES)
             na.spread <- all(is.na(spread))
-            ## Round the spread
-            spread <- roundingSummarize(spread, n)
+            if (na.spread) {
+              ## The spread couldn't be calculated, so show that
+              spread <- not.calculated.string
+            } else {
+              ## Round the spread
+              spread <- roundingSummarize(spread, n)
+            }
             ## Collapse the spread into a usable form if it is
             ## longer than one (e.g. a range or a confidence
             ## interval) and put brackets around it.
