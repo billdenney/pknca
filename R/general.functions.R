@@ -137,6 +137,15 @@ signifString <- function(x, digits=6) {
   toplog[mask.exact.log] <- toplog[mask.exact.log] + 1
   toplog <- ceiling(toplog)
   bottomlog[is.na(bottomlog)] <- digits-toplog[is.na(bottomlog)]
+  ## Find times when rounding increases the toplog and shift up the
+  ## bottomlog to a corresponding degree. e.g. x=0.9999 and digits=2
+  ## should be 1.0 not 1.00.
+  newtoplog <- log10(abs(round(x, digits=bottomlog)))
+  mask.exact.log <- (newtoplog %% 1) == 0
+  newtoplog[mask.exact.log] <- newtoplog[mask.exact.log] + 1
+  newtoplog <- ceiling(newtoplog)
+  mask.move.up <- toplog < newtoplog
+  bottomlog[mask.move.up] <- bottomlog[mask.move.up] - 1
   ## Do the rounding
   roundString(x, digits=bottomlog)
 }
