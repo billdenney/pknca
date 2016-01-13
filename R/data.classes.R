@@ -459,9 +459,9 @@ PKNCAdata.default <- function(data.conc, data.dose,
     intervals <- data.frame()
     indep.var.conc <- all.vars(parseFormula(ret$conc)$rhs)
     indep.var.dose <- all.vars(parseFormula(ret$dose)$rhs)
-    for (i in 1:nrow(groupid)) {
+    for (i in seq_len(nrow(groupid))) {
+      tmp.group <- groupid[i,,drop=FALSE]
       if (!is.null(tmp.conc.dose[[i]]$conc)) {
-        tmp.group <- groupid[i,,drop=FALSE]
         rownames(tmp.group) <- NULL
         new.intervals <-
           cbind(
@@ -473,8 +473,10 @@ PKNCAdata.default <- function(data.conc, data.dose,
         intervals <-
           rbind(intervals, new.intervals)
       } else {
-        warning("No concentration data for ",
-                paste(names(tmp.group), unlist(tmp.group), sep="=", collapse=", "))
+        warning("No intervals generated due to no concentration data for ",
+                paste(names(tmp.group),
+                      unlist(lapply(tmp.group, as.character)),
+                      sep="=", collapse=", "))
       }
     }
   }
