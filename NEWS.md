@@ -1,9 +1,9 @@
 # PKNCA 0.7
 
 * Features added
-** Additional PK parameters to support IV dosing added
+  * Additional PK parameters to support IV dosing added
 * Bugs fixed
-** Dosing without concentration is probably placebo; warn and continue
+  * Dosing without concentration is probably placebo; warn and continue
 
 # PKNCA 0.6
 
