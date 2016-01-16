@@ -2,6 +2,7 @@
 
 * Features added
   * Additional PK parameters to support IV dosing added
+  * Fixes #11, Intervals can be specified manually, and will apply across appropriate parts of the grouping variables
 * Bugs fixed
   * Dosing without concentration is probably placebo; warn and continue
 

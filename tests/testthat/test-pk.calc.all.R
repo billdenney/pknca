@@ -54,6 +54,21 @@ test_that("pk.nca", {
   expect_equal(myresult$result, verify.result,
                tol=0.001)
 
+  ## Specifying new intervals
+  mydata.newinterval <-
+      PKNCAdata(myconc, mydose,
+                intervals=data.frame(start=0, end=c(24, Inf),
+                                     auclast=c(TRUE, FALSE),
+                                     aucinf=c(FALSE, TRUE),
+                                     cmax=c(FALSE, TRUE),
+                                     tmax=c(FALSE, TRUE),
+                                     half.life=c(FALSE, TRUE)))
+  myresult.newinterval <- pk.nca(mydata)
+  expect_equal(myresult.newinterval$result,
+               myresult$result,
+               info="Intervals can be specified manually, and will apply across appropriate parts of the grouping variables.")
+  
+  
   ## Dosing not at time 0
   tmpconc.multi <- generate.conc(2, 1, 0:24)
   tmpdose.multi <- generate.dose(tmpconc)

@@ -58,7 +58,9 @@ pk.nca.intervals <- function(data, intervals, options) {
     ## Subset the intervals down to the intervals for the current group.
     shared.names <- names(data)[3:ncol(data)]
     all.intervals <- merge(unique(data[, shared.names, drop=FALSE]),
-                           intervals[,c("start", "end", shared.names)])
+                           intervals[,c("start", "end",
+                                        intersect(shared.names,
+                                                  names(intervals)))])
   } else {
     ## Likely single-subject data
     all.intervals <- intervals[,c("start", "end")]
