@@ -86,4 +86,21 @@ test_that("pk.nca", {
                tol=0.001,
                info="Shifted dosing works the same as un-shifted where time parameters like tmax and tlast are reported relative to the start of the interval")
 
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=Inf, cmax=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES,
+               c(0.99981, 0.94097), tol=0.00001,
+               info="Calculations work with a single row of intervals and a single parameter requested")
+
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=Inf, cl=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(subset(myresult$result, PPTESTCD %in% "cl")$PPORRES,
+               c(0.04640, 0.05111), tol=0.0001,
+               info="PK intervals work with passing in dose as a parameter")
 })

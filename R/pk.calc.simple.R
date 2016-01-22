@@ -254,18 +254,18 @@ PKNCA.set.summary("kel", business.geomean, business.geocv)
 #' Concepts and Applications, 4th Edition.  Stockholm, Sweden: Swedish
 #' Pharmaceutical Press, 2000.  86-7.
 #' @export
-pk.calc.cl <- function(dose, auc, unitconv)
-  if (missing(unitconv)) {
-    dose/auc
+pk.calc.cl <- function(dose, aucinf, unitconv=NA)
+  if (is.na(unitconv)) {
+    dose/aucinf
   } else {
-    unitconv*dose/auc
+    unitconv*dose/aucinf
   }
 ## Add the column to the interval specification
 add.interval.col("cl",
                  FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance",
-                 depends=list("auclast", "aucinf"))
+                 depends=list("aucinf", "auclast"))
 PKNCA.set.summary("cl", business.geomean, business.geocv)
 
 #' Calculate the absolute (or relative) bioavailability

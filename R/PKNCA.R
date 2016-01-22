@@ -16,6 +16,6 @@
 #' @importFrom nlme fixef getData getGroups gnls intervals lme nlme ranef
 #' @importFrom parallel mclapply
 #' @importFrom plyr rbind.fill
-#' @importFrom stats AIC as.formula coef confint formula glm logLik lm median model.frame na.exclude na.omit predict sd update
+#' @importFrom stats AIC as.formula coef confint formula glm logLik lm median model.frame na.exclude na.omit predict sd update update.formula
 #' @importFrom utils head sessionInfo
 NULL

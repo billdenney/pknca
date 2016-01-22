@@ -615,7 +615,7 @@ summary.PKNCAresults <- function(object,
              drop=FALSE],
            FUN=any)
   resultDataCols <- as.data.frame(resultDataCols[unlist(resultDataCols)])
-  ret <- cbind(unique(object$data$intervals[, groups, drop=FALSE]),
+  ret <- cbind(unique(object$result[, groups, drop=FALSE]),
                resultDataCols)
   ret[,setdiff(names(ret), groups)] <- not.requested.string
   ## Loop over every group that needs summarization
@@ -624,8 +624,10 @@ summary.PKNCAresults <- function(object,
     for (n in setdiff(names(ret), groups)) {
       ## Select the rows of the intervals that match the current row
       ## from the return value.
-      current.interval <- merge(ret[i, groups, drop=FALSE],
-                                object$data$intervals[,c(groups, n)])
+      current.interval <-
+        merge(ret[i, groups, drop=FALSE],
+              object$data$intervals[,intersect(names(object$data$intervals),
+                                               c(groups, n))])
       if (any(current.interval[,n])) {
         currentData <- merge(
           ret[i, groups, drop=FALSE],
