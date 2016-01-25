@@ -10,7 +10,7 @@ test_that("pk.calc.c0", {
   expect_error(pk.calc.c0(5:1, 0:4, time.dose="1"),
                regexp="time.dose must be a number")
   expect_error(pk.calc.c0(5:1, 0:4, method="blah"),
-               regexp="'arg' should be one of \"c0\", \"logslope\", \"c1\"",
+               regexp="should be one of",
                info="method must be valid")
   expect_warning(pk.calc.c0(5:1, 0:4, time.dose=30),
                  regexp="time.dose is after all available data")

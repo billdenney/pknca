@@ -110,11 +110,14 @@ test_that("PKNCA.options", {
   ## auc.method
   ## All possible methods
   expect_equal(PKNCA.options(auc.method="linear", check=TRUE),
-               "linear")
+               "linear",
+               info="auc.method selection works for linear")
   expect_equal(PKNCA.options(auc.method="lin up/log down", check=TRUE),
-               "lin up/log down")
+               "lin up/log down",
+               info="auc.method selection works for lin up/log down")
   expect_error(PKNCA.options(auc.method="foo", check=TRUE),
-               "'arg' should be one of \\\"lin up/log down\\\", \\\"linear\\\"")
+               regex="should be one of",
+               info="auc.method is a valid method")
 
   ## conc.na
   expect_equal(PKNCA.options(conc.na="drop", check=TRUE),
