@@ -1,10 +1,11 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.6.0.9004
+Version: 0.6.0.9005
 Date: 2015-12-10
-Author: Bill Denney <bill@denney.ws>, Clare Buckeridge
-    <clare.buckeridge@pfizer.com>
+Authors@R: c(
+    person("Bill", "Denney", email="bill@denney.ws", role=c("aut", "cre")),
+    person("Clare", "Buckeridge", email="clare.buckeridge@pfizer.com", role="aut"))
 Maintainer: Bill Denney <bill@denney.ws>
 Imports:
     digest,
@@ -28,4 +29,5 @@ URL: https://github.com/billdenney/pknca
 BugReports: https://github.com/billdenney/pknca/issues
 Acknowledgement: Sridhar Duvvuri for significant help
 NeedsCompilation: no
+VignetteBuilder: knitr
 RoxygenNote: 5.0.1

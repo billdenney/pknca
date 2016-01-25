@@ -1,0 +1,195 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
+-->
+
+PKNCA provides functions to complete noncompartmental analysis (NCA)
+for pharmacokinetic (PK) data.  Its intent is to provide a complete
+R-based solution enabling data provenance for NCA including tracking
+data cleaning, enabling calculations, exporting results, and
+reporting.  The library is designed to give a reasonable answer
+without user intervention (load, calculate, and summarize), but it
+allows the user to override the automatic selections at any point.
+
+The library design is modular to allow expansion based on needs
+unforseen by the authors including new NCA parameters, novel data
+cleaning methods, and modular summarization decisions.  Expanding the
+library will be discussed in a separate vignette.
+
+# Quick Start[quickstart]
+
+The simplest analysis requires concentration and dosing data, then
+five function calls can provide summarized results.
+
+```{r eval=FALSE}
+library(PKNCA)
+
+## Load the PK concentration data
+d.conc <- read.csv("concentration.csv", stringsAsFactors=FALSE)
+## Load the dosing data
+d.dose <- read.csv("dose.csv", stringsAsFactors=FALSE)
+
+## Create a concentration object specifying the concentration, time,
+## study, and subject columns.  (Note that any number of grouping
+## levels is supporting; you are not restricted to this list.)
+my.conc <- PKNCAconc(d.conc,
+                     concentration~time|study+subject)
+## Create a dosing object specifying the dose, time, study, and
+## subject columns.  (Note that the grouping factors should be a
+## subset of the grouping factors for concentration, and the columns
+## must have the same names between concentration and dose objects.)
+my.dose <- PKNCAdose(d.dose,
+                     dose~time|study+subject)
+## Combine the concentration and dosing information both to
+## automatically define the intervals for NCA calculation and provide
+## doses for calculations requiring dose.
+my.data <- PKNCAdata(my.conc, my.dose)
+
+## Calculate the NCA parameters
+my.results <- pk.nca(my.data)
+
+## Summarize the results
+summary(my.results)
+```
+
+# Data Handling
+
+After loading data, it must be in the right form.  The minimum
+requirements are that concentration, dose, and time must all be
+numeric (and not factors).  Grouping variables have no specific
+requirements; they can be any mode.
+
+Values below the limit of quantificaiton are coded as zeros (`{r
+eval=FALSE}0`), and missing values are coded as `{r eval=FALSE}NA`.
+
+# Options: Make PKNCA Work Your Way
+
+## Calculation Options: the PKNCA.options Function
+
+Different organizations have different requirements for computation
+and summarization of NCA.  Options for how to perform calculations and
+summaries are handled by the `{r eval=FALSE}PKNCA.options` command.
+
+Default options have been set to commonly-used standard parameters.
+The current value for options can be found by running the command with
+no arguments:
+
+```{r}
+PKNCA.options()
+```
+
+And, to reset the current values to the library defaults, run the
+function with the default argument set to `TRUE`.
+
+```{r eval=FALSE}
+PKNCA.options(default=TRUE)
+```
+
+Each of the options is documented where it is used; for example, the
+first.tmax option is documented in the `{r eval=FALSE}pk.calc.tmax`
+function.
+
+## Summarization Options: the PKNCA.set.summary Function
+
+On top of methods of calculation, summarization method preferences
+differ.  Typical summarization preferences include selection of the
+measurement of central tendency and dispersion, handling of missing
+values, handling of values below the limit of quantification, and
+more.  Beyond the method for summarization, presentation is managed
+through user preferences.  Presentation is typically controlled by
+rounding to either a defined number of decimal places or significant
+figures.
+
+An example is that C~max~ may be summarized by the geometric mean with
+the geometric CV using three significant figures, and having a summary
+result requires that at least half of the available values are present
+(not missing).  The code below will set this example.
+
+```{r eval=FALSE}
+PKNCA.set.summary(name="cmax",
+                  point=business.geomean,
+                  spread=business.geocv,
+                  rounding=list(signif=3))
+```
+
+Another example is that T~max~ is usually summarized by the median and
+range, and as measurements are often taken with minute resolution and
+recorded in hours, reporting is usually to the second decimal place.
+
+```{r eval=FALSE}
+PKNCA.set.summary(name="tmax",
+                  point=business.median,
+                  spread=business.range,
+                  rounding=list(round=2))
+```
+
+If the functions or default rounding options provided in the library
+do not meet the summarization needs, a user-supplied function can be
+used for rounding.
+
+# Grouping NCA Data
+
+As described in the [quick start](quickstart), concentration and dose
+data are generally grouped to identify how to separate the data.
+Typical groups for concentration data include study, treatment,
+subject, and analyte.  Typical groups for dose data include study,
+treatment, and subject.  By default, summaries are produced based on
+the concentration groups dropping the subject (so that averages are
+taken across subjects within the other parameters).
+
+The quick start example can be extended to include multiple analytes
+as follows.  The only difference is the `{r eval=FALSE}/analyte`
+formula element in the concentration data.  The reason for the slash
+instead of the plus is that the last element before a slash is assumed
+to be the subject, and as noted before, the subject is (by default)
+excluded from the summary grouping (so that summaries are grouped by
+study, treatment, etc., but not by subject).
+
+```{r eval=FALSE}
+## Create a concentration object specifying the concentration, time,
+## study, and subject columns.  (Note that any number of grouping
+## levels is supporting; you are not restricted to this list.)
+my.conc <- PKNCAconc(d.conc,
+                     concentration~time|study+subject/analyte)
+## Create a dosing object specifying the dose, time, study, and
+## subject columns.  (Note that the grouping factors should be a
+## subset of the grouping factors for concentration, and the columns
+## must have the same names between concentration and dose objects.)
+my.dose <- PKNCAdose(d.dose,
+                     dose~time|study+subject)
+```
+
+# Selecting Calculation Intervals
+
+All NCA calculations require the inverval over which they are
+calculated.  When the concentration and dosing information are
+combined to the PKNCAdata object, intervals are automatically
+determined.  The exception to this automatic determination is if the
+user provides intervals.
+
+When selected either automatically or manually, intervals define at
+minimum a start time, an end time, and the parameters to be
+calculated.  The parameter list is available from the `{r
+eval=FALSE}get.interval.cols` function.  The parameters requested are
+specified by setting the entry in a data.frame as requested.
+
+```{r}
+data.frame(start=c(0, 0), end=c(24, Inf),
+           cmax=c(FALSE, TRUE),
+           tmax=c(FALSE, TRUE),
+           auclast=TRUE,
+           aucinf=c(FALSE, TRUE))
+```
+
+An example of intervals like the above is sufficient for designs with
+a single type of treatment-- like single doses.  For more complex
+treatments, like the combination of single and multiple doses in a
+single summary would simply include a treatment column that matches
+the column name of the treatment in the concentration data set.
+
+## Automatic Interval Determination
+
+
+
+## Manual Interval Specification
+
