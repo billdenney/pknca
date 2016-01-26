@@ -52,6 +52,7 @@ superposition <- function(conc, ...)
   UseMethod("superposition", conc)
 
 #' @rdname superposition
+#' @export
 superposition.PKNCAconc <- function(conc, ...) {
   conc.col <- as.character(parseFormula(conc)$lhs)
   time.col <- as.character(parseFormula(conc)$rhs)
@@ -83,6 +84,7 @@ superposition.PKNCAconc <- function(conc, ...) {
 }
 
 #' @rdname superposition
+#' @export
 superposition.numeric <- function(conc, time, dose.input,
                                   tau, dose.times=0, dose.amount, n.tau=Inf,
                                   options=list(),
