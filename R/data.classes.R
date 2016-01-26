@@ -598,6 +598,7 @@ roundingSummarize <- function(x, name) {
 #' @return A data frame of NCA parameter results summarized according
 #' to the summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}
+#' @export
 summary.PKNCAresults <- function(object,
                                  drop.group=object$data$conc$subject,
                                  not.requested.string=".",
