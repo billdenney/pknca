@@ -7,14 +7,14 @@
 \alias{PKNCAdata.default}
 \title{Create a PKNCAdata object.}
 \usage{
-PKNCAdata(data.conc, ...)
+PKNCAdata(data.conc, data.dose, ...)
 
 \method{PKNCAdata}{PKNCAconc}(data.conc, data.dose, ...)
 
-\method{PKNCAdata}{PKNCAdose}(data.dose, data.conc, ...)
+\method{PKNCAdata}{PKNCAdose}(data.conc, data.dose, ...)
 
-\method{PKNCAdata}{default}(data.conc, data.dose, formula.conc, formula.dose,
-  intervals, options = list())
+\method{PKNCAdata}{default}(data.conc, data.dose, ..., formula.conc,
+  formula.dose, intervals, options = list())
 }
 \arguments{
 \item{data.conc}{Concentration data as a \code{PKNCAconc} object or
@@ -22,14 +22,16 @@ a data frame}
 
 \item{data.dose}{Dosing data as a \code{PKNCAdose} object}
 
+\item{...}{arguments passed to \code{PKNCAdata.default}}
+
 \item{formula.conc}{Formula for making a \code{PKNCAconc} object
-with \code{data.conc}.  This must be given if \code{data.conc} is a
-data.frame, and it must not be given if \code{data.conc} is a
+with \code{data.conc}.  This must be given if \code{data.conc} is
+a data.frame, and it must not be given if \code{data.conc} is a
 \code{PKNCAconc} object.}
 
 \item{formula.dose}{Formula for making a \code{PKNCAdose} object
-with \code{data.dose}.  This must be given if \code{data.dose} is a
-data.frame, and it must not be given if \code{data.dose} is a
+with \code{data.dose}.  This must be given if \code{data.dose} is
+a data.frame, and it must not be given if \code{data.dose} is a
 \code{PKNCAdose} object.}
 
 \item{intervals}{A data frame with the AUC interval specifications
@@ -42,8 +44,8 @@ missing, this will be automatically chosen by
 }
 \value{
 A PKNCAdata object with concentration, dose, interval, and
-calculation options stored (note that PKNCAdata objects can also
-have results after a NCA calculations are done to the data).
+  calculation options stored (note that PKNCAdata objects can also
+  have results after a NCA calculations are done to the data).
 }
 \description{
 \code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and
@@ -51,6 +53,6 @@ adds in the intervals for PK calculations.
 }
 \seealso{
 \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
-\code{\link{choose.auc.intervals}}
+  \code{\link{choose.auc.intervals}}
 }
 

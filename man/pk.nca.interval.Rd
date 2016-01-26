@@ -4,12 +4,17 @@
 \alias{pk.nca.interval}
 \title{Compute all PK parameters for a single concentration-time data set}
 \usage{
-pk.nca.interval(conc, time, interval, options = list())
+pk.nca.interval(conc, time, dose, time.dose, interval, options = list())
 }
 \arguments{
 \item{conc}{Concentration measured}
 
 \item{time}{Time of concentration measurement}
+
+\item{dose}{Dose amount (may be a scalar or vector)}
+
+\item{time.dose}{Time of the dose (must be the same length as
+\code{dose})}
 
 \item{interval}{One row of an interval definition (see
 \code{\link{check.interval.specification}} for how to define the
@@ -20,7 +25,7 @@ interval.}
 }
 \value{
 A data frame with the start and end time along with all PK
-parameters for the \code{interval}
+  parameters for the \code{interval}
 }
 \description{
 For one subject/time range, compute all available PK parameters.

@@ -130,7 +130,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
 #' @param dose Dose amount (may be a scalar or vector)
-#' @param dose.time Time of the dose (must be the same length as
+#' @param time.dose Time of the dose (must be the same length as
 #'   \code{dose})
 #' @param interval One row of an interval definition (see
 #'   \code{\link{check.interval.specification}} for how to define the

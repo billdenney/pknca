@@ -374,29 +374,30 @@ model.frame.PKNCAdose <- model.frame.PKNCAconc
 #' adds in the intervals for PK calculations.
 #' 
 #' @param data.conc Concentration data as a \code{PKNCAconc} object or
-#' a data frame
+#'   a data frame
 #' @param data.dose Dosing data as a \code{PKNCAdose} object
 #' @param formula.conc Formula for making a \code{PKNCAconc} object
-#' with \code{data.conc}.  This must be given if \code{data.conc} is a
-#' data.frame, and it must not be given if \code{data.conc} is a
-#' \code{PKNCAconc} object.
+#'   with \code{data.conc}.  This must be given if \code{data.conc} is
+#'   a data.frame, and it must not be given if \code{data.conc} is a
+#'   \code{PKNCAconc} object.
 #' @param formula.dose Formula for making a \code{PKNCAdose} object
-#' with \code{data.dose}.  This must be given if \code{data.dose} is a
-#' data.frame, and it must not be given if \code{data.dose} is a
-#' \code{PKNCAdose} object.
+#'   with \code{data.dose}.  This must be given if \code{data.dose} is
+#'   a data.frame, and it must not be given if \code{data.dose} is a
+#'   \code{PKNCAdose} object.
 #' @param intervals A data frame with the AUC interval specifications
-#' as defined in \code{\link{check.interval.specification}}.  If
-#' missing, this will be automatically chosen by
-#' \code{\link{choose.auc.intervals}}.
+#'   as defined in \code{\link{check.interval.specification}}.  If
+#'   missing, this will be automatically chosen by
+#'   \code{\link{choose.auc.intervals}}.
 #' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
+#'   \code{\link{PKNCA.options}} for calculations.
+#' @param ... arguments passed to \code{PKNCAdata.default}
 #' @return A PKNCAdata object with concentration, dose, interval, and
-#' calculation options stored (note that PKNCAdata objects can also
-#' have results after a NCA calculations are done to the data).
+#'   calculation options stored (note that PKNCAdata objects can also
+#'   have results after a NCA calculations are done to the data).
 #' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
-#' \code{\link{choose.auc.intervals}}
+#'   \code{\link{choose.auc.intervals}}
 #' @export
-PKNCAdata <- function(data.conc, ...)
+PKNCAdata <- function(data.conc, data.dose, ...)
   UseMethod("PKNCAdata", data.conc)
 
 ## Ensure that arguments are reversible
@@ -407,12 +408,13 @@ PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...)
 
 #' @rdname PKNCAdata
 #' @export
-PKNCAdata.PKNCAdose <- function(data.dose, data.conc, ...)
-  PKNCAdata.default(data.dose=data.dose, data.conc=data.conc, ...)
+PKNCAdata.PKNCAdose <- function(data.conc, data.dose, ...)
+  ## Swap the arguments
+  PKNCAdata.default(data.dose=data.conc, data.conc=data.dose, ...)
 
 #' @rdname PKNCAdata
 #' @export
-PKNCAdata.default <- function(data.conc, data.dose,
+PKNCAdata.default <- function(data.conc, data.dose, ...,
                               formula.conc, formula.dose,
                               intervals, options=list()) {
   ret <- list()
@@ -588,18 +590,19 @@ roundingSummarize <- function(x, name) {
 #'
 #' @param object The results to summarize
 #' @param drop.group Which group(s) should be dropped from the
-#' formula?
+#'   formula?
 #' @param not.requested.string A character string to use when a
-#' parameter summary was not requested for a parameter within an
-#' interval.
+#'   parameter summary was not requested for a parameter within an
+#'   interval.
 #' @param not.calculated.string A character string to use when a
-#' parameter summary was requested, but the point estimate AND spread
-#' calculations (if applicable) returned \code{NA}.
+#'   parameter summary was requested, but the point estimate AND
+#'   spread calculations (if applicable) returned \code{NA}.
+#' @param ... Ignored.
 #' @return A data frame of NCA parameter results summarized according
-#' to the summarization settings.
+#'   to the summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}
 #' @export
-summary.PKNCAresults <- function(object,
+summary.PKNCAresults <- function(object, ...,
                                  drop.group=object$data$conc$subject,
                                  not.requested.string=".",
                                  not.calculated.string="NC") {

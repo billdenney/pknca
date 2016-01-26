@@ -242,17 +242,18 @@ PKNCA.set.summary("kel", business.geomean, business.geocv)
 #' Calculate the (observed oral) clearance
 #'
 #' @param dose the dose administered
-#' @param auc the area under the curve from 0 to infinity or 0 to tau
-#' (the next dose on a regular schedule at steady-state)
+#' @param aucinf the area under the curve from 0 to infinity or 0 to
+#'   tau (the next dose on a regular schedule at steady-state)
 #' @param unitconv the multiplied factor to use for unit conversion
-#' (e.g. 1000 for mg \code{dose}, time*ng/mL for \code{auc}, and
-#' output in L/time)
+#'   (e.g. 1000 for mg \code{dose}, time*ng/mL for \code{auc}, and
+#'   output in L/time)
 #' @return the numeric value of the total (CL) or observed oral
-#' clearance (CL/F)
-#' @references Gabrielsson J, Weiner D.  "Section 2.5.1 Derivation of
-#' clearance."  Pharmacokinetic & Pharmacodynamic Data Analysis:
-#' Concepts and Applications, 4th Edition.  Stockholm, Sweden: Swedish
-#' Pharmaceutical Press, 2000.  86-7.
+#'   clearance (CL/F)
+#' @references Gabrielsson J, Weiner D.
+#'   "Section 2.5.1 Derivation of clearance."  Pharmacokinetic &
+#'   Pharmacodynamic Data Analysis: Concepts and Applications, 4th
+#'   Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000.
+#'   86-7.
 #' @export
 pk.calc.cl <- function(dose, aucinf, unitconv=NA)
   if (is.na(unitconv)) {

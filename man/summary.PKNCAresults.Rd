@@ -4,11 +4,14 @@
 \alias{summary.PKNCAresults}
 \title{Summarize PKNCA results}
 \usage{
-\method{summary}{PKNCAresults}(object, drop.group = object$data$conc$subject,
-  not.requested.string = ".", not.calculated.string = "NC")
+\method{summary}{PKNCAresults}(object, ...,
+  drop.group = object$data$conc$subject, not.requested.string = ".",
+  not.calculated.string = "NC")
 }
 \arguments{
 \item{object}{The results to summarize}
+
+\item{...}{Ignored.}
 
 \item{drop.group}{Which group(s) should be dropped from the
 formula?}
@@ -18,12 +21,12 @@ parameter summary was not requested for a parameter within an
 interval.}
 
 \item{not.calculated.string}{A character string to use when a
-parameter summary was requested, but the point estimate AND spread
-calculations (if applicable) returned \code{NA}.}
+parameter summary was requested, but the point estimate AND
+spread calculations (if applicable) returned \code{NA}.}
 }
 \value{
 A data frame of NCA parameter results summarized according
-to the summarization settings.
+  to the summarization settings.
 }
 \description{
 Summarize PKNCA results
