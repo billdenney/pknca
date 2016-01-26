@@ -1,3 +1,7 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
+-->
 ---
 title: "Introduction to PKNCA and Usage Instructions"
 author: "Bill Denney"
@@ -6,10 +10,6 @@ output:
     toc: true
     toc_depth: 2
 ---
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
--->
 
 ```{r setup, echo=FALSE, include=FALSE}
 library(PKNCA)

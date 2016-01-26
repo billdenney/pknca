@@ -17,6 +17,7 @@ Imports:
     stats,
     utils
 Suggests:
+    knitr,
     testthat
 Description: Compute standard Non-Compartmental Analysis (NCA)
     parameters and summarize them.  In addition to this core work, it
