@@ -39,12 +39,20 @@ pk.nca <- function(data) {
                          options=data$options)
     ## Put the group parameters with the results
     for (i in seq_len(length(tmp.results))) {
-      keep.group.names <- setdiff(names(attr(conc.split, "groupid")),
-                                  names(tmp.results[[i]]))
-      if (length(keep.group.names) > 0) {
-        tmp.results[[i]] <-
-          cbind(attr(conc.split, "groupid")[i,keep.group.names,drop=FALSE],
-                tmp.results[[i]])
+      ## If no calculations were performed, the results are NULL.
+      ## That will move through rbind.fill without adding rows, so no
+      ## action is required.
+      if (!is.null(tmp.results[[i]])) {
+        ## If calculations were performed, the results are non-NULL,
+        ## so add the grouping information to the results, if
+        ## applicable.
+        keep.group.names <- setdiff(names(attr(conc.split, "groupid")),
+                                    names(tmp.results[[i]]))
+        if (length(keep.group.names) > 0) {
+          tmp.results[[i]] <-
+            cbind(attr(conc.split, "groupid")[i,keep.group.names,drop=FALSE],
+                  tmp.results[[i]])
+        }
       }
     }
     ## Generate the outputs
@@ -65,18 +73,21 @@ pk.nca <- function(data) {
 ##
 ## This is simply a helper for pk.nca
 pk.nca.intervals <- function(conc.dose, intervals, options) {
+  if (is.null(conc.dose$conc)) {
+    ## No data; potentially placebo data (the warning would have
+    ## already been generated from making the PKNCAdata object.
+    return(NULL)
+  }
   ## Merge the intervals with the group columns from the concentration
   ## data
   if (ncol(conc.dose$conc) >= 3) {
     ## Subset the intervals down to the intervals for the current group.
     shared.names <- names(conc.dose$conc)[3:ncol(conc.dose$conc)]
     all.intervals <- merge(unique(conc.dose$conc[, shared.names, drop=FALSE]),
-                           intervals[,c("start", "end",
-                                        intersect(shared.names,
-                                                  names(intervals)))])
+                           intervals)
   } else {
     ## Likely single-subject data
-    all.intervals <- intervals[,c("start", "end")]
+    all.intervals <- intervals
     shared.names <- c()
   }
   ret <- data.frame()
@@ -107,7 +118,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                         time=tmpconcdata[,col.time],
                         dose=tmpdosedata[,col.dose],
                         time.dose=tmpdosedata[,col.time.dose],
-                        interval=intervals[i,],
+                        interval=all.intervals[i,],
                         options=options)
       ## Add all the new data into the output
       ret <- rbind(ret,
