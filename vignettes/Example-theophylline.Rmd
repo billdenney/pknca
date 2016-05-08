@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
+%\VignetteIndexEntry{Computing NCA Parameters for Theophylline}
 -->
 ---
 title: "Computing NCA Parameters for Theophylline"
