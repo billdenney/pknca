@@ -2,13 +2,24 @@
 % Please edit documentation in R/data.classes.R
 \name{PKNCAdose}
 \alias{PKNCAdose}
+\alias{PKNCAdose.data.frame}
+\alias{PKNCAdose.default}
+\alias{PKNCAdose.tbl_df}
 \title{Create a PKNCAdose object}
 \usage{
-PKNCAdose(data, formula, labels, units)
+PKNCAdose(data, ...)
+
+\method{PKNCAdose}{default}(data, ...)
+
+\method{PKNCAdose}{tbl_df}(data, ...)
+
+\method{PKNCAdose}{data.frame}(data, formula, labels, units, ...)
 }
 \arguments{
 \item{data}{A data frame with time and the groups defined in
 \code{formula}.}
+
+\item{...}{Ignored.}
 
 \item{formula}{The formula defining the
 \code{dose.amount~time|groups} where \code{time} is the time of

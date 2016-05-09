@@ -1,5 +1,6 @@
 context("Class generation")
 
+library(dplyr)
 source("generate.data.R")
 
 test_that("PKNCAconc", {
@@ -44,6 +45,12 @@ test_that("PKNCAconc", {
   expect_error(PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID),
                regexp="Rows that are not unique per group and time",
                info="Duplicated key rows")
+
+  expect_equal(PKNCAconc(tmp.conc.analyte,
+                         formula=conc~time|treatment+ID/analyte),
+               PKNCAconc(tbl_df(tmp.conc.analyte),
+                         formula=conc~time|treatment+ID/analyte),
+               info="tbl_df and data.frame classes both work and create identical objects")
 })
 
 test_that("PKNCAdose", {
@@ -55,6 +62,7 @@ test_that("PKNCAdose", {
   tmp.conc.analyte.study <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
                                           nanalytes=2, nstudies=2)
   tmp.dose <- generate.dose(tmp.conc)
+  rownames(tmp.dose) <- NULL
   tmp.dose.analyte <- generate.dose(tmp.conc.analyte)
   tmp.dose.study <- generate.dose(tmp.conc.study)
   tmp.dose.analyte.study <- generate.dose(tmp.conc.analyte.study)
@@ -88,6 +96,12 @@ test_that("PKNCAdose", {
   expect_error(PKNCAdose(bad.dose.analyte, formula=dose~time|treatment+ID),
                regexp="Rows that are not unique per group and time",
                info="Duplicated key rows")
+
+  expect_equal(PKNCAdose(tmp.dose,
+                         formula=dose~time|treatment+ID),
+               PKNCAdose(tbl_df(tmp.dose),
+                         formula=dose~time|treatment+ID),
+               info="tbl_df and data.frame classes both work and create identical objects")
 })
 
 test_that("PKNCAdata", {
@@ -161,8 +175,8 @@ test_that("PKNCAresults and summary", {
   ## to happen here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
 

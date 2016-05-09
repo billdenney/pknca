@@ -1,10 +1,10 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.7
-Date: 2016-04-01
+Version: 0.7.0.9001
+Date: 2016-05-09
 Authors@R: c(
-    person("Bill", "Denney", email="bill@denney.ws", role=c("aut", "cre")),
+    person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre")),
     person("Clare", "Buckeridge", email="clare.buckeridge@pfizer.com", role="aut"))
 Maintainer: Bill Denney <bill@denney.ws>
 Imports:
@@ -17,6 +17,7 @@ Imports:
     stats,
     utils
 Suggests:
+    dplyr,
     knitr,
     testthat
 Description: Compute standard Non-Compartmental Analysis (NCA)

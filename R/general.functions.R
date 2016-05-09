@@ -133,7 +133,7 @@ signifString <- function(x, digits=6) {
   toplog <- log10(abs(x))
   ## When the order of magnitude is an exact log 10, move up one so
   ## that the math works for determing the lower log.
-  mask.exact.log <- (toplog %% 1) == 0
+  mask.exact.log <- (toplog %% 1) %in% 0
   toplog[mask.exact.log] <- toplog[mask.exact.log] + 1
   toplog <- ceiling(toplog)
   bottomlog[is.na(bottomlog)] <- digits-toplog[is.na(bottomlog)]
@@ -141,7 +141,7 @@ signifString <- function(x, digits=6) {
   ## bottomlog to a corresponding degree. e.g. x=0.9999 and digits=2
   ## should be 1.0 not 1.00.
   newtoplog <- log10(abs(round(x, digits=bottomlog)))
-  mask.exact.log <- (newtoplog %% 1) == 0
+  mask.exact.log <- (newtoplog %% 1) %in% 0
   newtoplog[mask.exact.log] <- newtoplog[mask.exact.log] + 1
   newtoplog <- ceiling(newtoplog)
   mask.move.up <- toplog < newtoplog

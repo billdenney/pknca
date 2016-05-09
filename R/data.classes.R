@@ -20,9 +20,24 @@
 #' @param units (optional) Units for use when plotting and calculating
 #' parameters.  Note that unit conversions and simplifications are not
 #' done; the text is used as-is.
+#' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @export
-PKNCAconc <- function(data, formula, subject, labels, units) {
+PKNCAconc <- function(data, ...)
+  UseMethod("PKNCAconc")
+
+#' @rdname PKNCAconc
+#' @export
+PKNCAconc.default <- function(data, ...)
+  PKNCAconc.data.frame(as.data.frame(data), ...)
+#' @rdname PKNCAconc
+#' @export
+PKNCAconc.tbl_df <- function(data, ...)
+  PKNCAconc.data.frame(as.data.frame(data), ...)
+
+#' @rdname PKNCAconc
+#' @export
+PKNCAconc.data.frame <- function(data, formula, subject, labels, units, ...) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -108,9 +123,24 @@ set.name.matching <- function(ret, name, value, data) {
 #' @param units (optional) Units for use when plotting and calculating
 #'   parameters.  Note that unit conversions and simplifications are
 #'   not done; the text is used as-is.
+#' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @export
-PKNCAdose <- function(data, formula, labels, units) {
+PKNCAdose <- function(data, ...)
+  UseMethod("PKNCAdose")
+
+#' @rdname PKNCAdose
+#' @export
+PKNCAdose.default <- function(data, ...)
+  PKNCAdose.data.frame(as.data.frame(data), ...)
+#' @rdname PKNCAdose
+#' @export
+PKNCAdose.tbl_df <- function(data, ...)
+  PKNCAdose.data.frame(as.data.frame(data), ...)
+
+#' @rdname PKNCAdose
+#' @export
+PKNCAdose.data.frame <- function(data, formula, labels, units, ...) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -427,7 +457,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
       warning("data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
     ret$conc <- data.conc
   } else {
-    ret$conc <- PKNCAconc(data.conc, formula.conc)
+    ret$conc <- PKNCAconc(data.conc, formula=formula.conc)
   }
   ## Generate the data element
   if (inherits(data.dose, "PKNCAdose")) {

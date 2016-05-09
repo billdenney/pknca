@@ -2,13 +2,24 @@
 % Please edit documentation in R/data.classes.R
 \name{PKNCAconc}
 \alias{PKNCAconc}
+\alias{PKNCAconc.data.frame}
+\alias{PKNCAconc.default}
+\alias{PKNCAconc.tbl_df}
 \title{Create a PKNCAconc object}
 \usage{
-PKNCAconc(data, formula, subject, labels, units)
+PKNCAconc(data, ...)
+
+\method{PKNCAconc}{default}(data, ...)
+
+\method{PKNCAconc}{tbl_df}(data, ...)
+
+\method{PKNCAconc}{data.frame}(data, formula, subject, labels, units, ...)
 }
 \arguments{
 \item{data}{A data frame with concentration, time, and the groups
 defined in \code{formula}.}
+
+\item{...}{Ignored.}
 
 \item{formula}{The formula defining the
 \code{concentration~time|groups}}

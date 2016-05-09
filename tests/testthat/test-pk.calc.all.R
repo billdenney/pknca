@@ -7,8 +7,8 @@ test_that("pk.nca", {
   ## to happen here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
 
