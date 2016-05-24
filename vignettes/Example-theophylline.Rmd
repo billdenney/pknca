@@ -13,6 +13,7 @@ output:
 
 ```{r setup, echo=FALSE, include=FALSE}
 library(PKNCA)
+library(knitr)
 ```
 
 Examples simplify understanding.  Below is an example of how to use the theophylline dataset to generate NCA parameters.
@@ -21,7 +22,7 @@ Examples simplify understanding.  Below is an example of how to use the theophyl
 
 ```{r showtheoph}
 ## It is always a good idea to look at the data
-head(datasets::Theoph)
+knitr::kable(head(datasets::Theoph))
 ```
 
 The columns that we will be interested in for our analysis are conc, Time, and Subject in the concentration data set and Dose, Time, and Subject for the dosing data set.
@@ -34,7 +35,8 @@ my.conc <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
 ## that first.
 d.dose <- unique(datasets::Theoph[datasets::Theoph$Time == 0,
                                   c("Dose", "Time", "Subject")])
-d.dose
+knitr::kable(d.dose,
+             caption="Example dosing data extracted from theophylline data set")
 my.dose <- PKNCAdose(d.dose, Dose~Time|Subject)
 ```
 
@@ -44,8 +46,8 @@ After loading the data, they must be combined to prepare for parameter calculati
 
 ```{r autointervals}
 my.data.automatic <- PKNCAdata(my.conc, my.dose)
-PKNCA.options("single.dose.aucs")
-my.data.automatic$intervals
+knitr::kable(PKNCA.options("single.dose.aucs"))
+knitr::kable(my.data.automatic$intervals)
 ```
 
 Intervals for calculation can also be specified manually.  Manual specification requires at least columns for `start` time, `end` time, and the parameters requested.  The manual specification can also include any grouping factors from the concentration data set.  Column order of the intervals is not important.  When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter.  Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC~0-$\infinity$~, you do not have to specify it in the parameters requested.
@@ -59,7 +61,7 @@ my.intervals <- data.frame(start=0,
                            auclast=TRUE)
 my.data.manual <- PKNCAdata(my.conc, my.dose,
                             intervals=my.intervals)
-my.data.manual$intervals
+knitr::kable(my.data.manual$intervals)
 ```
 
 # Compute the parameters
@@ -68,7 +70,7 @@ Parameter calculation will automatically split the data by the grouping factor(s
 
 ```{r calculationauto}
 my.results.automatic <- pk.nca(my.data.automatic)
-head(my.results.automatic$result)
+knitr::kable(head(my.results.automatic$result))
 ```
 ```{r calculationautoshow, eval=FALSE}
 summary(my.results.automatic)
@@ -80,7 +82,7 @@ knitr::kable(summary(my.results.automatic))
 
 ```{r calculationmanual}
 my.results.manual <- pk.nca(my.data.manual)
-head(my.results.manual$result)
+knitr::kable(head(my.results.manual$result))
 ```
 ```{r calculationmanualshow, eval=FALSE}
 summary(my.results.manual)
