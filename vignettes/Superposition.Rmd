@@ -1,0 +1,123 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Superposition of Pharmacokinetic Data}
+-->
+---
+title: "Superposition of Pharmacokinetic Data"
+author: "Bill Denney"
+output:
+  html_document:
+    toc: false
+    toc_depth: 2
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+library(PKNCA)
+library(knitr)
+library(lattice)
+```
+
+Examples simplify understanding.  Below is an example of how to use
+the theophylline dataset to estimate the concentration for each
+subject after multiple doses.
+
+# Load the data
+
+```{r showtheoph}
+## It is always a good idea to look at the data
+knitr::kable(head(datasets::Theoph))
+```
+
+The columns that we will be interested in for our analysis are conc,
+Time, and Subject in the concentration data.
+
+```{r setupconc}
+## By default it is groupedData; convert it to a data frame for use
+my.conc <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+```
+
+# Compute the Superposition from Single-Dose Data to Steady-State
+
+With a simple call, we can have the estimated steady-state
+concentration for each subject.  At minimum, the time between dosing
+(`tau`) must be provided.
+
+```{r superposition, error=TRUE}
+steady.state <- superposition(my.conc, tau=24)
+```
+
+The error noting that the first concentration must be zero is due to
+the fact that superposition usually occurs with single-dose data.  If
+the first concentration is nonzero, the data are not likely to be
+single-dose (or a data error should be fixed).  Let's find the offending data.
+
+```{r findnonzero}
+knitr::kable(subset(datasets::Theoph, Time == 0 & conc > 0),
+             caption="Nonzero predose measurements")
+```
+
+For this example, we will assume that these were errors, correct them to zero, and recalculate.
+
+```{r allownonzero}
+## Correct nonzero concentrations at time 0 to be BLQ.
+theoph.corrected <- datasets::Theoph
+theoph.corrected$conc[theoph.corrected$Time == 0] <- 0
+my.conc.corrected <- PKNCAconc(theoph.corrected, conc~Time|Subject)
+
+## Calculate the new steady-state concentrations with 24 hour dosing
+steady.state <- superposition(my.conc.corrected, tau=24)
+knitr::kable(head(steady.state, n=14),
+             caption="Superposition at steady-state")
+```
+
+The output is a `r class(steady.state)` including all the grouping factors as columns, a column for `conc`entration, and a column for `time`.  Time point selection ensures that the beginning and end of the interval are included and that every measured time that contributes to the interval is included.  The points at the beginning and end of the interval are very similar; they are within a tolerance of `r formals(PKNCA:::superposition.numeric)$steady.state.tol` as defined by the `steady.state.tol` argument to superposition.
+
+# Nonstandard Superposition Computations
+
+## Compute the Superposition from Single-Dose Data to a Specific Dose
+
+If simulation to a specific dose is needed, the number of dosing intervals (`n.tau`) can be specified.
+
+```{r UnsteadyState}
+## Calculate the unsteady-state concentrations with 24 hour dosing
+unsteady.state <- superposition(my.conc.corrected, tau=24, n.tau=2)
+knitr::kable(head(unsteady.state, n=14),
+             caption="Superposition before steady-state")
+```
+
+## Compute the Superposition from Single-Dose Data with >1 Dose Per Interval
+
+Some dosing intervals are more complex than once per X hours (or days or weeks or...).  To predict more complex dosing with superposition, give the dose times within the interval.  The `dose.times` must all be less than `tau` (otherwise they are not in the interval).
+
+```{r ComplexInterval}
+## Calculate the new steady-state concentrations with 24 hour dosing
+complex.interval.steady.state <- superposition(my.conc.corrected, tau=24, dose.times=c(0, 2, 4))
+knitr::kable(head(complex.interval.steady.state, n=10),
+             caption="Superposition at steady-state with complex dosing")
+xyplot(conc~time, groups=Subject, type="l",
+       data=complex.interval.steady.state)
+```
+
+With this more complex dosing interval, the number of time points estimated increases.  The next section describes the selection of time points.
+
+# Time Point Selection and Addition
+
+Superposition is often used to estimate NCA parameters with nonparametric methods.  To ensure that estimated parameters are as accurate as possible (espectially $C_max$), each dose has every post-dose time point included.  Specifically, each dose will have the following times:
+
+* 0 (zero) and `tau`,
+* The time of each dose (the `dose.times` argument)
+* Every value from the time column of the data modulo `tau` (shifting the time for each measurement to be within the dosing interval) repeated for each dose, and
+* each time from the `additional.times` argument.
+
+How the number of time points increases can be seen by comparing the time points for subject 1 in the steady-state single dosing and the complex dosing examples above.
+
+```{r}
+steady.state$time[steady.state$Subject == 1]
+sum(steady.state$Subject == 1)
+complex.interval.steady.state$time[complex.interval.steady.state$Subject == 1]
+sum(complex.interval.steady.state$Subject == 1)
+```
+
+# Interpolation and Extrapolation Methods
+
+The interpolation and extrapolation methods align with those used for calculating the AUC.  By default, interpolation uses the `PKNCA.options` selection for `"auc.method"` and extrapolation follows the curve of $AUC_{inf}$.  These can be modified with the `interp.method` and `extrap.method` arguments.
