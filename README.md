@@ -38,10 +38,10 @@ package and then type the following commands:
     myrawdosedata <- read.csv("mydose.csv", stringsAsFactors=FALSE)
     # Put your concentration data into a PKNCAconc object
     myconc <- PKNCAconc(data=myrawconcdata,
-                        formula=conc~time|subject+analyte)
+                        formula=conc~time|treatment+subject/analyte)
     # Put your dose data into a PKNCAdose object
     mydose <- PKNCAdose(data=myrawdosedata,
-                        formula=~time|subject)
+                        formula=dose~time|treatment+subject)
     # Combine the two (and automatically determine the intervals of
     # interest
     mydata <- PKNCAdata(myconc, mydose)
