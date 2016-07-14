@@ -221,7 +221,17 @@ test_that("PKNCAresults and summary", {
       stringsAsFactors=FALSE)
   expect_equal(myresult$result, verify.result,
                tol=0.001)
-
+  
+  ## Test conversion to a data.frame
+  expect_equal(as.data.frame(myresult), verify.result, tol=0.001,
+               info="Conversion of PKNCAresults to a data.frame in long format (default long format)")
+  expect_equal(as.data.frame(myresult), verify.result, tol=0.001,
+               info="Conversion of PKNCAresults to a data.frame in long format (specifying long format)")
+  expect_equal(as.data.frame(myresult, out.format="wide"),
+               spread_(verify.result, "PPTESTCD", "PPORRES"),
+               tol=0.001,
+               info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)")
+  
   ## Testing the summarization
   mysummary <- summary(myresult)
   expect_true(is.data.frame(mysummary))
@@ -293,4 +303,6 @@ test_that("PKNCAresults and summary", {
                           aucinf=c("NR", "NoCalc"),
                           stringsAsFactors=FALSE),
                info="Summary respects the not.requested.string and not.calculated.string")
+  
+  
 })

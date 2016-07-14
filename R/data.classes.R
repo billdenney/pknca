@@ -573,11 +573,21 @@ PKNCAresults <- function(result, data, provenance) {
 #'
 #' @param x The object to extract results from
 #' @param ... Ignored (for compatibility with generic
-#' \code{\link{as.data.frame}}
+#' \code{\link{as.data.frame}})
+#' @param out.format Should the output be 'long' (default) or 'wide'?
 #' @return A data frame of results
 #' @export
-as.data.frame.PKNCAresults <- function(x, ...) {
-  x$result
+as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
+  ret <- x$result
+  out.format <- match.arg(out.format)
+  if (out.format %in% 'wide') {
+    if (require(tidyr)) {
+      ret <- spread_(ret, "PPTESTCD", "PPORRES")
+    } else {
+      stop("tidyr package is not installed, only long results are available.")
+    }
+  }
+  ret
 }
 
 #' Count the number of values that are not NA
