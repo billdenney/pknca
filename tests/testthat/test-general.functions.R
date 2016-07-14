@@ -51,6 +51,14 @@ test_that("Rounding", {
   expect_equal(roundString(c(100, 0.1), 3), c("100.000", "0.100"))
   ## Vectors of digits work
   expect_equal(roundString(c(100, 0.1), c(0, 3)), c("100", "0.100"))
+  ## Mixed inputs (NA, NaN, Inf or numeric)
+  expect_equal(roundString(NA), NA)
+  expect_equal(roundString(c(0.1, NA), digits=3), c("0.100", NA))
+  expect_equal(roundString(c(0.1, NA, NaN, Inf, -Inf), digits=3),
+               c("0.100", NA, "NaN", "Inf", "-Inf"))
+  ## All zeros
+  expect_equal(roundString(0, digits=3), "0.000")
+  expect_equal(roundString(c(0, NA), digits=3), c("0.000", NA))
 })
 
 test_that("Significance", {
@@ -75,4 +83,12 @@ test_that("Significance", {
   expect_equal(signifString(c(100, 0.1), 3), c("100", "0.100"))
   ## Rounding to a higher number of significant digits works correctly
   expect_equal(signifString(0.9999999, 3), "1.00")
+  ## Mixed inputs (NA, NaN, Inf or numeric)
+  expect_equal(signifString(NA), NA)
+  expect_equal(signifString(c(0.1, NA), digits=3), c("0.100", NA))
+  expect_equal(signifString(c(0.1, NA, NaN, Inf, -Inf), digits=3),
+               c("0.100", NA, "NaN", "Inf", "-Inf"))
+  ## All zeros
+  expect_equal(signifString(0, digits=3), "0.000")
+  expect_equal(signifString(c(0, NA), digits=3), c("0.000", NA))
 })

@@ -97,15 +97,34 @@ sapplyBy <- function(formula, data=parent.frame(), FUN) {
 #' @param x The number to round
 #' @param digits integer indicating the number of decimal places
 #' @return A string with the value
+#' @details Values that are not standard numbers like \code{Inf}, \code{NA}, and
+#'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{round}}, \code{\link{signifString}}
 #' @export
 roundString <- function(x, digits=0) {
   if (length(digits) == 1) {
-    if (digits < 0) {
-      formatC(round(x, digits), format='f', digits=0)
-    } else {
-      formatC(round(x, digits), format='f', digits=digits)
+    mask.asis <- FALSE
+    mask.aschar <- is.na(x) | is.nan(x) | is.infinite(x)
+    mask.manip <- !(mask.asis | mask.aschar)
+    ret <- rep(NA, length(x))
+    ## Put in the special values
+    if (any(mask.asis)) {
+      ret[mask.asis] <- x[mask.asis]
     }
+    if (any(mask.aschar)) {
+      ret[mask.aschar] <- as.character(x[mask.aschar])
+    }
+    if (any(mask.manip)) {
+      xtmp <- x[mask.manip]
+      if (digits < 0) {
+        ret[mask.manip] <-
+          formatC(round(xtmp, digits), format='f', digits=0)
+      } else {
+        ret[mask.manip] <-
+          formatC(round(xtmp, digits), format='f', digits=digits)
+      }
+    }
+    ret
   } else if (length(x) == length(digits)) {
     mapply(roundString, x, digits)
   } else {
@@ -113,39 +132,53 @@ roundString <- function(x, digits=0) {
   }
 }
 
-#' Round a value to a defined number of significant digits printing
-#' out trailing zeros, if applicable.
-#'
+#' Round a value to a defined number of significant digits printing out trailing
+#' zeros, if applicable.
+#' 
 #' @param x The number to round
 #' @param digits integer indicating the number of significant digits
 #' @return A string with the value
+#' @details Values that are not standard numbers like \code{Inf}, \code{NA}, and
+#'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
 signifString <- function(x, digits=6) {
-  toplog <- bottomlog <- rep(NA, length(x))
-  ## When 0 give the digits as the output
-  bottomlog[x %in% 0] <- digits
-  ## When missing, NaN, or infinite, set digits to 0
-  bottomlog[x %in% c(NA, NaN) |
-            is.infinite(x)] <- 0
-  ## Otherwise set it to digits orders of magnitude lower than the
-  ## current value
-  toplog <- log10(abs(x))
-  ## When the order of magnitude is an exact log 10, move up one so
-  ## that the math works for determing the lower log.
-  mask.exact.log <- (toplog %% 1) %in% 0
-  toplog[mask.exact.log] <- toplog[mask.exact.log] + 1
-  toplog <- ceiling(toplog)
-  bottomlog[is.na(bottomlog)] <- digits-toplog[is.na(bottomlog)]
-  ## Find times when rounding increases the toplog and shift up the
-  ## bottomlog to a corresponding degree. e.g. x=0.9999 and digits=2
-  ## should be 1.0 not 1.00.
-  newtoplog <- log10(abs(round(x, digits=bottomlog)))
-  mask.exact.log <- (newtoplog %% 1) %in% 0
-  newtoplog[mask.exact.log] <- newtoplog[mask.exact.log] + 1
-  newtoplog <- ceiling(newtoplog)
-  mask.move.up <- toplog < newtoplog
-  bottomlog[mask.move.up] <- bottomlog[mask.move.up] - 1
-  ## Do the rounding
-  roundString(x, digits=bottomlog)
+  mask.asis <- FALSE
+  mask.aschar <- is.na(x) | is.nan(x) | is.infinite(x)
+  mask.manip <- !(mask.asis | mask.aschar)
+  ret <- rep(NA, length(x))
+  ## Put in the special values
+  if (any(mask.asis)) {
+    ret[mask.asis] <- x[mask.asis]
+  }
+  if (any(mask.aschar)) {
+    ret[mask.aschar] <- as.character(x[mask.aschar])
+  }
+  if (any(mask.manip)) {
+    xtmp <- x[mask.manip]
+    toplog <- bottomlog <- rep(NA, length(xtmp))
+    ## When 0 give the digits as the output
+    bottomlog[xtmp %in% 0] <- digits
+    ## Otherwise set it to digits orders of magnitude lower than the
+    ## current value
+    toplog <- log10(abs(xtmp))
+    ## When the order of magnitude is an exact log 10, move up one so
+    ## that the math works for determing the lower log.
+    mask.exact.log <- (toplog %% 1) %in% 0
+    toplog[mask.exact.log] <- toplog[mask.exact.log] + 1
+    toplog <- ceiling(toplog)
+    bottomlog[is.na(bottomlog)] <- digits-toplog[is.na(bottomlog)]
+    ## Find times when rounding increases the toplog and shift up the
+    ## bottomlog to a corresponding degree. e.g. x=0.9999 and digits=2
+    ## should be 1.0 not 1.00.
+    newtoplog <- log10(abs(round(xtmp, digits=bottomlog)))
+    mask.exact.log <- (newtoplog %% 1) %in% 0
+    newtoplog[mask.exact.log] <- newtoplog[mask.exact.log] + 1
+    newtoplog <- ceiling(newtoplog)
+    mask.move.up <- toplog < newtoplog
+    bottomlog[mask.move.up] <- bottomlog[mask.move.up] - 1
+    ## Do the rounding
+    ret[mask.manip] <- roundString(xtmp, digits=bottomlog)
+  }
+  ret
 }
