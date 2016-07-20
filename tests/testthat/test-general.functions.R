@@ -84,11 +84,11 @@ test_that("Significance", {
   ## Rounding to a higher number of significant digits works correctly
   expect_equal(signifString(0.9999999, 3), "1.00")
   ## Mixed inputs (NA, NaN, Inf or numeric)
-  expect_equal(signifString(NA), NA)
-  expect_equal(signifString(c(0.1, NA), digits=3), c("0.100", NA))
+  expect_equal(signifString(NA), "NA")
+  expect_equal(signifString(c(0.1, NA), digits=3), c("0.100", "NA"))
   expect_equal(signifString(c(0.1, NA, NaN, Inf, -Inf), digits=3),
-               c("0.100", NA, "NaN", "Inf", "-Inf"))
+               c("0.100", "NA", "NaN", "Inf", "-Inf"))
   ## All zeros
   expect_equal(signifString(0, digits=3), "0.000")
-  expect_equal(signifString(c(0, NA), digits=3), c("0.000", NA))
+  expect_equal(signifString(c(0, NA), digits=3), c("0.000", "NA"))
 })

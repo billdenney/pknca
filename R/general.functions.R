@@ -104,12 +104,16 @@ sapplyBy <- function(formula, data=parent.frame(), FUN) {
 roundString <- function(x, digits=0) {
   if (length(digits) == 1) {
     mask.asis <- FALSE
-    mask.aschar <- is.na(x) | is.nan(x) | is.infinite(x)
-    mask.manip <- !(mask.asis | mask.aschar)
+    mask.na <- is.na(x)
+    mask.aschar <- is.nan(x) | is.infinite(x)
+    mask.manip <- !(mask.na | mask.asis | mask.aschar)
     ret <- rep(NA, length(x))
     ## Put in the special values
     if (any(mask.asis)) {
       ret[mask.asis] <- x[mask.asis]
+    }
+    if (any(mask.na)) {
+      ret[mask.na] <- "NA"
     }
     if (any(mask.aschar)) {
       ret[mask.aschar] <- as.character(x[mask.aschar])
@@ -144,12 +148,16 @@ roundString <- function(x, digits=0) {
 #' @export
 signifString <- function(x, digits=6) {
   mask.asis <- FALSE
-  mask.aschar <- is.na(x) | is.nan(x) | is.infinite(x)
-  mask.manip <- !(mask.asis | mask.aschar)
+  mask.na <- is.na(x)
+  mask.aschar <- is.nan(x) | is.infinite(x)
+  mask.manip <- !(mask.na | mask.asis | mask.aschar)
   ret <- rep(NA, length(x))
   ## Put in the special values
   if (any(mask.asis)) {
     ret[mask.asis] <- x[mask.asis]
+  }
+  if (any(mask.na)) {
+    ret[mask.na] <- "NA"
   }
   if (any(mask.aschar)) {
     ret[mask.aschar] <- as.character(x[mask.aschar])
