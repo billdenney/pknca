@@ -4,6 +4,14 @@ will be especially noticable around the inclusion of IV NCA parameters
 and additional specifications of the dosing including dose amount and
 route.
 
+# PKNCA 0.8
+
+* Updated vignettes
+* Standardize rounding and significance with missing values in signifString and roundString
+* Enable wide data output with as.data.frame(PKNCAresults, out.format="wide")
+* Correct calculation of Vz
+* Various CRAN-related cleanups
+
 # PKNCA 0.7
 
 * Features added
