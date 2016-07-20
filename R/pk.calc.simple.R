@@ -306,37 +306,24 @@ PKNCA.set.summary("mrt", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
-#' @param dose the dose administered
-#' @param auc the AUC from 0 to infinity
-#' @param kel the elimination rate
-#' @param unitconv the factor to use for unit conversion (e.g. 1000
-#' for mg \code{dose}, time*ng/mL for \code{auc}, 1/time for
-#' \code{kel}, and output in L)
+#' @param cl the clearance (or apparent observed clearance)
+#' @param lambda.z the elimination rate
 #' @export
-pk.calc.vz <- function(dose, auc, kel, unitconv) {
-  ## Ensure that dose is either a scalar or the same length as AUC
+pk.calc.vz <- function(cl, lambda.z) {
+  ## Ensure that cl is either a scalar or the same length as AUC
   ## (more complex repeating patterns while valid for general R are
   ## likely errors here).
-  if ((length(dose) != 1) & (length(dose) != length(auc)))
-    stop("'dose' and 'auc' must be the same length")
-  ## While dose may be the same for many measurements, it is highly
-  ## unlikely that kel and auc are the same.  Ensure that kel and auc
-  ## are the same length.
-  if (length(auc) != length(kel))
-    stop("'auc' and 'kel' must be the same length")
-  if (missing(unitconv)) {
-    dose/(auc*kel)
-  } else {
-    dose*unitconv/(auc*kel)
-  }
+  if (!(length(cl) %in% c(1, length(lambda.z))) |
+      !(length(lambda.z) %in% c(1, length(cl))))
+    stop("'cl' and 'lambda.z' must be the same length")
+  cl/lambda.z
 }
 ## Add the column to the interval specification
 add.interval.col("vz",
                  FUN="pk.calc.vz",
                  values=c(FALSE, TRUE),
                  desc="The terminal volume of distribution",
-                 depends=list(c("aucinf", "kel"),
-                              c("auclast", "kel")))
+                 depends=list(c("cl", "lambda.z")))
 PKNCA.set.summary("vz", business.geomean, business.geocv)
 
 #' Calculate the steady-state volume of distribution (Vss)
