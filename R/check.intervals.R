@@ -65,7 +65,7 @@ check.interval.specification <- function(x) {
   if (!is.data.frame(x)) {
     ## Just a warning and let as.data.frame make it an error if
     ## it can't be coerced.
-    warning("AUC specification must be a data.frame")
+    warning("Interval specification must be a data.frame")
     x <- as.data.frame(x, stringsAsFactors=FALSE)
   }
   if (nrow(x) == 0)
@@ -104,9 +104,9 @@ check.interval.specification <- function(x) {
   ## ##############################
   ## start and end
   if (any(x$start %in% NA))
-    stop("AUC specification may not have NA for the starting time")
+    stop("Interval specification may not have NA for the starting time")
   if (any(x$end %in% NA))
-    stop("AUC specification may not have NA for the end time")
+    stop("Interval specification may not have NA for the end time")
   if (any(is.infinite(x$start)))
     stop("start may not be infinite")
   if (any(x$start >= x$end))

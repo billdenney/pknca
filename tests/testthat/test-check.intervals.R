@@ -3,7 +3,6 @@ context("AUC interval checking")
 test_that(
   "check.interval.specification", {
 
-    ## Expand a minimal data frame
     d1 <- data.frame(start=0, end=1)
     r1 <- data.frame(start=0,
                      end=1,
@@ -35,15 +34,17 @@ test_that(
                      aucpext=FALSE,
                      cl=FALSE,
                      mrt=FALSE,
+                     vz=FALSE,
                      vss=FALSE,
                      vd=FALSE,
                      thalf.eff=FALSE,
                      kel=FALSE,
-                     vz=FALSE,
                      stringsAsFactors=FALSE)
     expect_warning(d1.check <- check.interval.specification(d1),
-                   regexp="Nothing to be calculated in interval specification number\\(s\\): 1")
-    expect_equal(d1.check, r1)
+                   regexp="Nothing to be calculated in interval specification number\\(s\\): 1",
+                   info="Warn if nothing is to be calculated in an interval specification")
+    expect_equal(d1.check, r1,
+                 info="Expand a minimal data frame for interval specification")
 
     ## Giving one parameter will fill in everything else as false
     d2 <- data.frame(start=0, end=1, auclast=TRUE)
@@ -77,52 +78,63 @@ test_that(
                      aucpext=FALSE,
                      cl=FALSE,
                      mrt=FALSE,
+                     vz=FALSE,
                      vss=FALSE,
                      vd=FALSE,
                      thalf.eff=FALSE,
                      kel=FALSE,
-                     vz=FALSE,
                      stringsAsFactors=FALSE)
     expect_equal(check.interval.specification(d2),
-                 r2)
+                 r2,
+                 info="Expand a data frame interval specification with only one request given")
 
     ## start and end must both be specified
     d3 <- data.frame(start=0)
     expect_error(check.interval.specification(d3),
-                 regexp="Column\\(s\\) 'end' missing from interval specification")
+                 regexp="Column\\(s\\) 'end' missing from interval specification",
+                 info="Confirm end column is in interval specification")
     d4 <- data.frame(end=1)
     expect_error(check.interval.specification(d4),
-                 regexp="Column\\(s\\) 'start' missing from interval specification")
+                 regexp="Column\\(s\\) 'start' missing from interval specification",
+                 info="Confirm start column is in interval specification")
     d5 <- data.frame(blah=5)
     expect_error(check.interval.specification(d5),
-                 regexp="Column\\(s\\) 'start', 'end' missing from interval specification")
+                 regexp="Column\\(s\\) 'start', 'end' missing from interval specification",
+                 info="Confirm start and end columns are in interval specification")
 
     ## Ensure that there are data
     d6 <- data.frame()
     expect_error(check.interval.specification(d6),
-                 regexp="interval specification has no rows")
+                 regexp="interval specification has no rows",
+                 info="It is an error to have an interval specification with no rows")
 
     ## Confirm specific column values required
     d7 <- data.frame(start=as.numeric(NA), end=1)
     expect_error(
       check.interval.specification(d7),
-      regexp="AUC specification may not have NA for the starting time")
+      regexp="Interval specification may not have NA for the starting time",
+      info="Interval specification may not have NA for the starting time")
     d8 <- data.frame(start=0, end=as.numeric(NA))
     expect_error(
       check.interval.specification(d8),
-      regexp="AUC specification may not have NA for the end time")
+      regexp="Interval specification may not have NA for the end time",
+      info="Interval specification may not have NA for the end time")
     d9 <- data.frame(start=1, end=1)
     expect_error(check.interval.specification(d9),
-                 regexp="start must be < end")
+                 regexp="start must be < end",
+                 info="In interval specification, start must be < end (they are equal).")
     d10 <- data.frame(start=1, end=0)
     expect_error(check.interval.specification(d10),
-                 regexp="start must be < end")
+                 regexp="start must be < end",
+                 info="In interval specification, start must be < end (end is less).")
     d11 <- data.frame(start=Inf, end=1)
     expect_error(check.interval.specification(d11),
-                 regexp="start may not be infinite")
+                 regexp="start may not be infinite",
+                 info="In interval specification, start may not be infinite (positive infinity).")
     d12 <- data.frame(start=-Inf, end=1)
     expect_error(check.interval.specification(d12),
-                 regexp="start may not be infinite")
+                 regexp="start may not be infinite",
+                 info="In interval specification, start may not be infinite (negative infinity).")
 
     ## But it is OK to have an infinite end
     d13 <- data.frame(start=0, end=Inf)
@@ -156,24 +168,31 @@ test_that(
                       aucpext=FALSE,
                       cl=FALSE,
                       mrt=FALSE,
+                      vz=FALSE,
                       vss=FALSE,
                       vd=FALSE,
                       thalf.eff=FALSE,
                       kel=FALSE,
-                      vz=FALSE,
                       stringsAsFactors=FALSE)
     expect_warning(d13.check <- check.interval.specification(d13))
-    expect_equal(d13.check, r13)
+    expect_equal(d13.check, r13,
+                 info="In interval specification, end may be infinite (positive infinity).")
+    expect_error(check.interval.specification(data.frame(start=0, end=-Inf)),
+                 info="In interval specification, end may not be negative infinity (start is 0).")
+    expect_error(check.interval.specification(data.frame(start=-Inf, end=-Inf)),
+                 info="In interval specification, end may not be negative infinity (start is -Inf).")
     
     ## When the no-calculation interval specification is not the first,
     ## ensure that is warned correctly
     d14 <- data.frame(start=0, end=24, auclast=c(rep(FALSE, 3), TRUE))
     expect_warning(check.interval.specification(d14),
-                   regexp="Nothing to be calculated in interval specification number\\(s\\): 1, 2, 3")
+                   regexp="Nothing to be calculated in interval specification number\\(s\\): 1, 2, 3",
+                   info="Warn when nothing is to be calculated in all rows of the specification.")
 
     d14 <- data.frame(start=0, end=24, auclast=c(rep(TRUE, 3), FALSE))
     expect_warning(check.interval.specification(d14),
-                   regexp="Nothing to be calculated in interval specification number\\(s\\): 4")
+                   regexp="Nothing to be calculated in interval specification number\\(s\\): 4",
+                   info="Warn when nothing is to be calculated in one but not all rows of the specification.")
 
     ## Other information is passed through untouched after all the
     ## calculation columns
@@ -209,20 +228,26 @@ test_that(
                       aucpext=FALSE,
                       cl=FALSE,
                       mrt=FALSE,
+                      vz=FALSE,
                       vss=FALSE,
                       vd=FALSE,
                       thalf.eff=FALSE,
                       kel=FALSE,
-                      vz=FALSE,
                       treatment="foo",
                       stringsAsFactors=FALSE)
     expect_warning(v15 <- check.interval.specification(d15))
-    expect_equal(v15, r15)
+    expect_equal(v15, r15,
+                 info="Extra information is maintained in the interval specification.")
 
     d16 <- data.frame(start=factor(0), end=1)
     expect_error(check.interval.specification(d16),
-                 regexp="Interval column 'start' should not be a factor")
-})
+                 regexp="Interval column 'start' should not be a factor",
+                 info="Start must be numeric and not a factor.")
+    d17 <- data.frame(start=0, end=factor(1))
+    expect_error(check.interval.specification(d17),
+                 regexp="Interval column 'end' should not be a factor",
+                 info="End must be numeric and not a factor.")
+  })
 
 test_that("check.interval.deps", {
   ## Confirm that the interval dependencies are accurately added
@@ -257,10 +282,10 @@ test_that("check.interval.deps", {
                           aucpext=FALSE,
                           cl=FALSE,
                           mrt=FALSE,
+                          vz=FALSE,
                           vss=FALSE,
                           vd=FALSE,
                           thalf.eff=FALSE,
-                          kel=FALSE,
-                          vz=FALSE))
+                          kel=FALSE))
             
           })
