@@ -228,7 +228,7 @@ test_that("PKNCAresults and summary", {
   expect_equal(as.data.frame(myresult), verify.result, tol=0.001,
                info="Conversion of PKNCAresults to a data.frame in long format (specifying long format)")
   expect_equal(as.data.frame(myresult, out.format="wide"),
-               spread_(verify.result, "PPTESTCD", "PPORRES"),
+               tidyr::spread_(verify.result, "PPTESTCD", "PPORRES"),
                tol=0.001,
                info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)")
   

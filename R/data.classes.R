@@ -581,11 +581,7 @@ as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
   ret <- x$result
   out.format <- match.arg(out.format)
   if (out.format %in% 'wide') {
-    if (require(tidyr)) {
-      ret <- spread_(ret, "PPTESTCD", "PPORRES")
-    } else {
-      stop("tidyr package is not installed, only long results are available.")
-    }
+    ret <- tidyr::spread_(ret, "PPTESTCD", "PPORRES")
   }
   ret
 }
