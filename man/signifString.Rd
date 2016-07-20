@@ -2,8 +2,8 @@
 % Please edit documentation in R/general.functions.R
 \name{signifString}
 \alias{signifString}
-\title{Round a value to a defined number of significant digits printing
-out trailing zeros, if applicable.}
+\title{Round a value to a defined number of significant digits printing out trailing
+zeros, if applicable.}
 \usage{
 signifString(x, digits = 6)
 }
@@ -16,8 +16,12 @@ signifString(x, digits = 6)
 A string with the value
 }
 \description{
-Round a value to a defined number of significant digits printing
-out trailing zeros, if applicable.
+Round a value to a defined number of significant digits printing out trailing
+zeros, if applicable.
+}
+\details{
+Values that are not standard numbers like \code{Inf}, \code{NA}, and
+  \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 }
 \seealso{
 \code{\link{signif}}, \code{\link{roundString}}

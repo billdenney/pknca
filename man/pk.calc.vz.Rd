@@ -4,18 +4,12 @@
 \alias{pk.calc.vz}
 \title{Calculate the terminal volume of distribution (Vz)}
 \usage{
-pk.calc.vz(dose, auc, kel, unitconv)
+pk.calc.vz(cl, lambda.z)
 }
 \arguments{
-\item{dose}{the dose administered}
+\item{cl}{the clearance (or apparent observed clearance)}
 
-\item{auc}{the AUC from 0 to infinity}
-
-\item{kel}{the elimination rate}
-
-\item{unitconv}{the factor to use for unit conversion (e.g. 1000
-for mg \code{dose}, time*ng/mL for \code{auc}, 1/time for
-\code{kel}, and output in L)}
+\item{lambda.z}{the elimination rate}
 }
 \description{
 Calculate the terminal volume of distribution (Vz)

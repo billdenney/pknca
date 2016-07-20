@@ -19,6 +19,10 @@ A string with the value
 Round a value to a defined number of digits printing out trailing
 zeros, if applicable.
 }
+\details{
+Values that are not standard numbers like \code{Inf}, \code{NA}, and
+  \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
+}
 \seealso{
 \code{\link{round}}, \code{\link{signifString}}
 }

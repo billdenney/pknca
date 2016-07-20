@@ -5,13 +5,15 @@
 \title{Extract the parameter results from a PKNCAresults and return them
 as a data frame.}
 \usage{
-\method{as.data.frame}{PKNCAresults}(x, ...)
+\method{as.data.frame}{PKNCAresults}(x, ..., out.format = c("long", "wide"))
 }
 \arguments{
 \item{x}{The object to extract results from}
 
 \item{...}{Ignored (for compatibility with generic
-\code{\link{as.data.frame}}}
+\code{\link{as.data.frame}})}
+
+\item{out.format}{Should the output be 'long' (default) or 'wide'?}
 }
 \value{
 A data frame of results
