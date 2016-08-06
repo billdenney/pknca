@@ -34,6 +34,7 @@ test_that(
                      aucpext=FALSE,
                      cl=FALSE,
                      mrt=FALSE,
+                     mrt.last=FALSE,
                      vz=FALSE,
                      vss=FALSE,
                      vd=FALSE,
@@ -43,7 +44,9 @@ test_that(
     expect_warning(d1.check <- check.interval.specification(d1),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 1",
                    info="Warn if nothing is to be calculated in an interval specification")
-    expect_equal(d1.check, r1,
+    ## Get the current name order of the expected results
+    nameorder <- names(d1.check)
+    expect_equal(d1.check, r1[,nameorder],
                  info="Expand a minimal data frame for interval specification")
 
     ## Giving one parameter will fill in everything else as false
@@ -78,6 +81,7 @@ test_that(
                      aucpext=FALSE,
                      cl=FALSE,
                      mrt=FALSE,
+                     mrt.last=FALSE,
                      vz=FALSE,
                      vss=FALSE,
                      vd=FALSE,
@@ -85,7 +89,7 @@ test_that(
                      kel=FALSE,
                      stringsAsFactors=FALSE)
     expect_equal(check.interval.specification(d2),
-                 r2,
+                 r2[,nameorder],
                  info="Expand a data frame interval specification with only one request given")
 
     ## start and end must both be specified
@@ -168,6 +172,7 @@ test_that(
                       aucpext=FALSE,
                       cl=FALSE,
                       mrt=FALSE,
+                      mrt.last=FALSE,
                       vz=FALSE,
                       vss=FALSE,
                       vd=FALSE,
@@ -175,7 +180,7 @@ test_that(
                       kel=FALSE,
                       stringsAsFactors=FALSE)
     expect_warning(d13.check <- check.interval.specification(d13))
-    expect_equal(d13.check, r13,
+    expect_equal(d13.check, r13[,nameorder],
                  info="In interval specification, end may be infinite (positive infinity).")
     expect_error(check.interval.specification(data.frame(start=0, end=-Inf)),
                  info="In interval specification, end may not be negative infinity (start is 0).")
@@ -228,6 +233,7 @@ test_that(
                       aucpext=FALSE,
                       cl=FALSE,
                       mrt=FALSE,
+                      mrt.last=FALSE,
                       vz=FALSE,
                       vss=FALSE,
                       vd=FALSE,
@@ -236,7 +242,7 @@ test_that(
                       treatment="foo",
                       stringsAsFactors=FALSE)
     expect_warning(v15 <- check.interval.specification(d15))
-    expect_equal(v15, r15,
+    expect_equal(v15, r15[,c(nameorder, "treatment")],
                  info="Extra information is maintained in the interval specification.")
 
     d16 <- data.frame(start=factor(0), end=1)
@@ -282,10 +288,11 @@ test_that("check.interval.deps", {
                           aucpext=FALSE,
                           cl=FALSE,
                           mrt=FALSE,
+                          mrt.last=FALSE,
                           vz=FALSE,
                           vss=FALSE,
                           vd=FALSE,
                           thalf.eff=FALSE,
-                          kel=FALSE))
+                          kel=FALSE)[,nameorder])
             
           })

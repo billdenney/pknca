@@ -191,7 +191,7 @@ PKNCA.set.summary("clast.obs", business.geomean, business.geocv)
 
 #' Calculate the effective half-life
 #'
-#' @param mrt the mean residence time
+#' @param mrt.inf the mean residence time to infinity
 #' @return the numeric value of the effective half-life
 #' @export
 pk.calc.thalf.eff <- function(mrt)
@@ -244,23 +244,25 @@ PKNCA.set.summary("kel", business.geomean, business.geocv)
 #' @param dose the dose administered
 #' @param aucinf the area under the curve from 0 to infinity or 0 to
 #'   tau (the next dose on a regular schedule at steady-state)
-#' @param unitconv the multiplied factor to use for unit conversion
-#'   (e.g. 1000 for mg \code{dose}, time*ng/mL for \code{auc}, and
-#'   output in L/time)
 #' @return the numeric value of the total (CL) or observed oral
 #'   clearance (CL/F)
+#' @details If \code{dose} is the same length as the other inputs, then the 
+#'   output will be the same length as all of the inputs; the function assumes 
+#'   that you are calculating for multiple intervals simultaneously.  If the 
+#'   inputs other than \code{dose} are scalars and \code{dose} is a vector, then
+#'   the function assumes multiple doses were given in a single interval, and 
+#'   the sum of the \code{dose}s will be used for the calculation.
 #' @references Gabrielsson J, Weiner D.
 #'   "Section 2.5.1 Derivation of clearance."  Pharmacokinetic &
 #'   Pharmacodynamic Data Analysis: Concepts and Applications, 4th
 #'   Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000.
 #'   86-7.
 #' @export
-pk.calc.cl <- function(dose, aucinf, unitconv=NA)
-  if (is.na(unitconv)) {
-    dose/aucinf
-  } else {
-    unitconv*dose/aucinf
-  }
+pk.calc.cl <- function(dose, aucinf) {
+  if (length(aucinf) == 1)
+    dose <- sum(dose)
+  dose/aucinf
+}
 ## Add the column to the interval specification
 add.interval.col("cl",
                  FUN="pk.calc.cl",
@@ -293,16 +295,24 @@ PKNCA.set.summary("f", business.geomean, business.geocv)
 #' @param aumc the AUMC from 0 to infinity or 0 ot tau at steady-state
 #' @return the numeric value of the mean residence time
 #' @export
-pk.calc.mrt <- function(auc, aumc)
-  aumc/auc
+pk.calc.mrt <- function(aucinf, aumcinf)
+  aumcinf/aucinf
 ## Add the column to the interval specification
 add.interval.col("mrt",
                  FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
-                 desc="The mean residence time",
-                 depends=list(c("auclast", "aumclast"),
-                              c("aucinf", "aumcinf")))
+                 desc="The mean residence time to infinity",
+                 depends=list())
 PKNCA.set.summary("mrt", business.geomean, business.geocv)
+pk.calc.mrt.last <- function(auclast, aumclast)
+  pk.calc.mrt(auclast, aumclast)
+## Add the column to the interval specification
+add.interval.col("mrt.last",
+                 FUN="pk.calc.mrt.last",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time to the last observed concentration above the LOQ",
+                 depends=list())
+PKNCA.set.summary("mrt.last", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
@@ -342,17 +352,28 @@ add.interval.col("vss",
                  depends=c("cl", "mrt"))
 PKNCA.set.summary("vss", business.geomean, business.geocv)
 
-#' Calculate the volume of distribution (Vd) or observed volume of
-#' distribution (Vd/F)
-#'
-#' @param dose Dose given
-#' @param aucinf Area under the curve to infinity (either predicted or
-#' observed).
+#' Calculate the volume of distribution (Vd) or observed volume of distribution 
+#' (Vd/F)
+#' 
+#' @param dose One or more doses given during an interval
+#' @param aucinf Area under the curve to infinity (either predicted or 
+#'   observed).
 #' @param lambda.z Elimination rate constant
+#' @details If \code{dose} is the same length as the other inputs, then the 
+#'   output will be the same length as all of the inputs; the function assumes 
+#'   that you are calculating for multiple intervals simultaneously.  If the 
+#'   inputs other than \code{dose} are scalars and \code{dose} is a vector, then
+#'   the function assumes multiple doses were given in a single interval, and 
+#'   the sum of the \code{dose}s will be used for the calculation.
 #' @return The observed volume of distribution
 #' @export
-pk.calc.vd <- function(dose, aucinf, lambda.z)
+pk.calc.vd <- function(dose, aucinf, lambda.z) {
+  if (length(aucinf) == 1 &
+      length(lambda.z) == 1) {
+    dose <- sum(dose)
+  }
   dose/(aucinf * lambda.z)
+}
 add.interval.col("vd",
                  FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),

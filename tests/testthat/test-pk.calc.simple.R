@@ -160,18 +160,19 @@ test_that("pk.calc.kel", {
 
 test_that("pk.calc.cl", {
   ## Ensure that dose and auc are required
-  expect_error(pk.calc.cl(auc=NA))
-  expect_error(pk.calc.cl(dose=NA))
+  expect_error(pk.calc.cl(aucinf=NA),
+               info="dose is required for clearance calculation")
+  expect_error(pk.calc.cl(dose=NA),
+               info="aucinf is required for clearance calculation")
 
-  ## Estimate a single CL
-  expect_equal(pk.calc.cl(10, 100), 0.1)
-  ## Estimate multiple CLs from a single dose level (including some
-  ## NA)
-  expect_equal(pk.calc.cl(10, c(10, NA, 100)),
-               c(1, NA, 0.1))
-  ## Do unit conversion
-  expect_equal(pk.calc.cl(10, c(10, NA, 100), 1000),
-               c(1, NA, 0.1)*1000)
+  expect_equal(pk.calc.cl(dose=10, aucinf=100), 0.1,
+               info="Normal clearance calcualtion works")
+  expect_equal(pk.calc.cl(dose=c(10, 10, 10), aucinf=c(10, NA, 100)),
+               c(1, NA, 0.1),
+               info="Vectors for both dose and aucinf give vectors for clearance (with NAs)")
+  expect_equal(pk.calc.cl(dose=c(50, 50), aucinf=100),
+               1,
+               info="Vector for dose and scalar for aucinf scalar output with the sum of doses")
 })
 
 test_that("pk.calc.f", {
@@ -242,10 +243,19 @@ test_that("pk.calc.vss", {
 })
 
 test_that("pk.calc.vd", {
-  expect_equal(pk.calc.vd(1, 2, 3), 1/6)
-  expect_equal(pk.calc.vd(NA, 2, 3), as.numeric(NA))
-  expect_equal(pk.calc.vd(1, NA, 3), as.numeric(NA))
-  expect_equal(pk.calc.vd(1, 2, NA), as.numeric(NA))
+  expect_equal(pk.calc.vd(1, 2, 3), 1/6,
+               info="Normal Vd calculation works")
+  expect_equal(pk.calc.vd(NA, 2, 3), NA_integer_,
+               info="Vd calculation returns NA when dose is NA")
+  expect_equal(pk.calc.vd(1, NA, 3), NA_integer_,
+               info="Vd calculation returns NA when aucinf is NA")
+  expect_equal(pk.calc.vd(1, 2, NA), NA_integer_,
+               info="Vd calculation returns NA when lambda.z is NA")
+  
+  expect_equal(pk.calc.vd(c(1, 2), c(2, 4), c(3, 6)), c(1/6, 1/12),
+               info="Vd calculation works with three vector inputs returning a vector")
+  expect_equal(pk.calc.vd(c(1, 2), 2, 3), 0.5,
+               info="Vd calculation works with vector dose and scalar aucinf and lambda.z inputs returning a scalar with the sum of doses used.")
 })
 
 test_that("pk.calc.cav", {
