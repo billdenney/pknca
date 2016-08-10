@@ -52,9 +52,13 @@ geomean <- function(x, na.rm=FALSE) {
   }
 }
 
+#' @describeIn geomean Compute the geometric standard deviation.
+#' @export
 geosd <- function(x, na.rm=FALSE)
   exp(stats::sd(log(x), na.rm=na.rm))
 
+#' @describeIn geomean Compute the geometric coefficient of variation.
+#' @export
 geocv <- function(x, na.rm=FALSE)
   sqrt(exp(stats::sd(log(x), na.rm=na.rm)^2)-1)*100
 
@@ -70,22 +74,39 @@ geocv <- function(x, na.rm=FALSE)
 #' @export
 business.mean <-
   pk.business(mean, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+
+#' @describeIn business.mean Compute the standard deviation with business rules.
+#' @export
 business.sd <-
   pk.business(stats::sd, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the coefficient of variation with business rules.
+#' @export
 business.cv <-
   pk.business(function(x, ...) {100*stats::sd(x, ...)/mean(x, ...)},
               max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the geometric mean with business rules.
+#' @export
 business.geomean <-
   pk.business(geomean, zero.missing=TRUE,
               max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the geometric coefficient of variation with business rules.
+#' @export
 business.geocv <-
   pk.business(geocv, zero.missing=TRUE,
               max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the minimum with business rules.
+#' @export
 business.min <-
   pk.business(min, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the maximum with business rules.
+#' @export
 business.max <-
   pk.business(max, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the median with business rules.
+#' @export
 business.median <-
   pk.business(stats::median, max.missing=~PKNCA::PKNCA.Options('max.missing'))
+#' @describeIn business.mean Compute the range with business rules.
+#' @export
 business.range <-
   pk.business(range, max.missing=~PKNCA::PKNCA.Options('max.missing'))
