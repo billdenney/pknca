@@ -4,17 +4,13 @@
 \alias{pk.calc.cl}
 \title{Calculate the (observed oral) clearance}
 \usage{
-pk.calc.cl(dose, aucinf, unitconv = NA)
+pk.calc.cl(dose, aucinf)
 }
 \arguments{
 \item{dose}{the dose administered}
 
 \item{aucinf}{the area under the curve from 0 to infinity or 0 to
 tau (the next dose on a regular schedule at steady-state)}
-
-\item{unitconv}{the multiplied factor to use for unit conversion
-(e.g. 1000 for mg \code{dose}, time*ng/mL for \code{auc}, and
-output in L/time)}
 }
 \value{
 the numeric value of the total (CL) or observed oral
@@ -22,6 +18,14 @@ the numeric value of the total (CL) or observed oral
 }
 \description{
 Calculate the (observed oral) clearance
+}
+\details{
+If \code{dose} is the same length as the other inputs, then the 
+  output will be the same length as all of the inputs; the function assumes 
+  that you are calculating for multiple intervals simultaneously.  If the 
+  inputs other than \code{dose} are scalars and \code{dose} is a vector, then
+  the function assumes multiple doses were given in a single interval, and 
+  the sum of the \code{dose}s will be used for the calculation.
 }
 \references{
 Gabrielsson J, Weiner D.

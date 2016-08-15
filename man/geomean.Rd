@@ -3,10 +3,15 @@
 \name{geomean}
 \alias{geocv}
 \alias{geomean}
+\alias{geosd}
 \alias{geosd,}
 \title{Compute the geometric mean, sd, and CV}
 \usage{
 geomean(x, na.rm = FALSE)
+
+geosd(x, na.rm = FALSE)
+
+geocv(x, na.rm = FALSE)
 }
 \arguments{
 \item{x}{A vector to compute the geometric mean of}
@@ -20,4 +25,10 @@ deviation, or geometric coefficient of variation.
 \description{
 Compute the geometric mean, sd, and CV
 }
+\section{Functions}{
+\itemize{
+\item \code{geosd}: Compute the geometric standard deviation.
+
+\item \code{geocv}: Compute the geometric coefficient of variation.
+}}
 

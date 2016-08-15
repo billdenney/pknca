@@ -191,7 +191,7 @@ PKNCA.set.summary("clast.obs", business.geomean, business.geocv)
 
 #' Calculate the effective half-life
 #'
-#' @param mrt.inf the mean residence time to infinity
+#' @param mrt the mean residence time to infinity
 #' @return the numeric value of the effective half-life
 #' @export
 pk.calc.thalf.eff <- function(mrt)
@@ -291,8 +291,10 @@ PKNCA.set.summary("f", business.geomean, business.geocv)
 
 #' Calcuate the mean residence time (MRT)
 #'
-#' @param auc the AUC from 0 to infinity or 0 ot tau at steady-state
-#' @param aumc the AUMC from 0 to infinity or 0 ot tau at steady-state
+#' @param aucinf the AUC from 0 to infinity or 0 to tau at steady-state
+#' @param auclast the AUC from 0 to the last concentration above the limit of quantification (LOQ)
+#' @param aumcinf the AUMC from 0 to infinity or 0 to tau at steady-state
+#' @param aumclast the AUMC from 0 to the last concentration above the LOQ
 #' @return the numeric value of the mean residence time
 #' @export
 pk.calc.mrt <- function(aucinf, aumcinf)
@@ -304,6 +306,9 @@ add.interval.col("mrt",
                  desc="The mean residence time to infinity",
                  depends=list())
 PKNCA.set.summary("mrt", business.geomean, business.geocv)
+#' @describeIn pk.calc.mrt Calculate the mean residence time (MRT) to the last
+#'   concentration above the limit of quantification
+#' @export
 pk.calc.mrt.last <- function(auclast, aumclast)
   pk.calc.mrt(auclast, aumclast)
 ## Add the column to the interval specification

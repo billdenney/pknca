@@ -3,6 +3,9 @@ context("AUC interval checking")
 test_that(
   "check.interval.specification", {
 
+    ## Get the current name order of the expected results
+    nameorder <- names(check.interval.deps(data.frame(start=0, end=1, cmax=TRUE)))
+
     d1 <- data.frame(start=0, end=1)
     r1 <- data.frame(start=0,
                      end=1,
@@ -44,8 +47,6 @@ test_that(
     expect_warning(d1.check <- check.interval.specification(d1),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 1",
                    info="Warn if nothing is to be calculated in an interval specification")
-    ## Get the current name order of the expected results
-    nameorder <- names(d1.check)
     expect_equal(d1.check, r1[,nameorder],
                  info="Expand a minimal data frame for interval specification")
 
@@ -256,6 +257,9 @@ test_that(
   })
 
 test_that("check.interval.deps", {
+  ## Get the current name order of the expected results
+  nameorder <- names(check.interval.deps(data.frame(start=0, end=1, cmax=TRUE)))
+
   ## Confirm that the interval dependencies are accurately added
   expect_equal(check.interval.deps(data.frame(start=0, end=24, aucinf=TRUE)),
                data.frame(start=0,

@@ -2,14 +2,21 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.mrt}
 \alias{pk.calc.mrt}
+\alias{pk.calc.mrt.last}
 \title{Calcuate the mean residence time (MRT)}
 \usage{
-pk.calc.mrt(auc, aumc)
+pk.calc.mrt(aucinf, aumcinf)
+
+pk.calc.mrt.last(auclast, aumclast)
 }
 \arguments{
-\item{auc}{the AUC from 0 to infinity or 0 ot tau at steady-state}
+\item{aucinf}{the AUC from 0 to infinity or 0 to tau at steady-state}
 
-\item{aumc}{the AUMC from 0 to infinity or 0 ot tau at steady-state}
+\item{aumcinf}{the AUMC from 0 to infinity or 0 to tau at steady-state}
+
+\item{auclast}{the AUC from 0 to the last concentration above the limit of quantification (LOQ)}
+
+\item{aumclast}{the AUMC from 0 to the last concentration above the LOQ}
 }
 \value{
 the numeric value of the mean residence time
@@ -17,4 +24,9 @@ the numeric value of the mean residence time
 \description{
 Calcuate the mean residence time (MRT)
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.mrt.last}: Calculate the mean residence time (MRT) to the last
+concentration above the limit of quantification
+}}
 

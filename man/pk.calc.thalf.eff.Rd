@@ -7,7 +7,7 @@
 pk.calc.thalf.eff(mrt)
 }
 \arguments{
-\item{mrt}{the mean residence time}
+\item{mrt}{the mean residence time to infinity}
 }
 \value{
 the numeric value of the effective half-life
