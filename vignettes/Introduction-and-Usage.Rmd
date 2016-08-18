@@ -71,8 +71,7 @@ requirements are that concentration, dose, and time must all be
 numeric (and not factors).  Grouping variables have no specific
 requirements; they can be any mode.
 
-Values below the limit of quantificaiton are coded as zeros (`{r
-eval=FALSE}0`), and missing values are coded as `{r eval=FALSE}NA`.
+Values below the limit of quantificaiton are coded as zeros (`0`), and missing values are coded as `NA`.
 
 # Options: Make PKNCA Work Your Way
 
@@ -80,7 +79,7 @@ eval=FALSE}0`), and missing values are coded as `{r eval=FALSE}NA`.
 
 Different organizations have different requirements for computation
 and summarization of NCA.  Options for how to perform calculations and
-summaries are handled by the `{r eval=FALSE}PKNCA.options` command.
+summaries are handled by the `PKNCA.options` command.
 
 Default options have been set to commonly-used standard parameters.
 The current value for options can be found by running the command with
@@ -98,8 +97,7 @@ PKNCA.options(default=TRUE)
 ```
 
 Each of the options is documented where it is used; for example, the
-first.tmax option is documented in the `{r eval=FALSE}pk.calc.tmax`
-function.
+first.tmax option is documented in the `pk.calc.tmax` function.
 
 ## Summarization Options: the PKNCA.set.summary Function
 
@@ -150,7 +148,7 @@ the concentration groups dropping the subject (so that averages are
 taken across subjects within the other parameters).
 
 The quick start example can be extended to include multiple analytes
-as follows.  The only difference is the `{r eval=FALSE}/analyte`
+as follows.  The only difference is the `/analyte`
 formula element in the concentration data.  The reason for the slash
 instead of the plus is that the last element before a slash is assumed
 to be the subject, and as noted before, the subject is (by default)
@@ -181,9 +179,9 @@ user provides intervals.
 
 When selected either automatically or manually, intervals define at
 minimum a start time, an end time, and the parameters to be
-calculated.  The parameter list is available from the `{r
-eval=FALSE}get.interval.cols` function.  The parameters requested are
-specified by setting the entry in a data.frame as requested.
+calculated.  The parameter list is available from the `get.interval.cols`
+function.  The parameters requested are specified by setting the entry in
+a data.frame as requested.
 
 ```{r}
 intervals <-
@@ -194,11 +192,13 @@ intervals <-
              aucinf=c(FALSE, TRUE))
 ```
 
-Intervals like the above is sufficient for designs with
-a single type of treatment-- like single doses.  For more complex
-treatments in a single analysis, like the combination of single and multiple doses,
-include a treatment column matching
-the treatment column name from the concentration data set.  See the [Manual Interval Specification](manual-interval-specification) section below for more details.
+Intervals like the above is sufficient for designs with a single type of treatment-- like single doses.  For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set.  See the [Manual Interval Specification](manual-interval-specification) section below for more details.
+
+## Selection of Data Used for Calculation
+
+When choosing which data is used for a calculation, PKNCA will never look beyond the data specified in the group and interval.  Groups are defined by the call to the `PKNCAconc` function, and they will typically define the measurement of a single analyte from a single individual receiving a single treatment.  Intervals are subsets within a group by start and end time.  PKNCA never examines data outside of the group and interval for standard NCA calculations.  As an example, with data from 0 to 48 hours and an interval set to `start` at 0 and `end` at 24 with the calculation of `aucinf`, any data after 24 hours will not be used for the half-life or AUC~inf~ calculations.
+
+A few functions look at data outside of a single interval, but these functions do not look at data outside of a single group, and these functions are typically used during preparation for NCA calculations not for the calculations themselves.  Functions that look a group as a whole include `choose.auc.intervals`, `find.tau`, and `pk.tss`.
 
 ## Automatic Interval Determination
 
