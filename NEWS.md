@@ -4,6 +4,14 @@ will be especially noticable around the inclusion of IV NCA parameters
 and additional specifications of the dosing including dose amount and
 route.
 
+# PKNCA 0.8
+
+This release is not backward compatible.  The switch to observed and
+predicted-related NCA parameters (like aucinf.obs and aucinf.pred)
+changed the format of the intervals specification.
+
+* Added Clast.pred related NCA calculations
+
 # PKNCA 0.7.1
 
 * Updated vignettes

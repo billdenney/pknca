@@ -26,40 +26,41 @@ test_that("pk.nca", {
     tmp
   }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options")
 
-  ## The specific order of the levels isn't important-- the fact that
-  ## they are factors and that the set doesn't change is important.
   test.code.levels <- levels(myresult$result$PPTESTCD)
   verify.result <-
     data.frame(
       start=0,
-      end=c(24, rep(Inf, 12),
-            24, rep(Inf, 12)),
+      end=c(24, rep(Inf, 13),
+            24, rep(Inf, 13)),
       treatment="Trt 1",
-      ID=rep(c(1, 2), each=13),
-      PPTESTCD=factor(rep(c("auclast", "cmax", "tmax", "tlast",
+      ID=rep(c(1, 2), each=14),
+      PPTESTCD=factor(rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
                             "lambda.z", "r.squared", "adj.r.squared",
                             "lambda.z.time.first", "lambda.z.n.points",
                             "clast.pred", "half.life", "span.ratio",
-                            "aucinf"),
+                            "aucinf.obs"),
                           times=2),
                       levels=test.code.levels),
-      PPORRES=c(13.54, 0.9998, 4.000, 24.00,
+      PPORRES=c(13.54, 0.9998, 4.000, 24.00, 0.3441,
                 0.04297, 0.9072, 0.9021, 5.000,
                 20.00, 0.3356, 16.13, 1.178,
                 21.55, 14.03, 0.9410, 2.000,
-                24.00, 0.05689, 0.9000, 0.8944,
+                24.00, 0.3148, 0.05689, 0.9000, 0.8944,
                 5.000, 20.00, 0.3011, 12.18,
                 1.560, 19.56),
       stringsAsFactors=FALSE)
   expect_equal(myresult$result, verify.result,
-               tol=0.001)
+               tol=0.001,
+               info=paste("The specific order of the levels isn't important--",
+                          "the fact that they are factors and that the set",
+                          "doesn't change is important."))
 
   ## Specifying new intervals
   mydata.newinterval <-
       PKNCAdata(myconc, mydose,
                 intervals=data.frame(start=0, end=c(24, Inf),
                                      auclast=c(TRUE, FALSE),
-                                     aucinf=c(FALSE, TRUE),
+                                     aucinf.obs=c(FALSE, TRUE),
                                      cmax=c(FALSE, TRUE),
                                      tmax=c(FALSE, TRUE),
                                      half.life=c(FALSE, TRUE)))
@@ -98,9 +99,9 @@ test_that("pk.nca", {
                info="Calculations work with a single row of intervals and a single parameter requested")
 
   mydata <- PKNCAdata(myconc, mydose,
-                      intervals=data.frame(start=0, end=Inf, cl=TRUE))
+                      intervals=data.frame(start=0, end=Inf, cl.obs=TRUE))
   myresult <- pk.nca(mydata)
-  expect_equal(subset(myresult$result, PPTESTCD %in% "cl")$PPORRES,
+  expect_equal(subset(myresult$result, PPTESTCD %in% "cl.obs")$PPORRES,
                c(0.04640, 0.05111), tol=0.0001,
                info="PK intervals work with passing in dose as a parameter")
 

@@ -15,7 +15,7 @@ pk.calc.ctrough(conc, time, start)
 }
 \value{
 The concentration when \code{time == start}.  If none
-match, then \code{NA}
+  match, then \code{NA}
 }
 \description{
 Determine the trough (predose) concentration

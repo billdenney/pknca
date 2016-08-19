@@ -57,7 +57,7 @@ my.intervals <- data.frame(start=0,
                            end=Inf,
                            cmax=TRUE,
                            tmax=TRUE,
-                           aucinf=TRUE,
+                           aucinf.obs=TRUE,
                            auclast=TRUE)
 my.data.manual <- PKNCAdata(my.conc, my.dose,
                             intervals=my.intervals)

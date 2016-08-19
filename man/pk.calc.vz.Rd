@@ -2,16 +2,28 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.vz}
 \alias{pk.calc.vz}
+\alias{pk.calc.vz.obs}
+\alias{pk.calc.vz.pred}
 \title{Calculate the terminal volume of distribution (Vz)}
 \usage{
 pk.calc.vz(cl, lambda.z)
+
+pk.calc.vz.obs(cl.obs, lambda.z)
+
+pk.calc.vz.pred(cl.pred, lambda.z)
 }
 \arguments{
-\item{cl}{the clearance (or apparent observed clearance)}
+\item{cl, cl.obs, cl.pred}{the clearance (or apparent observed clearance)}
 
 \item{lambda.z}{the elimination rate}
 }
 \description{
 Calculate the terminal volume of distribution (Vz)
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.vz.obs}: Calculate Vz using observed Clast
+
+\item \code{pk.calc.vz.pred}: Calculate Vz using predicted Clast
+}}
 

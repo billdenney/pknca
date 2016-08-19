@@ -70,7 +70,7 @@ test_that("PKNCA.options", {
                         start=0,
                         end=c(24, Inf),
                         auclast=c(TRUE, FALSE),
-                        aucinf=c(FALSE, TRUE),
+                        aucinf.obs=c(FALSE, TRUE),
                         half.life=c(FALSE, TRUE),
                         tmax=c(FALSE, TRUE),
                         cmax=c(FALSE, TRUE)))))

@@ -2,16 +2,22 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.vd}
 \alias{pk.calc.vd}
+\alias{pk.calc.vd.obs}
+\alias{pk.calc.vd.pred}
 \title{Calculate the volume of distribution (Vd) or observed volume of distribution 
 (Vd/F)}
 \usage{
 pk.calc.vd(dose, aucinf, lambda.z)
+
+pk.calc.vd.obs(dose, aucinf.obs, lambda.z)
+
+pk.calc.vd.pred(dose, aucinf.pred, lambda.z)
 }
 \arguments{
 \item{dose}{One or more doses given during an interval}
 
-\item{aucinf}{Area under the curve to infinity (either predicted or 
-observed).}
+\item{aucinf, aucinf.obs, aucinf.pred}{Area under the curve to
+infinity (either predicted or observed).}
 
 \item{lambda.z}{Elimination rate constant}
 }
@@ -23,11 +29,18 @@ Calculate the volume of distribution (Vd) or observed volume of distribution
 (Vd/F)
 }
 \details{
-If \code{dose} is the same length as the other inputs, then the 
-  output will be the same length as all of the inputs; the function assumes 
-  that you are calculating for multiple intervals simultaneously.  If the 
-  inputs other than \code{dose} are scalars and \code{dose} is a vector, then
-  the function assumes multiple doses were given in a single interval, and 
-  the sum of the \code{dose}s will be used for the calculation.
+If \code{dose} is the same length as the other inputs,
+  then the output will be the same length as all of the inputs; the
+  function assumes that you are calculating for multiple intervals
+  simultaneously.  If the inputs other than \code{dose} are scalars
+  and \code{dose} is a vector, then the function assumes multiple
+  doses were given in a single interval, and the sum of the
+  \code{dose}s will be used for the calculation.
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.vd.obs}: Compute the Vd with observed Clast
+
+\item \code{pk.calc.vd.pred}: Compute the Vd with predicted Clast
+}}
 

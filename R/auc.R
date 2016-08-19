@@ -1,65 +1,63 @@
 #' A compute the Area Under the (Moment) Curve
-#'
-#' Compute the area under the curve (AUC) and the area under the
-#' moment curve (AUMC) for pharmacokinetic (PK) data.  AUC and AUMC
-#' are used for many purposes when analyzing PK in drug development.
-#'
-#' \code{pk.calc.auc.last} is simply a shortcut setting the
-#' \code{interval} parameter to \code{c(0, "last")}.
-#'
-#' Extrapolation beyond Clast occurs using the half-life and
-#' Clast,obs; Clast,pred is not yet supported.
-#'
+#' 
+#' Compute the area under the curve (AUC) and the area under the moment curve
+#' (AUMC) for pharmacokinetic (PK) data.  AUC and AUMC are used for many
+#' purposes when analyzing PK in drug development.
+#' 
+#' \code{pk.calc.auc.last} is simply a shortcut setting the \code{interval}
+#' parameter to \code{c(0, "last")}.
+#' 
+#' Extrapolation beyond Clast occurs using the half-life and Clast,obs;
+#' Clast,pred is not yet supported.
+#' 
 #' @param conc Concentration measured
-#' @param time Time of concentration measurement (must be
-#' monotonically increasing and the same length as the concentration
-#' data)
-#' @param interval Numeric vector of two numbers for the start and
-#' end time of integration
-#' @param auc.type The type of AUC to compute.  Choices are 'AUCinf',
-#' 'AUClast', and 'AUCall'.
-#' @param clast The last concentration above the limit of
-#' quantification; this is used for AUCinf calculations.  If provided
-#' as clast.obs (observed clast value, default), AUCinf is AUCinf,obs.
-#' If provided as clast.pred, AUCinf is AUCinf,pred.
-#' @param lambda.z The elimination rate (in units of inverse time) for
-#' extrapolation
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
-#' @param method The method for integration (either 'lin up/log down'
-#' or 'linear')
-#' @param conc.blq How to handle BLQ values in between the first and
-#' last above LOQ concentrations. (See \code{\link{clean.conc.blq}}
-#' for usage instructions.)
-#' @param conc.na How to handle missing concentration values.  (See
-#' \code{\link{clean.conc.na}} for usage instructions.)
-#' @param check Run \code{\link{check.conc.time}},
-#' \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
-#' @param fun.linear The function to use for integration of the linear
-#' part of the curve (not required for AUC or AUMC functions)
-#' @param fun.log The function to use for integration of the
-#' logarithmic part of the curve (if log integration is used; not
-#' required for AUC or AUMC functions)
-#' @param fun.inf The function to use for extrapolation from the final
-#' measurement to infinite time (not required for AUC or AUMC
-#' functions.
-#' @param ... For functions other than \code{pk.calc.auxc}, these
-#' values are passed to \code{pk.calc.auxc}
+#' @param time Time of concentration measurement (must be monotonically
+#'   increasing and the same length as the concentration data)
+#' @param interval Numeric vector of two numbers for the start and end time of
+#'   integration
+#' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
+#'   and 'AUCall'.
+#' @param clast,clast.obs,clast.pred The last concentration above the limit of 
+#'   quantification; this is used for AUCinf calculations.  If provided as
+#'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
+#'   provided as clast.pred, AUCinf is AUCinf,pred.
+#' @param lambda.z The elimination rate (in units of inverse time) for 
+#'   extrapolation
+#' @param options List of changes to the default \code{\link{PKNCA.options}} for
+#'   calculations.
+#' @param method The method for integration (either 'lin up/log down' or
+#'   'linear')
+#' @param conc.blq How to handle BLQ values in between the first and last above
+#'   LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
+#'   instructions.)
+#' @param conc.na How to handle missing concentration values.  (See 
+#'   \code{\link{clean.conc.na}} for usage instructions.)
+#' @param check Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+#'   and \code{\link{clean.conc.na}}?
+#' @param fun.linear The function to use for integration of the linear part of
+#'   the curve (not required for AUC or AUMC functions)
+#' @param fun.log The function to use for integration of the logarithmic part of
+#'   the curve (if log integration is used; not required for AUC or AUMC
+#'   functions)
+#' @param fun.inf The function to use for extrapolation from the final 
+#'   measurement to infinite time (not required for AUC or AUMC functions.
+#' @param ... For functions other than \code{pk.calc.auxc}, these values are
+#'   passed to \code{pk.calc.auxc}
 #' @return A numeric value for the AU(M)C
 #' @aliases pk.calc.auc pk.calc.aumc pk.calc.auc.last
-#' @seealso \code{\link{pk.calc.auc.all}},
-#' \code{\link{pk.calc.auc.last}}, \code{\link{clean.conc.blq}}
+#' @seealso \code{\link{pk.calc.auc.all}}, \code{\link{pk.calc.auc.last}},
+#'   \code{\link{clean.conc.blq}}
 #' @references
-#'
-#' Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods -
-#' Linear trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data
-#' Analysis: Concepts and Applications, 4th Edition.  Stockholm,
-#' Sweden: Swedish Pharmaceutical Press, 2000.  162-4.
-#'
-#' Gabrielsson J, Weiner D.  "Section 2.8.3 Computation methods -
-#' Log-linear trapezoidal rule."  Pharmacokinetic & Pharmacodynamic
-#' Data Analysis: Concepts and Applications, 4th Edition.  Stockholm,
-#' Sweden: Swedish Pharmaceutical Press, 2000.  164-7.
+#' 
+#' Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods - Linear
+#' trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
+#' and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical
+#' Press, 2000.  162-4.
+#' 
+#' Gabrielsson J, Weiner D.  "Section 2.8.3 Computation methods - Log-linear
+#' trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
+#' and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical
+#' Press, 2000.  164-7.
 #' @examples
 #' myconc <- c(0, 1, 2, 1, 0.5, 0.25, 0)
 #' mytime <- c(0, 1, 2, 3, 4,   5,    6)
@@ -225,7 +223,7 @@ pk.calc.auc.last <- function(conc, time, ..., options=list()) {
               lambda.z=NA)
 }
 
-#' @describeIn pk.calc.auxc Compute the AUCinf.
+#' @describeIn pk.calc.auxc Compute the AUCinf
 #' @export
 pk.calc.auc.inf <- function(conc, time, ..., options=list(),
                             lambda.z) {
@@ -235,6 +233,24 @@ pk.calc.auc.inf <- function(conc, time, ..., options=list(),
               options=options,
               auc.type="AUCinf",
               lambda.z=lambda.z)
+}
+
+#' @describeIn pk.calc.auxc Compute the AUCinf with the observed Clast.
+#' @export
+pk.calc.auc.inf.obs <- function(conc, time, clast.obs, ..., options=list(),
+                                lambda.z) {
+  pk.calc.auc.inf(conc=conc, time=time, clast=clast.obs, ...,
+                  options=options,
+                  lambda.z=lambda.z)
+}
+
+#' @describeIn pk.calc.auxc Compute the AUCinf with the predicted Clast.
+#' @export
+pk.calc.auc.inf.pred <- function(conc, time, clast.pred, ..., options=list(),
+                                 lambda.z) {
+  pk.calc.auc.inf(conc=conc, time=time, clast=clast.pred, ...,
+                  options=options,
+                  lambda.z=lambda.z)
 }
 
 #' @describeIn pk.calc.auxc Compute the AUCall.
@@ -272,7 +288,7 @@ pk.calc.aumc.last <- function(conc, time, ..., options=list()) {
                lambda.z=NA)
 }
 
-#' @describeIn pk.calc.auxc Compute the AUMCinf.
+#' @describeIn pk.calc.auxc Compute the AUMCinf
 #' @export
 pk.calc.aumc.inf <- function(conc, time, ..., options=list(),
                              lambda.z) {
@@ -281,6 +297,22 @@ pk.calc.aumc.inf <- function(conc, time, ..., options=list(),
   pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUCinf",
                lambda.z=lambda.z)
+}
+
+#' @describeIn pk.calc.auxc Compute the AUMCinf with the observed Clast.
+#' @export
+pk.calc.aumc.inf.obs <- function(conc, time, clast.obs, ..., options=list(),
+                                 lambda.z) {
+  pk.calc.aumc.inf(conc=conc, time=time, clast=clast.obs, ..., options=options,
+                   lambda.z=lambda.z)
+}
+
+#' @describeIn pk.calc.auxc Compute the AUMCinf with the predicted Clast.
+#' @export
+pk.calc.aumc.inf.pred <- function(conc, time, clast.pred, ..., options=list(),
+                             lambda.z) {
+  pk.calc.aumc.inf(conc=conc, time=time, clast=clast.pred, ..., options=options,
+                   lambda.z=lambda.z)
 }
 
 #' @describeIn pk.calc.auxc Compute the AUMCall.
@@ -294,12 +326,19 @@ pk.calc.aumc.all <- function(conc, time, ..., options=list()) {
 }
 
 ## Add the columns to the interval specification
-add.interval.col("aucinf",
-                 FUN="pk.calc.auc.inf",
+add.interval.col("aucinf.obs",
+                 FUN="pk.calc.auc.inf.obs",
                  values=c(FALSE, TRUE),
-                 desc="The area under the concentration time curve from the beginning of the interval to infinity",
-                 depends="half.life")
-PKNCA.set.summary("aucinf", business.geomean, business.geocv)
+                 desc="The area under the concentration time curve from the beginning of the interval to infinity with extrapolation to infinity from the observed Clast",
+                 depends=c("half.life", "clast.obs"))
+PKNCA.set.summary("aucinf.obs", business.geomean, business.geocv)
+
+add.interval.col("aucinf.pred",
+                 FUN="pk.calc.auc.inf.pred",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve from the beginning of the interval to infinity with extrapolation to infinity from the predicted Clast",
+                 depends=c("half.life", "clast.pred"))
+PKNCA.set.summary("aucinf.pred", business.geomean, business.geocv)
 
 add.interval.col("auclast",
                  FUN="pk.calc.auc.last",
@@ -315,12 +354,19 @@ add.interval.col("aucall",
                  depends=c())
 PKNCA.set.summary("aucall", business.geomean, business.geocv)
 
-add.interval.col("aumcinf",
-                 FUN="pk.calc.aumc.inf",
+add.interval.col("aumcinf.obs",
+                 FUN="pk.calc.aumc.inf.obs",
                  values=c(FALSE, TRUE),
-                 desc="The area under the concentration time moment curve from the beginning of the interval to infinity",
-                 depends="half.life")
-PKNCA.set.summary("aumcinf", business.geomean, business.geocv)
+                 desc="The area under the concentration time moment curve from the beginning of the interval to infinity with extrapolation to infinity from the observed Clast",
+                 depends=c("half.life", "clast.obs"))
+PKNCA.set.summary("aumcinf.obs", business.geomean, business.geocv)
+
+add.interval.col("aumcinf.pred",
+                 FUN="pk.calc.aumc.inf.pred",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time moment curve from the beginning of the interval to infinity with extrapolation to infinity from the predicted Clast",
+                 depends=c("half.life", "clast.pred"))
+PKNCA.set.summary("aumcinf.pred", business.geomean, business.geocv)
 
 add.interval.col("aumclast",
                  FUN="pk.calc.aumc.last",

@@ -4,10 +4,14 @@
 \alias{pk.calc.auc}
 \alias{pk.calc.auc.all}
 \alias{pk.calc.auc.inf}
+\alias{pk.calc.auc.inf.obs}
+\alias{pk.calc.auc.inf.pred}
 \alias{pk.calc.auc.last}
 \alias{pk.calc.aumc}
 \alias{pk.calc.aumc.all}
 \alias{pk.calc.aumc.inf}
+\alias{pk.calc.aumc.inf.obs}
+\alias{pk.calc.aumc.inf.pred}
 \alias{pk.calc.aumc.last}
 \alias{pk.calc.auxc}
 \title{A compute the Area Under the (Moment) Curve}
@@ -26,6 +30,10 @@ pk.calc.auc.last(conc, time, ..., options = list())
 
 pk.calc.auc.inf(conc, time, ..., options = list(), lambda.z)
 
+pk.calc.auc.inf.obs(conc, time, clast.obs, ..., options = list(), lambda.z)
+
+pk.calc.auc.inf.pred(conc, time, clast.pred, ..., options = list(), lambda.z)
+
 pk.calc.auc.all(conc, time, ..., options = list())
 
 pk.calc.aumc(conc, time, ..., options = list())
@@ -34,73 +42,75 @@ pk.calc.aumc.last(conc, time, ..., options = list())
 
 pk.calc.aumc.inf(conc, time, ..., options = list(), lambda.z)
 
+pk.calc.aumc.inf.obs(conc, time, clast.obs, ..., options = list(), lambda.z)
+
+pk.calc.aumc.inf.pred(conc, time, clast.pred, ..., options = list(), lambda.z)
+
 pk.calc.aumc.all(conc, time, ..., options = list())
 }
 \arguments{
 \item{conc}{Concentration measured}
 
-\item{time}{Time of concentration measurement (must be
-monotonically increasing and the same length as the concentration
-data)}
+\item{time}{Time of concentration measurement (must be monotonically
+increasing and the same length as the concentration data)}
 
-\item{interval}{Numeric vector of two numbers for the start and
-end time of integration}
+\item{interval}{Numeric vector of two numbers for the start and end time of
+integration}
 
-\item{clast}{The last concentration above the limit of
-quantification; this is used for AUCinf calculations.  If provided
-as clast.obs (observed clast value, default), AUCinf is AUCinf,obs.
-If provided as clast.pred, AUCinf is AUCinf,pred.}
+\item{clast, clast.obs, clast.pred}{The last concentration above the limit of 
+quantification; this is used for AUCinf calculations.  If provided as
+clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
+provided as clast.pred, AUCinf is AUCinf,pred.}
 
-\item{lambda.z}{The elimination rate (in units of inverse time) for
+\item{lambda.z}{The elimination rate (in units of inverse time) for 
 extrapolation}
 
-\item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf',
-'AUClast', and 'AUCall'.}
+\item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
+and 'AUCall'.}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default \code{\link{PKNCA.options}} for
+calculations.}
 
-\item{method}{The method for integration (either 'lin up/log down'
-or 'linear')}
+\item{method}{The method for integration (either 'lin up/log down' or
+'linear')}
 
-\item{conc.blq}{How to handle BLQ values in between the first and
-last above LOQ concentrations. (See \code{\link{clean.conc.blq}}
-for usage instructions.)}
+\item{conc.blq}{How to handle BLQ values in between the first and last above
+LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
+instructions.)}
 
-\item{conc.na}{How to handle missing concentration values.  (See
+\item{conc.na}{How to handle missing concentration values.  (See 
 \code{\link{clean.conc.na}} for usage instructions.)}
 
-\item{check}{Run \code{\link{check.conc.time}},
-\code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
+\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+and \code{\link{clean.conc.na}}?}
 
-\item{fun.linear}{The function to use for integration of the linear
-part of the curve (not required for AUC or AUMC functions)}
+\item{fun.linear}{The function to use for integration of the linear part of
+the curve (not required for AUC or AUMC functions)}
 
-\item{fun.log}{The function to use for integration of the
-logarithmic part of the curve (if log integration is used; not
-required for AUC or AUMC functions)}
+\item{fun.log}{The function to use for integration of the logarithmic part of
+the curve (if log integration is used; not required for AUC or AUMC
+functions)}
 
-\item{fun.inf}{The function to use for extrapolation from the final
-measurement to infinite time (not required for AUC or AUMC
-functions.}
+\item{fun.inf}{The function to use for extrapolation from the final 
+measurement to infinite time (not required for AUC or AUMC functions.}
 
-\item{...}{For functions other than \code{pk.calc.auxc}, these
-values are passed to \code{pk.calc.auxc}}
+\item{...}{For functions other than \code{pk.calc.auxc}, these values are
+passed to \code{pk.calc.auxc}}
 }
 \value{
 A numeric value for the AU(M)C
 }
 \description{
-Compute the area under the curve (AUC) and the area under the
-moment curve (AUMC) for pharmacokinetic (PK) data.  AUC and AUMC
-are used for many purposes when analyzing PK in drug development.
+Compute the area under the curve (AUC) and the area under the moment curve
+(AUMC) for pharmacokinetic (PK) data.  AUC and AUMC are used for many
+purposes when analyzing PK in drug development.
 }
 \details{
-\code{pk.calc.auc.last} is simply a shortcut setting the
-\code{interval} parameter to \code{c(0, "last")}.
+\code{pk.calc.auc.last} is simply a shortcut setting the \code{interval}
+parameter to \code{c(0, "last")}.
 
-Extrapolation beyond Clast occurs using the half-life and
-Clast,obs; Clast,pred is not yet supported.
+Extrapolation beyond Clast occurs using the half-life and Clast,obs;
+Clast,pred is not yet supported.
 }
 \section{Functions}{
 \itemize{
@@ -108,7 +118,11 @@ Clast,obs; Clast,pred is not yet supported.
 
 \item \code{pk.calc.auc.last}: Compute the AUClast.
 
-\item \code{pk.calc.auc.inf}: Compute the AUCinf.
+\item \code{pk.calc.auc.inf}: Compute the AUCinf
+
+\item \code{pk.calc.auc.inf.obs}: Compute the AUCinf with the observed Clast.
+
+\item \code{pk.calc.auc.inf.pred}: Compute the AUCinf with the predicted Clast.
 
 \item \code{pk.calc.auc.all}: Compute the AUCall.
 
@@ -116,7 +130,11 @@ Clast,obs; Clast,pred is not yet supported.
 
 \item \code{pk.calc.aumc.last}: Compute the AUMClast.
 
-\item \code{pk.calc.aumc.inf}: Compute the AUMCinf.
+\item \code{pk.calc.aumc.inf}: Compute the AUMCinf
+
+\item \code{pk.calc.aumc.inf.obs}: Compute the AUMCinf with the observed Clast.
+
+\item \code{pk.calc.aumc.inf.pred}: Compute the AUMCinf with the predicted Clast.
 
 \item \code{pk.calc.aumc.all}: Compute the AUMCall.
 }}
@@ -127,18 +145,18 @@ pk.calc.auc(myconc, mytime, interval=c(0, 6))
 pk.calc.auc(myconc, mytime, interval=c(0, Inf))
 }
 \references{
-Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods -
-Linear trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data
-Analysis: Concepts and Applications, 4th Edition.  Stockholm,
-Sweden: Swedish Pharmaceutical Press, 2000.  162-4.
+Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods - Linear
+trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
+and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical
+Press, 2000.  162-4.
 
-Gabrielsson J, Weiner D.  "Section 2.8.3 Computation methods -
-Log-linear trapezoidal rule."  Pharmacokinetic & Pharmacodynamic
-Data Analysis: Concepts and Applications, 4th Edition.  Stockholm,
-Sweden: Swedish Pharmaceutical Press, 2000.  164-7.
+Gabrielsson J, Weiner D.  "Section 2.8.3 Computation methods - Log-linear
+trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
+and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical
+Press, 2000.  164-7.
 }
 \seealso{
-\code{\link{pk.calc.auc.all}},
-\code{\link{pk.calc.auc.last}}, \code{\link{clean.conc.blq}}
+\code{\link{pk.calc.auc.all}}, \code{\link{pk.calc.auc.last}},
+  \code{\link{clean.conc.blq}}
 }
 

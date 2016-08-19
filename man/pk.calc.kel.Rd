@@ -2,12 +2,18 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.kel}
 \alias{pk.calc.kel}
+\alias{pk.calc.kel.obs}
+\alias{pk.calc.kel.pred}
 \title{Calculate the elimination rate (Kel)}
 \usage{
 pk.calc.kel(mrt)
+
+pk.calc.kel.obs(mrt.obs)
+
+pk.calc.kel.pred(mrt.pred)
 }
 \arguments{
-\item{mrt}{the mean residence time}
+\item{mrt, mrt.obs, mrt.pred}{the mean residence time}
 }
 \value{
 the numeric value of the elimination rate
@@ -15,4 +21,10 @@ the numeric value of the elimination rate
 \description{
 Calculate the elimination rate (Kel)
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.kel.obs}: Calculate Kel with observed Clast
+
+\item \code{pk.calc.kel.pred}: Calculate Kel with predicted Clast
+}}
 

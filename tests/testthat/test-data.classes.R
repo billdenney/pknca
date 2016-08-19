@@ -194,33 +194,32 @@ test_that("PKNCAresults and summary", {
     tmp
   }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options")
 
-  ## The specific order of the levels isn't important-- the fact that
-  ## they are factors and that the set doesn't change is important.
   test.code.levels <- levels(myresult$result$PPTESTCD)
   verify.result <-
     data.frame(
       start=0,
-      end=c(24, rep(Inf, 12),
-            24, rep(Inf, 12)),
+      end=c(24, rep(Inf, 13),
+            24, rep(Inf, 13)),
       treatment="Trt 1",
-      ID=rep(c(1, 2), each=13),
-      PPTESTCD=factor(rep(c("auclast", "cmax", "tmax", "tlast",
+      ID=rep(c(1, 2), each=14),
+      PPTESTCD=factor(rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
                             "lambda.z", "r.squared", "adj.r.squared",
                             "lambda.z.time.first", "lambda.z.n.points",
                             "clast.pred", "half.life", "span.ratio",
-                            "aucinf"),
+                            "aucinf.obs"),
                           times=2),
                       levels=test.code.levels),
-      PPORRES=c(13.54, 0.9998, 4.000, 24.00,
+      PPORRES=c(13.54, 0.9998, 4.000, 24.00, 0.3441,
                 0.04297, 0.9072, 0.9021, 5.000,
                 20.00, 0.3356, 16.13, 1.178,
                 21.55, 14.03, 0.9410, 2.000,
-                24.00, 0.05689, 0.9000, 0.8944,
+                24.00, 0.3148, 0.05689, 0.9000, 0.8944,
                 5.000, 20.00, 0.3011, 12.18,
                 1.560, 19.56),
       stringsAsFactors=FALSE)
   expect_equal(myresult$result, verify.result,
-               tol=0.001)
+               tol=0.001,
+               info="The specific order of the levels isn't important-- the fact that they are factors and that the set doesn't change is important.")
   
   ## Test conversion to a data.frame
   expect_equal(as.data.frame(myresult), verify.result, tol=0.001,
@@ -243,7 +242,7 @@ test_that("PKNCAresults and summary", {
                           cmax=c(".", "0.970 [4.29]"),
                           tmax=c(".", "3.00 [2.00, 4.00]"),
                           half.life=c(".", "14.2 [2.79]"),
-                          aucinf=c(".", "20.5 [6.84]"),
+                          aucinf.obs=c(".", "20.5 [6.84]"),
                           stringsAsFactors=FALSE),
                info="simple summary of PKNCAresults performs as expected")
 
@@ -267,7 +266,7 @@ test_that("PKNCAresults and summary", {
                           cmax=c(".", "1.00 [NC]"),
                           tmax=c(".", "4.00 [4.00, 4.00]"),
                           half.life=c(".", "16.1 [NC]"),
-                          aucinf=c(".", "21.5 [NC]"),
+                          aucinf.obs=c(".", "21.5 [NC]"),
                           stringsAsFactors=FALSE),
                info="summary of PKNCAresults with some missing values results in NA for spread")
 
@@ -291,7 +290,7 @@ test_that("PKNCAresults and summary", {
                           cmax=c(".", "NC"),
                           tmax=c(".", "NC"),
                           half.life=c(".", "NC"),
-                          aucinf=c(".", "NC"),
+                          aucinf.obs=c(".", "NC"),
                           stringsAsFactors=FALSE),
                info="summary of PKNCAresults without most results gives NC")
 
@@ -306,9 +305,7 @@ test_that("PKNCAresults and summary", {
                           cmax=c("NR", "NoCalc"),
                           tmax=c("NR", "NoCalc"),
                           half.life=c("NR", "NoCalc"),
-                          aucinf=c("NR", "NoCalc"),
+                          aucinf.obs=c("NR", "NoCalc"),
                           stringsAsFactors=FALSE),
                info="Summary respects the not.requested.string and not.calculated.string")
-  
-  
 })

@@ -2,19 +2,24 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.cl}
 \alias{pk.calc.cl}
+\alias{pk.calc.cl.obs}
+\alias{pk.calc.cl.pred}
 \title{Calculate the (observed oral) clearance}
 \usage{
 pk.calc.cl(dose, aucinf)
+
+pk.calc.cl.obs(dose, aucinf.obs)
+
+pk.calc.cl.pred(dose, aucinf.pred)
 }
 \arguments{
 \item{dose}{the dose administered}
 
-\item{aucinf}{the area under the curve from 0 to infinity or 0 to
-tau (the next dose on a regular schedule at steady-state)}
+\item{aucinf, aucinf.obs, aucinf.pred}{the area under the curve from 0 to
+infinity or 0 to tau (the next dose on a regular schedule at steady-state)}
 }
 \value{
-the numeric value of the total (CL) or observed oral
-  clearance (CL/F)
+the numeric value of the total (CL) or observed oral clearance (CL/F)
 }
 \description{
 Calculate the (observed oral) clearance
@@ -27,11 +32,17 @@ If \code{dose} is the same length as the other inputs, then the
   the function assumes multiple doses were given in a single interval, and 
   the sum of the \code{dose}s will be used for the calculation.
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.cl.obs}: Compute the clearance from the AUCinf (calculated from
+observed Clast)
+
+\item \code{pk.calc.cl.pred}: Compute the clearance from the AUCinf (calculated from
+predicted Clast)
+}}
 \references{
-Gabrielsson J, Weiner D.
-  "Section 2.5.1 Derivation of clearance."  Pharmacokinetic &
-  Pharmacodynamic Data Analysis: Concepts and Applications, 4th
-  Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000.
-  86-7.
+Gabrielsson J, Weiner D. "Section 2.5.1 Derivation of clearance."
+  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts and Applications,
+  4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000. 86-7.
 }
 

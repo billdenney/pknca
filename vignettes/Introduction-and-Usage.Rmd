@@ -189,14 +189,14 @@ intervals <-
              cmax=c(FALSE, TRUE),
              tmax=c(FALSE, TRUE),
              auclast=TRUE,
-             aucinf=c(FALSE, TRUE))
+             aucinf.obs=c(FALSE, TRUE))
 ```
 
 Intervals like the above is sufficient for designs with a single type of treatment-- like single doses.  For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set.  See the [Manual Interval Specification](manual-interval-specification) section below for more details.
 
 ## Selection of Data Used for Calculation
 
-When choosing which data is used for a calculation, PKNCA will never look beyond the data specified in the group and interval.  Groups are defined by the call to the `PKNCAconc` function, and they will typically define the measurement of a single analyte from a single individual receiving a single treatment.  Intervals are subsets within a group by start and end time.  PKNCA never examines data outside of the group and interval for standard NCA calculations.  As an example, with data from 0 to 48 hours and an interval set to `start` at 0 and `end` at 24 with the calculation of `aucinf`, any data after 24 hours will not be used for the half-life or AUC~inf~ calculations.
+When choosing which data is used for a calculation, PKNCA will never look beyond the data specified in the group and interval.  Groups are defined by the call to the `PKNCAconc` function, and they will typically define the measurement of a single analyte from a single individual receiving a single treatment.  Intervals are subsets within a group by start and end time.  PKNCA never examines data outside of the group and interval for standard NCA calculations.  As an example, with data from 0 to 48 hours and an interval set to `start` at 0 and `end` at 24 with the calculation of `aucinf.obs`, any data after 24 hours will not be used for the half-life or AUC~inf~ calculations.
 
 A few functions look at data outside of a single interval, but these functions do not look at data outside of a single group, and these functions are typically used during preparation for NCA calculations not for the calculations themselves.  Functions that look a group as a whole include `choose.auc.intervals`, `find.tau`, and `pk.tss`.
 
@@ -244,7 +244,7 @@ my.intervals <-
              cmax=c(FALSE, TRUE),
              tmax=c(FALSE, TRUE),
              auclast=TRUE,
-             aucinf=c(FALSE, TRUE))
+             aucinf.obs=c(FALSE, TRUE))
 my.data <- PKNCAdata(my.conc, my.dose, 
                      intervals=my.intervals)
 ```
@@ -254,6 +254,6 @@ To update the automatically-selected intervals, extract the intervals, modify th
 ```{r eval=FALSE}
 my.data <- PKNCAdata(my.conc, my.dose)
 my.intervals <- my.data$intervals
-my.intervals$aucinf[1] <- TRUE
+my.intervals$aucinf.obs[1] <- TRUE
 mydata$intervals <- my.intervals
 ```
