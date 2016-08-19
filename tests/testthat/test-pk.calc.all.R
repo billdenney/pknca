@@ -103,4 +103,16 @@ test_that("pk.nca", {
   expect_equal(subset(myresult$result, PPTESTCD %in% "cl")$PPORRES,
                c(0.04640, 0.05111), tol=0.0001,
                info="PK intervals work with passing in dose as a parameter")
+
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=24, cmax=TRUE, cav=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(subset(myresult$result, PPTESTCD %in% "cav")$PPORRES,
+               c(0.5642, 0.5846), tol=0.0001,
+               info="PK intervals work with passing in start and end as parameters")
+  
 })

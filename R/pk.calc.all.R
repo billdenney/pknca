@@ -194,6 +194,9 @@ pk.nca.interval <- function(conc, time,
           ## Realign the time to be relative to the start of the
           ## interval
           call.args[[arg]] <- time.dose - interval$start[1]
+        } else if (arg %in% c("start", "end")) {
+          ## Provide the start and end of the interval if they are requested
+          call.args[[arg]] <- interval[1,arg]
         } else if (arg == "options") {
           call.args[[arg]] <- options
         } else if (any(mask.arg <- ret$PPTESTCD %in% arg)) {
