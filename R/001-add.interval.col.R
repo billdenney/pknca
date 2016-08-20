@@ -20,6 +20,9 @@ add.interval.col <- function(name, FUN, values, depends=c(),
                                "individual",
                                "population")) {
   current <- get("interval.cols", envir=.PKNCAEnv)
+  ## Ensure that the function exists
+  if (length(getAnywhere(FUN)) == 0)
+    stop("The function named '", FUN, "' is not defined.  Please define the function before calling add.interval.col.")
   current[[name]] <- list(FUN=FUN,
                           values=values,
                           desc=desc,
