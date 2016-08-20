@@ -1,5 +1,6 @@
 context("All NCA calculations")
 
+library(dplyr)
 source("generate.data.R")
 
 test_that("pk.nca", {
@@ -115,5 +116,36 @@ test_that("pk.nca", {
   expect_equal(subset(myresult$result, PPTESTCD %in% "cav")$PPORRES,
                c(0.5642, 0.5846), tol=0.0001,
                info="PK intervals work with passing in start and end as parameters")
+  
+  ## Ensure that the correct number of doses are included in parameters that use dosing.
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  tmpdose$time <- NULL
+  tmpdose <- merge(tmpdose, data.frame(time=c(0, 6, 12, 18, 24)))
+  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=24, cl.obs=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.obs"],
+               4/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "aucinf.obs"],
+               tol=0.0001,
+               info="The correct number of doses is selected for an interval (>=start and <end), 4 doses and not 5")
+
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=6, cl.last=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.last"],
+               1/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "auclast"],
+               tol=0.0001,
+               info="The correct number of doses is selected for an interval (>=start and <end), 1 dose and not 5")
+
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=1, end=6, cl.last=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.last"],
+               NA/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "auclast"],
+               tol=0.0001,
+               info="The correct number of doses is selected for an interval (>=start and <end), no doses selected")
   
 })

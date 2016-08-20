@@ -105,9 +105,12 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
       merge(conc.dose$dose,
             all.intervals[i,])[,c(col.dose, col.time.dose)]
     ## Choose only times between the start and end.
-    mask.keep <- (all.intervals$start[i] <= tmpconcdata[,col.time] &
-                  tmpconcdata[,col.time] <= all.intervals$end[i])
-    tmpconcdata <- tmpconcdata[mask.keep,]
+    mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[,col.time] &
+                         tmpconcdata[,col.time] <= all.intervals$end[i])
+    tmpconcdata <- tmpconcdata[mask.keep.conc,]
+    mask.keep.dose <- (all.intervals$start[i] <= tmpdosedata[,col.time.dose] &
+                         tmpdosedata[,col.time.dose] < all.intervals$end[i])
+    tmpdosedata <- tmpdosedata[mask.keep.dose,]
     if (nrow(tmpconcdata) == 0) {
       ## TODO: Improve this error message with additional information
       ## on the specific interval that has no data.
@@ -168,6 +171,11 @@ pk.nca.interval <- function(conc, time,
   ## calculations in order confirming what needs to be passed from a
   ## previous calculation to a later calculation.
   all.intervals <- get.interval.cols()
+  ## Set the dose to NA if its length is zero
+  if (length(dose) == 0) {
+    dose <- NA
+    time.dose <- NA
+  }
   ## Make sure that we calculate all of the dependencies.  Do this in
   ## reverse order for dependencies of dependencies.
   for (n in rev(names(all.intervals)))
