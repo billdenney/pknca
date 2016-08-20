@@ -287,8 +287,14 @@ PKNCA.set.summary("kel.pred", business.geomean, business.geocv)
 #' Calculate the (observed oral) clearance
 #' 
 #' @param dose the dose administered
-#' @param aucinf,aucinf.obs,aucinf.pred the area under the curve from 0 to
-#'   infinity or 0 to tau (the next dose on a regular schedule at steady-state)
+#' @param aucall The area under the concentration-time curve from 0 to the last 
+#'   measurement above the limit of quantifiation (LOQ) plus the triangle to the
+#'   first concentration below the LOQ.
+#' @param auclast The area under the concentration-time curve from 0 to the last
+#'   measurement above the LOQ.
+#' @param aucinf,aucinf.obs,aucinf.pred The area under the concentration-time 
+#'   curve from 0 to infinity (the next dose on a regular schedule at 
+#'   steady-state)
 #' @return the numeric value of the total (CL) or observed oral clearance (CL/F)
 #' @details If \code{dose} is the same length as the other inputs, then the 
 #'   output will be the same length as all of the inputs; the function assumes 
@@ -305,18 +311,38 @@ pk.calc.cl <- function(dose, aucinf) {
     dose <- sum(dose)
   dose/aucinf
 }
-#' @describeIn pk.calc.cl Compute the clearance from the AUCinf (calculated from
+#' @describeIn pk.calc.cl Compute the clearance from AUClast
+#' @export
+pk.calc.cl.last <- function(dose, auclast)
+  pk.calc.cl(dose, auclast)
+#' @describeIn pk.calc.cl Compute the clearance from AUCall
+#' @export
+pk.calc.cl.all <- function(dose, aucall)
+  pk.calc.cl(dose, aucall)
+#' @describeIn pk.calc.cl Compute the clearance from AUCinf (calculated from 
 #'   observed Clast)
 #' @export
 pk.calc.cl.obs <- function(dose, aucinf.obs)
   pk.calc.cl(dose, aucinf.obs)
-#' @describeIn pk.calc.cl Compute the clearance from the AUCinf (calculated from
+#' @describeIn pk.calc.cl Compute the clearance from AUCinf (calculated from
 #'   predicted Clast)
 #' @export
 pk.calc.cl.pred <- function(dose, aucinf.pred)
   pk.calc.cl(dose, aucinf.pred)
 
-## Add the column to the interval specification
+## Add the columns to the interval specification
+add.interval.col("cl.last",
+                 FUN="pk.calc.cl.last",
+                 values=c(FALSE, TRUE),
+                 desc="Clearance or observed oral clearance calculated to Clast",
+                 depends=c("auclast"))
+PKNCA.set.summary("cl.last", business.geomean, business.geocv)
+add.interval.col("cl.all",
+                 FUN="pk.calc.cl.all",
+                 values=c(FALSE, TRUE),
+                 desc="Clearance or observed oral clearance calculated with AUCall",
+                 depends=c("aucall"))
+PKNCA.set.summary("cl.all", business.geomean, business.geocv)
 add.interval.col("cl.obs",
                  FUN="pk.calc.cl.obs",
                  values=c(FALSE, TRUE),
@@ -437,21 +463,33 @@ PKNCA.set.summary("vz.pred", business.geomean, business.geocv)
 
 #' Calculate the steady-state volume of distribution (Vss)
 #'
-#' @param cl the clearance
-#' @param mrt the mean residence time
+#' @param cl,cl.obs,cl.pred the clearance
+#' @param mrt,mrt.obs,mrt.pred the mean residence time
 #' @return the volume of distribution at steady-state
 #' @export
 pk.calc.vss <- function(cl, mrt)
   cl*mrt
-## Add the column to the interval specification
-## FIXME: Need to require steady-state before Vss can be automatically
-## calculated.
-##add.interval.col("vss",
-##                 FUN="pk.calc.vss",
-##                 values=c(FALSE, TRUE),
-##                 desc="The steady-state volume of distribution",
-##                 depends=c("cl", "mrt"))
-##PKNCA.set.summary("vss", business.geomean, business.geocv)
+#' @describeIn pk.calc.vss Vss calculation using observed Clast
+#' @export
+pk.calc.vss.obs <- function(cl.obs, mrt.obs)
+  pk.calc.vss(cl.obs, mrt.obs)
+#' @describeIn pk.calc.vss Vss calculation using predicted Clast
+#' @export
+pk.calc.vss.pred <- function(cl.pred, mrt.pred)
+  pk.calc.vss(cl.pred, mrt.pred)
+# Add the columns to the interval specification
+add.interval.col("vss.obs",
+                 FUN="pk.calc.vss.obs",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution using observed Clast",
+                 depends=c("cl.obs", "mrt.obs"))
+PKNCA.set.summary("vss.obs", business.geomean, business.geocv)
+add.interval.col("vss.pred",
+                 FUN="pk.calc.vss.pred",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution using predicted Clast",
+                 depends=c("cl.pred", "mrt.pred"))
+PKNCA.set.summary("vss.pred", business.geomean, business.geocv)
 
 #' Calculate the volume of distribution (Vd) or observed volume of distribution 
 #' (Vd/F)

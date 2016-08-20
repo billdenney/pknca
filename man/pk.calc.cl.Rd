@@ -2,11 +2,17 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.cl}
 \alias{pk.calc.cl}
+\alias{pk.calc.cl.all}
+\alias{pk.calc.cl.last}
 \alias{pk.calc.cl.obs}
 \alias{pk.calc.cl.pred}
 \title{Calculate the (observed oral) clearance}
 \usage{
 pk.calc.cl(dose, aucinf)
+
+pk.calc.cl.last(dose, auclast)
+
+pk.calc.cl.all(dose, aucall)
 
 pk.calc.cl.obs(dose, aucinf.obs)
 
@@ -15,8 +21,16 @@ pk.calc.cl.pred(dose, aucinf.pred)
 \arguments{
 \item{dose}{the dose administered}
 
-\item{aucinf, aucinf.obs, aucinf.pred}{the area under the curve from 0 to
-infinity or 0 to tau (the next dose on a regular schedule at steady-state)}
+\item{aucinf, aucinf.obs, aucinf.pred}{The area under the concentration-time 
+curve from 0 to infinity (the next dose on a regular schedule at 
+steady-state)}
+
+\item{auclast}{The area under the concentration-time curve from 0 to the last
+measurement above the LOQ.}
+
+\item{aucall}{The area under the concentration-time curve from 0 to the last 
+measurement above the limit of quantifiation (LOQ) plus the triangle to the
+first concentration below the LOQ.}
 }
 \value{
 the numeric value of the total (CL) or observed oral clearance (CL/F)
@@ -34,10 +48,14 @@ If \code{dose} is the same length as the other inputs, then the
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.cl.obs}: Compute the clearance from the AUCinf (calculated from
+\item \code{pk.calc.cl.last}: Compute the clearance from AUClast
+
+\item \code{pk.calc.cl.all}: Compute the clearance from AUCall
+
+\item \code{pk.calc.cl.obs}: Compute the clearance from AUCinf (calculated from 
 observed Clast)
 
-\item \code{pk.calc.cl.pred}: Compute the clearance from the AUCinf (calculated from
+\item \code{pk.calc.cl.pred}: Compute the clearance from AUCinf (calculated from
 predicted Clast)
 }}
 \references{

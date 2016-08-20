@@ -2,14 +2,20 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.vss}
 \alias{pk.calc.vss}
+\alias{pk.calc.vss.obs}
+\alias{pk.calc.vss.pred}
 \title{Calculate the steady-state volume of distribution (Vss)}
 \usage{
 pk.calc.vss(cl, mrt)
+
+pk.calc.vss.obs(cl.obs, mrt.obs)
+
+pk.calc.vss.pred(cl.pred, mrt.pred)
 }
 \arguments{
-\item{cl}{the clearance}
+\item{cl, cl.obs, cl.pred}{the clearance}
 
-\item{mrt}{the mean residence time}
+\item{mrt, mrt.obs, mrt.pred}{the mean residence time}
 }
 \value{
 the volume of distribution at steady-state
@@ -17,4 +23,10 @@ the volume of distribution at steady-state
 \description{
 Calculate the steady-state volume of distribution (Vss)
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.vss.obs}: Vss calculation using observed Clast
+
+\item \code{pk.calc.vss.pred}: Vss calculation using predicted Clast
+}}
 
