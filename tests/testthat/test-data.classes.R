@@ -238,6 +238,7 @@ test_that("PKNCAresults and summary", {
                data.frame(start=0,
                           end=c(24, Inf),
                           treatment="Trt 1",
+                          N="2",
                           auclast=c("13.8 [2.51]", "."),
                           cmax=c(".", "0.970 [4.29]"),
                           tmax=c(".", "3.00 [2.00, 4.00]"),
@@ -262,6 +263,7 @@ test_that("PKNCAresults and summary", {
                data.frame(start=0,
                           end=c(24, Inf),
                           treatment="Trt 1",
+                          N="2",
                           auclast=c("13.5 [NC]", "."),
                           cmax=c(".", "1.00 [NC]"),
                           tmax=c(".", "4.00 [4.00, 4.00]"),
@@ -286,6 +288,7 @@ test_that("PKNCAresults and summary", {
                data.frame(start=0,
                           end=c(24, Inf),
                           treatment="Trt 1",
+                          N="2",
                           auclast=c("NC", "."),
                           cmax=c(".", "NC"),
                           tmax=c(".", "NC"),
@@ -301,6 +304,7 @@ test_that("PKNCAresults and summary", {
                data.frame(start=0,
                           end=c(24, Inf),
                           treatment="Trt 1",
+                          N="2",
                           auclast=c("NoCalc", "NR"),
                           cmax=c("NR", "NoCalc"),
                           tmax=c("NR", "NoCalc"),
@@ -308,4 +312,21 @@ test_that("PKNCAresults and summary", {
                           aucinf.obs=c("NR", "NoCalc"),
                           stringsAsFactors=FALSE),
                info="Summary respects the not.requested.string and not.calculated.string")
+  
+  mysummary <- summary(myresult,
+                       summarize.n.per.group=FALSE,
+                       not.requested.string="NR",
+                       not.calculated.string="NoCalc")
+  expect_equal(mysummary,
+               data.frame(start=0,
+                          end=c(24, Inf),
+                          treatment="Trt 1",
+                          auclast=c("NoCalc", "NR"),
+                          cmax=c("NR", "NoCalc"),
+                          tmax=c("NR", "NoCalc"),
+                          half.life=c("NR", "NoCalc"),
+                          aucinf.obs=c("NR", "NoCalc"),
+                          stringsAsFactors=FALSE),
+               info="N is optionally omitted")
+
 })

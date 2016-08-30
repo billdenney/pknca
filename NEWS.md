@@ -11,6 +11,7 @@ predicted-related NCA parameters (like aucinf.obs and aucinf.pred)
 changed the format of the intervals specification.
 
 * Added Clast.pred related NCA calculations
+* Added N to summary of PKNCAresults
 
 # PKNCA 0.7.1
 

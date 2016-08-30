@@ -5,28 +5,31 @@
 \title{Summarize PKNCA results}
 \usage{
 \method{summary}{PKNCAresults}(object, ...,
-  drop.group = object$data$conc$subject, not.requested.string = ".",
-  not.calculated.string = "NC")
+  drop.group = object$data$conc$subject, summarize.n.per.group = TRUE,
+  not.requested.string = ".", not.calculated.string = "NC")
 }
 \arguments{
 \item{object}{The results to summarize}
 
 \item{...}{Ignored.}
 
-\item{drop.group}{Which group(s) should be dropped from the
-formula?}
+\item{drop.group}{Which group(s) should be dropped from the formula?}
 
-\item{not.requested.string}{A character string to use when a
-parameter summary was not requested for a parameter within an
-interval.}
+\item{summarize.n.per.group}{Should a column for \code{N} be added 
+(\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of 
+parameter results for any parameter; if no parameters are requested for a
+group, then \code{N} will be \code{NA}.}
 
-\item{not.calculated.string}{A character string to use when a
-parameter summary was requested, but the point estimate AND
-spread calculations (if applicable) returned \code{NA}.}
+\item{not.requested.string}{A character string to use when a parameter 
+summary was not requested for a parameter within an interval.}
+
+\item{not.calculated.string}{A character string to use when a parameter 
+summary was requested, but the point estimate AND spread calculations (if 
+applicable) returned \code{NA}.}
 }
 \value{
-A data frame of NCA parameter results summarized according
-  to the summarization settings.
+A data frame of NCA parameter results summarized according to the 
+  summarization settings.
 }
 \description{
 Summarize PKNCA results

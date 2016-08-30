@@ -626,23 +626,26 @@ roundingSummarize <- function(x, name) {
 }
 
 #' Summarize PKNCA results
-#'
+#' 
 #' @param object The results to summarize
-#' @param drop.group Which group(s) should be dropped from the
-#'   formula?
-#' @param not.requested.string A character string to use when a
-#'   parameter summary was not requested for a parameter within an
-#'   interval.
-#' @param not.calculated.string A character string to use when a
-#'   parameter summary was requested, but the point estimate AND
-#'   spread calculations (if applicable) returned \code{NA}.
+#' @param drop.group Which group(s) should be dropped from the formula?
+#' @param not.requested.string A character string to use when a parameter 
+#'   summary was not requested for a parameter within an interval.
+#' @param not.calculated.string A character string to use when a parameter 
+#'   summary was requested, but the point estimate AND spread calculations (if 
+#'   applicable) returned \code{NA}.
+#' @param summarize.n.per.group Should a column for \code{N} be added 
+#'   (\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of 
+#'   parameter results for any parameter; if no parameters are requested for a
+#'   group, then \code{N} will be \code{NA}.
 #' @param ... Ignored.
-#' @return A data frame of NCA parameter results summarized according
-#'   to the summarization settings.
+#' @return A data frame of NCA parameter results summarized according to the 
+#'   summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}
 #' @export
 summary.PKNCAresults <- function(object, ...,
                                  drop.group=object$data$conc$subject,
+                                 summarize.n.per.group=TRUE,
                                  not.requested.string=".",
                                  not.calculated.string="NC") {
   allGroups <- getGroups(object)
@@ -658,13 +661,17 @@ summary.PKNCAresults <- function(object, ...,
              drop=FALSE],
            FUN=any)
   resultDataCols <- as.data.frame(resultDataCols[unlist(resultDataCols)])
-  ret <- cbind(unique(object$result[, groups, drop=FALSE]),
+  ret <- unique(object$result[, groups, drop=FALSE])
+  if (summarize.n.per.group) {
+    ret$N <- NA
+  }
+  ret <- cbind(ret,
                resultDataCols)
-  ret[,setdiff(names(ret), groups)] <- not.requested.string
+  ret[,names(resultDataCols)] <- not.requested.string
   ## Loop over every group that needs summarization
   for (i in seq_len(nrow(ret)))
     ## Loop over every column that needs summarziation
-    for (n in setdiff(names(ret), groups)) {
+    for (n in names(resultDataCols)) {
       ## Select the rows of the intervals that match the current row
       ## from the return value.
       current.interval <-
@@ -678,6 +685,9 @@ summary.PKNCAresults <- function(object, ...,
         if (nrow(currentData) == 0) {
           warning("No results to summarize for ", n, " in result row ", i)
         } else {
+          if (summarize.n.per.group) {
+            ret$N[i] <- max(ret$N[i], nrow(currentData), na.rm=TRUE)
+          }
           ## Calculation is required
           point <- summaryInstructions[[n]]$point(
             currentData$PPORRES)
@@ -713,5 +723,13 @@ summary.PKNCAresults <- function(object, ...,
         }
       }
     }
+  ## If N is requested, but it is not provided, then it should be set to not
+  ## calculated.
+  if (summarize.n.per.group) {
+    if (any(mask.na.N <- is.na(ret$N))) {
+      ret$N[mask.na.N] <- not.calculated.string
+    }
+    ret$N <- as.character(ret$N)
+  }
   ret
 }
