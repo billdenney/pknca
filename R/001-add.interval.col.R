@@ -13,7 +13,9 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' this column.
 #' @param desc A human-readable description of the parameter (<=40
 #' characters to comply with SDTM)
-#' @param datatype The type of data 
+#' @param datatype The type of data used for the calculation
+#' @return \code{NULL} (changes the available intervals for calculations
+#' @importFrom utils getAnywhere
 add.interval.col <- function(name, FUN, values, depends=c(),
                              desc="",
                              datatype=c("interval",
@@ -21,7 +23,7 @@ add.interval.col <- function(name, FUN, values, depends=c(),
                                "population")) {
   current <- get("interval.cols", envir=.PKNCAEnv)
   ## Ensure that the function exists
-  if (length(getAnywhere(FUN)) == 0)
+  if (length(utils::getAnywhere(FUN)) == 0)
     stop("The function named '", FUN, "' is not defined.  Please define the function before calling add.interval.col.")
   current[[name]] <- list(FUN=FUN,
                           values=values,

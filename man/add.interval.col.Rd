@@ -20,7 +20,10 @@ this column.}
 \item{desc}{A human-readable description of the parameter (<=40
 characters to comply with SDTM)}
 
-\item{datatype}{The type of data}
+\item{datatype}{The type of data used for the calculation}
+}
+\value{
+\code{NULL} (changes the available intervals for calculations
 }
 \description{
 Add columns for calculations within PKNCA intervals
