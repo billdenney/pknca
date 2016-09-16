@@ -6,7 +6,14 @@
 \usage{
 get.interval.cols()
 }
+\value{
+A list with named elements for each parameter.  Each list element
+  contains the parameter definition.
+}
 \description{
 Get the columns that can be used in an interval specification
+}
+\examples{
+get.interval.cols()
 }
 
