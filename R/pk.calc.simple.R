@@ -606,9 +606,9 @@ PKNCA.set.summary("ptr", business.geomean, business.geocv)
 #' @export
 pk.calc.tlag <- function(conc, time) {
   check.conc.time(conc, time)
-  mask.increase <- conc[-1] > conc[-length(conc)]
+  mask.increase <- c(conc[-1] > conc[-length(conc)], FALSE)
   if (any(mask.increase)) {
-    time[c(mask.increase, FALSE)][1]
+    time[mask.increase][1]
   } else {
     NA
   }
@@ -619,3 +619,39 @@ add.interval.col("tlag",
                  desc="Lag time",
                  depends=c())
 PKNCA.set.summary("tlag", business.median, business.range)
+
+#' Determine the degree of fluctuation
+#' 
+#' @param cmax The maximum observed concentration
+#' @param cmin The minimum observed concentration
+#' @param cav The average concentration in the interval
+#' @return The degree of fluctuation around the average concentration.
+#' @export
+pk.calc.deg.fluc <- function(cmax, cmin, cav) {
+  100*(cmax - cmin)/cav
+}
+add.interval.col("deg.fluc",
+                 FUN="pk.calc.deg.fluc",
+                 desc="Degree of fluctuation",
+                 depends=c("cmax", "cmin", "cav"))
+PKNCA.set.summary("deg.fluc", business.mean, business.sd)
+
+#' Determine the PK swing
+#' 
+#' @param cmax The maximum observed concentration
+#' @param cmin The minimum observed concentration
+#' @return The swing above the minimum concentration.  If \code{cmin} is zero,
+#'   then the result is infinity.
+#' @export
+pk.calc.swing <- function(cmax, cmin) {
+  if (cmin > 0) {
+    100*(cmax - cmin)/cmin
+  } else {
+    Inf
+  }
+}
+add.interval.col("swing",
+                 FUN="pk.calc.swing",
+                 desc="Swing relative to Cmin",
+                 depends=c("cmax", "cmin"))
+PKNCA.set.summary("swing", business.mean, business.sd)
