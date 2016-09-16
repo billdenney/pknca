@@ -1,0 +1,11 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Data Cleaning in PKNCA}
+-->
+---
+title: "Data Cleaning in PKNCA"
+author: "William Denney"
+date: "September 15, 2016"
+output: html_document
+---
+

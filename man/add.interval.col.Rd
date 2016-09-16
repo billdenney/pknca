@@ -4,21 +4,22 @@
 \alias{add.interval.col}
 \title{Add columns for calculations within PKNCA intervals}
 \usage{
-add.interval.col(name, FUN, values, depends = c(), desc = "",
-  datatype = c("interval", "individual", "population"))
+add.interval.col(name, FUN, values = c(FALSE, TRUE), depends = c(),
+  desc = "", datatype = c("interval", "individual", "population"))
 }
 \arguments{
-\item{name}{The column name}
+\item{name}{The column name as a character string}
 
-\item{FUN}{The function to run (as a character string)}
+\item{FUN}{The function to run (as a character string) or \code{NA} if the
+parameter is automatically calculated when calculating another parameter.}
 
 \item{values}{Valid values for the column}
 
-\item{depends}{Character vector of columns that must be run before
-this column.}
+\item{depends}{Character vector of columns that must be run before this
+column.}
 
-\item{desc}{A human-readable description of the parameter (<=40
-characters to comply with SDTM)}
+\item{desc}{A human-readable description of the parameter (<=40 characters to
+comply with SDTM)}
 
 \item{datatype}{The type of data used for the calculation}
 }

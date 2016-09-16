@@ -33,16 +33,23 @@ PKNCAdose.tbl_df <- function(data, ...)
 PKNCAdose.data.frame <- function(data, formula, labels, units, ...) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
-  if (!all(all.vars(formula) %in% names(data))) {
-    stop("All of the variables in the formula must be in the data")
-  }
   parsedForm <- parseFormula(formula, require.two.sided=FALSE)
+  ## Check for variable existence and length
   if (!(length(all.vars(parsedForm$lhs)) %in% c(0, 1)))
-    stop("The left hand side of the formula must have zero or one variable")
+    stop("The left side of the formula must have zero or one variable")
+  if (!(all.vars(parsedForm$lhs) %in% c(".", names(data)))) {
+    stop("The left side formula must be a variable in the data or '.'.")
+  }
   if (length(all.vars(parsedForm$rhs)) != 1)
-    stop("The right hand side of the formula (excluding groups) must have exactly one variable")
+    stop("The right side of the formula (excluding groups) must have exactly one variable")
+  if (!(all.vars(parsedForm$rhs) %in% c(".", names(data)))) {
+    stop("The right side formula must be a variable in the data or '.'.")
+  }
+  if (!all(all.vars(parsedForm$groups) %in% names(data))) {
+    stop("All of the variables in the groups must be in the data")
+  }
   ## Values must be unique (one value per measurement)
-  key.cols <- c(all.vars(parsedForm$rhs),
+  key.cols <- c(setdiff(all.vars(parsedForm$rhs), "."),
                 all.vars(parsedForm$groupFormula))
   if (any(mask.dup <- duplicated(data[,key.cols])))
     stop("Rows that are not unique per group and time (column names: ",
@@ -62,13 +69,15 @@ PKNCAdose.data.frame <- function(data, formula, labels, units, ...) {
 
 #' @rdname formula.PKNCAconc
 #' @export
-formula.PKNCAdose <-  function(x, ...)
+formula.PKNCAdose <-  function(x, ...) {
   x$formula
+}
 
 #' @rdname model.frame.PKNCAconc
 #' @export
-model.frame.PKNCAdose <- function(formula, ...)
+model.frame.PKNCAdose <- function(formula, ...) {
   model.frame.PKNCAconc(formula, ...)
+}
 
 #' @export
 getDepVar.PKNCAdose <- function(x, ...) {
