@@ -21,9 +21,20 @@ route.
 
 # Installation
 
-To install the development version from github, install the devtools
+## From CRAN
+
+The current stable version of PKNCA is available on CRAN.  You can
+install it and its dependencies using the following command:
+
+    install.packages("PKNCA")
+
+## From GitHub
+
+To install the development version from GitHub, install the devtools
 package and then type the following commands:
 
+    install.packages("devtools")
+    install.packages("Rcpp")
     library(devtools)
     install_github("billdenney/pknca")
 
