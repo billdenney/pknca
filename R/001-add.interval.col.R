@@ -6,7 +6,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 
 #' Add columns for calculations within PKNCA intervals
 #'
-#' @param name The column name
+#' @param name The column name as a character string
 #' @param FUN The function to run (as a character string)
 #' @param values Valid values for the column
 #' @param depends Character vector of columns that must be run before
@@ -15,12 +15,41 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' characters to comply with SDTM)
 #' @param datatype The type of data used for the calculation
 #' @return \code{NULL} (changes the available intervals for calculations
+#' @example
+#' \dontrun{
+#' add.interval.col("cmax",
+#'                  "pk.calc.cmax",
+#'                  desc="The maximum observed concentration")
+#' }
 #' @importFrom utils getAnywhere
-add.interval.col <- function(name, FUN, values, depends=c(),
+add.interval.col <- function(name,
+                             FUN,
+                             values=c(FALSE, TRUE),
+                             depends=c(),
                              desc="",
                              datatype=c("interval",
                                "individual",
                                "population")) {
+  ## Check inputs
+  if (!is.character(name)) {
+    stop("name must be a character string")
+  } else if (length(name) != 1) {
+    stop("name must have length == 1")
+  }
+  if (!is.character(FUN)) {
+    stop("FUN must be a character string")
+  } else if (length(FUN) != 1) {
+    stop("FUN must have length == 1")
+  }
+  datatype <- match.arg(datatype)
+  if (!(datatype %in% "interval")) {
+    stop("Only the 'interval' datatype is currently supported.")
+  }
+  if (!is.character(desc)) {
+    stop("desc must be a character string")
+  } else if (length(desc) != 1) {
+    stop("desc must have length == 1")
+  }
   current <- get("interval.cols", envir=.PKNCAEnv)
   ## Ensure that the function exists
   if (length(utils::getAnywhere(FUN)) == 0)
@@ -36,14 +65,10 @@ add.interval.col <- function(name, FUN, values, depends=c(),
 ## Add the start and end interval columns
 add.interval.col("start",
                  FUN=NA,
-                 values=as.numeric,
-                 desc="Starting time of the interval",
-                 depends=c())
+                 desc="Starting time of the interval")
 add.interval.col("end",
                  FUN=NA,
-                 values=as.numeric,
-                 desc="Ending time of the interval (potentially infinity)",
-                 depends=c())
+                 desc="Ending time of the interval (potentially infinity)")
 
 #' Sort the interval columns by dependencies.
 #'
@@ -80,6 +105,10 @@ sort.interval.cols <- function() {
 }
 
 #' Get the columns that can be used in an interval specification
+#' @return A list with named elements for each parameter.  Each list element
+#'   contains the parameter definition.
+#' @examples
+#' get.interval.cols()
 #' @export
 get.interval.cols <- function() {
   sort.interval.cols()

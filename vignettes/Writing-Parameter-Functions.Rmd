@@ -1,0 +1,88 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Writing PKNCA Parameter Functions}
+-->
+---
+title: "Writing PKNCA Parameter Functions"
+author: "William Denney"
+date: "August 18, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(PKNCA)
+```
+
+# Writing PKNCA Parameter Functions
+
+The PKNCA package is designed to be comprehensive in its coverage of the needs of an noncompartmental analysis (NCA) specialist.  While it has many NCA parameters specified, it may not have all parameters defined, and its design is modular to accept new parameter definitions.  From its inception, PKNCA is built in modules to allow addition of new components (or removal of unnecessary ones).  Defining new NCA parameters is straight-forward, and this guide will describe how it is done.  The three parts to writing a new NCA parameter in PKNCA are described below.
+
+# Writing the Parameter Function
+
+## Requirements
+
+The starting point to writing a new NCA parameter is writing the function that calculates the parameter value.  The function can be passed any of the following arguments.  The arguments must be named as described below:
+
+* `conc` is the numeric vector of plasma concentrations for an interval for a single group (usually a single analyte for a single subject in a single study).
+* `time` is the numeric vector of the time for plasma concentration measurements.
+* `dose` is the numeric vector of dose amounts for an interval for a single group.  NOTE: This is a vector and not always a scalar.  If your function expects a scalar, you should usually take the sum of the dose argument.
+* `time.dose` is the numeric vector of time for the doses.
+* `start` and `end` are the scalar numbers for the start and end time of the current interval.  NOTE: `end` may be `Inf` (infinity).
+* `options` are the PKNCA options used for the current calculation usually as defined by the `PKNCA.option` function (though these options may be over-ridden by the `options` argument to the `PKNCAdata` function.
+* Or, any NCA parameters by name (as given by `names(get.interval.cols())`).
+
+The function should return either a scalar which is the value for the parameter (usually the case) or a data.frame with parameters named for each parameter calculated.  For an example of returning a data.frame, see the `half.life` function.
+
+## Best Practices
+
+* Use the function `check.conc.time` if the function takes either `conc` or `time` as an input.
+* Make sure that you check for missing values (`NA`) in your inputs.
+* Don't recalculate other NCA parameters within your function unless you absolutely must.  Take the NCA parameter as an input.  That way, PKNCA will track the calculation dependencies.
+* For consistency with the rest of PKNCA, start the function name with "pk.calc" (like "pk.calc.cmax").
+
+# Tell PKNCA about the Parameter
+
+Just writing a function doesn't connect it to the rest of PKNCA.  You have to tell PKNCA that the function exists and a few more details about it.  To do this, you need to use the `add.interval.col` function.  The function takes six arguments:
+
+* `name` is the name of the parameter (as a character string).
+* `FUN` is the function name (as a character string).
+* `values` are the possible values for the interval column (currently only `TRUE` and `FALSE` are supported).
+* `depends` is a character vector of columns that must exist before this column can be created.  Use this to tell PKNCA about calculation dependencies (parameter X must be calculated to be able to calculate paramter Y).
+* `desc` is a text description of the parameter.
+
+# Tell PKNCA How to Summarize the Parameter
+
+For any parameter, PKNCA needs to know how to summarize it for the `summary` function of the `PKNCAresults` class.  To tell PKNCA how to summarize a parameter, use the `PKNCA.set.summary` function.  It takes at least these three arguments:
+
+* `name` must match an already existing parameter name (added by the `add.interval.col` function).
+* `point` is the function to calculate the point estimate (called as `point(x)`, and it must return a scalar).
+* `spread` is the function to calculate the spread (or variability).  The function will be called as `spread(x)` and must return a scalar or a two-long vector.
+
+# Putting It Together
+
+One of the most common examples is the function to calculate Cmax:
+
+    #' Determine maximum observed PK concentration
+    #'
+    #' @param conc Concentration measured
+    #' @param check Run \code{\link{check.conc.time}}?
+    #' @return a number for the maximum concentration or NA if all
+    #' concentrations are missing
+    #' @export
+    pk.calc.cmax <- function(conc, check=TRUE) {
+      if (check)
+        check.conc.time(conc=conc)
+      if (length(conc) == 0 | all(is.na(conc))) {
+        NA
+      } else {
+        max(conc, na.rm=TRUE)
+      }
+    }
+    ## Add the column to the interval specification
+    add.interval.col("cmax",
+                     FUN="pk.calc.cmax",
+                     values=c(FALSE, TRUE),
+                     desc="Maximum observed concentration",
+                     depends=c())
+    PKNCA.set.summary("cmax", business.geomean, business.geocv)
