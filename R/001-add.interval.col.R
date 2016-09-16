@@ -5,22 +5,17 @@ assign("summary", list(), envir=.PKNCAEnv)
 assign("interval.cols", list(), envir=.PKNCAEnv)
 
 #' Add columns for calculations within PKNCA intervals
-#'
+#' 
 #' @param name The column name as a character string
-#' @param FUN The function to run (as a character string)
+#' @param FUN The function to run (as a character string) or \code{NA} if the
+#'   parameter is automatically calculated when calculating another parameter.
 #' @param values Valid values for the column
-#' @param depends Character vector of columns that must be run before
-#' this column.
-#' @param desc A human-readable description of the parameter (<=40
-#' characters to comply with SDTM)
+#' @param depends Character vector of columns that must be run before this
+#'   column.
+#' @param desc A human-readable description of the parameter (<=40 characters to
+#'   comply with SDTM)
 #' @param datatype The type of data used for the calculation
 #' @return \code{NULL} (changes the available intervals for calculations
-#' @example
-#' \dontrun{
-#' add.interval.col("cmax",
-#'                  "pk.calc.cmax",
-#'                  desc="The maximum observed concentration")
-#' }
 #' @importFrom utils getAnywhere
 add.interval.col <- function(name,
                              FUN,
@@ -36,8 +31,8 @@ add.interval.col <- function(name,
   } else if (length(name) != 1) {
     stop("name must have length == 1")
   }
-  if (!is.character(FUN)) {
-    stop("FUN must be a character string")
+  if (!(is.character(FUN) | is.na(FUN))) {
+    stop("FUN must be a character string or NA")
   } else if (length(FUN) != 1) {
     stop("FUN must have length == 1")
   }
@@ -65,9 +60,11 @@ add.interval.col <- function(name,
 ## Add the start and end interval columns
 add.interval.col("start",
                  FUN=NA,
+                 values=as.numeric,
                  desc="Starting time of the interval")
 add.interval.col("end",
                  FUN=NA,
+                 values=as.numeric,
                  desc="Ending time of the interval (potentially infinity)")
 
 #' Sort the interval columns by dependencies.
