@@ -41,4 +41,7 @@ A PKNCAconc object that can be used for automated NCA.
 \description{
 Create a PKNCAdose object
 }
+\seealso{
+\code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
+}
 

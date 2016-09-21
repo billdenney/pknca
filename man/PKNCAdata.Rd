@@ -53,6 +53,6 @@ adds in the intervals for PK calculations.
 }
 \seealso{
 \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
-  \code{\link{choose.auc.intervals}}
+  \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
 }
 

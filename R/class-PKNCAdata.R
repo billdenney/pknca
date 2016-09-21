@@ -25,7 +25,7 @@
 #'   calculation options stored (note that PKNCAdata objects can also
 #'   have results after a NCA calculations are done to the data).
 #' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
-#'   \code{\link{choose.auc.intervals}}
+#'   \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
 #' @export
 PKNCAdata <- function(data.conc, data.dose, ...)
   UseMethod("PKNCAdata", data.conc)

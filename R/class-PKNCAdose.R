@@ -15,6 +15,7 @@
 #'   not done; the text is used as-is.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
+#' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
 #' @export
 PKNCAdose <- function(data, ...)
   UseMethod("PKNCAdose")
@@ -37,8 +38,9 @@ PKNCAdose.data.frame <- function(data, formula, labels, units, ...) {
   ## Check for variable existence and length
   if (!(length(all.vars(parsedForm$lhs)) %in% c(0, 1)))
     stop("The left side of the formula must have zero or one variable")
-  if (!(all.vars(parsedForm$lhs) %in% c(".", names(data)))) {
-    stop("The left side formula must be a variable in the data or '.'.")
+  if (!(identical(parsedForm$lhs, NA) ||
+        all.vars(parsedForm$lhs) %in% c(".", names(data)))) {
+    stop("The left side formula must be a variable in the data, empty, or '.'.")
   }
   if (length(all.vars(parsedForm$rhs)) != 1)
     stop("The right side of the formula (excluding groups) must have exactly one variable")
