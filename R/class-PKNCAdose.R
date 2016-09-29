@@ -1,20 +1,32 @@
 #' Create a PKNCAdose object
-#'
-#' @param data A data frame with time and the groups defined in
+#' 
+#' @param data A data frame with time and the groups defined in 
 #'   \code{formula}.
-#' @param formula The formula defining the
-#'   \code{dose.amount~time|groups} where \code{time} is the time of
-#'   the dosing and \code{dose.amount} is the amount administered at
-#'   that time.
-#' @param labels (optional) Labels for use when plotting.  They are a
-#'   named list where the names correspond to the names in the data
-#'   frame and the values are used for xlab and/or ylab as
-#'   appropriate.
-#' @param units (optional) Units for use when plotting and calculating
-#'   parameters.  Note that unit conversions and simplifications are
-#'   not done; the text is used as-is.
+#' @param formula The formula defining the 
+#'   \code{dose.amount~time|groups} where \code{time} is the time of the
+#'   dosing and \code{dose.amount} is the amount administered at that 
+#'   time (see Details).
+#' @param labels (optional) Labels for use when plotting.  They are a 
+#'   named list where the names correspond to the names in the data 
+#'   frame and the values are used for xlab and/or ylab as appropriate.
+#' @param units (optional) Units for use when plotting and calculating 
+#'   parameters.  Note that unit conversions and simplifications are not
+#'   done; the text is used as-is.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
+#' @details The \code{formula} for a \code{PKNCAdose} object can be 
+#'   given three ways: one-sided (missing left side), one-sided (missing
+#'   right side), or two-sided.  Each of the three ways can be given 
+#'   with or without groups.  When given one-sided missing the left 
+#'   side, the left side can either be omitted or can be given as a 
+#'   period (\code{.}): \code{~time|treatment+subject} and 
+#'   \code{.~time|treatment+subject} are identical, and dose-related NCA
+#'   parameters will all be reported as not calculable (for example, 
+#'   clearance).  When given one-sided missing the right side, the right
+#'   side must be specified as a period (\code{.}): 
+#'   \code{dose~.|treatment+subject}, and only a single row may be given
+#'   per group.  When the right side is missing, PKNCA assumes that the
+#'   same dose is given in every interval.  When given as a two-sided formula
 #' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
 #' @export
 PKNCAdose <- function(data, ...)
@@ -60,6 +72,10 @@ PKNCAdose.data.frame <- function(data, formula, labels, units, ...) {
          paste(seq_along(mask.dup)[mask.dup], collapse=", "))
   ret <- list(data=data,
               formula=formula)
+  mask.indep <- is.na(getIndepVar.PKNCAdose(ret))
+  if (any(mask.indep) & !all(mask.indep)) {
+    stop("Some but not all values are missing for the independent variable, please see the help for PKNCAdose for how to specify the formula and confirm that your data has dose times for all doses.")
+  }
   ## check and add labels and units
   if (!missing(labels))
     ret <- set.name.matching(ret, "labels", labels, data)
@@ -78,17 +94,31 @@ formula.PKNCAdose <-  function(x, ...) {
 #' @rdname model.frame.PKNCAconc
 #' @export
 model.frame.PKNCAdose <- function(formula, ...) {
-  model.frame.PKNCAconc(formula, ...)
+  cbind(getDepVar.PKNCAdose(formula),
+        getIndepVar.PKNCAdose(formula),
+        getGroups.PKNCAdose(formula))
 }
 
 #' @export
 getDepVar.PKNCAdose <- function(x, ...) {
-  x$data[, all.vars(parseFormula(x)$lhs)]
+  parsedForm <- parseFormula(x$formula, require.two.sided=FALSE)
+  if (identical(parsedForm$lhs, NA) ||
+      identical(all.vars(parsedForm$lhs), ".")) {
+    rep(NA_integer_, nrow(x$data))
+  } else {
+    x$data[, all.vars(parseFormula(x)$lhs)]
+  }
 }
 
 #' @export
 getIndepVar.PKNCAdose <- function(x, ...) {
-  x$data[, all.vars(parseFormula(x)$rhs)]
+  parsedForm <- parseFormula(x$formula, require.two.sided=FALSE)
+  if (identical(parsedForm$rhs, NA) ||
+      identical(all.vars(parsedForm$rhs), ".")) {
+    rep(NA_integer_, nrow(x$data))
+  } else {
+    x$data[, all.vars(parseFormula(x)$rhs)]
+  }
 }
 
 #' @rdname getGroups.PKNCAconc

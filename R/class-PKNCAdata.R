@@ -91,6 +91,9 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     intervals <- data.frame()
     indep.var.conc <- all.vars(parseFormula(ret$conc)$rhs)
     indep.var.dose <- all.vars(parseFormula(ret$dose)$rhs)
+    if (identical(indep.var.dose, ".")) {
+      stop("Dose times were not given, so intervals must be manually specified.")
+    }
     for (i in seq_len(nrow(groupid))) {
       tmp.group <- groupid[i,,drop=FALSE]
       if (!is.null(tmp.conc.dose[[i]]$conc)) {

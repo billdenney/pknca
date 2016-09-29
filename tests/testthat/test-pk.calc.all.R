@@ -73,7 +73,7 @@ test_that("pk.nca", {
   
   ## Dosing not at time 0
   tmpconc.multi <- generate.conc(2, 1, 0:24)
-  tmpdose.multi <- generate.dose(tmpconc)
+  tmpdose.multi <- generate.dose(tmpconc.multi)
   tmpconc.multi$time <- tmpconc.multi$time + 2
   tmpdose.multi$time <- tmpdose.multi$time + 2
   myconc.multi <- PKNCAconc(tmpconc.multi, conc~time|treatment+ID)
@@ -148,4 +148,21 @@ test_that("pk.nca", {
                tol=0.0001,
                info="The correct number of doses is selected for an interval (>=start and <end), no doses selected")
   
+})
+
+test_that("Calculations when dose time is missing", {
+  ## Ensure that the correct number of doses are included in parameters that use dosing.
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, dose~.|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=24, cl.obs=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.obs"],
+               1/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "aucinf.obs"],
+               info="The correct number of doses is selected for an interval (>=start and <end), 4 doses and not 5")
+
+  tmpdose$time <- NULL
+  tmpdose <- merge(tmpdose, data.frame(time=c(0, 6, 12, 18, 24)))
 })

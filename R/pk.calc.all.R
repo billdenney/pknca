@@ -108,8 +108,9 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
     mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[,col.time] &
                          tmpconcdata[,col.time] <= all.intervals$end[i])
     tmpconcdata <- tmpconcdata[mask.keep.conc,]
-    mask.keep.dose <- (all.intervals$start[i] <= tmpdosedata[,col.time.dose] &
-                         tmpdosedata[,col.time.dose] < all.intervals$end[i])
+    mask.keep.dose <- (is.na(tmpdosedata[,col.time.dose]) |
+                         (all.intervals$start[i] <= tmpdosedata[,col.time.dose] &
+                            tmpdosedata[,col.time.dose] < all.intervals$end[i]))
     tmpdosedata <- tmpdosedata[mask.keep.dose,]
     if (nrow(tmpconcdata) == 0) {
       ## TODO: Improve this error message with additional information

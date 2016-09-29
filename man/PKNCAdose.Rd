@@ -16,30 +16,44 @@ PKNCAdose(data, ...)
 \method{PKNCAdose}{data.frame}(data, formula, labels, units, ...)
 }
 \arguments{
-\item{data}{A data frame with time and the groups defined in
+\item{data}{A data frame with time and the groups defined in 
 \code{formula}.}
 
 \item{...}{Ignored.}
 
-\item{formula}{The formula defining the
-\code{dose.amount~time|groups} where \code{time} is the time of
-the dosing and \code{dose.amount} is the amount administered at
-that time.}
+\item{formula}{The formula defining the 
+\code{dose.amount~time|groups} where \code{time} is the time of the
+dosing and \code{dose.amount} is the amount administered at that 
+time (see Details).}
 
-\item{labels}{(optional) Labels for use when plotting.  They are a
-named list where the names correspond to the names in the data
-frame and the values are used for xlab and/or ylab as
-appropriate.}
+\item{labels}{(optional) Labels for use when plotting.  They are a 
+named list where the names correspond to the names in the data 
+frame and the values are used for xlab and/or ylab as appropriate.}
 
-\item{units}{(optional) Units for use when plotting and calculating
-parameters.  Note that unit conversions and simplifications are
-not done; the text is used as-is.}
+\item{units}{(optional) Units for use when plotting and calculating 
+parameters.  Note that unit conversions and simplifications are not
+done; the text is used as-is.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.
 }
 \description{
 Create a PKNCAdose object
+}
+\details{
+The \code{formula} for a \code{PKNCAdose} object can be 
+  given three ways: one-sided (missing left side), one-sided (missing
+  right side), or two-sided.  Each of the three ways can be given 
+  with or without groups.  When given one-sided missing the left 
+  side, the left side can either be omitted or can be given as a 
+  period (\code{.}): \code{~time|treatment+subject} and 
+  \code{.~time|treatment+subject} are identical, and dose-related NCA
+  parameters will all be reported as not calculable (for example, 
+  clearance).  When given one-sided missing the right side, the right
+  side must be specified as a period (\code{.}): 
+  \code{dose~.|treatment+subject}, and only a single row may be given
+  per group.  When the right side is missing, PKNCA assumes that the
+  same dose is given in every interval.  When given as a two-sided formula
 }
 \seealso{
 \code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
