@@ -42,16 +42,26 @@ test_that("PKNCAdose", {
   ## Accept "." on either side of the ~
   expect_equal(PKNCAdose(tmp.dose, formula=.~time|treatment+ID),
                structure(list(
-                 data=tmp.dose,
-                 formula = . ~ time | treatment + ID),
-                 .Names = c("data", "formula"),
+                 data=cbind(tmp.dose,
+                            data.frame(route="extravascular",
+                                       duration=0,
+                                       stringsAsFactors=FALSE)),
+                 formula = . ~ time | treatment + ID,
+                 route="route",
+                 duration="duration"),
+                 .Names = c("data", "formula", "route", "duration"),
                  class = c("PKNCAdose", "list")),
                info="PKNCAdose accepts . on the left side of the formula")
   expect_equal(PKNCAdose(tmp.dose, formula=dose~.|treatment+ID),
                structure(list(
-                 data=tmp.dose,
-                 formula = dose ~ . | treatment + ID),
-                 .Names = c("data", "formula"),
+                 data=cbind(tmp.dose,
+                            data.frame(route="extravascular",
+                                       duration=0,
+                                       stringsAsFactors=FALSE)),
+                 formula = dose ~ . | treatment + ID,
+                 route="route",
+                 duration="duration"),
+                 .Names = c("data", "formula", "route", "duration"),
                  class = c("PKNCAdose", "list")),
                info="PKNCAdose accepts . on the right side of the formula")
   
