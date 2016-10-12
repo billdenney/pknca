@@ -9,24 +9,24 @@
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}}
 #' @export
 pk.nca <- function(data) {
-  ## Separate the concentration and dosing data by their 
-  conc.split <- doBy::splitBy(parseFormula(data$conc)$groupFormula,
-                              data=stats::model.frame(data$conc))
-  ## If dose is not given, give a false dose column with all NAs to
-  ## simplify dose handling in subsequent steps.
-  if (identical(all.vars(parseFormula(data$dose)$lhs), character())) {
-    col.dose <- paste0(max(names(data$dose$data)), "X")
-    data$dose$data[,col.dose] <- NA
-    data$dose$formula <-
-      stats::update.formula(data$dose$formula, paste0(col.dose, "~."))
-  }
-  dose.split <- doBy::splitBy(parseFormula(data$dose)$groupFormula,
-                              data=stats::model.frame(data$dose))
-  conc.dose <- merge(conc=conc.split, dose=dose.split)
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
+    ## Separate the concentration and dosing data by their 
+    conc.split <- doBy::splitBy(parseFormula(data$conc)$groupFormula,
+                                data=stats::model.frame(data$conc))
+    ## If dose is not given, give a false dose column with all NAs to
+    ## simplify dose handling in subsequent steps.
+    if (identical(all.vars(parseFormula(data$dose)$lhs), character())) {
+      col.dose <- paste0(max(names(data$dose$data)), "X")
+      data$dose$data[,col.dose] <- NA
+      data$dose$formula <-
+        stats::update.formula(data$dose$formula, paste0(col.dose, "~."))
+    }
+    dose.split <- doBy::splitBy(parseFormula(data$dose)$groupFormula,
+                                data=stats::model.frame(data$dose))
+    conc.dose <- merge(conc=conc.split, dose=dose.split)
     ## Merge the options into the default options.
     tmp.opt <- PKNCA.options()
     tmp.opt[names(options)] <- data$options
@@ -112,18 +112,29 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                          (all.intervals$start[i] <= tmpdosedata[,col.time.dose] &
                             tmpdosedata[,col.time.dose] < all.intervals$end[i]))
     tmpdosedata <- tmpdosedata[mask.keep.dose,]
+    ## Setup for detailed error reporting in case it's needed
+    columns.to.report <- c(shared.names, c("start", "end"))
+    error.preamble <-
+      paste("Error with interval",
+            paste(columns.to.report,
+                  unlist(all.intervals[i,columns.to.report]),
+                  sep="=", collapse=", "))
     if (nrow(tmpconcdata) == 0) {
-      ## TODO: Improve this error message with additional information
-      ## on the specific interval that has no data.
-      warning("No data for interval")
+      warning(paste(error.preamble, "No data for interval", sep=": "))
     } else {
-      calculated.interval <-
-        pk.nca.interval(conc=tmpconcdata[,col.conc],
-                        time=tmpconcdata[,col.time],
-                        dose=tmpdosedata[,col.dose],
-                        time.dose=tmpdosedata[,col.time.dose],
-                        interval=all.intervals[i,],
-                        options=options)
+      tryCatch(
+        ## Try the calculation 
+        calculated.interval <-
+          pk.nca.interval(conc=tmpconcdata[,col.conc],
+                          time=tmpconcdata[,col.time],
+                          dose=tmpdosedata[,col.dose],
+                          time.dose=tmpdosedata[,col.time.dose],
+                          interval=all.intervals[i,],
+                          options=options),
+        error=function(e) {
+          e$message <- paste(error.preamble, e$message, sep=": ")
+          stop(e)
+        })
       ## Add all the new data into the output
       ret <- rbind(ret,
                    cbind(all.intervals[i,c("start", "end", shared.names)],
