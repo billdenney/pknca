@@ -31,6 +31,8 @@ include the named group levels.}
 data from \code{object})}
 
 \item{sep}{Unused (kept for compatibility with the nlme package)}
+
+\item{...}{Arguments passed to other getGroups functions}
 }
 \value{
 A data frame with the (selected) group columns.

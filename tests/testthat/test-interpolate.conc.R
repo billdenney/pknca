@@ -328,3 +328,15 @@ test_that("interp.extrap.conc", {
     regexp="An interpolation/extrapolation time is NA")
 
 })
+
+# test_that("interp.extrap.conc.dose", {
+#   testconc.sd <- c(0, 1, 2, 1, 0.5, 0.25)
+#   testtime.sd <- 0:(length(testconc.sd) - 1)
+#   testdose.sd <- 0
+#   testconc.md <- c(testconc.sd, 0.25 + testconc.sd, 0.5 + testconc.sd)
+#   testtime.md <- 0:(length(testconc.md) - 1)
+#   interp.extrap.conc.dose(conc=testconc.sd,
+#                           time=testtime.sd,
+#                           time.dose=testdose.sd,
+#                           time.out=c)
+# })

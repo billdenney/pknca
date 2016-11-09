@@ -2,12 +2,17 @@
 % Please edit documentation in R/class-PKNCAdose.R
 \name{setRoute}
 \alias{setRoute}
+\alias{setRoute.PKNCAdose}
 \title{Set the dosing route}
 \usage{
 setRoute(object, ...)
+
+\method{setRoute}{PKNCAdose}(object, route, ...)
 }
 \arguments{
 \item{object}{A PKNCAdose object}
+
+\item{...}{Arguments passed to another setRoute function}
 
 \item{route}{A character string indicating one of the following:  the
 column from the data which indicates the route of administration, a

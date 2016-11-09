@@ -1,37 +1,41 @@
 #' Interpolate concentrations between measurements or extrapolate
 #' concentrations after the last measurement.
 #'
-#' \code{interpolate.conc} and \code{extrapolate.conc} returns an
-#' interpolated (or extrapolated) concentration.
-#' \code{interp.extrap.conc} will choose whether interpolation or
-#' extrapolation is required and will also operate on many
-#' concentrations.  These will typically be used to estimate the
-#' concentration between two measured concentrations or after the last
-#' measured concentration.  Of note, these functions will not
+#' \code{interpolate.conc} and \code{extrapolate.conc} returns an 
+#' interpolated (or extrapolated) concentration. 
+#' \code{interp.extrap.conc} will choose whether interpolation or 
+#' extrapolation is required and will also operate on many 
+#' concentrations.  These will typically be used to estimate the 
+#' concentration between two measured concentrations or after the last 
+#' measured concentration.  Of note, these functions will not 
 #' extrapolate prior to the first point.
 #'
 #' @param conc Measured concentrations
 #' @param time Time of the concentration measurement
-#' @param time.out Time when interpolation is requested (vector for
-#' \code{interp.extrap.conc}, scalar otherwise)
-#' @param lambda.z The elimination rate constant.  \code{NA} will
-#' prevent extrapolation.
-#' @param clast The last observed concentration above the limit of
-#' quantification.  If not given, \code{clast} is calculated from \code{\link{pk.calc.clast.obs}}
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
-#' @param interp.method The method for interpolation (either
-#' 'lin up/log down' or 'linear')
-#' @param extrap.method The method for extrapolation: "AUCinf",
-#' "AUClast", or "AUCall".  See details for usage.
-#' @param conc.blq How to handle BLQ values. (See
-#' \code{\link{clean.conc.blq}} for usage instructions.)
-#' @param conc.na How to handle NA concentrations.  (See
-#' \code{\link{clean.conc.na}})
-#' @param check Run \code{\link{check.conc.time}},
-#' \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
-#' @return The interpolated or extrapolated concentration value as a
-#' scalar float.
+#' @param time.dose Time of the dose
+#' @param time.out Time when interpolation is requested (vector for 
+#'   \code{interp.extrap.conc}, scalar otherwise)
+#' @param lambda.z The elimination rate constant.  \code{NA} will 
+#'   prevent extrapolation.
+#' @param clast The last observed concentration above the limit of 
+#'   quantification.  If not given, \code{clast} is calculated from
+#'   \code{\link{pk.calc.clast.obs}}
+#' @param options List of changes to the default 
+#'   \code{\link{PKNCA.options}} for calculations.
+#' @param interp.method The method for interpolation (either 'lin up/log
+#'   down' or 'linear')
+#' @param extrap.method The method for extrapolation: "AUCinf", 
+#'   "AUClast", or "AUCall".  See details for usage.
+#' @param conc.blq How to handle BLQ values. (See 
+#'   \code{\link{clean.conc.blq}} for usage instructions.)
+#' @param conc.na How to handle NA concentrations.  (See 
+#'   \code{\link{clean.conc.na}})
+#' @param check Run \code{\link{check.conc.time}}, 
+#'   \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
+#' @param ... Additional arguments passed to \code{interpolate.conc} or
+#'   \code{extrapolate.conc}
+#' @return The interpolated or extrapolated concentration value as a 
+#'   scalar float.
 #'
 #' @details
 #' \describe{
@@ -103,6 +107,7 @@ interpolate.conc <- function(conc, time, time.out,
                              interp.method=PKNCA.choose.option("auc.method", options),
                              conc.blq=PKNCA.choose.option("conc.blq", options),
                              conc.na=PKNCA.choose.option("conc.na", options),
+                             ...,
                              check=TRUE) {
   ## Check the inputs
   if (check) {
@@ -124,7 +129,6 @@ interpolate.conc <- function(conc, time, time.out,
     stop("interpolate.conc can only works through Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation.")
   if (!(tolower(interp.method) %in% c("lin up/log down", "linear")))
     stop("interp.method must be one of 'linear' or 'lin up/log down'")
-  keep.trying <- TRUE
   if (time.out %in% data$time) {
     ## See if there is an exact time match and return that if it
     ## exists.
@@ -165,6 +169,7 @@ extrapolate.conc <- function(conc, time, time.out,
                              options=list(),
                              conc.na=PKNCA.choose.option("conc.na", options),
                              conc.blq=PKNCA.choose.option("conc.blq", options),
+                             ...,
                              check=TRUE) {
   if (check) {
     check.conc.time(conc, time)
@@ -222,4 +227,54 @@ extrapolate.conc <- function(conc, time, time.out,
     }
   }
   ret
+}
+
+#' @describeIn interp.extrap.conc Interpolate and extrapolate 
+#'   concentrations with awareness of when dosing occurs.
+#' @export
+interp.extrap.conc.dose <- function(conc, time, time.dose, time.out,
+                                    conc.blq=PKNCA.choose.option("conc.blq", options),
+                                    conc.na=PKNCA.choose.option("conc.na", options),
+                                    ...,
+                                    check=TRUE) {
+  if (check) {
+    check.conc.time(conc, time)
+    data <- clean.conc.blq(conc, time,
+                           conc.blq=conc.blq, conc.na=conc.na,
+                           check=FALSE)
+  } else {
+    data <- data.frame(conc, time)
+  }
+  ## Determine if a time is just before, at the same time, or just after
+  ## a dose.
+  mask.before.dose <- rep(FALSE, length(time))
+  mask.equal.dose <- rep(FALSE, length(time))
+  mask.after.dose <- rep(FALSE, length(time))
+  for (dosetime in unique(time.dose)) {
+    ## Handle extremes first
+    if (all(time < dosetime)) {
+      mask.before.dose[length(time)] <- TRUE
+    } else if (all(time > dosetime)) {
+      mask.after.dose[1] <- TRUE
+    } else if (any(mask.current <- time == dosetime)) {
+      mask.equal.dose[mask.current] <- TRUE
+    } else {
+      ## There is at least one time before and after the dosetime.
+      mask.before.dose[time == max(time[time < dosetime])] <- TRUE
+      mask.after.dose[time == min(time[time > dosetime])] <- TRUE
+    }
+  }
+  ret <- rep(NA_integer_, length(time.out))
+  for (i in seq_along(time.out)) {
+    if (time.out[i] < min(time))
+    mask.conc.prev <- time < time.out[i]
+    mask.conc.eq <- time == time.out[i]
+    mask.conc.post <- time > time.out[i]
+    mask.dose.prev <- time.dose < time.out[i]
+    mask.dose.eq <- time.dose == time.out[i]
+    mask.dose.post <- time.dose > time.out[i]
+    if (!any(mask.dose.post)) {
+      ## If there's no next dose, then it's normal interpolation/extrapolation
+    }
+  }
 }

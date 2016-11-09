@@ -20,7 +20,8 @@ Imports:
 Suggests:
     dplyr,
     knitr,
-    testthat
+    testthat,
+    ggplot2
 Description: Compute standard Non-Compartmental Analysis (NCA)
     parameters and summarize them.  In addition to this core work, it
     also provides standardized plotting routines, basic assessments

@@ -142,6 +142,7 @@ getIndepVar.PKNCAconc <- function(x, ...) {
 #' @param data The data to extract the groups from (defaults to the
 #' data from \code{object})
 #' @param sep Unused (kept for compatibility with the nlme package)
+#' @param ... Arguments passed to other getGroups functions
 #' @return A data frame with the (selected) group columns.
 #' @export
 getGroups.PKNCAconc <- function(object, form=formula(object), level,

@@ -115,11 +115,14 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
 #'   scalar indicating the route of administration for all subjects, or
 #'   a vector indicating the route of administration for each dose in
 #'   the dataset.
+#' @param ... Arguments passed to another setRoute function
 #' @return The object with an updated route
 #' @export
 setRoute <- function(object, ...)
   UseMethod("setRoute")
-setRoute.PKNCAdose <- function(object, route) {
+#' @rdname setRoute
+#' @export
+setRoute.PKNCAdose <- function(object, route, ...) {
   if (missing(route)) {
     message("Assuming route of administration is extravascular")
     tmpval <- getColumnValueOrNot(object$data, "extravascular", "route")
@@ -141,10 +144,13 @@ setRoute.PKNCAdose <- function(object, route) {
 #'   column in the data to use for the duration.
 #' @param rate (for PKNCAdose objects only) The rate of infusion
 #' @param dose (for PKNCAdose objects only) The dose amount
+#' @param ... Arguments passed to another setDuration function
 #' @return The object with duration set
 #' @export
 setDuration <- function(object, ...)
   UseMethod("setDuration")
+#' @rdname setDuration
+#' @export
 setDuration.PKNCAdose <- function(object, duration, rate, dose, ...) {
   if (missing(duration) & missing(rate)) {
     message("Assuming instant dosing (duration=0)")

@@ -2,12 +2,17 @@
 % Please edit documentation in R/class-PKNCAdose.R
 \name{setDuration}
 \alias{setDuration}
+\alias{setDuration.PKNCAdose}
 \title{Set the duration of dosing or measurement}
 \usage{
 setDuration(object, ...)
+
+\method{setDuration}{PKNCAdose}(object, duration, rate, dose, ...)
 }
 \arguments{
 \item{object}{An object to set a duration on}
+
+\item{...}{Arguments passed to another setDuration function}
 
 \item{duration}{The value to set for the duration or the name of the
 column in the data to use for the duration.}

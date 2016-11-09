@@ -3,6 +3,7 @@
 \name{interp.extrap.conc}
 \alias{extrapolate.conc}
 \alias{interp.extrap.conc}
+\alias{interp.extrap.conc.dose}
 \alias{interpolate.conc}
 \title{Interpolate concentrations between measurements or extrapolate
 concentrations after the last measurement.}
@@ -16,57 +17,67 @@ interp.extrap.conc(conc, time, time.out, lambda.z = NA,
 interpolate.conc(conc, time, time.out, options = list(),
   interp.method = PKNCA.choose.option("auc.method", options),
   conc.blq = PKNCA.choose.option("conc.blq", options),
-  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
+  conc.na = PKNCA.choose.option("conc.na", options), ..., check = TRUE)
 
 extrapolate.conc(conc, time, time.out, lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time), extrap.method = "AUCinf",
   options = list(), conc.na = PKNCA.choose.option("conc.na", options),
-  conc.blq = PKNCA.choose.option("conc.blq", options), check = TRUE)
+  conc.blq = PKNCA.choose.option("conc.blq", options), ..., check = TRUE)
+
+interp.extrap.conc.dose(conc, time, time.dose, time.out,
+  conc.blq = PKNCA.choose.option("conc.blq", options),
+  conc.na = PKNCA.choose.option("conc.na", options), ..., check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}
 
 \item{time}{Time of the concentration measurement}
 
-\item{time.out}{Time when interpolation is requested (vector for
+\item{time.out}{Time when interpolation is requested (vector for 
 \code{interp.extrap.conc}, scalar otherwise)}
 
-\item{lambda.z}{The elimination rate constant.  \code{NA} will
+\item{lambda.z}{The elimination rate constant.  \code{NA} will 
 prevent extrapolation.}
 
-\item{clast}{The last observed concentration above the limit of
-quantification.  If not given, \code{clast} is calculated from \code{\link{pk.calc.clast.obs}}}
+\item{clast}{The last observed concentration above the limit of 
+quantification.  If not given, \code{clast} is calculated from
+\code{\link{pk.calc.clast.obs}}}
 
-\item{options}{List of changes to the default
+\item{options}{List of changes to the default 
 \code{\link{PKNCA.options}} for calculations.}
 
-\item{interp.method}{The method for interpolation (either
-'lin up/log down' or 'linear')}
+\item{interp.method}{The method for interpolation (either 'lin up/log
+down' or 'linear')}
 
-\item{extrap.method}{The method for extrapolation: "AUCinf",
+\item{extrap.method}{The method for extrapolation: "AUCinf", 
 "AUClast", or "AUCall".  See details for usage.}
 
-\item{conc.blq}{How to handle BLQ values. (See
+\item{conc.blq}{How to handle BLQ values. (See 
 \code{\link{clean.conc.blq}} for usage instructions.)}
 
-\item{conc.na}{How to handle NA concentrations.  (See
+\item{conc.na}{How to handle NA concentrations.  (See 
 \code{\link{clean.conc.na}})}
 
-\item{check}{Run \code{\link{check.conc.time}},
+\item{check}{Run \code{\link{check.conc.time}}, 
 \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
+
+\item{...}{Additional arguments passed to \code{interpolate.conc} or
+\code{extrapolate.conc}}
+
+\item{time.dose}{Time of the dose}
 }
 \value{
-The interpolated or extrapolated concentration value as a
-scalar float.
+The interpolated or extrapolated concentration value as a 
+  scalar float.
 }
 \description{
-\code{interpolate.conc} and \code{extrapolate.conc} returns an
-interpolated (or extrapolated) concentration.
-\code{interp.extrap.conc} will choose whether interpolation or
-extrapolation is required and will also operate on many
-concentrations.  These will typically be used to estimate the
-concentration between two measured concentrations or after the last
-measured concentration.  Of note, these functions will not
+\code{interpolate.conc} and \code{extrapolate.conc} returns an 
+interpolated (or extrapolated) concentration. 
+\code{interp.extrap.conc} will choose whether interpolation or 
+extrapolation is required and will also operate on many 
+concentrations.  These will typically be used to estimate the 
+concentration between two measured concentrations or after the last 
+measured concentration.  Of note, these functions will not 
 extrapolate prior to the first point.
 }
 \details{
@@ -93,6 +104,9 @@ extrapolate prior to the first point.
 Tlast (inclusive)
 
 \item \code{extrapolate.conc}: Extrapolate concentrations after Tlast
+
+\item \code{interp.extrap.conc.dose}: Interpolate and extrapolate 
+concentrations with awareness of when dosing occurs.
 }}
 \seealso{
 \code{\link{pk.calc.clast.obs}}
