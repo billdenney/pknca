@@ -82,10 +82,8 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     ## Generate the intervals for each grouping of concentration and
     ## dosing.
     tmp.conc.dose <-
-      merge(conc=doBy::splitBy(parseFormula(ret$conc)$groupFormula,
-                               ret$conc$data),
-            dose=doBy::splitBy(parseFormula(ret$dose)$groupFormula,
-                               ret$dose$data))
+      merge.splitlist(conc=split(ret$conc),
+                      dose=split(ret$dose))
     groupid <- attributes(tmp.conc.dose)$groupid
     rownames(groupid) <- NULL
     intervals <- data.frame()
@@ -101,8 +99,8 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
         new.intervals <-
           cbind(
             tmp.group,
-            choose.auc.intervals(tmp.conc.dose[[i]]$conc[,indep.var.conc],
-                                 tmp.conc.dose[[i]]$dose[,indep.var.dose],
+            choose.auc.intervals(tmp.conc.dose[[i]]$conc$data[,indep.var.conc],
+                                 tmp.conc.dose[[i]]$dose$data[,indep.var.dose],
                                  single.dose.aucs=PKNCA.choose.option("single.dose.aucs",
                                                                       options)))
         intervals <-
@@ -147,3 +145,37 @@ print.PKNCAdata <- function(x, ...) {
 summary.PKNCAdata <- function(object, ...)
   print.PKNCAdata(object, summarize=TRUE, ...)
 
+#' @rdname split.PKNCAconc
+#' @export
+split.PKNCAdata <- function(x, ...) {
+  interval.group.cols <- intersect(names(x$intervals),
+                                   all.vars(parseFormula(x$conc$formula)$groups))
+  if (length(interval.group.cols) > 0) {
+    tmp.interval.split <-
+      split.PKNCAconc(list(data=x$intervals),
+                      f=x$intervals[, interval.group.cols, drop=FALSE])
+    tmp.attr <- attributes(tmp.interval.split)
+    tmp.interval.split <- lapply(tmp.interval.split, function(x) x$data)
+    attributes(tmp.interval.split) <- tmp.attr
+    ret <-
+      merge.splitlist(conc=split.PKNCAconc(x$conc),
+                      dose=split.PKNCAdose(x$dose),
+                      intervals=tmp.interval.split)
+  } else {
+    ret <-
+      merge.splitlist(conc=split.PKNCAconc(x$conc),
+                      dose=split.PKNCAdose(x$dose))
+    for (i in seq_along(ret)) {
+      ret[[i]]$intervals <- x$intervals
+    }
+  }
+  for (n in setdiff(names(x), c("conc", "dose", "intervals"))) {
+    ret <-
+      lapply(ret, function(x, name, value) {
+        x[[name]] <- value
+        x
+      },
+      name=n, value=x[[n]])
+  }
+  ret
+}

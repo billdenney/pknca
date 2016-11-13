@@ -1,0 +1,27 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Writing PKNCA Parameter Functions}
+-->
+---
+title: "Selection of Calculation Intervals"
+author: "William Denney"
+date: "November 1, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+source("../tests/testthat/generate.data.R")
+```
+
+
+# Introduction
+
+PKNCA considers two types of data grouping within data sets:  the group and the interval.  A group typically identifies a single subject given a single intervention type (a "treatment") with a single analyte.  An interval subsets a group by times within the group, and primary noncompartmental analysis (NCA) calculations are performed within an interval.
+
+As a concrete example, consider the figure below shows the concentration-time profile of a study subject in a multiple-dose study.  The group is all points in the figure, and the interval is the area with blue shading.
+
+```{r plotgroupinterval, echo=FALSE}
+
+```
+

@@ -56,15 +56,17 @@ test_that("PKNCAdata", {
   
   ## Single dose AUCs are appropriately selected
   expect_equal(PKNCAdata(obj.conc, obj.dose),
-               {tmp.intervals <- merge(PKNCA.options("single.dose.aucs"), tmp.dose)
-               tmp.intervals$time <- NULL
-               tmp.intervals$dose <- NULL
-               tmp <- list(conc=obj.conc,
-                           dose=obj.dose,
-                           options=list(),
-                           intervals=tmp.intervals)
-               class(tmp) <- c("PKNCAdata", "list")
-               tmp
-               },
+               {
+                 tmp.intervals <- merge(PKNCA.options("single.dose.aucs"), tmp.dose)
+                 tmp.intervals <- tmp.intervals[order(tmp.intervals$treatment, tmp.intervals$ID),]
+                 tmp.intervals$time <- NULL
+                 tmp.intervals$dose <- NULL
+                 tmp <- list(conc=obj.conc,
+                             dose=obj.dose,
+                             options=list(),
+                             intervals=tmp.intervals)
+                 class(tmp) <- c("PKNCAdata", "list")
+                 tmp
+               }, check.attributes=FALSE,
                info="Selection of single dose AUCs")
 })

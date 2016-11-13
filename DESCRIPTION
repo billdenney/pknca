@@ -1,13 +1,14 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.7.1.9007
-Date: 2016-10-12
+Version: 0.7.1.9009
+Date: 2016-11-12
 Authors@R: c(
     person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre")),
     person("Clare", "Buckeridge", email="clare.buckeridge@pfizer.com", role="aut"),
     person("Sridhar", "Duvvuri", role="ctb"))
 Imports:
+    dplyr,
     digest,
     doBy,
     plyr,
@@ -18,7 +19,6 @@ Imports:
     tidyr,
     utils
 Suggests:
-    dplyr,
     knitr,
     testthat,
     ggplot2

@@ -13,9 +13,6 @@ pk.nca <- function(data) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
-    ## Separate the concentration and dosing data by their 
-    conc.split <- doBy::splitBy(parseFormula(data$conc)$groupFormula,
-                                data=stats::model.frame(data$conc))
     ## If dose is not given, give a false dose column with all NAs to
     ## simplify dose handling in subsequent steps.
     if (identical(all.vars(parseFormula(data$dose)$lhs), character())) {
@@ -24,39 +21,33 @@ pk.nca <- function(data) {
       data$dose$formula <-
         stats::update.formula(data$dose$formula, paste0(col.dose, "~."))
     }
-    dose.split <- doBy::splitBy(parseFormula(data$dose)$groupFormula,
-                                data=stats::model.frame(data$dose))
-    conc.dose <- merge(conc=conc.split, dose=dose.split)
     ## Merge the options into the default options.
     tmp.opt <- PKNCA.options()
     tmp.opt[names(options)] <- data$options
     data$options <- tmp.opt
+    splitdata <- split.PKNCAdata(data)
     ## Calculate the results
     tmp.results <-
-      parallel::mclapply(X=conc.dose,
+      parallel::mclapply(X=splitdata,
                          FUN=pk.nca.intervals,
-                         intervals=data$intervals,
                          options=data$options)
     ## Put the group parameters with the results
     for (i in seq_len(length(tmp.results))) {
       ## If no calculations were performed, the results are NULL.
-      ## That will move through rbind.fill without adding rows, so no
-      ## action is required.
       if (!is.null(tmp.results[[i]])) {
-        ## If calculations were performed, the results are non-NULL,
-        ## so add the grouping information to the results, if
-        ## applicable.
-        keep.group.names <- setdiff(names(attr(conc.split, "groupid")),
+        ## If calculations were performed, the results are non-NULL, add
+        ## the grouping information to the results, if applicable.
+        keep.group.names <- setdiff(names(attr(splitdata, "groupid")),
                                     names(tmp.results[[i]]))
         if (length(keep.group.names) > 0) {
           tmp.results[[i]] <-
-            cbind(attr(conc.split, "groupid")[i,keep.group.names,drop=FALSE],
+            cbind(attr(splitdata, "groupid")[i,keep.group.names,drop=FALSE],
                   tmp.results[[i]])
         }
       }
     }
     ## Generate the outputs
-    results <- do.call(plyr::rbind.fill, tmp.results)
+    results <- dplyr::bind_rows(tmp.results)
     rownames(results) <- NULL
   }
   PKNCAresults(result=results,
@@ -78,32 +69,30 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
     ## already been generated from making the PKNCAdata object.
     return(NULL)
   }
-  ## Merge the intervals with the group columns from the concentration
-  ## data
-  if (ncol(conc.dose$conc) >= 3) {
-    ## Subset the intervals down to the intervals for the current group.
-    shared.names <- names(conc.dose$conc)[3:ncol(conc.dose$conc)]
-    all.intervals <- merge(unique(conc.dose$conc[, shared.names, drop=FALSE]),
-                           intervals)
-  } else {
-    ## Likely single-subject data
-    all.intervals <- intervals
-    shared.names <- c()
-  }
   ret <- data.frame()
+  all.intervals <- conc.dose$intervals
+  pformula.conc <- parseFormula(conc.dose$conc)
+  pformula.dose <- parseFormula(conc.dose$dose)
+  shared.names <- all.vars(pformula.conc$groups)
   ## Column names to use
-  col.conc <- names(conc.dose$conc)[1]
-  col.time <- names(conc.dose$conc)[2]
-  col.dose <- names(conc.dose$dose)[1]
-  col.time.dose <- names(conc.dose$dose)[2]
+  col.conc <- all.vars(pformula.conc$lhs)
+  col.time <- all.vars(pformula.conc$rhs)
+  col.dose <- all.vars(pformula.dose$lhs)
+  col.time.dose <- all.vars(pformula.dose$rhs)
+  if (!(col.time.dose %in% names(conc.dose$dose$data))) {
+    col.time.dose <- paste0(max(names(conc.dose$dose$data)), "X")
+    conc.dose$dose$data[[col.time.dose]] <- NA
+  }
   for (i in seq_len(nrow(all.intervals))) {
-    ## Subset the data down to the group of current interest
+    ## Subset the data down to the group of current interest, and make 
+    ## the first column of each the dependent variable and the second 
+    ## column the independent variable.
     tmpconcdata <-
-      merge(conc.dose$conc,
-            all.intervals[i,shared.names])[,c(col.conc, col.time)]
+      merge(conc.dose$conc$data,
+            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.conc, col.time)]
     tmpdosedata <-
-      merge(conc.dose$dose,
-            all.intervals[i,])[,c(col.dose, col.time.dose)]
+      merge(conc.dose$dose$data,
+            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.dose, col.time.dose)]
     ## Choose only times between the start and end.
     mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[,col.time] &
                          tmpconcdata[,col.time] <= all.intervals$end[i])
@@ -113,11 +102,11 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                             tmpdosedata[,col.time.dose] < all.intervals$end[i]))
     tmpdosedata <- tmpdosedata[mask.keep.dose,]
     ## Setup for detailed error reporting in case it's needed
-    columns.to.report <- c(shared.names, c("start", "end"))
     error.preamble <-
       paste("Error with interval",
-            paste(columns.to.report,
-                  unlist(all.intervals[i,columns.to.report]),
+            paste(c(shared.names, c("start", "end")),
+                  c(unlist(conc.dose$conc$data[1,shared.names]),
+                    unlist(all.intervals[,c("start", "end")])),
                   sep="=", collapse=", "))
     if (nrow(tmpconcdata) == 0) {
       warning(paste(error.preamble, "No data for interval", sep=": "))
@@ -137,7 +126,8 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
         })
       ## Add all the new data into the output
       ret <- rbind(ret,
-                   cbind(all.intervals[i,c("start", "end", shared.names)],
+                   cbind(all.intervals[i,c("start", "end")],
+                         conc.dose$conc$data[1, shared.names, drop=FALSE],
                          calculated.interval,
                          row.names=NULL))
     }

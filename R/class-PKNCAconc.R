@@ -273,3 +273,48 @@ plot.PKNCAconc <- function(x, ...,
   do.call(lattice::xyplot, call.args)
 }
 
+#' Divide into groups
+#' 
+#' \code{split.PKNCAconc} divides data into individual groups defined by
+#' \code{\link{getGroups.PKNCAconc}}.
+#' 
+#' @param x the object to split
+#' @param f the groups to use for splitting the object
+#' @param drop logical indicating if levels that do not occur should be
+#'   dropped.
+#' @param ... Ignored.
+#' @return A list of objects with an attribute of groupid consisting of 
+#'   a data.frame with columns for each group.
+#' @export
+split.PKNCAconc <- function(x, f=getGroups(x), drop=TRUE, ...) {
+  if (!drop)
+    stop("drop must be TRUE")
+  ## Do the initial separation and extract the groupid information
+  ret <- split(x=x$data, f=f, drop=drop, sep="\n")
+  groupid <- unique(f)
+  ## reorder the output to align with the input grouping order
+  ret.idx <-
+    factor(names(ret),
+           levels=do.call(paste, append(as.list(groupid), list(sep="\n"))),
+           ordered=TRUE)
+  ret <- ret[order(ret.idx)]
+  ## Reset the data in each split to a "data" element within a list.
+  ret <- lapply(ret,
+                function(y, newclass) {
+                  ret <- list(data=y)
+                  class(ret) <- newclass
+                  ret
+                },
+                newclass=class(x))
+  ## Add the other features back into the data
+  for (n in setdiff(names(x), "data")) {
+    ret <- lapply(ret,
+                  function(x, name, value) {
+                    x[[name]] <- value
+                    x
+                  },
+                  name=n, value=x[[n]])
+  }
+  attr(ret, "groupid") <- groupid
+  ret
+}

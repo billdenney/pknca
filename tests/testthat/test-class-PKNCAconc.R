@@ -13,13 +13,13 @@ test_that("PKNCAconc", {
                                           nanalytes=2, nstudies=2)
   
   ## Variables present
-  expect_error(PKNCAconc(tmp.conc, formula=conca~time|treatment+ID),
+  expect_error(PKNCAconc(tmp.conc, formula=XXX~time|treatment+ID),
                regexp="All of the variables in the formula must be in the data",
                info="All formula parameters must be in the data (LHS)")
-  expect_error(PKNCAconc(tmp.conc, formula=conc~timea|treatment+ID),
+  expect_error(PKNCAconc(tmp.conc, formula=conc~XXX|treatment+ID),
                regexp="All of the variables in the formula must be in the data",
                info="All formula parameters must be in the data (RHS)")
-  expect_error(PKNCAconc(tmp.conc, formula=conc~time|treatmenta+ID),
+  expect_error(PKNCAconc(tmp.conc, formula=conc~time|XXX+ID),
                regexp="All of the variables in the formula must be in the data",
                info="All formula parameters must be in the data (groups)")
   
@@ -51,4 +51,26 @@ test_that("PKNCAconc", {
                PKNCAconc(tbl_df(tmp.conc.analyte),
                          formula=conc~time|treatment+ID/analyte),
                info="tbl_df and data.frame classes both work and create identical objects")
+})
+
+test_that("split.PKNCAconc", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  expect_equal(base::split(myconc), split.PKNCAconc(myconc),
+               info="The generic is correctly called")
+  tmpsplit <- split.PKNCAconc(myconc)
+  expect_true(all(sapply(tmpsplit,
+                         function(x) {
+                           all(names(x) == names(myconc))
+                         })),
+               info="All parameter names are accurately transferred")
+  expect_true(all(sapply(tmpsplit,
+                         function(x) {
+                           ret <- TRUE
+                           for (n in setdiff(names(x), "data")) {
+                             ret <- ret & x[[n]] == myconc[[n]]
+                           }
+                           ret
+                         })),
+              info="All values (other than data) are accurately transferred.")
 })

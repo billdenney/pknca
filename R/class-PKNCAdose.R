@@ -269,3 +269,7 @@ summary.PKNCAdose <- summary.PKNCAconc
 #' @export
 plot.PKNCAdata <- function(x, ...)
   graphics::plot(x$conc, ...)
+
+#' @rdname split.PKNCAconc
+#' @export
+split.PKNCAdose <- split.PKNCAconc
