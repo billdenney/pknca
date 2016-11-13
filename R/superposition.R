@@ -54,33 +54,24 @@ superposition <- function(conc, ...)
 #' @rdname superposition
 #' @export
 superposition.PKNCAconc <- function(conc, ...) {
-  conc.col <- as.character(parseFormula(conc)$lhs)
-  time.col <- as.character(parseFormula(conc)$rhs)
   ## Split the data by grouping and extract just the concentration and
   ## time columns
-  tmp.data <- doBy::splitBy(parseFormula(conc)$groupFormula,
-                            getData(conc))
-  groupinfo <- attributes(tmp.data)$groupid
-  tmp.data <-
-    parallel::mclapply(X=tmp.data,
-                       FUN=function(x, conc.col, time.col) {
-                         renameCol(x, c(conc.col, time.col),
-                                   c("conc", "time"))[,c("conc", "time")]
-                       },
-                       conc.col=conc.col,
-                       time.col=time.col)
+  tmp.data <- split.PKNCAconc(conc)
+  groupinfo <- attr(tmp.data, 'groupid')
   tmp.results <-
-    parallel::mclapply(X=tmp.data,
-                       FUN=function(x, ...) {
-                         superposition.numeric(x$conc, x$time, ...)
-                       }, ...)
-  ret <- data.frame()
-  for (i in seq_along(tmp.results))
-    ret <- rbind(ret,
-                 cbind(groupinfo[i,,drop=FALSE],
-                       tmp.results[[i]],
-                       row.names=NULL))
-  ret
+    parallel::mclapply(
+      X=seq_along(tmp.data),
+      FUN=function(x, conc.col, time.col, ...) {
+        cbind(groupinfo[x,,drop=FALSE],
+              superposition.numeric(tmp.data[[x]]$data[[conc.col]],
+                                    tmp.data[[x]]$data[[time.col]],
+                                    ...),
+              row.names=NULL)
+      },
+      conc.col=as.character(parseFormula(conc)$lhs),
+      time.col=as.character(parseFormula(conc)$rhs),
+      ...)
+  dplyr::bind_rows(tmp.results)
 }
 
 #' @rdname superposition

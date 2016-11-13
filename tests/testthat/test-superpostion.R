@@ -407,3 +407,14 @@ test_that("superposition math", {
                tol=0.001,
                info="Uncalculable lambda.z with extrapolation to steady-state with lambda.z given, gives conc values")
 })
+
+test_that("PKNCAconc superposition", {
+  myconc <- PKNCAconc(conc~time|ID,
+                      data=data.frame(ID=rep(1:2, each=7),
+                                      conc=rep(c(0, 1, 2, 3, 2, 1, 0.5), 2),
+                                      time=rep(0:6, 2)))
+  expect_equal(superposition(myconc, tau=3, n.tau=2),
+               data.frame(ID=rep(1:2, each=4),
+                          conc=rep(c(3, 3, 3, 3.5), 2),
+                          time=rep(0:3, 2)))
+})
