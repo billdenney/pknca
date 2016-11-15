@@ -36,7 +36,7 @@ test_that("add.interval.col", {
   expect_equal(
     {
       add.interval.col(name="a", FUN=NA, datatype="interval", desc="test addition")
-      get("interval.cols", PKNCA::.PKNCAEnv)[["a"]]
+      get("interval.cols", PKNCA:::.PKNCAEnv)[["a"]]
     },
     list(FUN=NA,
          values=c(FALSE, TRUE),
@@ -47,7 +47,7 @@ test_that("add.interval.col", {
   expect_equal(
     {
       add.interval.col(name="a", FUN="mean", datatype="interval", desc="test addition")
-      get("interval.cols", PKNCA::.PKNCAEnv)[["a"]]
+      get("interval.cols", PKNCA:::.PKNCAEnv)[["a"]]
     },
     list(FUN="mean",
          values=c(FALSE, TRUE),
