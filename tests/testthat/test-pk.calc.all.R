@@ -16,6 +16,25 @@ test_that("pk.nca", {
   expect_equal(names(myresult),
                c("result", "data", "provenance"),
                info="Make sure that the result has the expected names (and only the expected names) in it.")
+
+  mydata.failure <- mydata
+  ## There's no way to automatically make a PKNCAdata object with no
+  ## intervals, but we want to ensure that users cannot cause this error
+  ## by playing in the internals.
+  mydata.failure$intervals <- data.frame()
+  expect_warning(myresult.failure <- pk.nca(mydata.failure),
+                 regexp="No intervals given; no calculations done.",
+                 info="An empty result is returned if there are no intervals")
+  
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose.nodose <- PKNCAdose(tmpdose, formula=~time|treatment+ID)
+  mydata.nodose <- PKNCAdata(myconc, mydose.nodose)
+  expect_equal(pk.nca(mydata.nodose)$result,
+               myresult$result,
+               info="missing dose information is handled without an issue")
+  
   
   ## Test each of the pieces for myresult for accuracy
 
