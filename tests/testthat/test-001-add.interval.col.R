@@ -1,7 +1,7 @@
 context("Interval columns")
 
 # Save the original state
-original.state <- get("interval.cols", envir=PKNCA::.PKNCAEnv)
+original.state <- get("interval.cols", envir=PKNCA:::.PKNCAEnv)
 
 test_that("add.interval.col", {
   # Invalid inputs fail
@@ -58,4 +58,4 @@ test_that("add.interval.col", {
 })
 
 # Reset the original state
-assign("interval.cols", original.state, envir=PKNCA::.PKNCAEnv)
+assign("interval.cols", original.state, envir=PKNCA:::.PKNCAEnv)
