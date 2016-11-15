@@ -4,17 +4,16 @@ test_that("pk.calc.auxc", {
   ## #####
   ## Verify input checks
 
-  ## Interval is decreasing
   expect_error(pk.calc.auxc(conc=1:2, time=0:1, interval=2:1, method="linear"),
-               regexp="The AUC interval must be increasing")
-  ## AUC should start at or after the first measurement and should be
-  ## before the last measurement
+               regexp="The AUC interval must be increasing",
+               info="Start and end of the interval must be in the correct order")
   expect_warning(pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
                               method="linear"),
-                 regexp="Requesting an AUC range starting \\(1\\) before the first measurement \\(2\\) is not allowed")
-  ## But starting before the beginning does return NA (not an error)
+                 regexp="Requesting an AUC range starting \\(1\\) before the first measurement \\(2\\) is not allowed",
+                 info="AUC should start at or after the first measurement and should be before the last measurement")
   expect_warning(v1 <- pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
-                                    method="linear"))
+                                    method="linear"),
+                 info="Starting before the beginning time returns NA (not an error)")
   expect_equal(v1, NA)
 
   ## All concentrations are NA, return NA
@@ -584,4 +583,61 @@ test_that("pk.calc.aumc.last", {
                     auc.type="foo",
                     method="linear"),
     regexp="auc.type cannot be changed when calling pk.calc.aumc.last, please use pk.calc.aumc")
+})
+
+test_that("pk.calc.auc.inf.pred", {
+  expect_equal(
+    pk.calc.auc.inf.pred(
+      conc=c(0, 1, 1, 0),
+      time=0:3,
+      clast.pred=1,
+      lambda.z=1,
+      interval=c(0, Inf),
+      method="linear"),
+    pk.calc.auc.inf(
+      conc=c(0, 1, 1, 0),
+      time=0:3,
+      clast=1,
+      lambda.z=1,
+      interval=c(0, Inf),
+      method="linear"),
+    info="pk.calc.auc.inf.pred is a simple wrapper around pk.calc.auc.inf")
+})
+
+test_that("pk.calc.aumc.inf.obs", {
+  expect_equal(
+    pk.calc.aumc.inf.obs(
+      conc=c(0, 1, 1, 0),
+      time=0:3,
+      clast.obs=1,
+      lambda.z=1,
+      interval=c(0, Inf),
+      method="linear"),
+    pk.calc.aumc.inf(
+      conc=c(0, 1, 1, 0),
+      time=0:3,
+      clast=1,
+      lambda.z=1,
+      interval=c(0, Inf),
+      method="linear"),
+    info="pk.calc.aumc.inf.obs is a simple wrapper around pk.calc.aumc.inf")
+})
+
+test_that("pk.calc.aumc.inf.pred", {
+  expect_equal(
+    pk.calc.aumc.inf.pred(
+      conc=c(0, 1, 1, 0),
+      time=0:3,
+      clast.pred=1,
+      lambda.z=1,
+      interval=c(0, Inf),
+      method="linear"),
+    pk.calc.aumc.inf(
+      conc=c(0, 1, 1, 0),
+      time=0:3,
+      clast=1,
+      lambda.z=1,
+      interval=c(0, Inf),
+      method="linear"),
+    info="pk.calc.aumc.inf.pred is a simple wrapper around pk.calc.aumc.inf")
 })
