@@ -104,7 +104,7 @@ test_that("merge.splitByData", {
                     info="Multiple grouping parameters")
 })
 
-test_that("merge.splitByData", {
+test_that("merge.splitlist", {
   d1a <- list(1, 2, 3)
   d1b <- list(4, 5, 6)
   attr(d1a, 'groupid') <- data.frame(A=1:3)
@@ -125,6 +125,9 @@ test_that("merge.splitByData", {
                info="merging splitlists requires list inputs")
 
   d2 <- list(4, 5, 6)
+  expect_error(merge.splitlist(d1a, d2),
+               regexp="All arguments must have a 'groupid' attribute",
+               info="merging splitlists requires groupid")
   attr(d2, 'groupid') <- data.frame()
   expect_error(merge.splitlist(d1a, d2),
                regexp="The number of rows in the 'groupid' attribute must match the length of the list.",
