@@ -126,7 +126,7 @@ test_that("pk.calc.clast.obs", {
   expect_equal(pk.calc.clast.obs(c1, t1), NA)
 })
 
-test_that("pk.calc.thalf.eff", {
+test_that("pk.calc.thalf.eff and its wrappers", {
   ## No input gives equivalent no output
   expect_equal(pk.calc.thalf.eff(c()),
                numeric())
@@ -140,9 +140,16 @@ test_that("pk.calc.thalf.eff", {
   r1 <- log(2)*d1
   expect_equal(pk.calc.thalf.eff(d1),
                r1)
+  
+  expect_equal(pk.calc.thalf.eff.obs(d1),
+               pk.calc.thalf.eff(d1),
+               info="pk.calc.thalf.eff.obs is a simple wrapper around pk.calc.thalf.eff")
+  expect_equal(pk.calc.thalf.eff.pred(d1),
+               pk.calc.thalf.eff(d1),
+               info="pk.calc.thalf.eff.pred is a simple wrapper around pk.calc.thalf.eff")
 })
 
-test_that("pk.calc.kel", {
+test_that("pk.calc.kel and its wrappers", {
   ## No input gives equivalent no output
   expect_equal(pk.calc.kel(c()),
                numeric())
@@ -154,11 +161,17 @@ test_that("pk.calc.kel", {
   ## Numbers mixed with NA give appropriate output
   d1 <- c(0, 1, NA, 3)
   r1 <- 1/d1
-  expect_equal(pk.calc.kel(d1),
-               r1)
+  expect_equal(pk.calc.kel(d1), r1)
+  
+  expect_equal(pk.calc.kel.obs(d1),
+               pk.calc.kel(d1),
+               info="pk.calc.kel.obs is a simple wrapper around pk.calc.kel")
+  expect_equal(pk.calc.kel.pred(d1),
+               pk.calc.kel(d1),
+               info="pk.calc.kel.pred is a simple wrapper around pk.calc.kel")
 })
 
-test_that("pk.calc.cl", {
+test_that("pk.calc.cl and its wrappers", {
   ## Ensure that dose and auc are required
   expect_error(pk.calc.cl(aucinf=NA),
                info="dose is required for clearance calculation")
@@ -173,26 +186,55 @@ test_that("pk.calc.cl", {
   expect_equal(pk.calc.cl(dose=c(50, 50), aucinf=100),
                1,
                info="Vector for dose and scalar for aucinf scalar output with the sum of doses")
+  
+  expect_equal(pk.calc.cl.last(dose=10, auclast=100),
+               pk.calc.cl(dose=10, aucinf=100),
+               info="pk.calc.cl.last is a simple wrapper around pk.calc.cl")
+  expect_equal(pk.calc.cl.all(dose=10, aucall=100),
+               pk.calc.cl(dose=10, aucinf=100),
+               info="pk.calc.cl.all is a simple wrapper around pk.calc.cl")
+  expect_equal(pk.calc.cl.obs(dose=10, aucinf.obs=100),
+               pk.calc.cl(dose=10, aucinf=100),
+               info="pk.calc.cl.obs is a simple wrapper around pk.calc.cl")
+  expect_equal(pk.calc.cl.pred(dose=10, aucinf.pred=100),
+               pk.calc.cl(dose=10, aucinf=100),
+               info="pk.calc.cl.pred is a simple wrapper around pk.calc.cl")
 })
 
 test_that("pk.calc.f", {
   expect_equal(pk.calc.f(1, 1, 1, 2), 2)
 })
 
-test_that("pk.calc.aucpext", {
+test_that("pk.calc.aucpext and its wrappers", {
   expect_equal(pk.calc.aucpext(1, 2), 50)
   expect_equal(pk.calc.aucpext(1.8, 2), 10)
   expect_warning(v1 <- pk.calc.aucpext(2, 1))
   expect_equal(v1, -100)
   expect_warning(pk.calc.aucpext(2, 1),
                  regexp="auclast should be less than aucinf")
+
+  expect_equal(pk.calc.aucpext.obs(1, 2),
+               pk.calc.aucpext(1, 2),
+               info="pk.calc.aucpext.obs is a simple wrapper around pk.calc.aucpext")
+  expect_equal(pk.calc.aucpext.pred(1, 2),
+               pk.calc.aucpext(1, 2),
+               info="pk.calc.aucpext.pred is a simple wrapper around pk.calc.aucpext")
 })
 
-test_that("pk.calc.mrt", {
+test_that("pk.calc.mrt and its wrappers", {
   expect_equal(pk.calc.mrt(1, 2), 2)
+  expect_equal(pk.calc.mrt.obs(1, 2),
+               pk.calc.mrt(1, 2),
+               info="pk.calc.mrt.obs is a simple wrapper around pk.calc.mrt")
+  expect_equal(pk.calc.mrt.pred(1, 2),
+               pk.calc.mrt(1, 2),
+               info="pk.calc.mrt.pred is a simple wrapper around pk.calc.mrt")
+  expect_equal(pk.calc.mrt.last(1, 2),
+               pk.calc.mrt(1, 2),
+               info="pk.calc.mrt.last is a simple wrapper around pk.calc.mrt")
 })
 
-test_that("pk.calc.vz", {
+test_that("pk.calc.vz and its wrappers", {
   ## Ensure that cl and lambda.z are required
   expect_equal(pk.calc.vz(cl=NA, lambda.z=NA), NA_integer_)
   expect_error(pk.calc.vz(cl=NA),
@@ -234,15 +276,29 @@ test_that("pk.calc.vz", {
                             c(1, 2, NA, 1, 2, NA, 1, 2, NA)),
                c(1, 0.5, NA, 2, 1, NA, NA, NA, NA),
                info="Vz with vector inputs including missing values for both parameters (cl and lambda.z)")
+  
+  expect_equal(pk.calc.vz.obs(cl.obs=1, lambda.z=1),
+               pk.calc.vz(cl=1, lambda.z=1),
+               info="pk.calc.vz.obs is a simple wrapper around pk.calc.vz")
+  expect_equal(pk.calc.vz.pred(cl.pred=1, lambda.z=1),
+               pk.calc.vz(cl=1, lambda.z=1),
+               info="pk.calc.vz.pred is a simple wrapper around pk.calc.vz")
 })
 
-test_that("pk.calc.vss", {
+test_that("pk.calc.vss and its wrappers", {
   expect_equal(pk.calc.vss(1, 1), 1)
   expect_equal(pk.calc.vss(2, 1), 2)
   expect_equal(pk.calc.vss(1, 2), 2)
+  
+  expect_equal(pk.calc.vss.obs(cl.obs=1, mrt.obs=1),
+               pk.calc.vss(cl=1, mrt=1),
+               info="pk.calc.vss.obs is a simple wrapper around pk.calc.vss")
+  expect_equal(pk.calc.vss.pred(cl.pred=1, mrt.pred=1),
+               pk.calc.vss(cl=1, mrt=1),
+               info="pk.calc.vss.pred is a simple wrapper around pk.calc.vss")
 })
 
-test_that("pk.calc.vd", {
+test_that("pk.calc.vd and its wrappers", {
   expect_equal(pk.calc.vd(1, 2, 3), 1/6,
                info="Normal Vd calculation works")
   expect_equal(pk.calc.vd(NA, 2, 3), NA_integer_,
@@ -256,6 +312,13 @@ test_that("pk.calc.vd", {
                info="Vd calculation works with three vector inputs returning a vector")
   expect_equal(pk.calc.vd(c(1, 2), 2, 3), 0.5,
                info="Vd calculation works with vector dose and scalar aucinf and lambda.z inputs returning a scalar with the sum of doses used.")
+  
+  expect_equal(pk.calc.vd.obs(dose=1, aucinf.obs=2, lambda.z=3),
+               pk.calc.vd(dose=1, aucinf=2, lambda.z=3),
+               info="pk.calc.vd.obs is a simple wrapper around pk.calc.vd")
+  expect_equal(pk.calc.vd.pred(dose=1, aucinf.pred=2, lambda.z=3),
+               pk.calc.vd(dose=1, aucinf=2, lambda.z=3),
+               info="pk.calc.vd.pred is a simple wrapper around pk.calc.vd")
 })
 
 test_that("pk.calc.cav", {
@@ -290,4 +353,16 @@ test_that("pk.calc.tlag", {
                info="No increase gives NA")
   expect_equal(pk.calc.tlag(5:1, 0:4), NA,
                info="No increase gives NA")
+})
+
+test_that("pk.calc.deg.fluc", {
+  expect_equal(pk.calc.deg.fluc(cmax=100, cmin=10, cav=45), 200,
+               info="Degree of fluctuation math works")
+})
+
+test_that("pk.calc.swing", {
+  expect_equal(pk.calc.swing(100, 10), 900,
+               info="Swing math works")
+  expect_equal(pk.calc.swing(100, 0), Inf,
+               info="Swing handle Ctrough=0")
 })
