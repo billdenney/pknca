@@ -31,29 +31,30 @@ add.interval.col <- function(name,
   } else if (length(name) != 1) {
     stop("name must have length == 1")
   }
-  if (!(is.character(FUN) | is.na(FUN))) {
-    stop("FUN must be a character string or NA")
-  } else if (length(FUN) != 1) {
+  if (length(FUN) != 1) {
     stop("FUN must have length == 1")
+  } else if (!(is.character(FUN) | is.na(FUN))) {
+    stop("FUN must be a character string or NA")
   }
   datatype <- match.arg(datatype)
   if (!(datatype %in% "interval")) {
     stop("Only the 'interval' datatype is currently supported.")
   }
-  if (!is.character(desc)) {
-    stop("desc must be a character string")
-  } else if (length(desc) != 1) {
+  if (length(desc) != 1) {
     stop("desc must have length == 1")
+  } else if (!is.character(desc)) {
+    stop("desc must be a character string")
   }
   current <- get("interval.cols", envir=.PKNCAEnv)
   ## Ensure that the function exists
-  if (length(utils::getAnywhere(FUN)) == 0)
+  if (!is.na(FUN) &&
+      length(utils::getAnywhere(FUN)$objs) == 0)
     stop("The function named '", FUN, "' is not defined.  Please define the function before calling add.interval.col.")
   current[[name]] <- list(FUN=FUN,
                           values=values,
                           desc=desc,
                           depends=depends,
-                          datatype=match.arg(datatype))
+                          datatype=datatype)
   assign("interval.cols", current, envir=.PKNCAEnv)
 }
 
