@@ -72,7 +72,7 @@ PKNCAconc.data.frame <- function(data, formula, subject, labels, units, ...) {
       } else if (length(subject) == 1) {
         ## There is a subject given; use it as is.
       } else {
-        stop("Unknown how to handle subject definition from the fromula")
+        stop("Unknown how to handle subject definition from the formula")
       }
     }
   } else {
@@ -156,7 +156,8 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
              paste(setdiff(level, grpnames), collapse=", "))
       grpnames <- level
     } else if (is.numeric(level)) {
-      if (length(level) == 1) {
+      if (length(level) == 1 &&
+          level > 0) {
         grpnames <- grpnames[1:level]
       } else {
         grpnames <- grpnames[level]

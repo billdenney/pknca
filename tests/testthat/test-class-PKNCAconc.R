@@ -53,6 +53,50 @@ test_that("PKNCAconc", {
                info="tbl_df and data.frame classes both work and create identical objects")
 })
 
+test_that("model frame and parameter extractions", {
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  expect_equal(model.frame(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
+               tmp.conc[,c("conc", "time", "treatment", "ID")],
+               info="model.frame.PKNCAconc extracts the correct components")
+  expect_equal(getDepVar(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
+               tmp.conc$conc,
+               info="getDepVar.PKNCAconc extracts the correct component")
+  expect_equal(getIndepVar(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
+               tmp.conc$time,
+               info="getIndepVar.PKNCAconc extracts the correct component")
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
+               tmp.conc[,c("treatment", "ID")],
+               info="getGroups.PKNCAconc extracts the correct components")
+
+  tmp.conc <- generate.conc(nsub=5, ntreat=1, time.points=0:24)
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|ID)),
+               tmp.conc[,"ID", drop=FALSE],
+               info="getGroups.PKNCAconc returns a data.frame even with a single grouping level")
+  # Levels
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level=1),
+               tmp.conc[,"treatment", drop=FALSE],
+               info="getGroups.PKNCAconc the correct level (numeric scalar)")
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level=-1),
+               tmp.conc[,"ID", drop=FALSE],
+               info="getGroups.PKNCAconc the correct level (negative numeric scalar)")
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level=1:2),
+               tmp.conc[,c("treatment", "ID"), drop=FALSE],
+               info="getGroups.PKNCAconc the correct level (numeric vector)")
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level=2:1),
+               tmp.conc[,c("ID", "treatment"), drop=FALSE],
+               info="getGroups.PKNCAconc the correct level (numeric vector)")
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level="ID"),
+               tmp.conc[,"ID", drop=FALSE],
+               info="getGroups.PKNCAconc the correct level (character string scalar)")
+  expect_equal(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level=c("ID", "treatment")),
+               tmp.conc[,c("ID", "treatment"), drop=FALSE],
+               info="getGroups.PKNCAconc the correct level (character string vector)")
+  expect_error(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level="foo"),
+               regexp="Not all levels are listed in the group names",
+               info="getGroups.PKNCAconc gives an error if a group name is not present")
+})
+
 test_that("split.PKNCAconc", {
   tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
   myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
