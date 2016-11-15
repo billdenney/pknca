@@ -18,14 +18,6 @@ getDepVar <- function(x, ...)
 getIndepVar <- function(x, ...)
   UseMethod("getIndepVar", x)
 
-#' Count the number of values that are not NA
-#'
-#' @param x The object to count non-NA values within.
-#' @return A scalar count of the non-NA values.
-#' @export
-count.non.missing <- function(x)
-  sum(!is.na(x))
-
 ## Used for setting labels and units
 set.name.matching <- function(ret, name, value, data) {
   if (!missing(value)) {
