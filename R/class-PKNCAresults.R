@@ -10,13 +10,12 @@
 #' @param provenance Data and calculation provenance
 #' @return A PKNCAresults object with each of the above within.
 #' @export
-PKNCAresults <- function(result, data, provenance) {
+PKNCAresults <- function(result, data) {
   ## Add all the parts into the object
   ret <- list(result=result,
-              data=data,
-              provenance=provenance)
+              data=data)
   class(ret) <- c("PKNCAresults", class(ret))
-  ret
+  addProvenance(ret)
 }
 
 #' Extract the parameter results from a PKNCAresults and return them

@@ -14,8 +14,10 @@ test_that("pk.nca", {
   myresult <- pk.nca(mydata)
 
   expect_equal(names(myresult),
-               c("result", "data", "provenance"),
+               c("result", "data"),
                info="Make sure that the result has the expected names (and only the expected names) in it.")
+  expect_true(checkProvenance(myresult),
+              info="Provenance works on results")
 
   mydata.failure <- mydata
   ## There's no way to automatically make a PKNCAdata object with no

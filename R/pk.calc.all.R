@@ -51,12 +51,7 @@ pk.nca <- function(data) {
     rownames(results) <- NULL
   }
   PKNCAresults(result=results,
-               data=data,
-               provenance=list(
-                 hash=digest::digest(list(results, data)),
-                 sessionInfo=utils::sessionInfo(),
-                 datetime=Sys.time(),
-                 sysInfo=Sys.info()))
+               data=data)
 }
 
 ## Subset data down to just the times of interest and then pass it

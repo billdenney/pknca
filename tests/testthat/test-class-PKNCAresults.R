@@ -14,8 +14,10 @@ test_that("PKNCAresults generation", {
   myresult <- pk.nca(mydata)
   
   expect_equal(names(myresult),
-               c("result", "data", "provenance"),
+               c("result", "data"),
                info="Make sure that the result has the expected names (and only the expected names) in it.")
+  expect_true(checkProvenance(myresult),
+              info="Provenance exists and can be confirmed on results")
   
   ## Test each of the pieces for myresult for accuracy
   
