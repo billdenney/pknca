@@ -103,15 +103,11 @@ sapplyBy <- function(formula, data=parent.frame(), FUN) {
 #' @export
 roundString <- function(x, digits=0) {
   if (length(digits) == 1) {
-    mask.asis <- FALSE
     mask.na <- is.na(x)
     mask.aschar <- is.nan(x) | is.infinite(x)
-    mask.manip <- !(mask.na | mask.asis | mask.aschar)
+    mask.manip <- !(mask.na | mask.aschar)
     ret <- rep(NA, length(x))
     ## Put in the special values
-    if (any(mask.asis)) {
-      ret[mask.asis] <- x[mask.asis]
-    }
     if (any(mask.na)) {
       ret[mask.na] <- "NA"
     }
@@ -147,15 +143,11 @@ roundString <- function(x, digits=0) {
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
 signifString <- function(x, digits=6) {
-  mask.asis <- FALSE
   mask.na <- is.na(x)
   mask.aschar <- is.nan(x) | is.infinite(x)
-  mask.manip <- !(mask.na | mask.asis | mask.aschar)
+  mask.manip <- !(mask.na | mask.aschar)
   ret <- rep(NA, length(x))
   ## Put in the special values
-  if (any(mask.asis)) {
-    ret[mask.asis] <- x[mask.asis]
-  }
   if (any(mask.na)) {
     ret[mask.na] <- "NA"
   }
