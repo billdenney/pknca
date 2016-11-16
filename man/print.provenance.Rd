@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{x}{The object to be printed}
+
+\item{...}{Ignored}
 }
 \value{
 invisible text of the printed information

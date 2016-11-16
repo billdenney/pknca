@@ -7,7 +7,6 @@
 #' Each row is one interval and each column is a group name or the
 #' name of an NCA parameter.
 #' @param data The PKNCAdata used to generate the result
-#' @param provenance Data and calculation provenance
 #' @return A PKNCAresults object with each of the above within.
 #' @export
 PKNCAresults <- function(result, data) {

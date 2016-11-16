@@ -12,8 +12,6 @@ Each row is one interval and each column is a group name or the
 name of an NCA parameter.}
 
 \item{data}{The PKNCAdata used to generate the result}
-
-\item{provenance}{Data and calculation provenance}
 }
 \value{
 A PKNCAresults object with each of the above within.
