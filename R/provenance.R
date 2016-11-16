@@ -51,6 +51,7 @@ checkProvenance <- function(object) {
 #' Print the summary of a provenance object
 #' 
 #' @param x The object to be printed
+#' @param ... Ignored
 #' @return invisible text of the printed information
 #' @export
 print.provenance <- function(x, ...) {
