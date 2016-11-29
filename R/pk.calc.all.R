@@ -96,6 +96,9 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                          (all.intervals$start[i] <= tmpdosedata[,col.time.dose] &
                             tmpdosedata[,col.time.dose] < all.intervals$end[i]))
     tmpdosedata <- tmpdosedata[mask.keep.dose,]
+    ## Sort the data in time order
+    tmpconcdata <- tmpconcdata[order(tmpconcdata[[col.time]]),]
+    tmpdosedata <- tmpdosedata[order(tmpdosedata[[col.time.dose]]),]
     ## Setup for detailed error reporting in case it's needed
     error.preamble <-
       paste("Error with interval",
