@@ -101,7 +101,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
       paste("Error with interval",
             paste(c(shared.names, c("start", "end")),
                   c(unlist(conc.dose$conc$data[1,shared.names]),
-                    unlist(all.intervals[,c("start", "end")])),
+                    unlist(all.intervals[i,c("start", "end")])),
                   sep="=", collapse=", "))
     if (nrow(tmpconcdata) == 0) {
       warning(paste(error.preamble, "No data for interval", sep=": "))
