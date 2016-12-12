@@ -434,7 +434,30 @@ interp.extrap.conc.dose.select <-
         value=function(data.out, data.conc, data.dose, conc.origin=0, ...) {
           conc.origin
         },
-        description="Interpolation before any events is NA or zero (0) depending on the value of conc.origin.  conc.origin defaults to zero which is the implicit assumption that a complete washout occurred and there is no endogenous source of the analyte."),
+        description=paste("Interpolation before any events is NA or zero (0)",
+                          "depending on the value of conc.origin.  conc.origin",
+                          "defaults to zero which is the implicit assumption",
+                          "that a complete washout occurred and there is no",
+                          "endogenous source of the analyte.")),
+
+    # Interpolation ####
+    "Interpolation"=
+      list(
+        select=function(x) {
+          ((x$event.before %in% "conc" |
+              (x$event.before %in% "both" &
+                 !(x$iv.bolus.before %in% TRUE))) &
+             is.na(x$event.at) &
+             (x$event.after %in% c("conc", "both")))
+        },
+        value=function(data.out, data.conc, data.dose, ...) {
+          tmp.conc <- data.conc[data.conc$cut %in% data.out$cut,]
+          interpolate.conc(conc=tmp.conc$conc, time=tmp.conc$time,
+                           time.out=data.out$time,
+                           check=FALSE, ...)
+        },
+        description=paste("With concentrations before and after and not an IV",
+                          "bolus before, interpolate between observed concentrations.")),
 
     # Immediately after an IV bolus with a concentration next ####
     "Immediately after an IV bolus with a concentration next"=
@@ -449,7 +472,10 @@ interp.extrap.conc.dose.select <-
                      time.dose=tmp.dose$time,
                      method=c("logslope", "c1"))
         },
-        description="Calculate C0 for the time immediately after an IV bolus.  First, attempt using log slope back-extrapolation.  If that fails, use the first concentration after the dose as C0."),
+        description=paste("Calculate C0 for the time immediately after an IV",
+                          "bolus.  First, attempt using log slope",
+                          "back-extrapolation.  If that fails, use the first",
+                          "concentration after the dose as C0.")),
 
     # Immediately after an IV bolus without a concentration next ####
     "Immediately after an IV bolus without a concentration next"=
@@ -481,7 +507,10 @@ interp.extrap.conc.dose.select <-
                            time.out=data.out$time,
                            check=FALSE, ...)
         },
-        description="First, calculate C0 using log slope back-extrapolation (falling back to the first post-dose concentration if that fails).  Then, interpolate between C0 and the first post-dose concentration."),
+        description=paste("First, calculate C0 using log slope back-extrapolation",
+                          "(falling back to the first post-dose concentration",
+                          "if that fails).  Then, interpolate between C0 and",
+                          "the first post-dose concentration.")),
 
     # After an IV bolus without a concentration next ####
     "After an IV bolus without a concentration next"=
@@ -490,7 +519,8 @@ interp.extrap.conc.dose.select <-
           (x$iv.bolus.before %in% TRUE) & is.na(x$event.at) & !(x$event.after %in% "conc")
         },
         warning="Cannot interpolate after an IV bolus without a concentration next.",
-        description="Between an IV bolus and anything other than a concentration, interpolation cannot occur.  Return NA"),
+        description=paste("Between an IV bolus and anything other than a",
+                          "concentration, interpolation cannot occur.  Return NA")),
 
     # After a dose with no event and a concentration after ####
     "After a dose with no event and a concentration after"=
@@ -544,7 +574,8 @@ interp.extrap.conc.dose.select <-
             is.na(x$event.at)
         },
         warning="Cannot extrapolate from a dose without any concentrations after it.",
-        description="Cannot estimate the concentration after a dose without concentrations after the dose, return NA."),
+        description=paste("Cannot estimate the concentration after a dose",
+                          "without concentrations after the dose, return NA.")),
 
     # After all events, concentration before ####
     "After all events, concentration before"=
@@ -559,8 +590,8 @@ interp.extrap.conc.dose.select <-
         },
         description="Extrapolate from the concentration data after the last dose."),
 
-    # After a concentration with either a dose or nothing at the current time ####
-    "After a concentration with either a dose or nothing at the current time"=
+    # Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose ####
+    "Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"=
       list(
         select=function(x) {
           (x$event.before %in% "conc") &
@@ -587,22 +618,8 @@ interp.extrap.conc.dose.select <-
             do.call(extrapolate.conc, args)
           }
         },
-        description="Extrapolate when the previous measurement is a concentration, and the current event is a dose or nothing.  If the previous concentration measurement is below the limit of quantification (zero), then return zero."),
-
-    # Interpolation ####
-    "Interpolation"=
-      list(
-        select=function(x) {
-          ((x$event.before %in% "conc" |
-              (x$event.before %in% "both" &
-                 !(x$iv.bolus.before %in% TRUE))) &
-             is.na(x$event.at) &
-             (x$event.after %in% c("conc", "both")))
-        },
-        value=function(data.out, data.conc, data.dose, ...) {
-          tmp.conc <- data.conc[data.conc$cut %in% data.out$cut,]
-          interpolate.conc(conc=tmp.conc$conc, time=tmp.conc$time,
-                           time.out=data.out$time,
-                           check=FALSE, ...)
-        },
-        description="With concentrations before and after and not an IV bolus before, interpolate between observed concentrations."))
+        description=paste("Extrapolate when the previous measurement is a",
+                          "concentration, and the current event is a dose or",
+                          "nothing.  If the previous concentration measurement",
+                          "is below the limit of quantification (zero), then",
+                          "return zero.")))
