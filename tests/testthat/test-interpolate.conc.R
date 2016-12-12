@@ -275,31 +275,60 @@ test_that("interpolate.conc", {
                                 interp.method="lin up/log down"),
                regexp="interpolate.conc can only works through Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation.")
 
+  ## Confirm that extrapolating before the first time uses conc.origin
+  expect_equal(interpolate.conc(conc=0:1,
+                                time=0:1,
+                                time.out=-1),
+               0,
+               info="conc.origin defaults to zero")
+  expect_equal(interpolate.conc(conc=0:1,
+                                time=0:1,
+                                time.out=-1,
+                                conc.origin=NA),
+               NA,
+               info="conc.origin is honored as NA")
+  expect_equal(interpolate.conc(conc=0:1,
+                                time=0:1,
+                                time.out=-1,
+                                conc.origin=5),
+               5,
+               info="conc.origin is honored as a number")
+  
   ## ##############################
   ## Confirm errors that should happen
 
-  ## Confirm that extrapolating before the first time is an error
-  expect_error(interpolate.conc(conc=0:1,
-                                time=0:1,
-                                time.out=-1),
-               regexp="Cannot interpolate backward in time")
-
-  ## Confirm that more than one time.out requested is an error (change
-  ## documentation when this is not true)
+  ## Change documentation when this is not true
   expect_error(interpolate.conc(conc=0:1,
                                 time=0:1,
                                 time.out=0:1),
-               regexp="Can only interpolate for one time point per function call")
+               regexp="Can only interpolate for one time point per function call",
+               info="Confirm that more than one time.out requested is an error")
 
-  ## Confirm that invalid interpolation methods are an error.
   expect_error(interpolate.conc(conc=0:1,
                                 time=0:1,
                                 time.out=0.5,
                                 interp.method="this doesn't work"),
-               regexp="interp.method must be one of 'linear' or 'lin up/log down'")
+               regexp="interp.method must be one of 'linear' or 'lin up/log down'",
+               info="Confirm that invalid interpolation methods are an error.")
 
-  ## FIXME: Future feature: Interpolation backward in time from a 0
-  ## starting value can be 0.
+  expect_error(interpolate.conc(conc=0:1,
+                                time=0:1,
+                                time.out=0.5,
+                                conc.origin=1:2),
+               regexp="conc.origin must be a scalar",
+               info="conc.origin must be a scalar")
+  expect_error(interpolate.conc(conc=0:1,
+                                time=0:1,
+                                time.out=0.5,
+                                conc.origin="A"),
+               regexp="conc.origin must be NA or a number \\(and not a factor\\)",
+               info="conc.origin must be a number and not a factor (character)")
+  expect_error(interpolate.conc(conc=0:1,
+                                time=0:1,
+                                time.out=0.5,
+                                conc.origin=factor("A")),
+               regexp="conc.origin must be NA or a number \\(and not a factor\\)",
+               info="conc.origin must be a number and not a factor (factor)")
 })
 
 test_that("interp.extrap.conc", {
@@ -329,14 +358,11 @@ test_that("interp.extrap.conc", {
 
 })
 
-# test_that("interp.extrap.conc.dose", {
-#   testconc.sd <- c(0, 1, 2, 1, 0.5, 0.25)
-#   testtime.sd <- 0:(length(testconc.sd) - 1)
-#   testdose.sd <- 0
-#   testconc.md <- c(testconc.sd, 0.25 + testconc.sd, 0.5 + testconc.sd)
-#   testtime.md <- 0:(length(testconc.md) - 1)
-#   interp.extrap.conc.dose(conc=testconc.sd,
-#                           time=testtime.sd,
-#                           time.dose=testdose.sd,
-#                           time.out=c)
-# })
+test_that("interp.extrap.conc.dose", {
+  expect_equal(
+    interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                            time=c(-1, 1:6),
+                            time.dose=0,
+                            time.out=c(-1, -0.1, 0, 0.1, 7)),
+    c(0, 0, 0, 0.1, 0.125))
+})
