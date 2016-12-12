@@ -10,6 +10,7 @@ This release is not backward compatible.  The switch to observed and
 predicted-related NCA parameters (like aucinf.obs and aucinf.pred)
 changed the format of the intervals specification.
 
+* Dose-aware interpolation and extrapolation was added with the interp.extrap.conc.dose function.
 * Added Clast.pred related NCA calculations
 * Added N to summary of PKNCAresults
 * Added parameter selection between Clast,observed and Clast,predicted across all parameters
