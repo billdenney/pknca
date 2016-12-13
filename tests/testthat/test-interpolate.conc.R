@@ -417,14 +417,14 @@ test_that("interp.extrap.conc.dose", {
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=-0.1),
-               structure(0, Method="After a concentration with either a dose or nothing at the current time"),
+               structure(0, Method="Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"),
                info="When the previous measurement is zero and there is no dose between, it is returned.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=0),
-               structure(0, Method="After a concentration with either a dose or nothing at the current time"),
+               structure(0, Method="Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"),
                info="When the previous measurement is zero it is at the time of the dose, zero is returned.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
@@ -445,5 +445,5 @@ test_that("interp.extrap.conc.dose", {
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=7),
-               structure(0.0625, Method="After a concentration with either a dose or nothing at the current time"))
+               structure(0.0625, Method="Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"))
 })
