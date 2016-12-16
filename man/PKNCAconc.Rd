@@ -13,35 +13,41 @@ PKNCAconc(data, ...)
 
 \method{PKNCAconc}{tbl_df}(data, ...)
 
-\method{PKNCAconc}{data.frame}(data, formula, subject, labels, units, ...)
+\method{PKNCAconc}{data.frame}(data, formula, subject, labels, units,
+  time.nominal, ...)
 }
 \arguments{
-\item{data}{A data frame with concentration, time, and the groups
+\item{data}{A data frame with concentration, time, and the groups 
 defined in \code{formula}.}
 
 \item{...}{Ignored.}
 
-\item{formula}{The formula defining the
+\item{formula}{The formula defining the 
 \code{concentration~time|groups}}
 
-\item{subject}{The column indicating the subject number (used for
-plotting).  If not provided, this defaults to the beginning of the
-inner groups: For example with
-\code{concentration~time|Study+Subject/Analyte}, the inner groups
-start with the first grouping variable before a \code{/},
-\code{Subject}.  If there is only one grouping variable, it is
+\item{subject}{The column indicating the subject number (used for 
+plotting).  If not provided, this defaults to the beginning of the 
+inner groups: For example with 
+\code{concentration~time|Study+Subject/Analyte}, the inner groups 
+start with the first grouping variable before a \code{/}, 
+\code{Subject}.  If there is only one grouping variable, it is 
 assumed to be the subject (e.g. \code{concentration~time|Subject}),
-and if there are multiple grouping variables without a \code{/},
+and if there are multiple grouping variables without a \code{/}, 
 subject is assumed to be the last one.  For single-subject data, it
 is assigned as \code{NULL}.}
 
-\item{labels}{(optional) Labels for use when plotting.  They are a
-named list where the names correspond to the names in the data
+\item{labels}{(optional) Labels for use when plotting.  They are a 
+named list where the names correspond to the names in the data 
 frame and the values are used for xlab and/or ylab as appropriate.}
 
-\item{units}{(optional) Units for use when plotting and calculating
+\item{units}{(optional) Units for use when plotting and calculating 
 parameters.  Note that unit conversions and simplifications are not
 done; the text is used as-is.}
+
+\item{time.nominal}{(optional) The name of the nominal time column
+(if the main time variable is actual time.  The \code{time.nominal}
+is not used during calculations; it is available to assist with
+data summary and checking.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

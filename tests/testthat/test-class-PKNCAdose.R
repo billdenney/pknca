@@ -164,3 +164,40 @@ test_that("PKNCAdose model.frame", {
                regexp="Rows that are not unique per group and time.*found within dosing data",
                info="Dosing must have unique values with time and group")
 })
+
+test_that("print.PKNCAdose", {
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  mydose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  tmp.conc.nogroup <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
+  tmp.dose.nogroup <- generate.dose(tmp.conc.nogroup)
+  mydose.nogroup <- PKNCAdose(tmp.dose.nogroup, formula=dose~time)
+  
+
+  expect_output(print(mydose),
+                regexp="Formula for dosing:
+ dose ~ time | treatment + ID
+Nominal time column is not specified.
+
+First 6 rows of dosing data:
+ treatment ID dose time         route duration
+     Trt 1  1    1    0 extravascular        0
+     Trt 1  2    1    0 extravascular        0
+     Trt 1  3    1    0 extravascular        0
+     Trt 1  4    1    0 extravascular        0
+     Trt 1  5    1    0 extravascular        0
+     Trt 2  1    2    0 extravascular        0",
+                fixed=TRUE,
+                info="Generic print.PKNCAdose works")
+  expect_output(print(mydose.nogroup),
+                regexp="Formula for dosing:
+ dose ~ time
+Nominal time column is not specified.
+
+Data for dosing:
+ treatment ID dose time         route duration
+     Trt 1  1    1    0 extravascular        0",
+                fixed=TRUE,
+                info="Generic print.PKNCAdose works with no groups")
+  
+})

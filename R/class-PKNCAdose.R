@@ -25,6 +25,10 @@
 #' @param units (optional) Units for use when plotting and calculating 
 #'   parameters.  Note that unit conversions and simplifications are not
 #'   done; the text is used as-is.
+#' @param time.nominal (optional) The name of the nominal time column
+#'   (if the main time variable is actual time.  The \code{time.nominal}
+#'   is not used during calculations; it is available to assist with
+#'   data summary and checking.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @details The \code{formula} for a \code{PKNCAdose} object can be 
@@ -58,7 +62,13 @@ PKNCAdose.tbl_df <- function(data, ...)
 #' @rdname PKNCAdose
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
-                                 labels, units, ...) {
+                                 labels, units, time.nominal, ...) {
+  ## Check inputs
+  if (!missing(time.nominal)) {
+    if (!(time.nominal %in% names(data))) {
+      stop("time.nominal, if given, must be a column name in the input data.")
+    }
+  }
   ## Verify that all the variables in the formula are columns in the
   ## data.
   parsedForm <- parseFormula(formula, require.two.sided=FALSE)
@@ -104,6 +114,9 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   }
   ret <- setDuration.PKNCAdose(ret, duration=duration,
                                rate=rate, dose=getDepVar.PKNCAdose(ret))
+  if (!missing(time.nominal)) {
+    ret$time.nominal <- time.nominal
+  }
   ret
 }
 
@@ -231,7 +244,7 @@ getData.PKNCAdose <-  function(object)
 #' @export
 print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
   cat("Formula for dosing:\n ")
-  print(stats::formula(x), ...)
+  print(stats::formula(x), showEnv=FALSE, ...)
   if (summarize) {
     cat("\n")
     grp <- getGroups(x)
@@ -246,6 +259,11 @@ print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
     } else {
       cat("No groups.\n")
     }
+  }
+  if ("time.nominal" %in% names(x)) {
+    cat("Nominal time column is: ", x$time.nominal, "\n", sep="")
+  } else {
+    cat("Nominal time column is not specified.\n")
   }
   if (n != 0) {
     if (n >= nrow(x$data)) {
@@ -264,11 +282,6 @@ print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
 #' @rdname print.PKNCAconc
 #' @export
 summary.PKNCAdose <- summary.PKNCAconc
-
-#' @rdname plot.PKNCAconc
-#' @export
-plot.PKNCAdata <- function(x, ...)
-  graphics::plot(x$conc, ...)
 
 #' @rdname split.PKNCAconc
 #' @export

@@ -179,3 +179,8 @@ split.PKNCAdata <- function(x, ...) {
   }
   ret
 }
+
+#' @rdname plot.PKNCAconc
+#' @export
+plot.PKNCAdata <- function(x, ...)
+  graphics::plot(x$conc, ...)

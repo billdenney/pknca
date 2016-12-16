@@ -22,7 +22,7 @@ test_that("PKNCAconc", {
   expect_error(PKNCAconc(tmp.conc, formula=conc~time|XXX+ID),
                regexp="All of the variables in the formula must be in the data",
                info="All formula parameters must be in the data (groups)")
-  
+
   ## Number of variables
   expect_error(PKNCAconc(tmp.conc, formula=conc+ID~time|treatment+ID),
                regexp="The left hand side of the formula must have exactly one variable",
@@ -30,7 +30,7 @@ test_that("PKNCAconc", {
   expect_error(PKNCAconc(tmp.conc, formula=conc~time+ID|treatment+ID),
                regexp="The right hand side of the formula \\(excluding groups\\) must have exactly one variable",
                info="The right number of parameters in the formula (RHS)")
-  
+
   ## Subject assignment
   expect_equal(PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID/analyte),
                PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID/analyte, subject="ID"))
@@ -117,4 +117,59 @@ test_that("split.PKNCAconc", {
                            ret
                          })),
               info="All values (other than data) are accurately transferred.")
+})
+
+test_that("print.PKNCAconc", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+
+  expect_output(print.PKNCAconc(myconc),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+                With 2 subjects defined in the 'ID' column.
+                Nominal time column is not specified.
+                
+                First 6 rows of concentration data:
+                treatment ID time      conc
+                Trt 1  1    0 0.0000000
+                Trt 1  1    1 0.7052248
+                Trt 1  1    2 0.7144320
+                Trt 1  1    3 0.8596094
+                Trt 1  1    4 0.9998126
+                Trt 1  1    5 0.7651474",
+                info="Generic print.PKNCAconc works")
+  expect_output(print.PKNCAconc(myconc, n=0),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+With 2 subjects defined in the 'ID' column.
+Nominal time column is not specified.",
+                info="print.PKNCAconc respects the n argument.")
+  expect_output(print.PKNCAconc(myconc, n=-98),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+                With 2 subjects defined in the 'ID' column.
+                Nominal time column is not specified.
+                
+                First 2 rows of concentration data:
+                treatment ID time      conc
+                Trt 1  1    0 0.0000000
+                Trt 1  1    1 0.7052248",
+                info="print.PKNCAconc accurately uses negative n argument.")
+})
+
+test_that("summary.PKNCAconc", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  
+  expect_output(summary(myconc),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+                With 2 subjects defined in the 'ID' column.
+                Nominal time column is not specified.
+                
+                Group summary:
+                Group Name Count
+                treatment     2
+                ID     4",
+                info="Generic summary.PKNCAconc works.")
 })

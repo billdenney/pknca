@@ -14,7 +14,7 @@ PKNCAdose(data, ...)
 \method{PKNCAdose}{tbl_df}(data, ...)
 
 \method{PKNCAdose}{data.frame}(data, formula, route, rate, duration, labels,
-  units, ...)
+  units, time.nominal, ...)
 }
 \arguments{
 \item{data}{A data frame with time and the groups defined in 
@@ -49,6 +49,11 @@ frame and the values are used for xlab and/or ylab as appropriate.}
 \item{units}{(optional) Units for use when plotting and calculating 
 parameters.  Note that unit conversions and simplifications are not
 done; the text is used as-is.}
+
+\item{time.nominal}{(optional) The name of the nominal time column
+(if the main time variable is actual time.  The \code{time.nominal}
+is not used during calculations; it is available to assist with
+data summary and checking.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

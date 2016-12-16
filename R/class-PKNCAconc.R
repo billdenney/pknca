@@ -1,25 +1,29 @@
 #' Create a PKNCAconc object
-#'
-#' @param data A data frame with concentration, time, and the groups
-#' defined in \code{formula}.
-#' @param formula The formula defining the
-#' \code{concentration~time|groups}
-#' @param subject The column indicating the subject number (used for
-#' plotting).  If not provided, this defaults to the beginning of the
-#' inner groups: For example with
-#' \code{concentration~time|Study+Subject/Analyte}, the inner groups
-#' start with the first grouping variable before a \code{/},
-#' \code{Subject}.  If there is only one grouping variable, it is
-#' assumed to be the subject (e.g. \code{concentration~time|Subject}),
-#' and if there are multiple grouping variables without a \code{/},
-#' subject is assumed to be the last one.  For single-subject data, it
-#' is assigned as \code{NULL}.
-#' @param labels (optional) Labels for use when plotting.  They are a
-#' named list where the names correspond to the names in the data
-#' frame and the values are used for xlab and/or ylab as appropriate.
-#' @param units (optional) Units for use when plotting and calculating
-#' parameters.  Note that unit conversions and simplifications are not
-#' done; the text is used as-is.
+#' 
+#' @param data A data frame with concentration, time, and the groups 
+#'   defined in \code{formula}.
+#' @param formula The formula defining the 
+#'   \code{concentration~time|groups}
+#' @param subject The column indicating the subject number (used for 
+#'   plotting).  If not provided, this defaults to the beginning of the 
+#'   inner groups: For example with 
+#'   \code{concentration~time|Study+Subject/Analyte}, the inner groups 
+#'   start with the first grouping variable before a \code{/}, 
+#'   \code{Subject}.  If there is only one grouping variable, it is 
+#'   assumed to be the subject (e.g. \code{concentration~time|Subject}),
+#'   and if there are multiple grouping variables without a \code{/}, 
+#'   subject is assumed to be the last one.  For single-subject data, it
+#'   is assigned as \code{NULL}.
+#' @param labels (optional) Labels for use when plotting.  They are a 
+#'   named list where the names correspond to the names in the data 
+#'   frame and the values are used for xlab and/or ylab as appropriate.
+#' @param units (optional) Units for use when plotting and calculating 
+#'   parameters.  Note that unit conversions and simplifications are not
+#'   done; the text is used as-is.
+#' @param time.nominal (optional) The name of the nominal time column
+#'   (if the main time variable is actual time.  The \code{time.nominal}
+#'   is not used during calculations; it is available to assist with
+#'   data summary and checking.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
@@ -38,7 +42,14 @@ PKNCAconc.tbl_df <- function(data, ...)
 
 #' @rdname PKNCAconc
 #' @export
-PKNCAconc.data.frame <- function(data, formula, subject, labels, units, ...) {
+PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
+                                 time.nominal, ...) {
+  ## Check inputs
+  if (!missing(time.nominal)) {
+    if (!(time.nominal %in% names(data))) {
+      stop("time.nominal, if given, must be a column name in the input data.")
+    }
+  }
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -93,6 +104,9 @@ PKNCAconc.data.frame <- function(data, formula, subject, labels, units, ...) {
     ret <- set.name.matching(ret, "labels", labels, data)
   if (!missing(units))
     ret <- set.name.matching(ret, "units", units, data)
+  if (!missing(time.nominal)) {
+    ret$time.nominal <- time.nominal
+  }
   class(ret) <- c("PKNCAconc", class(ret))
   ret
 }
@@ -191,6 +205,11 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
     cat(sprintf("With %d subjects defined in the '%s' column.\n",
                 length(unique(x$data[,x$subject])),
                 x$subject))
+  }
+  if ("time.nominal" %in% names(x)) {
+    cat("Nominal time column is: ", x$time.nominal, "\n", sep="")
+  } else {
+    cat("Nominal time column is not specified.\n")
   }
   if (summarize) {
     cat("\n")
