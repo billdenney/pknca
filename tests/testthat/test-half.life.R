@@ -48,10 +48,21 @@ test_that("pk.calc.half.life", {
     expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
                                    time=c(0, 1, 2, 3),
                                    min.hl.points=3,
+                                   allow.tmax.in.half.life=FALSE,
                                    adj.r.squared.factor=0.1,
                                    check=FALSE)$half.life,
                  1.000577,
-                 tolerance=0.0001))
+                 tolerance=0.00001))
+  expect_warning(
+    expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
+                                   time=c(0, 1, 2, 3),
+                                   min.hl.points=3,
+                                   allow.tmax.in.half.life=TRUE,
+                                   adj.r.squared.factor=0.1,
+                                   check=FALSE)$half.life,
+                 1.000346,
+                 tolerance=0.00001))
+  
 
   ## Make sure that when tmax and tlast are given that they are
   ## automatically included and not recalculated
