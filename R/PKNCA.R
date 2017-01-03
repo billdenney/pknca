@@ -10,7 +10,6 @@
 #' @docType package
 #' @name PKNCA
 #' @importFrom digest digest
-#' @importFrom doBy renameCol splitBy summaryBy
 #' @importFrom graphics plot
 #' @importFrom lattice xyplot
 #' @importFrom nlme fixef getData getGroups gnls intervals lme nlme ranef

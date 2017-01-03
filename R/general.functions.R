@@ -66,31 +66,6 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
   }
 }
 
-#' Similar to lapplyBy but returning a data frame
-#'
-#' @param formula See \code{splitBy}
-#' @param data See \code{splitBy}
-#' @param FUN either a function or a named list of functions
-#' @return A data frame with one column for each parameter of
-#' \code{formula} and one for each \code{FUN}.  If \code{FUN} is a
-#' named list, then the columns will be named the same; otherwise, the
-#' column will be named "FUN".
-#' @export
-sapplyBy <- function(formula, data=parent.frame(), FUN) {
-  sb <- doBy::splitBy(formula, data = data)
-  gr <- unique(attr(sb, "grps"))
-  ret <- attr(sb, "groupid")
-  if (is.function(FUN))
-    FUN <- list(FUN=FUN)
-  for (n in names(FUN)) {
-    ddd <- sapply(sb, FUN[[n]])
-    ret <- cbind(ret,
-                 doBy::renameCol(data.frame(result=ddd[gr]),
-                                 "result", n))
-  }
-  ret
-}
-
 #' Round a value to a defined number of digits printing out trailing
 #' zeros, if applicable.
 #'

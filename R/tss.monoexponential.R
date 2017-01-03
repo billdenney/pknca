@@ -95,19 +95,19 @@ tss.monoexponential.generate.formula <- function(data) {
   if ("treatment" %in% names(data)) {
     ctrough.by <-
       list("Ctrough.ss by treatment"=list(
-             formula=ctrough.ss~treatment-1,
-             ## Set the starting values for the ctrough.ss as the mean
-             ## concentration by treatment
-             start=doBy::summaryBy(conc~treatment,
-               data=data,
-               FUN=mean)$conc.mean))
+        formula=ctrough.ss~treatment-1,
+        ## Set the starting values for the ctrough.ss as the mean
+        ## concentration by treatment
+        start=dplyr::summarize_(
+          dplyr::group_by_(data, "treatment"),
+          .dots=list(conc.mean=~mean(conc)))$conc.mean))
   } else {
     ctrough.by <-
       list("Single Ctrough.ss"=list(
-             formula=ctrough.ss~1,
-             ## Set the starting values for the ctrough.ss as the mean
-             ## concentration.
-             start=mean(data$conc)))
+        formula=ctrough.ss~1,
+        ## Set the starting values for the ctrough.ss as the mean
+        ## concentration.
+        start=mean(data$conc)))
   }
   ## Try all combinations of Tss by treatment and single value
   tss.by <- list(
@@ -290,18 +290,21 @@ pk.tss.monoexponential.individual <- function(data,
   }
   output <- match.arg(output, several.ok=TRUE)
   ## Run by treatment or a single value for the full data frame
-  ret <- sapplyBy("treatment", data,
-                  FUN=list(tss.monoexponential.single=fit.tss))
+  ret <-
+    dplyr::summarize_(
+      dplyr::group_by_(data, "treatment"),
+      .dots=list(tss.monoexponential.single=~fit.tss(data.frame(time=time, tss.constant=tss.constant, conc=conc))))
   if ("subject" %in% names(data) &
       "individual" %in% output) {
     ret.sub <-
-      sapplyBy(c("treatment", "subject"),
-               data,
-               FUN=list(tss.monoexponential.individual=fit.tss))
+      dplyr::summarize_(
+        dplyr::group_by_(data, "treatment", "subject"),
+        .dots=list(tss.monoexponential.individual=~fit.tss(data.frame(time=time, tss.constant=tss.constant, conc=conc))))
     ret <- merge(ret, ret.sub, all=TRUE)
   }
   ## Return the requested columns
-  ret[,c(intersect(names(ret),
-                   c("subject", "treatment")),
-         paste("tss.monoexponential", output, sep="."))]
+  as.data.frame(
+    ret[,c(intersect(names(ret),
+                     c("subject", "treatment")),
+           paste("tss.monoexponential", output, sep="."))])
 }
