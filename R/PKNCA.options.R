@@ -2,7 +2,12 @@
 ## default options.
 
 .PKNCA.option.check <- list(
-  adj.r.squared.factor=function(x, default=FALSE) {
+  adj.r.squared.factor=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "The adjusted r^2 for the calculation of lambda.z has this factor",
+        "times the number of data points added to it.  It allows for more",
+        "data points to be preferred in the calculation of half-life."))
     if (default)
       return(0.0001)
     if (length(x) != 1)
@@ -17,7 +22,11 @@
       warning("adj.r.squared.factor is usually <0.01")
     x
   },
-  max.missing=function(x, default=FALSE) {
+  max.missing=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "The maximum fraction of the data that may be missing ('NA') to",
+        "calculate summary statistics with the business.* functions."))
     if (default)
       return(0.5)
     if (length(x) != 1)
@@ -31,12 +40,20 @@
       warning("max.missing is usually <= 0.5")
     x
   },
-  auc.method=function(x, default=FALSE) {
+  auc.method=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "The method used to calculate the AUC and related statistics.",
+        "Options are 'lin up/log down' and 'linear'."))
     if (default)
       return("lin up/log down")
     match.arg(x, c("lin up/log down", "linear"))
   },
-  conc.na=function(x, default=FALSE) {
+  conc.na=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "How should missing ('NA') concentration values be handled?  See",
+        "help for 'clean.conc.na' for how to use this option."))
     if (default)
       return("drop")
     if (is.na(x))
@@ -58,7 +75,12 @@
     }
     x
   },
-  conc.blq=function(x, default=FALSE) {
+  conc.blq=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "How should below the limit of quantification (zero, 0) concentration",
+        "values be handled?  See help for 'clean.conc.blq' for how to use",
+        "this option."))
     if (default)
       return(list(first="keep",
                   middle="drop",
@@ -99,7 +121,12 @@
     }
     x
   },
-  first.tmax=function(x, default=FALSE) {
+  first.tmax=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "If there is more than one concentration equal to Cmax, which time",
+        "should be selected for Tmax?  If 'TRUE', the first will be selected.",
+        "If 'FALSE', the last will be selected."))
     if (default)
       return(TRUE)
     if (length(x) != 1)
@@ -116,7 +143,11 @@
     }
     x
   },
-  allow.tmax.in.half.life=function(x, default=FALSE) {
+  allow.tmax.in.half.life=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "Should the concentration and time at Tmax be allowed in the",
+        "half-life calculation?  'TRUE' is yes and 'FALSE' is no."))
     if (default)
       return(FALSE)
     if (length(x) != 1)
@@ -133,7 +164,9 @@
     }
     x
   },
-  min.hl.points=function(x, default=FALSE) {
+  min.hl.points=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return("What is the minimum number of points required to calculate half-life?")
     if (default)
       return(3)
     if (length(x) != 1)
@@ -151,7 +184,9 @@
     }
     x
   },
-  min.span.ratio=function(x, default=FALSE) {
+  min.span.ratio=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return("What is the minimum span ratio required to consider a half-life valid?")
     if (default)
       return(2)
     if (length(x) != 1)
@@ -166,7 +201,9 @@
       warning("min.span.ratio is usually >= 2")
     x
   },
-  max.aucinf.pext=function(x, default=FALSE) {
+  max.aucinf.pext=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return("What is the maximum percent extrapolation to consider an AUCinf valid?")
     if (default)
       return(20)
     if (length(x) != 1)
@@ -183,7 +220,9 @@
       warning("max.aucinf.pext is on the percent not ratio scale, value given is <1%")
     x
   },
-  min.hl.r.squared=function(x, default=FALSE) {
+  min.hl.r.squared=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return("What is the minimum r-squared value to consider a half-life calculation valid?")
     if (default)
       return(0.9)
     if (length(x) != 1)
@@ -198,7 +237,14 @@
       warning("min.hl.r.squared is usually >= 0.9")
     x
   },
-  tau.choices=function(x, default=FALSE) {
+  tau.choices=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return(paste(
+        "What values for tau (repeating interdose interval) should be",
+        "considered when attempting to automatically determine the intervals",
+        "for multiple dosing?  See 'choose.auc.intervals' and 'find.tau' for",
+        "more information.  'NA' means automatically look at any potential",
+        "interval."))
     if (default)
       return(NA)
     if (is.factor(x))
@@ -214,7 +260,9 @@
       }
     x
   },
-  single.dose.aucs=function(x, default=FALSE) {
+  single.dose.aucs=function(x, default=FALSE, description=FALSE) {
+    if (description)
+      return("When data is single-dose, what intervals should be used?")
     if (default) {
       ## It is good to put this through the specification checker in
       ## case they get out of sync during development.  (A free test
@@ -232,38 +280,39 @@
   })
 
 #' Set default options for PKNCA functions
-#'
-#' This function will set the default PKNCA options.  If given no
-#' inputs, it will provide the current option set.  If given
-#' name/value pairs, it will set the option (as in the
-#' \code{\link{options}} function).  If given a name, it will return
-#' the value for the parameter.  If given the \code{default} option as
-#' true, it will provide the default options.
-#'
-#' Options are either for calculation or summary functions.
-#' Calculation options are required for a calculation function to
-#' report a result (otherwise the reported value will be \code{NA}).
-#' Summary options are used during summarization and are used for
-#' assessing what values are included in the summary.
-#'
+#' 
+#' This function will set the default PKNCA options.  If given no 
+#' inputs, it will provide the current option set.  If given name/value
+#' pairs, it will set the option (as in the \code{\link{options}}
+#' function).  If given a name, it will return the value for the
+#' parameter.  If given the \code{default} option as true, it will
+#' provide the default options.
+#' 
+#' Options are either for calculation or summary functions. Calculation
+#' options are required for a calculation function to report a result
+#' (otherwise the reported value will be \code{NA}). Summary options are
+#' used during summarization and are used for assessing what values are
+#' included in the summary.
+#' 
+#' See the vignette 'Options for Controlling PKNCA' for a current list
+#' of options.
+#' 
 #' @param \dots options to set or get the value for
 #' @param default (re)sets all default options
-#' @param check check a single option given, but do not set it (for
-#' validation of the values when used in another function)
+#' @param check check a single option given, but do not set it (for 
+#'   validation of the values when used in another function)
 #' @param name An option name to use with the \code{value}.
-#' @param value An option value (paired with the \code{name}) to set
-#' or check.
-#' @return
-#' If...
-#' \describe{
-#'   \item{no arguments are given}{returns the current options.}
-#'   \item{a value is set (including the defaults)}{returns \code{NULL}}
-#'   \item{a single value is requested}{the current value of that option is returned as a scalar}
-#'   \item{multiple values are requested}{the current values of those options are returned as a list}
-#' }
+#' @param value An option value (paired with the \code{name}) to set or
+#'   check.
+#' @return If... \describe{ \item{no arguments are given}{returns the
+#' current options.} \item{a value is set (including the
+#' defaults)}{returns \code{NULL}} \item{a single value is
+#' requested}{the current value of that option is returned as a scalar} 
+#' \item{multiple values are requested}{the current values of those
+#' options are returned as a list} }
 #' @seealso \code{\link{PKNCA.choose.option}}
 #' @examples
-#'
+#' 
 #' PKNCA.options()
 #' PKNCA.options(default=TRUE)
 #' PKNCA.options("auc.method")
@@ -360,6 +409,15 @@ PKNCA.choose.option <- function(name, options=list())
   } else {
     PKNCA.options(name)
   }
+
+#' Describe a PKNCA.options option by name.
+#' 
+#' @param name The option name requested.
+#' @return A character string of the description.
+#' @seealso \code{\link{PKNCA.options}}
+PKNCA.options.describe <- function(name) {
+  .PKNCA.option.check[[name]](description=TRUE)
+}
 
 #' Define how NCA parameters are summarized.
 #'

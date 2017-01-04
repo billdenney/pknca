@@ -1,0 +1,42 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Data Cleaning in PKNCA}
+-->
+---
+title: "Options for Controlling PKNCA"
+author: "William Denney"
+date: "January 4, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(PKNCA)
+```
+
+# Summary
+
+PKNCA has many options that control its function.  These options have effects throughout the package.  The options are controlled using either the `PKNCA.options` function or by passing the `options` argument to any of the functions with that as an argument.  All options supported by the current version of PKNCA (`r sessionInfo(package="PKNCA")$otherPkgs$PKNCA$Version`) are listed below with their descriptions.
+
+# Options
+
+```{r options, echo=FALSE, results='asis'}
+PKNCA.options(default=TRUE)
+opts <- PKNCA.options()
+for (n in names(opts)) {
+  cat("## ", n, "\n", sep="")
+  cat("\n")
+  cat(PKNCA:::PKNCA.options.describe(n), "\n", sep="")
+  cat("\n")
+  if (is.character(opts[[n]]) | is.numeric(opts[[n]]) | is.factor(opts[[n]])) {
+    cat("The default value is: ", opts[[n]], "\n", sep="")
+  } else if (is.data.frame(opts[[n]])) {
+    print(knitr::kable(opts[[n]]))
+  } else {
+    # Probably a list
+    print(opts[[n]])
+  }
+  cat("\n")
+}
+```
+
