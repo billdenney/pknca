@@ -1,12 +1,11 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Data Cleaning in PKNCA}
--->
 ---
 title: "Options for Controlling PKNCA"
 author: "William Denney"
-date: "January 4, 2017"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Options for Controlling PKNCA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

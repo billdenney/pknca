@@ -1,12 +1,11 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Writing PKNCA Parameter Functions}
--->
 ---
 title: "Writing PKNCA Parameter Functions"
 author: "William Denney"
-date: "September 15, 2016"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Writing PKNCA Parameter Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

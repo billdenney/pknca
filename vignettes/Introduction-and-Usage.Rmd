@@ -1,14 +1,11 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
--->
 ---
 title: "Introduction to PKNCA and Usage Instructions"
 author: "Bill Denney"
-output:
-  html_document:
-    toc: true
-    toc_depth: 2
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, echo=FALSE, include=FALSE}

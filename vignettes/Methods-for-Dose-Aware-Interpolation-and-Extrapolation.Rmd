@@ -1,15 +1,11 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Methods Used for Dose-Aware Concentration Interpolation/Extrapolation}
--->
 ---
 title: "Methods Used for Dose-Aware Concentration Interpolation/Extrapolation"
 author: "William Denney"
-date: "December 12, 2016"
-output:
-  html_document:
-    toc: true
-    toc_depth: 2
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Methods Used for Dose-Aware Concentration Interpolation/Extrapolation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

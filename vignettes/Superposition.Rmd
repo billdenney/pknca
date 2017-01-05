@@ -1,14 +1,11 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Superposition of Pharmacokinetic Data}
--->
 ---
 title: "Superposition of Pharmacokinetic Data"
 author: "Bill Denney"
-output:
-  html_document:
-    toc: false
-    toc_depth: 2
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Superposition of Pharmacokinetic Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, echo=FALSE, include=FALSE}
