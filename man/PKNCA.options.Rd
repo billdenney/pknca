@@ -9,39 +9,41 @@ PKNCA.options(..., default = FALSE, check = FALSE, name, value)
 \arguments{
 \item{default}{(re)sets all default options}
 
-\item{check}{check a single option given, but do not set it (for
+\item{check}{check a single option given, but do not set it (for 
 validation of the values when used in another function)}
 
 \item{name}{An option name to use with the \code{value}.}
 
-\item{value}{An option value (paired with the \code{name}) to set
-or check.}
+\item{value}{An option value (paired with the \code{name}) to set or
+check.}
 
 \item{\dots}{options to set or get the value for}
 }
 \value{
-If...
-\describe{
-  \item{no arguments are given}{returns the current options.}
-  \item{a value is set (including the defaults)}{returns \code{NULL}}
-  \item{a single value is requested}{the current value of that option is returned as a scalar}
-  \item{multiple values are requested}{the current values of those options are returned as a list}
-}
+If... \describe{ \item{no arguments are given}{returns the
+current options.} \item{a value is set (including the
+defaults)}{returns \code{NULL}} \item{a single value is
+requested}{the current value of that option is returned as a scalar} 
+\item{multiple values are requested}{the current values of those
+options are returned as a list} }
 }
 \description{
-This function will set the default PKNCA options.  If given no
-inputs, it will provide the current option set.  If given
-name/value pairs, it will set the option (as in the
-\code{\link{options}} function).  If given a name, it will return
-the value for the parameter.  If given the \code{default} option as
-true, it will provide the default options.
+This function will set the default PKNCA options.  If given no 
+inputs, it will provide the current option set.  If given name/value
+pairs, it will set the option (as in the \code{\link{options}}
+function).  If given a name, it will return the value for the
+parameter.  If given the \code{default} option as true, it will
+provide the default options.
 }
 \details{
-Options are either for calculation or summary functions.
-Calculation options are required for a calculation function to
-report a result (otherwise the reported value will be \code{NA}).
-Summary options are used during summarization and are used for
-assessing what values are included in the summary.
+Options are either for calculation or summary functions. Calculation
+options are required for a calculation function to report a result
+(otherwise the reported value will be \code{NA}). Summary options are
+used during summarization and are used for assessing what values are
+included in the summary.
+
+See the vignette 'Options for Controlling PKNCA' for a current list
+of options.
 }
 \examples{
 

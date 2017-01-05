@@ -14,7 +14,7 @@ PKNCAdose(data, ...)
 \method{PKNCAdose}{tbl_df}(data, ...)
 
 \method{PKNCAdose}{data.frame}(data, formula, route, rate, duration, labels,
-  units, time.nominal, ...)
+  units, time.nominal, exclude, ...)
 }
 \arguments{
 \item{data}{A data frame with time and the groups defined in 
@@ -54,6 +54,11 @@ done; the text is used as-is.}
 (if the main time variable is actual time.  The \code{time.nominal}
 is not used during calculations; it is available to assist with
 data summary and checking.}
+
+\item{exclude}{(optional) The name of a column with concentrations to
+exclude from calculations and summarization.  If given, the column 
+should have values of \code{NA} or \code{""} for concentrations to
+include and non-empty text for concentrations to exclude.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

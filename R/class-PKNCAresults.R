@@ -7,12 +7,21 @@
 #' Each row is one interval and each column is a group name or the
 #' name of an NCA parameter.
 #' @param data The PKNCAdata used to generate the result
+#' @param exclude (optional) The name of a column with concentrations to
+#'   exclude from calculations and summarization.  If given, the column 
+#'   should have values of \code{NA} or \code{""} for concentrations to
+#'   include and non-empty text for concentrations to exclude.
 #' @return A PKNCAresults object with each of the above within.
 #' @export
-PKNCAresults <- function(result, data) {
+PKNCAresults <- function(result, data, exclude) {
   ## Add all the parts into the object
   ret <- list(result=result,
               data=data)
+  if (missing(exclude)) {
+    ret <- setExcludeColumn(ret, dataname="result")
+  } else {
+    ret <- setExcludeColumn(ret, exclude=exclude, dataname="result")
+  }
   class(ret) <- c("PKNCAresults", class(ret))
   addProvenance(ret)
 }

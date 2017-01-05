@@ -14,7 +14,7 @@ test_that("pk.nca", {
   myresult <- pk.nca(mydata)
 
   expect_equal(names(myresult),
-               c("result", "data"),
+               c("result", "data", "exclude"),
                info="Make sure that the result has the expected names (and only the expected names) in it.")
   expect_true(checkProvenance(myresult),
               info="Provenance works on results")
@@ -70,6 +70,7 @@ test_that("pk.nca", {
                 24.00, 0.3148, 0.05689, 0.9000, 0.8944,
                 5.000, 20.00, 0.3011, 12.18,
                 1.560, 19.56),
+      exclude=NA_character_,
       stringsAsFactors=FALSE)
   expect_equal(myresult$result, verify.result,
                tol=0.001,

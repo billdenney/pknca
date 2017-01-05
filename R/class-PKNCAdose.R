@@ -29,6 +29,10 @@
 #'   (if the main time variable is actual time.  The \code{time.nominal}
 #'   is not used during calculations; it is available to assist with
 #'   data summary and checking.
+#' @param exclude (optional) The name of a column with concentrations to
+#'   exclude from calculations and summarization.  If given, the column 
+#'   should have values of \code{NA} or \code{""} for concentrations to
+#'   include and non-empty text for concentrations to exclude.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @details The \code{formula} for a \code{PKNCAdose} object can be 
@@ -62,7 +66,7 @@ PKNCAdose.tbl_df <- function(data, ...)
 #' @rdname PKNCAdose
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
-                                 labels, units, time.nominal, ...) {
+                                 labels, units, time.nominal, exclude, ...) {
   ## Check inputs
   if (!missing(time.nominal)) {
     if (!(time.nominal %in% names(data))) {
@@ -98,6 +102,11 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   ret <- list(data=data,
               formula=formula)
   class(ret) <- c("PKNCAdose", class(ret))
+  if (missing(exclude)) {
+    ret <- setExcludeColumn(ret)
+  } else {
+    ret <- setExcludeColumn(ret, exclude=exclude)
+  }
   mask.indep <- is.na(getIndepVar.PKNCAdose(ret))
   if (any(mask.indep) & !all(mask.indep)) {
     stop("Some but not all values are missing for the independent variable, please see the help for PKNCAdose for how to specify the formula and confirm that your data has dose times for all doses.")

@@ -43,25 +43,29 @@ test_that("PKNCAdose", {
   expect_equal(PKNCAdose(tmp.dose, formula=.~time|treatment+ID),
                structure(list(
                  data=cbind(tmp.dose,
-                            data.frame(route="extravascular",
+                            data.frame(exclude=NA_character_,
+                                       route="extravascular",
                                        duration=0,
                                        stringsAsFactors=FALSE)),
                  formula = . ~ time | treatment + ID,
+                 exclude="exclude",
                  route="route",
                  duration="duration"),
-                 .Names = c("data", "formula", "route", "duration"),
+                 .Names = c("data", "formula", "exclude", "route", "duration"),
                  class = c("PKNCAdose", "list")),
                info="PKNCAdose accepts . on the left side of the formula")
   expect_equal(PKNCAdose(tmp.dose, formula=dose~.|treatment+ID),
                structure(list(
                  data=cbind(tmp.dose,
-                            data.frame(route="extravascular",
+                            data.frame(exclude=NA_character_,
+                                       route="extravascular",
                                        duration=0,
                                        stringsAsFactors=FALSE)),
                  formula = dose ~ . | treatment + ID,
+                 exclude="exclude",
                  route="route",
                  duration="duration"),
-                 .Names = c("data", "formula", "route", "duration"),
+                 .Names = c("data", "formula", "exclude", "route", "duration"),
                  class = c("PKNCAdose", "list")),
                info="PKNCAdose accepts . on the right side of the formula")
   
@@ -180,13 +184,13 @@ test_that("print.PKNCAdose", {
 Nominal time column is not specified.
 
 First 6 rows of dosing data:
- treatment ID dose time         route duration
-     Trt 1  1    1    0 extravascular        0
-     Trt 1  2    1    0 extravascular        0
-     Trt 1  3    1    0 extravascular        0
-     Trt 1  4    1    0 extravascular        0
-     Trt 1  5    1    0 extravascular        0
-     Trt 2  1    2    0 extravascular        0",
+ treatment ID dose time exclude         route duration
+     Trt 1  1    1    0    <NA> extravascular        0
+     Trt 1  2    1    0    <NA> extravascular        0
+     Trt 1  3    1    0    <NA> extravascular        0
+     Trt 1  4    1    0    <NA> extravascular        0
+     Trt 1  5    1    0    <NA> extravascular        0
+     Trt 2  1    2    0    <NA> extravascular        0",
                 fixed=TRUE,
                 info="Generic print.PKNCAdose works")
   expect_output(print(mydose.nogroup),
@@ -195,8 +199,8 @@ First 6 rows of dosing data:
 Nominal time column is not specified.
 
 Data for dosing:
- treatment ID dose time         route duration
-     Trt 1  1    1    0 extravascular        0",
+ treatment ID dose time exclude         route duration
+     Trt 1  1    1    0    <NA> extravascular        0",
                 fixed=TRUE,
                 info="Generic print.PKNCAdose works with no groups")
   

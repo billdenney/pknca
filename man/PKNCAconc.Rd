@@ -14,7 +14,7 @@ PKNCAconc(data, ...)
 \method{PKNCAconc}{tbl_df}(data, ...)
 
 \method{PKNCAconc}{data.frame}(data, formula, subject, labels, units,
-  time.nominal, ...)
+  time.nominal, exclude, ...)
 }
 \arguments{
 \item{data}{A data frame with concentration, time, and the groups 
@@ -44,10 +44,15 @@ frame and the values are used for xlab and/or ylab as appropriate.}
 parameters.  Note that unit conversions and simplifications are not
 done; the text is used as-is.}
 
-\item{time.nominal}{(optional) The name of the nominal time column
+\item{time.nominal}{(optional) The name of the nominal time column 
 (if the main time variable is actual time.  The \code{time.nominal}
-is not used during calculations; it is available to assist with
+is not used during calculations; it is available to assist with 
 data summary and checking.}
+
+\item{exclude}{(optional) The name of a column with concentrations to
+exclude from calculations and summarization.  If given, the column 
+should have values of \code{NA} or \code{""} for concentrations to
+include and non-empty text for concentrations to exclude.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

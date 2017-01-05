@@ -20,10 +20,14 @@
 #' @param units (optional) Units for use when plotting and calculating 
 #'   parameters.  Note that unit conversions and simplifications are not
 #'   done; the text is used as-is.
-#' @param time.nominal (optional) The name of the nominal time column
+#' @param time.nominal (optional) The name of the nominal time column 
 #'   (if the main time variable is actual time.  The \code{time.nominal}
-#'   is not used during calculations; it is available to assist with
+#'   is not used during calculations; it is available to assist with 
 #'   data summary and checking.
+#' @param exclude (optional) The name of a column with concentrations to
+#'   exclude from calculations and summarization.  If given, the column 
+#'   should have values of \code{NA} or \code{""} for concentrations to
+#'   include and non-empty text for concentrations to exclude.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
@@ -43,7 +47,7 @@ PKNCAconc.tbl_df <- function(data, ...)
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
-                                 time.nominal, ...) {
+                                 time.nominal, exclude, ...) {
   ## Check inputs
   if (!missing(time.nominal)) {
     if (!(time.nominal %in% names(data))) {
@@ -99,6 +103,11 @@ PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
   ret <- list(data=data,
               formula=formula,
               subject=subject)
+  if (missing(exclude)) {
+    ret <- setExcludeColumn(ret)
+  } else {
+    ret <- setExcludeColumn(ret, exclude=exclude)
+  }
   ## check and add labels and units
   if (!missing(labels))
     ret <- set.name.matching(ret, "labels", labels, data)

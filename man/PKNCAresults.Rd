@@ -4,7 +4,7 @@
 \alias{PKNCAresults}
 \title{Generate a PKNCAresults object}
 \usage{
-PKNCAresults(result, data)
+PKNCAresults(result, data, exclude)
 }
 \arguments{
 \item{result}{a data frame with NCA calculation results and groups.
@@ -12,6 +12,11 @@ Each row is one interval and each column is a group name or the
 name of an NCA parameter.}
 
 \item{data}{The PKNCAdata used to generate the result}
+
+\item{exclude}{(optional) The name of a column with concentrations to
+exclude from calculations and summarization.  If given, the column 
+should have values of \code{NA} or \code{""} for concentrations to
+include and non-empty text for concentrations to exclude.}
 }
 \value{
 A PKNCAresults object with each of the above within.
