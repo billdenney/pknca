@@ -17,42 +17,48 @@ PKNCAdata(data.conc, data.dose, ...)
   formula.dose, intervals, options = list())
 }
 \arguments{
-\item{data.conc}{Concentration data as a \code{PKNCAconc} object or
-a data frame}
+\item{data.conc}{Concentration data as a \code{PKNCAconc} object or a
+data frame}
 
-\item{data.dose}{Dosing data as a \code{PKNCAdose} object}
+\item{data.dose}{Dosing data as a \code{PKNCAdose} object (see 
+details)}
 
 \item{...}{arguments passed to \code{PKNCAdata.default}}
 
-\item{formula.conc}{Formula for making a \code{PKNCAconc} object
-with \code{data.conc}.  This must be given if \code{data.conc} is
-a data.frame, and it must not be given if \code{data.conc} is a
+\item{formula.conc}{Formula for making a \code{PKNCAconc} object with
+\code{data.conc}.  This must be given if \code{data.conc} is a 
+data.frame, and it must not be given if \code{data.conc} is a 
 \code{PKNCAconc} object.}
 
-\item{formula.dose}{Formula for making a \code{PKNCAdose} object
-with \code{data.dose}.  This must be given if \code{data.dose} is
-a data.frame, and it must not be given if \code{data.dose} is a
+\item{formula.dose}{Formula for making a \code{PKNCAdose} object with
+\code{data.dose}.  This must be given if \code{data.dose} is a 
+data.frame, and it must not be given if \code{data.dose} is a 
 \code{PKNCAdose} object.}
 
-\item{intervals}{A data frame with the AUC interval specifications
-as defined in \code{\link{check.interval.specification}}.  If
-missing, this will be automatically chosen by
-\code{\link{choose.auc.intervals}}.}
+\item{intervals}{A data frame with the AUC interval specifications as
+defined in \code{\link{check.interval.specification}}.  If missing,
+this will be automatically chosen by 
+\code{\link{choose.auc.intervals}}. (see details)}
 
-\item{options}{List of changes to the default
+\item{options}{List of changes to the default 
 \code{\link{PKNCA.options}} for calculations.}
 }
 \value{
-A PKNCAdata object with concentration, dose, interval, and
-  calculation options stored (note that PKNCAdata objects can also
+A PKNCAdata object with concentration, dose, interval, and 
+  calculation options stored (note that PKNCAdata objects can also 
   have results after a NCA calculations are done to the data).
 }
 \description{
-\code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and
+\code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and 
 adds in the intervals for PK calculations.
 }
+\details{
+If \code{data.dose} is not given or is \code{NA}, then the 
+  \code{intervals} must be given.  At least one of \code{data.dose}
+  and \code{intervals} must be given.
+}
 \seealso{
-\code{\link{PKNCAconc}}, \code{\link{PKNCAdose}},
+\code{\link{PKNCAconc}}, \code{\link{PKNCAdose}}, 
   \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
 }
 

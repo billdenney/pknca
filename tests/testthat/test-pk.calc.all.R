@@ -48,7 +48,6 @@ test_that("pk.nca", {
     tmp
   }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options")
 
-  test.code.levels <- levels(myresult$result$PPTESTCD)
   verify.result <-
     data.frame(
       start=0,
@@ -56,13 +55,12 @@ test_that("pk.nca", {
             24, rep(Inf, 13)),
       treatment="Trt 1",
       ID=rep(c(1, 2), each=14),
-      PPTESTCD=factor(rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
-                            "lambda.z", "r.squared", "adj.r.squared",
-                            "lambda.z.time.first", "lambda.z.n.points",
-                            "clast.pred", "half.life", "span.ratio",
-                            "aucinf.obs"),
-                          times=2),
-                      levels=test.code.levels),
+      PPTESTCD=rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
+                     "lambda.z", "r.squared", "adj.r.squared",
+                     "lambda.z.time.first", "lambda.z.n.points",
+                     "clast.pred", "half.life", "span.ratio",
+                     "aucinf.obs"),
+                   times=2),
       PPORRES=c(13.54, 0.9998, 4.000, 24.00, 0.3441,
                 0.04297, 0.9072, 0.9021, 5.000,
                 20.00, 0.3356, 16.13, 1.178,
@@ -187,4 +185,23 @@ test_that("Calculations when dose time is missing", {
 
   tmpdose$time <- NULL
   tmpdose <- merge(tmpdose, data.frame(time=c(0, 6, 12, 18, 24)))
+})
+
+test_that("Calculations when no dose info is given", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, intervals=data.frame(start=0, end=24, cmax=TRUE, cl.last=TRUE))
+  expect_message(myresult <- pk.nca(mydata),
+                 regexp="No dose information provided, assuming default dosing information.",
+                 info="Default dosing information is assumed if no dosing information is given.")
+  expect_equal(myresult$result,
+               data.frame(start=0,
+                          end=24,
+                          treatment="Trt 1",
+                          ID=rep(1:2, each=3),
+                          PPTESTCD=rep(c("auclast", "cmax", "cl.last"), 2),
+                          PPORRES=c(13.5417297156528, 0.999812606062292, NA,
+                                    14.0305397438242, 0.94097296083447, NA),
+                          exclude=NA_character_,
+                          stringsAsFactors=FALSE))
 })

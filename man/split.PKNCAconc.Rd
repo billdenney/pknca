@@ -17,7 +17,7 @@
 
 \item{f}{the groups to use for splitting the object}
 
-\item{drop}{logical indicating if levels that do not occur should be
+\item{drop}{logical indicating if levels that do not occur should be 
 dropped.}
 
 \item{...}{Ignored.}
@@ -29,5 +29,10 @@ A list of objects with an attribute of groupid consisting of
 \description{
 \code{split.PKNCAconc} divides data into individual groups defined by
 \code{\link{getGroups.PKNCAconc}}.
+}
+\details{
+If \code{x} is \code{NA} then a list with NA as the only
+  element and a "groupid" attribute of an empty data.frame is
+  returned.
 }
 

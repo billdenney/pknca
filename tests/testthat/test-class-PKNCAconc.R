@@ -117,6 +117,13 @@ test_that("split.PKNCAconc", {
                            ret
                          })),
               info="All values (other than data) are accurately transferred.")
+  expect_equal(split.PKNCAconc(NA),
+               {
+                 tmp <- list(NA)
+                 attr(tmp, "groupid") <- data.frame(NA)[,c()]
+                 tmp
+               },
+               info="NA split returns an effectively null split.")
 })
 
 test_that("print.PKNCAconc", {

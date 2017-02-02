@@ -13,9 +13,19 @@ pk.nca <- function(data) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
-    ## If dose is not given, give a false dose column with all NAs to
-    ## simplify dose handling in subsequent steps.
+    if (identical(NA, data$dose)) {
+      # If no dose information is given, add NULL dose information.
+      message("No dose information provided, assuming default dosing information.")
+      tmp.dose.data <- unique(getGroups(data$conc))
+      data$dose <-
+        PKNCAdose(data=tmp.dose.data,
+                  formula=as.formula(
+                    paste0(".~.|",
+                           paste(names(tmp.dose.data), collapse="+"))))
+    }
     if (identical(all.vars(parseFormula(data$dose)$lhs), character())) {
+      ## If dose amount is not given, give a false dose column with all 
+      ## NAs to simplify dose handling in subsequent steps.
       col.dose <- paste0(max(names(data$dose$data)), "X")
       data$dose$data[,col.dose] <- NA
       data$dose$formula <-
@@ -74,6 +84,11 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
   col.time <- all.vars(pformula.conc$rhs)
   col.dose <- all.vars(pformula.dose$lhs)
   col.time.dose <- all.vars(pformula.dose$rhs)
+  # Insert NA doses and dose times if they are not given
+  if (!(col.dose %in% names(conc.dose$dose$data))) {
+    col.dose <- paste0(max(names(conc.dose$dose$data)), "X")
+    conc.dose$dose$data[[col.dose]] <- NA
+  }
   if (!(col.time.dose %in% names(conc.dose$dose$data))) {
     col.time.dose <- paste0(max(names(conc.dose$dose$data)), "X")
     conc.dose$dose$data[[col.time.dose]] <- NA
@@ -222,11 +237,15 @@ pk.nca.interval <- function(conc, time,
       ## If the function returns a data frame, save all the returned
       ## values, otherwise, save the value returned.
       if (is.data.frame(tmp.result)) {
-        ret <- rbind(ret, data.frame(PPTESTCD=names(tmp.result),
-                                     PPORRES=unlist(tmp.result, use.names=FALSE)))
+        ret <- rbind(ret,
+                     data.frame(PPTESTCD=names(tmp.result),
+                                PPORRES=unlist(tmp.result, use.names=FALSE),
+                                stringsAsFactors=FALSE))
       } else {
-        ret <- rbind(ret, data.frame(PPTESTCD=n,
-                                     PPORRES=tmp.result))
+        ret <- rbind(ret,
+                     data.frame(PPTESTCD=n,
+                                PPORRES=tmp.result,
+                                stringsAsFactors=FALSE))
       }
     }
   ret

@@ -29,7 +29,6 @@ test_that("PKNCAresults generation", {
     tmp
   }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options")
   
-  test.code.levels <- levels(myresult$result$PPTESTCD)
   verify.result <-
     data.frame(
       start=0,
@@ -37,13 +36,12 @@ test_that("PKNCAresults generation", {
             24, rep(Inf, 13)),
       treatment="Trt 1",
       ID=rep(c(1, 2), each=14),
-      PPTESTCD=factor(rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
-                            "lambda.z", "r.squared", "adj.r.squared",
-                            "lambda.z.time.first", "lambda.z.n.points",
-                            "clast.pred", "half.life", "span.ratio",
-                            "aucinf.obs"),
-                          times=2),
-                      levels=test.code.levels),
+      PPTESTCD=rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
+                     "lambda.z", "r.squared", "adj.r.squared",
+                     "lambda.z.time.first", "lambda.z.n.points",
+                     "clast.pred", "half.life", "span.ratio",
+                     "aucinf.obs"),
+                   times=2),
       PPORRES=c(13.54, 0.9998, 4.000, 24.00, 0.3441,
                 0.04297, 0.9072, 0.9021, 5.000,
                 20.00, 0.3356, 16.13, 1.178,

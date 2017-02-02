@@ -70,3 +70,143 @@ test_that("PKNCAdata", {
                }, check.attributes=FALSE,
                info="Selection of single dose AUCs")
 })
+
+test_that("PKNCAdata with no dose", {
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  obj.conc <-
+    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+
+  expect_error(PKNCAdata(obj.conc),
+               regexp="If data.dose is not given, intervals must be given",
+               info="One of dose and intervals is required (no dose)")
+  expect_error(PKNCAdata(obj.conc, data.dose=NA),
+               regexp="If data.dose is not given, intervals must be given",
+               info="One of dose and intervals is required (NA dose)")
+  expect_equal(PKNCAdata(obj.conc, intervals=data.frame(start=0, end=24, aucinf.obs=TRUE)),
+               {
+                 tmp <- list(conc=obj.conc,
+                             dose=NA,
+                             options=list(),
+                             intervals=check.interval.specification(
+                               data.frame(start=0, end=24, aucinf.obs=TRUE)))
+                 class(tmp) <- c("PKNCAdata", "list")
+                 tmp
+               })
+})
+
+test_that("print.PKNCAdata", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  obj.conc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  obj.dose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  obj.data.nodose <- PKNCAdata(obj.conc,
+                               intervals=data.frame(start=0, end=24, aucinf.obs=TRUE))
+  obj.data.nodose.opt <-
+    PKNCAdata(obj.conc,
+              intervals=data.frame(start=0, end=24, aucinf.obs=TRUE),
+              options=list(min.hl.r.squared=0.95))
+  obj.data.dose <- PKNCAdata(obj.conc, data.dose=obj.dose)
+
+  expect_output(print.PKNCAdata(obj.data.nodose),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+With 2 subjects defined in the 'ID' column.
+Nominal time column is not specified.
+                
+First 6 rows of concentration data:
+ treatment ID time      conc exclude
+     Trt 1  1    0 0.0000000    <NA>
+     Trt 1  1    1 0.7052248    <NA>
+     Trt 1  1    2 0.7144320    <NA>
+     Trt 1  1    3 0.8596094    <NA>
+     Trt 1  1    4 0.9998126    <NA>
+     Trt 1  1    5 0.7651474    <NA>
+No dosing information.
+
+With 1 rows of AUC specifications.
+No options are set differently than default.",
+                info="Generic print.PKNCAdata works with no dosing")
+  expect_output(print.PKNCAdata(obj.data.dose),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+With 2 subjects defined in the 'ID' column.
+Nominal time column is not specified.
+                
+First 6 rows of concentration data:
+ treatment ID time      conc exclude
+     Trt 1  1    0 0.0000000    <NA>
+     Trt 1  1    1 0.7052248    <NA>
+     Trt 1  1    2 0.7144320    <NA>
+     Trt 1  1    3 0.8596094    <NA>
+     Trt 1  1    4 0.9998126    <NA>
+     Trt 1  1    5 0.7651474    <NA>
+Formula for dosing:
+ dose ~ time | treatment + ID
+Nominal time column is not specified.
+                
+Data for dosing:
+ treatment ID dose time exclude         route duration
+     Trt 1  1    1    0    <NA> extravascular        0
+     Trt 1  2    1    0    <NA> extravascular        0
+     Trt 2  1    2    0    <NA> extravascular        0
+     Trt 2  2    2    0    <NA> extravascular        0
+With 1 rows of AUC specifications.
+No options are set differently than default.",
+                info="Generic print.PKNCAdata works with dosing")
+
+  expect_output(print.PKNCAdata(obj.data.nodose.opt),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+With 2 subjects defined in the 'ID' column.
+Nominal time column is not specified.
+                
+First 6 rows of concentration data:
+ treatment ID time      conc exclude
+     Trt 1  1    0 0.0000000    <NA>
+     Trt 1  1    1 0.7052248    <NA>
+     Trt 1  1    2 0.7144320    <NA>
+     Trt 1  1    3 0.8596094    <NA>
+     Trt 1  1    4 0.9998126    <NA>
+     Trt 1  1    5 0.7651474    <NA>
+No dosing information.
+
+With 1 rows of AUC specifications.
+Options changed from default are:
+$min.hl.r.squared
+[1] 0.95",
+                info="Generic print.PKNCAdata works with no dosing and with options changed")
+})
+
+test_that("summary.PKNCAdata", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  obj.conc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  obj.dose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  obj.data.nodose <- PKNCAdata(obj.conc,
+                               intervals=data.frame(start=0, end=24, aucinf.obs=TRUE))
+  
+  expect_output(summary(obj.data.nodose),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+With 2 subjects defined in the 'ID' column.
+Nominal time column is not specified.
+
+Group summary:
+ Group Name Count
+  treatment     2
+         ID     4
+
+First 6 rows of concentration data:
+ treatment ID time      conc exclude
+     Trt 1  1    0 0.0000000    <NA>
+     Trt 1  1    1 0.7052248    <NA>
+     Trt 1  1    2 0.7144320    <NA>
+     Trt 1  1    3 0.8596094    <NA>
+     Trt 1  1    4 0.9998126    <NA>
+     Trt 1  1    5 0.7651474    <NA>
+No dosing information.
+
+With 1 rows of AUC specifications.
+No options are set differently than default.",
+                info="Generic summary.PKNCAdata works.")
+})
