@@ -60,7 +60,10 @@ test_that("setExcludeColumn", {
                list(data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
                     exclude="exclude"),
                info="setExcludeColumn works with zero-row data")
-  
+  expect_equal(setExcludeColumn(list(data=data.frame()), exclude="foo"),
+               list(data=data.frame(foo=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
+                    exclude="foo"),
+               info="setExcludeColumn works with zero-row data")
 })
 
 test_that("exclude.helper", {

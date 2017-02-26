@@ -205,3 +205,31 @@ test_that("Calculations when no dose info is given", {
                           exclude=NA_character_,
                           stringsAsFactors=FALSE))
 })
+
+test_that("pk.nca with exclusions", {
+  ## Note that generate.conc sets the random seed, so it doesn't have
+  ## to happen here.
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  tmpconc.excl <- tmpconc
+  tmpconc.excl$excl <- NA_character_
+  tmpconc.excl$excl[5] <- "test exclusion"
+  myconc.excl <- PKNCAconc(tmpconc.excl,
+                           formula=conc~time|treatment+ID,
+                           exclude="excl")
+  mydata.excl <- PKNCAdata(myconc.excl, mydose)
+  myresult.excl <- pk.nca(mydata.excl)
+  expect_true(identical(myresult$result[myresult$result$ID %in% 2,],
+                        myresult.excl$result[myresult.excl$result$ID %in% 2,]),
+               info="Results are unchanged for the subject who has the same data")
+  expect_false(identical(myresult$result[myresult$result$ID %in% 1,],
+                         myresult.excl$result[myresult.excl$result$ID %in% 1,]),
+               info="Results are changed for the subject who has the same data")
+  expect_equal(myresult.excl$result$PPORRES[myresult.excl$result$ID %in% 1 & myresult.excl$result$PPTESTCD %in% "cmax"],
+               max(tmpconc.excl$conc[tmpconc.excl$ID %in% 1 & is.na(tmpconc.excl$excl)]),
+               info="Cmax is affected by the exclusion")
+})

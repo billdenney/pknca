@@ -61,7 +61,8 @@ pk.nca <- function(data) {
     rownames(results) <- NULL
   }
   PKNCAresults(result=results,
-               data=data)
+               data=data,
+               exclude="exclude")
 }
 
 ## Subset data down to just the times of interest and then pass it
@@ -99,17 +100,19 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
     ## column the independent variable.
     tmpconcdata <-
       merge(conc.dose$conc$data,
-            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.conc, col.time)]
+            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.conc, col.time, conc.dose$conc$exclude)]
     tmpdosedata <-
       merge(conc.dose$dose$data,
-            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.dose, col.time.dose)]
+            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.dose, col.time.dose, conc.dose$dose$exclude)]
     ## Choose only times between the start and end.
-    mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[,col.time] &
-                         tmpconcdata[,col.time] <= all.intervals$end[i])
+    mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[[col.time]] &
+                         tmpconcdata[[col.time]] <= all.intervals$end[i] &
+                         is.na(tmpconcdata[[conc.dose$conc$exclude]]))
     tmpconcdata <- tmpconcdata[mask.keep.conc,]
     mask.keep.dose <- (is.na(tmpdosedata[,col.time.dose]) |
-                         (all.intervals$start[i] <= tmpdosedata[,col.time.dose] &
-                            tmpdosedata[,col.time.dose] < all.intervals$end[i]))
+                         (all.intervals$start[i] <= tmpdosedata[[col.time.dose]] &
+                            tmpdosedata[[col.time.dose]] < all.intervals$end[i]) &
+                         is.na(tmpdosedata[[conc.dose$dose$exclude]]))
     tmpdosedata <- tmpdosedata[mask.keep.dose,]
     ## Sort the data in time order
     tmpconcdata <- tmpconcdata[order(tmpconcdata[[col.time]]),]
@@ -240,11 +243,13 @@ pk.nca.interval <- function(conc, time,
         ret <- rbind(ret,
                      data.frame(PPTESTCD=names(tmp.result),
                                 PPORRES=unlist(tmp.result, use.names=FALSE),
+                                exclude=NA_character_,
                                 stringsAsFactors=FALSE))
       } else {
         ret <- rbind(ret,
                      data.frame(PPTESTCD=n,
                                 PPORRES=tmp.result,
+                                exclude=NA_character_,
                                 stringsAsFactors=FALSE))
       }
     }

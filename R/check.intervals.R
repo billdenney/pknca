@@ -1,65 +1,23 @@
-#' Check the formatting of a calculation interval specification data
+#' Check the formatting of a calculation interval specification data 
 #' frame.
-#'
-#' Calculation interval specifications are data frames defining what
-#' calculations will be required and summarized from all time
-#' intervals.  Note: parameters which are not requested may be
-#' calculated if it is required for (or computed at the same time as)
-#' a requested parameter.
 #' 
-#' The data frame columns (with variable type in parentheses) are:
-#' \describe{
-#'   \item{\code{start}}{The starting time (numeric)}
-#'   \item{\code{end}}{The ending time (numeric including Inf)}
-#'   \item{\code{aucinf}}{Compute AUCinf (logical)}
-#'   \item{\code{auclast}}{Compute AUClast (logical)}
-#'   \item{\code{aucall}}{Compute AUCall (logical)}
-#'   \item{\code{aumcinf}}{Compute AUMCinf (logical)}
-#'   \item{\code{aumclast}}{Compute AUMClast (logical)}
-#'   \item{\code{aumcall}}{Compute AUMCall (logical)}
-#'   \item{\code{tfirst}}{The time of the first concentration above the limit
-#'     of quantification (logical)}
-#'   \item{\code{tmax}}{The time of observed maximum concentration (logical)}
-#'   \item{\code{tlast}}{The time of the last concentration above the limit
-#'     of quantification (logical)}
-#'   \item{\code{cmin}}{The observed minimum concentration during the interval
-#'     (logical)}
-#'   \item{\code{cmax}}{The observed maximum concentration (logical)}
-#'   \item{\code{clast.obs}}{The observed last concentration (logical)}
-#'   \item{\code{clast.pred}}{The concentration at \code{tlast} predicted by
-#'     the half life (logical)}
-#'   \item{\code{half.life}}{The half-life (logical)}
-#'   \item{\code{thalf.eff}}{The effective half-life (logical)}
-#'   \item{\code{aucpext}}{The percent of the AUCinf that is extrapolated after
-#'     the AUClast (logical)}
-#'   \item{\code{cl}}{The clearance (force: 'force' indicates that
-#'     clearance should be calculated even if it is a multiple-dose study
-#'     and the drug has not reached steady-state.)}
-#'   \item{\code{mrt}}{The mean residence time (logical)}
-#'   \item{\code{vz}}{Terminal volume of distribution (logical)}
-#'   \item{\code{vss}}{Steady-state volume of distribution (logical)}
-#' }
-#'
-#' The variable types for each column are:
-#' \describe{
-#'   \item{logical}{A logical variable.}
-#'   \item{numeric}{A numeric (non-factor) column}
-#'   \item{force}{logical or the text \code{'force'}.  \code{'force'}
-#'     indicates that checking if the calculation is appropriate should be
-#'     skipped.}
-#'   \item{character or factor}{The text suggested as either a character or
-#'     a factor}
-#' }
+#' Calculation interval specifications are data frames defining what 
+#' calculations will be required and summarized from all time intervals.
+#' Note: parameters which are not requested may be calculated if it is 
+#' required for (or computed at the same time as) a requested parameter.
 #' 
-#' \code{start} and \code{end} time must always be given, and the
-#' \code{start} must be before the \code{end}.
-#'
-#' @param x The data frame specifying what to calculate during each
-#' time interval
-#' @return x The potentially updated data frame with the interval
-#' calculation specification.
-#'
-#' @seealso \code{\link{check.interval.deps}}
+#' \code{start} and \code{end} time must always be given as columns, and
+#' the \code{start} must be before the \code{end}.  Other columns define
+#' the parameters to be calculated and the groupings to apply the
+#' intervals to.
+#' 
+#' @param x The data frame specifying what to calculate during each time
+#'   interval
+#' @return x The potentially updated data frame with the interval 
+#'   calculation specification.
+#'   
+#' @seealso \code{\link{check.interval.deps}}, 
+#'   \code{\link{get.parameter.deps}}, \code{\link{get.interval.cols}}
 #' @export
 check.interval.specification <- function(x) {
   if (!is.data.frame(x)) {
@@ -125,6 +83,64 @@ check.interval.specification <- function(x) {
   ## frame
   x[,c(names(interval.cols),
        setdiff(names(x), names(interval.cols)))]
+}
+
+#' Get all columns that depend on a parameter
+#' 
+#' @param x The parameter name (as a character string)
+#' @return A character vector of parameter names that depend on the 
+#'   parameter \code{x}.  If none depend on \code{x}, then the result 
+#'   will be an empty vector.
+#' @export
+get.parameter.deps <- function(x) {
+  all.intervals <- get.interval.cols()
+  if (!(x %in% names(all.intervals))) {
+    stop("x must be the name of an NCA parameter listed by the function 'get.interval.cols'")
+  }
+  funmap <-
+    lapply(all.intervals,
+           function(x) {
+             if (is.na(x$FUN) &
+                 is.null(x$depends)) {
+               # For columnns like "start" and "end"
+               NA
+             } else if (is.na(x$FUN)) {
+               if (length(x$depends) == 1) {
+                 # When the value is calculated by the same function as
+                 # another parameter.
+                 all.intervals[[x$depends]]$FUN
+               } else {
+                 stop("Invalid interval definition with no function and multiple dependencies.")
+               }
+             } else {
+               x$FUN
+             }
+           })
+  # Find all parameters that are defined by the same function
+  samefun <- function(n, funmap) {
+    names(funmap)[unlist(funmap) %in% unlist(funmap[n]) &
+                    !is.na(unlist(funmap))]
+  }
+  searchdeps <- function(current, funmap) {
+    # Find any parameters using the same function
+    start <- samefun(current, funmap)
+    # Find any parameters that depend on the current parameter
+    ret <-
+      sapply(all.intervals,
+             function(x) {
+               any(x$depends %in% start)
+             })
+    # Extract their names
+    added <- setdiff(names(ret)[ret], start)
+    if (length(added) > 0) {
+      # Find any parameters that depend on any of those parameters
+      unique(c(start, added,
+               searchdeps(added, funmap)))
+    } else {
+      c(start, added)
+    }
+  }
+  sort(searchdeps(x, funmap))
 }
 
 #' Take in a single row of an interval specification and return that

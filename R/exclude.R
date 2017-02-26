@@ -121,6 +121,8 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
         setdiff(c("exclude", paste0("exclude.", max(names(object[[dataname]])))),
                 names(object[[dataname]]))[1]
       object[[dataname]][,exclude] <- rep(NA_character_, nrow(object[[dataname]]))
+    } else if (nrow(object[[dataname]]) == 0) {
+      object[[dataname]][,exclude] <- rep(NA_character_, nrow(object[[dataname]]))
     } else if (!(exclude %in% names(object[[dataname]]))) {
       stop("exclude, if given, must be a column name in the input data.")
     } else {

@@ -180,3 +180,16 @@ test_that("summary.PKNCAconc", {
                 ID     4",
                 info="Generic summary.PKNCAconc works.")
 })
+
+test_that("PKNCAconc with exclusions", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.conc$excl <- NA_character_
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, exclude="excl")
+  expect_equal(myconc,
+               structure(
+                 list(data=tmp.conc,
+                      formula=conc~time|treatment+ID,
+                      subject="ID", 
+                      exclude="excl"),
+                 class=c("PKNCAconc", "list")))
+})

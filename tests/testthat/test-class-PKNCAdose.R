@@ -205,3 +205,21 @@ Data for dosing:
                 info="Generic print.PKNCAdose works with no groups")
   
 })
+
+test_that("PKNCAdose with exclusions", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  tmp.dose$excl <- NA_character_
+  mydose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, exclude="excl")
+  expect_equal(mydose,
+               structure(
+                 list(data=cbind(tmp.dose,
+                                 data.frame(route="extravascular",
+                                            duration=0,
+                                            stringsAsFactors=FALSE)),
+                      formula=dose~time|treatment+ID,
+                      exclude="excl",
+                      route="route",
+                      duration="duration"),
+                 class=c("PKNCAdose", "list")))
+})
