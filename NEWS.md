@@ -7,6 +7,7 @@ route.
 # PKNCA 0.8.1
 
 * A PKNCAdose is no longer required for calculations.
+* Data may now be excluded from calculations.
 
 # PKNCA 0.8
 

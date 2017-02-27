@@ -107,7 +107,7 @@ pk.tss <- function(...,
     if (identical(NA, ret)) {
       ret <- tmp
     } else {
-      stop("Bug in pk.tss where ret is set to non-NA too early")
+      stop("Bug in pk.tss where ret is set to non-NA too early.  Please report the bug with a reproducible example.") # nocov
     }
     ## Set check to FALSE if it has already been checked (so that it
     ## doesn't happen again in stepwise.linear)

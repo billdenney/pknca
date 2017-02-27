@@ -69,9 +69,19 @@ test_that("PKNCAdata", {
                  tmp
                }, check.attributes=FALSE,
                info="Selection of single dose AUCs")
+  
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  tmp.conc <- tmp.conc[!(tmp.conc$ID %in% 1),]
+  obj.conc <-
+    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  obj.dose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  expect_warning(PKNCAdata(obj.conc, obj.dose),
+                 regexp="No intervals generated due to no concentration data for treatment=Trt 1, ID=1",
+                 info="Missing concentration data with dose data gives a warning.")
 })
 
-test_that("PKNCAdata with no dose", {
+test_that("PKNCAdata with no or limited dose information", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   obj.conc <-
     PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
@@ -92,6 +102,15 @@ test_that("PKNCAdata with no dose", {
                  class(tmp) <- c("PKNCAdata", "list")
                  tmp
                })
+  
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  obj.conc <-
+    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  obj.dose <- PKNCAdose(tmp.dose, formula=dose~.|treatment+ID)
+  expect_error(PKNCAdata(obj.conc, obj.dose),
+               regexp="Dose times were not given, so intervals must be manually specified.",
+               info="No dose times requires intervals.")
 })
 
 test_that("print.PKNCAdata", {
@@ -209,4 +228,26 @@ No dosing information.
 With 1 rows of AUC specifications.
 No options are set differently than default.",
                 info="Generic summary.PKNCAdata works.")
+})
+
+test_that("splitting PKNCAdata", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=1, time.points=0:24)
+  obj.conc <-
+    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  intervals <- data.frame(start=0, end=24, aucinf.obs=TRUE)
+  mydata <- PKNCAdata(obj.conc, intervals=intervals)
+
+  splitconc <- split(obj.conc)
+  expect_equal(split(mydata),
+               list(
+                 "Trt 1\n1"=list(
+                   conc=splitconc[[1]],
+                   dose=NA,
+                   intervals=check.interval.specification(data.frame(start=0, end=24, aucinf.obs=TRUE)),
+                   options=list()),
+                 "Trt 1\n2"=list(
+                   conc=splitconc[[2]],
+                   dose=NA,
+                   intervals=check.interval.specification(data.frame(start=0, end=24, aucinf.obs=TRUE)),
+                   options=list())))
 })

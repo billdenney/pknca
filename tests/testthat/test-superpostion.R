@@ -162,29 +162,46 @@ test_that("superposition inputs", {
                              n.tau=1.0000001),
                regexp="n.tau must be an integer or Inf")
 
-  ## lambda.z given and not a scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau=Inf, lambda.z=c(1, 2)),
-               regexp="lambda.z must be a scalar")
-  ## lambda.z given and not a number
+               regexp="lambda.z must be a scalar",
+               info="lambda.z must be a scalar")
+
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              lambda.z="1"),
-               regexp="lambda.z must be a number")
+               regexp="lambda.z must be a number",
+               info="lambda.z must be a number (character)")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              lambda.z=factor("1")),
-               regexp="lambda.z must be a number")
+               regexp="lambda.z must be a number",
+               info="lambda.z must be a number (factor)")
 
-  ## clast.pred must be a scalar
+  expect_equal(superposition(conc=c(4, 2, 1, 0.5),
+                             time=0:3,
+                             tau=24,
+                             n.tau=Inf,
+                             check.blq=FALSE),
+               superposition(conc=c(4, 2, 1, 0.5),
+                             time=0:3,
+                             tau=24,
+                             clast.pred=TRUE,
+                             n.tau=Inf,
+                             check.blq=FALSE),
+               info="clast.pred may be provided as 'TRUE'")
+  
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred=c(1, 2)),
-               regexp="clast.pred must be a scalar")
-  ## clast.pred must be a number or logical or NA
+               regexp="clast.pred must be a scalar",
+               info="clast.pred must be a scalar")
+
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred="1"),
-               regexp="clast.pred must either be a logical .* or numeric value")
+               regexp="clast.pred must either be a logical .* or numeric value",
+               info="clast.pred must be a number or logical or NA (character)")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred=factor("1")),
-               regexp="clast.pred must either be a logical .* or numeric value")
+               regexp="clast.pred must either be a logical .* or numeric value",
+               info="clast.pred must be a number or logical or NA (factor)")
 
   ## tlast given and not a scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,

@@ -89,6 +89,13 @@ test_that("PKNCAdose", {
                info="tbl_df and data.frame classes both work and create identical objects")
 })
 
+test_that("PKNCAdose without a data.frame as input", {
+  tmp <- structure(list(), class="foo")
+  expect_error(PKNCAdose(tmp, formula=.~time|treatment+ID),
+               regexp='cannot coerce class ""foo"" to a data.frame',
+               info="PKNCAdose tries to make arbitrary data into a data.frame")
+})
+
 test_that("PKNCAdose model.frame", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   tmp.conc.analyte <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
@@ -222,4 +229,46 @@ test_that("PKNCAdose with exclusions", {
                       route="route",
                       duration="duration"),
                  class=c("PKNCAdose", "list")))
+})
+
+test_that("PKNCAdose route and duration", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  expect_equal(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID),
+               PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, route="extravascular"),
+               info="route is assumed as extravascular")
+  expect_equal(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID),
+               PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0),
+               info="duration is assumed as 0")
+  expect_equal(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID),
+               PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0, route="extravascular"),
+               info="route and duration are correctly assumed")
+  dose.iv <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0, route="intravascular")
+  dose.ev <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0, route="extravascular")
+  expect_equal(dose.iv,
+               {
+                 tmp <- dose.ev
+                 tmp$data$route <- "intravascular"
+                 tmp
+               },
+               info="Intravascular route works")
+  expect_error(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0, route="foo"),
+               regexp="route must have values of either 'extravascular' or 'intravascular'.  Please set to one of those values and retry.",
+               info="route must be an accepted value")
+  tmp.dose.iv <- tmp.dose
+  tmp.dose.iv$route <- "intravascular"
+  # Note that the column names are in a different order when specified
+  # in the input data.frame or not.
+  expect_equivalent(
+    {
+      tmp <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0, route="intravascular")
+      tmp$data <- tmp$data[,sort(names(tmp$data))]
+      tmp
+    },
+    {
+      tmp <- PKNCAdose(tmp.dose.iv, formula=dose~time|treatment+ID, duration=0, route="route")
+      tmp$data <- tmp$data[,sort(names(tmp$data))]
+      tmp
+    })
+
 })

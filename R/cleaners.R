@@ -1,18 +1,19 @@
-#' Handle NA values in the concentration measurements as requested by
+#' Handle NA values in the concentration measurements as requested by 
 #' the user.
-#'
-#' NA concentrations (and their associated times) will be removed then the BLQ values in the middle
-#'
+#' 
+#' NA concentrations (and their associated times) will be removed then
+#' the BLQ values in the middle
+#' 
 #' @param conc Measured concentrations
 #' @param time Time of the concentration measurement
 #' @param \dots Additional items to add to the data frame
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
-#' @param conc.na How to handle NA concentrations?  Either 'drop' or a
-#' number to impute.
+#' @param options List of changes to the default 
+#'   \code{\link{PKNCA.options}} for calculations.
+#' @param conc.na How to handle NA concentrations?  Either 'drop' or a 
+#'   number to impute.
 #' @param check Run \code{\link{check.conc.time}}?
-#' @return The concentration and time measurements (data frame)
-#' filtered and cleaned as requested relative to NA in the concentration.
+#' @return The concentration and time measurements (data frame) filtered
+#'   and cleaned as requested relative to NA in the concentration.
 #' @export
 clean.conc.na <- function(conc, time, ...,
                           options=list(),
@@ -29,33 +30,35 @@ clean.conc.na <- function(conc, time, ...,
   } else if (is.numeric(conc.na)) {
     ret$conc[is.na(conc)] <- conc.na
   } else {
-    stop("Unknown how to handle conc.na")
+    # This case should already have been captured by the PKNCA.options
+    # call above.
+    stop("Unknown how to handle conc.na") # nocov
   }
   ret
 }
 
-#' Handle BLQ values in the concentration measurements as requested by
+#' Handle BLQ values in the concentration measurements as requested by 
 #' the user.
-#'
+#' 
 #' @param conc Measured concentrations
 #' @param time Time of the concentration measurement
 #' @param \dots Additional arguments passed to clean.conc.na
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
-#' @param conc.blq How to handle a BLQ value that is between above LOQ
-#' values?  See details for description.
-#' @param conc.na How to handle NA concentrations.  (See
-#' \code{\link{clean.conc.na}})
+#' @param options List of changes to the default 
+#'   \code{\link{PKNCA.options}} for calculations.
+#' @param conc.blq How to handle a BLQ value that is between above LOQ 
+#'   values?  See details for description.
+#' @param conc.na How to handle NA concentrations.  (See 
+#'   \code{\link{clean.conc.na}})
 #' @param check Run \code{\link{check.conc.time}}?
-#' @return The concentration and time measurements (data frame)
-#' filtered and cleaned as requested relative to BLQ in the middle.
+#' @return The concentration and time measurements (data frame) filtered
+#'   and cleaned as requested relative to BLQ in the middle.
 #'
-#' @details NA concentrations (and their associated times) will be
-#' handled as described in \code{\link{clean.conc.na}} before working
-#' with the BLQ values.  The method for handling NA concentrations can
-#' affect the output of which points are considered BLQ and which are
-#' considered "middle".  Values are considered BLQ if they are 0.
-#' 
+#' @details NA concentrations (and their associated times) will be 
+#'   handled as described in \code{\link{clean.conc.na}} before working 
+#'   with the BLQ values.  The method for handling NA concentrations can
+#'   affect the output of which points are considered BLQ and which are 
+#'   considered "middle".  Values are considered BLQ if they are 0.
+#'
 #' \code{conc.blq} can be set either a scalar indicating what
 #' should be done for all BLQ values or a list with elements named
 #' "first", "middle", and "last" each set to a scalar.
@@ -116,7 +119,7 @@ clean.conc.blq <- function(conc, time,
         mask <- (tlast <= ret$time &
                    ret$conc %in% 0)
       } else {
-        stop("There is a bug in cleaning the conc.blq with position names")
+        stop("There is a bug in cleaning the conc.blq with position names") # nocov
       }
       ## Choose the rule to apply
       this.rule <-
@@ -132,8 +135,10 @@ clean.conc.blq <- function(conc, time,
       } else if (is.numeric(this.rule)) {
         ret$conc[mask] <- conc.blq
       } else {
-        stop(sprintf("Unknown how to handle conc.blq rule %s",
-                     as.character(this.rule)))
+        # This case should already have been captured by the PKNCA.options
+        # call above.
+        stop(sprintf("Unknown how to handle conc.blq rule %s", # nocov
+                     as.character(this.rule)))                 # nocov
       }
     }
   }

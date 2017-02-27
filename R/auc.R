@@ -154,7 +154,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     if (all(data$conc %in% 0)) {
       ret <- 0
     } else {
-      stop("Unknown error with NA tlast but non-BLQ concentrations")
+      stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
     }
   } else {
     ## ############################
@@ -180,7 +180,8 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
       ret[mask.down] <- fun.log(data$conc[idx.1], data$conc[idx.2],
                                 data$time[idx.1], data$time[idx.2])
     } else if (!(method %in% "linear")) {
-      stop("Invalid AUC integration method")
+      # This should have already been caught, but the test exists to double-check
+      stop("Invalid AUC integration method") # nocov
     }
     if (auc.type %in% "AUCinf") {
       ## Whether AUCinf,obs or AUCinf,pred is calculated depends on if

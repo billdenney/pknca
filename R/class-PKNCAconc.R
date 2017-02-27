@@ -87,7 +87,7 @@ PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
       } else if (length(subject) == 1) {
         ## There is a subject given; use it as is.
       } else {
-        stop("Unknown how to handle subject definition from the formula")
+        stop("Unknown how to handle subject definition from the formula") # nocov
       }
     }
   } else {

@@ -14,20 +14,29 @@ test_that("pk.calc.auxc", {
   expect_warning(v1 <- pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
                                     method="linear"),
                  info="Starting before the beginning time returns NA (not an error)")
-  expect_equal(v1, NA)
+  expect_equal(v1, NA,
+               info="Starting before the beginning time returns NA (not an error)")
 
   ## All concentrations are NA, return NA
   expect_warning(v2 <- pk.calc.auxc(conc=c(NA, NA), time=2:3, interval=c(1, 3),
-                                    method="linear"))
-  expect_equal(v2, NA)
+                                    method="linear"),
+                 info="All concentrations NA gives a warning")
+  expect_equal(v2, NA,
+               info="All concentrations NA is NA")
   ## All concentrations are 0, return 0
   expect_equal(pk.calc.auxc(conc=c(0, 0), time=2:3, interval=c(2, 3),
                             method="linear"),
-               0)
+               0,
+               info="All zeros is zero")
   ## Concentrations mix 0 and NA, return 0
   expect_equal(pk.calc.auxc(conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
                             method="linear"),
-               0)
+               0,
+               info="Mixed zeros and NA is still zero.")
+  ## Invalid integration method
+  expect_error(pk.calc.auxc(conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
+                            method="foo"),
+               info="Invalid integration methods are caught.")
 })
 
 test_that("pk.calc.auc", {

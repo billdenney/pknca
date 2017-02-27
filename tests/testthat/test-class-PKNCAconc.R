@@ -53,6 +53,13 @@ test_that("PKNCAconc", {
                info="tbl_df and data.frame classes both work and create identical objects")
 })
 
+test_that("PKNCAconc with input other than data.frames", {
+  tmp <- structure(list(), class="foo")
+  expect_error(PKNCAconc(tmp, formula=conc~time|treatment+ID),
+               regexp='cannot coerce class ""foo"" to a data.frame',
+               info="Attempt to coerce into a data.frame.")
+})
+
 test_that("model frame and parameter extractions", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   expect_equal(model.frame(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
@@ -192,4 +199,21 @@ test_that("PKNCAconc with exclusions", {
                       subject="ID", 
                       exclude="excl"),
                  class=c("PKNCAconc", "list")))
+})
+
+test_that("PKNCAconc with nominal time added", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.conc$tnom <- tmp.conc$time
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="tnom")
+  expect_equal(myconc,
+               structure(
+                 list(data=cbind(tmp.conc, data.frame(exclude=NA_character_, stringsAsFactors=FALSE)),
+                      formula=conc~time|treatment+ID,
+                      subject="ID",
+                      exclude="exclude",
+                      time.nominal="tnom"),
+                 class=c("PKNCAconc", "list")))
+  expect_error(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="foo"),
+               regexp="time.nominal, if given, must be a column name in the input data.",
+               info="time.nominal must be in the input data.")
 })

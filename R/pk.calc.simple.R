@@ -568,7 +568,9 @@ pk.calc.ctrough <- function(conc, time, start) {
   } else if (sum(mask.start) == 0) {
     NA
   } else {
-    stop("More than one time matches the starting time")
+    # This should be impossible as check.conc.time should catch
+    # duplicates.
+    stop("More than one time matches the starting time.  Please report this as a bug with a reproducible example.") # nocov
   }
 }
 add.interval.col("ctrough",

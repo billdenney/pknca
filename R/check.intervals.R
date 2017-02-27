@@ -41,7 +41,9 @@ check.interval.specification <- function(x) {
         ## Set missing columns to the default value
         x[,n] <- interval.cols[[n]]$values[1]
       } else {
-        stop("Cannot assign default value for interval column", n)
+        # It would probably take malicious code to get here (altering
+        # the intervals without using add.interval.col
+        stop("Cannot assign default value for interval column", n) # nocov
       }
     } else {
       ## Confirm the edits of the given columns
@@ -110,7 +112,10 @@ get.parameter.deps <- function(x) {
                  # another parameter.
                  all.intervals[[x$depends]]$FUN
                } else {
-                 stop("Invalid interval definition with no function and multiple dependencies.")
+                 # It would probably take malicious code to get here
+                 # (altering the intervals without using
+                 # add.interval.col
+                 stop("Invalid interval definition with no function and multiple dependencies.") # nocov
                }
              } else {
                x$FUN

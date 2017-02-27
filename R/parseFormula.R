@@ -143,7 +143,7 @@ findOperator <- function(x, op, side) {
     if (identical(x[[1]], op)) {
       ## We found the operator
       if (length(x) == 1) {
-        stop("call or formula with length 1 found after finding the operator, unknown how to proceed")
+        stop("call or formula with length 1 found after finding the operator, unknown how to proceed") # nocov
       } else if (length(x) == 2) {
         ## Unary operators have a right hand side only
         if (side == "left") {
@@ -153,7 +153,7 @@ findOperator <- function(x, op, side) {
         } else if (side == "both") {
           return(x)
         }
-        stop("Unknown side with a found unary operator")
+        stop("Unknown side with a found unary operator") # nocov
       } else if (length(x) == 3) {
         ## Binary operator
         if (side == "left") {
@@ -163,7 +163,7 @@ findOperator <- function(x, op, side) {
         } else if (side == "both") {
           return(x)
         }
-        stop("Unknown side with a found binary operator")
+        stop("Unknown side with a found binary operator") # nocov
       }
     } else {
       ## Go down the left then right side of the tree

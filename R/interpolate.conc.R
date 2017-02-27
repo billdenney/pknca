@@ -190,7 +190,7 @@ interpolate.conc <- function(conc, time, time.out,
       ret <- exp(log(conc.1)+
                  (time.out-time.1)/(time.2-time.1)*(log(conc.2)-log(conc.1)))
     } else {
-      stop("You should never see this error.")
+      stop("You should never see this error.  Please report this as a bug with a reproducible example.") # nocov
     }
   }
   ret
@@ -258,7 +258,7 @@ extrapolate.conc <- function(conc, time, time.out,
         ret <- (time.out - time.prev)/(time.next - time.prev)*conc.prev
       }
     } else {
-      stop("Invalid extrap.method caught too late (seeing this error indicates a software bug)")
+      stop("Invalid extrap.method caught too late (seeing this error indicates a software bug)") # nocov
     }
   }
   ret
