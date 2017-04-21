@@ -97,6 +97,24 @@ xyplot(conc~time, groups=Subject, type="l",
 
 With this more complex dosing interval, the number of time points estimated increases.  The next section describes the selection of time points.
 
+### Show the Curve to Steady-State
+
+To determine the concentration curve to get to steady-state, you can give all the dose times considered required to get to steady-state.  To do this, specify tau as the total time to steady-state, specify `n.tau` as `1` to indicate that only one round of dosing should be administered.
+
+This command does not technically go to steady-state; if the `dose.times` are not sufficiently long to reach steady-state, it only goes for as many doses as requested.
+
+```{r to_steady_state}
+up.to.steady.state <- superposition(my.conc.corrected,
+                                    tau=4*24,
+                                    n.tau=1,
+                                    dose.times=seq(0, 3*24, by=12))
+xyplot(conc~time,
+       groups=Subject,
+       data=up.to.steady.state,
+       type="l")
+```
+
+
 # Time Point Selection and Addition
 
 Superposition is often used to estimate NCA parameters with nonparametric methods.  To ensure that estimated parameters are as accurate as possible (espectially $C_max$), each dose has every post-dose time point included.  Specifically, each dose will have the following times:
