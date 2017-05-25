@@ -1,27 +1,211 @@
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Writing PKNCA Parameter Functions}
--->
 ---
 title: "Selection of Calculation Intervals"
 author: "William Denney"
-date: "November 1, 2016"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Selection of Calculation Intervals}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
-library(ggplot2)
+knitr::opts_chunk$set(echo=TRUE,
+                      fig.width=6,
+                      fig.height=4)
+library(cowplot)
+library(PKNCA)
 source("../tests/testthat/generate.data.R")
 ```
-
 
 # Introduction
 
 PKNCA considers two types of data grouping within data sets:  the group and the interval.  A group typically identifies a single subject given a single intervention type (a "treatment") with a single analyte.  An interval subsets a group by times within the group, and primary noncompartmental analysis (NCA) calculations are performed within an interval.
 
-As a concrete example, consider the figure below shows the concentration-time profile of a study subject in a multiple-dose study.  The group is all points in the figure, and the interval is the area with blue shading.
+As a concrete example, consider the figure below shows the concentration-time profile of a study subject in a multiple-dose study.  The group is all points in the figure, and the interval for the last day (144 to 168 hr) is the area with blue shading.
 
-```{r plotgroupinterval, echo=FALSE}
+```{r intro_interval_plot, echo=FALSE}
+# Simulate concentration-time data and setup the PKNCAconc object
+d.conc <-
+  PKNCAconc(
+    generate.conc(nsub=1,
+                  ntreat=1,
+                  time.points=c(0, 1, 2, 4, 6, 8, 12, 24, 36, 48),
+                  nstudies=1,
+                  nanalytes=1,
+                  resid=0),
+    conc~time|treatment+ID)
+print(d.conc)
+# Use superposition to simulate multiple doses
+d.conc.multi <-
+  superposition(d.conc,
+                tau=168,
+                dose.times=seq(0, 168-24, by=24),
+                n.tau=1)
+# Plot the concentration-time data and the interval
+ggplot(d.conc.multi, aes(x=time, y=conc)) +
+  geom_ribbon(data=d.conc.multi[d.conc.multi$time >= 144,],
+              aes(ymax=conc, ymin=0),
+              fill="skyblue") +
+  geom_point() + geom_line() +
+  scale_x_continuous(breaks=seq(0, 168, by=12)) +
+  scale_y_continuous(limits=c(0, NA)) +
+  labs(x="Time Since First Dose (hr)",
+       y="Concentration\n(arbitrary units)")
+```
+```{r intro_interval_spec}
+my.intervals <- data.frame(start=144, end=168, auclast=TRUE)
+print(my.intervals)
 
+PKNCAdata(d.conc, intervals=my.intervals)
 ```
 
+# Group Matching
+
+Group matching occurs by matching all overlapping column names between the groups and the interval data.frame.  (Note that grouping columns cannot be the word `start`, `end`, or share a name with an NCA parameter.)
+
+## Selecting the Subjects for an Interval
+
+The groups for an interval prepare for summarization.  Typically the groups will take a structure similar to the preferred summarization structure with groups nested in the logical method for summary.  As an example, the group structure may be: study, treatment, day, analyte, and subject.  The grouping names for an interval must be the same as or a subset of the grouping names used for the concentration data.
+
+As the matching occurs with all available columns, the grouping columns names are only required to the level of specificity for the calculations desired.  As an example, if you want AUC_inf,obs_ in subjects who received single doses and AUC_last_ on days 1 (0 to 24 hours) and 10 (216 to 240 hours) in subjects who received multiple doses, with treatment defined as "Drug 1 Single" or "Drug 1 Multiple", the intervals could be defined as below.
+
+```{r select_group}
+my.intervals <- data.frame(treatment=c("Drug 1 Single", "Drug 1 Multiple", "Drug 1 Multiple"),
+                           start=c(0, 0, 216),
+                           end=c(Inf, 24, 240),
+                           aucinf.obs=c(TRUE, FALSE, FALSE),
+                           auclast=c(FALSE, TRUE, TRUE))
+print(my.intervals)
+```
+
+# Intervals
+
+Intervals are defined by `data.frame`s with one row per interval, zero or more columns to match the groups from the `PKNCAdata` object, and one or more NCA parameters to calculate.
+
+Selection of points within an interval occurs by choosing any point at or after the `start` and at or before the `end`.
+
+## To Infinity
+
+The end of an interval may be infinity.  An interval to infinity works the same as any other interval in that points are selected by being at or after the `start` and at or before the `end` of the interval.  Selecting `Inf` or any value at or after the maximum time yields no difference in effect, but `Inf` is simpler when scripting to ensure that all points are selected.
+
+```{r infinity_interval_plot, echo=FALSE}
+# Simulate concentration-time data and setup the PKNCAconc object
+d.conc <-
+  PKNCAconc(
+    generate.conc(nsub=1,
+                  ntreat=1,
+                  time.points=c(0, 1, 2, 4, 6, 8, 12, 24, 36, 48),
+                  nstudies=1,
+                  nanalytes=1,
+                  resid=0),
+    conc~time|treatment+ID)
+print(d.conc)
+# Use superposition to simulate multiple doses
+ggplot(d.conc$data[d.conc$data$time <= 48,], aes(x=time, y=conc)) +
+  geom_ribbon(data=d.conc$data,
+              aes(ymax=conc, ymin=0),
+              fill="skyblue") +
+  geom_point() + geom_line() +
+  scale_x_continuous(breaks=seq(0, 72, by=12)) +
+  scale_y_continuous(limits=c(0, NA)) +
+  labs(x="Time Since First Dose (hr)",
+       y="Concentration\n(arbitrary units)")
+```
+```{r infinity_interval_spec}
+my.intervals <- data.frame(start=0,
+                           end=Inf,
+                           auclast=TRUE,
+                           aucinf.obs=TRUE)
+print(my.intervals)
+
+my.data <- PKNCAdata(d.conc, intervals=my.intervals)
+```
+
+## Multiple Intervals
+
+More than one interval may be specified for the same subject or group of subjects by providing more than one row of interval specifications.  In the figure below, the blue and green shaded regions indicate the first and second rows of the intervals, respectively.
+
+```{r multiple_intervals_plot, echo=FALSE}
+# Simulate concentration-time data and setup the PKNCAconc object
+d.conc <-
+  PKNCAconc(
+    generate.conc(nsub=1,
+                  ntreat=1,
+                  time.points=c(0, 1, 2, 4, 6, 8, 12, 24, 36, 48),
+                  nstudies=1,
+                  nanalytes=1,
+                  resid=0),
+    conc~time|treatment+ID)
+print(d.conc)
+# Use superposition to simulate multiple doses
+d.conc.multi <-
+  superposition(d.conc,
+                tau=168,
+                dose.times=seq(0, 168-24, by=24),
+                n.tau=1)
+# Plot the concentration-time data and the interval
+ggplot(d.conc.multi, aes(x=time, y=conc)) +
+  geom_ribbon(data=d.conc.multi[d.conc.multi$time <= 24,],
+              aes(ymax=conc, ymin=0),
+              fill="skyblue") +
+  geom_ribbon(data=d.conc.multi[d.conc.multi$time >= 144,],
+              aes(ymax=conc, ymin=0),
+              fill="lightgreen") +
+  geom_point() + geom_line() +
+  scale_x_continuous(breaks=seq(0, 168, by=12)) +
+  scale_y_continuous(limits=c(0, NA)) +
+  labs(x="Time Since First Dose (hr)",
+       y="Concentration\n(arbitrary units)")
+```
+```{r multiple_intervals_spec}
+my.intervals <- data.frame(start=c(0, 144),
+                           end=c(24, 168),
+                           auclast=TRUE)
+print(my.intervals)
+
+my.data <- PKNCAdata(d.conc, intervals=my.intervals)
+```
+
+# Overlapping Intervals and Different Calculations by Interval
+
+In some scenarios, multiple intervals may be needed where some intervals overlap.  There is no issue with an interval specification that has two rows with overlapping times; the rows are considered separately.  In the example below, the 0-24 interval is shared between both the first and second (shaded blue-green).
+
+The example of overlapping intervals also illustrates that different calculations can be performed in different intervals.  In this case, `auclast` is calculated in both intervals while `aucinf.obs` is only calculated in the 0-Inf interval.
+
+```{r overlapping_intervals_plot, echo=FALSE}
+# Simulate concentration-time data and setup the PKNCAconc object
+d.conc <-
+  PKNCAconc(
+    generate.conc(nsub=1,
+                  ntreat=1,
+                  time.points=c(0, 1, 2, 4, 6, 8, 12, 24, 36, 48),
+                  nstudies=1,
+                  nanalytes=1,
+                  resid=0),
+    conc~time|treatment+ID)
+print(d.conc)
+# Use superposition to simulate multiple doses
+ggplot(d.conc$data, aes(x=time, y=conc)) +
+  geom_ribbon(data=d.conc$data,
+              aes(ymax=conc, ymin=0),
+              fill="lightgreen",
+              alpha=0.5) +
+  geom_ribbon(data=d.conc$data[d.conc$data$time <= 24,],
+              aes(ymax=conc, ymin=0),
+              fill="skyblue",
+              alpha=0.5) +
+  geom_point() + geom_line() +
+  scale_x_continuous(breaks=seq(0, 168, by=12)) +
+  scale_y_continuous(limits=c(0, NA)) +
+  labs(x="Time Since First Dose (hr)",
+       y="Concentration\n(arbitrary units)")
+```
+```{r overlapping_intervals_spec}
+my.intervals <- data.frame(start=0,
+                           end=c(24, Inf),
+                           auclast=TRUE,
+                           aucinf.obs=c(FALSE, TRUE))
+print(my.intervals)
+
+my.data <- PKNCAdata(d.conc, intervals=my.intervals)
+```
