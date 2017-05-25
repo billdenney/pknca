@@ -1,7 +1,7 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.8.1.9000
+Version: 0.8.1.9001
 Date: 2017-04-21
 Authors@R: c(
     person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre")),
@@ -17,10 +17,12 @@ Imports:
     stats,
     tidyr,
     utils
-Suggests:
+Depends:
+    cowplot,
+    ggplot2,
     knitr,
+    rmarkdown,
     testthat,
-    ggplot2
 Description: Compute standard Non-Compartmental Analysis (NCA)
     parameters and summarize them.  In addition to this core work, it
     also provides standardized plotting routines, basic assessments
