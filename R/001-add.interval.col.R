@@ -7,21 +7,42 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' Add columns for calculations within PKNCA intervals
 #' 
 #' @param name The column name as a character string
-#' @param FUN The function to run (as a character string) or \code{NA} if the
-#'   parameter is automatically calculated when calculating another parameter.
+#' @param FUN The function to run (as a character string) or \code{NA} 
+#'   if the parameter is automatically calculated when calculating 
+#'   another parameter.
 #' @param values Valid values for the column
-#' @param depends Character vector of columns that must be run before this
-#'   column.
-#' @param desc A human-readable description of the parameter (<=40 characters to
-#'   comply with SDTM)
+#' @param depends Character vector of columns that must be run before 
+#'   this column.
+#' @param desc A human-readable description of the parameter (<=40 
+#'   characters to comply with SDTM)
+#' @param formalsmap A named list mapping parameter names in the 
+#'   function call to NCA parameter names.  The names of the list should
+#'   correspond to function parameter names and the values should be
+#'   character strings of NCA parameters.
 #' @param datatype The type of data used for the calculation
-#' @return \code{NULL} (changes the available intervals for calculations
+#' @return \code{NULL} (Calling this function has a side effect of 
+#'   changing the available intervals for calculations)
+#' @examples
+#' \dontrun{
+#' add.interval.col("cmax",
+#'                  FUN="pk.calc.cmax",
+#'                  values=c(FALSE, TRUE),
+#'                  desc="Maximum observed concentration",
+#'                  depends=c())
+#' add.interval.col("cmax.dn",
+#'                  FUN="pk.calc.dn",
+#'                  values=c(FALSE, TRUE),
+#'                  desc="Maximum observed concentration, dose normalized",
+#'                  formalsmap=list(parameter="cmax"),
+#'                  depends=c("cmax"))
+#' }
 #' @importFrom utils getAnywhere
 add.interval.col <- function(name,
                              FUN,
                              values=c(FALSE, TRUE),
                              depends=c(),
                              desc="",
+                             formalsmap=list(),
                              datatype=c("interval",
                                "individual",
                                "population")) {
@@ -45,14 +66,35 @@ add.interval.col <- function(name,
   } else if (!is.character(desc)) {
     stop("desc must be a character string")
   }
-  current <- get("interval.cols", envir=.PKNCAEnv)
+  if (!is.list(formalsmap)) {
+    stop("formalsmap must be a list")
+  } else if (length(formalsmap) > 0 &
+             is.null(names(formalsmap))) {
+    stop("formalsmap must be a named list")
+  } else if (length(formalsmap) > 0 &
+             is.na(FUN)) {
+    stop("formalsmap may not be given when FUN is NA.")
+  } else if (!all(nchar(names(formalsmap)) > 0)) {
+    stop("All formalsmap elements must be named")
+  }
   ## Ensure that the function exists
   if (!is.na(FUN) &&
-      length(utils::getAnywhere(FUN)$objs) == 0)
+      length(utils::getAnywhere(FUN)$objs) == 0) {
     stop("The function named '", FUN, "' is not defined.  Please define the function before calling add.interval.col.")
+  }
+  if (!is.na(FUN) &
+      length(formalsmap) > 0) {
+    # Ensure that the formalsmap parameters are all in the list of
+    # formal arguments to the function.
+    if (!all(names(formalsmap) %in% names(formals(utils::getAnywhere(FUN)$objs[[1]])))) {
+      stop("All names for the formalsmap list must be arguments to the function.")
+    }
+  }
+  current <- get("interval.cols", envir=.PKNCAEnv)
   current[[name]] <- list(FUN=FUN,
                           values=values,
                           desc=desc,
+                          formalsmap=formalsmap,
                           depends=depends,
                           datatype=datatype)
   assign("interval.cols", current, envir=.PKNCAEnv)

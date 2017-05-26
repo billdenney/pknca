@@ -227,6 +227,12 @@ pk.nca.interval <- function(conc, time,
           call.args[[arg]] <- options
         } else if (any(mask.arg <- ret$PPTESTCD %in% arg)) {
           call.args[[arg]] <- ret$PPORRES[mask.arg]
+        } else if (!is.null(new.name <- all.intervals[[n]]$formalsmap[[arg]]) &
+                   any(mask.arg <- ret$PPTESTCD %in% new.name)) {
+          # The parameter name is mapped by the formalsmap in 
+          # add.interval.col.  The NCA parameter name for the function call
+          # argument is given by new.name.
+          call.args[[arg]] <- ret$PPORRES[mask.arg]
         } else {
           ## Give an error if there is not a default argument.
           ## FIXME: checking if the class is a name isn't perfect.  

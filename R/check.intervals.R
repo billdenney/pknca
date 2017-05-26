@@ -105,26 +105,36 @@ get.parameter.deps <- function(x) {
              if (is.na(x$FUN) &
                  is.null(x$depends)) {
                # For columnns like "start" and "end"
-               NA
+               retfun <- NA
              } else if (is.na(x$FUN)) {
                if (length(x$depends) == 1) {
                  # When the value is calculated by the same function as
                  # another parameter.
-                 all.intervals[[x$depends]]$FUN
+                 retfun <- all.intervals[[x$depends]]$FUN
                } else {
-                 # It would probably take malicious code to get here
-                 # (altering the intervals without using
-                 # add.interval.col
+                 # It would probably take malicious code to get here (an
+                 # example of malicious code could be altering the
+                 # intervals without using add.interval.col)
                  stop("Invalid interval definition with no function and multiple dependencies.") # nocov
                }
              } else {
-               x$FUN
+               retfun <- x$FUN
              }
+             # Define a function call by its function name and the
+             # changes to the formal arguments made.
+             append(list(retfun), x$formalsmap)
            })
-  # Find all parameters that are defined by the same function
+  # Find all parameters that are defined by the same function with the same 
   samefun <- function(n, funmap) {
-    names(funmap)[unlist(funmap) %in% unlist(funmap[n]) &
-                    !is.na(unlist(funmap))]
+    mask.funmap <- rep(FALSE, length(funmap))
+    for (current in n) {
+      for (i in seq_len(length(funmap))) {
+        mask.funmap[i] <- mask.funmap[i] |
+          !any(is.na(funmap[[current]][[1]]), is.na(funmap[[i]][[1]])) &
+          identical(funmap[[current]], funmap[[i]])
+      }
+    }
+    names(funmap)[mask.funmap]
   }
   searchdeps <- function(current, funmap) {
     # Find any parameters using the same function

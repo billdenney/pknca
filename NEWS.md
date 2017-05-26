@@ -7,6 +7,13 @@ route.
 # PKNCA 0.8.2
 
 * Updated vignettes to improve clarity
+* Added dose-normalized PK parameters (Fixes issue #41)
+* BACKWARD INCOMPATIBILITY: Added back-end functionality to only
+  require one function to handle many NCA parameters that are related
+  (e.g. combine pk.calc.aucpext, pk.calc.aucpext.obs,
+  pk.calc.aucpext.pred, etc.).  If your current code calls a specific
+  function (like pk.calc.aucpext.pred), you must change to using the
+  generic function (like pk.calc.aucpext)
 
 # PKNCA 0.8.1
 

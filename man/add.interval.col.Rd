@@ -5,28 +5,51 @@
 \title{Add columns for calculations within PKNCA intervals}
 \usage{
 add.interval.col(name, FUN, values = c(FALSE, TRUE), depends = c(),
-  desc = "", datatype = c("interval", "individual", "population"))
+  desc = "", formalsmap = list(), datatype = c("interval", "individual",
+  "population"))
 }
 \arguments{
 \item{name}{The column name as a character string}
 
-\item{FUN}{The function to run (as a character string) or \code{NA} if the
-parameter is automatically calculated when calculating another parameter.}
+\item{FUN}{The function to run (as a character string) or \code{NA} 
+if the parameter is automatically calculated when calculating 
+another parameter.}
 
 \item{values}{Valid values for the column}
 
-\item{depends}{Character vector of columns that must be run before this
-column.}
+\item{depends}{Character vector of columns that must be run before 
+this column.}
 
-\item{desc}{A human-readable description of the parameter (<=40 characters to
-comply with SDTM)}
+\item{desc}{A human-readable description of the parameter (<=40 
+characters to comply with SDTM)}
+
+\item{formalsmap}{A named list mapping parameter names in the 
+function call to NCA parameter names.  The names of the list should
+correspond to function parameter names and the values should be
+character strings of NCA parameters.}
 
 \item{datatype}{The type of data used for the calculation}
 }
 \value{
-\code{NULL} (changes the available intervals for calculations
+\code{NULL} (Calling this function has a side effect of 
+  changing the available intervals for calculations)
 }
 \description{
 Add columns for calculations within PKNCA intervals
+}
+\examples{
+\dontrun{
+add.interval.col("cmax",
+                 FUN="pk.calc.cmax",
+                 values=c(FALSE, TRUE),
+                 desc="Maximum observed concentration",
+                 depends=c())
+add.interval.col("cmax.dn",
+                 FUN="pk.calc.dn",
+                 values=c(FALSE, TRUE),
+                 desc="Maximum observed concentration, dose normalized",
+                 formalsmap=list(parameter="cmax"),
+                 depends=c("cmax"))
+}
 }
 

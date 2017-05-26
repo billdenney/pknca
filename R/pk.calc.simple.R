@@ -198,30 +198,27 @@ PKNCA.set.summary("clast.obs", business.geomean, business.geocv)
 #' @export
 pk.calc.thalf.eff <- function(mrt)
   log(2)*mrt
-pk.calc.thalf.eff.obs <- function(mrt.obs)
-  pk.calc.thalf.eff(mrt.obs)
-pk.calc.thalf.eff.pred <- function(mrt.pred)
-  pk.calc.thalf.eff(mrt.pred)
 ## Add the columns to the interval specification
 add.interval.col("thalf.eff.obs",
-                 FUN="pk.calc.thalf.eff.obs",
+                 FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRTobs)",
+                 formalsmap=list(mrt="mrt.obs"),
                  depends=c("mrt.obs"))
 PKNCA.set.summary("thalf.eff.obs", business.geomean, business.geocv)
 add.interval.col("thalf.eff.pred",
-                 FUN="pk.calc.thalf.eff.pred",
+                 FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRTpred)",
+                 formalsmap=list(mrt="mrt.pred"),
                  depends=c("mrt.pred"))
 PKNCA.set.summary("thalf.eff.pred", business.geomean, business.geocv)
 
 #' Calculate the AUC percent extrapolated
 #' 
-#' @param auclast the area under the curve from time 0 to the last measurement
-#'   above the limit of quantification
-#' @param aucinf,aucinf.obs,aucinf.pred the area under the curve from time 0 to
-#'   infinity
+#' @param auclast the area under the curve from time 0 to the last
+#'   measurement above the limit of quantification
+#' @param aucinf the area under the curve from time 0 to infinity
 #' @return the numeric value of the AUC percent extrapolated
 #' @export
 pk.calc.aucpext <- function(auclast, aucinf) {
@@ -230,71 +227,49 @@ pk.calc.aucpext <- function(auclast, aucinf) {
   100*(1-auclast/aucinf)
 }
 
-#' @describeIn pk.calc.aucpext Compute the percent extrapolated AUCinf from the 
-#'   observed Clast
-#' @export
-pk.calc.aucpext.obs <- function(auclast, aucinf.obs)
-  pk.calc.aucpext(auclast, aucinf.obs)
-#' @describeIn pk.calc.aucpext Compute the percent extrapolated AUCinf from the 
-#'   observed Clast
-#' @export
-pk.calc.aucpext.pred <- function(auclast, aucinf.pred)
-  pk.calc.aucpext(auclast, aucinf.pred)
-
 ## Add the columns to the interval specification
 add.interval.col("aucpext.obs",
-                 FUN="pk.calc.aucpext.obs",
+                 FUN="pk.calc.aucpext",
                  values=c(FALSE, TRUE),
                  desc="Percent of the AUCinf that is extrapolated after Tlast calculated from the observed Clast",
+                 formalsmap=list(aucinf="aucinf.obs"),
                  depends=c("auclast", "aucinf.obs"))
 PKNCA.set.summary("aucpext.obs", business.mean, business.sd)
 add.interval.col("aucpext.pred",
-                 FUN="pk.calc.aucpext.pred",
+                 FUN="pk.calc.aucpext",
                  values=c(FALSE, TRUE),
                  desc="Percent of the AUCinf that is extrapolated after Tlast calculated from the predicted Clast",
+                 formalsmap=list(aucinf="aucinf.pred"),
                  depends=c("auclast", "aucinf.pred"))
 PKNCA.set.summary("aucpext.pred", business.mean, business.sd)
 
 #' Calculate the elimination rate (Kel)
 #'
-#' @param mrt,mrt.obs,mrt.pred the mean residence time
+#' @param mrt the mean residence time
 #' @return the numeric value of the elimination rate
 #' @export
 pk.calc.kel <- function(mrt)
   1/mrt
-#' @describeIn pk.calc.kel Calculate Kel with observed Clast
-#' @export
-pk.calc.kel.obs <- function(mrt.obs)
-  pk.calc.kel(mrt.obs)
-#' @describeIn pk.calc.kel Calculate Kel with predicted Clast
-#' @export
-pk.calc.kel.pred <- function(mrt.pred)
-  pk.calc.kel(mrt.pred)
 ## Add the columns to the interval specification
 add.interval.col("kel.obs",
-                 FUN="pk.calc.kel.obs",
+                 FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the MRT with observed Clast)",
+                 formalsmap=list(mrt="mrt.obs"),
                  depends=c("mrt.obs"))
 PKNCA.set.summary("kel.obs", business.geomean, business.geocv)
 add.interval.col("kel.pred",
-                 FUN="pk.calc.kel.pred",
+                 FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the MRT with predicted Clast)",
+                 formalsmap=list(mrt="mrt.pred"),
                  depends=c("mrt.pred"))
 PKNCA.set.summary("kel.pred", business.geomean, business.geocv)
 
 #' Calculate the (observed oral) clearance
 #' 
 #' @param dose the dose administered
-#' @param aucall The area under the concentration-time curve from 0 to the last 
-#'   measurement above the limit of quantifiation (LOQ) plus the triangle to the
-#'   first concentration below the LOQ.
-#' @param auclast The area under the concentration-time curve from 0 to the last
-#'   measurement above the LOQ.
-#' @param aucinf,aucinf.obs,aucinf.pred The area under the concentration-time 
-#'   curve from 0 to infinity (the next dose on a regular schedule at 
-#'   steady-state)
+#' @param auc The area under the concentration-time curve.
 #' @return the numeric value of the total (CL) or observed oral clearance (CL/F)
 #' @details If \code{dose} is the same length as the other inputs, then the 
 #'   output will be the same length as all of the inputs; the function assumes 
@@ -306,53 +281,39 @@ PKNCA.set.summary("kel.pred", business.geomean, business.geocv)
 #'   Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts and Applications,
 #'   4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000. 86-7.
 #' @export
-pk.calc.cl <- function(dose, aucinf) {
-  if (length(aucinf) == 1)
+pk.calc.cl <- function(dose, auc) {
+  if (length(auc) == 1)
     dose <- sum(dose)
-  dose/aucinf
+  dose/auc
 }
-#' @describeIn pk.calc.cl Compute the clearance from AUClast
-#' @export
-pk.calc.cl.last <- function(dose, auclast)
-  pk.calc.cl(dose, auclast)
-#' @describeIn pk.calc.cl Compute the clearance from AUCall
-#' @export
-pk.calc.cl.all <- function(dose, aucall)
-  pk.calc.cl(dose, aucall)
-#' @describeIn pk.calc.cl Compute the clearance from AUCinf (calculated from 
-#'   observed Clast)
-#' @export
-pk.calc.cl.obs <- function(dose, aucinf.obs)
-  pk.calc.cl(dose, aucinf.obs)
-#' @describeIn pk.calc.cl Compute the clearance from AUCinf (calculated from
-#'   predicted Clast)
-#' @export
-pk.calc.cl.pred <- function(dose, aucinf.pred)
-  pk.calc.cl(dose, aucinf.pred)
 
 ## Add the columns to the interval specification
 add.interval.col("cl.last",
-                 FUN="pk.calc.cl.last",
+                 FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated to Clast",
+                 formalsmap=list(auc="auclast"),
                  depends=c("auclast"))
 PKNCA.set.summary("cl.last", business.geomean, business.geocv)
 add.interval.col("cl.all",
-                 FUN="pk.calc.cl.all",
+                 FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated with AUCall",
+                 formalsmap=list(auc="aucall"),
                  depends=c("aucall"))
 PKNCA.set.summary("cl.all", business.geomean, business.geocv)
 add.interval.col("cl.obs",
-                 FUN="pk.calc.cl.obs",
+                 FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated with observed Clast",
+                 formalsmap=list(auc="aucinf.obs"),
                  depends=c("aucinf.obs"))
 PKNCA.set.summary("cl.obs", business.geomean, business.geocv)
 add.interval.col("cl.pred",
-                 FUN="pk.calc.cl.pred",
+                 FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated with predicted Clast",
+                 formalsmap=list(auc="aucinf.pred"),
                  depends=list("aucinf.pred"))
 PKNCA.set.summary("cl.pred", business.geomean, business.geocv)
 
@@ -376,58 +337,39 @@ PKNCA.set.summary("f", business.geomean, business.geocv)
 
 #' Calcuate the mean residence time (MRT)
 #'
-#' @param aucinf,aucinf.obs,aucinf.pred the AUC from 0 to infinity or
-#'   0 to tau at steady-state
-#' @param auclast the AUC from 0 to the last concentration above the
-#'   limit of quantification (LOQ)
-#' @param aumcinf,aumcinf.obs,aumcinf.pred the AUMC from 0 to infinity
-#'   or 0 to tau at steady-state
-#' @param aumclast the AUMC from 0 to the last concentration above the
-#'   LOQ
+#' @param auc the AUC from 0 to infinity or 0 to tau at steady-state
+#' @param aumc the AUMC from 0 to infinity or 0 to tau at steady-state
 #' @return the numeric value of the mean residence time
 #' @export
-pk.calc.mrt <- function(aucinf, aumcinf)
-  aumcinf/aucinf
-#' @describeIn pk.calc.mrt Calcuate the mean residence time (MRT)
-#'   using observed Clast
-#' @export
-pk.calc.mrt.obs <- function(aucinf.obs, aumcinf.obs)
-  pk.calc.mrt(aucinf.obs, aumcinf.obs)
-#' @describeIn pk.calc.mrt Calcuate the mean residence time (MRT)
-#'   using predicted Clast
-#' @export
-pk.calc.mrt.pred <- function(aucinf.pred, aumcinf.pred)
-  pk.calc.mrt(aucinf.pred, aumcinf.pred)
+pk.calc.mrt <- function(auc, aumc) {
+  aumc/auc
+}
 ## Add the columns to the interval specification
 add.interval.col("mrt.obs",
-                 FUN="pk.calc.mrt.obs",
+                 FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
                  desc="The mean residence time to infinity using observed Clast",
+                 formalsmap=list(auc="aucinf.obs", aumc="aumcinf.obs"),
                  depends=c("aucinf.obs", "aumcinf.obs"))
 PKNCA.set.summary("mrt.obs", business.geomean, business.geocv)
 add.interval.col("mrt.pred",
-                 FUN="pk.calc.mrt.pred",
+                 FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
                  desc="The mean residence time to infinity using predicted Clast",
+                 formalsmap=list(auc="aucinf.pred", aumc="aumcinf.pred"),
                  depends=c("aucinf.pred", "aumcinf.pred"))
 PKNCA.set.summary("mrt.pred", business.geomean, business.geocv)
-
-#' @describeIn pk.calc.mrt Calculate the mean residence time (MRT) to the last
-#'   concentration above the limit of quantification
-#' @export
-pk.calc.mrt.last <- function(auclast, aumclast)
-  pk.calc.mrt(auclast, aumclast)
-## Add the column to the interval specification
 add.interval.col("mrt.last",
-                 FUN="pk.calc.mrt.last",
+                 FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
                  desc="The mean residence time to the last observed concentration above the LOQ",
+                 formalsmap=list(auc="auclast", aumc="aumclast"),
                  depends=list("auclast", "aumclast"))
 PKNCA.set.summary("mrt.last", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
-#' @param cl,cl.obs,cl.pred the clearance (or apparent observed clearance)
+#' @param cl the clearance (or apparent observed clearance)
 #' @param lambda.z the elimination rate
 #' @export
 pk.calc.vz <- function(cl, lambda.z) {
@@ -439,71 +381,59 @@ pk.calc.vz <- function(cl, lambda.z) {
     stop("'cl' and 'lambda.z' must be the same length")
   cl/lambda.z
 }
-#' @describeIn pk.calc.vz Calculate Vz using observed Clast
-#' @export
-pk.calc.vz.obs <- function(cl.obs, lambda.z)
-  pk.calc.vz(cl.obs, lambda.z)
-#' @describeIn pk.calc.vz Calculate Vz using predicted Clast
-#' @export
-pk.calc.vz.pred <- function(cl.pred, lambda.z)
-  pk.calc.vz(cl.pred, lambda.z)
 ## Add the columns to the interval specification
 add.interval.col("vz.obs",
-                 FUN="pk.calc.vz.obs",
+                 FUN="pk.calc.vz",
                  values=c(FALSE, TRUE),
                  desc="The terminal volume of distribution using observed Clast",
+                 formalsmap=list(cl="cl.obs"),
                  depends=c("cl.obs", "lambda.z"))
 PKNCA.set.summary("vz.obs", business.geomean, business.geocv)
 add.interval.col("vz.pred",
-                 FUN="pk.calc.vz.pred",
+                 FUN="pk.calc.vz",
                  values=c(FALSE, TRUE),
                  desc="The terminal volume of distribution using predicted Clast",
+                 formalsmap=list(cl="cl.pred"),
                  depends=c("cl.pred", "lambda.z"))
 PKNCA.set.summary("vz.pred", business.geomean, business.geocv)
 
 #' Calculate the steady-state volume of distribution (Vss)
 #'
-#' @param cl,cl.obs,cl.pred the clearance
-#' @param mrt,mrt.obs,mrt.pred the mean residence time
+#' @param cl the clearance
+#' @param mrt the mean residence time
 #' @return the volume of distribution at steady-state
 #' @export
 pk.calc.vss <- function(cl, mrt)
   cl*mrt
-#' @describeIn pk.calc.vss Vss calculation using observed Clast
-#' @export
-pk.calc.vss.obs <- function(cl.obs, mrt.obs)
-  pk.calc.vss(cl.obs, mrt.obs)
-#' @describeIn pk.calc.vss Vss calculation using predicted Clast
-#' @export
-pk.calc.vss.pred <- function(cl.pred, mrt.pred)
-  pk.calc.vss(cl.pred, mrt.pred)
 # Add the columns to the interval specification
 add.interval.col("vss.obs",
-                 FUN="pk.calc.vss.obs",
+                 FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
                  desc="The steady-state volume of distribution using observed Clast",
+                 formalsmap=list(cl="cl.obs", mrt="mrt.obs"),
                  depends=c("cl.obs", "mrt.obs"))
 PKNCA.set.summary("vss.obs", business.geomean, business.geocv)
 add.interval.col("vss.pred",
-                 FUN="pk.calc.vss.pred",
+                 FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
                  desc="The steady-state volume of distribution using predicted Clast",
+                 formalsmap=list(cl="cl.pred", mrt="mrt.pred"),
                  depends=c("cl.pred", "mrt.pred"))
 PKNCA.set.summary("vss.pred", business.geomean, business.geocv)
 
-#' Calculate the volume of distribution (Vd) or observed volume of distribution 
-#' (Vd/F)
+#' Calculate the volume of distribution (Vd) or observed volume of
+#' distribution (Vd/F)
 #' 
 #' @param dose One or more doses given during an interval
-#' @param aucinf,aucinf.obs,aucinf.pred Area under the curve to
-#'   infinity (either predicted or observed).
+#' @param aucinf Area under the curve to infinity (either predicted or
+#'   observed).
 #' @param lambda.z Elimination rate constant
-#' @details If \code{dose} is the same length as the other inputs,
-#'   then the output will be the same length as all of the inputs; the
-#'   function assumes that you are calculating for multiple intervals
-#'   simultaneously.  If the inputs other than \code{dose} are scalars
-#'   and \code{dose} is a vector, then the function assumes multiple
-#'   doses were given in a single interval, and the sum of the
+#' @details If \code{dose} is the same length as the other inputs, then
+#'   the output will be the same length as all of the inputs; the 
+#'   function assumes that you are calculating for multiple intervals 
+#'   simultaneously.  If the inputs other than \code{dose} are scalars 
+#'   and \code{dose} is a vector, then the function assumes multiple 
+#'   doses were given in a single interval, and the sum of the 
 #'   \code{dose}s will be used for the calculation.
 #' @return The observed volume of distribution
 #' @export
@@ -514,25 +444,19 @@ pk.calc.vd <- function(dose, aucinf, lambda.z) {
   }
   dose/(aucinf * lambda.z)
 }
-#' @describeIn pk.calc.vd Compute the Vd with observed Clast
-#' @export
-pk.calc.vd.obs <- function(dose, aucinf.obs, lambda.z)
-  pk.calc.vd(dose, aucinf.obs, lambda.z)
-#' @describeIn pk.calc.vd Compute the Vd with predicted Clast
-#' @export
-pk.calc.vd.pred <- function(dose, aucinf.pred, lambda.z)
-  pk.calc.vd(dose, aucinf.pred, lambda.z)
 ## Add the columns to the interval specification
 add.interval.col("vd.obs",
-                 FUN="pk.calc.vd.obs",
+                 FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),
                  desc="Apparent observed volume of distribution calculated with observed Clast",
+                 formalsmap=list(aucinf="aucinf.obs"),
                  depends=c("aucinf.obs", "lambda.z"))
 PKNCA.set.summary("vd.obs", business.geomean, business.geocv)
 add.interval.col("vd.pred",
-                 FUN="pk.calc.vd.pred",
+                 FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),
                  desc="Apparent observed volume of distribution calculated with predicted Clast",
+                 formalsmap=list(aucinf="aucinf.pred"),
                  depends=c("aucinf.pred", "lambda.z"))
 PKNCA.set.summary("vd.pred", business.geomean, business.geocv)
 
