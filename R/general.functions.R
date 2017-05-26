@@ -22,6 +22,8 @@ check.conversion <- function(x, FUN, ...) {
 #' If the concentrations or times are invalid, will provide an error.
 #' Reasons for being invalid are
 #' \itemize{
+#'   \item \code{time} is not a number
+#'   \item \code{conc} is not a number
 #'   \item Any \code{time} value is NA
 #'   \item \code{time} is not monotonically increasing
 #'   \item \code{conc} and \code{time} are not the same length
@@ -41,24 +43,31 @@ check.conversion <- function(x, FUN, ...) {
 #' @export
 check.conc.time <- function(conc, time, monotonic.time=TRUE) {
   if (!missing(conc)) {
-    if (length(conc) == 0)
+    if (length(conc) == 0) {
       warning("No concentration data given")
-    if (any(!is.na(conc) & conc < 0))
-      warning("Negative concentrations found")
-    if (all(is.na(conc)))
+    } else if ((!is.numeric(conc) | is.factor(conc)) &
+                   !(is.logical(conc) & all(is.na(conc)))) {
+      stop("Concentration data must be numeric and not a factor")
+    } else if (all(is.na(conc))) {
       warning("All concentration data is missing")
+    } else if (any(!is.na(conc) & conc < 0)) {
+      warning("Negative concentrations found")
+    }
   }
   if (!missing(time)) {
-    if (any(is.na(time)))
+    if (length(time) == 0) {
+      warning("No time data given")
+    } else if (any(is.na(time))) {
       stop("Time may not be NA")
+    } else if (!is.numeric(time) | is.factor(time)) {
+      stop("Time data must be numeric and not a factor")
+    }
     if (monotonic.time) {
       if (!all(time[-1] > time[-length(time)]))
         stop("Time must be monotonically increasing")
       if (!(length(time) == length(unique(time))))
         stop("All time values must be unique")
     }
-    if (length(time) == 0)
-      warning("No time data given")
   }
   if (!missing(conc) & !missing(time)) {
     if (length(conc) != length(time))
