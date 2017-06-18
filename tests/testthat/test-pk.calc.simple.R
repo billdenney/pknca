@@ -191,6 +191,10 @@ test_that("pk.calc.mrt", {
   expect_equal(pk.calc.mrt(1, 2), 2)
 })
 
+test_that("pk.calc.mrt.md", {
+  expect_equal(pk.calc.mrt.md(1, 2, 1.5, 24), 2 + 24*0.5)
+})
+
 test_that("pk.calc.vz", {
   ## Ensure that cl and lambda.z are required
   expect_equal(pk.calc.vz(cl=NA, lambda.z=NA), NA_integer_)

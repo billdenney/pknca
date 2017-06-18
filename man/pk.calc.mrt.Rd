@@ -2,19 +2,24 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.mrt}
 \alias{pk.calc.mrt}
-\title{Calcuate the mean residence time (MRT)}
+\title{Calculate the mean residence time (MRT) for single-dose data or
+linear multiple-dose data.}
 \usage{
 pk.calc.mrt(auc, aumc)
 }
 \arguments{
-\item{auc}{the AUC from 0 to infinity or 0 to tau at steady-state}
+\item{auc}{the AUC from 0 to infinity}
 
-\item{aumc}{the AUMC from 0 to infinity or 0 to tau at steady-state}
+\item{aumc}{the AUMC from 0 to infinity}
 }
 \value{
 the numeric value of the mean residence time
 }
 \description{
-Calcuate the mean residence time (MRT)
+Calculate the mean residence time (MRT) for single-dose data or
+linear multiple-dose data.
+}
+\seealso{
+\code{\link{pk.calc.mrt.md}}
 }
 

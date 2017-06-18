@@ -335,11 +335,13 @@ add.interval.col("f",
                  depends=c())
 PKNCA.set.summary("f", business.geomean, business.geocv)
 
-#' Calcuate the mean residence time (MRT)
-#'
-#' @param auc the AUC from 0 to infinity or 0 to tau at steady-state
-#' @param aumc the AUMC from 0 to infinity or 0 to tau at steady-state
+#' Calculate the mean residence time (MRT) for single-dose data or
+#' linear multiple-dose data.
+#' 
+#' @param auc the AUC from 0 to infinity
+#' @param aumc the AUMC from 0 to infinity
 #' @return the numeric value of the mean residence time
+#' @seealso \code{\link{pk.calc.mrt.md}}
 #' @export
 pk.calc.mrt <- function(auc, aumc) {
   aumc/auc
@@ -366,6 +368,39 @@ add.interval.col("mrt.last",
                  formalsmap=list(auc="auclast", aumc="aumclast"),
                  depends=list("auclast", "aumclast"))
 PKNCA.set.summary("mrt.last", business.geomean, business.geocv)
+
+#' Calculate the mean residence time (MRT) for multiple-dose data with
+#' nonlinear kinetics.
+#' 
+#' @param auctau the AUC from time 0 to the end of the dosing interval 
+#'   (tau).
+#' @param aumctau the AUMC from time 0 to the end of the dosing interval
+#'   (tau).
+#' @param aucinf the AUC from time 0 to infinity (typically using 
+#'   single-dose data)
+#' @param tau the dosing interval
+#' @details Note that if \code{aucinf == auctau} (as would be the 
+#'   assumption with linear kinetics), the equation becomes the same as 
+#'   the single-dose MRT.
+#' @seealso \code{\link{pk.calc.mrt}}
+#' @export
+pk.calc.mrt.md <- function(auctau, aumctau, aucinf, tau) {
+  aumctau/auctau + tau*(aucinf-auctau)/auctau
+}
+add.interval.col("mrt.md.obs",
+                 FUN="pk.calc.mrt.md",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time with multiple dosing and nonlinear kinetics using observed Clast",
+                 formalsmap=list(auctau="auclast", aumctau="aumclast", aucinf="aucinf.obs"),
+                 depends=c("auclast", "aumclast", "aucinf.obs"))
+PKNCA.set.summary("mrt.md.obs", business.geomean, business.geocv)
+add.interval.col("mrt.md.pred",
+                 FUN="pk.calc.mrt.md",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time with multiple dosing and nonlinear kinetics using predicted Clast",
+                 formalsmap=list(auctau="auclast", aumctau="aumclast", aucinf="aucinf.pred"),
+                 depends=c("auclast", "aumclast", "aucinf.pred"))
+PKNCA.set.summary("mrt.md.obs", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
@@ -420,6 +455,20 @@ add.interval.col("vss.pred",
                  formalsmap=list(cl="cl.pred", mrt="mrt.pred"),
                  depends=c("cl.pred", "mrt.pred"))
 PKNCA.set.summary("vss.pred", business.geomean, business.geocv)
+add.interval.col("vss.md.obs",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution for nonlinear multiple-dose data using observed Clast",
+                 formalsmap=list(cl="cl.last", mrt="mrt.md.obs"),
+                 depends=c("cl.last", "mrt.md.obs"))
+PKNCA.set.summary("vss.md.obs", business.geomean, business.geocv)
+add.interval.col("vss.md.pred",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution for nonlinear multiple-dose data using predicted Clast",
+                 formalsmap=list(cl="cl.last", mrt="mrt.md.pred"),
+                 depends=c("cl.last", "mrt.md.pred"))
+PKNCA.set.summary("vss.md.pred", business.geomean, business.geocv)
 
 #' Calculate the volume of distribution (Vd) or observed volume of
 #' distribution (Vd/F)
