@@ -160,7 +160,7 @@ get.parameter.deps <- function(x) {
 
 #' Take in a single row of an interval specification and return that
 #' row updated with any additional calculations that must be done to
-#' fulfil all dependencies.
+#' fulfill all dependencies.
 #'
 #' @param x A data frame with one or morw rows of the PKNCA interval
 #' @return The interval specification with additional calculations
