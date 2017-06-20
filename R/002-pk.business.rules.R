@@ -30,12 +30,14 @@ pk.business <- function(FUN,
   }
 
 #' Compute the geometric mean, sd, and CV
-#'
+#' 
 #' @param x A vector to compute the geometric mean of
 #' @param na.rm Should missing values be removed?
-#' @return The scalar value of the geometric mean, geometric standard
-#' deviation, or geometric coefficient of variation.
+#' @return The scalar value of the geometric mean, geometric standard 
+#'   deviation, or geometric coefficient of variation.
 #' @aliases geosd, geocv
+#' @references Kirkwood T. B.L. Geometric means and measures of
+#' dispersion. Biometrics 1979; 35: 908-909
 #' @export
 geomean <- function(x, na.rm=FALSE) {
   if (na.rm)
