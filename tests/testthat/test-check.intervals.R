@@ -157,6 +157,6 @@ test_that("get.parameter.deps", {
                character(0),
                info="Special columns that are not actually parameters have no dependencies (including themselves).")
   expect_equal(get.parameter.deps("cl.obs"),
-               c("cl.obs", "vss.obs", "vz.obs"),
+               c("cl.obs", "vss.iv.obs", "vss.obs", "vz.obs"),
                info="Parameters with dependencies return them.")
 })

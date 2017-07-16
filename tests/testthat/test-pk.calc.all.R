@@ -233,3 +233,19 @@ test_that("pk.nca with exclusions", {
                max(tmpconc.excl$conc[tmpconc.excl$ID %in% 1 & is.na(tmpconc.excl$excl)]),
                info="Cmax is affected by the exclusion")
 })
+
+test_that("pk.calc.all with duration.dose required", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  tmpdose$duration_dose <- 0.1
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID, duration="duration_dose", route="intravascular")
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=24,
+                                           mrt.iv.last=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "mrt.iv.last"],
+               c(10.36263, 10.12515),
+               tol=1e-5,
+               info="duration.dose is used when requested")
+})

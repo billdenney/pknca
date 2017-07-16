@@ -26,8 +26,10 @@
 #'   data summary and checking.
 #' @param exclude (optional) The name of a column with concentrations to
 #'   exclude from calculations and summarization.  If given, the column 
-#'   should have values of \code{NA} or \code{""} for concentrations to
+#'   should have values of \code{NA} or \code{""} for concentrations to 
 #'   include and non-empty text for concentrations to exclude.
+#' @param duration (optional) The duration of collection as is typically
+#'   used for concentration measurements in urine or feces.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
@@ -47,7 +49,7 @@ PKNCAconc.tbl_df <- function(data, ...)
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
-                                 time.nominal, exclude, ...) {
+                                 time.nominal, exclude, duration, ...) {
   ## Check inputs
   if (!missing(time.nominal)) {
     if (!(time.nominal %in% names(data))) {
@@ -107,6 +109,11 @@ PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
     ret <- setExcludeColumn(ret)
   } else {
     ret <- setExcludeColumn(ret, exclude=exclude)
+  }
+  if (missing(duration)) {
+    ret <- setDuration.PKNCAconc(ret)
+  } else {
+    ret <- setDuration.PKNCAconc(ret, duration=duration)
   }
   ## check and add labels and units
   if (!missing(labels))
@@ -194,6 +201,26 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
 #' @export
 getData.PKNCAconc <- function(object)
   object$data
+
+setDuration.PKNCAconc <- function(object, duration, ...) {
+  if (missing(duration)) {
+    message("Assuming point rather than interval concentration measurement")
+    tmpval <- getColumnValueOrNot(object$data, 0, "duration")
+  } else {
+    tmpval <- getColumnValueOrNot(object$data, duration, "duration")
+  }
+  duration.val <- tmpval$data[[tmpval$name]]
+  if (is.numeric(duration.val) &&
+      !any(is.na(duration.val)) &&
+      !any(is.infinite(duration.val)) &&
+      all(duration.val >= 0)) {
+    object$data <- tmpval$data
+    object$duration <- tmpval$name
+  } else {
+    stop("duration must be numeric without missing (NA) or infinite values, and all values must be >= 0")
+  }
+  object
+}
 
 #' Print and/or summarize a PKNCAconc or PKNCAdose object.
 #'

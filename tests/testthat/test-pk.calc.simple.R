@@ -188,8 +188,23 @@ test_that("pk.calc.aucpext", {
 })
 
 test_that("pk.calc.mrt", {
-  expect_equal(pk.calc.mrt(1, 2), 2)
+  expect_equal(pk.calc.mrt(auc=1, aumc=2),
+               2,
+               info="MRT is calculated correctly")
 })
+
+test_that("pk.calc.mrt.iv", {
+  expect_equal(pk.calc.mrt.iv(auc=1, aumc=2, duration.dose=1),
+               1.5,
+               info="MRT.iv is calculated correctly")
+  expect_equal(pk.calc.mrt.iv(auc=1, aumc=2, duration.dose=0),
+               2,
+               info="MRT.iv is calculated correctly when duration is 0")
+  expect_equal(pk.calc.mrt.iv(auc=1, aumc=2, duration.dose=NA),
+               NA_real_,
+               info="MRT.iv is calculated correctly when duration is missing")
+})
+
 
 test_that("pk.calc.mrt.md", {
   expect_equal(pk.calc.mrt.md(1, 2, 1.5, 24), 2 + 24*0.5)
@@ -305,4 +320,16 @@ test_that("pk.calc.swing", {
                info="Swing math works")
   expect_equal(pk.calc.swing(100, 0), Inf,
                info="Swing handle Ctrough=0")
+})
+
+test_that("pk.calc.ceoi", {
+  expect_equal(pk.calc.ceoi(conc=0:5, time=0:5, duration.dose=1),
+               1,
+               info="Ceoi returns the concentration at the end of the dosing duration")
+  expect_equal(pk.calc.ceoi(conc=0:5, time=0:5, duration.dose=1.5),
+               NA_real_,
+               info="Ceoi returns NA if there is no measurement at the end of the dosing duration")
+  expect_equal(pk.calc.ceoi(conc=0:5, time=0:5, duration.dose=NA),
+               NA_real_,
+               info="Ceoi returns NA if there is no dosing duration")
 })

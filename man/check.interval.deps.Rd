@@ -4,7 +4,7 @@
 \alias{check.interval.deps}
 \title{Take in a single row of an interval specification and return that
 row updated with any additional calculations that must be done to
-fulfil all dependencies.}
+fulfill all dependencies.}
 \usage{
 check.interval.deps(x)
 }
@@ -18,7 +18,7 @@ added where requested outputs require them.
 \description{
 Take in a single row of an interval specification and return that
 row updated with any additional calculations that must be done to
-fulfil all dependencies.
+fulfill all dependencies.
 }
 \seealso{
 \code{\link{check.interval.specification}}

@@ -12,9 +12,11 @@ route.
   pk.calc.aucpext.pred, etc.).  If your current code calls a specific
   function (like pk.calc.aucpext.pred), you must change to using the
   generic function (like pk.calc.aucpext)
+* Add parameters for Ceoi and intravenous MRT
 * Updated vignettes to improve clarity
 * Added dose-normalized PK parameters (Fixes issue #41)
-* Added checks to confirm that concentration and time are numeric (Fixes feature request #40)
+* Added checks to confirm that concentration and time are numeric
+  (Fixes feature request #40)
 
 # PKNCA 0.8.1
 

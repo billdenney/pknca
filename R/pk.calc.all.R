@@ -83,8 +83,10 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
   ## Column names to use
   col.conc <- all.vars(pformula.conc$lhs)
   col.time <- all.vars(pformula.conc$rhs)
+  col.duration.conc <- conc.dose$conc$duration
   col.dose <- all.vars(pformula.dose$lhs)
   col.time.dose <- all.vars(pformula.dose$rhs)
+  col.duration.dose <- conc.dose$dose$duration
   # Insert NA doses and dose times if they are not given
   if (!(col.dose %in% names(conc.dose$dose$data))) {
     col.dose <- paste0(max(names(conc.dose$dose$data)), "X")
@@ -100,10 +102,18 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
     ## column the independent variable.
     tmpconcdata <-
       merge(conc.dose$conc$data,
-            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.conc, col.time, conc.dose$conc$exclude)]
+            all.intervals[i, intersect(shared.names, names(all.intervals)),
+                          drop=FALSE])[,c(col.conc,
+                                          col.time,
+                                          conc.dose$conc$exclude,
+                                          conc.dose$conc$duration)]
     tmpdosedata <-
       merge(conc.dose$dose$data,
-            all.intervals[i, intersect(shared.names, names(all.intervals)), drop=FALSE])[,c(col.dose, col.time.dose, conc.dose$dose$exclude)]
+            all.intervals[i, intersect(shared.names, names(all.intervals)),
+                          drop=FALSE])[,c(col.dose,
+                                          col.time.dose,
+                                          conc.dose$dose$exclude,
+                                          conc.dose$dose$duration)]
     ## Choose only times between the start and end.
     mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[[col.time]] &
                          tmpconcdata[[col.time]] <= all.intervals$end[i] &
@@ -130,10 +140,12 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
       tryCatch(
         ## Try the calculation 
         calculated.interval <-
-          pk.nca.interval(conc=tmpconcdata[,col.conc],
-                          time=tmpconcdata[,col.time],
-                          dose=tmpdosedata[,col.dose],
-                          time.dose=tmpdosedata[,col.time.dose],
+          pk.nca.interval(conc=tmpconcdata[[col.conc]],
+                          time=tmpconcdata[[col.time]],
+                          duration.conc=tmpconcdata[[col.duration.conc]],
+                          dose=tmpdosedata[[col.dose]],
+                          time.dose=tmpdosedata[[col.time.dose]],
+                          duration.dose=tmpdosedata[[col.duration.dose]],
                           interval=all.intervals[i,],
                           options=options),
         error=function(e) {
@@ -152,30 +164,34 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 }
 
 #' Compute all PK parameters for a single concentration-time data set
-#'
-#' For one subject/time range, compute all available PK parameters.
-#' All the internal options should be set by
-#' \code{\link{PKNCA.options}} prior to running.  The only part that
-#' changes with a call to this function is the \code{conc}entration
-#' and \code{time}.
-#'
+#' 
+#' For one subject/time range, compute all available PK parameters. All 
+#' the internal options should be set by \code{\link{PKNCA.options}} 
+#' prior to running.  The only part that changes with a call to this 
+#' function is the \code{conc}entration and \code{time}.
+#' 
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
+#' @param duration.conc The duration of the concentration measurement 
+#'   (typically for urine and fecal measurements)
 #' @param dose Dose amount (may be a scalar or vector)
-#' @param time.dose Time of the dose (must be the same length as
+#' @param time.dose Time of the dose (must be the same length as 
 #'   \code{dose})
-#' @param interval One row of an interval definition (see
-#'   \code{\link{check.interval.specification}} for how to define the
+#' @param duration.dose The duration of the dose administration
+#'   (typically zero for extravascular and intravascular bolus and
+#'   nonzero for intravascular infusion)
+#' @param interval One row of an interval definition (see 
+#'   \code{\link{check.interval.specification}} for how to define the 
 #'   interval.
-#' @param options List of changes to the default
+#' @param options List of changes to the default 
 #'   \code{\link{PKNCA.options}} for calculations.
-#' @return A data frame with the start and end time along with all PK
+#' @return A data frame with the start and end time along with all PK 
 #'   parameters for the \code{interval}
-#' 
+#'   
 #' @seealso \code{\link{check.interval.specification}}
 #' @export
-pk.nca.interval <- function(conc, time,
-                            dose, time.dose,
+pk.nca.interval <- function(conc, time, duration.conc,
+                            dose, time.dose, duration.dose,
                             interval, options=list()) {
   if (!is.data.frame(interval))
     stop("interval must be a data.frame")
@@ -193,6 +209,7 @@ pk.nca.interval <- function(conc, time,
   if (length(dose) == 0) {
     dose <- NA
     time.dose <- NA
+    duration.dose <- NA
   }
   ## Make sure that we calculate all of the dependencies.  Do this in
   ## reverse order for dependencies of dependencies.
@@ -214,12 +231,16 @@ pk.nca.interval <- function(conc, time,
           ## Realign the time to be relative to the start of the
           ## interval
           call.args[[arg]] <- time - interval$start[1]
+        } else if (arg == "duration.conc") {
+          call.args[[arg]] <- duration.conc
         } else if (arg == "dose") {
           call.args[[arg]] <- dose
         } else if (arg == "time.dose") {
           ## Realign the time to be relative to the start of the
           ## interval
           call.args[[arg]] <- time.dose - interval$start[1]
+        } else if (arg == "duration.dose") {
+          call.args[[arg]] <- duration.dose
         } else if (arg %in% c("start", "end")) {
           ## Provide the start and end of the interval if they are requested
           call.args[[arg]] <- interval[1,arg]

@@ -14,7 +14,7 @@ PKNCAconc(data, ...)
 \method{PKNCAconc}{tbl_df}(data, ...)
 
 \method{PKNCAconc}{data.frame}(data, formula, subject, labels, units,
-  time.nominal, exclude, ...)
+  time.nominal, exclude, duration, ...)
 }
 \arguments{
 \item{data}{A data frame with concentration, time, and the groups 
@@ -51,8 +51,11 @@ data summary and checking.}
 
 \item{exclude}{(optional) The name of a column with concentrations to
 exclude from calculations and summarization.  If given, the column 
-should have values of \code{NA} or \code{""} for concentrations to
+should have values of \code{NA} or \code{""} for concentrations to 
 include and non-empty text for concentrations to exclude.}
+
+\item{duration}{(optional) The duration of collection as is typically
+used for concentration measurements in urine or feces.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

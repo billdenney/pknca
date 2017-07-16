@@ -213,6 +213,34 @@ add.interval.col("thalf.eff.pred",
                  formalsmap=list(mrt="mrt.pred"),
                  depends=c("mrt.pred"))
 PKNCA.set.summary("thalf.eff.pred", business.geomean, business.geocv)
+add.interval.col("thalf.eff.last",
+                 FUN="pk.calc.thalf.eff",
+                 values=c(FALSE, TRUE),
+                 desc="The effective half-life (as determined from the MRTlast)",
+                 formalsmap=list(mrt="mrt.last"),
+                 depends=c("mrt.last"))
+PKNCA.set.summary("thalf.eff.last", business.geomean, business.geocv)
+add.interval.col("thalf.eff.iv.obs",
+                 FUN="pk.calc.thalf.eff",
+                 values=c(FALSE, TRUE),
+                 desc="The effective half-life (as determined from the intravenous MRTobs)",
+                 formalsmap=list(mrt="mrt.iv.obs"),
+                 depends=c("mrt.iv.obs"))
+PKNCA.set.summary("thalf.eff.iv.obs", business.geomean, business.geocv)
+add.interval.col("thalf.eff.iv.pred",
+                 FUN="pk.calc.thalf.eff",
+                 values=c(FALSE, TRUE),
+                 desc="The effective half-life (as determined from the intravenous MRTpred)",
+                 formalsmap=list(mrt="mrt.iv.pred"),
+                 depends=c("mrt.iv.pred"))
+PKNCA.set.summary("thalf.eff.iv.pred", business.geomean, business.geocv)
+add.interval.col("thalf.eff.iv.last",
+                 FUN="pk.calc.thalf.eff",
+                 values=c(FALSE, TRUE),
+                 desc="The effective half-life (as determined from the intravenous MRTlast)",
+                 formalsmap=list(mrt="mrt.iv.last"),
+                 depends=c("mrt.iv.last"))
+PKNCA.set.summary("thalf.eff.iv.last", business.geomean, business.geocv)
 
 #' Calculate the AUC percent extrapolated
 #' 
@@ -265,6 +293,34 @@ add.interval.col("kel.pred",
                  formalsmap=list(mrt="mrt.pred"),
                  depends=c("mrt.pred"))
 PKNCA.set.summary("kel.pred", business.geomean, business.geocv)
+add.interval.col("kel.last",
+                 FUN="pk.calc.kel",
+                 values=c(FALSE, TRUE),
+                 desc="Elimination rate (as calculated from the MRT using AUClast)",
+                 formalsmap=list(mrt="mrt.last"),
+                 depends=c("mrt.last"))
+PKNCA.set.summary("kel.last", business.geomean, business.geocv)
+add.interval.col("kel.iv.obs",
+                 FUN="pk.calc.kel",
+                 values=c(FALSE, TRUE),
+                 desc="Elimination rate (as calculated from the intravenous MRTobs)",
+                 formalsmap=list(mrt="mrt.iv.obs"),
+                 depends=c("mrt.iv.obs"))
+PKNCA.set.summary("kel.iv.obs", business.geomean, business.geocv)
+add.interval.col("kel.iv.pred",
+                 FUN="pk.calc.kel",
+                 values=c(FALSE, TRUE),
+                 desc="Elimination rate (as calculated from the intravenous MRTpred)",
+                 formalsmap=list(mrt="mrt.iv.pred"),
+                 depends=c("mrt.iv.pred"))
+PKNCA.set.summary("kel.iv.pred", business.geomean, business.geocv)
+add.interval.col("kel.iv.last",
+                 FUN="pk.calc.kel",
+                 values=c(FALSE, TRUE),
+                 desc="Elimination rate (as calculated from the intravenous MRTlast)",
+                 formalsmap=list(mrt="mrt.iv.last"),
+                 depends=c("mrt.iv.last"))
+PKNCA.set.summary("kel.iv.last", business.geomean, business.geocv)
 
 #' Calculate the (observed oral) clearance
 #' 
@@ -335,16 +391,18 @@ add.interval.col("f",
                  depends=c())
 PKNCA.set.summary("f", business.geomean, business.geocv)
 
-#' Calculate the mean residence time (MRT) for single-dose data or
+#' Calculate the mean residence time (MRT) for single-dose data or 
 #' linear multiple-dose data.
 #' 
-#' @param auc the AUC from 0 to infinity
-#' @param aumc the AUMC from 0 to infinity
+#' @param auc the AUC from 0 to infinity or 0 to tau
+#' @param aumc the AUMC from 0 to infinity or 0 to tau
+#' @param duration.dose The duration of the dose (usually an infusion
+#'   duration for an IV infusion)
 #' @return the numeric value of the mean residence time
 #' @seealso \code{\link{pk.calc.mrt.md}}
 #' @export
 pk.calc.mrt <- function(auc, aumc) {
-  aumc/auc
+  pk.calc.mrt.iv(auc, aumc, duration.dose=0)
 }
 ## Add the columns to the interval specification
 add.interval.col("mrt.obs",
@@ -368,6 +426,34 @@ add.interval.col("mrt.last",
                  formalsmap=list(auc="auclast", aumc="aumclast"),
                  depends=list("auclast", "aumclast"))
 PKNCA.set.summary("mrt.last", business.geomean, business.geocv)
+
+#' @describeIn pk.calc.mrt MRT for an IV infusion
+#' @export
+pk.calc.mrt.iv <- function(auc, aumc, duration.dose) {
+  aumc/auc - duration.dose/2
+}
+## Add the columns to the interval specification
+add.interval.col("mrt.iv.obs",
+                 FUN="pk.calc.mrt.iv",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time to infinity using observed Clast correcting for dosing duration",
+                 formalsmap=list(auc="aucinf.obs", aumc="aumcinf.obs"),
+                 depends=c("aucinf.obs", "aumcinf.obs"))
+PKNCA.set.summary("mrt.iv.obs", business.geomean, business.geocv)
+add.interval.col("mrt.iv.pred",
+                 FUN="pk.calc.mrt.iv",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time to infinity using predicted Clast correcting for dosing duration",
+                 formalsmap=list(auc="aucinf.pred", aumc="aumcinf.pred"),
+                 depends=c("aucinf.pred", "aumcinf.pred"))
+PKNCA.set.summary("mrt.iv.pred", business.geomean, business.geocv)
+add.interval.col("mrt.iv.last",
+                 FUN="pk.calc.mrt.iv",
+                 values=c(FALSE, TRUE),
+                 desc="The mean residence time to the last observed concentration above the LOQ correcting for dosing duration",
+                 formalsmap=list(auc="auclast", aumc="aumclast"),
+                 depends=list("auclast", "aumclast"))
+PKNCA.set.summary("mrt.iv.last", business.geomean, business.geocv)
 
 #' Calculate the mean residence time (MRT) for multiple-dose data with
 #' nonlinear kinetics.
@@ -455,6 +541,35 @@ add.interval.col("vss.pred",
                  formalsmap=list(cl="cl.pred", mrt="mrt.pred"),
                  depends=c("cl.pred", "mrt.pred"))
 PKNCA.set.summary("vss.pred", business.geomean, business.geocv)
+add.interval.col("vss.last",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution calculating through Tlast",
+                 formalsmap=list(cl="cl.last", mrt="mrt.last"),
+                 depends=c("cl.last", "mrt.last"))
+PKNCA.set.summary("vss.last", business.geomean, business.geocv)
+add.interval.col("vss.iv.obs",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution with intravenous infusion using observed Clast",
+                 formalsmap=list(cl="cl.obs", mrt="mrt.iv.obs"),
+                 depends=c("cl.obs", "mrt.iv.obs"))
+PKNCA.set.summary("vss.iv.obs", business.geomean, business.geocv)
+add.interval.col("vss.iv.pred",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution with intravenous infusion using predicted Clast",
+                 formalsmap=list(cl="cl.pred", mrt="mrt.iv.pred"),
+                 depends=c("cl.pred", "mrt.iv.pred"))
+PKNCA.set.summary("vss.iv.pred", business.geomean, business.geocv)
+add.interval.col("vss.iv.last",
+                 FUN="pk.calc.vss",
+                 values=c(FALSE, TRUE),
+                 desc="The steady-state volume of distribution with intravenous infusion calculating through Tlast",
+                 formalsmap=list(cl="cl.last", mrt="mrt.iv.last"),
+                 depends=c("cl.last", "mrt.iv.last"))
+PKNCA.set.summary("vss.iv.last", business.geomean, business.geocv)
+
 add.interval.col("vss.md.obs",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
@@ -630,3 +745,30 @@ add.interval.col("swing",
                  desc="Swing relative to Cmin",
                  depends=c("cmax", "cmin"))
 PKNCA.set.summary("swing", business.mean, business.sd)
+
+#' Determine the concentration at the end of infusion
+#' 
+#' @param conc Concentration measured
+#' @param time Time of concentration measurement
+#' @param duration.dose The duration for the dosing administration 
+#'   (typically from IV infusion)
+#' @param check Run \code{\link{check.conc.time}}?
+#' @return The concentration at the end of the infusion, \code{NA} if
+#'   duration.dose is \code{NA}, or \code{NA} if all \code{time != duration.dose}
+#' @export
+pk.calc.ceoi <- function(conc, time, duration.dose=NA, check=TRUE) {
+  if (check)
+    check.conc.time(conc=conc, time=time)
+  if (is.na(duration.dose)) {
+    NA_real_
+  } else if (all(time != duration.dose)) {
+    NA_real_
+  } else {
+    conc[time == duration.dose][1]
+  }
+}
+add.interval.col("ceoi",
+                 FUN="pk.calc.ceoi",
+                 desc="Concentration at the end of infusion",
+                 depends=c())
+PKNCA.set.summary("ceoi", business.geomean, business.geocv)

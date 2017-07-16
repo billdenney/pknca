@@ -194,10 +194,29 @@ test_that("PKNCAconc with exclusions", {
   myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, exclude="excl")
   expect_equal(myconc,
                structure(
-                 list(data=tmp.conc,
+                 list(data=cbind(tmp.conc, duration=0),
                       formula=conc~time|treatment+ID,
                       subject="ID", 
-                      exclude="excl"),
+                      exclude="excl",
+                      duration="duration"),
+                 class=c("PKNCAconc", "list")))
+})
+
+test_that("PKNCAconc with duration", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.conc$duration_test <- 0.1
+  myconc <- PKNCAconc(tmp.conc,
+                      formula=conc~time|treatment+ID,
+                      duration="duration_test")
+  expect_equal(myconc,
+               structure(
+                 list(data=cbind(tmp.conc,
+                                 data.frame(exclude=NA_character_,
+                                            stringsAsFactors=FALSE)),
+                      formula=conc~time|treatment+ID,
+                      subject="ID", 
+                      exclude="exclude",
+                      duration="duration_test"),
                  class=c("PKNCAconc", "list")))
 })
 
@@ -207,10 +226,14 @@ test_that("PKNCAconc with nominal time added", {
   myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="tnom")
   expect_equal(myconc,
                structure(
-                 list(data=cbind(tmp.conc, data.frame(exclude=NA_character_, stringsAsFactors=FALSE)),
+                 list(data=cbind(tmp.conc,
+                                 data.frame(exclude=NA_character_,
+                                            duration=0,
+                                            stringsAsFactors=FALSE)),
                       formula=conc~time|treatment+ID,
                       subject="ID",
                       exclude="exclude",
+                      duration="duration",
                       time.nominal="tnom"),
                  class=c("PKNCAconc", "list")))
   expect_error(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="foo"),
