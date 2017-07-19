@@ -25,8 +25,10 @@ The starting point to writing a new NCA parameter is writing the function that c
 
 * `conc` is the numeric vector of plasma concentrations for an interval for a single group (usually a single analyte for a single subject in a single study).
 * `time` is the numeric vector of the time for plasma concentration measurements.
+* `duration.conc` is the duration of a concentration measurement (usually for urine or fecal measurements)
 * `dose` is the numeric vector of dose amounts for an interval for a single group.  NOTE: This is a vector and not always a scalar.  If your function expects a scalar, you should usually take the sum of the dose argument.
 * `time.dose` is the numeric vector of time for the doses.
+* `duration.dose` is the duration of a dose (usually for intravenous infusions)
 * `start` and `end` are the scalar numbers for the start and end time of the current interval.  NOTE: `end` may be `Inf` (infinity).
 * `options` are the PKNCA options used for the current calculation usually as defined by the `PKNCA.option` function (though these options may be over-ridden by the `options` argument to the `PKNCAdata` function.
 * Or, any NCA parameters by name (as given by `names(get.interval.cols())`).
@@ -42,12 +44,13 @@ The function should return either a scalar which is the value for the parameter 
 
 # Tell PKNCA about the Parameter
 
-Just writing a function doesn't connect it to the rest of PKNCA.  You have to tell PKNCA that the function exists and a few more details about it.  To do this, you need to use the `add.interval.col` function.  The function takes six arguments:
+Just writing a function doesn't connect it to the rest of PKNCA.  You have to tell PKNCA that the function exists and a few more details about it.  To do this, you need to use the `add.interval.col` function.  The function takes up to seven arguments:
 
 * `name` is the name of the parameter (as a character string).
 * `FUN` is the function name (as a character string).
 * `values` are the possible values for the interval column (currently only `TRUE` and `FALSE` are supported).
 * `depends` is a character vector of columns that must exist before this column can be created.  Use this to tell PKNCA about calculation dependencies (parameter X must be calculated to be able to calculate paramter Y).
+* `formalsmap` remaps the (formal) function arguments.  `formalsmap` is usually used when the same function may be used for multiple different parameters, for example the function `pk.calc.thalf.eff` is used to calculate the parameters `thalf.eff.obs`, `thalf.eff.pred`, `thalf.eff.last`, `thalf.eff.iv.obs`, `thalf.eff.iv.pred`, and `thalf.eff.iv.last` with different mean residence time inputs.
 * `desc` is a text description of the parameter.
 
 # Tell PKNCA How to Summarize the Parameter

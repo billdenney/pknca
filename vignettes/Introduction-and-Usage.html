@@ -80,31 +80,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PKNCA)
 
 ## Load the PK concentration data
-d.conc &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;concentration.csv&quot;</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
-## Load the dosing data
-d.dose &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;dose.csv&quot;</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+d.conc &lt;-<span class="st"> </span>datasets::Theoph
+## Generate the dosing data
+d.dose &lt;-<span class="st"> </span>d.conc[d.conc$Time ==<span class="st"> </span><span class="dv">0</span>,]
+d.dose$Time &lt;-<span class="st"> </span><span class="dv">0</span>
 
-## Create a concentration object specifying the concentration, time,
-## study, and subject columns.  (Note that any number of grouping
-## levels is supporting; you are not restricted to this list.)
+## Create a concentration object specifying the concentration, time, and
+## subject columns.  (Note that any number of grouping levels is
+## supported; you are not restricted to just grouping by subject.)
 my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d.conc,
-                     concentration~time|study+subject)
-## Create a dosing object specifying the dose, time, study, and
-## subject columns.  (Note that the grouping factors should be a
-## subset of the grouping factors for concentration, and the columns
-## must have the same names between concentration and dose objects.)
+                     conc~Time|Subject)
+## Create a dosing object specifying the dose, time, and subject
+## columns.  (Note that the grouping factors should be the same as or a
+## subset of the grouping factors for concentration, and the grouping
+## columns must have the same names between concentration and dose
+## objects.)
 my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose,
-                     dose~time|study+subject)
-## Combine the concentration and dosing information both to
+                     Dose~Time|Subject)</code></pre></div>
+<pre><code>## Assuming route of administration is extravascular</code></pre>
+<pre><code>## Assuming instant dosing (duration=0)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Combine the concentration and dosing information both to
 ## automatically define the intervals for NCA calculation and provide
 ## doses for calculations requiring dose.
 my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
 
 ## Calculate the NCA parameters
-my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
-
-## Summarize the results
+my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)</code></pre></div>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Summarize the results
 <span class="kw">summary</span>(my.results)</code></pre></div>
+<pre><code>##   start end  N     auclast        cmax               tmax   half.life
+## 1     0  24 12 74.6 [24.3]           .                  .           .
+## 2     0 Inf 12           . 8.65 [17.0] 1.14 [0.630, 3.55] 8.18 [2.12]
+##   aucinf.obs
+## 1          .
+## 2 115 [28.4]</code></pre>
 </div>
 <div id="data-handling" class="section level1">
 <h1>Data Handling</h1>
@@ -208,17 +218,35 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <h1>Grouping NCA Data</h1>
 <p>As described in the <a href="#quick-start">quick start</a>, concentration and dose data are generally grouped to identify how to separate the data. Typical groups for concentration data include study, treatment, subject, and analyte. Typical groups for dose data include study, treatment, and subject. By default, summaries are produced based on the concentration groups dropping the subject (so that averages are taken across subjects within the other parameters).</p>
 <p>The quick start example can be extended to include multiple analytes as follows. The only difference is the <code>/analyte</code> formula element in the concentration data. The reason for the slash instead of the plus is that the last element before a slash is assumed to be the subject, and as noted before, the subject is (by default) excluded from the summary grouping (so that summaries are grouped by study, treatment, etc., but not by subject).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Create a concentration object specifying the concentration, time,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Generate a faux multi-study, multi-analyte dataset.
+d.conc.parent &lt;-<span class="st"> </span>d.conc
+d.conc.parent$Subject &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(d.conc.parent$Subject))
+d.conc.parent$Study &lt;-<span class="st"> </span>d.conc.parent$Subject &lt;=<span class="st"> </span><span class="dv">6</span>
+d.conc.parent$Analyte &lt;-<span class="st"> &quot;Parent&quot;</span>
+d.conc.metabolite &lt;-<span class="st"> </span>d.conc.parent
+d.conc.metabolite$conc &lt;-<span class="st"> </span>d.conc.metabolite$conc/<span class="dv">2</span>
+d.conc.metabolite$Analyte &lt;-<span class="st"> &quot;Metabolite&quot;</span>
+d.conc.both &lt;-<span class="st"> </span><span class="kw">rbind</span>(d.conc.parent, d.conc.metabolite)
+d.conc.both &lt;-<span class="st"> </span>d.conc.both[<span class="kw">with</span>(d.conc.both, <span class="kw">order</span>(Study, Subject, Time, Analyte)),]
+d.dose.both &lt;-<span class="st"> </span>d.conc.both[d.conc.both$Time ==<span class="st"> </span><span class="dv">0</span> &amp;<span class="st"> </span>d.conc.both$Analyte %in%<span class="st"> &quot;Parent&quot;</span>,
+                           <span class="kw">c</span>(<span class="st">&quot;Study&quot;</span>, <span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>)]
+
+## Create a concentration object specifying the concentration, time,
 ## study, and subject columns.  (Note that any number of grouping
 ## levels is supporting; you are not restricted to this list.)
-my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d.conc,
-                     concentration~time|study+subject/analyte)
+my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d.conc.both,
+                     conc~Time|Study+Subject/Analyte)
 ## Create a dosing object specifying the dose, time, study, and
 ## subject columns.  (Note that the grouping factors should be a
 ## subset of the grouping factors for concentration, and the columns
 ## must have the same names between concentration and dose objects.)
-my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose,
-                     dose~time|study+subject)</code></pre></div>
+my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose.both,
+                     Dose~Time|Study+Subject)
+
+<span class="co"># Perform and summarize the PK data as previously described</span>
+my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
+my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
+<span class="kw">summary</span>(my.results)</code></pre></div>
 </div>
 <div id="selecting-calculation-intervals" class="section level1">
 <h1>Selecting Calculation Intervals</h1>
@@ -439,7 +467,7 @@ my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc,
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
 my.intervals &lt;-<span class="st"> </span>my.data$intervals
 my.intervals$aucinf.obs[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span>
-mydata$intervals &lt;-<span class="st"> </span>my.intervals</code></pre></div>
+my.data$intervals &lt;-<span class="st"> </span>my.intervals</code></pre></div>
 </div>
 </div>
 
