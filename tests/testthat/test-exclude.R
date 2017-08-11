@@ -113,6 +113,16 @@ test_that("exclude.helper", {
                               FUN=function(x) TRUE),
                regexp="mask or the return value from FUN must match the length of the data.",
                info="The return from FUN may not be a scalar")
+  expect_error(exclude.helper(obj1,
+                              reason=1:2,
+                              FUN=function(x) TRUE),
+               regexp="reason must be a scalar.",
+               info="Interpretation of a non-scalar reason is unclear")
+  expect_error(exclude.helper(obj1,
+                              reason=1,
+                              FUN=function(x) TRUE),
+               regexp="reason must be a character string.",
+               info="Interpretation of a non-character reason is unclear")
   
   ## Check operation
   obj4 <- list(data=data.frame(a=1:5,

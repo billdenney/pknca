@@ -19,12 +19,6 @@
 #'   if neither is given, then the dose is assumed to be a bolus 
 #'   (\code{duration=0}).  If \code{rate} is given, then the dose amount
 #'   must be given (the left hand side of the \code{formula}).
-#' @param labels (optional) Labels for use when plotting.  They are a 
-#'   named list where the names correspond to the names in the data 
-#'   frame and the values are used for xlab and/or ylab as appropriate.
-#' @param units (optional) Units for use when plotting and calculating 
-#'   parameters.  Note that unit conversions and simplifications are not
-#'   done; the text is used as-is.
 #' @param time.nominal (optional) The name of the nominal time column
 #'   (if the main time variable is actual time.  The \code{time.nominal}
 #'   is not used during calculations; it is available to assist with
@@ -66,7 +60,7 @@ PKNCAdose.tbl_df <- function(data, ...)
 #' @rdname PKNCAdose
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
-                                 labels, units, time.nominal, exclude, ...) {
+                                 time.nominal, exclude, ...) {
   ## Check inputs
   if (!missing(time.nominal)) {
     if (!(time.nominal %in% names(data))) {
@@ -111,11 +105,6 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   if (any(mask.indep) & !all(mask.indep)) {
     stop("Some but not all values are missing for the independent variable, please see the help for PKNCAdose for how to specify the formula and confirm that your data has dose times for all doses.")
   }
-  ## check and add labels and units
-  if (!missing(labels))
-    ret <- set.name.matching(ret, "labels", labels, data)
-  if (!missing(units))
-    ret <- set.name.matching(ret, "units", units, data)
   if (missing(route)) {
     ret <- setRoute.PKNCAdose(ret)
   } else {

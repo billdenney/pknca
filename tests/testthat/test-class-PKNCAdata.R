@@ -79,6 +79,11 @@ test_that("PKNCAdata", {
   expect_warning(PKNCAdata(obj.conc, obj.dose),
                  regexp="No intervals generated due to no concentration data for treatment=Trt 1, ID=1",
                  info="Missing concentration data with dose data gives a warning.")
+  
+  expect_warning(PKNCAdata(obj.conc, obj.dose, formula.conc=a~b),
+                 regexp="data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
+  expect_warning(PKNCAdata(obj.conc, obj.dose, formula.dose=a~b),
+                 regexp="data.dose was given as a PKNCAdose object.  Ignoring formula.dose")
 })
 
 test_that("PKNCAdata with no or limited dose information", {

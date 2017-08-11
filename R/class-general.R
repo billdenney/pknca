@@ -18,32 +18,6 @@ getDepVar <- function(x, ...)
 getIndepVar <- function(x, ...)
   UseMethod("getIndepVar", x)
 
-## Used for setting labels and units
-set.name.matching <- function(ret, name, value, data) {
-  if (!missing(value)) {
-    if (is.null(names(value)))
-      stop(paste(name, "must be a named list"))
-    if (!(all(names(labels) %in% names(data))))
-      stop(paste(name, "names must match data names"))
-    ret[[name]] <- value
-  }
-  ret
-}
-
-## Make plotting labels from data, a formula, labels, and units.
-make.label <- function(side, data, parsed.formula, labels, units) {
-  col.text <- as.character(parsed.formula[[side]])
-  label <- col.text
-  if (!is.null(labels))
-    if (col.text %in% names(labels))
-      label <- labels[[col.text]]
-  if (!is.null(units))
-    if (col.text %in% names(units))
-      label <- sprintf("%s (%s)", label, units[[col.text]])
-  label
-}
-
-
 #' Get the value from a column in a data frame if the value is a column 
 #' there, otherwise, the value should be a scalar or the length of the 
 #' data.

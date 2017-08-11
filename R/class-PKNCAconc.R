@@ -14,12 +14,6 @@
 #'   and if there are multiple grouping variables without a \code{/}, 
 #'   subject is assumed to be the last one.  For single-subject data, it
 #'   is assigned as \code{NULL}.
-#' @param labels (optional) Labels for use when plotting.  They are a 
-#'   named list where the names correspond to the names in the data 
-#'   frame and the values are used for xlab and/or ylab as appropriate.
-#' @param units (optional) Units for use when plotting and calculating 
-#'   parameters.  Note that unit conversions and simplifications are not
-#'   done; the text is used as-is.
 #' @param time.nominal (optional) The name of the nominal time column 
 #'   (if the main time variable is actual time.  The \code{time.nominal}
 #'   is not used during calculations; it is available to assist with 
@@ -48,7 +42,7 @@ PKNCAconc.tbl_df <- function(data, ...)
 
 #' @rdname PKNCAconc
 #' @export
-PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
+PKNCAconc.data.frame <- function(data, formula, subject,
                                  time.nominal, exclude, duration, ...) {
   ## Check inputs
   if (!missing(time.nominal)) {
@@ -115,11 +109,6 @@ PKNCAconc.data.frame <- function(data, formula, subject, labels, units,
   } else {
     ret <- setDuration.PKNCAconc(ret, duration=duration)
   }
-  ## check and add labels and units
-  if (!missing(labels))
-    ret <- set.name.matching(ret, "labels", labels, data)
-  if (!missing(units))
-    ret <- set.name.matching(ret, "units", units, data)
   if (!missing(time.nominal)) {
     ret$time.nominal <- time.nominal
   }
@@ -318,14 +307,6 @@ plot.PKNCAconc <- function(x, ...,
   }
   call.args[["x"]] <- stats::formula(conc.formula)
   call.args[["data"]] <- x$data
-  ## If labels and/or units are given for the x and y variables, use
-  ## them.
-  xlab <- make.label("rhs", x$data, conc.formula, x$labels, x$units)
-  ylab <- make.label("lhs", x$data, conc.formula, x$labels, x$units)
-  if (!("xlab" %in% names(call.args)))
-    call.args[["xlab"]] <- xlab
-  if (!("ylab" %in% names(call.args)))
-    call.args[["ylab"]] <- ylab
   do.call(lattice::xyplot, call.args)
 }
 

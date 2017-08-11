@@ -356,6 +356,13 @@ test_that("interp.extrap.conc", {
                        interp.method="lin up/log down"),
     regexp="An interpolation/extrapolation time is NA")
 
+  # Check inputs
+  expect_error(
+    interp.extrap.conc(conc=c(0, 1, 0.5, 1, 0),
+                       time=0:4,
+                       time.out=c(),
+                       interp.method="lin up/log down"),
+    regexp="time.out must be a vector with at least one element")
 })
 
 test_that("interp.extrap.conc.dose", {

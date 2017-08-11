@@ -66,7 +66,7 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
       if (!all(time[-1] > time[-length(time)]))
         stop("Time must be monotonically increasing")
       if (!(length(time) == length(unique(time))))
-        stop("All time values must be unique")
+        stop("All time values must be unique") # nocov
     }
   }
   if (!missing(conc) & !missing(time)) {
@@ -130,7 +130,7 @@ signifString <- function(x, digits=6)
   UseMethod("signifString")
 
 signifString.data.frame <- function(x, digits=6) {
-  ret <- lapply(as.data.frame(x),
+  ret <- lapply(x,
                 function(y, digits) {
                   if (is.numeric(y) & !is.factor(y)) {
                     signifString(y, digits)
@@ -139,6 +139,8 @@ signifString.data.frame <- function(x, digits=6) {
                   }
                 },
                 digits=3)
+  ret <- as.data.frame(ret,
+                       stringsAsFactors=FALSE)
   rownames(ret) <- rownames(x)
   colnames(ret) <- colnames(x)
   ret

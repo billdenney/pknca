@@ -158,4 +158,17 @@ test_that("half-life manual point selection", {
                         allow.tmax.in.half.life=FALSE,
                         check=FALSE)$clast.pred,
     info="manually-selected half-life respects tlast and generates a different clast.pred")
+  expect_warning(manual_blq <-
+                   pk.calc.half.life(conc=rep(0, 6),
+                                     time=c(0, 1, 2, 3, 4, 5),
+                                     manually.selected.points=TRUE,
+                                     min.hl.points=3,
+                                     tlast=20,
+                                     allow.tmax.in.half.life=FALSE,
+                                     check=FALSE),
+                 regexp="No data to manually fit for half-life (all concentrations may be 0)",
+                 fixed=TRUE,
+                 info="All BLQ with manual point selection gives a warning")
+  expect_true(all(is.na(unlist(manual_blq))),
+              info="All BLQ with manual point selection gives all NA results")
 })

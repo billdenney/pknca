@@ -42,10 +42,15 @@ test_that("PKNCA.options", {
   expect_error(PKNCA.options(value=5),
                regexp="Cannot have a value without a name")
 
-  ## Cannot both check and default at the same time
   expect_error(PKNCA.options("adj.r.squared.factor", default=TRUE, check=TRUE),
                regexp="Cannot request both default and check")
   
+  expect_error(PKNCA.options(adj.r.squared.factor=0.1, default=TRUE, check=TRUE),
+               regexp="Cannot request both default and check")
+  
+  expect_error(PKNCA.options(adj.r.squared.factor=0.1, max.aucinf.pext=15, check=TRUE),
+               regexp="Must give exactly one option to check")
+
   ## Confirm that the default state is as expected (setting it first
   ## in case the tests are run in a non-default state)
   PKNCA.options(default=TRUE)

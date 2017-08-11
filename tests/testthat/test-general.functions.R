@@ -101,4 +101,17 @@ test_that("Significance", {
   ## All zeros
   expect_equal(signifString(0, digits=3), "0.000")
   expect_equal(signifString(c(0, NA), digits=3), c("0.000", "NA"))
+  
+  # Data Frames
+  expect_equal(signifString(data.frame(A=c(0, 1.111111),
+                                       B=factor(LETTERS[1:2]),
+                                       C=LETTERS[1:2],
+                                       stringsAsFactors=FALSE),
+                            digits=3),
+               data.frame(A=c("0.000", "1.11"),
+                          B=factor(LETTERS[1:2]),
+                          C=LETTERS[1:2],
+                          stringsAsFactors=FALSE),
+               check.attributes=FALSE,
+               info="Data frame significance is calculated correctly")
 })

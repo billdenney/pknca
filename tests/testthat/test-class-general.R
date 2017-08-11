@@ -8,4 +8,6 @@ test_that("getColumnValueorNot", {
                list(data=cbind(tmpdata,
                                data.frame(d="d", stringsAsFactors=FALSE)),
                     name="d"))
+  expect_error(getColumnValueOrNot(tmpdata, 1:3, "d"),
+               regexp="value was not a column name nor was it a scalar or a vector matching the length of the data")
 })
