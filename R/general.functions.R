@@ -126,7 +126,25 @@ roundString <- function(x, digits=0) {
 #'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
-signifString <- function(x, digits=6) {
+signifString <- function(x, digits=6) 
+  UseMethod("signifString")
+
+signifString.data.frame <- function(x, digits=6) {
+  ret <- lapply(as.data.frame(x),
+                function(y, digits) {
+                  if (is.numeric(y) & !is.factor(y)) {
+                    signifString(y, digits)
+                  } else {
+                    y
+                  }
+                },
+                digits=3)
+  rownames(ret) <- rownames(x)
+  colnames(ret) <- colnames(x)
+  ret
+}
+
+signifString.default <- function(x, digits=6) {
   mask.na <- is.na(x)
   mask.aschar <- is.nan(x) | is.infinite(x)
   mask.manip <- !(mask.na | mask.aschar)

@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo=TRUE,
                       fig.height=4)
 library(cowplot)
 library(PKNCA)
+library(knitr)
 source("../tests/testthat/generate.data.R")
 ```
 
@@ -54,7 +55,7 @@ ggplot(d.conc.multi, aes(x=time, y=conc)) +
 ```
 ```{r intro_interval_spec}
 my.intervals <- data.frame(start=144, end=168, auclast=TRUE)
-print(my.intervals)
+knitr::kable(my.intervals)
 
 PKNCAdata(d.conc, intervals=my.intervals)
 ```
@@ -67,7 +68,7 @@ Group matching occurs by matching all overlapping column names between the group
 
 The groups for an interval prepare for summarization.  Typically the groups will take a structure similar to the preferred summarization structure with groups nested in the logical method for summary.  As an example, the group structure may be: study, treatment, day, analyte, and subject.  The grouping names for an interval must be the same as or a subset of the grouping names used for the concentration data.
 
-As the matching occurs with all available columns, the grouping columns names are only required to the level of specificity for the calculations desired.  As an example, if you want AUC_inf,obs_ in subjects who received single doses and AUC_last_ on days 1 (0 to 24 hours) and 10 (216 to 240 hours) in subjects who received multiple doses, with treatment defined as "Drug 1 Single" or "Drug 1 Multiple", the intervals could be defined as below.
+As the matching occurs with all available columns, the grouping columns names are only required to the level of specificity for the calculations desired.  As an example, if you want AUC~inf,obs~ in subjects who received single doses and AUC~last~ on days 1 (0 to 24 hours) and 10 (216 to 240 hours) in subjects who received multiple doses, with treatment defined as "Drug 1 Single" or "Drug 1 Multiple", the intervals could be defined as below.
 
 ```{r select_group}
 my.intervals <- data.frame(treatment=c("Drug 1 Single", "Drug 1 Multiple", "Drug 1 Multiple"),
@@ -75,7 +76,7 @@ my.intervals <- data.frame(treatment=c("Drug 1 Single", "Drug 1 Multiple", "Drug
                            end=c(Inf, 24, 240),
                            aucinf.obs=c(TRUE, FALSE, FALSE),
                            auclast=c(FALSE, TRUE, TRUE))
-print(my.intervals)
+knitr::kable(my.intervals)
 ```
 
 # Intervals
@@ -161,7 +162,7 @@ ggplot(d.conc.multi, aes(x=time, y=conc)) +
 my.intervals <- data.frame(start=c(0, 144),
                            end=c(24, 168),
                            auclast=TRUE)
-print(my.intervals)
+knitr::kable(my.intervals)
 
 my.data <- PKNCAdata(d.conc, intervals=my.intervals)
 ```
@@ -205,7 +206,67 @@ my.intervals <- data.frame(start=0,
                            end=c(24, Inf),
                            auclast=TRUE,
                            aucinf.obs=c(FALSE, TRUE))
-print(my.intervals)
+knitr::kable(my.intervals)
 
 my.data <- PKNCAdata(d.conc, intervals=my.intervals)
 ```
+
+# Intervals with Duration
+
+Some events have durations of times rather than instants in time associated with them.  Two typical examples of duration data in NCA are intravenous infusions and urine or fecal sample collections.  Inform PKNCA of durations with the `duration` argument to the `PKNCAdose` and `PKNCAconc` functions.
+
+Durations data are selected based on both the beginning and ending of the duration existing within the interval.
+
+```{r interval_yes_no, echo=FALSE}
+ggplot_intervals <- function(definition, intervals) {
+  intervals$within <-
+    c("No", "Yes")[intervals$interval.start >= min(definition$start.x) &
+                     intervals$interval.end >= max(definition$start.x)]
+  intervals$within <-
+    factor(intervals$within, levels=c("Yes", "No"))
+  ggplot(intervals,
+         aes(x=interval.start,
+             xend=interval.end,
+             y=y,
+             yend=y,
+             linetype=within)) +
+    geom_segment() +
+    geom_segment(data=definition,
+                 mapping=aes(x=start.x, xend=start.x, y=start.y, yend=end.y),
+                 arrow=arrow(),
+                 inherit.aes=FALSE) +
+    geom_point(aes(x=interval.start, y=1),
+               shape="|",
+               size=4) +
+    geom_point(aes(x=max(interval.end), y=1),
+               shape="|",
+               size=4) +
+    scale_y_continuous(breaks=NULL) +
+    labs(x="Time",
+         y=NULL)
+}
+
+interval_definition <-
+  data.frame(start.x=c(0, 24),
+             start.y=0.5,
+             end.y=0.9)
+show_intervals <-
+  data.frame(interval.start=c(0, 4, 12, 24),
+             interval.end=c(4, 12, 24, 48),
+             y=1)
+ggplot_intervals(interval_definition,
+                 show_intervals)
+
+interval_definition <-
+  data.frame(start.x=c(0, 16),
+             start.y=0.5,
+             end.y=0.9)
+show_intervals <-
+  data.frame(interval.start=c(0, 4, 12, 24),
+             interval.end=c(4, 12, 24, 48),
+             y=1)
+ggplot_intervals(interval_definition,
+                 show_intervals)
+
+```
+

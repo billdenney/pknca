@@ -12,6 +12,7 @@ route.
   pk.calc.aucpext.pred, etc.).  If your current code calls a specific
   function (like pk.calc.aucpext.pred), you must change to using the
   generic function (like pk.calc.aucpext)
+* Add manual half-life point selection
 * Add parameters for Ceoi and intravenous MRT
 * Updated vignettes to improve clarity
 * Added dose-normalized PK parameters (Fixes issue #41)

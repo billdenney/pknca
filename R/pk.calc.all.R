@@ -263,6 +263,7 @@ pk.nca.interval <- function(conc, time, duration.conc,
               arg, all.intervals[[n]]$FUN))
         }
       }
+      # Do the calculation
       tmp.result <- do.call(all.intervals[[n]]$FUN, call.args)
       ## If the function returns a data frame, save all the returned
       ## values, otherwise, save the value returned.

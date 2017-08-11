@@ -44,15 +44,13 @@ test_that("pk.calc.half.life", {
                  tolerance=0.0001))
 
   ## Ensure that the allow.tmax.in.half.life parameter is followed
-  expect_warning(
-    expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
-                                   time=c(0, 1, 2, 3),
-                                   min.hl.points=3,
-                                   allow.tmax.in.half.life=FALSE,
-                                   adj.r.squared.factor=0.1,
-                                   check=FALSE)$half.life,
-                 1.000577,
-                 tolerance=0.00001))
+  expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
+                                 time=c(0, 1, 2, 3),
+                                 min.hl.points=3,
+                                 allow.tmax.in.half.life=FALSE,
+                                 check=FALSE)$half.life,
+               1.000577,
+               tolerance=0.00001)
   expect_warning(
     expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
                                    time=c(0, 1, 2, 3),
@@ -119,4 +117,45 @@ test_that("pk.calc.half.life", {
                           tlast=3),
                tolerance=0.0001)
 
+})
+
+test_that("half-life manual point selection", {
+  expect_equal(
+      pk.calc.half.life(conc=c(3, 1, 0.5, 0.13, 0.12, 0.113),
+                        time=c(0, 1, 2, 3, 4, 5),
+                        manually.selected.points=TRUE,
+                        min.hl.points=3,
+                        allow.tmax.in.half.life=FALSE,
+                        check=FALSE)$half.life,
+      1.00653,
+      tolerance=0.0001,
+      info="manual selection uses the given points as is")
+  expect_true(
+    pk.calc.half.life(conc=c(3, 1, 0.5, 0.13, 0.12, 0.113),
+                      time=c(0, 1, 2, 3, 4, 5),
+                      manually.selected.points=TRUE,
+                      min.hl.points=3,
+                      allow.tmax.in.half.life=FALSE,
+                      check=FALSE)$half.life !=
+      pk.calc.half.life(conc=c(3, 1, 0.5, 0.13, 0.12, 0.113),
+                        time=c(0, 1, 2, 3, 4, 5),
+                        min.hl.points=3,
+                        allow.tmax.in.half.life=FALSE,
+                        check=FALSE)$half.life,
+    info="manual selection is different than automatic selection")
+  expect_true(
+    pk.calc.half.life(conc=c(3, 1, 0.5, 0.13, 0.12, 0.113),
+                      time=c(0, 1, 2, 3, 4, 5),
+                      manually.selected.points=TRUE,
+                      min.hl.points=3,
+                      tlast=20,
+                      allow.tmax.in.half.life=FALSE,
+                      check=FALSE)$clast.pred <
+      pk.calc.half.life(conc=c(3, 1, 0.5, 0.13, 0.12, 0.113),
+                        time=c(0, 1, 2, 3, 4, 5),
+                        manually.selected.points=TRUE,
+                        min.hl.points=3,
+                        allow.tmax.in.half.life=FALSE,
+                        check=FALSE)$clast.pred,
+    info="manually-selected half-life respects tlast and generates a different clast.pred")
 })
