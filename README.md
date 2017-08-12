@@ -25,9 +25,9 @@ route.
 
 # Citation
 
-As of version 0.8.0.9002, you can find citation information for the
-PKNCA package with a call to `citation(package="PKNCA")`.  The
-preferred citation until publication of version 1.0 is below:
+Citation information for the PKNCA package is available with a call to
+`citation(package="PKNCA")`.  The preferred citation until publication
+of version 1.0 is below:
 
 Denney W, Duvvuri S and Buckeridge C (2015). “Simple, Automatic
 Noncompartmental Analysis: The PKNCA R Package.” _Journal of
