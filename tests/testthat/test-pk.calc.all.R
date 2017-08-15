@@ -249,3 +249,27 @@ test_that("pk.calc.all with duration.dose required", {
                tol=1e-5,
                info="duration.dose is used when requested")
 })
+
+test_that("half life inclusion and exclusion", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  tmpconc$include_hl <- tmpconc$time <= 22
+  tmpconc$exclude_hl <- tmpconc$time == 22
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  myconc_incl <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID,
+                           include_half.life="include_hl")
+  myconc_excl <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID,
+                           exclude_half.life="exclude_hl")
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <-  PKNCAdata(myconc, mydose,
+                       intervals=data.frame(start=0, end=24, half.life=TRUE))
+  mydata_incl <- PKNCAdata(myconc_incl, mydose,
+                           intervals=data.frame(start=0, end=24, half.life=TRUE))
+  mydata_excl <- PKNCAdata(myconc_excl, mydose,
+                           intervals=data.frame(start=0, end=24, half.life=TRUE))
+  myresult <- pk.nca(mydata)
+  myresult_incl <- pk.nca(mydata_incl)
+  myresult_excl <- pk.nca(mydata_excl)
+  expect_false(identical(myresult$result, myresult_excl$result))
+  expect_false(identical(myresult$result, myresult_incl$result))
+})

@@ -108,6 +108,8 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                           drop=FALSE])[,c(col.conc,
                                           col.time,
                                           conc.dose$conc$exclude,
+                                          col.include_half.life,
+                                          col.exclude_half.life,
                                           col.duration.conc)]
     tmpdosedata <-
       merge(conc.dose$dose$data,
