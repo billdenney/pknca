@@ -2,18 +2,9 @@
 % Please edit documentation in R/exclude.R
 \name{exclude}
 \alias{exclude}
-\alias{exclude.PKNCAconc}
-\alias{exclude.PKNCAdose}
-\alias{exclude.PKNCAresults}
 \title{Exclude data points or results from calculations or summarization.}
 \usage{
 exclude(object, reason, mask, FUN)
-
-\method{exclude}{PKNCAconc}(object, reason, mask, FUN)
-
-\method{exclude}{PKNCAdose}(object, reason, mask, FUN)
-
-\method{exclude}{PKNCAresults}(object, reason, mask, FUN)
 }
 \arguments{
 \item{object}{The object to exclude data from.}

@@ -14,7 +14,7 @@ PKNCAconc(data, ...)
 \method{PKNCAconc}{tbl_df}(data, ...)
 
 \method{PKNCAconc}{data.frame}(data, formula, subject, time.nominal, exclude,
-  duration, ...)
+  duration, exclude_half.life, include_half.life, ...)
 }
 \arguments{
 \item{data}{A data frame with concentration, time, and the groups 
@@ -48,6 +48,11 @@ include and non-empty text for concentrations to exclude.}
 
 \item{duration}{(optional) The duration of collection as is typically
 used for concentration measurements in urine or feces.}
+
+\item{exclude_half.life, include_half.life}{Points to exclude from the
+half-life calculation (still using normal selection rules for the
+other points) or to include for the half-life (using specifically
+those points and bypassing automatic point selection).}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

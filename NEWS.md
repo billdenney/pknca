@@ -4,7 +4,7 @@ will be especially noticable around the inclusion of IV NCA parameters
 and additional specifications of the dosing including dose amount and
 route.
 
-# PKNCA 0.8.2
+# PKNCA 0.9.0
 
 * BACKWARD INCOMPATIBILITY: Added back-end functionality to only
   require one function to handle many NCA parameters that are related
@@ -12,12 +12,13 @@ route.
   pk.calc.aucpext.pred, etc.).  If your current code calls a specific
   function (like pk.calc.aucpext.pred), you must change to using the
   generic function (like pk.calc.aucpext)
-* Add manual half-life point selection
+* Add manual half-life point selection (Fixes issue #18)
 * Add parameters for Ceoi and intravenous MRT
 * Updated vignettes to improve clarity
 * Added dose-normalized PK parameters (Fixes issue #41)
 * Added checks to confirm that concentration and time are numeric
   (Fixes feature request #40)
+* Improved test coverage
 
 # PKNCA 0.8.1
 

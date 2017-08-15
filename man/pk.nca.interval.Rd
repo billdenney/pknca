@@ -5,7 +5,8 @@
 \title{Compute all PK parameters for a single concentration-time data set}
 \usage{
 pk.nca.interval(conc, time, duration.conc, dose, time.dose, duration.dose,
-  interval, options = list())
+  include_half.life = NULL, exclude_half.life = NULL, interval,
+  options = list())
 }
 \arguments{
 \item{conc}{Concentration measured}
@@ -20,9 +21,17 @@ pk.nca.interval(conc, time, duration.conc, dose, time.dose, duration.dose,
 \item{time.dose}{Time of the dose (must be the same length as 
 \code{dose})}
 
-\item{duration.dose}{The duration of the dose administration
-(typically zero for extravascular and intravascular bolus and
+\item{duration.dose}{The duration of the dose administration 
+(typically zero for extravascular and intravascular bolus and 
 nonzero for intravascular infusion)}
+
+\item{include_half.life}{An optional boolean vector of the
+concentration measurements to include in the half-life calculation.
+If given, no half-life point selection will occur.}
+
+\item{exclude_half.life}{An optional boolean vector of the
+concentration measurements to exclude from the half-life
+calculation.}
 
 \item{interval}{One row of an interval definition (see 
 \code{\link{check.interval.specification}} for how to define the 

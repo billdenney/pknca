@@ -113,7 +113,10 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   ret <- setDuration.PKNCAdose(ret, duration=duration,
                                rate=rate, dose=getDepVar.PKNCAdose(ret))
   if (!missing(time.nominal)) {
-    ret$time.nominal <- time.nominal
+    ret <-
+      setAttributeColumn(object=ret,
+                         attr_name="time.nominal",
+                         col_name=time.nominal)
   }
   ret
 }
@@ -135,14 +138,19 @@ setRoute <- function(object, ...)
 #' @export
 setRoute.PKNCAdose <- function(object, route, ...) {
   if (missing(route)) {
-    message("Assuming route of administration is extravascular")
-    tmpval <- getColumnValueOrNot(object$data, "extravascular", "route")
+    object <-
+      setAttributeColumn(object=object,
+                         attr_name="route",
+                         default_value="extravascular",
+                         message_if_default="Assuming route of administration is extravascular")
   } else {
-    tmpval <- getColumnValueOrNot(object$data, route, "route")
+    object <-
+      setAttributeColumn(object=object,
+                         attr_name="route",
+                         col_or_value=route)
   }
-  object$data <- tmpval$data
-  object$route <- tmpval$name
-  if (!all(tolower(object$data[[object$route]]) %in% c("extravascular", "intravascular"))) {
+  if (!all(tolower(getAttributeColumn(object=object, attr_name="route")[[1]]) %in%
+           c("extravascular", "intravascular"))) {
     stop("route must have values of either 'extravascular' or 'intravascular'.  Please set to one of those values and retry.")
   }
   object
@@ -164,27 +172,27 @@ setDuration <- function(object, ...)
 #' @export
 setDuration.PKNCAdose <- function(object, duration, rate, dose, ...) {
   if (missing(duration) & missing(rate)) {
-    message("Assuming instant dosing (duration=0)")
-    tmpval <- getColumnValueOrNot(object$data, 0, "duration")
+    object <- setAttributeColumn(object=object, attr_name="duration", default_value=0,
+                                 message_if_default="Assuming instant dosing (duration=0)")
+                                
   } else if (!missing(duration) & !missing(rate)) {
     stop("Both duration and rate cannot be given at the same time")
     # TODO: A consistency check could be done, but that would get into
     # requiring near-equal checks for floating point error.
   } else if (!missing(duration)) {
-    tmpval <- getColumnValueOrNot(object$data, duration, "duration")
+    object <- setAttributeColumn(object=object, attr_name="duration", col_or_value=duration)
   } else if (!missing(rate) & !missing(dose)) {
     tmprate <- getColumnValueOrNot(object$data, rate, "rate")
     tmpdose <- getColumnValueOrNot(object$data, dose, "dose")
     duration <- tmpdose$data[[tmpdose$name]]/tmprate$data[[tmprate$name]]
-    tmpval <- getColumnValueOrNot(object$data, duration, "duration")
+    object <- setAttributeColumn(object=object, attr_name="duration", col_or_value=duration)
   }
-  duration.val <- tmpval$data[[tmpval$name]]
+  duration.val <- getAttributeColumn(object=object, attr_name="duration")[[1]]
   if (is.numeric(duration.val) &&
       !any(is.na(duration.val)) &&
       !any(is.infinite(duration.val)) &&
       all(duration.val >= 0)) {
-    object$data <- tmpval$data
-    object$duration <- tmpval$name
+    # It passes
   } else {
     stop("duration must be numeric without missing (NA) or infinite values, and all values must be >= 0")
   }
@@ -237,6 +245,10 @@ getGroups.PKNCAdose <- function(...) {
 #' @export
 getData.PKNCAdose <-  function(object)
   object$data
+
+#' @rdname getDataName
+getDataName.PKNCAdose <- function(object)
+  "data"
 
 #' @rdname print.PKNCAconc
 #' @export

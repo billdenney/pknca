@@ -49,9 +49,8 @@ test_that("PKNCAdose", {
                                        stringsAsFactors=FALSE)),
                  formula = . ~ time | treatment + ID,
                  exclude="exclude",
-                 route="route",
-                 duration="duration"),
-                 .Names = c("data", "formula", "exclude", "route", "duration"),
+                 columns=list(route="route",
+                              duration="duration")),
                  class = c("PKNCAdose", "list")),
                info="PKNCAdose accepts . on the left side of the formula")
   expect_equal(PKNCAdose(tmp.dose, formula=dose~.|treatment+ID),
@@ -63,9 +62,8 @@ test_that("PKNCAdose", {
                                        stringsAsFactors=FALSE)),
                  formula = dose ~ . | treatment + ID,
                  exclude="exclude",
-                 route="route",
-                 duration="duration"),
-                 .Names = c("data", "formula", "exclude", "route", "duration"),
+                 columns=list(route="route",
+                              duration="duration")),
                  class = c("PKNCAdose", "list")),
                info="PKNCAdose accepts . on the right side of the formula")
   
@@ -226,8 +224,8 @@ test_that("PKNCAdose with exclusions", {
                                             stringsAsFactors=FALSE)),
                       formula=dose~time|treatment+ID,
                       exclude="excl",
-                      route="route",
-                      duration="duration"),
+                      columns=list(route="route",
+                                   duration="duration")),
                  class=c("PKNCAdose", "list")))
 })
 

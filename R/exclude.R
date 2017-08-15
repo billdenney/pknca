@@ -28,25 +28,8 @@
 exclude <- function(object, reason, mask, FUN)
   UseMethod("exclude")
 
-#' @rdname exclude
-#' @export
-exclude.PKNCAconc <- function(object, reason, mask, FUN) {
-  exclude.helper(object, reason, mask, FUN)
-}
-
-#' @rdname exclude
-#' @export
-exclude.PKNCAdose <- function(object, reason, mask, FUN) {
-  exclude.helper(object, reason, mask, FUN)
-}
-
-#' @rdname exclude
-#' @export
-exclude.PKNCAresults <- function(object, reason, mask, FUN) {
-  exclude.helper(object, reason, mask, FUN, dataname="result")
-}
-
-exclude.helper <- function(object, reason, mask, FUN, dataname="data") {
+exclude.default <- function(object, reason, mask, FUN) {
+  dataname <- getDataName(object)
   # Check inputs
   if (missing(mask) & !missing(FUN)) {
     mask <- do.call(FUN, list(object))

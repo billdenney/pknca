@@ -83,10 +83,12 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
   ## Column names to use
   col.conc <- all.vars(pformula.conc$lhs)
   col.time <- all.vars(pformula.conc$rhs)
-  col.duration.conc <- conc.dose$conc$duration
+  col.duration.conc <- conc.dose$conc$columns$duration
+  col.include_half.life <- conc.dose$conc$columns$include_half.life
+  col.exclude_half.life <- conc.dose$conc$columns$exclude_half.life
   col.dose <- all.vars(pformula.dose$lhs)
   col.time.dose <- all.vars(pformula.dose$rhs)
-  col.duration.dose <- conc.dose$dose$duration
+  col.duration.dose <- conc.dose$dose$columns$duration
   # Insert NA doses and dose times if they are not given
   if (!(col.dose %in% names(conc.dose$dose$data))) {
     col.dose <- paste0(max(names(conc.dose$dose$data)), "X")
@@ -106,14 +108,14 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                           drop=FALSE])[,c(col.conc,
                                           col.time,
                                           conc.dose$conc$exclude,
-                                          conc.dose$conc$duration)]
+                                          col.duration.conc)]
     tmpdosedata <-
       merge(conc.dose$dose$data,
             all.intervals[i, intersect(shared.names, names(all.intervals)),
                           drop=FALSE])[,c(col.dose,
                                           col.time.dose,
                                           conc.dose$dose$exclude,
-                                          conc.dose$dose$duration)]
+                                          col.duration.dose)]
     ## Choose only times between the start and end.
     mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[[col.time]] &
                          tmpconcdata[[col.time]] <= all.intervals$end[i] &
@@ -138,16 +140,24 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
       warning(paste(error.preamble, "No data for interval", sep=": "))
     } else {
       tryCatch(
-        ## Try the calculation 
-        calculated.interval <-
-          pk.nca.interval(conc=tmpconcdata[[col.conc]],
-                          time=tmpconcdata[[col.time]],
-                          duration.conc=tmpconcdata[[col.duration.conc]],
-                          dose=tmpdosedata[[col.dose]],
-                          time.dose=tmpdosedata[[col.time.dose]],
-                          duration.dose=tmpdosedata[[col.duration.dose]],
-                          interval=all.intervals[i,],
-                          options=options),
+        {
+          args <- list(conc=tmpconcdata[[col.conc]],
+                       time=tmpconcdata[[col.time]],
+                       duration.conc=tmpconcdata[[col.duration.conc]],
+                       dose=tmpdosedata[[col.dose]],
+                       time.dose=tmpdosedata[[col.time.dose]],
+                       duration.dose=tmpdosedata[[col.duration.dose]],
+                       interval=all.intervals[i,],
+                       options=options)
+          if (!is.null(col.include_half.life)) {
+            args$include_half.life <- tmpconcdata[[col.include_half.life]]
+          }
+          if (!is.null(col.exclude_half.life)) {
+            args$exclude_half.life <- tmpconcdata[[col.exclude_half.life]]
+          }
+          ## Try the calculation
+          calculated.interval <- do.call(pk.nca.interval, args)
+        },
         error=function(e) {
           e$message <- paste(error.preamble, e$message, sep=": ")
           stop(e)
@@ -177,12 +187,18 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #' @param dose Dose amount (may be a scalar or vector)
 #' @param time.dose Time of the dose (must be the same length as 
 #'   \code{dose})
-#' @param duration.dose The duration of the dose administration
-#'   (typically zero for extravascular and intravascular bolus and
+#' @param duration.dose The duration of the dose administration 
+#'   (typically zero for extravascular and intravascular bolus and 
 #'   nonzero for intravascular infusion)
 #' @param interval One row of an interval definition (see 
 #'   \code{\link{check.interval.specification}} for how to define the 
 #'   interval.
+#' @param include_half.life An optional boolean vector of the
+#'   concentration measurements to include in the half-life calculation.
+#'   If given, no half-life point selection will occur.
+#' @param exclude_half.life An optional boolean vector of the
+#'   concentration measurements to exclude from the half-life
+#'   calculation.
 #' @param options List of changes to the default 
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @return A data frame with the start and end time along with all PK 
@@ -192,6 +208,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #' @export
 pk.nca.interval <- function(conc, time, duration.conc,
                             dose, time.dose, duration.dose,
+                            include_half.life=NULL, exclude_half.life=NULL,
                             interval, options=list()) {
   if (!is.data.frame(interval))
     stop("interval must be a data.frame")
@@ -261,6 +278,17 @@ pk.nca.interval <- function(conc, time, duration.conc,
             stop(sprintf(
               "Cannot find argument '%s' for NCA function '%s'",
               arg, all.intervals[[n]]$FUN))
+        }
+      }
+      # Apply manual inclusion and exclusion
+      if (n %in% "half.life") {
+        if (!is.null(include_half.life)) {
+          call.args$conc <- call.args$conc[include_half.life]
+          call.args$time <- call.args$time[include_half.life]
+          call.args$manually.selected.points <- TRUE
+        } else if (!is.null(exclude_half.life)) {
+          call.args$conc <- call.args$conc[!exclude_half.life]
+          call.args$time <- call.args$time[!exclude_half.life]
         }
       }
       # Do the calculation

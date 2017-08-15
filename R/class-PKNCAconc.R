@@ -24,6 +24,10 @@
 #'   include and non-empty text for concentrations to exclude.
 #' @param duration (optional) The duration of collection as is typically
 #'   used for concentration measurements in urine or feces.
+#' @param exclude_half.life,include_half.life Points to exclude from the
+#'   half-life calculation (still using normal selection rules for the
+#'   other points) or to include for the half-life (using specifically
+#'   those points and bypassing automatic point selection).
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
@@ -43,13 +47,8 @@ PKNCAconc.tbl_df <- function(data, ...)
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
-                                 time.nominal, exclude, duration, ...) {
-  ## Check inputs
-  if (!missing(time.nominal)) {
-    if (!(time.nominal %in% names(data))) {
-      stop("time.nominal, if given, must be a column name in the input data.")
-    }
-  }
+                                 time.nominal, exclude, duration,
+                                 exclude_half.life, include_half.life, ...) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {
@@ -99,6 +98,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
   ret <- list(data=data,
               formula=formula,
               subject=subject)
+  class(ret) <- c("PKNCAconc", class(ret))
   if (missing(exclude)) {
     ret <- setExcludeColumn(ret)
   } else {
@@ -110,9 +110,23 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     ret <- setDuration.PKNCAconc(ret, duration=duration)
   }
   if (!missing(time.nominal)) {
-    ret$time.nominal <- time.nominal
+    ret <-
+      setAttributeColumn(object=ret,
+                         attr_name="time.nominal",
+                         col_name=time.nominal)
   }
-  class(ret) <- c("PKNCAconc", class(ret))
+  if (!missing(exclude_half.life)) {
+    ret <-
+      setAttributeColumn(object=ret,
+                         attr_name="exclude_half.life",
+                         col_name=exclude_half.life)
+  }
+  if (!missing(include_half.life)) {
+    ret <-
+      setAttributeColumn(object=ret,
+                         attr_name="include_half.life",
+                         col_name=include_half.life)
+  }
   ret
 }
 
@@ -191,20 +205,25 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
 getData.PKNCAconc <- function(object)
   object$data
 
+#' @rdname getDataName
+getDataName.PKNCAconc <- function(object)
+  "data"
+
 setDuration.PKNCAconc <- function(object, duration, ...) {
   if (missing(duration)) {
-    message("Assuming point rather than interval concentration measurement")
-    tmpval <- getColumnValueOrNot(object$data, 0, "duration")
+    object <-
+      setAttributeColumn(object=object, attr_name="duration", default_value=0,
+                         message_if_default="Assuming point rather than interval concentration measurement")
   } else {
-    tmpval <- getColumnValueOrNot(object$data, duration, "duration")
+    object <-
+      setAttributeColumn(object=object, attr_name="duration", col_or_value=duration)
   }
-  duration.val <- tmpval$data[[tmpval$name]]
+  duration.val <- getAttributeColumn(object=object, attr_name="duration")[[1]]
   if (is.numeric(duration.val) &&
       !any(is.na(duration.val)) &&
       !any(is.infinite(duration.val)) &&
       all(duration.val >= 0)) {
-    object$data <- tmpval$data
-    object$duration <- tmpval$name
+    # It passes the test
   } else {
     stop("duration must be numeric without missing (NA) or infinite values, and all values must be >= 0")
   }

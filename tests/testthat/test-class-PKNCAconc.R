@@ -117,11 +117,11 @@ test_that("split.PKNCAconc", {
                info="All parameter names are accurately transferred")
   expect_true(all(sapply(tmpsplit,
                          function(x) {
-                           ret <- TRUE
-                           for (n in setdiff(names(x), "data")) {
-                             ret <- ret & x[[n]] == myconc[[n]]
-                           }
-                           ret
+                           x_nodata <- x
+                           x_nodata$data <- NULL
+                           mc_nodata <- myconc
+                           mc_nodata$data <- NULL
+                           identical(x_nodata, mc_nodata)
                          })),
               info="All values (other than data) are accurately transferred.")
   expect_equal(split.PKNCAconc(NA),
@@ -198,7 +198,7 @@ test_that("PKNCAconc with exclusions", {
                       formula=conc~time|treatment+ID,
                       subject="ID", 
                       exclude="excl",
-                      duration="duration"),
+                      columns=list(duration="duration")),
                  class=c("PKNCAconc", "list")))
 })
 
@@ -216,7 +216,7 @@ test_that("PKNCAconc with duration", {
                       formula=conc~time|treatment+ID,
                       subject="ID", 
                       exclude="exclude",
-                      duration="duration_test"),
+                      columns=list(duration="duration_test")),
                  class=c("PKNCAconc", "list")))
 })
 
@@ -233,10 +233,20 @@ test_that("PKNCAconc with nominal time added", {
                       formula=conc~time|treatment+ID,
                       subject="ID",
                       exclude="exclude",
-                      duration="duration",
-                      time.nominal="tnom"),
+                      columns=list(duration="duration",
+                                   time.nominal="tnom")),
                  class=c("PKNCAconc", "list")))
-  expect_error(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="foo"),
-               regexp="time.nominal, if given, must be a column name in the input data.",
-               info="time.nominal must be in the input data.")
+  expect_equal(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="foo"),
+               structure(
+                 list(data=cbind(tmp.conc,
+                                 data.frame(exclude=NA_character_,
+                                            duration=0,
+                                            foo=NA,
+                                            stringsAsFactors=FALSE)),
+                      formula=conc~time|treatment+ID,
+                      subject="ID",
+                      exclude="exclude",
+                      columns=list(duration="duration",
+                                   time.nominal="foo")),
+                 class=c("PKNCAconc", "list")))
 })
