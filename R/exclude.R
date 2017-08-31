@@ -28,6 +28,8 @@
 exclude <- function(object, reason, mask, FUN)
   UseMethod("exclude")
 
+#' @describeIn exclude The general case for data exclusion
+#' @export
 exclude.default <- function(object, reason, mask, FUN) {
   dataname <- getDataName(object)
   # Check inputs

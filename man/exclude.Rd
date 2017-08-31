@@ -2,9 +2,12 @@
 % Please edit documentation in R/exclude.R
 \name{exclude}
 \alias{exclude}
+\alias{exclude.default}
 \title{Exclude data points or results from calculations or summarization.}
 \usage{
 exclude(object, reason, mask, FUN)
+
+\method{exclude}{default}(object, reason, mask, FUN)
 }
 \arguments{
 \item{object}{The object to exclude data from.}
@@ -33,6 +36,11 @@ Only one of \code{mask} or \code{FUN} may be given.  If
   \code{FUN(object)} and it must return a logical vector equivalent 
   to \code{mask}.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: The general case for data exclusion
+}}
+
 \examples{
 myconc <- PKNCAconc(data.frame(subject=1,
                                time=0:6,
