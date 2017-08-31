@@ -7,6 +7,8 @@
 PKNCA.options(..., default = FALSE, check = FALSE, name, value)
 }
 \arguments{
+\item{\dots}{options to set or get the value for}
+
 \item{default}{(re)sets all default options}
 
 \item{check}{check a single option given, but do not set it (for 
@@ -16,8 +18,6 @@ validation of the values when used in another function)}
 
 \item{value}{An option value (paired with the \code{name}) to set or
 check.}
-
-\item{\dots}{options to set or get the value for}
 }
 \value{
 If... \describe{ \item{no arguments are given}{returns the
@@ -56,4 +56,3 @@ PKNCA.options(auc.method="lin up/log down", min.hl.points=3)
 \seealso{
 \code{\link{PKNCA.choose.option}}
 }
-

@@ -21,4 +21,3 @@ check.conversion(x, FUN, ...)
 Check that the conversion to a data type does not change the number
 of NA values
 }
-

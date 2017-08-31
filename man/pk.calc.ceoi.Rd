@@ -23,4 +23,3 @@ The concentration at the end of the infusion, \code{NA} if
 \description{
 Determine the concentration at the end of infusion
 }
-

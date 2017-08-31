@@ -36,4 +36,3 @@ repetition.
 This is intended to find the interval over which x repeats by the
 rule unique(mod(x, interval)) is minimized.
 }
-

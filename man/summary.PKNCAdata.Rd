@@ -16,4 +16,3 @@ concentration, dosing, and interval information.}
 Summarize a PKNCAdata object showing important details about the
 concentration, dosing, and interval information.
 }
-

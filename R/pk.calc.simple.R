@@ -244,15 +244,20 @@ PKNCA.set.summary("thalf.eff.iv.last", business.geomean, business.geocv)
 
 #' Calculate the AUC percent extrapolated
 #' 
-#' @param auclast the area under the curve from time 0 to the last
+#' @param auclast the area under the curve from time 0 to the last 
 #'   measurement above the limit of quantification
 #' @param aucinf the area under the curve from time 0 to infinity
-#' @return the numeric value of the AUC percent extrapolated
+#' @return The numeric value of the AUC percent extrapolated or
+#'   \code{NA_real_} if \code{aucinf <= 0}.
 #' @export
 pk.calc.aucpext <- function(auclast, aucinf) {
   if (auclast >= aucinf)
     warning("auclast should be less than aucinf")
-  100*(1-auclast/aucinf)
+  if (aucinf > 0) {
+    100*(1-auclast/aucinf)
+  } else {
+    NA_real_
+  }
 }
 
 ## Add the columns to the interval specification
@@ -338,9 +343,15 @@ PKNCA.set.summary("kel.iv.last", business.geomean, business.geocv)
 #'   4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000. 86-7.
 #' @export
 pk.calc.cl <- function(dose, auc) {
-  if (length(auc) == 1)
+  if (length(auc) == 1) {
     dose <- sum(dose)
-  dose/auc
+  }
+  ret <- dose/auc
+  mask_zero <- !is.na(auc) & (auc <= 0)
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
 }
 
 ## Add the columns to the interval specification
@@ -382,8 +393,17 @@ PKNCA.set.summary("cl.pred", business.geomean, business.geocv)
 #' @param auc2 The AUC from 0 to infinity or 0 to tau administered in
 #'   route or method 2
 #' @export
-pk.calc.f <- function(dose1, auc1, dose2, auc2)
-  (auc2/dose2)/(auc1/dose1)
+pk.calc.f <- function(dose1, auc1, dose2, auc2) {
+  ret <- (auc2/dose2)/(auc1/dose1)
+  mask_zero <-
+    is.na(auc1)  | (auc1 <= 0) |
+    is.na(dose2) | (dose2 <= 0) |
+    is.na(dose1) | (dose1 <= 0)
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
+}
 add.interval.col("f",
                  FUN="pk.calc.f",
                  values=c(FALSE, TRUE),
@@ -430,7 +450,12 @@ PKNCA.set.summary("mrt.last", business.geomean, business.geocv)
 #' @describeIn pk.calc.mrt MRT for an IV infusion
 #' @export
 pk.calc.mrt.iv <- function(auc, aumc, duration.dose) {
-  aumc/auc - duration.dose/2
+  ret <- aumc/auc - duration.dose/2
+  mask_zero <- is.na(auc) | auc <= 0
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
 }
 ## Add the columns to the interval specification
 add.interval.col("mrt.iv.obs",
@@ -471,7 +496,12 @@ PKNCA.set.summary("mrt.iv.last", business.geomean, business.geocv)
 #' @seealso \code{\link{pk.calc.mrt}}
 #' @export
 pk.calc.mrt.md <- function(auctau, aumctau, aucinf, tau) {
-  aumctau/auctau + tau*(aucinf-auctau)/auctau
+  ret <- aumctau/auctau + tau*(aucinf-auctau)/auctau
+  mask_zero <- is.na(auctau) | auctau <= 0
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
 }
 add.interval.col("mrt.md.obs",
                  FUN="pk.calc.mrt.md",
@@ -606,7 +636,14 @@ pk.calc.vd <- function(dose, aucinf, lambda.z) {
       length(lambda.z) == 1) {
     dose <- sum(dose)
   }
-  dose/(aucinf * lambda.z)
+  ret <- dose/(aucinf * lambda.z)
+  mask_zero <-
+    is.na(aucinf) | aucinf <= 0 |
+    is.na(lambda.z) | lambda.z <= 0
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
 }
 ## Add the columns to the interval specification
 add.interval.col("vd.obs",
@@ -631,8 +668,14 @@ PKNCA.set.summary("vd.pred", business.geomean, business.geocv)
 #' @param end The ending time of the interval
 #' @return The Cav (average concentration during the interval)
 #' @export
-pk.calc.cav <- function(auclast, start, end)
-  auclast/(end-start)
+pk.calc.cav <- function(auclast, start, end) {
+  ret <- auclast/(end-start)
+  mask_zero <- is.na(end) | is.na(start) | end == start
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
+}
 add.interval.col("cav",
                  FUN="pk.calc.cav",
                  values=c(FALSE, TRUE),
@@ -654,7 +697,7 @@ pk.calc.ctrough <- function(conc, time, start) {
   if (sum(mask.start) == 1) {
     conc[mask.start]
   } else if (sum(mask.start) == 0) {
-    NA
+    NA_real_
   } else {
     # This should be impossible as check.conc.time should catch
     # duplicates.
@@ -676,7 +719,7 @@ PKNCA.set.summary("ctrough", business.geomean, business.geocv)
 #' @export
 pk.calc.ptr <- function(cmax, cmin) {
   ret <- cmax/cmin
-  ret[cmin %in% 0] <- NA
+  ret[cmin %in% 0] <- NA_real_
   ret
 }
 add.interval.col("ptr",
@@ -700,7 +743,7 @@ pk.calc.tlag <- function(conc, time) {
   if (any(mask.increase)) {
     time[mask.increase][1]
   } else {
-    NA
+    NA_real_
   }
 }
 add.interval.col("tlag",
@@ -718,7 +761,12 @@ PKNCA.set.summary("tlag", business.median, business.range)
 #' @return The degree of fluctuation around the average concentration.
 #' @export
 pk.calc.deg.fluc <- function(cmax, cmin, cav) {
-  100*(cmax - cmin)/cav
+  ret <- 100*(cmax - cmin)/cav
+  mask_zero <- is.na(cav) | cav == 0
+  if (any(mask_zero)) {
+    ret[mask_zero] <- NA_real_
+  }
+  ret
 }
 add.interval.col("deg.fluc",
                  FUN="pk.calc.deg.fluc",

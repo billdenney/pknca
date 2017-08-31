@@ -17,4 +17,3 @@ invisible text of the printed information
 \description{
 Print the summary of a provenance object
 }
-

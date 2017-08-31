@@ -9,6 +9,8 @@ pk.tss.monoexponential(..., tss.fraction = 0.9, output = c("population",
   "popind", "individual", "single"), check = TRUE, verbose = FALSE)
 }
 \arguments{
+\item{\dots}{See \code{\link{pk.tss.data.prep}}}
+
 \item{tss.fraction}{The fraction of steady-state required for
 calling steady-state}
 
@@ -24,8 +26,6 @@ the data to a single gnls model.}
 \item{verbose}{Describe models as they are run, show convergence of
 the model (passed to the nlme function), and additional details
 while running.}
-
-\item{\dots}{See \code{\link{pk.tss.data.prep}}}
 }
 \value{
 A scalar float for the first time when steady-state is
@@ -46,4 +46,3 @@ AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
 \seealso{
 \code{\link{pk.tss}}, \code{\link{pk.tss.stepwise.linear}}
 }
-

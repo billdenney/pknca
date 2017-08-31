@@ -25,4 +25,3 @@ A PKNCAresults object with each of the above within.
 This function should not be run directly.  The object is created
 for summarization and plotting.
 }
-

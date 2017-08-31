@@ -24,4 +24,3 @@ provenance.
 \seealso{
 \code{\link{checkProvenance}}
 }
-

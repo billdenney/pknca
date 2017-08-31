@@ -20,4 +20,3 @@ Determine dose normalized NCA parameter
 \examples{
 pk.calc.dn(90, 10)
 }
-

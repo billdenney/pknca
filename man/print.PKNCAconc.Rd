@@ -2,8 +2,8 @@
 % Please edit documentation in R/class-PKNCAconc.R, R/class-PKNCAdose.R
 \name{print.PKNCAconc}
 \alias{print.PKNCAconc}
-\alias{print.PKNCAdose}
 \alias{summary.PKNCAconc}
+\alias{print.PKNCAdose}
 \alias{summary.PKNCAdose}
 \title{Print and/or summarize a PKNCAconc or PKNCAdose object.}
 \usage{
@@ -23,12 +23,11 @@
 
 \item{summarize}{Summarize the nested number of groups}
 
-\item{object}{The object to summarize}
-
 \item{\dots}{Arguments passed to \code{print.formula} and
 \code{print.data.frame}}
+
+\item{object}{The object to summarize}
 }
 \description{
 Print and/or summarize a PKNCAconc or PKNCAdose object.
 }
-

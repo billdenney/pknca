@@ -36,4 +36,3 @@ Input restrictions are:
   \item all \code{conc} is 0 or \code{NA}
 }
 }
-

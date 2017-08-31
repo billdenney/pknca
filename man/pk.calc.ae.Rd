@@ -26,4 +26,3 @@ The units for the concentration and volume should match such
 \seealso{
 \code{\link{pk.calc.clr}}, \code{\link{pk.calc.fe}}
 }
-

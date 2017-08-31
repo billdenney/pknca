@@ -7,13 +7,13 @@
 pk.tss(..., type = c("monoexponential", "stepwise.linear"), check = TRUE)
 }
 \arguments{
+\item{\dots}{Passed to \code{\link{pk.tss.monoexponential}} or
+\code{\link{pk.tss.stepwise.linear}}.}
+
 \item{type}{The type of Tss to calculate, either
 \code{stepwise.linear} or \code{monoexponential}}
 
 \item{check}{See \code{\link{pk.tss.data.prep}}}
-
-\item{\dots}{Passed to \code{\link{pk.tss.monoexponential}} or
-\code{\link{pk.tss.stepwise.linear}}.}
 }
 \value{
 A data frame with columns as defined from
@@ -26,4 +26,3 @@ Compute the time to steady-state (tss)
 \code{\link{pk.tss.monoexponential}},
 \code{\link{pk.tss.stepwise.linear}}
 }
-

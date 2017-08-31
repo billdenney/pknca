@@ -9,4 +9,3 @@
 \description{
 Columns are always to the right of columns that they depend on.
 }
-

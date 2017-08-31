@@ -24,4 +24,3 @@ The units for \code{ae} and \code{dose} should be the same
 \seealso{
 \code{\link{pk.calc.ae}}, \code{\link{pk.calc.ae}}
 }
-

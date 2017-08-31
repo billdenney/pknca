@@ -9,6 +9,8 @@ pk.tss.stepwise.linear(..., min.points = 3, level = 0.95, verbose = FALSE,
   check = TRUE)
 }
 \arguments{
+\item{\dots}{See \code{\link{pk.tss.data.prep}}}
+
 \item{min.points}{The minimum number of points required for the fit}
 
 \item{level}{The confidence level required for assessment of
@@ -19,8 +21,6 @@ the model (passed to the nlme function), and additional details
 while running.}
 
 \item{check}{See \code{\link{pk.tss.data.prep}}}
-
-\item{\dots}{See \code{\link{pk.tss.data.prep}}}
 }
 \value{
 A scalar float for the first time when steady-state is
@@ -46,4 +46,3 @@ AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
 \seealso{
 \code{\link{pk.tss.monoexponential}}
 }
-

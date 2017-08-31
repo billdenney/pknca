@@ -2,9 +2,9 @@
 % Please edit documentation in R/class-PKNCAconc.R
 \name{PKNCAconc}
 \alias{PKNCAconc}
-\alias{PKNCAconc.data.frame}
 \alias{PKNCAconc.default}
 \alias{PKNCAconc.tbl_df}
+\alias{PKNCAconc.data.frame}
 \title{Create a PKNCAconc object}
 \usage{
 PKNCAconc(data, ...)
@@ -63,4 +63,3 @@ Create a PKNCAconc object
 \seealso{
 \code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
 }
-

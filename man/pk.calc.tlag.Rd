@@ -21,4 +21,3 @@ Determine the observed lag time (time before the first
 concentration above the limit of quantification or above the first
 concentration in the interval)
 }
-

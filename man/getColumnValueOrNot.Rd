@@ -29,4 +29,3 @@ Get the value from a column in a data frame if the value is a column
 there, otherwise, the value should be a scalar or the length of the 
 data.
 }
-

@@ -20,4 +20,3 @@ The computations assume that all calculation options are set in
 \seealso{
 \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}}
 }
-

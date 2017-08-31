@@ -20,4 +20,3 @@ A formula object
 \description{
 Extract the formula from a PKNCAconc object.
 }
-

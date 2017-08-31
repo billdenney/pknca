@@ -18,4 +18,3 @@ Describe a PKNCA.options option by name.
 \seealso{
 \code{\link{PKNCA.options}}
 }
-

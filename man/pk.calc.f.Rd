@@ -20,4 +20,3 @@ route or method 2}
 \description{
 Calculate the absolute (or relative) bioavailability
 }
-

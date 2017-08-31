@@ -21,4 +21,3 @@ The last observed concentration above the LOQ
 If Tlast is NA (due to no non-missing above LOQ measurements), this
 will return NA.
 }
-

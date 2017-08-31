@@ -39,4 +39,3 @@ Define how NCA parameters are summarized.
 \seealso{
 \code{\link{summary.PKNCAresults}}
 }
-

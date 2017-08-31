@@ -28,4 +28,3 @@ NA is returned.
 Note that all missing values are removed prior to calling the
 function.  The function is called with the
 }
-

@@ -31,4 +31,3 @@ Note that if \code{aucinf == auctau} (as would be the
 \seealso{
 \code{\link{pk.calc.mrt}}
 }
-

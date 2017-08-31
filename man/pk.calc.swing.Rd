@@ -18,4 +18,3 @@ The swing above the minimum concentration.  If \code{cmin} is zero,
 \description{
 Determine the PK swing
 }
-

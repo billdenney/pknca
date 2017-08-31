@@ -27,4 +27,3 @@ The merge is equivalent to a \code{full_join} where items
   missing from one or the other item will be missing, but the 
   element(s) will exist.
 }
-

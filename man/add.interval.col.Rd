@@ -52,4 +52,3 @@ add.interval.col("cmax.dn",
                  depends=c("cmax"))
 }
 }
-

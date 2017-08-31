@@ -15,4 +15,3 @@ the numeric value of the elimination rate
 \description{
 Calculate the elimination rate (Kel)
 }
-

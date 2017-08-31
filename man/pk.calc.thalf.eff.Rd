@@ -15,4 +15,3 @@ the numeric value of the effective half-life
 \description{
 Calculate the effective half-life
 }
-

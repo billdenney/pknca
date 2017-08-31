@@ -20,4 +20,3 @@ The concentration when \code{time == start}.  If none
 \description{
 Determine the trough (predose) concentration
 }
-

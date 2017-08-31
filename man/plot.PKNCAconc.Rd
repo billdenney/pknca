@@ -13,6 +13,8 @@
 \arguments{
 \item{x}{The object to plot}
 
+\item{\dots}{Additional arguments passed to \code{xyplot}}
+
 \item{groups}{The grouping variable for the plot (typically the
 subject column)}
 
@@ -21,8 +23,6 @@ subject column)}
 
 \item{panel.formula.update}{Updates to the \code{panel.formula} to
 simplify modifications without having to fully specify the formula.}
-
-\item{\dots}{Additional arguments passed to \code{xyplot}}
 }
 \value{
 A trellis object of the plot(s)
@@ -30,4 +30,3 @@ A trellis object of the plot(s)
 \description{
 Plot a PKNCAconc object
 }
-

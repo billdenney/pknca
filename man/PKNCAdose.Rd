@@ -2,9 +2,9 @@
 % Please edit documentation in R/class-PKNCAdose.R
 \name{PKNCAdose}
 \alias{PKNCAdose}
-\alias{PKNCAdose.data.frame}
 \alias{PKNCAdose.default}
 \alias{PKNCAdose.tbl_df}
+\alias{PKNCAdose.data.frame}
 \title{Create a PKNCAdose object}
 \usage{
 PKNCAdose(data, ...)
@@ -77,4 +77,3 @@ The \code{formula} for a \code{PKNCAdose} object can be
 \seealso{
 \code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
 }
-

@@ -172,19 +172,44 @@ test_that("pk.calc.cl", {
   expect_equal(pk.calc.cl(dose=c(50, 50), auc=100),
                1,
                info="Vector for dose and scalar for auc scalar output with the sum of doses")
+  expect_equal(pk.calc.cl(dose=c(50, 50), auc=c(NA, 100)),
+               c(NA_real_, 0.5),
+               info="NA generation works with NA, including for a vector")
+  expect_equal(pk.calc.cl(dose=c(50, 50), auc=c(0, 100)),
+               c(NA_real_, 0.5),
+               info="NA generation works with zero, including for a vector")
 })
 
 test_that("pk.calc.f", {
-  expect_equal(pk.calc.f(1, 1, 1, 2), 2)
+  expect_equal(pk.calc.f(1, 1, 1, 2), 2,
+               info="Standard bioavailability calculation")
+  expect_equal(pk.calc.f(NA, 1, 1, 1), NA_real_,
+               info="NA handling per parameter in bioavailability (1)")
+  expect_equal(pk.calc.f(1, NA, 1, 1), NA_real_,
+               info="NA handling per parameter in bioavailability (2)")
+  expect_equal(pk.calc.f(1, 1, NA, 1), NA_real_,
+               info="NA handling per parameter in bioavailability (3)")
+  expect_equal(pk.calc.f(1, 1, 1, NA), NA_real_,
+               info="NA handling per parameter in bioavailability (4)")
+  expect_equal(pk.calc.f(0, 1, 1, 1), NA_real_,
+               info="Zero handling per parameter in bioavailability (1)")
+  expect_equal(pk.calc.f(1, 0, 1, 1), NA_real_,
+               info="Zero handling per parameter in bioavailability (2)")
+  expect_equal(pk.calc.f(1, 1, 0, 1), NA_real_,
+               info="Zero handling per parameter in bioavailability (3)")
+  expect_equal(pk.calc.f(1, 1, 1, 0), 0,
+               info="Zero handling per parameter in bioavailability (4)")
 })
 
 test_that("pk.calc.aucpext", {
   expect_equal(pk.calc.aucpext(1, 2), 50)
   expect_equal(pk.calc.aucpext(1.8, 2), 10)
-  expect_warning(v1 <- pk.calc.aucpext(2, 1))
-  expect_equal(v1, -100)
-  expect_warning(pk.calc.aucpext(2, 1),
+  expect_warning(v1 <- pk.calc.aucpext(2, 1),
                  regexp="auclast should be less than aucinf")
+  expect_equal(v1, -100)
+  expect_warning(v2 <- pk.calc.aucpext(auclast=0, aucinf=0))
+  expect_equal(v2, NA_real_,
+               info="aucinf<=0 gives NA_real_ (not infinity)")
 })
 
 test_that("pk.calc.mrt", {
@@ -203,11 +228,15 @@ test_that("pk.calc.mrt.iv", {
   expect_equal(pk.calc.mrt.iv(auc=1, aumc=2, duration.dose=NA),
                NA_real_,
                info="MRT.iv is calculated correctly when duration is missing")
+  expect_equal(pk.calc.mrt.iv(auc=0, aumc=2, duration.dose=NA),
+               NA_real_,
+               info="MRT.iv is calculated correctly when auc is zero")
 })
-
 
 test_that("pk.calc.mrt.md", {
   expect_equal(pk.calc.mrt.md(1, 2, 1.5, 24), 2 + 24*0.5)
+  expect_equal(pk.calc.mrt.md(0, 2, 1.5, 24), NA_real_,
+               info="auctau <= 0 becomes NA (not Inf)")
 })
 
 test_that("pk.calc.vz", {
@@ -274,11 +303,20 @@ test_that("pk.calc.vd and its wrappers", {
                info="Vd calculation works with three vector inputs returning a vector")
   expect_equal(pk.calc.vd(c(1, 2), 2, 3), 0.5,
                info="Vd calculation works with vector dose and scalar aucinf and lambda.z inputs returning a scalar with the sum of doses used.")
+  
+  expect_equal(pk.calc.vd(dose=1, aucinf=0, lambda.z=1),
+               NA_real_,
+               info="aucinf<=0 becomes NA")
+  expect_equal(pk.calc.vd(dose=1, aucinf=1, lambda.z=0),
+               NA_real_,
+               info="lambda.z<=0 becomes NA")
 })
 
 test_that("pk.calc.cav", {
   expect_equal(pk.calc.cav(2, 0, 1), 2)
-  expect_equal(pk.calc.cav(NA, 0, 1), as.numeric(NA))
+  expect_equal(pk.calc.cav(NA, 0, 1), NA_real_)
+  expect_equal(pk.calc.cav(2, 1, 1), NA_real_,
+               info="If end == start, return NA_real_")
 })
 
 test_that("pk.calc.ctrough", {
@@ -286,7 +324,7 @@ test_that("pk.calc.ctrough", {
                info="Found and it's the first time")
   expect_equal(pk.calc.ctrough(1:5, 0:4, 1), 2,
                info="Found and it's not the first time")
-  expect_equal(pk.calc.ctrough(1:5, 0:4, 1.5), NA,
+  expect_equal(pk.calc.ctrough(1:5, 0:4, 1.5), NA_real_,
                info="Not found")
   expect_error(pk.calc.ctrough(1:5, c(0, 0:3), 0),
                regexp="Time must be monotonically increasing")
@@ -295,7 +333,7 @@ test_that("pk.calc.ctrough", {
 test_that("pk.calc.ptr", {
   expect_equal(pk.calc.ptr(cmax=2, cmin=1), 2,
                info="Confirm that the ratio goes the right way")
-  expect_equal(pk.calc.ptr(2, 0), as.numeric(NA),
+  expect_equal(pk.calc.ptr(2, 0), NA_real_,
                info="Division by zero returns NA")
 })
 
@@ -304,15 +342,17 @@ test_that("pk.calc.tlag", {
                info="find the first point")
   expect_equal(pk.calc.tlag(c(0, 0, 0, 0, 1), 0:4), 3,
                info="find the next to last point")
-  expect_equal(pk.calc.tlag(c(0, 0, 0, 0, 0), 0:4), NA,
+  expect_equal(pk.calc.tlag(c(0, 0, 0, 0, 0), 0:4), NA_real_,
                info="No increase gives NA")
-  expect_equal(pk.calc.tlag(5:1, 0:4), NA,
+  expect_equal(pk.calc.tlag(5:1, 0:4), NA_real_,
                info="No increase gives NA")
 })
 
 test_that("pk.calc.deg.fluc", {
   expect_equal(pk.calc.deg.fluc(cmax=100, cmin=10, cav=45), 200,
                info="Degree of fluctuation math works")
+  expect_equal(pk.calc.deg.fluc(cmax=100, cmin=10, cav=0), NA_real_,
+               info="Degree of fluctuation returns NA when cav=0")
 })
 
 test_that("pk.calc.swing", {
@@ -320,6 +360,8 @@ test_that("pk.calc.swing", {
                info="Swing math works")
   expect_equal(pk.calc.swing(100, 0), Inf,
                info="Swing handle Ctrough=0")
+  expect_equal(pk.calc.swing(100, -1), Inf,
+               info="Swing handle Ctrough<0")
 })
 
 test_that("pk.calc.ceoi", {

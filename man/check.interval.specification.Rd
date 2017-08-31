@@ -31,4 +31,3 @@ intervals to.
 \code{\link{check.interval.deps}}, 
   \code{\link{get.parameter.deps}}, \code{\link{get.interval.cols}}
 }
-

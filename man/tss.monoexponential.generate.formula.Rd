@@ -17,4 +17,3 @@ a list with elements for each of the variables
 A helper function to generate the formula and starting values for
 the parameters in monoexponential models.
 }
-

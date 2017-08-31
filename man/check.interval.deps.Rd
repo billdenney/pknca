@@ -23,4 +23,3 @@ fulfill all dependencies.
 \seealso{
 \code{\link{check.interval.specification}}
 }
-

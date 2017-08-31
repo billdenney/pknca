@@ -16,4 +16,3 @@ Get the columns that can be used in an interval specification
 \examples{
 get.interval.cols()
 }
-

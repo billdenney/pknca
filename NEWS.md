@@ -12,6 +12,9 @@ route.
   pk.calc.aucpext.pred, etc.).  If your current code calls a specific
   function (like pk.calc.aucpext.pred), you must change to using the
   generic function (like pk.calc.aucpext)
+* BACKWARD INCOMPATIBILITY: Functions that previously may have
+  returned Infinity due to dividing by zero (e.g. when AUC=0
+  calculating clearance) now return NA.
 * Add manual half-life point selection (Fixes issue #18)
 * Add parameters for Ceoi and intravenous MRT
 * Updated vignettes to improve clarity

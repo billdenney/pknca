@@ -27,4 +27,3 @@ The object with duration set
 \description{
 Set the duration of dosing or measurement
 }
-

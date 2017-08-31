@@ -28,4 +28,3 @@ components are done.
 \seealso{
 \code{\link{pk.calc.half.life}}
 }
-

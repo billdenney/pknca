@@ -22,4 +22,3 @@ A data frame of results
 Extract the parameter results from a PKNCAresults and return them
 as a data frame.
 }
-

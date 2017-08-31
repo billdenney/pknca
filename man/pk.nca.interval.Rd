@@ -53,4 +53,3 @@ function is the \code{conc}entration and \code{time}.
 \seealso{
 \code{\link{check.interval.specification}}
 }
-

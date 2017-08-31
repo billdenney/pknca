@@ -34,4 +34,3 @@ If no model converges, then the \code{tss.monoexponential.single}
 and/or \code{tss.monoexponential.individual} column will be set to
 NA.
 }
-

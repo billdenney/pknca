@@ -2,11 +2,11 @@
 % Please edit documentation in R/pk.calc.c0.R
 \name{pk.calc.c0}
 \alias{pk.calc.c0}
+\alias{pk.calc.c0.method.logslope}
 \alias{pk.calc.c0.method.c0}
 \alias{pk.calc.c0.method.c1}
-\alias{pk.calc.c0.method.cmin}
-\alias{pk.calc.c0.method.logslope}
 \alias{pk.calc.c0.method.set0}
+\alias{pk.calc.c0.method.cmin}
 \title{Estimate the concentration at dosing time for an IV bolus dose.}
 \usage{
 pk.calc.c0(conc, time, time.dose = 0, method = c("c0", "logslope", "c1"),

@@ -25,4 +25,3 @@ found.
 Find the first occurrence of an operator in a formula and return
 the left, right, or both sides of the operator.
 }
-

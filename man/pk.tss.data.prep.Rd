@@ -44,4 +44,3 @@ a data frame with columns for \code{conc}entration,
 Clean up the time to steady-state parameters and return a data
 frame for use by the tss calculators.
 }
-

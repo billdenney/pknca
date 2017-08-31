@@ -23,4 +23,3 @@ value for an option.
 \seealso{
 \code{\link{PKNCA.options}}
 }
-

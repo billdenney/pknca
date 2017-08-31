@@ -26,4 +26,3 @@ Values that are not standard numbers like \code{Inf}, \code{NA}, and
 \seealso{
 \code{\link{round}}, \code{\link{signifString}}
 }
-

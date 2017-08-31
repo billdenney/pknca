@@ -31,4 +31,3 @@ If \code{dose} is the same length as the other inputs, then
   doses were given in a single interval, and the sum of the 
   \code{dose}s will be used for the calculation.
 }
-

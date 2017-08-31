@@ -21,4 +21,3 @@ Extract the best model from a list of models using AIC.list.
 \seealso{
 \code{\link{AIC.list}}
 }
-

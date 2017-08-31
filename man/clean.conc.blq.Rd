@@ -14,6 +14,8 @@ clean.conc.blq(conc, time, ..., options = list(),
 
 \item{time}{Time of the concentration measurement}
 
+\item{\dots}{Additional arguments passed to clean.conc.na}
+
 \item{options}{List of changes to the default 
 \code{\link{PKNCA.options}} for calculations.}
 
@@ -24,8 +26,6 @@ values?  See details for description.}
 \code{\link{clean.conc.na}})}
 
 \item{check}{Run \code{\link{check.conc.time}}?}
-
-\item{\dots}{Additional arguments passed to clean.conc.na}
 }
 \value{
 The concentration and time measurements (data frame) filtered
@@ -65,4 +65,3 @@ The valid settings for each are:
 \seealso{
 \code{\link{clean.conc.na}}
 }
-

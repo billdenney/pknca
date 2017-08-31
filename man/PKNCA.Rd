@@ -32,4 +32,3 @@ summary(my.results)
 as.data.frame(my.results)
 }
 }
-

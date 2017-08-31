@@ -24,4 +24,3 @@ order.
 Extract the columns used in the formula (in order) from a PKNCAconc
 or PKNCAdose object.
 }
-

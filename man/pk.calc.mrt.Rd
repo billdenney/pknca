@@ -29,7 +29,7 @@ linear multiple-dose data.
 \itemize{
 \item \code{pk.calc.mrt.iv}: MRT for an IV infusion
 }}
+
 \seealso{
 \code{\link{pk.calc.mrt.md}}
 }
-

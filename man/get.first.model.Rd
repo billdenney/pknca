@@ -17,4 +17,3 @@ The first item in the \code{object} that is not a list or
 \description{
 Get the first model from a list of models
 }
-

@@ -15,4 +15,3 @@
 \description{
 Print a PKNCAdata object
 }
-

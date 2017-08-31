@@ -43,4 +43,3 @@ Intervals for AUC are selected by the following metrics:
 \code{\link{pk.calc.half.life}}, \code{\link{find.tau}},
 \code{\link{check.interval.specification}}, \code{\link{PKNCA.options}}
 }
-

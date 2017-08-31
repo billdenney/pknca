@@ -36,4 +36,3 @@ the best model does not include a random effect for subject on Tss
 then the \code{tss.monoexponential.popind} column of the output
 will be set to NA.
 }
-

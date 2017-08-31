@@ -7,15 +7,15 @@
 pk.calc.aucpext(auclast, aucinf)
 }
 \arguments{
-\item{auclast}{the area under the curve from time 0 to the last
+\item{auclast}{the area under the curve from time 0 to the last 
 measurement above the limit of quantification}
 
 \item{aucinf}{the area under the curve from time 0 to infinity}
 }
 \value{
-the numeric value of the AUC percent extrapolated
+The numeric value of the AUC percent extrapolated or
+  \code{NA_real_} if \code{aucinf <= 0}.
 }
 \description{
 Calculate the AUC percent extrapolated
 }
-

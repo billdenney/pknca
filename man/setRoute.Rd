@@ -26,4 +26,3 @@ The object with an updated route
 \description{
 Set the dosing route
 }
-

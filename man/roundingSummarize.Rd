@@ -20,4 +20,3 @@ A string of the rounded value
 During the summarization of PKNCAresults, do the rounding of values
 based on the instructions given.
 }
-

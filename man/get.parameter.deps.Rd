@@ -17,4 +17,3 @@ A character vector of parameter names that depend on the
 \description{
 Get all columns that depend on a parameter
 }
-

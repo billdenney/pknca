@@ -15,4 +15,3 @@
 \description{
 Extract all the original data from a PKNCAconc or PKNCAdose object
 }
-

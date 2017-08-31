@@ -42,4 +42,3 @@ exclude(myconc,
         reason="Carryover",
         mask=c(TRUE, rep(FALSE, 6)))
 }
-

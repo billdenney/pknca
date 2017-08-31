@@ -25,4 +25,3 @@ The units for the \code{ae} and \code{auc} should match such
 \seealso{
 \code{\link{pk.calc.ae}}, \code{\link{pk.calc.fe}}
 }
-

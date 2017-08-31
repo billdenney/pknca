@@ -17,4 +17,3 @@ The numeric adjusted r-squared value
 \description{
 Calculate the adjusted r-squared value
 }
-

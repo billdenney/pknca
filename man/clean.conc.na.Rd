@@ -13,6 +13,8 @@ clean.conc.na(conc, time, ..., options = list(),
 
 \item{time}{Time of the concentration measurement}
 
+\item{\dots}{Additional items to add to the data frame}
+
 \item{options}{List of changes to the default 
 \code{\link{PKNCA.options}} for calculations.}
 
@@ -20,8 +22,6 @@ clean.conc.na(conc, time, ..., options = list(),
 number to impute.}
 
 \item{check}{Run \code{\link{check.conc.time}}?}
-
-\item{\dots}{Additional items to add to the data frame}
 }
 \value{
 The concentration and time measurements (data frame) filtered
@@ -31,4 +31,3 @@ The concentration and time measurements (data frame) filtered
 NA concentrations (and their associated times) will be removed then
 the BLQ values in the middle
 }
-

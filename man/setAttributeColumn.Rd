@@ -40,4 +40,3 @@ to the names of the object.
 \seealso{
 \code{\link{getAttributeColumn}}
 }
-

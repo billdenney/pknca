@@ -37,4 +37,3 @@ Summarize PKNCA results
 \seealso{
 \code{\link{PKNCA.set.summary}}
 }
-

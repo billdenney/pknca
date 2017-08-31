@@ -17,4 +17,3 @@ The ratio of cmax to cmin (if cmin == 0, NA)
 \description{
 Determine the peak-to-trough ratio
 }
-

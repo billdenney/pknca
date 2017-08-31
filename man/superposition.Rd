@@ -86,4 +86,3 @@ following times: 0 (zero), \code{dose.times}, \code{time modulo tau}
 \seealso{
 \code{\link{interp.extrap.conc}}
 }
-

@@ -9,11 +9,11 @@
 \arguments{
 \item{object}{the list of models}
 
-\item{assess.best}{determine which model is the best (by lowest
-AIC)}
-
 \item{\dots}{parameters passed to the underlying AIC function
 (typically the parameter k)}
+
+\item{assess.best}{determine which model is the best (by lowest
+AIC)}
 }
 \value{
 a data frame with row names matching the names of the list
@@ -27,4 +27,3 @@ Assess the AIC for all models in a list of models
 \seealso{
 \code{\link{get.best.model}}
 }
-

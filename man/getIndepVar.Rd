@@ -19,4 +19,3 @@ The vector of the independent variable from the object.
 Get the independent variable (right hand side of the formula) from
 a PKNCA object.
 }
-

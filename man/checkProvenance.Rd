@@ -20,4 +20,3 @@ Check the hash of an object to confirm its provenance.
 \seealso{
 \code{\link{addProvenance}}
 }
-

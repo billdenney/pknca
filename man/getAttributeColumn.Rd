@@ -22,4 +22,3 @@ The value of the attribute (or \code{NULL} if the attribute
 \description{
 Retrieve the value of an attribute column.
 }
-
