@@ -255,37 +255,35 @@ getDataName.PKNCAdose <- function(object)
 print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
   cat("Formula for dosing:\n ")
   print(stats::formula(x), showEnv=FALSE, ...)
+  if (!is.null(time_nom_data <- getAttributeColumn(x, attr_name="time.nominal", warn_missing=c()))) {
+    cat("Nominal time column is: ", names(time_nom_data), "\n", sep="")
+  } else {
+    cat("Nominal time column is not specified.\n")
+  }
   if (summarize) {
     cat("\n")
-    grp <- getGroups(x)
+    grp <- getGroups.PKNCAdose(x)
     if (ncol(grp) > 0) {
-      tmp.summary <- data.frame(Group.Name=names(grp),
-                                Count=0)
-      for (i in 1:ncol(grp))
-        tmp.summary$Count[i] <- nrow(unique(grp[,1:i,drop=FALSE]))
-      cat("Group summary:\n")
-      names(tmp.summary) <- gsub("\\.", " ", names(tmp.summary))
+      tmp.summary <- as.data.frame(
+        lapply(grp, FUN=function(y) length(unique(y))))
+      cat("Number unique entries in each group:\n")
       print.data.frame(tmp.summary, row.names=FALSE)
     } else {
       cat("No groups.\n")
     }
-  }
-  if ("time.nominal" %in% names(x)) {
-    cat("Nominal time column is: ", x$time.nominal, "\n", sep="")
   } else {
-    cat("Nominal time column is not specified.\n")
-  }
-  if (n != 0) {
-    if (n >= nrow(x$data)) {
-      cat("\nData for dosing:\n")
-    } else if (n < 0) {
-      cat(sprintf("\nFirst %d rows of dosing data:\n",
-                  nrow(x$data)+n))
-    } else {
-      cat(sprintf("\nFirst %d rows of dosing data:\n",
-                  n))
+    if (n != 0) {
+      if (n >= nrow(x$data)) {
+        cat("\nData for dosing:\n")
+      } else if (n < 0) {
+        cat(sprintf("\nFirst %d rows of dosing data:\n",
+                    nrow(x$data)+n))
+      } else {
+        cat(sprintf("\nFirst %d rows of dosing data:\n",
+                    n))
+      }
+      print.data.frame(utils::head(x$data, n=n), ..., row.names=FALSE)
     }
-    print.data.frame(utils::head(x$data, n=n), ..., row.names=FALSE)
   }
 }
 

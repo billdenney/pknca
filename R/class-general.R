@@ -101,22 +101,27 @@ setAttributeColumn <- function(object, attr_name, col_or_value, col_name, defaul
   } else if (!is.character(col_name) | (length(col_name) != 1)) {
     stop("col_name must be a character scalar.")
   }
-  # Set the value if the column does not exist yet
-  if (!(col_name %in% names(object[[dataname]]))) {
-    if (missing(default_value)) {
+  # Set the default value
+  if (missing(default_value)) {
+    if (col_name %in% names(object[[dataname]])) {
+      default_value <- object[[dataname]][[col_name]]
+    } else {
       default_value <- NA
-    } else if (!(length(default_value) %in% c(1, nrow(object[[dataname]])))) {
-      stop("default_value must be a scalar or the same length as the rows in the data.")
+      # React to using the default value, if requested
+      if (!missing(stop_if_default)) {
+        stop(stop_if_default)
+      } else if (!missing(warn_if_default)) {
+        warning(warn_if_default)
+      } else if (!missing(message_if_default)) {
+        message(message_if_default)
+      }
     }
-    if (!missing(stop_if_default)) {
-      stop(stop_if_default)
-    } else if (!missing(warn_if_default)) {
-      warning(warn_if_default)
-    } else if (!missing(message_if_default)) {
-      message(message_if_default)
-    }
-    object[[dataname]][[col_name]] <- default_value
   }
+  # Check that the default_value can work
+  if (!(length(default_value) %in% c(1, nrow(object[[dataname]])))) {
+    stop("default_value must be a scalar or the same length as the rows in the data.")
+  }
+  object[[dataname]][[col_name]] <- default_value
   # Inform the object that the column exists
   if (!("columns" %in% names(object))) {
     object$columns <- list()

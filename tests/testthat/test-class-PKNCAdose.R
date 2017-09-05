@@ -209,6 +209,31 @@ Data for dosing:
                 fixed=TRUE,
                 info="Generic print.PKNCAdose works with no groups")
   
+  expect_output(print(mydose, n=-5),
+                regexp="Formula for dosing:
+ dose ~ time | treatment + ID
+Nominal time column is not specified.
+
+First 5 rows of dosing data:
+ treatment ID dose time exclude         route duration
+     Trt 1  1    1    0    <NA> extravascular        0
+     Trt 1  2    1    0    <NA> extravascular        0
+     Trt 1  3    1    0    <NA> extravascular        0
+     Trt 1  4    1    0    <NA> extravascular        0
+     Trt 1  5    1    0    <NA> extravascular        0",
+                fixed=TRUE,
+                info="Generic print.PKNCAdose works")
+  
+  expect_output(print(mydose, summarize=TRUE),
+                regexp="Formula for dosing:
+ dose ~ time | treatment + ID
+Nominal time column is not specified.
+
+Number unique entries in each group:
+ treatment ID
+         2  5",
+                fixed=TRUE,
+                info="Summary print.PKNCAdose works")
 })
 
 test_that("PKNCAdose with exclusions", {
@@ -269,4 +294,67 @@ test_that("PKNCAdose route and duration", {
       tmp
     })
 
+})
+
+test_that("time.nominal within PKNCAdose", {
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  tmp.dose$nom_time <- tmp.dose$time
+  rownames(tmp.dose) <- NULL
+  expect_equal(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID,
+                         time.nominal="nom_time"),
+               structure(list(
+                 data=cbind(tmp.dose,
+                            data.frame(exclude=NA_character_,
+                                       route="extravascular",
+                                       duration=0,
+                                       stringsAsFactors=FALSE)),
+                 formula = dose ~ time | treatment + ID,
+                 exclude="exclude",
+                 columns=list(route="route",
+                              duration="duration",
+                              time.nominal="nom_time")),
+                 class = c("PKNCAdose", "list")),
+               info="PKNCAdose accepts time.nominal")
+  expect_error(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID,
+                         time.nominal="foo"),
+               regexp="time.nominal, if given, must be a column name in the input data",
+               info="PKNCAdose time.nominal must be a column in the data")
+  # Test printing
+  dose_with_nom_time <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID,
+                                  time.nominal="nom_time")
+  expect_output(print(dose_with_nom_time),
+                regexp="Formula for dosing:
+ dose ~ time | treatment + ID
+Nominal time column is: nom_time
+
+First 6 rows of dosing data:
+ treatment ID dose time nom_time exclude         route duration
+     Trt 1  1    1    0        0    <NA> extravascular        0
+     Trt 1  2    1    0        0    <NA> extravascular        0
+     Trt 1  3    1    0        0    <NA> extravascular        0
+     Trt 1  4    1    0        0    <NA> extravascular        0
+     Trt 1  5    1    0        0    <NA> extravascular        0
+     Trt 2  1    2    0        0    <NA> extravascular        0",
+                fixed=TRUE,
+                info="Generic print.PKNCAdose works")
+})
+
+test_that("setDuration", {
+  tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  tmp.dose$nom_time <- tmp.dose$time
+  rownames(tmp.dose) <- NULL
+  mydose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  expect_equal(setDuration(mydose),
+               mydose,
+               info="No changes with no arguments")
+  expect_error(setDuration(mydose, duration="foo", rate="bar"),
+               regexp="Both duration and rate cannot be given at the same time",
+               fixed=TRUE,
+               info="Cannot give both duration and rate")
+  expect_error(setDuration(mydose, duration="foobar"),
+               regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
+               fixed=TRUE,
+               info="Cannot give both duration as non-numeric")
 })
