@@ -273,3 +273,18 @@ test_that("half life inclusion and exclusion", {
   expect_false(identical(myresult$result, myresult_excl$result))
   expect_false(identical(myresult$result, myresult_incl$result))
 })
+
+test_that("No interval requested (e.g. for placebo)", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <-  PKNCAdata(myconc, mydose,
+                       intervals=data.frame(treatment="Trt 1", start=0, end=24, cmax=TRUE,
+                                            stringsAsFactors=FALSE))
+  myresult <- pk.nca(mydata)
+  expect_equal(nrow(as.data.frame(myresult)), 2,
+               info="Only two rows of results were generated since only 'Trt 1' was requested")
+  expect_true(all(as.data.frame(myresult)$treatment %in% "Trt 1"),
+              info="All results were for 'Trt 1'")
+})

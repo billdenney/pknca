@@ -36,9 +36,20 @@ pk.nca <- function(data) {
     tmp.opt[names(options)] <- data$options
     data$options <- tmp.opt
     splitdata <- split.PKNCAdata(data)
+    # Calculations will only be performed when an interval is requested
+    mask_has_interval <-
+      sapply(splitdata,
+             FUN=function(x) {
+               (!is.null(x$intervals)) &&
+                 (nrow(x$intervals) > 0)
+             })
+    if (any(!mask_has_interval)) {
+      message(sum(!mask_has_interval), " groups have no interval calculations requested.")
+    }
     ## Calculate the results
-    tmp.results <-
-      parallel::mclapply(X=splitdata,
+    tmp.results <- list()
+    tmp.results[mask_has_interval] <-
+      parallel::mclapply(X=splitdata[mask_has_interval],
                          FUN=pk.nca.intervals,
                          options=data$options)
     ## Put the group parameters with the results
