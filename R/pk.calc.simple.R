@@ -247,17 +247,39 @@ PKNCA.set.summary("thalf.eff.iv.last", business.geomean, business.geocv)
 #' @param auclast the area under the curve from time 0 to the last 
 #'   measurement above the limit of quantification
 #' @param aucinf the area under the curve from time 0 to infinity
-#' @return The numeric value of the AUC percent extrapolated or
-#'   \code{NA_real_} if \code{aucinf <= 0}.
+#' @return The numeric value of the AUC percent extrapolated or 
+#'   \code{NA_real_} if andy of the following are true 
+#'   \code{is.na(aucinf)}, \code{is.na(auclast)}, \code{aucinf <= 0},
+#'   or \code{auclast <= 0}.
 #' @export
 pk.calc.aucpext <- function(auclast, aucinf) {
-  if (auclast >= aucinf)
-    warning("auclast should be less than aucinf")
-  if (aucinf > 0) {
-    100*(1-auclast/aucinf)
-  } else {
-    NA_real_
+  scalar_auclast <- length(auclast) == 1
+  scalar_aucinf <- length(aucinf) == 1
+  if (scalar_auclast | scalar_aucinf) {
+    # no length checking needs to occur
+  } else if ((!scalar_auclast & !scalar_aucinf) &
+             length(auclast) != length(aucinf)) {
+    stop("auclast and aucinf must either be a scalar or the same length.")
   }
+  ret <- rep(NA_real_, max(c(length(auclast), length(aucinf))))
+  mask_na <-
+    is.na(auclast) |
+    is.na(aucinf)
+  mask_negative <-
+    !mask_na &
+    (aucinf <= 0 |
+       auclast <= 0)
+  mask_greater <-
+    !mask_na &
+    (auclast >= aucinf)
+  mask_calc <- !mask_na
+  if (any(mask_greater))
+    warning("aucpext is typically only calculated when aucinf is greater than auclast.")
+  if (any(mask_negative))
+    warning("aucpext is typically only calculated when both aucinf and auclast are positive.")
+  ret[mask_calc] <-
+    100*(1-auclast[mask_calc]/aucinf[mask_calc])
+  ret
 }
 
 ## Add the columns to the interval specification

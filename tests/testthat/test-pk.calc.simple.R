@@ -205,11 +205,33 @@ test_that("pk.calc.aucpext", {
   expect_equal(pk.calc.aucpext(1, 2), 50)
   expect_equal(pk.calc.aucpext(1.8, 2), 10)
   expect_warning(v1 <- pk.calc.aucpext(2, 1),
-                 regexp="auclast should be less than aucinf")
+                 regexp="aucpext is typically only calculated when aucinf is greater than auclast.")
   expect_equal(v1, -100)
-  expect_warning(v2 <- pk.calc.aucpext(auclast=0, aucinf=0))
+  expect_warning(v2 <- pk.calc.aucpext(auclast=0, aucinf=0),
+                 regexp="aucpext is typically only calculated when aucinf is greater than auclast.")
   expect_equal(v2, NA_real_,
                info="aucinf<=0 gives NA_real_ (not infinity)")
+  expect_equal(pk.calc.aucpext(NA, NA),
+               NA_real_,
+               info="Percent extrapolated is NA when both inputs are NA.")
+  expect_equal(pk.calc.aucpext(NA, 1),
+               NA_real_,
+               info="Percent extrapolated is NA when input auclast is NA.")
+  expect_equal(pk.calc.aucpext(1, NA),
+               NA_real_,
+               info="Percent extrapolated is NA when input aucinf is NA.")
+  expect_error(pk.calc.aucpext(1:2, 1:3),
+               regexp="auclast and aucinf must either be a scalar or the same length.",
+               info="aucpext input length checks require consistency.")
+  expect_equal(pk.calc.aucpext(c(1, NA), 2),
+               c(50, NA_real_),
+               info="Percent extrapolated works with vector/scalar input.")
+  expect_equal(pk.calc.aucpext(1, c(2, NA)),
+               c(50, NA_real_),
+               info="Percent extrapolated works with scalar/vector input.")
+  expect_equal(pk.calc.aucpext(c(1, 1), c(2, NA)),
+               c(50, NA_real_),
+               info="Percent extrapolated works with vector/vector input.")
 })
 
 test_that("pk.calc.mrt", {
