@@ -20,6 +20,7 @@ the dosing including dose amount and route.
 * BACKWARD INCOMPATIBILITY: Functions that previously may have
   returned Infinity due to dividing by zero (e.g. when AUC=0
   calculating clearance) now return NA.
+* exclude_nca* functions added (Fixes issue #20)
 * Add manual half-life point selection (Fixes issue #18)
 * Add parameters for Ceoi and intravenous MRT
 * Updated vignettes to improve clarity

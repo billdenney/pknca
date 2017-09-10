@@ -31,6 +31,7 @@
 #'         mask=c(TRUE, rep(FALSE, 6)))
 #' @export
 #' @importFrom dplyr "%>%"
+#' @importFrom rlang syms
 exclude <- function(object, reason, mask, FUN)
   UseMethod("exclude")
 
