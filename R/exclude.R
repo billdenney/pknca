@@ -4,18 +4,20 @@
 #' @param reason The reason to add as a reason for exclusion.
 #' @param mask A logical vector or numeric index of values to exclude 
 #'   (see details).
-#' @param FUN A function to operate on the data to select reasons for 
-#'   exclusions (see details).
+#' @param FUN A function to operate on the data (one group at a time) to
+#'   select reasons for exclusions (see details).
 #' @return The object with updated information in the exclude column. 
 #'   The exclude column will contain the \code{reason} if \code{mask} or
 #'   \code{FUN} indicate.  If a previous reason for exclusion was given,
-#'   then subsequent reasons for exclusion will be added to the first
+#'   then subsequent reasons for exclusion will be added to the first 
 #'   with a semicolon space ("; ") separator.
 #'   
 #' @details Only one of \code{mask} or \code{FUN} may be given.  If 
-#'   \code{FUN} is given, it will be called on the object as 
-#'   \code{FUN(object)} and it must return a logical vector equivalent 
-#'   to \code{mask}.
+#'   \code{FUN} is given, it will be called with two arguments:  a
+#'   data.frame (or similar object) that consists of a single group of
+#'   the data and the full object (e.g. the PKNCAconc object), 
+#'   \code{FUN(current_group, object)}, and it must return a logical
+#'   vector equivalent to \code{mask}.
 #' @examples
 #' myconc <- PKNCAconc(data.frame(subject=1,
 #'                                time=0:6,
@@ -34,7 +36,15 @@ exclude.default <- function(object, reason, mask, FUN) {
   dataname <- getDataName(object)
   # Check inputs
   if (missing(mask) & !missing(FUN)) {
-    mask <- do.call(FUN, list(object))
+    # operate on one group at a time
+    groupnames <- c(names(getGroups(object)),
+                    intersect(names(object[[dataname]]),
+                              c("start", "end")))
+    mask_df <-
+      object[[dataname]] %>%
+      dplyr::group_by(!!! rlang::syms(groupnames)) %>%
+      dplyr::do(exclude_current_group_XXX=do.call(FUN, list(., object)))
+    mask <- do.call(c, mask_df$exclude_current_group_XXX)
   } else if (!xor(missing(mask), missing(FUN))) {
     stop("Either mask for FUN must be given (but not both).")
   }

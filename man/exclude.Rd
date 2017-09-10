@@ -17,14 +17,14 @@ exclude(object, reason, mask, FUN)
 \item{mask}{A logical vector or numeric index of values to exclude 
 (see details).}
 
-\item{FUN}{A function to operate on the data to select reasons for 
-exclusions (see details).}
+\item{FUN}{A function to operate on the data (one group at a time) to
+select reasons for exclusions (see details).}
 }
 \value{
 The object with updated information in the exclude column. 
   The exclude column will contain the \code{reason} if \code{mask} or
   \code{FUN} indicate.  If a previous reason for exclusion was given,
-  then subsequent reasons for exclusion will be added to the first
+  then subsequent reasons for exclusion will be added to the first 
   with a semicolon space ("; ") separator.
 }
 \description{
@@ -32,9 +32,11 @@ Exclude data points or results from calculations or summarization.
 }
 \details{
 Only one of \code{mask} or \code{FUN} may be given.  If 
-  \code{FUN} is given, it will be called on the object as 
-  \code{FUN(object)} and it must return a logical vector equivalent 
-  to \code{mask}.
+  \code{FUN} is given, it will be called with two arguments:  a
+  data.frame (or similar object) that consists of a single group of
+  the data and the full object (e.g. the PKNCAconc object), 
+  \code{FUN(current_group, object)}, and it must return a logical
+  vector equivalent to \code{mask}.
 }
 \section{Methods (by class)}{
 \itemize{

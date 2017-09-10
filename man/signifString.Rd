@@ -2,10 +2,16 @@
 % Please edit documentation in R/general.functions.R
 \name{signifString}
 \alias{signifString}
+\alias{signifString.data.frame}
+\alias{signifString.default}
 \title{Round a value to a defined number of significant digits printing out trailing
 zeros, if applicable.}
 \usage{
 signifString(x, digits = 6)
+
+\method{signifString}{data.frame}(x, digits = 6)
+
+\method{signifString}{default}(x, digits = 6)
 }
 \arguments{
 \item{x}{The number to round}

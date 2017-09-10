@@ -34,6 +34,9 @@ A data frame of NCA parameter results summarized according to the
 \description{
 Summarize PKNCA results
 }
+\details{
+Excluded results will not be included in the summary.
+}
 \seealso{
 \code{\link{PKNCA.set.summary}}
 }

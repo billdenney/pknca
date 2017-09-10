@@ -68,11 +68,10 @@ test_that("setExcludeColumn", {
 
 test_that("exclude.default", {
   ## Check inputs
-  obj1 <- list(data=data.frame(a=1:5,
-                               exclude=NA_character_,
-                               stringsAsFactors=FALSE),
-               exclude="exclude")
-  class(obj1) <- "PKNCAconc"
+  source("generate.data.R")
+  my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  obj1 <- PKNCAconc(my_conc, formula=conc~time|treatment+ID)
+
   expect_error(exclude.default(obj1,
                               reason="Just because"),
                regexp="Either mask for FUN must be given \\(but not both\\).",
@@ -83,19 +82,15 @@ test_that("exclude.default", {
                               FUN=function(x) rep(TRUE, nrow(x$data))),
                regexp="Either mask for FUN must be given \\(but not both\\).",
                info="Both mask and FUN may not be given")
-  obj2 <- list(data=data.frame(a=1:5,
-                               exclude=NA_character_,
-                               stringsAsFactors=FALSE))
-  class(obj2) <- "PKNCAconc"
+  obj2 <- obj1
+  obj2$exclude <- NULL
   expect_error(exclude.default(obj2,
                               reason="Just because",
                               mask=rep(TRUE, 5)),
                regexp="object must have an exclude column specified.",
                info="exclude column is required.")
-  obj3 <- list(data=data.frame(a=1:5,
-                               stringsAsFactors=FALSE),
-               exclude="exclude")
-  class(obj3) <- "PKNCAconc"
+  obj3 <- obj1
+  obj3$exclude <- "foo"
   expect_error(exclude.default(obj3,
                               reason="Just because",
                               mask=rep(TRUE, 5)),
@@ -113,51 +108,79 @@ test_that("exclude.default", {
                info="mask must match the length of the data.")
   expect_error(exclude.default(obj1,
                               reason="Just because",
-                              FUN=function(x) TRUE),
+                              FUN=function(x, ...) TRUE),
                regexp="mask or the return value from FUN must match the length of the data.",
                info="The return from FUN may not be a scalar")
   expect_error(exclude.default(obj1,
                               reason=1:2,
-                              FUN=function(x) TRUE),
+                              FUN=function(x, ...) TRUE),
                regexp="reason must be a scalar.",
                info="Interpretation of a non-scalar reason is unclear")
   expect_error(exclude.default(obj1,
                               reason=1,
-                              FUN=function(x) TRUE),
+                              FUN=function(x, ...) TRUE),
                regexp="reason must be a character string.",
                info="Interpretation of a non-character reason is unclear")
   
   ## Check operation
-  obj4 <- list(data=data.frame(a=1:5,
-                               exclude=c(NA_character_, rep("Just because", 4)),
-                               stringsAsFactors=FALSE),
-               exclude="exclude")
-  class(obj4) <- "PKNCAconc"
+  obj4 <- obj1
+  obj4$data$exclude <- c(NA_character_, rep("Just because", nrow(obj4$data)-1))
 
   expect_equal(exclude.default(obj1,
                               reason="Just because",
-                              mask=c(FALSE, rep(TRUE, 4))),
+                              mask=c(FALSE, rep(TRUE, nrow(obj1$data)-1))),
                obj4,
                info="Mask given as a vector works")
+  
+  obj5 <- obj1
+  obj5$data$exclude <- ifelse(obj5$data$time == 0,
+                              NA_character_, "Just because")
   expect_equal(exclude.default(obj1,
                               reason="Just because",
-                              FUN=function(x) c(FALSE, rep(TRUE, nrow(x$data)-1))),
-               obj4,
+                              FUN=function(x, ...) c(FALSE, rep(TRUE, nrow(x)-1))),
+               obj5,
                info="A function returning a vector works")
 
-  obj5 <- list(data=data.frame(a=1:5,
-                               exclude=c(NA_character_, "Just because", rep("Just because; really", 3)),
-                               stringsAsFactors=FALSE),
-               exclude="exclude")
-  class(obj5) <- "PKNCAconc"
+  obj6 <- obj5
+  obj6$data$exclude[1:2] <- c("really", "Just because; really")
 
   expect_equal(
     exclude.default(
       exclude.default(obj1,
                      reason="Just because",
-                     FUN=function(x) c(FALSE, rep(TRUE, nrow(x$data)-1))),
+                     FUN=function(x, ...) c(FALSE, rep(TRUE, nrow(x)-1))),
       reason="really",
-      mask=c(FALSE, FALSE, TRUE, TRUE, TRUE)),
-    obj5,
+      mask=c(TRUE, TRUE, rep(FALSE, nrow(obj1$data) - 2))),
+    obj6,
     info="Multiple reasons are tracked.")
+  
+  # Check exclusion for PKNCAdose class
+  my_dose <- generate.dose(my_conc)
+  dose_obj <- PKNCAdose(my_dose, dose~time|treatment+ID)
+  dose_obj_ex1 <- dose_obj
+  dose_obj_ex1$data$exclude[dose_obj_ex1$data$ID == 1] <- "Not 1"
+  expect_equal(exclude(dose_obj, reason="Not 1", FUN=function(x, ...) x$ID == 1),
+               dose_obj_ex1,
+               info="exclude works for PKNCAdose objects (with functions)")
+  
+  # Dose exclusion is respected
+  data_obj <- PKNCAdata(obj1, dose_obj, intervals=data.frame(start=0, end=Inf, cl.last=TRUE))
+  data_obj_ex1 <- PKNCAdata(obj1, dose_obj_ex1, intervals=data.frame(start=0, end=Inf, cl.last=TRUE))
+  result_obj <- pk.nca(data_obj)
+  result_obj_ex1 <- pk.nca(data_obj_ex1)
+
+  expect_equal(result_obj_ex1$result$PPORRES[result_obj_ex1$result$ID == 1 &
+                                               result_obj_ex1$result$PPTESTCD == "cl.last"],
+               rep(NA_real_, 2),
+               info="exclude of dose is respected")
+  
+  # Check exclusion for PKNCAresults class
+  result_obj_not_1 <- result_obj
+  result_obj_not_1$result$exclude[result_obj_not_1$result$ID == 1] <- "Not 1"
+  expect_equal(exclude(result_obj, reason="Not 1", FUN=function(x, ...) x$ID == 1),
+               result_obj_not_1,
+               info="exclude works for PKNCAresults object")
+
+  expect_false(any(summary(result_obj)$cl.last == summary(result_obj_not_1)$cl.last),
+               info="summary.PKNCAresults respects exclude")
 })

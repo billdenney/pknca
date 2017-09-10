@@ -161,22 +161,23 @@ getIndepVar.PKNCAconc <- function(x, ...) {
   x$data[, all.vars(parseFormula(x)$rhs)]
 }
 
-#' Get the groups (right hand side after the \code{|} from a PKNCA
-#' object.
-#'
+#' Get the groups (right hand side after the \code{|} from a PKNCA 
+#' object).
+#' 
 #' @param object The object to extract the data from
-#' @param form The formula to extract the data from (defaults to the
-#' formula from \code{object})
-#' @param level optional.  If included, this specifies the level(s) of
-#' the groups to include.  If a numeric scalar, include the first
-#' \code{level} number of groups.  If a numeric vector, include each
-#' of the groups specified by the number.  If a character vector,
-#' include the named group levels.
-#' @param data The data to extract the groups from (defaults to the
-#' data from \code{object})
+#' @param form The formula to extract the data from (defaults to the 
+#'   formula from \code{object})
+#' @param level optional.  If included, this specifies the level(s) of 
+#'   the groups to include.  If a numeric scalar, include the first 
+#'   \code{level} number of groups.  If a numeric vector, include each 
+#'   of the groups specified by the number.  If a character vector, 
+#'   include the named group levels.
+#' @param data The data to extract the groups from (defaults to the data
+#'   from \code{object})
 #' @param sep Unused (kept for compatibility with the nlme package)
 #' @param ... Arguments passed to other getGroups functions
 #' @return A data frame with the (selected) group columns.
+#' @importFrom nlme getGroups
 #' @export
 getGroups.PKNCAconc <- function(object, form=formula(object), level,
                                 data=getData(object), sep) {

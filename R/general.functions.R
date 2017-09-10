@@ -129,6 +129,8 @@ roundString <- function(x, digits=0) {
 signifString <- function(x, digits=6) 
   UseMethod("signifString")
 
+#' @rdname signifString
+#' @export
 signifString.data.frame <- function(x, digits=6) {
   ret <- lapply(x,
                 function(y, digits) {
@@ -146,6 +148,8 @@ signifString.data.frame <- function(x, digits=6) {
   ret
 }
 
+#' @rdname signifString
+#' @export
 signifString.default <- function(x, digits=6) {
   mask.na <- is.na(x)
   mask.aschar <- is.nan(x) | is.infinite(x)

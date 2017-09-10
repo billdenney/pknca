@@ -1,11 +1,14 @@
-Note that backward compatibility will not be guaranteed until version
-1.0.  Argument and function changes will continue until then.  These
-will be especially noticable around the inclusion of IV NCA parameters
-and additional specifications of the dosing including dose amount and
-route.
+Note that backward compatibility of function arguments will not be
+(near-)guaranteed until version 1.0.  Argument and function changes
+will continue until then.  These will be especially noticable around
+the inclusion of IV NCA parameters and additional specifications of
+the dosing including dose amount and route.
 
 # PKNCA 0.9.0
 
+* BACKWARD INCOMPATIBILITY: The function supplied to the exclude
+  argument 'FUN' now requires two arguments and operates on the level
+  of a single group rather than the full object.
 * BACKWARD INCOMPATIBILITY: Added back-end functionality to only
   require one function to handle many NCA parameters that are related
   (e.g. combine pk.calc.aucpext, pk.calc.aucpext.obs,
