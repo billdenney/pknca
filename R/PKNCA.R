@@ -37,3 +37,6 @@
 #'   update.formula
 #' @importFrom utils head sessionInfo
 NULL
+
+# To work with the use of dplyr's pipe within the exclude function
+utils::globalVariables(".")
