@@ -32,11 +32,14 @@ Exclude data points or results from calculations or summarization.
 }
 \details{
 Only one of \code{mask} or \code{FUN} may be given.  If 
-  \code{FUN} is given, it will be called with two arguments:  a
-  data.frame (or similar object) that consists of a single group of
+  \code{FUN} is given, it will be called with two arguments:  a 
+  data.frame (or similar object) that consists of a single group of 
   the data and the full object (e.g. the PKNCAconc object), 
-  \code{FUN(current_group, object)}, and it must return a logical
-  vector equivalent to \code{mask}.
+  \code{FUN(current_group, object)}, and it must return a logical 
+  vector equivalent to \code{mask} or a character vector with the 
+  reason text given when data should be excluded or 
+  \code{NA_character_} when the data shoudl be included (for the
+  current exclusion test).
 }
 \section{Methods (by class)}{
 \itemize{

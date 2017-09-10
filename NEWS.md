@@ -8,7 +8,9 @@ the dosing including dose amount and route.
 
 * BACKWARD INCOMPATIBILITY: The function supplied to the exclude
   argument 'FUN' now requires two arguments and operates on the level
-  of a single group rather than the full object.
+  of a single group rather than the full object.  The function can
+  also return the reason as a character string instead of a logical
+  mask of when to exclude data.
 * BACKWARD INCOMPATIBILITY: Added back-end functionality to only
   require one function to handle many NCA parameters that are related
   (e.g. combine pk.calc.aucpext, pk.calc.aucpext.obs,

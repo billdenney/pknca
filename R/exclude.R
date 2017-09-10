@@ -13,11 +13,14 @@
 #'   with a semicolon space ("; ") separator.
 #'   
 #' @details Only one of \code{mask} or \code{FUN} may be given.  If 
-#'   \code{FUN} is given, it will be called with two arguments:  a
-#'   data.frame (or similar object) that consists of a single group of
+#'   \code{FUN} is given, it will be called with two arguments:  a 
+#'   data.frame (or similar object) that consists of a single group of 
 #'   the data and the full object (e.g. the PKNCAconc object), 
-#'   \code{FUN(current_group, object)}, and it must return a logical
-#'   vector equivalent to \code{mask}.
+#'   \code{FUN(current_group, object)}, and it must return a logical 
+#'   vector equivalent to \code{mask} or a character vector with the 
+#'   reason text given when data should be excluded or 
+#'   \code{NA_character_} when the data shoudl be included (for the
+#'   current exclusion test).
 #' @examples
 #' myconc <- PKNCAconc(data.frame(subject=1,
 #'                                time=0:6,
@@ -27,6 +30,7 @@
 #'         reason="Carryover",
 #'         mask=c(TRUE, rep(FALSE, 6)))
 #' @export
+#' @importFrom dplyr "%>%"
 exclude <- function(object, reason, mask, FUN)
   UseMethod("exclude")
 
@@ -45,11 +49,15 @@ exclude.default <- function(object, reason, mask, FUN) {
       dplyr::group_by(!!! rlang::syms(groupnames)) %>%
       dplyr::do(exclude_current_group_XXX=do.call(FUN, list(., object)))
     mask <- do.call(c, mask_df$exclude_current_group_XXX)
+    if (is.character(mask)) {
+      reason <- mask
+      mask <- !is.na(reason)
+    }
   } else if (!xor(missing(mask), missing(FUN))) {
     stop("Either mask for FUN must be given (but not both).")
   }
-  if (!(length(reason) == 1)) {
-    stop("reason must be a scalar.")
+  if (!(length(reason) %in% c(1, nrow(object[[dataname]])))) {
+    stop("reason must be a scalar or have the same length as the data.")
   } else if (!is.character(reason)) {
     stop("reason must be a character string.")
   }
@@ -58,6 +66,9 @@ exclude.default <- function(object, reason, mask, FUN) {
   } else if (!(object$exclude %in% names(object[[dataname]]))) {
     stop("exclude column must exist in object[['", dataname, "']].")
   }
+  # Make a scalar reason a vector
+  if (length(reason) == 1)
+    reason <- rep(reason, length(mask))
   # Find the original value of the 'exclude' column.
   orig <- object[[dataname]][[object$exclude]]
   if (length(mask) != length(orig)) {
@@ -71,10 +82,10 @@ exclude.default <- function(object, reason, mask, FUN) {
   mask.multiple <- mask & (!mask.one)
   ret <- orig
   if (any(mask.one)) {
-    ret[mask.one] <- reason
+    ret[mask.one] <- reason[mask.one]
   }
   if (any(mask.multiple)) {
-    ret[mask.multiple] <- paste(ret[mask.multiple], reason, sep="; ")
+    ret[mask.multiple] <- paste(ret[mask.multiple], reason[mask.one], sep="; ")
   }
   object[[dataname]][,object$exclude] <- ret
   object

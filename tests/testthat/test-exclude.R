@@ -141,6 +141,11 @@ test_that("exclude.default", {
                obj5,
                info="A function returning a vector works")
 
+  expect_equal(exclude.default(obj1,
+                               FUN=function(x, ...) c(NA_character_, rep("Just because", nrow(x)-1))),
+               obj5,
+               info="A function returning a character vector works")
+  
   obj6 <- obj5
   obj6$data$exclude[1:2] <- c("really", "Just because; really")
 
