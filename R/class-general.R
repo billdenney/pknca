@@ -1,3 +1,7 @@
+#' @importFrom nlme getGroups
+#' @export
+nlme::getGroups
+
 #' Get the dependent variable (left hand side of the formula) from a
 #' PKNCA object.
 #'
