@@ -1,7 +1,7 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.8.1.9019
+Version: 0.8.1.9020
 Date: 2017-09-10
 Authors@R: c(
     person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre")),

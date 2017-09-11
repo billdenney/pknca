@@ -47,9 +47,18 @@ exclude.default <- function(object, reason, mask, FUN) {
                               c("start", "end")))
     mask_df <-
       object[[dataname]] %>%
+      dplyr::mutate(row_number_XXX=1:n()) %>%
       dplyr::group_by(!!! rlang::syms(groupnames)) %>%
-      dplyr::do(exclude_current_group_XXX=do.call(FUN, list(., object)))
+      dplyr::do(exclude_current_group_XXX=do.call(FUN, list(., object)),
+                exclude_current_group_XXX_row_num=.$row_number_XXX) %>%
+      dplyr::mutate(exclude_lengths_match=length(exclude_current_group_XXX) ==
+                      length(exclude_current_group_XXX_row_num))
+    if (!all(mask_df$exclude_lengths_match)) {
+      stop("The return value from FUN must match the length of the data")
+    }
+    # Extract the output and ensure that the output order equals the input order
     mask <- do.call(c, mask_df$exclude_current_group_XXX)
+    mask <- mask[order(do.call(c, mask_df$exclude_current_group_XXX_row_num))]
     if (is.character(mask)) {
       reason <- mask
       mask <- !is.na(reason)
@@ -73,7 +82,7 @@ exclude.default <- function(object, reason, mask, FUN) {
   # Find the original value of the 'exclude' column.
   orig <- object[[dataname]][[object$exclude]]
   if (length(mask) != length(orig)) {
-    stop("mask or the return value from FUN must match the length of the data.")
+    stop("mask must match the length of the data.")
   }
   # No current value for exclude
   mask.none <- orig %in% c(NA, "")

@@ -99,27 +99,27 @@ test_that("exclude.default", {
   expect_error(exclude.default(obj1,
                               reason="Just because",
                               mask=TRUE),
-               regexp="mask or the return value from FUN must match the length of the data.",
+               regexp="mask must match the length of the data.",
                info="mask may not be a scalar")
   expect_error(exclude.default(obj1,
                               reason="Just because",
                               mask=rep(TRUE, 6)),
-               regexp="mask or the return value from FUN must match the length of the data.",
+               regexp="mask must match the length of the data.",
                info="mask must match the length of the data.")
   expect_error(exclude.default(obj1,
                               reason="Just because",
                               FUN=function(x, ...) TRUE),
-               regexp="mask or the return value from FUN must match the length of the data.",
+               regexp="The return value from FUN must match the length of the data",
                info="The return from FUN may not be a scalar")
   expect_error(exclude.default(obj1,
                               reason=1:2,
                               FUN=function(x, ...) TRUE),
-               regexp="reason must be a scalar.",
+               regexp="The return value from FUN must match the length of the data",
                info="Interpretation of a non-scalar reason is unclear")
   expect_error(exclude.default(obj1,
                               reason=1,
                               FUN=function(x, ...) TRUE),
-               regexp="reason must be a character string.",
+               regexp="The return value from FUN must match the length of the data",
                info="Interpretation of a non-character reason is unclear")
   
   ## Check operation
@@ -140,6 +140,20 @@ test_that("exclude.default", {
                               FUN=function(x, ...) c(FALSE, rep(TRUE, nrow(x)-1))),
                obj5,
                info="A function returning a vector works")
+
+  obj7 <- obj1
+  obj7$data <- obj7$data[nrow(obj7$data):1,]
+  exclude_1 <- function(x, ...) {
+    ifelse(x$ID == 1,
+           "Drop 1",
+           NA_character_)
+  }
+  expect_equal(exclude.default(obj1,
+                               FUN=exclude_1)$exclude,
+               rev(
+                 exclude.default(obj7,
+                                 FUN=exclude_1)$exclude),
+               info="Function application is order-invariant")
 
   expect_equal(exclude.default(obj1,
                                FUN=function(x, ...) c(NA_character_, rep("Just because", nrow(x)-1))),
