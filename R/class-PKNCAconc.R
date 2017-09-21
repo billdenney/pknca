@@ -353,7 +353,12 @@ split.PKNCAconc <- function(x, f=getGroups(x), drop=TRUE, ...) {
     groupid <- data.frame(NA)[,c()]
   } else {
     ## Do the initial separation and extract the groupid information
-    ret <- split(x=x$data, f=f, drop=drop, sep="\n")
+    f_new <-
+      as.factor(
+        do.call(
+          paste,
+          append(as.list(f), list(sep="\n"))))
+    ret <- split(x=x$data, f=f_new, drop=drop, sep="\n")
     groupid <- unique(f)
     ## reorder the output to align with the input grouping order
     ret.idx <-

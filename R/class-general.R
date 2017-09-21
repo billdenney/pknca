@@ -60,7 +60,7 @@ getDataName <- function(object)
 #' Add an attribute to an object where the attribute is added as a name 
 #' to the names of the object.
 #' 
-#' @param object The object to set the exclude column on.
+#' @param object The object to set the attribute column on.
 #' @param attr_name The attribute name to set
 #' @param col_or_value If this exists as a column in the data, it is
 #'   used as the \code{col_name}.  If not, this becomes the
