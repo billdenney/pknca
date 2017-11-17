@@ -4,25 +4,28 @@
 \alias{pk.nca.interval}
 \title{Compute all PK parameters for a single concentration-time data set}
 \usage{
-pk.nca.interval(conc, time, duration.conc, dose, time.dose, duration.dose,
-  include_half.life = NULL, exclude_half.life = NULL, interval,
-  options = list())
+pk.nca.interval(conc, time, volume, duration.conc, dose, time.dose,
+  duration.dose, include_half.life = NULL, exclude_half.life = NULL,
+  interval, options = list())
 }
 \arguments{
 \item{conc}{Concentration measured}
 
 \item{time}{Time of concentration measurement}
 
-\item{duration.conc}{The duration of the concentration measurement 
+\item{volume}{The volume (or mass) of the concentration measurement
+(typically for urine and fecal measurements)}
+
+\item{duration.conc}{The duration of the concentration measurement
 (typically for urine and fecal measurements)}
 
 \item{dose}{Dose amount (may be a scalar or vector)}
 
-\item{time.dose}{Time of the dose (must be the same length as 
+\item{time.dose}{Time of the dose (must be the same length as
 \code{dose})}
 
-\item{duration.dose}{The duration of the dose administration 
-(typically zero for extravascular and intravascular bolus and 
+\item{duration.dose}{The duration of the dose administration
+(typically zero for extravascular and intravascular bolus and
 nonzero for intravascular infusion)}
 
 \item{include_half.life}{An optional boolean vector of the
@@ -33,21 +36,21 @@ If given, no half-life point selection will occur.}
 concentration measurements to exclude from the half-life
 calculation.}
 
-\item{interval}{One row of an interval definition (see 
-\code{\link{check.interval.specification}} for how to define the 
+\item{interval}{One row of an interval definition (see
+\code{\link{check.interval.specification}} for how to define the
 interval.}
 
-\item{options}{List of changes to the default 
+\item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}
 }
 \value{
-A data frame with the start and end time along with all PK 
+A data frame with the start and end time along with all PK
   parameters for the \code{interval}
 }
 \description{
-For one subject/time range, compute all available PK parameters. All 
-the internal options should be set by \code{\link{PKNCA.options}} 
-prior to running.  The only part that changes with a call to this 
+For one subject/time range, compute all available PK parameters. All
+the internal options should be set by \code{\link{PKNCA.options}}
+prior to running.  The only part that changes with a call to this
 function is the \code{conc}entration and \code{time}.
 }
 \seealso{

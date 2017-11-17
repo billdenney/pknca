@@ -1,27 +1,31 @@
 #' Create a PKNCAconc object
-#' 
-#' @param data A data frame with concentration, time, and the groups 
-#'   defined in \code{formula}.
-#' @param formula The formula defining the 
-#'   \code{concentration~time|groups}
-#' @param subject The column indicating the subject number (used for 
-#'   plotting).  If not provided, this defaults to the beginning of the 
-#'   inner groups: For example with 
-#'   \code{concentration~time|Study+Subject/Analyte}, the inner groups 
-#'   start with the first grouping variable before a \code{/}, 
-#'   \code{Subject}.  If there is only one grouping variable, it is 
+#'
+#' @param data A data frame with concentration (or amount for
+#'   urine/feces), time, and the groups defined in \code{formula}.
+#' @param formula The formula defining the
+#'   \code{concentration~time|groups} or \code{amount~time|groups} for
+#'   urine/feces (In the remainder of the documentation, "concentration"
+#'   will be used to describe concentration or amount.)
+#' @param subject The column indicating the subject number (used for
+#'   plotting).  If not provided, this defaults to the beginning of the
+#'   inner groups: For example with
+#'   \code{concentration~time|Study+Subject/Analyte}, the inner groups
+#'   start with the first grouping variable before a \code{/},
+#'   \code{Subject}.  If there is only one grouping variable, it is
 #'   assumed to be the subject (e.g. \code{concentration~time|Subject}),
-#'   and if there are multiple grouping variables without a \code{/}, 
+#'   and if there are multiple grouping variables without a \code{/},
 #'   subject is assumed to be the last one.  For single-subject data, it
 #'   is assigned as \code{NULL}.
-#' @param time.nominal (optional) The name of the nominal time column 
+#' @param time.nominal (optional) The name of the nominal time column
 #'   (if the main time variable is actual time.  The \code{time.nominal}
-#'   is not used during calculations; it is available to assist with 
+#'   is not used during calculations; it is available to assist with
 #'   data summary and checking.
 #' @param exclude (optional) The name of a column with concentrations to
-#'   exclude from calculations and summarization.  If given, the column 
-#'   should have values of \code{NA} or \code{""} for concentrations to 
+#'   exclude from calculations and summarization.  If given, the column
+#'   should have values of \code{NA} or \code{""} for concentrations to
 #'   include and non-empty text for concentrations to exclude.
+#' @param volume (optional) The volume (or mass) of collection as is
+#'   typically used for urine or feces measurements.
 #' @param duration (optional) The duration of collection as is typically
 #'   used for concentration measurements in urine or feces.
 #' @param exclude_half.life,include_half.life Points to exclude from the
@@ -47,7 +51,7 @@ PKNCAconc.tbl_df <- function(data, ...)
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
-                                 time.nominal, exclude, duration,
+                                 time.nominal, exclude, duration, volume,
                                  exclude_half.life, include_half.life, ...) {
   ## Verify that all the variables in the formula are columns in the
   ## data.
@@ -103,6 +107,14 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     ret <- setExcludeColumn(ret)
   } else {
     ret <- setExcludeColumn(ret, exclude=exclude)
+  }
+  if (missing(volume)) {
+    ret <- setAttributeColumn(ret, attr_name="volume", default_value=NA_real_)
+  } else {
+    ret <- setAttributeColumn(ret, attr_name="volume", col_or_value=volume)
+    if (!is.numeric(getAttributeColumn(ret, attr_name="volume")[[1]])) {
+      stop("Volume must be numeric")
+    }
   }
   if (missing(duration)) {
     ret <- setDuration.PKNCAconc(ret)

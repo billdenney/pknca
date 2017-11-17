@@ -212,11 +212,14 @@ test_that("PKNCAconc with exclusions", {
   myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, exclude="excl")
   expect_equal(myconc,
                structure(
-                 list(data=cbind(tmp.conc, duration=0),
+                 list(data=cbind(tmp.conc,
+                                 volume=NA_real_,
+                                 duration=0),
                       formula=conc~time|treatment+ID,
                       subject="ID", 
                       exclude="excl",
-                      columns=list(duration="duration")),
+                      columns=list(volume="volume",
+                                   duration="duration")),
                  class=c("PKNCAconc", "list")))
 })
 
@@ -230,11 +233,13 @@ test_that("PKNCAconc with duration", {
                structure(
                  list(data=cbind(tmp.conc,
                                  data.frame(exclude=NA_character_,
+                                            volume=NA_real_,
                                             stringsAsFactors=FALSE)),
                       formula=conc~time|treatment+ID,
                       subject="ID", 
                       exclude="exclude",
-                      columns=list(duration="duration_test")),
+                      columns=list(volume="volume",
+                                   duration="duration_test")),
                  class=c("PKNCAconc", "list")))
 })
 
@@ -246,25 +251,75 @@ test_that("PKNCAconc with nominal time added", {
                structure(
                  list(data=cbind(tmp.conc,
                                  data.frame(exclude=NA_character_,
+                                            volume=NA_real_,
                                             duration=0,
                                             stringsAsFactors=FALSE)),
                       formula=conc~time|treatment+ID,
                       subject="ID",
                       exclude="exclude",
-                      columns=list(duration="duration",
+                      columns=list(volume="volume",
+                                   duration="duration",
                                    time.nominal="tnom")),
                  class=c("PKNCAconc", "list")))
   expect_equal(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="foo"),
                structure(
                  list(data=cbind(tmp.conc,
                                  data.frame(exclude=NA_character_,
+                                            volume=NA_real_,
                                             duration=0,
                                             foo=NA,
                                             stringsAsFactors=FALSE)),
                       formula=conc~time|treatment+ID,
                       subject="ID",
                       exclude="exclude",
-                      columns=list(duration="duration",
+                      columns=list(volume="volume",
+                                   duration="duration",
                                    time.nominal="foo")),
+                 class=c("PKNCAconc", "list")))
+})
+
+test_that("PKNCAconc with volume added", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
+  tmp.conc$vol <- 1:nrow(tmp.conc)
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, volume="vol")
+  expect_equal(myconc,
+               structure(
+                 list(data=cbind(tmp.conc,
+                                 data.frame(exclude=NA_character_,
+                                            duration=0,
+                                            stringsAsFactors=FALSE)),
+                      formula=conc~time|treatment+ID,
+                      subject="ID",
+                      exclude="exclude",
+                      columns=list(volume="vol",
+                                   duration="duration")),
+                 class=c("PKNCAconc", "list")))
+  myconc_manual_vol <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, volume=2)
+  expect_equal(myconc_manual_vol,
+               structure(
+                 list(data=cbind(tmp.conc,
+                                 data.frame(exclude=NA_character_,
+                                            volume=2,
+                                            duration=0,
+                                            stringsAsFactors=FALSE)),
+                      formula=conc~time|treatment+ID,
+                      subject="ID",
+                      exclude="exclude",
+                      columns=list(volume="volume",
+                                   duration="duration")),
+                 class=c("PKNCAconc", "list")))
+  myconc_manual_vol_vector <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, volume=1:nrow(tmp.conc))
+  expect_equal(myconc_manual_vol_vector,
+               structure(
+                 list(data=cbind(tmp.conc,
+                                 data.frame(exclude=NA_character_,
+                                            volume=1:nrow(tmp.conc),
+                                            duration=0,
+                                            stringsAsFactors=FALSE)),
+                      formula=conc~time|treatment+ID,
+                      subject="ID",
+                      exclude="exclude",
+                      columns=list(volume="volume",
+                                   duration="duration")),
                  class=c("PKNCAconc", "list")))
 })

@@ -288,3 +288,29 @@ test_that("No interval requested (e.g. for placebo)", {
   expect_true(all(as.data.frame(myresult)$treatment %in% "Trt 1"),
               info="All results were for 'Trt 1'")
 })
+
+test_that("Volume-related calculations", {
+  tmpconc <- generate.conc(2, 1, c(4, 12, 24))
+  tmpconc$conc <- 1:nrow(tmpconc)
+  tmpconc$vol <- 2
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID, volume="vol")
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <-  PKNCAdata(myconc, mydose,
+                       intervals=data.frame(treatment="Trt 1", start=0, end=24,
+                                            ae=TRUE, fe=TRUE,
+                                            stringsAsFactors=FALSE))
+  myresult <- pk.nca(mydata)
+  expect_equal(as.data.frame(myresult)[["PPORRES"]], c(12, 12, 30, 30),
+              info="ae and fe are correctly calculated")
+  tmpdose2 <- tmpdose
+  tmpdose2$dose <- 2
+  mydose2 <- PKNCAdose(tmpdose2, formula=dose~time|treatment+ID)
+  mydata2 <-  PKNCAdata(myconc, mydose2,
+                       intervals=data.frame(treatment="Trt 1", start=0, end=24,
+                                            ae=TRUE, fe=TRUE,
+                                            stringsAsFactors=FALSE))
+  myresult2 <- pk.nca(mydata2)
+  expect_equal(as.data.frame(myresult2)[["PPORRES"]], c(12, 6, 30, 15),
+               info="fe respects dose")
+})

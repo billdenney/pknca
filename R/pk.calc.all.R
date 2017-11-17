@@ -94,6 +94,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
   ## Column names to use
   col.conc <- all.vars(pformula.conc$lhs)
   col.time <- all.vars(pformula.conc$rhs)
+  col.volume <- conc.dose$conc$columns$volume
   col.duration.conc <- conc.dose$conc$columns$duration
   col.include_half.life <- conc.dose$conc$columns$include_half.life
   col.exclude_half.life <- conc.dose$conc$columns$exclude_half.life
@@ -121,6 +122,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                                           conc.dose$conc$exclude,
                                           col.include_half.life,
                                           col.exclude_half.life,
+                                          col.volume,
                                           col.duration.conc)]
     tmpdosedata <-
       merge(conc.dose$dose$data,
@@ -156,6 +158,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
         {
           args <- list(conc=tmpconcdata[[col.conc]],
                        time=tmpconcdata[[col.time]],
+                       volume=tmpconcdata[[col.volume]],
                        duration.conc=tmpconcdata[[col.duration.conc]],
                        dose=tmpdosedata[[col.dose]],
                        time.dose=tmpdosedata[[col.time.dose]],
@@ -187,24 +190,26 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 }
 
 #' Compute all PK parameters for a single concentration-time data set
-#' 
-#' For one subject/time range, compute all available PK parameters. All 
-#' the internal options should be set by \code{\link{PKNCA.options}} 
-#' prior to running.  The only part that changes with a call to this 
+#'
+#' For one subject/time range, compute all available PK parameters. All
+#' the internal options should be set by \code{\link{PKNCA.options}}
+#' prior to running.  The only part that changes with a call to this
 #' function is the \code{conc}entration and \code{time}.
-#' 
+#'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param duration.conc The duration of the concentration measurement 
+#' @param volume The volume (or mass) of the concentration measurement
+#'   (typically for urine and fecal measurements)
+#' @param duration.conc The duration of the concentration measurement
 #'   (typically for urine and fecal measurements)
 #' @param dose Dose amount (may be a scalar or vector)
-#' @param time.dose Time of the dose (must be the same length as 
+#' @param time.dose Time of the dose (must be the same length as
 #'   \code{dose})
-#' @param duration.dose The duration of the dose administration 
-#'   (typically zero for extravascular and intravascular bolus and 
+#' @param duration.dose The duration of the dose administration
+#'   (typically zero for extravascular and intravascular bolus and
 #'   nonzero for intravascular infusion)
-#' @param interval One row of an interval definition (see 
-#'   \code{\link{check.interval.specification}} for how to define the 
+#' @param interval One row of an interval definition (see
+#'   \code{\link{check.interval.specification}} for how to define the
 #'   interval.
 #' @param include_half.life An optional boolean vector of the
 #'   concentration measurements to include in the half-life calculation.
@@ -212,14 +217,14 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #' @param exclude_half.life An optional boolean vector of the
 #'   concentration measurements to exclude from the half-life
 #'   calculation.
-#' @param options List of changes to the default 
+#' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
-#' @return A data frame with the start and end time along with all PK 
+#' @return A data frame with the start and end time along with all PK
 #'   parameters for the \code{interval}
-#'   
+#'
 #' @seealso \code{\link{check.interval.specification}}
 #' @export
-pk.nca.interval <- function(conc, time, duration.conc,
+pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose,
                             include_half.life=NULL, exclude_half.life=NULL,
                             interval, options=list()) {
@@ -261,6 +266,8 @@ pk.nca.interval <- function(conc, time, duration.conc,
           ## Realign the time to be relative to the start of the
           ## interval
           call.args[[arg]] <- time - interval$start[1]
+        } else if (arg == "volume") {
+          call.args[[arg]] <- volume
         } else if (arg == "duration.conc") {
           call.args[[arg]] <- duration.conc
         } else if (arg == "dose") {
