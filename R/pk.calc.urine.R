@@ -56,7 +56,7 @@ PKNCA.set.summary("clr.pred", business.geomean, business.geocv)
 #' @return The fraction of dose excreted.
 #' @details   The units for \code{ae} and \code{dose} should be the same
 #'   so that \code{ae/dose} is a unitless fraction.
-#' @seealso \code{\link{pk.calc.ae}}, \code{\link{pk.calc.ae}}
+#' @seealso \code{\link{pk.calc.ae}}, \code{\link{pk.calc.clr}}
 #' @export
 pk.calc.fe <- function(ae, dose) {
   sum(ae)/dose
