@@ -334,6 +334,15 @@ test_that("PKNCA.set.summary input checking", {
                                  rounding=list(round=2)),
                list(auclast=list(point=mean, spread=sd,
                                  rounding=list(round=2))))
+  ## Changing a vector of settings works
+  PKNCA.set.summary(reset=TRUE)
+  expect_equal(PKNCA.set.summary(c("cmax", "auclast"),
+                                 point=mean, spread=sd,
+                                 rounding=list(round=2)),
+               list(cmax=list(point=mean, spread=sd,
+                              rounding=list(round=2)),
+                    auclast=list(point=mean, spread=sd,
+                                 rounding=list(round=2))))
 
   ## Reset all the values to the defaults
   PKNCA.set.summary(reset=TRUE)

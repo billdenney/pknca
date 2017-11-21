@@ -20,10 +20,13 @@ the dosing including dose amount and route.
 * BACKWARD INCOMPATIBILITY: Functions that previously may have
   returned Infinity due to dividing by zero (e.g. when AUC=0
   calculating clearance) now return NA.
+* Corrected issue with exclude handling where now a blank string is
+  also accepted as included (not excluded).
 * PKNCAconc now accepts a "volume" argument and pk.nca can now
   calculate urine/feces-related parameters (fe, ae, clr)
 * exclude_nca* functions added (Fixes issue #20)
 * Add manual half-life point selection (Fixes issue #18)
+* Improved summary settings (Fixes issue #54)
 * Add parameters for Ceoi and intravenous MRT
 * Updated vignettes to improve clarity
 * Added dose-normalized PK parameters (Fixes issue #41)

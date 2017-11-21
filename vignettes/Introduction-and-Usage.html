@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -71,6 +71,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h4 class="author"><em>Bill Denney</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#data-handling">Data Handling</a></li>
+<li><a href="#options-make-pknca-work-your-way">Options: Make PKNCA Work Your Way</a><ul>
+<li><a href="#calculation-options-the-pknca.options-function">Calculation Options: the PKNCA.options Function</a></li>
+<li><a href="#summarization-options-the-pknca.set.summary-function">Summarization Options: the PKNCA.set.summary Function</a></li>
+</ul></li>
+<li><a href="#grouping-nca-data">Grouping NCA Data</a></li>
+<li><a href="#selecting-calculation-intervals">Selecting Calculation Intervals</a><ul>
+<li><a href="#selection-of-data-used-for-calculation">Selection of Data Used for Calculation</a></li>
+<li><a href="#automatic-interval-determination">Automatic Interval Determination</a></li>
+<li><a href="#manual-interval-specification">Manual Interval Specification</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p>PKNCA provides functions to complete noncompartmental analysis (NCA) for pharmacokinetic (PK) data. Its intent is to provide a complete R-based solution enabling data provenance for NCA including tracking data cleaning, enabling calculations, exporting results, and reporting. The library is designed to give a reasonable answer without user intervention (load, calculate, and summarize), but it allows the user to override the automatic selections at any point.</p>
 <p>The library design is modular to allow expansion based on needs unforseen by the authors including new NCA parameters, novel data cleaning methods, and modular summarization decisions. Expanding the library will be discussed in a separate vignette.</p>
@@ -80,26 +96,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PKNCA)
 
 ## Load the PK concentration data
-d.conc &lt;-<span class="st"> </span>datasets::Theoph
+d.conc &lt;-<span class="st"> </span>datasets<span class="op">::</span>Theoph
 ## Generate the dosing data
-d.dose &lt;-<span class="st"> </span>d.conc[d.conc$Time ==<span class="st"> </span><span class="dv">0</span>,]
-d.dose$Time &lt;-<span class="st"> </span><span class="dv">0</span>
+d.dose &lt;-<span class="st"> </span>d.conc[d.conc<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>,]
+d.dose<span class="op">$</span>Time &lt;-<span class="st"> </span><span class="dv">0</span>
 
 ## Create a concentration object specifying the concentration, time, and
 ## subject columns.  (Note that any number of grouping levels is
 ## supported; you are not restricted to just grouping by subject.)
 my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d.conc,
-                     conc~Time|Subject)
+                     conc<span class="op">~</span>Time<span class="op">|</span>Subject)
 ## Create a dosing object specifying the dose, time, and subject
 ## columns.  (Note that the grouping factors should be the same as or a
 ## subset of the grouping factors for concentration, and the grouping
 ## columns must have the same names between concentration and dose
 ## objects.)
 my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose,
-                     Dose~Time|Subject)</code></pre></div>
-<pre><code>## Assuming route of administration is extravascular</code></pre>
-<pre><code>## Assuming instant dosing (duration=0)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Combine the concentration and dosing information both to
+                     Dose<span class="op">~</span>Time<span class="op">|</span>Subject)
+## Combine the concentration and dosing information both to
 ## automatically define the intervals for NCA calculation and provide
 ## doses for calculations requiring dose.
 my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
@@ -107,6 +121,41 @@ my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc,
 ## Calculate the NCA parameters
 my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)</code></pre></div>
 <pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Summarize the results
 <span class="kw">summary</span>(my.results)</code></pre></div>
 <pre><code>##   start end  N     auclast        cmax               tmax   half.life
@@ -173,27 +222,48 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 ## [1] NA
 ## 
 ## $single.dose.aucs
-##   start end auclast aucall aumclast aumcall  cmax  cmin  tmax tlast tfirst
-## 1     0  24    TRUE  FALSE    FALSE   FALSE FALSE FALSE FALSE FALSE  FALSE
-## 2     0 Inf   FALSE  FALSE    FALSE   FALSE  TRUE FALSE  TRUE FALSE  FALSE
-##   clast.obs cl.last cl.all     f mrt.last   cav ctrough   ptr  tlag
-## 1     FALSE   FALSE  FALSE FALSE    FALSE FALSE   FALSE FALSE FALSE
-## 2     FALSE   FALSE  FALSE FALSE    FALSE FALSE   FALSE FALSE FALSE
-##   deg.fluc swing half.life r.squared adj.r.squared lambda.z
-## 1    FALSE FALSE     FALSE     FALSE         FALSE    FALSE
-## 2    FALSE FALSE      TRUE     FALSE         FALSE    FALSE
-##   lambda.z.time.first lambda.z.n.points clast.pred span.ratio aucinf.obs
-## 1               FALSE             FALSE      FALSE      FALSE      FALSE
-## 2               FALSE             FALSE      FALSE      FALSE       TRUE
-##   aucinf.pred aumcinf.obs aumcinf.pred aucpext.obs aucpext.pred cl.obs
-## 1       FALSE       FALSE        FALSE       FALSE        FALSE  FALSE
-## 2       FALSE       FALSE        FALSE       FALSE        FALSE  FALSE
-##   cl.pred mrt.obs mrt.pred vz.obs vz.pred vss.obs vss.pred vd.obs vd.pred
-## 1   FALSE   FALSE    FALSE  FALSE   FALSE   FALSE    FALSE  FALSE   FALSE
-## 2   FALSE   FALSE    FALSE  FALSE   FALSE   FALSE    FALSE  FALSE   FALSE
-##   thalf.eff.obs thalf.eff.pred kel.obs kel.pred
-## 1         FALSE          FALSE   FALSE    FALSE
-## 2         FALSE          FALSE   FALSE    FALSE</code></pre>
+##   start end auclast aucall aumclast aumcall auclast.dn aucall.dn
+## 1     0  24    TRUE  FALSE    FALSE   FALSE      FALSE     FALSE
+## 2     0 Inf   FALSE  FALSE    FALSE   FALSE      FALSE     FALSE
+##   aumclast.dn aumcall.dn  cmax  cmin  tmax tlast tfirst clast.obs cl.last
+## 1       FALSE      FALSE FALSE FALSE FALSE FALSE  FALSE     FALSE   FALSE
+## 2       FALSE      FALSE  TRUE FALSE  TRUE FALSE  FALSE     FALSE   FALSE
+##   cl.all     f mrt.last mrt.iv.last vss.last vss.iv.last   cav ctrough
+## 1  FALSE FALSE    FALSE       FALSE    FALSE       FALSE FALSE   FALSE
+## 2  FALSE FALSE    FALSE       FALSE    FALSE       FALSE FALSE   FALSE
+##     ptr  tlag deg.fluc swing  ceoi    ae clr.last clr.obs clr.pred    fe
+## 1 FALSE FALSE    FALSE FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE
+## 2 FALSE FALSE    FALSE FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE
+##   half.life r.squared adj.r.squared lambda.z lambda.z.time.first
+## 1     FALSE     FALSE         FALSE    FALSE               FALSE
+## 2      TRUE     FALSE         FALSE    FALSE               FALSE
+##   lambda.z.n.points clast.pred span.ratio cmax.dn cmin.dn clast.obs.dn
+## 1             FALSE      FALSE      FALSE   FALSE   FALSE        FALSE
+## 2             FALSE      FALSE      FALSE   FALSE   FALSE        FALSE
+##   clast.pred.dn cav.dn ctrough.dn thalf.eff.last thalf.eff.iv.last
+## 1         FALSE  FALSE      FALSE          FALSE             FALSE
+## 2         FALSE  FALSE      FALSE          FALSE             FALSE
+##   kel.last kel.iv.last aucinf.obs aucinf.pred aumcinf.obs aumcinf.pred
+## 1    FALSE       FALSE      FALSE       FALSE       FALSE        FALSE
+## 2    FALSE       FALSE       TRUE       FALSE       FALSE        FALSE
+##   aucinf.obs.dn aucinf.pred.dn aumcinf.obs.dn aumcinf.pred.dn aucpext.obs
+## 1         FALSE          FALSE          FALSE           FALSE       FALSE
+## 2         FALSE          FALSE          FALSE           FALSE       FALSE
+##   aucpext.pred cl.obs cl.pred mrt.obs mrt.pred mrt.iv.obs mrt.iv.pred
+## 1        FALSE  FALSE   FALSE   FALSE    FALSE      FALSE       FALSE
+## 2        FALSE  FALSE   FALSE   FALSE    FALSE      FALSE       FALSE
+##   mrt.md.obs mrt.md.pred vz.obs vz.pred vss.obs vss.pred vss.iv.obs
+## 1      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE      FALSE
+## 2      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE      FALSE
+##   vss.iv.pred vss.md.obs vss.md.pred vd.obs vd.pred thalf.eff.obs
+## 1       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
+## 2       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
+##   thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs kel.pred
+## 1          FALSE            FALSE             FALSE   FALSE    FALSE
+## 2          FALSE            FALSE             FALSE   FALSE    FALSE
+##   kel.iv.obs kel.iv.pred
+## 1      FALSE       FALSE
+## 2      FALSE       FALSE</code></pre>
 <p>And, to reset the current values to the library defaults, run the function with the default argument set to <code>TRUE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">PKNCA.options</span>(<span class="dt">default=</span><span class="ot">TRUE</span>)</code></pre></div>
 <p>Each of the options is documented where it is used; for example, the first.tmax option is documented in the <code>pk.calc.tmax</code> function.</p>
@@ -212,6 +282,27 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
                   <span class="dt">spread=</span>business.range,
                   <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">round=</span><span class="dv">2</span>))</code></pre></div>
 <p>If the functions or default rounding options provided in the library do not meet the summarization needs, a user-supplied function can be used for rounding.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">median_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">median</span>(x, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+}
+quantprob_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">quantile</span>(x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+}
+<span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;auclast&quot;</span>,
+                  <span class="dt">point=</span>median_na,
+                  <span class="dt">spread=</span>quantprob_na,
+                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</code></pre></div>
+<p>In some cases multiple parameters may need the same summary functions (as often occurs with simulated data). Many parameters can be set simultaneously by specifying a vector of <code>name</code>s.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">median_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">median</span>(x, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+}
+quantprob_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">quantile</span>(x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
+}
+<span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="kw">c</span>(<span class="st">&quot;auclast&quot;</span>, <span class="st">&quot;cmax&quot;</span>, <span class="st">&quot;tmax&quot;</span>, <span class="st">&quot;half.life&quot;</span>, <span class="st">&quot;aucinf.pred&quot;</span>),
+                  <span class="dt">point=</span>median_na,
+                  <span class="dt">spread=</span>quantprob_na,
+                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</code></pre></div>
 </div>
 </div>
 <div id="grouping-nca-data" class="section level1">
@@ -220,28 +311,28 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <p>The quick start example can be extended to include multiple analytes as follows. The only difference is the <code>/analyte</code> formula element in the concentration data. The reason for the slash instead of the plus is that the last element before a slash is assumed to be the subject, and as noted before, the subject is (by default) excluded from the summary grouping (so that summaries are grouped by study, treatment, etc., but not by subject).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Generate a faux multi-study, multi-analyte dataset.
 d.conc.parent &lt;-<span class="st"> </span>d.conc
-d.conc.parent$Subject &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(d.conc.parent$Subject))
-d.conc.parent$Study &lt;-<span class="st"> </span>d.conc.parent$Subject &lt;=<span class="st"> </span><span class="dv">6</span>
-d.conc.parent$Analyte &lt;-<span class="st"> &quot;Parent&quot;</span>
+d.conc.parent<span class="op">$</span>Subject &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(d.conc.parent<span class="op">$</span>Subject))
+d.conc.parent<span class="op">$</span>Study &lt;-<span class="st"> </span>d.conc.parent<span class="op">$</span>Subject <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span>
+d.conc.parent<span class="op">$</span>Analyte &lt;-<span class="st"> &quot;Parent&quot;</span>
 d.conc.metabolite &lt;-<span class="st"> </span>d.conc.parent
-d.conc.metabolite$conc &lt;-<span class="st"> </span>d.conc.metabolite$conc/<span class="dv">2</span>
-d.conc.metabolite$Analyte &lt;-<span class="st"> &quot;Metabolite&quot;</span>
+d.conc.metabolite<span class="op">$</span>conc &lt;-<span class="st"> </span>d.conc.metabolite<span class="op">$</span>conc<span class="op">/</span><span class="dv">2</span>
+d.conc.metabolite<span class="op">$</span>Analyte &lt;-<span class="st"> &quot;Metabolite&quot;</span>
 d.conc.both &lt;-<span class="st"> </span><span class="kw">rbind</span>(d.conc.parent, d.conc.metabolite)
 d.conc.both &lt;-<span class="st"> </span>d.conc.both[<span class="kw">with</span>(d.conc.both, <span class="kw">order</span>(Study, Subject, Time, Analyte)),]
-d.dose.both &lt;-<span class="st"> </span>d.conc.both[d.conc.both$Time ==<span class="st"> </span><span class="dv">0</span> &amp;<span class="st"> </span>d.conc.both$Analyte %in%<span class="st"> &quot;Parent&quot;</span>,
+d.dose.both &lt;-<span class="st"> </span>d.conc.both[d.conc.both<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>d.conc.both<span class="op">$</span>Analyte <span class="op">%in%</span><span class="st"> &quot;Parent&quot;</span>,
                            <span class="kw">c</span>(<span class="st">&quot;Study&quot;</span>, <span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>)]
 
 ## Create a concentration object specifying the concentration, time,
 ## study, and subject columns.  (Note that any number of grouping
 ## levels is supporting; you are not restricted to this list.)
 my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d.conc.both,
-                     conc~Time|Study+Subject/Analyte)
+                     conc<span class="op">~</span>Time<span class="op">|</span>Study<span class="op">+</span>Subject<span class="op">/</span>Analyte)
 ## Create a dosing object specifying the dose, time, study, and
 ## subject columns.  (Note that the grouping factors should be a
 ## subset of the grouping factors for concentration, and the columns
 ## must have the same names between concentration and dose objects.)
 my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose.both,
-                     Dose~Time|Study+Subject)
+                     Dose<span class="op">~</span>Time<span class="op">|</span>Study<span class="op">+</span>Subject)
 
 <span class="co"># Perform and summarize the PK data as previously described</span>
 my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
@@ -277,6 +368,10 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <th align="left">aucall</th>
 <th align="left">aumclast</th>
 <th align="left">aumcall</th>
+<th align="left">auclast.dn</th>
+<th align="left">aucall.dn</th>
+<th align="left">aumclast.dn</th>
+<th align="left">aumcall.dn</th>
 <th align="left">cmax</th>
 <th align="left">cmin</th>
 <th align="left">tmax</th>
@@ -287,12 +382,21 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <th align="left">cl.all</th>
 <th align="left">f</th>
 <th align="left">mrt.last</th>
+<th align="left">mrt.iv.last</th>
+<th align="left">vss.last</th>
+<th align="left">vss.iv.last</th>
 <th align="left">cav</th>
 <th align="left">ctrough</th>
 <th align="left">ptr</th>
 <th align="left">tlag</th>
 <th align="left">deg.fluc</th>
 <th align="left">swing</th>
+<th align="left">ceoi</th>
+<th align="left">ae</th>
+<th align="left">clr.last</th>
+<th align="left">clr.obs</th>
+<th align="left">clr.pred</th>
+<th align="left">fe</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -301,26 +405,52 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <th align="left">lambda.z.n.points</th>
 <th align="left">clast.pred</th>
 <th align="left">span.ratio</th>
+<th align="left">cmax.dn</th>
+<th align="left">cmin.dn</th>
+<th align="left">clast.obs.dn</th>
+<th align="left">clast.pred.dn</th>
+<th align="left">cav.dn</th>
+<th align="left">ctrough.dn</th>
+<th align="left">thalf.eff.last</th>
+<th align="left">thalf.eff.iv.last</th>
+<th align="left">kel.last</th>
+<th align="left">kel.iv.last</th>
 <th align="left">aucinf.obs</th>
 <th align="left">aucinf.pred</th>
 <th align="left">aumcinf.obs</th>
 <th align="left">aumcinf.pred</th>
+<th align="left">aucinf.obs.dn</th>
+<th align="left">aucinf.pred.dn</th>
+<th align="left">aumcinf.obs.dn</th>
+<th align="left">aumcinf.pred.dn</th>
 <th align="left">aucpext.obs</th>
 <th align="left">aucpext.pred</th>
 <th align="left">cl.obs</th>
 <th align="left">cl.pred</th>
 <th align="left">mrt.obs</th>
 <th align="left">mrt.pred</th>
+<th align="left">mrt.iv.obs</th>
+<th align="left">mrt.iv.pred</th>
+<th align="left">mrt.md.obs</th>
+<th align="left">mrt.md.pred</th>
 <th align="left">vz.obs</th>
 <th align="left">vz.pred</th>
 <th align="left">vss.obs</th>
 <th align="left">vss.pred</th>
+<th align="left">vss.iv.obs</th>
+<th align="left">vss.iv.pred</th>
+<th align="left">vss.md.obs</th>
+<th align="left">vss.md.pred</th>
 <th align="left">vd.obs</th>
 <th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
+<th align="left">thalf.eff.iv.obs</th>
+<th align="left">thalf.eff.iv.pred</th>
 <th align="left">kel.obs</th>
 <th align="left">kel.pred</th>
+<th align="left">kel.iv.obs</th>
+<th align="left">kel.iv.pred</th>
 </tr>
 </thead>
 <tbody>
@@ -328,6 +458,45 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -383,21 +552,11 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
@@ -407,7 +566,56 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -435,14 +643,14 @@ my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 dose.times &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">168</span>, <span class="dt">by=</span><span class="dv">24</span>)
 <span class="kw">print</span>(dose.times)</code></pre></div>
 <pre><code>## [1]   0  24  48  72  96 120 144 168</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PKNCA::<span class="kw">find.tau</span>(dose.times)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PKNCA<span class="op">::</span><span class="kw">find.tau</span>(dose.times)</code></pre></div>
 <pre><code>## [1] 24</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## or when the doses have mixed intervals (10 and 24 hours).
 dose.times &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">168</span>, <span class="dt">by=</span><span class="dv">24</span>),
                      <span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">178</span>, <span class="dt">by=</span><span class="dv">24</span>)))
 <span class="kw">print</span>(dose.times)</code></pre></div>
 <pre><code>##  [1]   0  10  24  34  48  58  72  82  96 106 120 130 144 154 168 178</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PKNCA::<span class="kw">find.tau</span>(dose.times)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PKNCA<span class="op">::</span><span class="kw">find.tau</span>(dose.times)</code></pre></div>
 <pre><code>## [1] 24</code></pre>
 <p>After finding <span class="math inline">\(\tau\)</span>, PKNCA will also look after the last dose (or the beginning of the last dosing interval), and two additional intervals may be added:</p>
 <ul>
@@ -465,9 +673,9 @@ my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc,
                      <span class="dt">intervals=</span>my.intervals)</code></pre></div>
 <p>To update the automatically-selected intervals, extract the intervals, modify them, and put them back.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
-my.intervals &lt;-<span class="st"> </span>my.data$intervals
-my.intervals$aucinf.obs[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span>
-my.data$intervals &lt;-<span class="st"> </span>my.intervals</code></pre></div>
+my.intervals &lt;-<span class="st"> </span>my.data<span class="op">$</span>intervals
+my.intervals<span class="op">$</span>aucinf.obs[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span>
+my.data<span class="op">$</span>intervals &lt;-<span class="st"> </span>my.intervals</code></pre></div>
 </div>
 </div>
 
@@ -478,7 +686,7 @@ my.data$intervals &lt;-<span class="st"> </span>my.intervals</code></pre></div>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -1,7 +1,9 @@
 ---
 title: "Introduction to PKNCA and Usage Instructions"
 author: "Bill Denney"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: yes
 vignette: >
   %\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
   %\VignetteEngine{knitr::rmarkdown}
@@ -135,6 +137,36 @@ PKNCA.set.summary(name="tmax",
 If the functions or default rounding options provided in the library
 do not meet the summarization needs, a user-supplied function can be
 used for rounding.
+
+```{r custom_summary_fun, eval=FALSE}
+median_na <- function(x) {
+  median(x, na.rm=TRUE)
+}
+quantprob_na <- function(x) {
+  quantile(x, probs=c(0.05, 0.95), na.rm=TRUE)
+}
+PKNCA.set.summary(name="auclast",
+                  point=median_na,
+                  spread=quantprob_na,
+                  rounding=list(signif=3))
+```
+
+In some cases multiple parameters may need the same summary functions
+(as often occurs with simulated data).  Many parameters can be set
+simultaneously by specifying a vector of `name`s.
+
+```{r multi_summary_settings, eval=FALSE}
+median_na <- function(x) {
+  median(x, na.rm=TRUE)
+}
+quantprob_na <- function(x) {
+  quantile(x, probs=c(0.05, 0.95), na.rm=TRUE)
+}
+PKNCA.set.summary(name=c("auclast", "cmax", "tmax", "half.life", "aucinf.pred"),
+                  point=median_na,
+                  spread=quantprob_na,
+                  rounding=list(signif=3))
+```
 
 # Grouping NCA Data
 

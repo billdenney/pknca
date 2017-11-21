@@ -421,22 +421,23 @@ PKNCA.options.describe <- function(name) {
 
 #' Define how NCA parameters are summarized.
 #'
-#' @param name The parameter name.  It must have already been defined
-#' (see \code{\link{add.interval.col}}).
+#' @param name The parameter name or a vector of parameter names.  It
+#'   must have already been defined (see
+#'   \code{\link{add.interval.col}}).
 #' @param point The function to calculate the point estimate for the
-#' summary.  The function will be called as \code{point(x)} and must
-#' return a scalar value (typically a number, NA, or a string).
+#'   summary.  The function will be called as \code{point(x)} and must
+#'   return a scalar value (typically a number, NA, or a string).
 #' @param spread Optional.  The function to calculate the spread (or
-#' variability).  The function will be called as \code{spread(x)} and
-#' must return a scalar or two-long vector (typically a number, NA, or
-#' a string).
-#' @param rounding Instructions for how to round the value of point
-#' and spread.  It may either be a list or a function.  If it is a
-#' list, then it must have a single entry with a name of either
-#' "signif" or "round" and a value of the digits to round.  If a
-#' function, it is expected to return a scalar number or character
-#' string with the correct results for an input of either a scalar or
-#' a two-long vector.
+#'   variability).  The function will be called as \code{spread(x)} and
+#'   must return a scalar or two-long vector (typically a number, NA, or
+#'   a string).
+#' @param rounding Instructions for how to round the value of point and
+#'   spread.  It may either be a list or a function.  If it is a list,
+#'   then it must have a single entry with a name of either "signif" or
+#'   "round" and a value of the digits to round.  If a function, it is
+#'   expected to return a scalar number or character string with the
+#'   correct results for an input of either a scalar or a two-long
+#'   vector.
 #' @param reset Reset all the summary instructions
 #' @return All current summary settings (invisibly)
 #' @seealso \code{\link{summary.PKNCAresults}}
@@ -454,17 +455,21 @@ PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
     return(invisible(current))
   }
   ## Confirm that the name exists
-  if (!(name %in% names(get("interval.cols", envir=.PKNCAEnv))))
-    stop("You must first define the parameter name with add.interval.col")
+  if (!all(found_names <- name %in% names(get("interval.cols", envir=.PKNCAEnv)))) {
+    stop(paste("You must first define the parameter name with add.interval.col.  Parameters not yet defined are:",
+               paste(name[!found_names], collapse=", ")))
+  }
   ## Confirm that point is a function
   if (!is.function(point))
     stop("point must be a function")
-  current[[name]] <- list(point=point)
+  for (current_name in name)
+    current[[current_name]] <- list(point=point)
   ## Confirm that spread is a function (if given)
   if (!missing(spread)) {
     if (!is.function(spread))
       stop("spread must be a function")
-    current[[name]]$spread <- spread
+    for (current_name in name)
+      current[[current_name]]$spread <- spread
   }
   ## Confirm that rounding is either a single-entry list or a function
   if (is.list(rounding)) {
@@ -472,9 +477,11 @@ PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
       stop("rounding must have a single value in the list")
     if (!(names(rounding) %in% c("signif", "round")))
       stop("When a list, rounding must have a name of either 'signif' or 'round'")
-    current[[name]]$rounding <- rounding
+    for (current_name in name)
+      current[[current_name]]$rounding <- rounding
   } else if (is.function(rounding)) {
-    current[[name]]$rounding <- rounding
+    for (current_name in name)
+      current[[current_name]]$rounding <- rounding
   } else {
     stop("rounding must be either a list or a function")
   }
