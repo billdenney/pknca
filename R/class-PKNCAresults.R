@@ -138,6 +138,8 @@ summary.PKNCAresults <- function(object, ...,
   groups <- unique(c("start", "end",
                      setdiff(names(allGroups), drop.group)))
   exclude_col <- object$exclude
+  # Ensure that the exclude_col is NA instead of "" for subsequent processing.
+  object$result[[exclude_col]] <- normalize_exclude(object$result[[exclude_col]])
   summaryFormula <- stats::as.formula(paste0("~", paste(groups, collapse="+")))
   summaryInstructions <- PKNCA.set.summary()
   ## Find any parameters that request any summaries

@@ -155,3 +155,22 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
   }
   object
 }
+
+#' Normalize the exclude column by setting blanks to NA
+#'
+#' @param object The object to extract the exclude column from
+#' @return The exclude vector where \code{NA} indicates not to exclude
+#'   and anything else indicates to exclude.
+normalize_exclude <- function(object) {
+  dataname <- getDataName(object)
+  if (is.null(dataname)) {
+    ret <- object
+  } else {
+    ret <- object[[dataname]][[object[["exclude"]]]]
+  }
+  mask_blank <- ret %in% ""
+  if (any(mask_blank)) {
+    ret[mask_blank] <- NA
+  }
+  ret
+}

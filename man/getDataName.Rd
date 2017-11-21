@@ -7,7 +7,9 @@
 \alias{getDataName.PKNCAdose}
 \alias{getDataName.PKNCAresults}
 \alias{getDataName}
-\title{Get the name of the element containing the data for the current object.}
+\alias{getDataName.default}
+\title{Get the name of the element containing the data for the current
+object.}
 \usage{
 \method{getDataName}{PKNCAconc}(object)
 
@@ -18,13 +20,22 @@
 \method{getDataName}{PKNCAresults}(object)
 
 getDataName(object)
+
+\method{getDataName}{default}(object)
 }
 \arguments{
 \item{object}{The object to get the data name from.}
 }
 \value{
-A character scalar with the name of the data object.
+A character scalar with the name of the data object (or NULL
+  if the method does not apply).
 }
 \description{
-Get the name of the element containing the data for the current object.
+Get the name of the element containing the data for the current
+object.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: If no data name exists, returns NULL.
+}}
+

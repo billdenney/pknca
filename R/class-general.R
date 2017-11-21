@@ -50,12 +50,19 @@ getColumnValueOrNot <- function(data, value, prefix="X") {
   ret
 }
 
-#' Get the name of the element containing the data for the current object.
-#' 
+#' Get the name of the element containing the data for the current
+#' object.
+#'
 #' @param object The object to get the data name from.
-#' @return A character scalar with the name of the data object.
+#' @return A character scalar with the name of the data object (or NULL
+#'   if the method does not apply).
 getDataName <- function(object)
   UseMethod("getDataName")
+
+#' @describeIn getDataName If no data name exists, returns NULL.
+getDataName.default <- function(object) {
+  NULL
+}
 
 #' Add an attribute to an object where the attribute is added as a name 
 #' to the names of the object.

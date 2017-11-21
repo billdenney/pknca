@@ -124,6 +124,8 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                                           col.exclude_half.life,
                                           col.volume,
                                           col.duration.conc)]
+    tmpconcdata[[conc.dose$conc$exclude]] <-
+      normalize_exclude(tmpconcdata[[conc.dose$conc$exclude]])
     tmpdosedata <-
       merge(conc.dose$dose$data,
             all.intervals[i, intersect(shared.names, names(all.intervals)),
@@ -131,6 +133,8 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
                                           col.time.dose,
                                           conc.dose$dose$exclude,
                                           col.duration.dose)]
+    tmpdosedata[[conc.dose$dose$exclude]] <-
+      normalize_exclude(tmpdosedata[[conc.dose$dose$exclude]])
     ## Choose only times between the start and end.
     mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[[col.time]] &
                          tmpconcdata[[col.time]] <= all.intervals$end[i] &

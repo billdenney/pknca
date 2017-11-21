@@ -172,3 +172,14 @@ test_that("getAttributeColumn", {
   expect_error(getAttributeColumn(object=obj3, attr_name="foo", warn_missing=c("foo")),
                info="warn_missing must have a valid value")
 })
+
+test_that("getDataName.default returns NULL", {
+  expect_null(getDataName(1:5),
+              info="getDataName.default returns NULL (numeric)")
+  expect_null(getDataName("a"),
+              info="getDataName.default returns NULL (character)")
+  expect_null(getDataName(factor("A")),
+              info="getDataName.default returns NULL (factor)")
+  expect_null(getDataName(TRUE),
+              info="getDataName.default returns NULL (logical)")
+})

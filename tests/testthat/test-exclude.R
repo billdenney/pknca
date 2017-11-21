@@ -203,3 +203,23 @@ test_that("exclude.default", {
   expect_false(any(summary(result_obj)$cl.last == summary(result_obj_not_1)$cl.last),
                info="summary.PKNCAresults respects exclude")
 })
+
+# Issue #55
+test_that("normalize_exclude makes blanks into NA_character_", {
+  source("generate.data.R")
+  my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  my_conc$exclude <- c("", rep(NA_character_, nrow(my_conc) - 1))
+  obj1 <- PKNCAconc(my_conc,
+                    formula=conc~time|treatment+ID,
+                    exclude="exclude")
+  expect_equal(normalize_exclude(obj1),
+               rep(NA_character_, nrow(my_conc)),
+               info="normalize_exclude makes blanks into NA_character_")
+  obj2 <- obj1
+  obj2$data$exclude[2] <- "foo"
+  expect_equal(normalize_exclude(obj2),
+               c(NA_character_, "foo", rep(NA_character_, nrow(my_conc)-2)),
+               info="normalize_exclude makes blanks into NA_character_ and leaves non-blank alone.")
+  expect_equal(normalize_exclude(1:5), 1:5,
+               info="normalize_exclude works with bare vectors (as opposed to PKNCA objects)")
+})
