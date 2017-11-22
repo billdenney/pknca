@@ -2,7 +2,7 @@ language: r
 cache: packages
 sudo: false
 r_check_args: --as-cran --install-tests
-r_build_args: --install-tests
+r_build_args: --no-build-vignettes
 
 r:
   - release
