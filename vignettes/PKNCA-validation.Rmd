@@ -1,0 +1,78 @@
+---
+title: "PKNCA Validation"
+author: "William Denney"
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 6
+vignette: >
+  %\VignetteIndexEntry{PKNCA Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,
+                      fig.width=6,
+                      fig.height=4)
+library(PKNCA)
+library(knitr)
+library(testthat)
+library(dplyr)
+```
+
+# Introduction
+
+Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.
+
+Re-running this vignette in your local environment will confirm that local results match those in the original package development.  Test success is confirmed by the existence of no failed tests; warnings are expected during testing (and not shown in this vignette for that reason); and some tests may be skipped, but those are expected as well.
+
+# Summary of Testing
+
+```{r validation, include=FALSE}
+testresult <- test_package(package="PKNCA")
+test_log <- as.data.frame(testresult)
+failed_tests <- sum(test_log$failed)
+testing_results <-
+  if (failed_tests == 0) {
+    "All tests passed."
+  } else {
+    "Some tests failed (see below)."
+  }
+```
+
+The following sentence is dynamically generated to summarize the testing results:  `r testing_results`
+
+# Testing Log
+
+```{r testing_log, results="asis", echo=FALSE}
+all_contexts <- unique(test_log$context)
+test_log_printing <-
+  test_log %>%
+  rename(`Testing Filename`=file,
+         `Test Description`=test,
+         `Number of Tests`=nb,
+         `Number of Failed Tests`=failed)
+
+for (current_context in all_contexts) {
+  current_log <-
+    test_log_printing[
+      test_log_printing$context %in% current_context,
+      setdiff(names(test_log_printing),
+              c("context", "skipped",
+                "error", "warning",
+                "user", "system", "real")),
+      drop=FALSE]
+  cat("## ", current_context, "\n\n")
+  print(kable(x=current_log,
+              row.names=FALSE))
+  cat("\n\n")
+}
+```
+
+# Session Information
+
+```{r session_info}
+Sys.Date()
+sessionInfo()
+```
