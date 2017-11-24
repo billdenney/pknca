@@ -114,6 +114,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
+<p>To run the tests, the package must be installed with its tests:</p>
+<ul>
+<li>To install from CRAN:
+<ul>
+<li><code>install.packages(pkgs=&quot;PKNCA&quot;, INSTALL_opts=&quot;--install-tests&quot;)</code></li>
+</ul></li>
+<li>To install from GitHub:
+<ul>
+<li><code>library(devtools)</code></li>
+<li><code>install_github(&quot;billdenney/pknca&quot;, args=&quot;--install-tests&quot;)</code></li>
+</ul></li>
+</ul>
 <p>Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.</p>
 <p>Re-running this vignette in your local environment will confirm that local results match those in the original package development. Test success is confirmed by the existence of no failed tests; warnings are expected during testing (and not shown in this vignette for that reason); and some tests may be skipped, but those are expected as well.</p>
 </div>
@@ -352,6 +364,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">test-class-general.R</td>
 <td align="left">getAttributeColumn</td>
 <td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">test-class-general.R</td>
+<td align="left">getDataName.default returns NULL</td>
+<td align="right">4</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -616,6 +634,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">test-exclude.R</td>
 <td align="left">exclude.default</td>
 <td align="right">18</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-exclude.R</td>
+<td align="left">normalize_exclude makes blanks into NA_character_</td>
+<td align="right">3</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1257,7 +1281,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-PKNCA.options.R</td>
 <td align="left">PKNCA.set.summary input checking</td>
-<td align="right">9</td>
+<td align="right">10</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -1366,7 +1390,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="session-information" class="section level1">
 <h1>Session Information</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Sys.Date</span>()</code></pre></div>
-<pre><code>## [1] &quot;2017-11-22&quot;</code></pre>
+<pre><code>## [1] &quot;2017-11-24&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
 <pre><code>## R version 3.4.1 (2017-06-30)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
@@ -1385,8 +1409,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] bindrcpp_0.2     dplyr_0.7.4.9000 PKNCA_0.8.1.9023 testthat_1.0.2  
-## [5] rmarkdown_1.7    knitr_1.17       cowplot_0.8.0    ggplot2_2.2.1   
+## [1] bindrcpp_0.2     dplyr_0.7.4.9000 PKNCA_0.8.1.9024 testthat_1.0.2  
+## [5] rmarkdown_1.8    knitr_1.17       cowplot_0.9.1    ggplot2_2.2.1   
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.13     highr_0.6        compiler_3.4.1   plyr_1.8.4      

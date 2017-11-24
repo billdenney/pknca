@@ -19,9 +19,20 @@ library(PKNCA)
 library(knitr)
 library(testthat)
 library(dplyr)
+
+run_tests <- dir.exists(system.file(package="PKNCA", "tests/"))
+testing_results <- "Tests were not run because tests are not installed."
 ```
 
 # Introduction
+
+To run the tests, the package must be installed with its tests:
+
+* To install from CRAN:
+    * `install.packages(pkgs="PKNCA", INSTALL_opts="--install-tests")`
+* To install from GitHub:
+    * `library(devtools)`
+    * `install_github("billdenney/pknca", args="--install-tests")`
 
 Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.
 
@@ -29,7 +40,7 @@ Re-running this vignette in your local environment will confirm that local resul
 
 # Summary of Testing
 
-```{r validation, include=FALSE}
+```{r validation, include=FALSE, eval=run_tests}
 testresult <- test_package(package="PKNCA")
 test_log <- as.data.frame(testresult)
 failed_tests <- sum(test_log$failed)
@@ -43,9 +54,9 @@ testing_results <-
 
 The following sentence is dynamically generated to summarize the testing results:  `r testing_results`
 
-# Testing Log
+```{r testing_log, results="asis", echo=FALSE, eval=run_tests}
+cat("# Testing Log\n\n")
 
-```{r testing_log, results="asis", echo=FALSE}
 all_contexts <- unique(test_log$context)
 test_log_printing <-
   test_log %>%
