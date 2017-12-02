@@ -89,8 +89,10 @@ test_that("PKNCAdose", {
 
 test_that("PKNCAdose without a data.frame as input", {
   tmp <- structure(list(), class="foo")
+  captured_message <- tryCatch(as.data.frame(tmp), error=function(e) e$message)
   expect_error(PKNCAdose(tmp, formula=.~time|treatment+ID),
-               regexp='cannot coerce class ""foo"" to a data.frame',
+               regexp=captured_message,
+               fixed=TRUE,
                info="PKNCAdose tries to make arbitrary data into a data.frame")
 })
 

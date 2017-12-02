@@ -55,8 +55,10 @@ test_that("PKNCAconc", {
 
 test_that("PKNCAconc with input other than data.frames", {
   tmp <- structure(list(), class="foo")
+  captured_message <- tryCatch(as.data.frame(tmp), error=function(e) e$message)
   expect_error(PKNCAconc(tmp, formula=conc~time|treatment+ID),
-               regexp='cannot coerce class ""foo"" to a data.frame',
+               regexp=captured_message,
+               fixed=TRUE,
                info="Attempt to coerce into a data.frame.")
 })
 
