@@ -103,9 +103,9 @@ pk.tss <- function(...,
   type <- match.arg(type, several.ok=TRUE)
   ret <- NA
   if ("monoexponential" %in% type) {
-    tmp <- pk.tss.monoexponential(..., check=check)
+    ret_monoexponential <- pk.tss.monoexponential(..., check=check)
     if (identical(NA, ret)) {
-      ret <- tmp
+      ret <- ret_monoexponential
     } else {
       stop("Bug in pk.tss where ret is set to non-NA too early.  Please report the bug with a reproducible example.") # nocov
     }
@@ -114,11 +114,11 @@ pk.tss <- function(...,
     check <- FALSE
   }
   if ("stepwise.linear" %in% type) {
-    tmp <- pk.tss.stepwise.linear(..., check=check)
+    ret_stepwise <- pk.tss.stepwise.linear(..., check=check)
     if (identical(NA, ret)) {
-      ret <- tmp
+      ret <- ret_stepwise
     } else {
-      ret <- merge(ret, tmp, all=TRUE)
+      ret <- merge(ret, ret_stepwise, all=TRUE)
     }
   }
   ret

@@ -8,21 +8,22 @@
 #' \code{random.effects} argument).
 #' 
 #' @param \dots See \code{\link{pk.tss.data.prep}}
-#' @param tss.fraction The fraction of steady-state required for
-#' calling steady-state
+#' @param tss.fraction The fraction of steady-state required for calling
+#'   steady-state
 #' @param output Which types of outputs should be produced?
-#' \code{population} is the population estimate for time to
-#' steady-state (from an nlme model), \code{popind} is the individual
-#' estimate (from an nlme model), \code{individual} fits each
-#' individual separately with a gnls model, and \code{single} fits all
-#' the data to a single gnls model.
+#'   \code{population} is the population estimate for time to
+#'   steady-state (from an nlme model), \code{popind} is the individual
+#'   estimate (from an nlme model), \code{individual} fits each
+#'   individual separately with a gnls model (requires more than one
+#'   individual; use \code{single} for one individual), and
+#'   \code{single} fits all the data to a single gnls model.
 #' @param check See \code{\link{pk.tss.data.prep}}.
 #' @param verbose Describe models as they are run, show convergence of
-#' the model (passed to the nlme function), and additional details
-#' while running.
+#'   the model (passed to the nlme function), and additional details
+#'   while running.
 #' 
 #' @return A scalar float for the first time when steady-state is
-#' achieved or \code{NA} if it is not observed.
+#'   achieved or \code{NA} if it is not observed.
 #' @seealso \code{\link{pk.tss}}, \code{\link{pk.tss.stepwise.linear}}
 #' @references
 #' Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
@@ -65,23 +66,34 @@ pk.tss.monoexponential <- function(...,
   ## Set the tss.constant so that exp(tss.constant) == tss.fraction so
   ## that the model below solves for the requested tss.
   modeldata$tss.constant <- log(1-tss.fraction)
-  ret <- data.frame()
-  if (any(c("population", "popind") %in% output)) {
-    ret <-
+  ret_population <-
+    if (any(c("population", "popind") %in% output)) {
       pk.tss.monoexponential.population(
         modeldata,
         output=intersect(c("population", "popind"), output),
         verbose=verbose)
-  }
-  if (any(c("individual", "single") %in% output)) {
-    ret <-
-      merge(ret,
-            pk.tss.monoexponential.individual(
-              modeldata,
-              output=intersect(c("individual", "single"), output),
-              verbose=verbose),
-            all=TRUE)
-  }
+    } else {
+      NA
+    }
+  ret_individual <-
+    if (any(c("individual", "single") %in% output)) {
+      pk.tss.monoexponential.individual(
+        modeldata,
+        output=intersect(c("individual", "single"), output),
+        verbose=verbose)
+    } else {
+      NA
+    }
+  ret <-
+    if (!identical(NA, ret_population) & !identical(NA, ret_individual)) {
+      merge(ret_population, ret_individual)
+    } else if (!identical(NA, ret_population)) {
+      ret_population
+    } else if (!identical(NA, ret_individual)) {
+      ret_individual
+    } else {
+      stop("Error in selection of return values for pk.tss.monoexponential.  This is likely a bug.")
+    }
   ret
 }
 
@@ -190,8 +202,10 @@ pk.tss.monoexponential.population <- function(data,
                        data=data,
                        verbose=verbose)
           ## If the model converges, get the summary and AIC out.
-          current.model.summary <- summary(current.model)
-          current.aic <- stats::AIC(current.model)
+          if (!is.null(current.model)) {
+            current.model.summary <- summary(current.model)
+            current.aic <- stats::AIC(current.model)
+          }
         }, silent=!verbose)
         ## Put the current model (or model attempt) into the list of
         ## models.
@@ -212,11 +226,11 @@ pk.tss.monoexponential.population <- function(data,
   if (all(is.na(all.model.summary$AIC)) |
       length(all.model.summary) == 0) {
     warning("No population model for monoexponential Tss converged, no results given")
-    ret <- merge(
+    ret <-
       data.frame(tss.monoexponential.population=NA,
-                 tss.monoexponential.popind=NA),
-      data[,"subject",drop=FALSE],
-      all=TRUE)
+                 tss.monoexponential.popind=NA,
+                 subject=unique(data[["subject"]]),
+                 stringsAsFactors=FALSE)
   } else {
     best.model <-
       models[all.model.summary$AIC %in%
@@ -242,7 +256,8 @@ pk.tss.monoexponential.population <- function(data,
   ## Return the requested columns
   ret[,intersect(c("subject", "treatment",
                    paste("tss.monoexponential", output, sep=".")),
-                 names(ret))]
+                 names(ret)),
+      drop=FALSE]
 }
 
 #' A helper function to estimate individual and single outputs for
@@ -266,13 +281,14 @@ pk.tss.monoexponential.population <- function(data,
 #' provided).  The columns will be named
 #' \code{tss.monoexponential.population} and/or
 #' \code{tss.monoexponential.popind}.
+#' @importFrom dplyr group_by_
 pk.tss.monoexponential.individual <- function(data,
                                               output=c(
                                                 "individual",
                                                 "single"),
                                               verbose=FALSE) {
   fit.tss <- function(d) {
-    tss <- NA
+    tss <- NA_real_
     try({
       current.model <-
         nlme::gnls(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
@@ -284,27 +300,57 @@ pk.tss.monoexponential.individual <- function(data,
                      stats::median(unique(d$time))),
                    data=d,
                    verbose=verbose)
-      tss <- stats::coef(current.model)[["tss"]]
+      if (!is.null(current.model)) {
+        tss <- stats::coef(current.model)[["tss"]]
+      }
     }, silent=!verbose)
+    if (is.null(tss)) {
+      tss <- NA_real_
+    }
     tss
   }
   output <- match.arg(output, several.ok=TRUE)
   ## Run by treatment or a single value for the full data frame
+  data_maybe_grouped <-
+    if ("treatment" %in% names(data)) {
+      data %>%
+        dplyr::group_by_("treatment")
+    } else {
+      data
+    }
   ret <-
-    dplyr::summarize_(
-      dplyr::group_by_(data, "treatment"),
-      .dots=list(tss.monoexponential.single=~fit.tss(data.frame(time=time, tss.constant=tss.constant, conc=conc))))
+    data_maybe_grouped %>%
+    dplyr::summarize(
+      tss.monoexponential.single=
+        fit.tss(data.frame(time=.$time,
+                           tss.constant=.$tss.constant,
+                           conc=.$conc,
+                           treatment=.$treatment)))
   if ("subject" %in% names(data) &
       "individual" %in% output) {
+    data_grouped <-
+      if (all(c("treatment", "subject") %in% names(data))) {
+        data %>%
+          group_by_("treatment", "subject")
+      } else if ("subject" %in% names(data)) {
+        data %>%
+          group_by_("subject")
+      } else {
+        stop("Subject must be specified to have subject-level fitting")
+      }
     ret.sub <-
+      data_grouped %>%
       dplyr::summarize_(
-        dplyr::group_by_(data, "treatment", "subject"),
-        .dots=list(tss.monoexponential.individual=~fit.tss(data.frame(time=time, tss.constant=tss.constant, conc=conc))))
+        .dots=list(tss.monoexponential.individual=~fit.tss(data.frame(time=time,
+                                                                      tss.constant=tss.constant,
+                                                                      conc=conc))))
     ret <- merge(ret, ret.sub, all=TRUE)
   }
   ## Return the requested columns
   as.data.frame(
     ret[,c(intersect(names(ret),
                      c("subject", "treatment")),
-           paste("tss.monoexponential", output, sep="."))])
+           paste("tss.monoexponential", output, sep=".")),
+        drop=FALSE],
+    stringsAsFactors=FALSE)
 }

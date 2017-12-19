@@ -31,10 +31,12 @@
 #'         mask=c(TRUE, rep(FALSE, 6)))
 #' @export
 #' @importFrom dplyr "%>%"
+#' @importFrom dplyr n
 #' @importFrom rlang syms
 exclude <- function(object, reason, mask, FUN)
   UseMethod("exclude")
 
+utils::globalVariables(c("exclude_current_group_XXX", "row_number_XXX", "exclude_current_group_XXX_row_num"))
 #' @describeIn exclude The general case for data exclusion
 #' @export
 exclude.default <- function(object, reason, mask, FUN) {
@@ -49,16 +51,14 @@ exclude.default <- function(object, reason, mask, FUN) {
       object[[dataname]] %>%
       dplyr::mutate(row_number_XXX=1:n()) %>%
       dplyr::group_by(!!! rlang::syms(groupnames)) %>%
-      dplyr::do(exclude_current_group_XXX=do.call(FUN, list(., object)),
-                exclude_current_group_XXX_row_num=.$row_number_XXX) %>%
+      dplyr::mutate(exclude_current_group_XXX_row_num=row_number_XXX,
+                    exclude_current_group_XXX=do.call(FUN,
+                                                      list(as.data.frame(., stringsAsFactors=FALSE)[.$row_number_XXX %in% row_number_XXX,,drop=FALSE],
+                                                           object))) %>%
       dplyr::mutate(exclude_lengths_match=length(exclude_current_group_XXX) ==
                       length(exclude_current_group_XXX_row_num))
-    if (!all(mask_df$exclude_lengths_match)) {
-      stop("The return value from FUN must match the length of the data")
-    }
     # Extract the output and ensure that the output order equals the input order
-    mask <- do.call(c, mask_df$exclude_current_group_XXX)
-    mask <- mask[order(do.call(c, mask_df$exclude_current_group_XXX_row_num))]
+    mask <- mask_df$exclude_current_group_XXX[order(mask_df$exclude_current_group_XXX_row_num)]
     if (is.character(mask)) {
       reason <- mask
       mask <- !is.na(reason)

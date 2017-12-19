@@ -107,19 +107,14 @@ test_that("exclude.default", {
                regexp="mask must match the length of the data.",
                info="mask must match the length of the data.")
   expect_error(exclude.default(obj1,
-                              reason="Just because",
-                              FUN=function(x, ...) TRUE),
-               regexp="The return value from FUN must match the length of the data",
-               info="The return from FUN may not be a scalar")
-  expect_error(exclude.default(obj1,
                               reason=1:2,
                               FUN=function(x, ...) TRUE),
-               regexp="The return value from FUN must match the length of the data",
+               regexp="reason must be a scalar or have the same length as the data",
                info="Interpretation of a non-scalar reason is unclear")
   expect_error(exclude.default(obj1,
                               reason=1,
                               FUN=function(x, ...) TRUE),
-               regexp="The return value from FUN must match the length of the data",
+               regexp="reason must be a character string.",
                info="Interpretation of a non-character reason is unclear")
   
   ## Check operation

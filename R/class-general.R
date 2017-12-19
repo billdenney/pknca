@@ -184,7 +184,7 @@ formulaOrNames <- function(formula=NA_character_,
     parsedFormula <- parseFormula(formula, require.two.sided=FALSE)
     ret$lhs <- all.vars(parsedFormula$lhs)
     ret$rhs <- all.vars(parsedFormula$rhs)
-    ret$groups <- all.vars(parsedForm$groupFormula)
+    ret$groups <- all.vars(parsedFormula$groupFormula)
   } else {
     ret$lhs <- lhs
     ret$rhs <- rhs

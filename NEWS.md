@@ -4,7 +4,7 @@ will continue until then.  These will be especially noticable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
-# PKNCA 0.9.0
+# PKNCA 0.8.2
 
 * BACKWARD INCOMPATIBILITY: The function supplied to the exclude
   argument 'FUN' now requires two arguments and operates on the level
@@ -23,6 +23,8 @@ the dosing including dose amount and route.
 
 * Added Validation vignette.
 
+* Corrected issue where time to steady-state with a single estimate
+  may have given more than one estimated time to steady-state.
 * Corrected issue with exclude handling where now a blank string is
   also accepted as included (not excluded).
 * PKNCAconc now accepts a "volume" argument and pk.nca can now

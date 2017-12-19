@@ -11,15 +11,16 @@ pk.tss.monoexponential(..., tss.fraction = 0.9, output = c("population",
 \arguments{
 \item{\dots}{See \code{\link{pk.tss.data.prep}}}
 
-\item{tss.fraction}{The fraction of steady-state required for
-calling steady-state}
+\item{tss.fraction}{The fraction of steady-state required for calling
+steady-state}
 
 \item{output}{Which types of outputs should be produced?
 \code{population} is the population estimate for time to
 steady-state (from an nlme model), \code{popind} is the individual
 estimate (from an nlme model), \code{individual} fits each
-individual separately with a gnls model, and \code{single} fits all
-the data to a single gnls model.}
+individual separately with a gnls model (requires more than one
+individual; use \code{single} for one individual), and
+\code{single} fits all the data to a single gnls model.}
 
 \item{check}{See \code{\link{pk.tss.data.prep}}.}
 
@@ -29,7 +30,7 @@ while running.}
 }
 \value{
 A scalar float for the first time when steady-state is
-achieved or \code{NA} if it is not observed.
+  achieved or \code{NA} if it is not observed.
 }
 \description{
 Trough concentrations are selected as concentrations at the time of

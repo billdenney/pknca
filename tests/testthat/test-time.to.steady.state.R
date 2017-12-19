@@ -314,11 +314,7 @@ test_that("pk.tss.monoexponential", {
                  3.91269286106442, 4.74475071729459, 3.99341726779716,
                  5.08737230904342, 4.50068650719192, 3.4876172020751,
                  5.35051537086801),
-               tss.monoexponential.single=c(
-                 4.49364716304018, 4.5987103152447, 4.49364716304018,
-                 4.49364716304018, 4.49364716304018, 4.49364716304018,
-                 4.5987103152447, 4.5987103152447, 4.5987103152447,
-                 4.5987103152447)),
+               tss.monoexponential.single=4.56067603534),
     tolerance=1e-4,
     check.attributes=FALSE,
     info="pk.tss.monoexponential 1")
@@ -372,6 +368,17 @@ test_that("pk.tss.monoexponential", {
                            time.dosing=0:14,
                            tss.fraction=0.5),
     regexp="tss.fraction is usually >= 0.8")
+  
+  expect_equal(
+    pk.tss.monoexponential(conc=c(0, 1000),
+                           time=0:1,
+                           subject=c(1, 1),
+                           treatment=c("A", "A"),
+                           time.dosing=0:1,
+                           tss.fraction=0.9,
+                           output="single"),
+    data.frame(tss.monoexponential.single=NA_real_),
+    info="Single-subject data fitting works when it does not converge.")
 })
 
 test_that("pk.tss", {
