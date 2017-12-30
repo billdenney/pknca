@@ -262,46 +262,51 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       call.args <- list()
       ## Prepare to call the function by setting up its arguments.
       ## Ignore the "..." argument if it exists.
-      for (arg in setdiff(names(formals(get(all.intervals[[n]]$FUN))),
-                          "...")) {
-        if (arg == "conc") {
-          call.args[[arg]] <- conc
-        } else if (arg == "time") {
+      arglist <- setdiff(names(formals(get(all.intervals[[n]]$FUN))),
+                         "...")
+      arglist <- setNames(object=as.list(arglist), arglist)
+      arglist[names(all.intervals[[n]]$formalsmap)] <- all.intervals[[n]]$formalsmap
+      for (arg_formal in names(arglist)) {
+        arg_mapped <- arglist[[arg_formal]]
+        if (arg_mapped == "conc") {
+          call.args[[arg_formal]] <- conc
+        } else if (arg_mapped == "time") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg]] <- time - interval$start[1]
-        } else if (arg == "volume") {
-          call.args[[arg]] <- volume
-        } else if (arg == "duration.conc") {
-          call.args[[arg]] <- duration.conc
-        } else if (arg == "dose") {
-          call.args[[arg]] <- dose
-        } else if (arg == "time.dose") {
+          call.args[[arg_formal]] <- time - interval$start[1]
+        } else if (arg_mapped == "volume") {
+          call.args[[arg_formal]] <- volume
+        } else if (arg_mapped == "duration.conc") {
+          call.args[[arg_formal]] <- duration.conc
+        } else if (arg_mapped == "dose") {
+          call.args[[arg_formal]] <- dose
+        } else if (arg_mapped == "time.dose") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg]] <- time.dose - interval$start[1]
-        } else if (arg == "duration.dose") {
-          call.args[[arg]] <- duration.dose
-        } else if (arg %in% c("start", "end")) {
+          call.args[[arg_formal]] <- time.dose - interval$start[1]
+        } else if (arg_mapped == "duration.dose") {
+          call.args[[arg_formal]] <- duration.dose
+        } else if (arg_mapped %in% c("start", "end")) {
           ## Provide the start and end of the interval if they are requested
-          call.args[[arg]] <- interval[1,arg]
-        } else if (arg == "options") {
-          call.args[[arg]] <- options
-        } else if (any(mask.arg <- ret$PPTESTCD %in% arg)) {
-          call.args[[arg]] <- ret$PPORRES[mask.arg]
-        } else if (!is.null(new.name <- all.intervals[[n]]$formalsmap[[arg]]) &
-                   any(mask.arg <- ret$PPTESTCD %in% new.name)) {
-          # The parameter name is mapped by the formalsmap in 
-          # add.interval.col.  The NCA parameter name for the function call
-          # argument is given by new.name.
-          call.args[[arg]] <- ret$PPORRES[mask.arg]
+          call.args[[arg_formal]] <- interval[1,arg_mapped]
+        } else if (arg_mapped == "options") {
+          call.args[[arg_formal]] <- options
+        } else if (any(mask.arg <- ret$PPTESTCD %in% arg_mapped)) {
+          call.args[[arg_formal]] <- ret$PPORRES[mask.arg]
         } else {
           ## Give an error if there is not a default argument.
           ## FIXME: checking if the class is a name isn't perfect.  
-          if (class(formals(get(all.intervals[[n]]$FUN))[[arg]]) == "name")
+          if (class(formals(get(all.intervals[[n]]$FUN))[[arg_formal]]) == "name") {
+            arg_text <-
+              if (arg_formal == arg_mapped) {
+                sprintf("'%s'", arg_formal)
+              } else {
+                sprintf("'%s' mapped to '%s'", arg_formal, arg_mapped)
+              }
             stop(sprintf(
-              "Cannot find argument '%s' for NCA function '%s'",
-              arg, all.intervals[[n]]$FUN))
+              "Cannot find argument %s for NCA function '%s'",
+              arg_text, all.intervals[[n]]$FUN))
+          }
         }
       }
       # Apply manual inclusion and exclusion

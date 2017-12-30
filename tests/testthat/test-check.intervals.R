@@ -134,7 +134,7 @@ test_that("check.interval.deps", {
 
   r1 <- data.frame(start=0,
                    end=24,
-                   half.life=TRUE,
+                   lambda.z=TRUE,
                    clast.obs=TRUE,
                    aucinf.obs=TRUE)
   r1[,setdiff(nameorder, names(r1))] <- FALSE
