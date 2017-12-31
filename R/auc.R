@@ -281,6 +281,12 @@ pk.calc.auc.all <- function(conc, time, ..., options=list()) {
 #'   AUCinf,obs. If provided as clast.pred, AUCinf is AUCinf,pred.
 #' @param lambda.z The elimination rate (in units of inverse time) for
 #'   extrapolation
+#' @param time.dose,route,duration.dose The time of doses, route of
+#'   administration, and duration of dose used with interpolation and
+#'   extrapolation of concentration data (see
+#'   \code{\link{interp.extrap.conc.dose}}).  If \code{NULL},
+#'   \code{\link{interp.extrap.conc}} will be used instead (assuming
+#'   that no doses affecting concentrations are in the interval).
 #' @param method The method for integration (either 'lin up/log down' or
 #'   'linear')
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf',
@@ -290,10 +296,11 @@ pk.calc.auc.all <- function(conc, time, ..., options=list()) {
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @seealso \code{\link{pk.calc.auxc}}, \code{\link{PKNCA.options}},
-#'   \code{\link{interp.extrap.conc}}
+#'   \code{\link{interp.extrap.conc.dose}}
 #' @export
 pk.calc.aucint <- function(conc, time, interval, start, end,
                            clast, lambda.z,
+                           time.dose=NULL, route="extravascular", duration.dose=0,
                            method, auc.type, ...,
                            options=list()) {
   if (missing(interval)) {
@@ -318,14 +325,28 @@ pk.calc.aucint <- function(conc, time, interval, start, end,
   }
   missing_times <- setdiff(interval, time)
   if (length(missing_times)) {
-    missing_conc <-
-      interp.extrap.conc(conc=conc, time=time,
-                         time.out=missing_times,
-                         interp.method=method,
-                         extrap.method=auc.type,
-                         clast=clast, lambda.z=lambda.z,
-                         options=options,
-                         ...)
+    if (is.null(time.dose)) {
+      missing_conc <-
+        interp.extrap.conc(
+          conc=conc, time=time,
+          time.out=missing_times,
+          interp.method=method,
+          extrap.method=auc.type,
+          clast=clast, lambda.z=lambda.z,
+          options=options,
+          ...)
+    } else {
+      missing_conc <-
+        interp.extrap.conc.dose(
+          conc=conc, time=time,
+          time.out=missing_times,
+          time.dose=time.dose,
+          route.dose=route,
+          duration.dose=duration.dose,
+          options=options,
+          out.after=FALSE,
+          ...)
+    }
     new_data <- data.frame(conc=c(conc, missing_conc),
                            time=c(time, missing_times))
     new_data <- new_data[new_data$time >= start &
