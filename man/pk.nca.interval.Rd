@@ -5,28 +5,41 @@
 \title{Compute all PK parameters for a single concentration-time data set}
 \usage{
 pk.nca.interval(conc, time, volume, duration.conc, dose, time.dose,
-  duration.dose, include_half.life = NULL, exclude_half.life = NULL,
-  interval, options = list())
+  duration.dose, route, conc.group = NULL, time.group = NULL,
+  volume.group = NULL, duration.conc.group = NULL, dose.group = NULL,
+  time.dose.group = NULL, duration.dose.group = NULL, route.group = NULL,
+  include_half.life = NULL, exclude_half.life = NULL, interval,
+  options = list())
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc, conc.group}{Concentration measured for the current
+interval or all data for the group}
 
-\item{time}{Time of concentration measurement}
+\item{time, time.group}{Time of concentration measurement for the
+current interval or all data for the group}
 
-\item{volume}{The volume (or mass) of the concentration measurement
+\item{volume, volume.group}{The volume (or mass) of the concentration
+measurement for the current interval or all data for the group
 (typically for urine and fecal measurements)}
 
-\item{duration.conc}{The duration of the concentration measurement
-(typically for urine and fecal measurements)}
+\item{duration.conc, duration.conc.group}{The duration of the
+concentration measurement for the current interval or all data for
+the group (typically for urine and fecal measurements)}
 
-\item{dose}{Dose amount (may be a scalar or vector)}
+\item{dose, dose.group}{Dose amount (may be a scalar or vector) for
+the current interval or all data for the group}
 
-\item{time.dose}{Time of the dose (must be the same length as
-\code{dose})}
+\item{time.dose, time.dose.group}{Time of the dose for the current
+interval or all data for the group (must be the same length as
+\code{dose} or \code{dose.group})}
 
-\item{duration.dose}{The duration of the dose administration
+\item{duration.dose, duration.dose.group}{The duration of the dose
+administration for the current interval or all data for the group
 (typically zero for extravascular and intravascular bolus and
 nonzero for intravascular infusion)}
+
+\item{route, route.group}{The route of dosing for the current interval
+or all data for the group}
 
 \item{include_half.life}{An optional boolean vector of the
 concentration measurements to include in the half-life calculation.

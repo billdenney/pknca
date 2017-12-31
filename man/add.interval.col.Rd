@@ -53,6 +53,7 @@ formal parameter names and the values should be one of the following:
     \item{"dose"}{Dose amounts assocuated with the current interval.}
     \item{"time.dose"}{Time of dose start associated with the current interval (values start at 0 at the beginning of the current interval).}
     \item{"duration.dose"}{Duration of dose (typically infusion duration) for doses in the current interval.}
+    \item{"route"}{Route of dosing for the current interval.}
     \item{"start"}{Time of interval start.}
     \item{"end"}{Time of interval end.}
     \item{"options"}{PKNCA.options governing calculations.}
@@ -66,6 +67,7 @@ formal parameter names and the values should be one of the following:
     \item{"dose.group"}{Dose amounts assocuated with the current group.}
     \item{"time.dose.group"}{Time of dose start associated with the current group (values start at 0 at the beginning of the current interval).}
     \item{"duration.dose.group"}{Duration of dose (typically infusion duration) for doses in the current group.}
+    \item{"route.group"}{Route of dosing for the current group.}
   }
 }
 }

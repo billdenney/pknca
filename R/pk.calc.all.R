@@ -101,6 +101,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
   col.dose <- all.vars(pformula.dose$lhs)
   col.time.dose <- all.vars(pformula.dose$rhs)
   col.duration.dose <- conc.dose$dose$columns$duration
+  col.route <- conc.dose$dose$columns$route
   # Insert NA doses and dose times if they are not given
   if (!(col.dose %in% names(conc.dose$dose$data))) {
     col.dose <- paste0(max(names(conc.dose$dose$data)), "X")
@@ -110,70 +111,93 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
     col.time.dose <- paste0(max(names(conc.dose$dose$data)), "X")
     conc.dose$dose$data[[col.time.dose]] <- NA
   }
+  # Exclude data once at the beginning
+  conc_data_all <-
+    conc.dose$conc$data[
+      # Remove rows to be excluded from all calculations
+      is.na(normalize_exclude(conc.dose$conc$data[[conc.dose$conc$exclude]])),,
+      drop=FALSE]
+  dose_data_all <-
+    conc.dose$dose$data[
+      # Remove rows to be excluded from all calculations
+      is.na(normalize_exclude(conc.dose$dose$data[[conc.dose$dose$exclude]])),,
+      drop=FALSE]
   for (i in seq_len(nrow(all.intervals))) {
     ## Subset the data down to the group of current interest, and make 
     ## the first column of each the dependent variable and the second 
     ## column the independent variable.
-    tmpconcdata <-
-      merge(conc.dose$conc$data,
-            all.intervals[i, intersect(shared.names, names(all.intervals)),
-                          drop=FALSE])[,c(col.conc,
-                                          col.time,
-                                          conc.dose$conc$exclude,
-                                          col.include_half.life,
-                                          col.exclude_half.life,
-                                          col.volume,
-                                          col.duration.conc)]
-    tmpconcdata[[conc.dose$conc$exclude]] <-
-      normalize_exclude(tmpconcdata[[conc.dose$conc$exclude]])
-    tmpdosedata <-
-      merge(conc.dose$dose$data,
-            all.intervals[i, intersect(shared.names, names(all.intervals)),
-                          drop=FALSE])[,c(col.dose,
-                                          col.time.dose,
-                                          conc.dose$dose$exclude,
-                                          col.duration.dose)]
-    tmpdosedata[[conc.dose$dose$exclude]] <-
-      normalize_exclude(tmpdosedata[[conc.dose$dose$exclude]])
+    conc_data_group <-
+      merge(conc_data_all,
+        all.intervals[
+          i,
+          intersect(shared.names, names(all.intervals)),
+          drop=FALSE])[,
+                       c(col.conc,
+                         col.time,
+                         col.include_half.life,
+                         col.exclude_half.life,
+                         col.volume,
+                         col.duration.conc)]
+    dose_data_group <-
+      merge(dose_data_all,
+        all.intervals[
+          i,
+          intersect(shared.names, names(all.intervals)),
+          drop=FALSE])[,
+                       c(col.dose,
+                         col.time.dose,
+                         col.duration.dose,
+                         col.route)]
     ## Choose only times between the start and end.
-    mask.keep.conc <- (all.intervals$start[i] <= tmpconcdata[[col.time]] &
-                         tmpconcdata[[col.time]] <= all.intervals$end[i] &
-                         is.na(tmpconcdata[[conc.dose$conc$exclude]]))
-    tmpconcdata <- tmpconcdata[mask.keep.conc,]
-    mask.keep.dose <- (is.na(tmpdosedata[,col.time.dose]) |
-                         (all.intervals$start[i] <= tmpdosedata[[col.time.dose]] &
-                            tmpdosedata[[col.time.dose]] < all.intervals$end[i]) &
-                         is.na(tmpdosedata[[conc.dose$dose$exclude]]))
-    tmpdosedata <- tmpdosedata[mask.keep.dose,]
+    mask.keep.conc <- (all.intervals$start[i] <= conc_data_group[[col.time]] &
+                         conc_data_group[[col.time]] <= all.intervals$end[i])
+    conc_data_interval <- conc_data_group[mask.keep.conc,]
+    mask.keep.dose <- (is.na(dose_data_group[,col.time.dose]) |
+                         (all.intervals$start[i] <= dose_data_group[[col.time.dose]] &
+                            dose_data_group[[col.time.dose]] < all.intervals$end[i]))
+    dose_data_interval <- dose_data_group[mask.keep.dose,]
     ## Sort the data in time order
-    tmpconcdata <- tmpconcdata[order(tmpconcdata[[col.time]]),]
-    tmpdosedata <- tmpdosedata[order(tmpdosedata[[col.time.dose]]),]
+    conc_data_interval <- conc_data_interval[order(conc_data_interval[[col.time]]),]
+    dose_data_interval <- dose_data_interval[order(dose_data_interval[[col.time.dose]]),]
     ## Setup for detailed error reporting in case it's needed
     error.preamble <-
       paste("Error with interval",
             paste(c(shared.names, c("start", "end")),
-                  c(unlist(conc.dose$conc$data[1,shared.names]),
+                  c(unlist(conc_data_all[1,shared.names]),
                     unlist(all.intervals[i,c("start", "end")])),
                   sep="=", collapse=", "))
-    if (nrow(tmpconcdata) == 0) {
+    if (nrow(conc_data_interval) == 0) {
       warning(paste(error.preamble, "No data for interval", sep=": "))
     } else {
       tryCatch(
         {
-          args <- list(conc=tmpconcdata[[col.conc]],
-                       time=tmpconcdata[[col.time]],
-                       volume=tmpconcdata[[col.volume]],
-                       duration.conc=tmpconcdata[[col.duration.conc]],
-                       dose=tmpdosedata[[col.dose]],
-                       time.dose=tmpdosedata[[col.time.dose]],
-                       duration.dose=tmpdosedata[[col.duration.dose]],
-                       interval=all.intervals[i,],
-                       options=options)
+          args <- list(
+            # Interval-level data
+            conc=conc_data_interval[[col.conc]],
+            time=conc_data_interval[[col.time]],
+            volume=conc_data_interval[[col.volume]],
+            duration.conc=conc_data_interval[[col.duration.conc]],
+            dose=dose_data_interval[[col.dose]],
+            time.dose=dose_data_interval[[col.time.dose]],
+            duration.dose=dose_data_interval[[col.duration.dose]],
+            route=dose_data_interval[[col.route]],
+            # Group-level data
+            conc.group=conc_data_group[[col.conc]],
+            time.group=conc_data_group[[col.time]],
+            volume.group=conc_data_group[[col.volume]],
+            duration.conc.group=conc_data_group[[col.duration.conc]],
+            dose.group=dose_data_group[[col.dose]],
+            time.dose.group=dose_data_group[[col.time.dose]],
+            duration.dose.group=dose_data_group[[col.duration.dose]],
+            route.group=dose_data_group[[col.route]],
+            # Generic data
+            interval=all.intervals[i,],
+            options=options)
           if (!is.null(col.include_half.life)) {
-            args$include_half.life <- tmpconcdata[[col.include_half.life]]
+            args$include_half.life <- conc_data_interval[[col.include_half.life]]
           }
           if (!is.null(col.exclude_half.life)) {
-            args$exclude_half.life <- tmpconcdata[[col.exclude_half.life]]
+            args$exclude_half.life <- conc_data_interval[[col.exclude_half.life]]
           }
           ## Try the calculation
           calculated.interval <- do.call(pk.nca.interval, args)
@@ -185,7 +209,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
       ## Add all the new data into the output
       ret <- rbind(ret,
                    cbind(all.intervals[i,c("start", "end")],
-                         conc.dose$conc$data[1, shared.names, drop=FALSE],
+                         conc_data_all[1, shared.names, drop=FALSE],
                          calculated.interval,
                          row.names=NULL))
     }
@@ -200,18 +224,27 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #' prior to running.  The only part that changes with a call to this
 #' function is the \code{conc}entration and \code{time}.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
-#' @param volume The volume (or mass) of the concentration measurement
+#' @param conc,conc.group Concentration measured for the current
+#'   interval or all data for the group
+#' @param time,time.group Time of concentration measurement for the
+#'   current interval or all data for the group
+#' @param volume,volume.group The volume (or mass) of the concentration
+#'   measurement for the current interval or all data for the group
 #'   (typically for urine and fecal measurements)
-#' @param duration.conc The duration of the concentration measurement
-#'   (typically for urine and fecal measurements)
-#' @param dose Dose amount (may be a scalar or vector)
-#' @param time.dose Time of the dose (must be the same length as
-#'   \code{dose})
-#' @param duration.dose The duration of the dose administration
+#' @param duration.conc,duration.conc.group The duration of the
+#'   concentration measurement for the current interval or all data for
+#'   the group (typically for urine and fecal measurements)
+#' @param dose,dose.group Dose amount (may be a scalar or vector) for
+#'   the current interval or all data for the group
+#' @param time.dose,time.dose.group Time of the dose for the current
+#'   interval or all data for the group (must be the same length as
+#'   \code{dose} or \code{dose.group})
+#' @param duration.dose,duration.dose.group The duration of the dose
+#'   administration for the current interval or all data for the group
 #'   (typically zero for extravascular and intravascular bolus and
 #'   nonzero for intravascular infusion)
+#' @param route,route.group The route of dosing for the current interval
+#'   or all data for the group
 #' @param interval One row of an interval definition (see
 #'   \code{\link{check.interval.specification}} for how to define the
 #'   interval.
@@ -229,7 +262,9 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #' @seealso \code{\link{check.interval.specification}}
 #' @export
 pk.nca.interval <- function(conc, time, volume, duration.conc,
-                            dose, time.dose, duration.dose,
+                            dose, time.dose, duration.dose, route,
+                            conc.group=NULL, time.group=NULL, volume.group=NULL, duration.conc.group=NULL,
+                            dose.group=NULL, time.dose.group=NULL, duration.dose.group=NULL, route.group=NULL,
                             include_half.life=NULL, exclude_half.life=NULL,
                             interval, options=list()) {
   if (!is.data.frame(interval))
@@ -286,6 +321,28 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
           call.args[[arg_formal]] <- time.dose - interval$start[1]
         } else if (arg_mapped == "duration.dose") {
           call.args[[arg_formal]] <- duration.dose
+        } else if (arg_mapped == "route") {
+          call.args[[arg_formal]] <- route
+        } else if (arg_mapped == "conc.group") {
+          call.args[[arg_formal]] <- conc.group
+        } else if (arg_mapped == "time.group") {
+          ## Realign the time to be relative to the start of the
+          ## interval
+          call.args[[arg_formal]] <- time.group - interval$start[1]
+        } else if (arg_mapped == "volume.group") {
+          call.args[[arg_formal]] <- volume.group
+        } else if (arg_mapped == "duration.conc.group") {
+          call.args[[arg_formal]] <- duration.conc.group
+        } else if (arg_mapped == "dose.group") {
+          call.args[[arg_formal]] <- dose.group
+        } else if (arg_mapped == "time.dose.group") {
+          ## Realign the time to be relative to the start of the
+          ## interval
+          call.args[[arg_formal]] <- time.dose.group - interval$start[1]
+        } else if (arg_mapped == "duration.dose.group") {
+          call.args[[arg_formal]] <- duration.dose.group
+        } else if (arg_mapped == "route.group") {
+          call.args[[arg_formal]] <- route.group
         } else if (arg_mapped %in% c("start", "end")) {
           ## Provide the start and end of the interval if they are requested
           call.args[[arg_formal]] <- interval[1,arg_mapped]
