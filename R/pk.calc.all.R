@@ -260,6 +260,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
 #'   parameters for the \code{interval}
 #'
 #' @seealso \code{\link{check.interval.specification}}
+#' @importFrom stats setNames
 #' @export
 pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose, route,
@@ -299,7 +300,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       ## Ignore the "..." argument if it exists.
       arglist <- setdiff(names(formals(get(all.intervals[[n]]$FUN))),
                          "...")
-      arglist <- setNames(object=as.list(arglist), arglist)
+      arglist <- stats::setNames(object=as.list(arglist), arglist)
       arglist[names(all.intervals[[n]]$formalsmap)] <- all.intervals[[n]]$formalsmap
       for (arg_formal in names(arglist)) {
         arg_mapped <- arglist[[arg_formal]]

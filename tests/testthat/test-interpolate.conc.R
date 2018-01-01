@@ -294,6 +294,20 @@ test_that("interpolate.conc", {
                5,
                info="conc.origin is honored as a number")
   
+  expect_equal(interpolate.conc(conc=c(NA, 1),
+                                time=c(0, 1),
+                                time.out=0.5,
+                                check=FALSE),
+               NA_real_,
+               info="Skipping the checks with an NA bounding the interpolation gives NA")
+  
+  expect_equal(interpolate.conc(conc=c(NA, 1, 2),
+                                time=c(0, 1, 2),
+                                time.out=1.5,
+                                check=FALSE),
+               1.5,
+               info="Skipping the checks with an NA, but not bounding the interpolation gives the expected value.")
+
   ## ##############################
   ## Confirm errors that should happen
 
@@ -365,6 +379,28 @@ test_that("interp.extrap.conc", {
     regexp="time.out must be a vector with at least one element")
 })
 
+test_that("interp.extrap.conc.dose handles all eventualities", {
+  event_choices <- unlist(event_choices_interp.extrap.conc.dose, use.names=FALSE)
+  eventualities <-
+    expand.grid(event_before=setdiff(event_choices, "output_only"),
+                event=setdiff(event_choices, "none"),
+                event_after=setdiff(event_choices, "output_only"))
+  eventualities$method <- NA_character_
+  for (nm in names(interp.extrap.conc.dose.select)) {
+    mask_selected <- interp.extrap.conc.dose.select[[nm]]$select(eventualities)
+    expect_true(any(mask_selected),
+                info=sprintf("interp.extrap.conc.dose.select[[%s]] matched at least one eventuality", nm))
+    expect_true(!any(mask_selected & !is.na(eventualities$method)),
+                info=sprintf("interp.extrap.conc.dose.select[[%s]] overlapped with another method.", nm))
+    eventualities$method[mask_selected] <- nm
+    # if (interactive()) {
+    #   cat(sprintf("%d/%d rows filled at %s\n", sum(!is.na(eventualities$method)), nrow(eventualities), nm))
+    # }
+  }
+  expect_false(any(is.na(eventualities$method)),
+               info="interp.extrap.conc.dose.select matched all eventualities")
+})
+
 test_that("interp.extrap.conc.dose", {
   # Check inputs
   expect_error(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
@@ -410,47 +446,70 @@ test_that("interp.extrap.conc.dose", {
                                        time.dose=0,
                                        conc.origin=NA,
                                        time.out=-2),
-               structure(NA, Method="Before all events"),
+               structure(NA_real_, Method="Before all events"),
                info="Interpolation before all events yields conc.origin respecting its input.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=-1),
-               structure(0, Method="Copy"),
+               structure(0, Method="Observed concentration"),
                info="When there is a concentration measurement at a time point, it is returned.")
   
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=-0.1),
-               structure(0, Method="Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"),
+               structure(0, Method="Extrapolation"),
                info="When the previous measurement is zero and there is no dose between, it is returned.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=0),
-               structure(0, Method="Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"),
+               structure(0, Method="Extrapolation"),
                info="When the previous measurement is zero it is at the time of the dose, zero is returned.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=0.1),
-               structure(0.1, Method="After a dose with no event and a concentration after"),
+               structure(0.1, Method="Dose before, concentration after without a dose"),
                info="Extrapolation to a dose then interpolation between the dose and the next time works.")
+
+  expect_warning(r_double_dose <-
+                   interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                                           time=c(-1, 1:5),
+                                           time.dose=c(0, 0.1),
+                                           time.out=0.2),
+                 regexp="Cannot interpolate between two doses or after a dose without a concentration after the first dose.",
+                 fixed=TRUE,
+                 info="Two doses in a row generates a warning")
+
+  expect_equal(r_double_dose,
+               structure(NA_real_, Method="Dose before, concentration after without a dose"),
+               info="Extrapolation to a dose then interpolation between the dose and the next time gives NA when the dose is NA.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=5),
-               structure(0.25, Method="Copy"),
+               structure(0.25, Method="Observed concentration"),
                info="Copy from after the dose.")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
                                        time.dose=0,
                                        time.out=7),
-               structure(0.0625, Method="Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose"))
+               structure(NA_real_, Method="Extrapolation"),
+               info="Extrapolation without lambda.z gives NA result")
+
+  expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                                       time=c(-1, 1:5),
+                                       time.dose=0,
+                                       time.out=7,
+                                       lambda.z=log(2)),
+               structure(0.0625, Method="Extrapolation"),
+               info="Extrapolation with lambda.z gives result")
+  
 })

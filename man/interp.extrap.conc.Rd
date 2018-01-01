@@ -26,7 +26,7 @@ extrapolate.conc(conc, time, time.out, lambda.z = NA,
   conc.blq = PKNCA.choose.option("conc.blq", options), ..., check = TRUE)
 
 interp.extrap.conc.dose(conc, time, time.dose, route.dose = "extravascular",
-  duration.dose = NA, time.out, out.after = FALSE,
+  duration.dose = NA, time.out, out.after = FALSE, options = list(),
   conc.blq = PKNCA.choose.option("conc.blq", options),
   conc.na = PKNCA.choose.option("conc.na", options), ..., check = TRUE)
 }
