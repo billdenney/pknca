@@ -16,15 +16,15 @@ pk.calc.aucint(conc, time, interval, start, end,
   method = PKNCA.choose.option("auc.method", options), auc.type = "AUClast",
   ..., options = list())
 
-pk.calc.aucint.last(conc, time, start, end, ..., options = list())
+pk.calc.aucint.last(conc, time, start, end, time.dose, ..., options = list())
 
-pk.calc.aucint.all(conc, time, start, end, ..., options = list())
+pk.calc.aucint.all(conc, time, start, end, time.dose, ..., options = list())
 
-pk.calc.aucint.inf.obs(conc, time, start, end, lambda.z, clast.obs, ...,
-  options = list())
+pk.calc.aucint.inf.obs(conc, time, start, end, time.dose, lambda.z, clast.obs,
+  ..., options = list())
 
-pk.calc.aucint.inf.pred(conc, time, start, end, lambda.z, clast.pred, ...,
-  options = list())
+pk.calc.aucint.inf.pred(conc, time, start, end, time.dose, lambda.z, clast.pred,
+  ..., options = list())
 }
 \arguments{
 \item{conc}{Concentration measured}

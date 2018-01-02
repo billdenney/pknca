@@ -17,6 +17,11 @@ test_that("PKNCAdose", {
   tmp.dose.study <- generate.dose(tmp.conc.study)
   tmp.dose.analyte.study <- generate.dose(tmp.conc.analyte.study)
   
+  ## Data exists
+  expect_error(PKNCAdose(data.frame()),
+               regexp="data must have at least one row.",
+               info="PKNCAconc requires data")
+
   ## Variables present
   expect_error(PKNCAdose(tmp.dose, formula=dosea~time|treatment+ID),
                regexp="The left side formula must be a variable in the data, empty, or '.'.",

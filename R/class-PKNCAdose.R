@@ -61,6 +61,10 @@ PKNCAdose.tbl_df <- function(data, ...)
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
                                  time.nominal, exclude, ...) {
+  ## The data must have... data
+  if (nrow(data) == 0) {
+    stop("data must have at least one row.")
+  }
   ## Check inputs
   if (!missing(time.nominal)) {
     if (!(time.nominal %in% names(data))) {

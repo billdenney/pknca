@@ -280,13 +280,13 @@ test_that("No interval requested (e.g. for placebo)", {
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <-  PKNCAdata(myconc, mydose,
-                       intervals=data.frame(treatment="Trt 1", start=0, end=24, cmax=TRUE,
+                       intervals=data.frame(treatment="Trt 3", start=0, end=24, cmax=TRUE,
                                             stringsAsFactors=FALSE))
-  myresult <- pk.nca(mydata)
-  expect_equal(nrow(as.data.frame(myresult)), 2,
-               info="Only two rows of results were generated since only 'Trt 1' was requested")
-  expect_true(all(as.data.frame(myresult)$treatment %in% "Trt 1"),
-              info="All results were for 'Trt 1'")
+  expect_message(myresult <- pk.nca(mydata),
+                 regexp="2 groups have no interval calculations requested.",
+                 info="No intervals apply to a group provides a message.")
+  expect_equal(nrow(as.data.frame(myresult)), 0,
+               info="No rows were generated when no intervals applied")
 })
 
 test_that("Volume-related calculations", {
@@ -313,4 +313,34 @@ test_that("Volume-related calculations", {
   myresult2 <- pk.nca(mydata2)
   expect_equal(as.data.frame(myresult2)[["PPORRES"]], c(12, 6, 30, 15),
                info="fe respects dose")
+})
+
+test_that("pk.nca can calculate values with group-level data", {
+  tmpconc_impute <- generate.conc(2, 1, 0:24)
+  # This is what will happen in the imputation
+  tmpconc_observe_05 <- tmpconc_impute[tmpconc_impute$time %in% 0,]
+  tmpconc_observe_05$time <- 0.5
+  tmpconc_observe <- rbind(tmpconc_impute, tmpconc_observe_05)
+  tmpconc_observe <- tmpconc_observe[order(tmpconc_observe$treatment, tmpconc_observe$ID, tmpconc_observe$time),]
+  tmpdose <- generate.dose(tmpconc_impute)
+  tmpdose$time <- 0.5
+  
+  myconc_impute <- PKNCAconc(tmpconc_impute, formula=conc~time|treatment+ID)
+  myconc_observe <- PKNCAconc(tmpconc_observe, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata_impute <-
+    PKNCAdata(myconc_impute, mydose,
+              intervals=data.frame(treatment="Trt 1", start=0, end=24,
+                                   aucint.last=TRUE,
+                                   stringsAsFactors=FALSE))
+  mydata_observe <-
+    PKNCAdata(myconc_observe, mydose,
+              intervals=data.frame(treatment="Trt 1", start=0, end=24,
+                                   auclast=TRUE,
+                                   stringsAsFactors=FALSE))
+  myres_impute <- pk.nca(mydata_impute)
+  myres_observe <- pk.nca(mydata_observe)
+  expect_equal(as.data.frame(myres_impute)$PPORRES,
+               as.data.frame(myres_observe)$PPORRES,
+               info="Manually imputing values gives the same result as aucint")
 })

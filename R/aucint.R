@@ -131,7 +131,7 @@ pk.calc.aucint <- function(conc, time, interval, start, end,
   # AUCinf traces an AUClast curve (because the interval doesn't go to
   # infinity) while AUCall and AUClast trace their own curves.
   auc.type_map <-
-    list(AUCinf="AUClast",
+    list(AUClast="AUClast",
          AUCall="AUCall",
          AUCinf="AUClast")[[auc.type]]
   pk.calc.auc(conc=conc_interp, time=time_interp,
@@ -147,22 +147,27 @@ pk.calc.aucint <- function(conc, time, interval, start, end,
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUClast
 #' @export
-pk.calc.aucint.last <- function(conc, time, start, end, ..., options=list()) {
-  pk.calc.aucint(conc=conc, time=time, interval=c(start, end), options=options, ...,
+pk.calc.aucint.last <- function(conc, time, start, end, time.dose, ..., options=list()) {
+  pk.calc.aucint(conc=conc, time=time, interval=c(start, end), options=options,
+                 time.dose=time.dose,
+                 ...,
                  auc.type="AUClast")
 }
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUCall
 #' @export
-pk.calc.aucint.all <- function(conc, time, start, end, ..., options=list()) {
-  pk.calc.aucint(conc=conc, time=time, interval=c(start, end), options=options, ...,
+pk.calc.aucint.all <- function(conc, time, start, end, time.dose, ..., options=list()) {
+  pk.calc.aucint(conc=conc, time=time, interval=c(start, end), options=options,
+                 time.dose=time.dose,
+                 ...,
                  auc.type="AUCall")
 }
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUCinf.obs
 #' @export
-pk.calc.aucint.inf.obs <- function(conc, time, start, end, lambda.z, clast.obs, ..., options=list()) {
+pk.calc.aucint.inf.obs <- function(conc, time, start, end, time.dose, lambda.z, clast.obs, ..., options=list()) {
   pk.calc.aucint(conc=conc, time=time, interval=c(start, end),
+                 time.dose=time.dose,
                  lambda.z=lambda.z, clast=clast.obs,
                  options=options, ...,
                  auc.type="AUCinf")
@@ -170,8 +175,9 @@ pk.calc.aucint.inf.obs <- function(conc, time, start, end, lambda.z, clast.obs, 
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUCinf.pred
 #' @export
-pk.calc.aucint.inf.pred <- function(conc, time, start, end, lambda.z, clast.pred, ..., options=list()) {
+pk.calc.aucint.inf.pred <- function(conc, time, start, end, time.dose, lambda.z, clast.pred, ..., options=list()) {
   pk.calc.aucint(conc=conc, time=time, interval=c(start, end),
+                 time.dose=time.dose,
                  lambda.z=lambda.z, clast=clast.pred,
                  options=options, ...,
                  auc.type="AUCinf")
@@ -181,7 +187,7 @@ add.interval.col("aucint.last",
                  FUN="pk.calc.aucint.last",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
-                 formalsmap=list(conc="conc.group", time="time.group"),
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c())
 PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
 
@@ -189,7 +195,7 @@ add.interval.col("aucint.all",
                  FUN="pk.calc.aucint.all",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
-                 formalsmap=list(conc="conc.group", time="time.group"),
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c())
 PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
 
@@ -197,7 +203,7 @@ add.interval.col("aucint.inf.obs",
                  FUN="pk.calc.aucint.inf.obs",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
-                 formalsmap=list(conc="conc.group", time="time.group"),
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c("lambda.z", "clast.obs"))
 PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
 
@@ -205,6 +211,6 @@ add.interval.col("aucint.inf.pred",
                  FUN="pk.calc.aucint.inf.pred",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
-                 formalsmap=list(conc="conc.group", time="time.group"),
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c("lambda.z", "clast.pred"))
 PKNCA.set.summary("aucint.all", business.geomean, business.geocv)

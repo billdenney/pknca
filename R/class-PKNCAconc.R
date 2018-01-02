@@ -53,6 +53,10 @@ PKNCAconc.tbl_df <- function(data, ...)
 PKNCAconc.data.frame <- function(data, formula, subject,
                                  time.nominal, exclude, duration, volume,
                                  exclude_half.life, include_half.life, ...) {
+  ## The data must have... data
+  if (nrow(data) == 0) {
+    stop("data must have at least one row.")
+  }
   ## Verify that all the variables in the formula are columns in the
   ## data.
   if (!all(all.vars(formula) %in% names(data))) {

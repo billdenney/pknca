@@ -376,7 +376,7 @@ interp.extrap.conc.dose <- function(conc, time,
   data_all$method <- NA_character_
   for (nm in names(interp.extrap.conc.dose.select)) {
     mask <- is.na(data_all$method) &
-      interp.extrap.conc.dose.select[[nm]]$select(data_all)
+      do.call(interp.extrap.conc.dose.select[[nm]]$select, list(x=data_all))
     if (any(mask)) {
       if ("warning" %in% names(interp.extrap.conc.dose.select[[nm]])) {
         warning(sprintf("%s: %d data points",
@@ -386,8 +386,11 @@ interp.extrap.conc.dose <- function(conc, time,
       } else {
         for (current_idx in which(mask)) {
           data_all$conc[current_idx] <-
-            interp.extrap.conc.dose.select[[nm]]$value(
-              data_all, current_idx, ..., options=options)
+            do.call(interp.extrap.conc.dose.select[[nm]]$value,
+                    list(data_all=data_all,
+                         current_idx=current_idx,
+                         options=options,
+                         ...))
           data_all$method[current_idx] <- nm
         }
       }
@@ -404,238 +407,268 @@ interp.extrap.conc.dose <- function(conc, time,
   ret
 }
 
+# Dose-aware interpolation/extrapolation functions ####
+
+# Impossible combinations ####
+iecd_impossible_select <- function(x) {
+  x$event_before %in% "output_only" | # Restricted in code
+    x$event %in% "none" | # "none" events do not occur, they are before or after the timeline
+    x$event_after %in% "output_only" | # Restricted in code
+    (x$event %in% "output_only" &
+       x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after")) |
+    (x$event_before %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after") &
+       x$event %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after")) |
+    (x$event %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after") &
+       x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after")) |
+    (x$event_before %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after") &
+       x$event %in% c("none", "output_only") &
+       x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after"))
+}
+iecd_impossible_value <- function(data_all, current_idx, ...) {
+  stop(
+    sprintf(
+      "Impossible combination requested for interp.extrap.conc.dose.  event_before: %s, event: %s, event_after: %s",
+      data_all$event_before[current_idx],
+      data_all$event[current_idx],
+      data_all$event_after[current_idx])) # nocov
+}
+
+
+# Observed concentration ####
+iecd_observed_select <- function(x) {
+  x$event %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc") &
+    !do.call(interp.extrap.conc.dose.select[["Impossible combinations"]]$select, list(x=x))
+}
+iecd_observed_value <- function(data_all, current_idx, ...) {
+  data_all$conc[current_idx]
+}
+
+# Before all events ####
+iecd_before_select <- function(x) {
+  x$event_before %in% "none" &
+    !(x$event %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc", "dose_iv_bolus_after", "none")) &
+    !(x$event_after %in% "output_only" |
+        (x$event %in% "output_only" &
+           x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after"))) # because these are impossible
+}
+iecd_before_value <- function(data_all, current_idx, conc.origin=0, ...) {
+  conc.origin
+}
+
+# Interpolation ####
+iecd_interp_select <- function(x) {
+  x$event_before %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc") &
+    x$event %in% c("output_only") &
+    x$event_after %in% c("conc_dose", "conc") &
+    !(x$event_before %in% "conc_dose" &
+        x$event_after %in% "conc_dose")
+}
+iecd_interp_value <- function(data_all, current_idx, ...) {
+  tmp_conc <- data_all[!is.na(data_all$conc) &
+                         data_all$dose_count %in% data_all$dose_count[current_idx],]
+  interpolate.conc(conc=tmp_conc$conc, time=tmp_conc$time,
+                   time.out=data_all$time[current_idx],
+                   check=FALSE, ...)
+}
+
+# Extrapolation ####
+iecd_extrap_select <- function(x) {
+  extrap_output_only <-
+    x$event_before %in% c("conc_dose_iv_bolus_after", "conc") &
+    x$event %in% "output_only" &
+    x$event_after %in% c("dose", "none")
+  extrap_dose <-
+    x$event_before %in% c("conc_dose_iv_bolus_after", "conc") &
+    x$event %in% "dose" &
+    !(x$event_after %in% "output_only")
+  extrap_output_only | extrap_dose
+}
+iecd_extrap_value <- function(data_all, current_idx, lambda.z, ...) {
+  last_conc <- data_all[data_all$time < data_all$time[current_idx] &
+                          !is.na(data_all$conc),]
+  last_conc <- last_conc[nrow(last_conc),]
+  if (last_conc$conc %in% 0) {
+    # BLQ continues to be BLQ
+    0
+  } else {
+    if (missing(lambda.z)) {
+      lambda.z <- NA_real_
+    }
+    extrapolate.conc(conc=last_conc$conc[nrow(last_conc)],
+                     time=last_conc$time[nrow(last_conc)],
+                     time.out=data_all$time[current_idx], lambda.z=lambda.z,
+                     clast=last_conc$conc[nrow(last_conc)], ...)
+  }
+}
+
+# Immediately after an IV bolus with a concentration next ####
+iecd_iv_conc_select <- function(x) {
+  !(x$event_before %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after", "output_only")) &
+    x$event %in% "dose_iv_bolus_after" &
+    x$event_after %in% c("conc_dose", "conc")
+}
+iecd_iv_conc_value <- function(data_all, current_idx, ...) {
+  tmp_conc <- data_all[data_all$conc_event &
+                         (data_all$dose_count %in% data_all$dose_count[current_idx] |
+                            data_all$dose_count_prev %in%  data_all$dose_count[current_idx]),]
+  tmp_dose <- data_all[data_all$dose_event & 
+                         data_all$dose_count %in% data_all$dose_count[current_idx],]
+  pk.calc.c0(conc=tmp_conc$conc, time=tmp_conc$time,
+             time.dose=tmp_dose$time,
+             method=c("logslope", "c1"))
+}
+
+# Immediately after an IV bolus without a concentration next ####
+iecd_iv_noconc_select <- function(x) {
+  bolus_is_current <-
+    x$event_before %in% c("conc", "conc_dose", "dose", "none") &
+    x$event %in% "dose_iv_bolus_after" &
+    x$event_after %in% c("dose", "none")
+  bolus_is_previous <-
+    x$event_before %in% "dose_iv_bolus_after" &
+    x$event %in% "dose" &
+    x$event_after %in% c("conc_dose_iv_bolus_after", "conc_dose", "dose_iv_bolus_after", "dose", "conc", "none")
+  bolus_is_current | bolus_is_previous
+}
+
+# After an IV bolus with a concentration next ####
+iecd_afteriv_conc_select <- function(x) {
+  x$event_before %in% c("dose_iv_bolus_after") &
+    x$event %in% c("output_only") &
+    x$event_after %in% c("conc_dose", "conc")
+}
+iecd_afteriv_conc_value <- function(data_all, current_idx, ...) {
+  tmp_conc <- data_all[data_all$conc_event &
+                         (data_all$dose_count %in% data_all$dose_count[current_idx] |
+                            data_all$dose_count_prev %in%  data_all$dose_count[current_idx]),
+                       c("conc", "time")]
+  tmp_dose <- data_all[data_all$dose_event & 
+                         data_all$dose_count %in% data_all$dose_count[current_idx],]
+  tmp_conc <- rbind(
+    data.frame(
+      time=tmp_dose$time,
+      conc=
+        pk.calc.c0(conc=tmp_conc$conc, time=tmp_conc$time,
+                   time.dose=tmp_dose$time,
+                   method=c("logslope", "c1"))),
+    tmp_conc)
+  interpolate.conc(conc=tmp_conc$conc,
+                   time=tmp_conc$time,
+                   time.out=data_all$time[current_idx],
+                   check=FALSE, ...)
+}
+
+# After an IV bolus without a concentration next ####
+iecd_afteriv_noconc_select <- function(x) {
+  x$event_before %in% c("dose_iv_bolus_after") &
+    x$event %in% "output_only" &
+    x$event_after %in% c("dose", "none")
+}
+
+# Doses with no concentrations between ####
+iecd_dose_noconc_select <- function(x) {
+  dose_current <-
+    x$event_before %in% c("conc_dose", "dose") &
+    x$event %in% "dose" &
+    !(x$event_after %in% "output_only")
+  dose_around <-
+    x$event_before %in% c("dose", "conc_dose") &
+    x$event %in% "output_only" &
+    x$event_after %in% c("dose", "conc_dose")
+  dose_current | dose_around
+}
+
+# Dose as the last event in the timeline and requesting a concentration after ####
+iecd_dose_last_select <- function(x) {
+  x$event_before %in% c("conc_dose", "dose") &
+    x$event %in% "output_only" &
+    x$event_after %in% "none"
+}
+
+# Dose before, concentration after without a dose ####
+iecd_dose_conc_select <- function(x) {
+  x$event_before %in% "dose" &
+    x$event %in% "output_only" &
+    x$event_after %in% "conc"
+}
+iecd_dose_conc_value <- function(data_all, current_idx, ...) {
+  data_tmp <- data_all[data_all$dose_event | data_all$conc_event,]
+  interpolate.conc(conc=data_tmp$conc, time=data_tmp$time,
+                   time.out=data_all$time[current_idx], ...,
+                   check=FALSE)
+}
+  
 interp.extrap.conc.dose.select <-
   list(
-    # Impossible combinations ####
     "Impossible combinations"=
       list(
-        select=function(x) {
-          x$event_before %in% "output_only" | # Restricted in code
-            x$event %in% "none" | # "none" events do not occur, they are before or after the timeline
-            x$event_after %in% "output_only" | # Restricted in code
-            (x$event %in% "output_only" &
-               x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after")) |
-            (x$event_before %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after") &
-               x$event %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after")) |
-            (x$event %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after") &
-               x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after")) |
-            (x$event_before %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after") &
-               x$event %in% c("none", "output_only") &
-               x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after"))
-        },
-        value=function(data_all, current_idx, ...) {
-          stop(
-            sprintf(
-              "Impossible combination requested for interp.extrap.conc.dose.  event_before: %s, event: %s, event_after: %s",
-              data_all$event_before[current_idx],
-              data_all$event[current_idx],
-              data_all$event_after[current_idx]))
-        },
+        select="iecd_impossible_select",
+        value="iecd_impossible_value",
         description="The event combination cannot exist."),
-
-    # Observed concentration ####
     "Observed concentration"=
       list(
-        select=function(x) {
-          x$event %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc") &
-            !interp.extrap.conc.dose.select[["Impossible combinations"]]$select(x)
-        },
-        value=function(data_all, current_idx, ...) {
-          data_all$conc[current_idx]
-        },
+        select="iecd_observed_select",
+        value="iecd_observed_value",
         description="Copy the input concentration at the given time to the output."),
-
-    # Before all events ####
     "Before all events"=
       list(
-        select=function(x) {
-          x$event_before %in% "none" &
-            !(x$event %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc", "dose_iv_bolus_after", "none")) &
-            !(x$event_after %in% "output_only" |
-                (x$event %in% "output_only" &
-                   x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after"))) # because these are impossible
-        },
-        value=function(data_all, current_idx, conc.origin=0, ...) {
-          conc.origin
-        },
+        select="iecd_before_select",
+        value="iecd_before_value",
         description=paste("Interpolation before any events is NA or zero (0)",
                           "depending on the value of conc.origin.  conc.origin",
                           "defaults to zero which is the implicit assumption",
                           "that a complete washout occurred and there is no",
                           "endogenous source of the analyte.")),
-
-    # Interpolation ####
     "Interpolation"=
       list(
-        select=function(x) {
-          x$event_before %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc") &
-            x$event %in% c("output_only") &
-            x$event_after %in% c("conc_dose", "conc") &
-            !(x$event_before %in% "conc_dose" &
-                x$event_after %in% "conc_dose")
-        },
-        value=function(data_all, current_idx, ...) {
-          tmp_conc <- data_all[!is.na(data_all$conc) &
-                                 data_all$dose_count %in% data_all$dose_count[current_idx],]
-          interpolate.conc(conc=tmp_conc$conc, time=tmp_conc$time,
-                           time.out=data_all$time[current_idx],
-                           check=FALSE, ...)
-        },
+        select="iecd_interp_select",
+        value="iecd_interp_value",
         description=paste("With concentrations before and after and not an IV",
                           "bolus before, interpolate between observed concentrations.")),
-    
-    # Extrapolation ####
     "Extrapolation"=
       list(
-        select=function(x) {
-          extrap_output_only <-
-            x$event_before %in% c("conc_dose_iv_bolus_after", "conc") &
-            x$event %in% "output_only" &
-            x$event_after %in% c("dose", "none")
-          extrap_dose <-
-            x$event_before %in% c("conc_dose_iv_bolus_after", "conc") &
-            x$event %in% "dose" &
-            !(x$event_after %in% "output_only")
-          extrap_output_only | extrap_dose
-        },
-        value=function(data_all, current_idx, lambda.z, ...) {
-          last_conc <- data_all[data_all$time < data_all$time[current_idx] &
-                                  !is.na(data_all$conc),]
-          last_conc <- last_conc[nrow(last_conc),]
-          if (last_conc$conc %in% 0) {
-            # BLQ continues to be BLQ
-            0
-          } else {
-            if (missing(lambda.z)) {
-              lambda.z <- NA_real_
-            }
-            extrapolate.conc(conc=last_conc$conc[nrow(last_conc)],
-                             time=last_conc$time[nrow(last_conc)],
-                             time.out=data_all$time[current_idx], lambda.z=lambda.z,
-                             clast=last_conc$conc[nrow(last_conc)], ...)
-          }
-        },
+        select="iecd_extrap_select",
+        value="iecd_extrap_value",
         description="Extrapolate from a concentration to a dose"),
-
-    ## !!!!!!!!! FINDME !!!!!!!!!!!!!!!!!!!!!! #####
-    
-    # Immediately after an IV bolus with a concentration next ####
     "Immediately after an IV bolus with a concentration next"=
       list(
-        select=function(x) {
-          !(x$event_before %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after", "output_only")) &
-          x$event %in% "dose_iv_bolus_after" &
-            x$event_after %in% c("conc_dose", "conc")
-        },
-        value=function(data_all, current_idx, ...) {
-          tmp.conc <- data_all[data_all$dose_count %in% data.out$cut,]
-          tmp.dose <- data.dose[data.dose$cut %in% data.out$cut,]
-          pk.calc.c0(conc=tmp.conc$conc, time=tmp.conc$time,
-                     time.dose=tmp.dose$time,
-                     method=c("logslope", "c1"))
-        },
+        select="iecd_iv_conc_select",
+        value="iecd_iv_conc_value",
         description=paste("Calculate C0 for the time immediately after an IV",
                           "bolus.  First, attempt using log slope",
                           "back-extrapolation.  If that fails, use the first",
                           "concentration after the dose as C0.")),
-
-    # Immediately after an IV bolus without a concentration next ####
     "Immediately after an IV bolus without a concentration next"=
       list(
-        select=function(x) {
-          bolus_is_current <-
-            x$event_before %in% c("conc", "conc_dose", "dose", "none") &
-            x$event %in% "dose_iv_bolus_after" &
-            x$event_after %in% c("dose", "none")
-          bolus_is_previous <-
-            x$event_before %in% "dose_iv_bolus_after" &
-            x$event %in% "dose" &
-            x$event_after %in% c("conc_dose_iv_bolus_after", "conc_dose", "dose_iv_bolus_after", "dose", "conc", "none")
-          bolus_is_current | bolus_is_previous
-        },
+        select="iecd_iv_noconc_select",
         warning="Cannot interpolate immediately after an IV bolus without a concentration next.",
         description="Cannot calculate C0 without a concentration after an IV bolus; return NA."),
-
-    # After an IV bolus with a concentration next ####
     "After an IV bolus with a concentration next"=
       list(
-        select=function(x) {
-          x$event_before %in% c("dose_iv_bolus_after") &
-            x$event %in% c("output_only") &
-            x$event_after %in% c("conc_dose", "conc")
-        },
-        value=function(data_all, current_idx, ...) {
-          tmp.conc <- data.conc[data.conc$cut %in% data.out$cut, c("conc", "time")]
-          tmp.dose <- data.dose[data.dose$cut %in% data.out$cut, "time", drop=FALSE]
-          tmp.conc <- rbind(
-            data.frame(
-              time=tmp.dose$time,
-              conc=
-                pk.calc.c0(conc=tmp.conc$conc, time=tmp.conc$time,
-                           time.dose=tmp.dose$time,
-                           method=c("logslope", "c1"))),
-            tmp.conc)
-          interpolate.conc(conc=tmp.conc$conc, time=tmp.conc$time,
-                           time.out=data.out$time,
-                           check=FALSE, ...)
-        },
+        select="iecd_afteriv_conc_select",
+        value="iecd_afteriv_conc_value",
         description=paste("First, calculate C0 using log slope back-extrapolation",
                           "(falling back to the first post-dose concentration",
                           "if that fails).  Then, interpolate between C0 and",
                           "the first post-dose concentration.")),
-
-    # After an IV bolus without a concentration next ####
     "After an IV bolus without a concentration next"=
       list(
-        select=function(x) {
-          x$event_before %in% c("dose_iv_bolus_after") &
-            x$event %in% "output_only" &
-            x$event_after %in% c("dose", "none")
-        },
+        select="iecd_afteriv_noconc_select",
         warning="Cannot interpolate after an IV bolus without a concentration next.",
         description=paste("Between an IV bolus and anything other than a",
                           "concentration, interpolation cannot occur.  Return NA")),
-
-
-    # Doses with no concentrations between ####
     "Doses with no concentrations between"=
       list(
-        select=function(x) {
-          dose_current <-
-            x$event_before %in% c("conc_dose", "dose") &
-            x$event %in% "dose" &
-            !(x$event_after %in% "output_only")
-          dose_around <-
-            x$event_before %in% c("dose", "conc_dose") &
-            x$event %in% "output_only" &
-            x$event_after %in% c("dose", "conc_dose")
-          dose_current | dose_around
-        },
+        select="iecd_dose_noconc_select",
         warning="Cannot interpolate between two doses or after a dose without a concentration after the first dose.",
         description="Two doses with no concentrations between them, return NA."),
-
-    # Dose as the last event in the timeline and requesting a concentration after ####
     "Dose as the last event in the timeline and requesting a concentration after"=
       list(
-        select=function(x) {
-          x$event_before %in% c("conc_dose", "dose") &
-            x$event %in% "output_only" &
-            x$event_after %in% "none"
-        },
+        select="iecd_dose_last_select",
         warning="Cannot extrapolate from a dose without any concentrations after it.",
         description=paste("Cannot estimate the concentration after a dose",
                           "without concentrations after the dose, return NA.")),
-    # Dose before, concentration after without a dose ####
     "Dose before, concentration after without a dose"=list(
-      select=function(x) {
-        x$event_before %in% "dose" &
-          x$event %in% "output_only" &
-          x$event_after %in% "conc"
-      },
-      value=function(data_all, current_idx, ...) {
-        data_tmp <- data_all[data_all$dose_event | data_all$conc_event,]
-        interpolate.conc(conc=data_tmp$conc, time=data_tmp$time,
-                         time.out=data_all$time[current_idx], ...,
-                         check=FALSE)
-      },
+      select="iecd_dose_conc_select",
+      value="iecd_dose_conc_value",
       description="If the concentration at the dose is estimable, interpolate.  Otherwise, NA."))

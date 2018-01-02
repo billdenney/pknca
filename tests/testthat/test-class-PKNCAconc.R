@@ -11,6 +11,10 @@ test_that("PKNCAconc", {
                                   nstudies=2)
   tmp.conc.analyte.study <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
                                           nanalytes=2, nstudies=2)
+  ## Data exists
+  expect_error(PKNCAconc(data.frame()),
+               regexp="data must have at least one row.",
+               info="PKNCAconc requires data")
   
   ## Variables present
   expect_error(PKNCAconc(tmp.conc, formula=XXX~time|treatment+ID),

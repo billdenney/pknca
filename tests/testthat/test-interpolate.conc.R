@@ -387,7 +387,7 @@ test_that("interp.extrap.conc.dose handles all eventualities", {
                 event_after=setdiff(event_choices, "output_only"))
   eventualities$method <- NA_character_
   for (nm in names(interp.extrap.conc.dose.select)) {
-    mask_selected <- interp.extrap.conc.dose.select[[nm]]$select(eventualities)
+    mask_selected <- do.call(interp.extrap.conc.dose.select[[nm]]$select, list(x=eventualities))
     expect_true(any(mask_selected),
                 info=sprintf("interp.extrap.conc.dose.select[[%s]] matched at least one eventuality", nm))
     expect_true(!any(mask_selected & !is.na(eventualities$method)),
@@ -433,6 +433,17 @@ test_that("interp.extrap.conc.dose", {
                                        time.out=c(-1, -0.1, 0, 0.1, 7), out.after=FALSE),
                regexp="duration.dose must either be a scalar or the same length as time.dose",
                info="duration.dose must match the length of time.dose or be a scalar.")
+
+  expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                                       time=c(-1, 1:5),
+                                       time.dose=0,
+                                       time.out=-2,
+                                       check=FALSE),
+               interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                                       time=c(-1, 1:5),
+                                       time.dose=0,
+                                       time.out=-2),
+               info="Check is respected")
 
   expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
                                        time=c(-1, 1:5),
@@ -512,4 +523,66 @@ test_that("interp.extrap.conc.dose", {
                structure(0.0625, Method="Extrapolation"),
                info="Extrapolation with lambda.z gives result")
   
+  expect_equal(interp.extrap.conc.dose(conc=0:2,
+                                       time=0:2,
+                                       time.dose=0,
+                                       time.out=0.5),
+               structure(0.5, Method="Interpolation"),
+               info="Interpolation works")
+
+  expect_equal(interp.extrap.conc.dose(conc=c(0:2, 1),
+                                       time=0:3,
+                                       time.dose=0,
+                                       time.out=2.5,
+                                       method="linear"),
+               structure(sqrt(2), Method="Interpolation"),
+               info="Interpolation respects method")
+  
+  expect_equal(interp.extrap.conc.dose(conc=0:2,
+                                       time=0:2,
+                                       time.dose=0,
+                                       route.dose="intravascular",
+                                       time.out=0,
+                                       duration.dose=0,
+                                       out.after=FALSE),
+               structure(0, Method="Observed concentration"),
+               info="Observed before IV bolus")
+
+  expect_equal(interp.extrap.conc.dose(conc=0:2,
+                                       time=0:2,
+                                       time.dose=0,
+                                       route.dose="intravascular",
+                                       time.out=0,
+                                       duration.dose=0,
+                                       out.after=TRUE),
+               structure(1, Method="Immediately after an IV bolus with a concentration next"),
+               info="Observed after IV bolus, one concentration")
+
+  expect_equal(interp.extrap.conc.dose(conc=c(0, 2, 1),
+                                       time=0:2,
+                                       time.dose=0,
+                                       route.dose="intravascular",
+                                       time.out=0,
+                                       duration.dose=0,
+                                       out.after=TRUE),
+               structure(4, Method="Immediately after an IV bolus with a concentration next"),
+               info="Observed after IV bolus, two concentrations")
+
+  expect_equal(interp.extrap.conc.dose(conc=c(2, 1),
+                                       time=1:2,
+                                       time.dose=0,
+                                       route.dose="intravascular",
+                                       time.out=0.5,
+                                       duration.dose=0),
+               structure(2*sqrt(2), Method="After an IV bolus with a concentration next"),
+               info="After IV bolus, two concentrations")
+
+  expect_equal(interp.extrap.conc.dose(conc=2,
+                                       time=1,
+                                       time.dose=0,
+                                       route.dose="intravascular",
+                                       time.out=0.5,
+                                       duration.dose=0),
+               structure(2, Method="After an IV bolus with a concentration next"),
+               info="After IV bolus, one concentration")
 })
