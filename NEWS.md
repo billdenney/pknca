@@ -4,9 +4,13 @@ will continue until then.  These will be especially noticable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
-# PKNCA 0.9.0
+# PKNCA 0.8.4
 
 * Added AUCint flavors
+* Parameter names for NCA parameters will likely be changing in the
+  next version; code will still work, but some calculation methods and
+  therefore results may be subtly different.  These changes will be
+  fully documented.)
 
 # PKNCA 0.8.2
 
