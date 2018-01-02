@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -43,1002 +43,736 @@
 <p>The method list below is described and sorted in order of how many scenarios the method is applied to in the list.</p>
 <p>For each of the summary tables below, the column headers are as follows:</p>
 <ul>
-<li><strong>Event Before</strong>: The type of event immediately before the time of the requested output may be one of the following:
-<ul>
-<li><em>NA</em>: No event</li>
-<li><em>dose</em>: A dosing event without a simultaneous concentration measure</li>
-<li><em>conc</em>: A concentration measurement without a simultaneous dose</li>
-<li><em>both</em>: A dosing event at the same time as a concentration measurement</li>
-</ul></li>
-<li><strong>IV Bolus Before</strong>: If the “Event Before” the requested output time was a “dose” or “both”, was the dose an IV bolus?
-<ul>
-<li><em>TRUE</em>: Yes, it was an IV bolus.</li>
-<li><em>FALSE</em>: No, it was not an IV bolus.</li>
-<li><em>NA</em>: It was not a dose.</li>
-</ul></li>
+<li><strong>Event Before</strong>: The type of event before the time of the requested output may be one of the following</li>
 <li><strong>Event At</strong>: The equivalent to “Event Before” but for the event occurring at the requested output time.</li>
-<li><strong>IV Bolus At</strong>: The equivalent to “IV Bolus Before” but for the event occurring at the requested output time.</li>
 <li><strong>Event After</strong>: The equivalent to “Event Before” but for the next event occurring after the requested output time.</li>
-<li><strong>Instant After</strong>: Should the time of the output be considered instantaneously after the requested output time? “After” only has an effect relative to an IV bolus.
-<ul>
-<li><em>TRUE</em>: Yes, the output is immediately after.</li>
-<li><em>FALSE</em>: No, the output is immediately before.</li>
-</ul></li>
 </ul>
-<div id="copy" class="section level2">
-<h2>Copy</h2>
+<div id="observed-concentration" class="section level2">
+<h2>Observed concentration</h2>
 <p>Copy the input concentration at the given time to the output.</p>
 <table>
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">conc</td>
+<td align="left">dose</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">conc</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">dose</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="impossible-combinations" class="section level2">
+<h2>Impossible combinations</h2>
+<p>The event combination cannot exist.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Event Before</th>
+<th align="left">Event At</th>
+<th align="left">Event After</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 </tbody>
 </table>
@@ -1050,477 +784,185 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">conc_dose</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="extrapolation" class="section level2">
+<h2>Extrapolation</h2>
+<p>Extrapolate from a concentration to a dose</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Event Before</th>
+<th align="left">Event At</th>
+<th align="left">Event After</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
 </tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<tr class="odd">
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
 </tr>
 </tbody>
 </table>
@@ -1532,253 +974,80 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
 </tr>
 <tr class="even">
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
 </tr>
 <tr class="odd">
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
 </tr>
 </tbody>
 </table>
@@ -1790,457 +1059,60 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">none</td>
+<td align="left">dose</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">output_only</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="after-an-iv-bolus-without-a-concentration-next" class="section level2">
-<h2>After an IV bolus without a concentration next</h2>
-<p>Between an IV bolus and anything other than a concentration, interpolation cannot occur. Return NA</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
-<th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
-<th align="left">Event After</th>
-<th align="left">Instant After</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="concentration-nothing-or-dose-but-notdose-iv-bolus-after-nothing-or-dose" class="section level2">
-<h2>Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</h2>
-<p>Extrapolate when the previous measurement is a concentration, and the current event is a dose or nothing. If the previous concentration measurement is below the limit of quantification (zero), then return zero.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
-<th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
-<th align="left">Event After</th>
-<th align="left">Instant After</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
 </tr>
 </tbody>
 </table>
@@ -2252,93 +1124,50 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 </tr>
 </tbody>
 </table>
@@ -2350,135 +1179,35 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="after-all-events-concentration-before" class="section level2">
-<h2>After all events, concentration before</h2>
-<p>Extrapolate from the concentration data after the last dose.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
-<th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
-<th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">output_only</td>
+<td align="left">conc</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
 </tr>
 <tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
 </tr>
 <tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
 </tr>
 </tbody>
 </table>
@@ -2490,79 +1219,90 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="after-a-dose-with-no-event-and-a-concentration-after" class="section level2">
-<h2>After a dose with no event and a concentration after</h2>
-<p>If there is a non-IV bolus dose before, nothing at the current time, and a concentration after, extrapolate from prior data to the concentration at the time of dosing then interpolate between the dosing time and the requested output time.</p>
+<div id="after-an-iv-bolus-without-a-concentration-next" class="section level2">
+<h2>After an IV bolus without a concentration next</h2>
+<p>Between an IV bolus and anything other than a concentration, interpolation cannot occur. Return NA</p>
 <table>
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after" class="section level2">
+<h2>Dose as the last event in the timeline and requesting a concentration after</h2>
+<p>Cannot estimate the concentration after a dose without concentrations after the dose, return NA.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Event Before</th>
+<th align="left">Event At</th>
+<th align="left">Event After</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="dose-before-concentration-after-without-a-dose" class="section level2">
+<h2>Dose before, concentration after without a dose</h2>
+<p>If the concentration at the dose is estimable, interpolate. Otherwise, NA.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Event Before</th>
+<th align="left">Event At</th>
+<th align="left">Event After</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">output_only</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
 </tr>
 </tbody>
 </table>
@@ -2574,2606 +1314,1307 @@
 <thead>
 <tr class="header">
 <th align="left">Event Before</th>
-<th align="left">IV Bolus Before</th>
 <th align="left">Event At</th>
-<th align="left">IV Bolus At</th>
 <th align="left">Event After</th>
-<th align="left">Instant After</th>
 <th align="left">Method Used</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
 </tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<tr class="odd">
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
 </tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
+<tr class="odd">
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">conc_dose</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Before all events</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Interpolation</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Interpolation</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Interpolation</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Interpolation</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">Extrapolation</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose</td>
+<td align="left">Extrapolation</td>
 </tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<tr class="odd">
+<td align="left">conc</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Extrapolation</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Extrapolation</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Immediately after an IV bolus with a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 <td align="left">Immediately after an IV bolus with a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">Immediately after an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
 <td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
 <td align="left">Immediately after an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">conc</td>
+<td align="left">Interpolation</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+<td align="left">Interpolation</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">conc</td>
 <td align="left">Doses with no concentrations between</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
+<td align="left">conc_dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">Immediately after an IV bolus with a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 <td align="left">Immediately after an IV bolus with a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">Immediately after an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus without a concentration next</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">After an IV bolus without a concentration next</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus without a concentration next</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">After an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
+<td align="left">Interpolation</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+<td align="left">Dose as the last event in the timeline and requesting a concentration after</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc</td>
+<td align="left">Interpolation</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+<td align="left">Interpolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+<td align="left">Extrapolation</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Immediately after an IV bolus with a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Immediately after an IV bolus with a concentration next</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">conc</td>
+<td align="left">Dose before, concentration after without a dose</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">dose</td>
+<td align="left">Doses with no concentrations between</td>
+</tr>
+<tr class="odd">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+<td align="left">Dose as the last event in the timeline and requesting a concentration after</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+<td align="left">Immediately after an IV bolus without a concentration next</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="odd">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc</td>
 <td align="left">After an IV bolus with a concentration next</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
 <td align="left">After an IV bolus with a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus without a concentration next</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">After an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">After all events, concentration before</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">After all events, concentration before</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Interpolation</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Interpolation</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Interpolation</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Interpolation</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">After all events, concentration before</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">After all events, concentration before</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">After all events, concentration before</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Concentration, nothing or dose but not(dose, IV bolus, After), nothing or dose</td>
-</tr>
-<tr class="even">
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">After a dose with no event and a concentration after</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">After a dose with no event and a concentration after</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus without a concentration next</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
 <td align="left">After an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus without a concentration next</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">After an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">none</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus with a concentration next</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">After an IV bolus with a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">After an IV bolus without a concentration next</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">After an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<td align="left">none</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
 </tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
+<tr class="odd">
+<td align="left">none</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
 <td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
 <td align="left">conc</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">none</td>
+<td align="left">Observed concentration</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">conc</td>
+<td align="left">Before all events</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">conc_dose</td>
+<td align="left">Before all events</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Before all events</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">dose</td>
+<td align="left">Before all events</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Before all events</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose</td>
+<td align="left">none</td>
+<td align="left">Before all events</td>
+</tr>
+<tr class="odd">
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc</td>
+<td align="left">Immediately after an IV bolus with a concentration next</td>
+</tr>
+<tr class="even">
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose</td>
 <td align="left">Immediately after an IV bolus with a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
 <td align="left">Immediately after an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">NA</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Copy</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
-</tr>
-<tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">none</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">none</td>
 <td align="left">Immediately after an IV bolus without a concentration next</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">conc</td>
+<td align="left">Before all events</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">both</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose</td>
+<td align="left">Before all events</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">conc_dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
+<td align="left">none</td>
+<td align="left">output_only</td>
 <td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">conc</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Before all events</td>
 </tr>
 <tr class="odd">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">FALSE</td>
-<td align="left">Doses with no concentrations between</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">dose_iv_bolus_after</td>
+<td align="left">Impossible combinations</td>
 </tr>
 <tr class="even">
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">dose</td>
-<td align="left">TRUE</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">none</td>
+<td align="left">output_only</td>
+<td align="left">none</td>
+<td align="left">Before all events</td>
 </tr>
 </tbody>
 </table>
@@ -5186,7 +2627,7 @@
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

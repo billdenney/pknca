@@ -19,37 +19,23 @@ library(dplyr)
 Interpolation and extrapolation with awareness of doses occurring before, at the same time of, or after the requested interpolation time point must account for many interactions.  To ensure clarity in the interpolation/extrapolation methods and the decisions made by the algorithm, each potential choice is listed below with its accompanying calculation method.  The code used to generate the table is the same as the code within the function.
 
 ```{r generatecombs, echo=FALSE}
-event.before <-
-  data.frame(event.before=c(NA, "conc", "dose", "dose", "both", "both"),
-             iv.bolus.before=c(NA, NA, FALSE, TRUE, FALSE, TRUE))
-event.at <-
-  data.frame(event.at=c(NA, "conc", "dose", "dose", "both", "both"),
-             iv.bolus.at=c(NA, NA, FALSE, TRUE, FALSE, TRUE))
-event.after <-
-  data.frame(event.after=c(NA, "conc", "dose", "both"))
-time.request <-
-  data.frame(after=c(FALSE, TRUE))
-
 method.choices <- names(PKNCA:::interp.extrap.conc.dose.select)
 method.choices <-
   factor(method.choices, levels=method.choices, ordered=TRUE)
          
 all.combs <-
-  merge(
-    merge(
-      merge(event.before, event.at),
-      event.after),
-    time.request)
-all.combs$Method <- ""
+  expand.grid(event_before=setdiff(unlist(PKNCA:::event_choices_interp.extrap.conc.dose), "output_only"),
+              event=setdiff(unlist(PKNCA:::event_choices_interp.extrap.conc.dose), "none"),
+              event_after=setdiff(unlist(PKNCA:::event_choices_interp.extrap.conc.dose), "output_only"),
+              Method="",
+              stringsAsFactors=FALSE)
 
 for (n in method.choices) {
   mask <-
-    PKNCA:::interp.extrap.conc.dose.select[[n]]$select(all.combs)
-  mask.overlap <- mask &
-    !(all.combs$Method %in% "")
-  all.combs$Method[mask & ! mask.overlap] <- n
-  #all.combs$Method[mask.overlap] <- paste(all.combs$Method[mask.overlap], n, sep="; ")
-  #cat(n, sum(mask), "\n")
+    do.call(PKNCA:::interp.extrap.conc.dose.select[[n]]$select,
+            list(x=all.combs),
+            envir=environment(pk.nca))
+  all.combs$Method[mask] <- n
 }
 
 all.combs <-
@@ -63,21 +49,9 @@ The method list below is described and sorted in order of how many scenarios the
 
 For each of the summary tables below, the column headers are as follows:
 
-* **Event Before**: The type of event immediately before the time of the requested output may be one of the following:
-    * *NA*: No event
-    * *dose*: A dosing event without a simultaneous concentration measure
-    * *conc*: A concentration measurement without a simultaneous dose
-    * *both*: A dosing event at the same time as a concentration measurement
-* **IV Bolus Before**:  If the "Event Before" the requested output time was a "dose" or "both", was the dose an IV bolus?
-    * *TRUE*: Yes, it was an IV bolus.
-    * *FALSE*: No, it was not an IV bolus.
-    * *NA*: It was not a dose.
+* **Event Before**: The type of event before the time of the requested output may be one of the following
 * **Event At**: The equivalent to "Event Before" but for the event occurring at the requested output time.
-* **IV Bolus At**:  The equivalent to "IV Bolus Before" but for the event occurring at the requested output time.
 * **Event After**: The equivalent to "Event Before" but for the next event occurring after the requested output time.
-* **Instant After**:  Should the time of the output be considered instantaneously after the requested output time?  "After" only has an effect relative to an IV bolus.
-    * *TRUE*: Yes, the output is immediately after.
-    * *FALSE*: No, the output is immediately before.
 
 ```{r methodsummary, results="asis", echo=FALSE}
 methodorder <- names(sort(summary(factor(all.combs$Method)), decreasing=TRUE))
@@ -87,11 +61,9 @@ for (n in methodorder) {
   cat(PKNCA:::interp.extrap.conc.dose.select[[n]]$description, "\n\n", sep="")
   print(knitr::kable(
     all.combs[all.combs$Method %in% n,
-              c("event.before", "iv.bolus.before",
-                "event.at", "iv.bolus.at", "event.after",
-                "after")],
+              c("event_before","event", "event_after")],
     row.names=FALSE,
-    col.names=c("Event Before", "IV Bolus Before", "Event At", "IV Bolus At", "Event After", "Instant After")))
+    col.names=c("Event Before", "Event At", "Event After")))
   cat("\n")
 }
 ```
@@ -100,11 +72,7 @@ for (n in methodorder) {
 
 ```{r methodlisting, echo=FALSE}
 knitr::kable(
-  all.combs[,c("event.before", "iv.bolus.before",
-               "event.at", "iv.bolus.at", "event.after",
-               "after", "Method")],
+  all.combs[,c("event_before", "event", "event_after", "Method")],
     row.names=FALSE,
-    col.names=c("Event Before", "IV Bolus Before",
-                "Event At", "IV Bolus At", "Event After",
-                "Instant After", "Method Used"))
+    col.names=c("Event Before", "Event At", "Event After", "Method Used"))
 ```
