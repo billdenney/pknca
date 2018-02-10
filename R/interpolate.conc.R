@@ -333,6 +333,7 @@ interp.extrap.conc.dose <- function(conc, time,
   data_out <-
     data.frame(out=TRUE,
                out_after=out.after,
+               out_order=1:length(time.out),
                time=time.out)
   data_all <-
     merge(merge(data_conc,
@@ -402,8 +403,10 @@ interp.extrap.conc.dose <- function(conc, time,
          paste(unique(data_all$time[mask_no_method]), collapse=", ")) # nocov
   }
   # Filter to the requested time points and output
-  ret <- data_all$conc[data_all$out]
-  attr(ret, "Method") <- data_all$method[data_all$out]
+  data_out <- data_all[data_all$out,,drop=FALSE]
+  data_out <- data_out[order(data_out$out_order),,drop=FALSE]
+  ret <- data_out$conc
+  attr(ret, "Method") <- data_out$method
   ret
 }
 
@@ -494,10 +497,14 @@ iecd_extrap_value <- function(data_all, current_idx, lambda.z, ...) {
     if (missing(lambda.z)) {
       lambda.z <- NA_real_
     }
-    extrapolate.conc(conc=last_conc$conc[nrow(last_conc)],
-                     time=last_conc$time[nrow(last_conc)],
-                     time.out=data_all$time[current_idx], lambda.z=lambda.z,
-                     clast=last_conc$conc[nrow(last_conc)], ...)
+    args <- list(conc=last_conc$conc[nrow(last_conc)],
+                 time=last_conc$time[nrow(last_conc)],
+                 time.out=data_all$time[current_idx], lambda.z=lambda.z,
+                 ...)
+    if (!("clast" %in% names(args))) {
+      args$clast <- last_conc$conc[nrow(last_conc)]
+    }
+    do.call(extrapolate.conc, args)
   }
 }
 

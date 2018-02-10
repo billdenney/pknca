@@ -585,4 +585,20 @@ test_that("interp.extrap.conc.dose", {
                                        duration.dose=0),
                structure(2, Method="After an IV bolus with a concentration next"),
                info="After IV bolus, one concentration")
+  
+  expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                                       time=c(-1, 1:5),
+                                       time.dose=0,
+                                       time.out=c(-2, 2)),
+               structure(c(0, 2),
+                         Method=c("Before all events", "Observed concentration")),
+               info="Outputs are in the same order as inputs (initially sorted)")
+  
+  expect_equal(interp.extrap.conc.dose(conc=c(0, 1, 2, 1, 0.5, 0.25),
+                                       time=c(-1, 1:5),
+                                       time.dose=0,
+                                       time.out=c(2, -2)),
+               structure(c(2, 0),
+                         Method=c("Observed concentration", "Before all events")),
+               info="Outputs are in the same order as inputs (reverse sorted time.out)")
 })
