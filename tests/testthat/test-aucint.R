@@ -21,31 +21,27 @@ test_that("AUCint gives errors appropriately", {
                fixed=TRUE)
 
   expect_error(pk.calc.aucint(start="A", end=1),
-               regexp="start must be a finite number",
+               regexp="start must be a number",
                fixed=TRUE,
                info="start not a number")
   expect_error(pk.calc.aucint(start=factor("A"), end=1),
-               regexp="start must be a finite number",
+               regexp="start must be a number",
                fixed=TRUE,
                info="start not a number (factor)")
   expect_error(pk.calc.aucint(start=Inf, end=1),
-               regexp="start must be a finite number",
+               regexp="interval beginning (or start) must be finite",
                fixed=TRUE,
                info="start not finite")
 
   expect_error(pk.calc.aucint(end="A", start=1),
-               regexp="end must be a finite number",
+               regexp="end must be a number",
                fixed=TRUE,
                info="end not a number")
   expect_error(pk.calc.aucint(end=factor("A"), start=1),
-               regexp="end must be a finite number",
+               regexp="end must be a number",
                fixed=TRUE,
                info="end not a number (factor)")
-  expect_error(pk.calc.aucint(end=Inf, start=1),
-               regexp="end must be a finite number",
-               fixed=TRUE,
-               info="end not finite")
-  
+
   expect_error(pk.calc.aucint(start=1, end=2, interval=c(1, 2)),
                regexp="start and end cannot be given if interval is given",
                fixed=TRUE)
@@ -53,19 +49,19 @@ test_that("AUCint gives errors appropriately", {
                regexp="interval must be a vector with 2 elements",
                fixed=TRUE)
   expect_error(pk.calc.aucint(interval=c("A", "B")),
-               regexp="interval must be numeric and finite",
+               regexp="interval must be numeric",
                fixed=TRUE,
                info="interval not a number")
   expect_error(pk.calc.aucint(interval=factor(c("A", "B"))),
-               regexp="interval must be numeric and finite",
+               regexp="interval must be numeric",
                fixed=TRUE,
                info="interval not a number (factor)")
-  expect_error(pk.calc.aucint(interval=c(1, Inf)),
-               regexp="interval must be numeric and finite",
-               fixed=TRUE,
-               info="interval not finite (end)")
   expect_error(pk.calc.aucint(interval=c(Inf, 1)),
-               regexp="interval must be numeric and finite",
+               regexp="interval beginning (or start) must be finite",
+               fixed=TRUE,
+               info="interval not finite (start)")
+  expect_error(pk.calc.aucint(interval=c(-Inf, 1)),
+               regexp="interval beginning (or start) must be finite",
                fixed=TRUE,
                info="interval not finite (start)")
   expect_error(pk.calc.aucint(interval=c(1, 1)),
@@ -96,6 +92,38 @@ test_that("AUCint gives the same value when no interpolation/extrapolation is re
                pk.calc.auc(conc=tmpdata$conc, time=tmpdata$time,
                            interval=c(0, 2)),
                info="Giving interval and start+end are the same, no interp/extrap (test 2)")
+})
+
+test_that("AUCint gives a warning and NA when it cannot interpolate or extrapolate a value", {
+  tmpdata <- data.frame(conc=c(8, 4, 2, 1),
+                        time=0:3)
+  expect_warning(
+    over_dose <-
+      pk.calc.aucint(conc=tmpdata$conc,
+                     time=tmpdata$time,
+                     interval=c(0, 4),
+                     time.dose=1.5,
+                     lambda.z=NA,
+                     auc.type="AUCinf"),
+    regexp="Some interpolated/extrapolated concentration values are missing (may be due to interpolating or extrapolating over a dose with lambda.z=NA). Time points with missing data are:  1.5, 4",
+    fixed=TRUE,
+    info="warned when integrating over a dose with lambda.z=NA")
+  expect_equal(over_dose, NA_real_,
+               info="When you cannot integrate over a dose, you get NA")
+
+  expect_warning(
+    before_time <-
+      pk.calc.aucint(conc=tmpdata$conc,
+                     time=tmpdata$time,
+                     interval=c(-1, 4),
+                     time.dose=c(-1.5, -0.5),
+                     lambda.z=1,
+                     auc.type="AUCinf"),
+    regexp="Some interpolated/extrapolated concentration values are missing Time points with missing data are:  -1, -0.5",
+    fixed=TRUE,
+    info="warned when integrating over a dose with lambda.z=NA")
+  expect_equal(before_time, NA_real_,
+               info="When you cannot interpolate a point, you get NA")
 })
 
 test_that("AUCint respects auc.type and does the correct calculations for each AUC type", {
@@ -189,4 +217,27 @@ test_that("aucint respects doses", {
                pk.calc.aucint(conc=tmpdata_blq$conc, time=tmpdata_blq$time,
                               interval=c(0, 4), auc.type="AUCall"),
                info="Calculation with dosing at a time after all observations causes no change.")
+})
+
+test_that("aucint works with infinite intervals", {
+  tmpdata <- data.frame(conc=c(8, 4, 2, 1),
+                        time=0:3)
+  expect_equal(pk.calc.aucint.last(conc=tmpdata$conc, time=tmpdata$time, start=0, end=Inf),
+               pk.calc.auc.last(conc=tmpdata$conc, time=tmpdata$time),
+               info="Simple AUClast = aucint.last")
+  expect_equal(pk.calc.aucint.all(conc=tmpdata$conc, time=tmpdata$time, start=0, end=Inf),
+               pk.calc.auc.all(conc=tmpdata$conc, time=tmpdata$time),
+               info="Simple AUCall = aucint.all")
+  expect_equal(pk.calc.aucint.inf.obs(conc=tmpdata$conc, time=tmpdata$time,
+                                      start=0, end=Inf,
+                                      clast.obs=1, lambda.z=log(2)),
+               pk.calc.auc.inf.obs(conc=tmpdata$conc, time=tmpdata$time,
+                                   clast.obs=1, lambda.z=log(2)),
+               info="Simple AUCinf.obs = aucint.inf.obs")
+  expect_equal(pk.calc.aucint.inf.pred(conc=tmpdata$conc, time=tmpdata$time,
+                                       start=0, end=Inf,
+                                       clast.pred=2, lambda.z=log(2)),
+               pk.calc.auc.inf.pred(conc=tmpdata$conc, time=tmpdata$time,
+                                    clast.pred=2, lambda.z=log(2)),
+               info="Simple AUCinf.pred = aucint.inf.pred")
 })

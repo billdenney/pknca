@@ -331,7 +331,7 @@ test_that("pk.nca can calculate values with group-level data", {
   mydata_impute <-
     PKNCAdata(myconc_impute, mydose,
               intervals=data.frame(treatment="Trt 1", start=0, end=24,
-                                   aucint.last=TRUE,
+                                   aucint.last.dose=TRUE,
                                    stringsAsFactors=FALSE))
   mydata_observe <-
     PKNCAdata(myconc_observe, mydose,

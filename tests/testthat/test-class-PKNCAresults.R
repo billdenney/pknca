@@ -35,7 +35,7 @@ test_that("PKNCAresults generation", {
       end=c(24, rep(Inf, 13),
             24, rep(Inf, 13)),
       treatment="Trt 1",
-      ID=rep(c(1, 2), each=14),
+      ID=as.integer(rep(c(1, 2), each=14)),
       PPTESTCD=rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
                      "lambda.z", "r.squared", "adj.r.squared",
                      "lambda.z.time.first", "lambda.z.n.points",

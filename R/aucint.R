@@ -32,36 +32,45 @@
 #' @seealso \code{\link{pk.calc.auxc}}, \code{\link{PKNCA.options}},
 #'   \code{\link{interp.extrap.conc.dose}}
 #' @export
-pk.calc.aucint <- function(conc, time, interval, start, end,
+pk.calc.aucint <- function(conc, time,
+                           interval=NULL, start=NULL, end=NULL,
                            clast=pk.calc.clast.obs(conc, time), lambda.z=NA,
                            time.dose=NULL, route="extravascular", duration.dose=0,
                            method=PKNCA.choose.option("auc.method", options),
                            auc.type="AUClast", ...,
                            options=list()) {
-  if (missing(interval)) {
-    if (missing(start) | missing(end)) {
+  if (is.null(interval)) {
+    if (is.null(start) | is.null(end)) {
       stop("If interval is not given, start and end must be given.")
     } else if (length(start) != 1) {
       stop("start must be a scalar")
     } else if (length(end) != 1) {
       stop("end must be a scalar")
-    } else if (!is.numeric(start) | is.factor(start) | is.infinite(start)) {
-      stop("start must be a finite number")
-    } else if (!is.numeric(end) | is.factor(end) | is.infinite(end)) {
-      stop("end must be a finite number")
+    } else if (!is.numeric(start) | is.factor(start)) {
+      stop("start must be a number")
+    } else if (!is.numeric(end) | is.factor(end)) {
+      stop("end must be a number")
     }
     interval <- c(start, end)
-  } else if (!missing(start) | !missing(end)) {
+  } else if (!is.null(start) | !is.null(end)) {
     stop("start and end cannot be given if interval is given")
-  } else if (length(interval) != 2) {
+  }
+  if (length(interval) != 2) {
     stop("interval must be a vector with 2 elements")
-  } else if (!is.numeric(interval) | is.factor(interval) | any(is.infinite(interval))) {
-    stop("interval must be numeric and finite")
+  } else if (!is.numeric(interval) | is.factor(interval)) {
+    stop("interval must be numeric")
+  } else if (is.infinite(interval[1])) {
+    stop("interval beginning (or start) must be finite")
   }
   if (interval[1] >= interval[2]) {
     stop("interval start must be before interval end.")
   }
-  missing_times <- setdiff(c(interval, time.dose), time)
+  missing_times <-
+    if (is.infinite(interval[2])) {
+      setdiff(c(interval[1], time.dose), time)
+    } else {
+      setdiff(c(interval, time.dose), time)
+    }
   # Handle the potential double-calculation (before/after tlast) with AUCinf
   conc_clast <- NULL
   time_clast <- NULL
@@ -128,12 +137,19 @@ pk.calc.aucint <- function(conc, time, interval, start, end,
     conc_interp <- conc
     time_interp <- time
   }
-  # AUCinf traces an AUClast curve (because the interval doesn't go to
-  # infinity) while AUCall and AUClast trace their own curves.
+  # AUCinf traces an AUClast curve if the interval is finite (because
+  # the interval doesn't go to infinity) while AUCall and AUClast trace
+  # their own curves.  Or, they all trace their own curves.
   auc.type_map <-
-    list(AUClast="AUClast",
-         AUCall="AUCall",
-         AUCinf="AUClast")[[auc.type]]
+    if (is.infinite(interval[2])) {
+      list(AUClast="AUClast",
+           AUCall="AUCall",
+           AUCinf="AUCinf")[[auc.type]]
+    } else {
+      list(AUClast="AUClast",
+           AUCall="AUCall",
+           AUCinf="AUClast")[[auc.type]]
+    }
   pk.calc.auc(conc=conc_interp, time=time_interp,
               interval=interval,
               clast=clast, lambda.z=lambda.z,
@@ -147,8 +163,12 @@ pk.calc.aucint <- function(conc, time, interval, start, end,
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUClast
 #' @export
-pk.calc.aucint.last <- function(conc, time, start, end, time.dose, ..., options=list()) {
-  pk.calc.aucint(conc=conc, time=time, interval=c(start, end), options=options,
+pk.calc.aucint.last <- function(conc, time, start=NULL, end=NULL, time.dose, ..., options=list()) {
+  if (missing(time.dose))
+    time.dose <- NULL
+  pk.calc.aucint(conc=conc, time=time,
+                 start=start, end=end,
+                 options=options,
                  time.dose=time.dose,
                  ...,
                  auc.type="AUClast")
@@ -156,8 +176,12 @@ pk.calc.aucint.last <- function(conc, time, start, end, time.dose, ..., options=
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUCall
 #' @export
-pk.calc.aucint.all <- function(conc, time, start, end, time.dose, ..., options=list()) {
-  pk.calc.aucint(conc=conc, time=time, interval=c(start, end), options=options,
+pk.calc.aucint.all <- function(conc, time, start=NULL, end=NULL, time.dose, ..., options=list()) {
+  if (missing(time.dose))
+    time.dose <- NULL
+  pk.calc.aucint(conc=conc, time=time,
+                 start=start, end=end,
+                 options=options,
                  time.dose=time.dose,
                  ...,
                  auc.type="AUCall")
@@ -165,8 +189,11 @@ pk.calc.aucint.all <- function(conc, time, start, end, time.dose, ..., options=l
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUCinf.obs
 #' @export
-pk.calc.aucint.inf.obs <- function(conc, time, start, end, time.dose, lambda.z, clast.obs, ..., options=list()) {
-  pk.calc.aucint(conc=conc, time=time, interval=c(start, end),
+pk.calc.aucint.inf.obs <- function(conc, time, start=NULL, end=NULL, time.dose, lambda.z, clast.obs, ..., options=list()) {
+  if (missing(time.dose))
+    time.dose <- NULL
+  pk.calc.aucint(conc=conc, time=time,
+                 start=start, end=end,
                  time.dose=time.dose,
                  lambda.z=lambda.z, clast=clast.obs,
                  options=options, ...,
@@ -175,8 +202,11 @@ pk.calc.aucint.inf.obs <- function(conc, time, start, end, time.dose, lambda.z, 
 #' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
 #'   for AUCinf.pred
 #' @export
-pk.calc.aucint.inf.pred <- function(conc, time, start, end, time.dose, lambda.z, clast.pred, ..., options=list()) {
-  pk.calc.aucint(conc=conc, time=time, interval=c(start, end),
+pk.calc.aucint.inf.pred <- function(conc, time, start=NULL, end=NULL, time.dose, lambda.z, clast.pred, ..., options=list()) {
+  if (missing(time.dose))
+    time.dose <- NULL
+  pk.calc.aucint(conc=conc, time=time,
+                 start=start, end=end,
                  time.dose=time.dose,
                  lambda.z=lambda.z, clast=clast.pred,
                  options=options, ...,
@@ -184,6 +214,14 @@ pk.calc.aucint.inf.pred <- function(conc, time, start, end, time.dose, lambda.z,
 }
 
 add.interval.col("aucint.last",
+                 FUN="pk.calc.aucint.last",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
+                 depends=c())
+PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
+
+add.interval.col("aucint.last.dose",
                  FUN="pk.calc.aucint.last",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
@@ -195,6 +233,14 @@ add.interval.col("aucint.all",
                  FUN="pk.calc.aucint.all",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
+                 depends=c())
+PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
+
+add.interval.col("aucint.all.dose",
+                 FUN="pk.calc.aucint.all",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c())
 PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
@@ -203,11 +249,27 @@ add.interval.col("aucint.inf.obs",
                  FUN="pk.calc.aucint.inf.obs",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
+                 depends=c("lambda.z", "clast.obs"))
+PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
+
+add.interval.col("aucint.inf.obs.dose",
+                 FUN="pk.calc.aucint.inf.obs",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c("lambda.z", "clast.obs"))
 PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
 
 add.interval.col("aucint.inf.pred",
+                 FUN="pk.calc.aucint.inf.pred",
+                 values=c(FALSE, TRUE),
+                 desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
+                 depends=c("lambda.z", "clast.pred"))
+PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
+
+add.interval.col("aucint.inf.pred.dose",
                  FUN="pk.calc.aucint.inf.pred",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",

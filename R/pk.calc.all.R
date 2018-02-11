@@ -302,6 +302,8 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                          "...")
       arglist <- stats::setNames(object=as.list(arglist), arglist)
       arglist[names(all.intervals[[n]]$formalsmap)] <- all.intervals[[n]]$formalsmap
+      # Drop arguments that were set to NULL by the formalsmap
+      arglist <- arglist[!sapply(arglist, is.null)]
       for (arg_formal in names(arglist)) {
         arg_mapped <- arglist[[arg_formal]]
         if (arg_mapped == "conc") {
