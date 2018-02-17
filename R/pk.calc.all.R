@@ -43,8 +43,35 @@ pk.nca <- function(data) {
                (!is.null(x$intervals)) &&
                  (nrow(x$intervals) > 0)
              })
+    mask_has_dose <-
+      sapply(splitdata,
+             FUN=function(x) {
+               !is.null(x$dose)
+             })
+    mask_has_conc <-
+      sapply(splitdata,
+             FUN=function(x) {
+               !is.null(x$conc)
+             })
     if (any(!mask_has_interval)) {
       message(sum(!mask_has_interval), " groups have no interval calculations requested.")
+    }
+    if (any(mask_missing_dose <- !mask_has_dose & mask_has_conc & mask_has_interval)) {
+      missing_groups <- list()
+      for (current_idx in which(mask_missing_dose)) {
+        tmp_dose_data <- unique(getGroups(splitdata[[current_idx]]$conc))
+        splitdata[[current_idx]]$dose <-
+          PKNCAdose(data=tmp_dose_data,
+                    formula=as.formula(
+                      paste0(".~.|",
+                             paste(names(tmp_dose_data), collapse="+"))))
+        missing_groups <- append(missing_groups, tmp_dose_data)
+      }
+      warning("The following intervals are missing dosing data:\n",
+              paste(
+                capture.output(
+                  print(as.data.frame(bind_rows(missing_groups)))),
+                collapse="\n"))
     }
     ## Calculate the results
     tmp.results <- list()

@@ -344,3 +344,20 @@ test_that("pk.nca can calculate values with group-level data", {
                as.data.frame(myres_observe)$PPORRES,
                info="Manually imputing values gives the same result as aucint")
 })
+
+test_that("Missing dose info for some subjects gives a warning, not a difficult-to-interpret error", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)[1,]
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <-  PKNCAdata(myconc, mydose,
+                       intervals=data.frame(start=0, end=24,
+                                            cl.last=TRUE))
+  expect_warning(myresult <- pk.nca(mydata),
+                 regexp="The following intervals are missing dosing data:",
+                 fixed=TRUE,
+                 info="Warning is issued when dose data are missing for an interval but provided for some data.")
+  expect_true(all(is.na(myresult$result[["PPORRES"]]) == c(FALSE, FALSE, FALSE, TRUE)) &
+                all(myresult$result[["PPTESTCD"]] == rep(c("auclast", "cl.last"), 2)),
+              info="cl.last is not calculated when dose information is missing, but only for the subject where dose info is missing.")
+})
