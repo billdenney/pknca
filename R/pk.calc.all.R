@@ -15,7 +15,7 @@ pk.nca <- function(data) {
   } else {
     if (identical(NA, data$dose)) {
       # If no dose information is given, add NULL dose information.
-      message("No dose information provided, assuming default dosing information.")
+      message("No dose information provided, calculations requiring dose will return NA.")
       tmp.dose.data <- unique(getGroups(data$conc))
       data$dose <-
         PKNCAdose(data=tmp.dose.data,

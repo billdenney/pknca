@@ -192,8 +192,8 @@ test_that("Calculations when no dose info is given", {
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
   mydata <- PKNCAdata(myconc, intervals=data.frame(start=0, end=24, cmax=TRUE, cl.last=TRUE))
   expect_message(myresult <- pk.nca(mydata),
-                 regexp="No dose information provided, assuming default dosing information.",
-                 info="Default dosing information is assumed if no dosing information is given.")
+                 regexp="No dose information provided, calculations requiring dose will return NA.",
+                 info="Dosing information not required.")
   expect_equal(myresult$result,
                data.frame(start=0,
                           end=24,
