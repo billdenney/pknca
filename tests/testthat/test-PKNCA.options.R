@@ -353,6 +353,15 @@ test_that("PKNCA.set.summary input checking", {
   }
 })
 
+test_that("PKNCA.set.summary exists for all paramters", {
+  missing_summaries <-
+    setdiff(setdiff(names(get.interval.cols()),
+                    names(PKNCA.set.summary())),
+            c("start", "end"))
+  expect_true(length(missing_summaries) == 0,
+              info="All parameters have summary functions")
+})
+
 test_that("PKNCA.options.describe", {
   expect_equal(PKNCA:::PKNCA.options.describe("adj.r.squared.factor"),
                PKNCA:::.PKNCA.option.check[["adj.r.squared.factor"]](description=TRUE),

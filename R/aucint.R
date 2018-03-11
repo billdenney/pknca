@@ -227,7 +227,7 @@ add.interval.col("aucint.last.dose",
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c())
-PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
+PKNCA.set.summary("aucint.last.dose", business.geomean, business.geocv)
 
 add.interval.col("aucint.all",
                  FUN="pk.calc.aucint.all",
@@ -243,7 +243,7 @@ add.interval.col("aucint.all.dose",
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c())
-PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
+PKNCA.set.summary("aucint.all.dose", business.geomean, business.geocv)
 
 add.interval.col("aucint.inf.obs",
                  FUN="pk.calc.aucint.inf.obs",
@@ -251,7 +251,7 @@ add.interval.col("aucint.inf.obs",
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
                  depends=c("lambda.z", "clast.obs"))
-PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
+PKNCA.set.summary("aucint.inf.obs", business.geomean, business.geocv)
 
 add.interval.col("aucint.inf.obs.dose",
                  FUN="pk.calc.aucint.inf.obs",
@@ -259,7 +259,7 @@ add.interval.col("aucint.inf.obs.dose",
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c("lambda.z", "clast.obs"))
-PKNCA.set.summary("aucint.last", business.geomean, business.geocv)
+PKNCA.set.summary("aucint.inf.obs.dose", business.geomean, business.geocv)
 
 add.interval.col("aucint.inf.pred",
                  FUN="pk.calc.aucint.inf.pred",
@@ -267,7 +267,7 @@ add.interval.col("aucint.inf.pred",
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
                  depends=c("lambda.z", "clast.pred"))
-PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
+PKNCA.set.summary("aucint.inf.pred", business.geomean, business.geocv)
 
 add.interval.col("aucint.inf.pred.dose",
                  FUN="pk.calc.aucint.inf.pred",
@@ -275,4 +275,4 @@ add.interval.col("aucint.inf.pred.dose",
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
                  formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
                  depends=c("lambda.z", "clast.pred"))
-PKNCA.set.summary("aucint.all", business.geomean, business.geocv)
+PKNCA.set.summary("aucint.inf.pred.dose", business.geomean, business.geocv)

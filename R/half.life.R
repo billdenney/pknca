@@ -229,11 +229,13 @@ add.interval.col("r.squared",
                  values=c(FALSE, TRUE),
                  desc="The r^2 value of the half-life calculation",
                  depends=c("half.life"))
+PKNCA.set.summary("r.squared", business.mean, business.sd)
 add.interval.col("adj.r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The adjusted r^2 value of the half-life calculation",
                  depends=c("half.life"))
+PKNCA.set.summary("adj.r.squared", business.mean, business.sd)
 add.interval.col("lambda.z",
                  FUN=NA,
                  values=c(FALSE, TRUE),
@@ -245,6 +247,7 @@ add.interval.col("lambda.z.time.first",
                  values=c(FALSE, TRUE),
                  desc="The first time point used for the calculation of half-life",
                  depends=c("half.life"))
+PKNCA.set.summary("lambda.z.time.first", business.median, business.range)
 add.interval.col("lambda.z.n.points",
                  FUN=NA,
                  values=c(FALSE, TRUE),

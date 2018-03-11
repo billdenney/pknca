@@ -538,7 +538,7 @@ add.interval.col("mrt.md.pred",
                  desc="The mean residence time with multiple dosing and nonlinear kinetics using predicted Clast",
                  formalsmap=list(auctau="auclast", aumctau="aumclast", aucinf="aucinf.pred"),
                  depends=c("auclast", "aumclast", "aucinf.pred"))
-PKNCA.set.summary("mrt.md.obs", business.geomean, business.geocv)
+PKNCA.set.summary("mrt.md.pred", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
