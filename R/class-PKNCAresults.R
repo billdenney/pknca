@@ -144,9 +144,11 @@ summary.PKNCAresults <- function(object, ...,
   summaryInstructions <- PKNCA.set.summary()
   ## Find any parameters that request any summaries
   resultDataCols <- 
-    lapply(object$data$intervals[,setdiff(names(object$data$intervals),
-                                          c(groups, drop.group,
-                                            "start", "end")),
+    lapply(object$data$intervals[,
+                                 setdiff(
+                                   intersect(names(object$data$intervals),
+                                             names(get.interval.cols())),
+                                   c("start", "end")),
                                  drop=FALSE],
            FUN=any)
   resultDataCols <- as.data.frame(resultDataCols[unlist(resultDataCols)])
@@ -179,6 +181,9 @@ summary.PKNCAresults <- function(object, ...,
             ret$N[i] <- max(ret$N[i], nrow(currentData), na.rm=TRUE)
           }
           ## Calculation is required
+          if (is.null(summaryInstructions[[n]])) {
+            stop("No summary function is set for parameter ", n, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
+          }
           point <- summaryInstructions[[n]]$point(
             currentData$PPORRES)
           na.point <- is.na(point)
