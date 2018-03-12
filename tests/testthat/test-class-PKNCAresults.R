@@ -64,6 +64,26 @@ test_that("PKNCAresults generation", {
                tidyr::spread_(verify.result, "PPTESTCD", "PPORRES"),
                tol=0.001,
                info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)")
+
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals=data.frame(start=0, end=12, aucint.inf.obs=TRUE))
+  myresult <- pk.nca(mydata)
+
+  tmpconc12 <- tmpconc
+  tmpconc12$time <- tmpconc$time + 12
+  tmpdose12 <- generate.dose(tmpconc12)
+  myconc12 <- PKNCAconc(tmpconc12, formula=conc~time|treatment+ID)
+  mydose12 <- PKNCAdose(tmpdose12, formula=dose~time|treatment+ID)
+  mydata12 <- PKNCAdata(myconc12, mydose12, intervals=data.frame(start=12, end=24, aucint.inf.obs=TRUE))
+  myresult12 <- pk.nca(mydata12)
+  comparison_orig <- as.data.frame(myresult)
+  comparison_12 <- as.data.frame(myresult12)
+  expect_equal(comparison_orig$PPORRES[comparison_orig$PPTESTCD %in% "aucint.inf.obs"],
+               comparison_12$PPORRES[comparison_12$PPTESTCD %in% "aucint.inf.obs"],
+               info="Time shift does not affect aucint calculations.")
 })
 
 test_that("PKNCAresults summary", {

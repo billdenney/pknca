@@ -358,7 +358,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         } else if (arg_mapped == "time.group") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg_formal]] <- time.group - interval$start[1]
+          call.args[[arg_formal]] <- time.group
         } else if (arg_mapped == "volume.group") {
           call.args[[arg_formal]] <- volume.group
         } else if (arg_mapped == "duration.conc.group") {
@@ -368,7 +368,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         } else if (arg_mapped == "time.dose.group") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg_formal]] <- time.dose.group - interval$start[1]
+          call.args[[arg_formal]] <- time.dose.group
         } else if (arg_mapped == "duration.dose.group") {
           call.args[[arg_formal]] <- duration.dose.group
         } else if (arg_mapped == "route.group") {
