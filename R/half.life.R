@@ -1,5 +1,6 @@
 #' Compute the half-life and associated parameters
 #' 
+#' @details 
 #' If \code{manually.selected.points} is \code{FALSE} (default), the
 #' half-life is calculated by computing the best fit line for all 
 #' available sets of points.  The best one is chosen by the following 

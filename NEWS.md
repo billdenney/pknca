@@ -9,6 +9,7 @@ the dosing including dose amount and route.
 * Cleaned AUCint names
 * Added dose-count within interval (to warn of multiple doses within an
   interval)
+* Various documentation updates
 
 # PKNCA 0.8.4
 

@@ -73,12 +73,14 @@ A data frame with one row and columns for
  }
 }
 \description{
+Compute the half-life and associated parameters
+}
+\details{
 If \code{manually.selected.points} is \code{FALSE} (default), the
 half-life is calculated by computing the best fit line for all 
 available sets of points.  The best one is chosen by the following 
 rules in order:
-}
-\details{
+
 \itemize{
  \item{At least \code{min.hl.points} points included} 
  \item{A \code{lambda.z} > 0}
