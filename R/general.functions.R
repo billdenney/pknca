@@ -75,37 +75,53 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
   }
 }
 
-#' Round a value to a defined number of digits printing out trailing
-#' zeros, if applicable.
+#' Round a value to a defined number of digits printing out trailing zeros, if
+#' applicable.
 #'
 #' @param x The number to round
 #' @param digits integer indicating the number of decimal places
+#' @param si_range See help for \code{\link{signifString}} (and you likely want
+#'   to round with \code{signifString} if you want to use this argument)
 #' @return A string with the value
 #' @details Values that are not standard numbers like \code{Inf}, \code{NA}, and
 #'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{round}}, \code{\link{signifString}}
 #' @export
-roundString <- function(x, digits=0) {
+roundString <- function(x, digits=0, si_range=Inf) {
   if (length(digits) == 1) {
-    mask.na <- is.na(x)
-    mask.aschar <- is.nan(x) | is.infinite(x)
-    mask.manip <- !(mask.na | mask.aschar)
+    mask_na <- is.na(x)
+    mask_aschar <- is.nan(x) | is.infinite(x)
+    mask_manip <- !(mask_na | mask_aschar)
     ret <- rep(NA, length(x))
     ## Put in the special values
-    if (any(mask.na)) {
-      ret[mask.na] <- "NA"
+    if (any(mask_na)) {
+      ret[mask_na] <- "NA"
     }
-    if (any(mask.aschar)) {
-      ret[mask.aschar] <- as.character(x[mask.aschar])
+    if (any(mask_aschar)) {
+      ret[mask_aschar] <- as.character(x[mask_aschar])
     }
-    if (any(mask.manip)) {
-      xtmp <- x[mask.manip]
-      if (digits < 0) {
-        ret[mask.manip] <-
-          formatC(round(xtmp, digits), format='f', digits=0)
-      } else {
-        ret[mask.manip] <-
-          formatC(round(xtmp, digits), format='f', digits=digits)
+    if (any(mask_manip)) {
+      xtmp <- round(x[mask_manip], digits)
+      mask_si <-
+        xtmp != 0 &
+        abs(log10(abs(xtmp))) >= si_range
+      mask_no_si <- !mask_si
+      if (any(mask_si)) {
+        logval <- floor(log10(abs(xtmp[mask_si])))
+        ret[mask_manip][mask_si] <-
+          paste0(
+            formatC(xtmp[mask_si]/10^logval, format="f", digits=digits + logval),
+            "e",
+            formatC(logval, format="d"))
+      }
+      if (any(mask_no_si)) {
+        if (digits < 0) {
+          ret[mask_manip][mask_no_si] <-
+            formatC(xtmp[mask_no_si], format='f', digits=0)
+        } else {
+          ret[mask_manip][mask_no_si] <-
+            formatC(xtmp[mask_no_si], format='f', digits=digits)
+        }
       }
     }
     ret
@@ -118,24 +134,28 @@ roundString <- function(x, digits=0) {
 
 #' Round a value to a defined number of significant digits printing out trailing
 #' zeros, if applicable.
-#' 
+#'
 #' @param x The number to round
 #' @param digits integer indicating the number of significant digits
+#' @param si_range integer (or \code{Inf}) indicating when to switch to
+#'   scientific notation instead of floating point. Zero indicates always use
+#'   scientific; \code{Inf} indicates to never use scientific notation;
+#'   otherwise, scientific notation is used when \code{abs(log10(x)) > si_range}.
 #' @return A string with the value
 #' @details Values that are not standard numbers like \code{Inf}, \code{NA}, and
 #'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
-signifString <- function(x, digits=6) 
+signifString <- function(x, digits=6, si_range=6) 
   UseMethod("signifString")
 
 #' @rdname signifString
 #' @export
-signifString.data.frame <- function(x, digits=6) {
+signifString.data.frame <- function(x, digits=6, si_range=6) {
   ret <- lapply(x,
                 function(y, digits) {
                   if (is.numeric(y) & !is.factor(y)) {
-                    signifString(y, digits)
+                    signifString(x=y, digits=digits, si_range=si_range)
                   } else {
                     y
                   }
@@ -150,20 +170,20 @@ signifString.data.frame <- function(x, digits=6) {
 
 #' @rdname signifString
 #' @export
-signifString.default <- function(x, digits=6) {
-  mask.na <- is.na(x)
-  mask.aschar <- is.nan(x) | is.infinite(x)
-  mask.manip <- !(mask.na | mask.aschar)
+signifString.default <- function(x, digits=6, si_range=6) {
+  mask_na <- is.na(x)
+  mask_aschar <- is.nan(x) | is.infinite(x)
+  mask_manip <- !(mask_na | mask_aschar)
   ret <- rep(NA, length(x))
   ## Put in the special values
-  if (any(mask.na)) {
-    ret[mask.na] <- "NA"
+  if (any(mask_na)) {
+    ret[mask_na] <- "NA"
   }
-  if (any(mask.aschar)) {
-    ret[mask.aschar] <- as.character(x[mask.aschar])
+  if (any(mask_aschar)) {
+    ret[mask_aschar] <- as.character(x[mask_aschar])
   }
-  if (any(mask.manip)) {
-    xtmp <- x[mask.manip]
+  if (any(mask_manip)) {
+    xtmp <- x[mask_manip]
     toplog <- bottomlog <- rep(NA, length(xtmp))
     ## When 0 give the digits as the output
     bottomlog[xtmp %in% 0] <- digits
@@ -186,7 +206,7 @@ signifString.default <- function(x, digits=6) {
     mask.move.up <- toplog < newtoplog
     bottomlog[mask.move.up] <- bottomlog[mask.move.up] - 1
     ## Do the rounding
-    ret[mask.manip] <- roundString(xtmp, digits=bottomlog)
+    ret[mask_manip] <- roundString(xtmp, digits=bottomlog, si_range=si_range)
   }
   ret
 }

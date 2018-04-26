@@ -7,16 +7,21 @@
 \title{Round a value to a defined number of significant digits printing out trailing
 zeros, if applicable.}
 \usage{
-signifString(x, digits = 6)
+signifString(x, digits = 6, si_range = 6)
 
-\method{signifString}{data.frame}(x, digits = 6)
+\method{signifString}{data.frame}(x, digits = 6, si_range = 6)
 
-\method{signifString}{default}(x, digits = 6)
+\method{signifString}{default}(x, digits = 6, si_range = 6)
 }
 \arguments{
 \item{x}{The number to round}
 
 \item{digits}{integer indicating the number of significant digits}
+
+\item{si_range}{integer (or \code{Inf}) indicating when to switch to
+scientific notation instead of floating point. Zero indicates always use
+scientific; \code{Inf} indicates to never use scientific notation;
+otherwise, scientific notation is used when \code{abs(log10(x)) > si_range}.}
 }
 \value{
 A string with the value

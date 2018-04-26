@@ -57,18 +57,21 @@ test_that("Rounding", {
   ## Respecting the digits
   expect_equal(roundString(0.05, 3), "0.050")
   expect_equal(roundString(123.05, 3), "123.050")
-  ## Vectors work with different orders of magnitude work
-  expect_equal(roundString(c(100, 0.1), 3), c("100.000", "0.100"))
-  ## Vectors of digits work
-  expect_equal(roundString(c(100, 0.1), c(0, 3)), c("100", "0.100"))
-  ## Mixed inputs (NA, NaN, Inf or numeric)
-  expect_equal(roundString(NA), "NA")
-  expect_equal(roundString(c(0.1, NA), digits=3), c("0.100", "NA"))
+  expect_equal(roundString(c(100, 0.1), 3), c("100.000", "0.100"),
+               info="Vectors work with different orders of magnitude work")
+  expect_equal(roundString(c(100, 0.1), c(0, 3)), c("100", "0.100"),
+               info="Vectors of digits work")
+  expect_equal(roundString(c(0.1, NA), digits=3), c("0.100", "NA"),
+               info="Mixed inputs (NA, NaN, Inf or numeric), NA")
   expect_equal(roundString(c(0.1, NA, NaN, Inf, -Inf), digits=3),
-               c("0.100", "NA", "NaN", "Inf", "-Inf"))
+               c("0.100", "NA", "NaN", "Inf", "-Inf"),
+               info="Mixed inputs (NA, NaN, Inf or numeric)")
   ## All zeros
   expect_equal(roundString(0, digits=3), "0.000")
   expect_equal(roundString(c(0, NA), digits=3), c("0.000", "NA"))
+  # scientific notation
+  expect_equal(roundString(1234567, digits=3, si_range=5), "1.234567000e6",
+               info="si_range works with roundString (even if it looks odd)")
 })
 
 test_that("Significance", {
@@ -83,7 +86,13 @@ test_that("Significance", {
   expect_equal(signifString(0.05, 3), "0.0500")
   expect_equal(signifString(123.05, 3), "123")
   expect_equal(signifString(123456.05, 3), "123000")
-  expect_equal(signifString(-123000.05, 3), "-123000")
+  expect_equal(signifString(123456.05, 3, si_range=6), "123000")
+  expect_equal(signifString(123456.05, 3, si_range=5), "1.23e5")
+  expect_equal(signifString(-123000.05, 3, si_range=5), "-1.23e5")
+  expect_equal(signifString(999999, 3, si_range=6), "1.00e6",
+               info="Rounding around the edge of the si_range works correctly (going up)")
+  expect_equal(signifString(999999, 7, si_range=6), "999999.0",
+               info="Rounding around the edge of the si_range works correctly (going staying the same)")
   expect_equal(signifString(-.05, 3), "-0.0500")
   ## Exact orders of magnitude work on both sides of 0
   expect_equal(signifString(0.01, 3), "0.0100")

@@ -10,6 +10,8 @@ the dosing including dose amount and route.
 * Added dose-count within interval (to warn of multiple doses within an
   interval)
 * Various documentation updates
+* signifString and roundString now by default use scientific notation
+  for values >=1e6 and <=1e-6
 
 # PKNCA 0.8.4
 
