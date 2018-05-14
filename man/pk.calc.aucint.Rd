@@ -12,9 +12,8 @@ interval.}
 \usage{
 pk.calc.aucint(conc, time, interval = NULL, start = NULL, end = NULL,
   clast = pk.calc.clast.obs(conc, time), lambda.z = NA, time.dose = NULL,
-  route = "extravascular", duration.dose = 0,
-  method = PKNCA.choose.option("auc.method", options), auc.type = "AUClast",
-  ..., options = list())
+  route = "extravascular", duration.dose = 0, method = NULL,
+  auc.type = "AUClast", ..., options = list())
 
 pk.calc.aucint.last(conc, time, start = NULL, end = NULL, time.dose, ...,
   options = list())

@@ -21,10 +21,12 @@
 pk.tss.data.prep <- function(conc, time, subject, treatment,
                              subject.dosing, time.dosing,
                              options=list(),
-                             conc.blq=PKNCA.choose.option("conc.blq", options),
-                             conc.na=PKNCA.choose.option("conc.na", options),
+                             conc.blq=NULL,
+                             conc.na=NULL,
                              check=TRUE, ...) {
   ## Check inputs
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     ## When subject and time are given, then monotonicity tests for
     ## time are not required.

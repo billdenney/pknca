@@ -82,11 +82,11 @@ superposition.numeric <- function(conc, time, dose.input,
                                   lambda.z, clast.pred=FALSE, tlast,
                                   additional.times=c(),
                                   check.blq=TRUE,
-                                  interp.method=PKNCA.choose.option("auc.method",
-                                    options),
+                                  interp.method=NULL,
                                   extrap.method="AUCinf",
                                   steady.state.tol=1e-3, ...) {
   ## Check the inputs
+  interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
   ## Concentration and time
   check.conc.time(conc, time)
   if (check.blq)

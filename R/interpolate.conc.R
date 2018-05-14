@@ -87,12 +87,16 @@ interp.extrap.conc <- function(conc, time, time.out,
                                lambda.z=NA,
                                clast=pk.calc.clast.obs(conc, time),
                                options=list(),
-                               interp.method=PKNCA.choose.option("auc.method", options),
+                               interp.method=NULL,
                                extrap.method="AUCinf",
                                ...,
-                               conc.blq=PKNCA.choose.option("conc.blq", options),
-                               conc.na=PKNCA.choose.option("conc.na", options),
+                               conc.blq=NULL,
+                               conc.na=NULL,
                                check=TRUE) {
+  # Check inputs
+  interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     check.conc.time(conc, time)
     data <- clean.conc.blq(conc, time,
@@ -130,13 +134,16 @@ interp.extrap.conc <- function(conc, time, time.out,
 #' @export
 interpolate.conc <- function(conc, time, time.out,
                              options=list(),
-                             interp.method=PKNCA.choose.option("auc.method", options),
-                             conc.blq=PKNCA.choose.option("conc.blq", options),
-                             conc.na=PKNCA.choose.option("conc.na", options),
+                             interp.method=NULL,
+                             conc.blq=NULL,
+                             conc.na=NULL,
                              conc.origin=0,
                              ...,
                              check=TRUE) {
   ## Check the inputs
+  interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     check.conc.time(conc, time)
     data <- clean.conc.blq(conc, time,
@@ -204,10 +211,12 @@ extrapolate.conc <- function(conc, time, time.out,
                              lambda.z=NA, clast=pk.calc.clast.obs(conc, time),
                              extrap.method="AUCinf",
                              options=list(),
-                             conc.na=PKNCA.choose.option("conc.na", options),
-                             conc.blq=PKNCA.choose.option("conc.blq", options),
+                             conc.na=NULL,
+                             conc.blq=NULL,
                              ...,
                              check=TRUE) {
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
     check.conc.time(conc, time)
     data <- clean.conc.blq(conc, time, conc.na=conc.na, check=FALSE)
@@ -284,10 +293,13 @@ interp.extrap.conc.dose <- function(conc, time,
                                     time.dose, route.dose="extravascular", duration.dose=NA,
                                     time.out, out.after=FALSE,
                                     options=list(),
-                                    conc.blq=PKNCA.choose.option("conc.blq", options),
-                                    conc.na=PKNCA.choose.option("conc.na", options),
+                                    conc.blq=NULL,
+                                    conc.na=NULL,
                                     ...,
                                     check=TRUE) {
+  # Check inputs
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
     check.conc.time(conc, time)
     data_conc <-

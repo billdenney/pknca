@@ -303,13 +303,14 @@
 #'   validation of the values when used in another function)
 #' @param name An option name to use with the \code{value}.
 #' @param value An option value (paired with the \code{name}) to set or
-#'   check.
-#' @return If... \describe{ \item{no arguments are given}{returns the
-#' current options.} \item{a value is set (including the
-#' defaults)}{returns \code{NULL}} \item{a single value is
-#' requested}{the current value of that option is returned as a scalar} 
-#' \item{multiple values are requested}{the current values of those
-#' options are returned as a list} }
+#'   check (if \code{NULL}, ).
+#' @return If...
+#' \describe{
+#'   \item{no arguments are given}{returns the current options.}
+#'   \item{a value is set (including the defaults)}{returns \code{NULL}}
+#'   \item{a single value is requested}{the current value of that option is returned as a scalar} 
+#'   \item{multiple values are requested}{the current values of those options are returned as a list}
+#' }
 #' @seealso \code{\link{PKNCA.choose.option}}
 #' @examples
 #' 
@@ -394,17 +395,21 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE, name, value) {
   }
 }
 
-#' Choose either the value from an option list or the current set
-#' value for an option.
+#' Choose either the value from an option list or the current set value for an
+#' option.
 #'
 #' @param name The option name requested.
+#' @param value A value to check for the option (\code{NULL} to choose not to
+#'   check the value).
 #' @param options The non-default options to choose from.
-#' @return The value of the option first from the \code{options} list
-#' and if it is not there then from the current settings.
+#' @return The value of the option first from the \code{options} list and if it
+#'   is not there then from the current settings.
 #' @seealso \code{\link{PKNCA.options}}
 #' @export
-PKNCA.choose.option <- function(name, options=list())
-  if (name %in% names(options)) {
+PKNCA.choose.option <- function(name, value=NULL, options=list())
+  if (!is.null(value)) {
+    PKNCA.options(name=name, value=value, check=TRUE)
+  } else if (name %in% names(options)) {
     PKNCA.options(name=name, value=options[[name]], check=TRUE)
   } else {
     PKNCA.options(name)

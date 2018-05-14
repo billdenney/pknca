@@ -6,8 +6,7 @@
 frame for use by the tss calculators.}
 \usage{
 pk.tss.data.prep(conc, time, subject, treatment, subject.dosing, time.dosing,
-  options = list(), conc.blq = PKNCA.choose.option("conc.blq", options),
-  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE, ...)
+  options = list(), conc.blq = NULL, conc.na = NULL, check = TRUE, ...)
 }
 \arguments{
 \item{conc}{Concentration measured}

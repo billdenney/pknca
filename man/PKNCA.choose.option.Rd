@@ -2,23 +2,26 @@
 % Please edit documentation in R/PKNCA.options.R
 \name{PKNCA.choose.option}
 \alias{PKNCA.choose.option}
-\title{Choose either the value from an option list or the current set
-value for an option.}
+\title{Choose either the value from an option list or the current set value for an
+option.}
 \usage{
-PKNCA.choose.option(name, options = list())
+PKNCA.choose.option(name, value = NULL, options = list())
 }
 \arguments{
 \item{name}{The option name requested.}
 
+\item{value}{A value to check for the option (\code{NULL} to choose not to
+check the value).}
+
 \item{options}{The non-default options to choose from.}
 }
 \value{
-The value of the option first from the \code{options} list
-and if it is not there then from the current settings.
+The value of the option first from the \code{options} list and if it
+  is not there then from the current settings.
 }
 \description{
-Choose either the value from an option list or the current set
-value for an option.
+Choose either the value from an option list or the current set value for an
+option.
 }
 \seealso{
 \code{\link{PKNCA.options}}

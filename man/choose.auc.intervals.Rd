@@ -5,7 +5,7 @@
 \title{Choose intervals to compute AUCs from time and dosing information}
 \usage{
 choose.auc.intervals(time.conc, time.dosing, options = list(),
-  single.dose.aucs = PKNCA.choose.option("single.dose.aucs", options))
+  single.dose.aucs = NULL)
 }
 \arguments{
 \item{time.conc}{Time of concentration measurement}

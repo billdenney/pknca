@@ -322,7 +322,11 @@ test_that("interpolate.conc", {
                                 time=0:1,
                                 time.out=0.5,
                                 interp.method="this doesn't work"),
-               regexp="interp.method must be one of 'linear' or 'lin up/log down'",
+               regexp=tryCatch(expr={
+                 match.arg("foo", choices=c("lin up/log down", "linear"))
+               },
+               error=function(e) e)$message,
+               fixed=TRUE,
                info="Confirm that invalid interpolation methods are an error.")
 
   expect_error(interpolate.conc(conc=0:1,

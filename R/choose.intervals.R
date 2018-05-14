@@ -29,7 +29,9 @@
 #' @export
 choose.auc.intervals <- function(time.conc, time.dosing,
                                  options=list(),
-                                 single.dose.aucs=PKNCA.choose.option("single.dose.aucs", options)) {
+                                 single.dose.aucs=NULL) {
+  # Check inputs
+  single.dose.aucs <- PKNCA.choose.option(name="single.dose.aucs", value=single.dose.aucs, options=options)
   if (any(is.na(time.conc)))
     stop("time.conc may not have any NA values")
   if (any(is.na(time.dosing)))
@@ -127,7 +129,9 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' @export
 find.tau <- function(x, na.action=na.omit,
                      options=list(),
-                     tau.choices=PKNCA.choose.option("tau.choices", options)) {
+                     tau.choices=NULL) {
+  # Check inputs
+  tau.choices <- PKNCA.choose.option(name="tau.choices", value=tau.choices, options=options)
   ret <- NA
   x <- na.action(x)
   if (length(unique(x)) == 1) {

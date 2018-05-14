@@ -4,8 +4,8 @@
 \alias{pk.calc.tmax}
 \title{Determine time of maximum observed PK concentration}
 \usage{
-pk.calc.tmax(conc, time, options = list(),
-  first.tmax = PKNCA.choose.option("first.tmax", options), check = TRUE)
+pk.calc.tmax(conc, time, options = list(), first.tmax = NULL,
+  check = TRUE)
 }
 \arguments{
 \item{conc}{Concentration measured}

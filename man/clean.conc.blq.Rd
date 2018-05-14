@@ -5,9 +5,8 @@
 \title{Handle BLQ values in the concentration measurements as requested by 
 the user.}
 \usage{
-clean.conc.blq(conc, time, ..., options = list(),
-  conc.blq = PKNCA.choose.option("conc.blq", options),
-  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
+clean.conc.blq(conc, time, ..., options = list(), conc.blq = NULL,
+  conc.na = NULL, check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}

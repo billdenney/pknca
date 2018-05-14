@@ -10,25 +10,20 @@ concentrations after the last measurement.}
 \usage{
 interp.extrap.conc(conc, time, time.out, lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time), options = list(),
-  interp.method = PKNCA.choose.option("auc.method", options),
-  extrap.method = "AUCinf", ..., conc.blq = PKNCA.choose.option("conc.blq",
-  options), conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
+  interp.method = NULL, extrap.method = "AUCinf", ..., conc.blq = NULL,
+  conc.na = NULL, check = TRUE)
 
 interpolate.conc(conc, time, time.out, options = list(),
-  interp.method = PKNCA.choose.option("auc.method", options),
-  conc.blq = PKNCA.choose.option("conc.blq", options),
-  conc.na = PKNCA.choose.option("conc.na", options), conc.origin = 0, ...,
-  check = TRUE)
+  interp.method = NULL, conc.blq = NULL, conc.na = NULL,
+  conc.origin = 0, ..., check = TRUE)
 
 extrapolate.conc(conc, time, time.out, lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time), extrap.method = "AUCinf",
-  options = list(), conc.na = PKNCA.choose.option("conc.na", options),
-  conc.blq = PKNCA.choose.option("conc.blq", options), ..., check = TRUE)
+  options = list(), conc.na = NULL, conc.blq = NULL, ..., check = TRUE)
 
 interp.extrap.conc.dose(conc, time, time.dose, route.dose = "extravascular",
   duration.dose = NA, time.out, out.after = FALSE, options = list(),
-  conc.blq = PKNCA.choose.option("conc.blq", options),
-  conc.na = PKNCA.choose.option("conc.na", options), ..., check = TRUE)
+  conc.blq = NULL, conc.na = NULL, ..., check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}

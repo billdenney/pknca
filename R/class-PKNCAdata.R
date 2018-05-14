@@ -112,8 +112,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
             tmp.group,
             choose.auc.intervals(tmp.conc.dose[[i]]$conc$data[,indep.var.conc],
                                  tmp.conc.dose[[i]]$dose$data[,indep.var.dose],
-                                 single.dose.aucs=PKNCA.choose.option("single.dose.aucs",
-                                                                      options)))
+                                 options=options))
         intervals <-
           rbind(intervals, new.intervals)
       } else {

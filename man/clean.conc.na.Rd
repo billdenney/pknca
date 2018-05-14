@@ -5,8 +5,8 @@
 \title{Handle NA values in the concentration measurements as requested by 
 the user.}
 \usage{
-clean.conc.na(conc, time, ..., options = list(),
-  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE)
+clean.conc.na(conc, time, ..., options = list(), conc.na = NULL,
+  check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}

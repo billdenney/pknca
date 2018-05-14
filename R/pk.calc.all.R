@@ -33,7 +33,7 @@ pk.nca <- function(data) {
     }
     ## Merge the options into the default options.
     tmp.opt <- PKNCA.options()
-    tmp.opt[names(options)] <- data$options
+    tmp.opt[names(data$options)] <- data$options
     data$options <- tmp.opt
     splitdata <- split.PKNCAdata(data)
     # Calculations will only be performed when an interval is requested

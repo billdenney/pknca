@@ -12,6 +12,7 @@ the dosing including dose amount and route.
 * Various documentation updates
 * signifString and roundString now by default use scientific notation
   for values >=1e6 and <=1e-6
+* Fix bug in option handling within `pk.nca` (Fix #68)
 
 # PKNCA 0.8.4
 

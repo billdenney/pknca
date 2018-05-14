@@ -17,9 +17,9 @@
 #' @export
 clean.conc.na <- function(conc, time, ...,
                           options=list(),
-                          conc.na=PKNCA.choose.option("conc.na", options),
+                          conc.na=NULL,
                           check=TRUE) {
-  conc.na <- PKNCA.options(conc.na=conc.na, check=TRUE)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check)
     check.conc.time(conc, time)
   ## Prep it as a data frame
@@ -84,10 +84,11 @@ clean.conc.na <- function(conc, time, ...,
 clean.conc.blq <- function(conc, time,
                            ...,
                            options=list(),
-                           conc.blq=PKNCA.choose.option("conc.blq", options),
-                           conc.na=PKNCA.choose.option("conc.na", options),
+                           conc.blq=NULL,
+                           conc.na=NULL,
                            check=TRUE) {
-  conc.blq <- PKNCA.options(conc.blq=conc.blq, check=TRUE)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check)
     check.conc.time(conc, time)
   ## Handle NA concentrations and make the data frame

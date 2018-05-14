@@ -13,8 +13,8 @@ superposition(conc, ...)
 \method{superposition}{numeric}(conc, time, dose.input, tau, dose.times = 0,
   dose.amount, n.tau = Inf, options = list(), lambda.z,
   clast.pred = FALSE, tlast, additional.times = c(), check.blq = TRUE,
-  interp.method = PKNCA.choose.option("auc.method", options),
-  extrap.method = "AUCinf", steady.state.tol = 0.001, ...)
+  interp.method = NULL, extrap.method = "AUCinf",
+  steady.state.tol = 0.001, ...)
 }
 \arguments{
 \item{conc}{Concentration measured}

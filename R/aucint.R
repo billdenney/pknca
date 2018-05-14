@@ -36,9 +36,11 @@ pk.calc.aucint <- function(conc, time,
                            interval=NULL, start=NULL, end=NULL,
                            clast=pk.calc.clast.obs(conc, time), lambda.z=NA,
                            time.dose=NULL, route="extravascular", duration.dose=0,
-                           method=PKNCA.choose.option("auc.method", options),
+                           method=NULL,
                            auc.type="AUClast", ...,
                            options=list()) {
+  # Check inputs
+  method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
   if (is.null(interval)) {
     if (is.null(start) | is.null(end)) {
       stop("If interval is not given, start and end must be given.")

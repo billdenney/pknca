@@ -81,8 +81,9 @@ PKNCA.set.summary("cmin", business.geomean, business.geocv)
 #' @export
 pk.calc.tmax <- function(conc, time,
                          options=list(),
-                         first.tmax=PKNCA.choose.option("first.tmax", options),
+                         first.tmax=NULL,
                          check=TRUE) {
+  first.tmax <- PKNCA.choose.option(name="first.tmax", value=first.tmax, options=options)
   if (missing(conc))
     stop("conc must be given")
   if (missing(time))

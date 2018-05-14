@@ -70,19 +70,20 @@
 pk.calc.half.life <- function(conc, time, tmax, tlast,
                               manually.selected.points=FALSE,
                               options=list(),
-                              min.hl.points=PKNCA.choose.option("min.hl.points", options),
-                              adj.r.squared.factor=PKNCA.choose.option("adj.r.squared.factor", options),
-                              conc.blq=PKNCA.choose.option("conc.blq", options),
-                              conc.na=PKNCA.choose.option("conc.na", options),
-                              first.tmax=PKNCA.choose.option("first.tmax", options),
-                              allow.tmax.in.half.life=PKNCA.choose.option("allow.tmax.in.half.life", options),
+                              min.hl.points=NULL,
+                              adj.r.squared.factor=NULL,
+                              conc.blq=NULL,
+                              conc.na=NULL,
+                              first.tmax=NULL,
+                              allow.tmax.in.half.life=NULL,
                               check=TRUE) {
   ## Check inputs
-  min.hl.points <-
-    PKNCA.options(min.hl.points=min.hl.points, check=TRUE)
-  adj.r.squared.factor <-
-    PKNCA.options(adj.r.squared.factor=adj.r.squared.factor,
-                  check=TRUE)
+  min.hl.points <- PKNCA.choose.option(name="min.hl.points", value=min.hl.points, options=options)
+  adj.r.squared.factor <- PKNCA.choose.option(name="adj.r.squared.factor", value=adj.r.squared.factor, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
+  first.tmax <- PKNCA.choose.option(name="first.tmax", value=first.tmax, options=options)
+  allow.tmax.in.half.life <- PKNCA.choose.option(name="allow.tmax.in.half.life", value=allow.tmax.in.half.life, options=options)
   if (check) {
     check.conc.time(conc, time)
     data <- clean.conc.blq(conc, time, conc.blq=conc.blq, conc.na=conc.na)

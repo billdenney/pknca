@@ -69,13 +69,15 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                          lambda.z=NA,
                          auc.type="AUClast",
                          options=list(),
-                         method=PKNCA.choose.option("auc.method", options),
-                         conc.blq=PKNCA.choose.option("conc.blq", options),
-                         conc.na=PKNCA.choose.option("conc.na", options),
+                         method=NULL,
+                         conc.blq=NULL,
+                         conc.na=NULL,
                          check=TRUE,
                          fun.linear, fun.log, fun.inf) {
   ## Check the inputs
-  method <- PKNCA.options(auc.method=method, check=TRUE)
+  method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     check.conc.time(conc, time)
     data <- clean.conc.blq(conc, time,

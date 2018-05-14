@@ -21,11 +21,9 @@
 \usage{
 pk.calc.auxc(conc, time, interval = c(0, Inf),
   clast = pk.calc.clast.obs(conc, time, check = FALSE), lambda.z = NA,
-  auc.type = "AUClast", options = list(),
-  method = PKNCA.choose.option("auc.method", options),
-  conc.blq = PKNCA.choose.option("conc.blq", options),
-  conc.na = PKNCA.choose.option("conc.na", options), check = TRUE,
-  fun.linear, fun.log, fun.inf)
+  auc.type = "AUClast", options = list(), method = NULL,
+  conc.blq = NULL, conc.na = NULL, check = TRUE, fun.linear, fun.log,
+  fun.inf)
 
 pk.calc.auc(conc, time, ..., options = list())
 
