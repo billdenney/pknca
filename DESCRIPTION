@@ -1,7 +1,7 @@
 Package: PKNCA
 Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
-Version: 0.8.5
+Version: 0.8.5.9000
 Authors@R: c(
     person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre")),
     person("Clare", "Buckeridge", email="clare.buckeridge@pfizer.com", role="aut"),
@@ -9,7 +9,6 @@ Authors@R: c(
 Imports:
     dplyr (>= 0.5.0),
     digest,
-    plyr,
     nlme,
     parallel,
     lattice,
