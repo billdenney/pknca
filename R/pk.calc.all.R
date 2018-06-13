@@ -8,6 +8,8 @@
 #' in the concentration data.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}}
 #' @export
+#' @importFrom utils capture.output
+#' @importFrom dplyr bind_rows
 pk.nca <- function(data) {
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
@@ -70,7 +72,7 @@ pk.nca <- function(data) {
       warning("The following intervals are missing dosing data:\n",
               paste(
                 capture.output(
-                  print(as.data.frame(bind_rows(missing_groups)))),
+                  print(as.data.frame(dplyr::bind_rows(missing_groups)))),
                 collapse="\n"))
     }
     ## Calculate the results

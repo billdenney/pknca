@@ -34,9 +34,11 @@ five function calls can provide summarized results.  (Please note that this and 
 
 ```{r setup_data}
 library(PKNCA)
+library(dplyr, quietly=TRUE)
 
 ## Load the PK concentration data
-d.conc <- datasets::Theoph
+d.conc <- datasets::Theoph %>%
+  mutate(Subject=as.numeric(as.character(Subject)))
 ## Generate the dosing data
 d.dose <- d.conc[d.conc$Time == 0,]
 d.dose$Time <- 0

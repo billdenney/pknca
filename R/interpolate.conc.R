@@ -169,8 +169,6 @@ interpolate.conc <- function(conc, time, time.out,
     ret <- conc.origin
   } else if (time.out > tlast) {
     stop("interpolate.conc can only works through Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation.")
-  } else if (!(tolower(interp.method) %in% c("lin up/log down", "linear"))) {
-    stop("interp.method must be one of 'linear' or 'lin up/log down'")
   } else if (time.out %in% data$time) {
     ## See if there is an exact time match and return that if it
     ## exists.
