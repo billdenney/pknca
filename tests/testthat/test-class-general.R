@@ -15,8 +15,9 @@ test_that("getColumnValueorNot", {
 })
 
 test_that("setAttributeColumn", {
-  skip("Issue #226 in testthat prevents these tests from succeeding")
-  obj1 <- list(data=data.frame(A=1:3))
+  #skip("Issue #226 in testthat prevents these tests from succeeding")
+  obj1 <- structure(list(data=data.frame(A=1:3)),
+                    class="PKNCAconc")
   # Validation of inputs
   expect_error(setAttributeColumn(object=obj1,
                                   attr_name=c("A", "B")),
@@ -46,8 +47,9 @@ test_that("setAttributeColumn", {
                                             default_value=4),
                  regexp="Found column named A, using it for the attribute of the same name")
   expect_equal(val1,
-               list(data=data.frame(A=1:3),
-                    columns=list(A="A")),
+               structure(list(data=data.frame(A=rep(4, 3)),
+                              columns=list(A="A")),
+                         class="PKNCAconc"),
                info="col_name defaults to attr_name, column values are not automatically replaced")
   
   # Info provided back with *_if_default
@@ -70,24 +72,27 @@ test_that("setAttributeColumn", {
   expect_equal(setAttributeColumn(object=obj1,
                                   attr_name="foo",
                                   default_value=4),
-               list(data=data.frame(A=1:3,
-                                    foo=4),
-                    columns=list(foo="foo")),
+               structure(list(data=data.frame(A=1:3,
+                                              foo=4),
+                              columns=list(foo="foo")),
+                         class="PKNCAconc"),
                info="col_name defaults to attr_name, column values are added if the column doesn't exist")
   expect_equal(setAttributeColumn(object=obj1,
                                   attr_name="foo",
                                   col_name="bar",
                                   default_value=4),
-               list(data=data.frame(A=1:3,
-                                    bar=4),
-                    columns=list(foo="bar")),
+               structure(list(data=data.frame(A=1:3,
+                                              bar=4),
+                              columns=list(foo="bar")),
+                         class="PKNCAconc"),
                info="attr_name is set to col_name, column values are added if the column exists")
   expect_equal(setAttributeColumn(object=obj1,
                                   attr_name="foo",
                                   col_name="A",
                                   default_value=4),
-               list(data=data.frame(A=1:3),
-                    columns=list(foo="A")),
+               structure(list(data=data.frame(A=rep(4, 3)),
+                              columns=list(foo="A")),
+                         class="PKNCAconc"),
                info="attr_name is set to col_name, column values are not added if the column exists")
   obj2 <- setAttributeColumn(object=obj1,
                              attr_name="foo",
@@ -97,18 +102,20 @@ test_that("setAttributeColumn", {
                                   attr_name="bar",
                                   col_name="B",
                                   default_value=5),
-               list(data=data.frame(A=1:3,
-                                    B=5),
-                    columns=list(foo="A",
-                                 bar="B")),
+               structure(list(data=data.frame(A=rep(4, 3),
+                                              B=5),
+                              columns=list(foo="A",
+                                           bar="B")),
+                         class="PKNCAconc"),
                info="Adding a second attribute works")
   expect_equal(setAttributeColumn(object=obj2,
                                   attr_name="foo",
                                   col_name="B",
                                   default_value=5),
-               list(data=data.frame(A=1:3,
-                                    B=5),
-                    columns=list(foo="B")),
+               structure(list(data=data.frame(A=rep(4, 3),
+                                              B=5),
+                              columns=list(foo="B")),
+                         class="PKNCAconc"),
                info="Overwriting an attribute works and is non-destructive to the existing data")
 
   # col_or_value testing
@@ -139,16 +146,19 @@ test_that("setAttributeColumn", {
 })
 
 test_that("getAttributeColumn", {
-  skip("Issue #226 in testthat prevents these tests from succeeding")
-  obj1 <- list(data=data.frame(A=1:3,
-                               B=4:6),
-               columns=list(foo="A"))
-  obj2 <- list(data=data.frame(A=1:3,
-                               B=4:6),
-               columns=list(foo="A",
-                            bar=c("A", "B")))
-  obj3 <- list(data=data.frame(A=1:3),
-               columns=list(foo="C"))
+  #skip("Issue #226 in testthat prevents these tests from succeeding")
+  obj1 <- structure(list(data=data.frame(A=1:3,
+                                         B=4:6),
+                         columns=list(foo="A")),
+                    class="PKNCAconc")
+  obj2 <- structure(list(data=data.frame(A=1:3,
+                                         B=4:6),
+                         columns=list(foo="A",
+                                      bar=c("A", "B"))),
+                    class="PKNCAconc")
+  obj3 <- structure(list(data=data.frame(A=1:3),
+                         columns=list(foo="C")),
+                    class="PKNCAconc")
   expect_equal(getAttributeColumn(object=obj1, attr_name="foo"),
                data.frame(A=1:3),
                info="A data frame (not a vector) is returned")
