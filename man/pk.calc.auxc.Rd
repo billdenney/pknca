@@ -5,13 +5,10 @@
 \alias{pk.calc.auc}
 \alias{pk.calc.aumc}
 \alias{pk.calc.auc.last}
-\alias{pk.calc.auc}
-\alias{pk.calc.auc.last}
 \alias{pk.calc.auc.inf}
 \alias{pk.calc.auc.inf.obs}
 \alias{pk.calc.auc.inf.pred}
 \alias{pk.calc.auc.all}
-\alias{pk.calc.aumc}
 \alias{pk.calc.aumc.last}
 \alias{pk.calc.aumc.inf}
 \alias{pk.calc.aumc.inf.obs}

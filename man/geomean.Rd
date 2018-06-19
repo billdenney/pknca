@@ -2,8 +2,6 @@
 % Please edit documentation in R/002-pk.business.rules.R
 \name{geomean}
 \alias{geomean}
-\alias{geosd,}
-\alias{geocv}
 \alias{geosd}
 \alias{geocv}
 \title{Compute the geometric mean, sd, and CV}
