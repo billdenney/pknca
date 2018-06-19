@@ -8,8 +8,8 @@ test_that("parseFormula", {
   r1 <- list(model=~a,
              lhs=NA,
              rhs=as.name("a"),
-             groups=NA,
-             groupFormula=NA,
+             groups=NULL,
+             groupFormula=NULL,
              env=tmp.env)
   expect_equal(parseFormula(f1),
                r1,
@@ -20,8 +20,8 @@ test_that("parseFormula", {
   r2 <- list(model=a~b,
              lhs=as.name("a"),
              rhs=as.name("b"),
-             groups=NA,
-             groupFormula=NA,
+             groups=NULL,
+             groupFormula=NULL,
              env=tmp.env)
   expect_equal(parseFormula(f2),
                r2,
