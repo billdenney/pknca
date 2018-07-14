@@ -70,8 +70,17 @@ test_that("Rounding", {
   expect_equal(roundString(0, digits=3), "0.000")
   expect_equal(roundString(c(0, NA), digits=3), c("0.000", "NA"))
   # scientific notation
-  expect_equal(roundString(1234567, digits=3, si_range=5), "1.234567000e6",
-               info="si_range works with roundString (even if it looks odd)")
+  expect_equal(roundString(1234567, digits=3, sci_range=5), "1.234567000e6",
+               info="sci_range works with roundString (even if it looks odd)")
+  expect_warning(roundString(1234567, digits=3, si_range=5),
+                 regexp="The si_range argument is deprecated, please use sci_range",
+                 info="sci_range works with roundString (even if it looks odd)")
+  expect_equal(roundString(1234567, digits=3, si_range=5),
+               roundString(1234567, digits=3, sci_range=5),
+               info="sci_range works with roundString (even if it looks odd)")
+  expect_equal(roundString(1234567, digits=3, sci_range=5, sci_sep="x10^"),
+               "1.234567000x10^6",
+               info="sci_sep is respected.")
 })
 
 test_that("Significance", {
@@ -86,13 +95,18 @@ test_that("Significance", {
   expect_equal(signifString(0.05, 3), "0.0500")
   expect_equal(signifString(123.05, 3), "123")
   expect_equal(signifString(123456.05, 3), "123000")
-  expect_equal(signifString(123456.05, 3, si_range=6), "123000")
-  expect_equal(signifString(123456.05, 3, si_range=5), "1.23e5")
-  expect_equal(signifString(-123000.05, 3, si_range=5), "-1.23e5")
-  expect_equal(signifString(999999, 3, si_range=6), "1.00e6",
-               info="Rounding around the edge of the si_range works correctly (going up)")
-  expect_equal(signifString(999999, 7, si_range=6), "999999.0",
-               info="Rounding around the edge of the si_range works correctly (going staying the same)")
+  expect_warning(signifString(123456.05, 3, si_range=6),
+                regexp="The si_range argument is deprecated, please use sci_range")
+  expect_equal(signifString(123456.05, 3, sci_range=6),
+               signifString(123456.05, 3, si_range=6),
+               info="si_range and sci_range arguments are treated equally.")
+  expect_equal(signifString(123456.05, 3, sci_range=6), "123000")
+  expect_equal(signifString(123456.05, 3, sci_range=5), "1.23e5")
+  expect_equal(signifString(-123000.05, 3, sci_range=5), "-1.23e5")
+  expect_equal(signifString(999999, 3, sci_range=6), "1.00e6",
+               info="Rounding around the edge of the sci_range works correctly (going up)")
+  expect_equal(signifString(999999, 7, sci_range=6), "999999.0",
+               info="Rounding around the edge of the sci_range works correctly (going staying the same)")
   expect_equal(signifString(-.05, 3), "-0.0500")
   ## Exact orders of magnitude work on both sides of 0
   expect_equal(signifString(0.01, 3), "0.0100")
@@ -110,6 +124,10 @@ test_that("Significance", {
   ## All zeros
   expect_equal(signifString(0, digits=3), "0.000")
   expect_equal(signifString(c(0, NA), digits=3), c("0.000", "NA"))
+
+  expect_equal(signifString(1234567, digits=3, sci_range=5, sci_sep="x10^"),
+               "1.23x10^6",
+               info="sci_sep is respected.")
   
   # Data Frames
   expect_equal(signifString(data.frame(A=c(0, 1.111111),
@@ -123,4 +141,15 @@ test_that("Significance", {
                           stringsAsFactors=FALSE),
                check.attributes=FALSE,
                info="Data frame significance is calculated correctly")
+  expect_equal(signifString(data.frame(A=c(0, 1.111111),
+                                       B=factor(LETTERS[1:2]),
+                                       C=LETTERS[1:2],
+                                       stringsAsFactors=FALSE),
+                            digits=4),
+               data.frame(A=c("0.0000", "1.111"),
+                          B=factor(LETTERS[1:2]),
+                          C=LETTERS[1:2],
+                          stringsAsFactors=FALSE),
+               check.attributes=FALSE,
+               info="Data frame digits are respected")
 })

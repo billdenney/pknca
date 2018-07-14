@@ -80,14 +80,23 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
 #'
 #' @param x The number to round
 #' @param digits integer indicating the number of decimal places
-#' @param si_range See help for \code{\link{signifString}} (and you likely want
+#' @param sci_range See help for \code{\link{signifString}} (and you likely want
 #'   to round with \code{signifString} if you want to use this argument)
+#' @param sci_sep The separator to use for scientific notation strings
+#'   (typically this will be either "e" or "x10^" for computer- or
+#'   human-readable output).
+#' @param si_range Deprecated, please use \code{sci_range}
 #' @return A string with the value
 #' @details Values that are not standard numbers like \code{Inf}, \code{NA}, and
 #'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{round}}, \code{\link{signifString}}
 #' @export
-roundString <- function(x, digits=0, si_range=Inf) {
+roundString <- function(x, digits=0, sci_range=Inf, sci_sep="e", si_range) {
+  if (!missing(si_range)) {
+    .Deprecated(new="roundString with the sci_range argument",
+                msg="The si_range argument is deprecated, please use sci_range")
+    sci_range <- si_range
+  }
   if (length(digits) == 1) {
     mask_na <- is.na(x)
     mask_aschar <- is.nan(x) | is.infinite(x)
@@ -104,14 +113,14 @@ roundString <- function(x, digits=0, si_range=Inf) {
       xtmp <- round(x[mask_manip], digits)
       mask_si <-
         xtmp != 0 &
-        abs(log10(abs(xtmp))) >= si_range
+        abs(log10(abs(xtmp))) >= sci_range
       mask_no_si <- !mask_si
       if (any(mask_si)) {
         logval <- floor(log10(abs(xtmp[mask_si])))
         ret[mask_manip][mask_si] <-
           paste0(
             formatC(xtmp[mask_si]/10^logval, format="f", digits=digits + logval),
-            "e",
+            sci_sep,
             formatC(logval, format="d"))
       }
       if (any(mask_no_si)) {
@@ -137,30 +146,40 @@ roundString <- function(x, digits=0, si_range=Inf) {
 #'
 #' @param x The number to round
 #' @param digits integer indicating the number of significant digits
-#' @param si_range integer (or \code{Inf}) indicating when to switch to
+#' @param sci_range integer (or \code{Inf}) indicating when to switch to
 #'   scientific notation instead of floating point. Zero indicates always use
 #'   scientific; \code{Inf} indicates to never use scientific notation;
 #'   otherwise, scientific notation is used when \code{abs(log10(x)) > si_range}.
+#' @param sci_sep The separator to use for scientific notation strings
+#'   (typically this will be either "e" or "x10^" for computer- or
+#'   human-readable output).
+#' @param si_range Deprecated, please use \code{sci_range}
+#' @param ... Arguments passed to methods.
 #' @return A string with the value
 #' @details Values that are not standard numbers like \code{Inf}, \code{NA}, and
 #'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
-signifString <- function(x, digits=6, si_range=6) 
+signifString <- function(x, ...) 
   UseMethod("signifString")
 
 #' @rdname signifString
 #' @export
-signifString.data.frame <- function(x, digits=6, si_range=6) {
+signifString.data.frame <- function(x, digits=6, sci_range=6, sci_sep="e", si_range) {
+  if (!missing(si_range)) {
+    .Deprecated(new="roundString with the sci_range argument",
+                msg="The si_range argument is deprecated, please use sci_range")
+    sci_range <- si_range
+  }
   ret <- lapply(x,
-                function(y, digits) {
+                function(y) {
                   if (is.numeric(y) & !is.factor(y)) {
-                    signifString(x=y, digits=digits, si_range=si_range)
+                    signifString(x=y, digits=digits,
+                                 sci_range=sci_range, sci_sep=sci_sep)
                   } else {
                     y
                   }
-                },
-                digits=3)
+                })
   ret <- as.data.frame(ret,
                        stringsAsFactors=FALSE)
   rownames(ret) <- rownames(x)
@@ -170,7 +189,12 @@ signifString.data.frame <- function(x, digits=6, si_range=6) {
 
 #' @rdname signifString
 #' @export
-signifString.default <- function(x, digits=6, si_range=6) {
+signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range) {
+  if (!missing(si_range)) {
+    .Deprecated(new="roundString with the sci_range argument",
+                msg="The si_range argument is deprecated, please use sci_range")
+    sci_range <- si_range
+  }
   mask_na <- is.na(x)
   mask_aschar <- is.nan(x) | is.infinite(x)
   mask_manip <- !(mask_na | mask_aschar)
@@ -206,7 +230,8 @@ signifString.default <- function(x, digits=6, si_range=6) {
     mask.move.up <- toplog < newtoplog
     bottomlog[mask.move.up] <- bottomlog[mask.move.up] - 1
     ## Do the rounding
-    ret[mask_manip] <- roundString(xtmp, digits=bottomlog, si_range=si_range)
+    ret[mask_manip] <- roundString(xtmp, digits=bottomlog,
+                                   sci_range=sci_range, sci_sep=sci_sep)
   }
   ret
 }
