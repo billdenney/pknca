@@ -81,6 +81,9 @@ test_that("Rounding", {
   expect_equal(roundString(1234567, digits=3, sci_range=5, sci_sep="x10^"),
                "1.234567000x10^6",
                info="sci_sep is respected.")
+  expect_equal(roundString(c(1e7, 1e10), digits=c(-3, -9), sci_range=5),
+               c("1.0000e7", "1.0e10"),
+               info="Different numbers of digits for rounding work with roundString")
 })
 
 test_that("Significance", {
@@ -128,6 +131,9 @@ test_that("Significance", {
   expect_equal(signifString(1234567, digits=3, sci_range=5, sci_sep="x10^"),
                "1.23x10^6",
                info="sci_sep is respected.")
+  expect_equal(signifString(c(1e7, 1e10), digits=3),
+               c("1.00e7", "1.00e10"),
+               info="Different numbers of digits for rounding work with signifString")
   
   # Data Frames
   expect_equal(signifString(data.frame(A=c(0, 1.111111),

@@ -6,8 +6,9 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.0
 
-* parseFormula now internally uses NULL for no-group formulat
-  definitions.
+* parseFormula now internally uses NULL for no-group formula definitions.
+* signifString and roundString now have sci_range (deprecating si_range) and
+  sci_sep arguments.
 
 # PKNCA 0.8.5
 

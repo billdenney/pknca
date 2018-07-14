@@ -111,31 +111,31 @@ roundString <- function(x, digits=0, sci_range=Inf, sci_sep="e", si_range) {
     }
     if (any(mask_manip)) {
       xtmp <- round(x[mask_manip], digits)
-      mask_si <-
+      mask_sci <-
         xtmp != 0 &
         abs(log10(abs(xtmp))) >= sci_range
-      mask_no_si <- !mask_si
-      if (any(mask_si)) {
-        logval <- floor(log10(abs(xtmp[mask_si])))
-        ret[mask_manip][mask_si] <-
+      mask_no_sci <- !mask_sci
+      if (any(mask_sci)) {
+        logval <- floor(log10(abs(xtmp[mask_sci])))
+        ret[mask_manip][mask_sci] <-
           paste0(
-            formatC(xtmp[mask_si]/10^logval, format="f", digits=digits + logval),
+            formatC(xtmp[mask_sci]/10^logval, format="f", digits=digits + logval),
             sci_sep,
             formatC(logval, format="d"))
       }
-      if (any(mask_no_si)) {
+      if (any(mask_no_sci)) {
         if (digits < 0) {
-          ret[mask_manip][mask_no_si] <-
-            formatC(xtmp[mask_no_si], format='f', digits=0)
+          ret[mask_manip][mask_no_sci] <-
+            formatC(xtmp[mask_no_sci], format='f', digits=0)
         } else {
-          ret[mask_manip][mask_no_si] <-
-            formatC(xtmp[mask_no_si], format='f', digits=digits)
+          ret[mask_manip][mask_no_sci] <-
+            formatC(xtmp[mask_no_sci], format='f', digits=digits)
         }
       }
     }
     ret
   } else if (length(x) == length(digits)) {
-    mapply(roundString, x, digits)
+    mapply(roundString, x, digits=digits, sci_range=sci_range, sci_sep=sci_sep)
   } else {
     stop("digits must either be a scalar or the same length as x")
   }
@@ -165,17 +165,11 @@ signifString <- function(x, ...)
 
 #' @rdname signifString
 #' @export
-signifString.data.frame <- function(x, digits=6, sci_range=6, sci_sep="e", si_range) {
-  if (!missing(si_range)) {
-    .Deprecated(new="roundString with the sci_range argument",
-                msg="The si_range argument is deprecated, please use sci_range")
-    sci_range <- si_range
-  }
+signifString.data.frame <- function(x, ...) {
   ret <- lapply(x,
                 function(y) {
                   if (is.numeric(y) & !is.factor(y)) {
-                    signifString(x=y, digits=digits,
-                                 sci_range=sci_range, sci_sep=sci_sep)
+                    signifString(x=y, ...)
                   } else {
                     y
                   }
@@ -189,7 +183,10 @@ signifString.data.frame <- function(x, digits=6, sci_range=6, sci_sep="e", si_ra
 
 #' @rdname signifString
 #' @export
-signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range) {
+signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range, ...) {
+  if (length(list(...))) {
+    stop("Additional, unsupported arguments were passed")
+  }
   if (!missing(si_range)) {
     .Deprecated(new="roundString with the sci_range argument",
                 msg="The si_range argument is deprecated, please use sci_range")

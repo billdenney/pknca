@@ -9,11 +9,10 @@ zeros, if applicable.}
 \usage{
 signifString(x, ...)
 
-\method{signifString}{data.frame}(x, digits = 6, sci_range = 6,
-  sci_sep = "e", si_range)
+\method{signifString}{data.frame}(x, ...)
 
 \method{signifString}{default}(x, digits = 6, sci_range = 6,
-  sci_sep = "e", si_range)
+  sci_sep = "e", si_range, ...)
 }
 \arguments{
 \item{x}{The number to round}
