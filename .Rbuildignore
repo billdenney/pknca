@@ -4,3 +4,4 @@ example.*?.R
 ^\.travis\.yml$
 cran-comments.md
 ^\.github$
+^LICENSE\.md$
