@@ -3,7 +3,7 @@ Type: Package
 Title: Perform Pharmacokinetic Non-Compartmental Analysis
 Version: 0.8.5.9001
 Authors@R: c(
-    person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre")),
+    person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre"), comment=c(ORCID="0000-0002-5759-428X")),
     person("Clare", "Buckeridge", email="clare.buckeridge@pfizer.com", role="aut"),
     person("Sridhar", "Duvvuri", role="ctb"))
 Imports:
