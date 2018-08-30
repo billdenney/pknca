@@ -182,6 +182,8 @@ sort.interval.cols <- function() {
 #' Get the columns that can be used in an interval specification
 #' @return A list with named elements for each parameter.  Each list element
 #'   contains the parameter definition.
+#' @seealso \code{\link{check.interval.cols}} and the vignette "Selection of
+#'   Calculation Intervals"
 #' @examples
 #' get.interval.cols()
 #' @export

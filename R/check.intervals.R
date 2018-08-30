@@ -15,9 +15,10 @@
 #'   interval
 #' @return x The potentially updated data frame with the interval 
 #'   calculation specification.
-#'   
-#' @seealso \code{\link{check.interval.deps}}, 
-#'   \code{\link{get.parameter.deps}}, \code{\link{get.interval.cols}}
+#'
+#' @seealso \code{\link{check.interval.deps}}, \code{\link{get.parameter.deps}},
+#'   \code{\link{get.interval.cols}}, and the vignette "Selection of Calculation
+#'   Intervals"
 #' @export
 check.interval.specification <- function(x) {
   if (!is.data.frame(x)) {

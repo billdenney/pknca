@@ -28,6 +28,7 @@ the parameters to be calculated and the groupings to apply the
 intervals to.
 }
 \seealso{
-\code{\link{check.interval.deps}}, 
-  \code{\link{get.parameter.deps}}, \code{\link{get.interval.cols}}
+\code{\link{check.interval.deps}}, \code{\link{get.parameter.deps}},
+  \code{\link{get.interval.cols}}, and the vignette "Selection of Calculation
+  Intervals"
 }
