@@ -1,7 +1,9 @@
 ---
 title: "Selection of Calculation Intervals"
 author: "William Denney"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: yes
 vignette: >
   %\VignetteIndexEntry{Selection of Calculation Intervals}
   %\VignetteEngine{knitr::rmarkdown}
@@ -270,3 +272,34 @@ ggplot_intervals(interval_definition,
 
 ```
 
+# Parameters Available for Calculation in an Interval
+
+The following parameters are available in an interval.  For more information about the parameter, see the documentation for the function.
+
+```{r parameters-available, echo=FALSE}
+interval_spec <- get.interval.cols()
+interval_spec <- interval_spec[sort(names(interval_spec))]
+
+get_function_for_calc <- function(x) {
+  if (is.na(x$FUN)) {
+    if (is.null(x$depends)) {
+      "(none)"
+    } else {
+      paste("See the parameter name", x$depends)
+    }
+  } else {
+    x$FUN
+  }
+}
+
+kable(
+  data.frame(
+    `Parameter Name`=names(interval_spec),
+    `Parameter Description`=sapply(interval_spec, `[[`, "desc"),
+    `Function for Calculation`=sapply(interval_spec, get_function_for_calc),
+    check.names=FALSE,
+    stringsAsFactors=FALSE
+  ),
+  row.names=FALSE
+)
+```
