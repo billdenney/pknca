@@ -5,8 +5,8 @@
 \title{Add columns for calculations within PKNCA intervals}
 \usage{
 add.interval.col(name, FUN, values = c(FALSE, TRUE), depends = c(),
-  desc = "", formalsmap = list(), datatype = c("interval", "individual",
-  "population"))
+  desc = "", formalsmap = list(), datatype = c("interval",
+  "individual", "population"))
 }
 \arguments{
 \item{name}{The column name as a character string}

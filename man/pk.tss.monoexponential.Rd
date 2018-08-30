@@ -5,8 +5,9 @@
 \title{Compute the time to steady state using nonlinear, mixed-effects
 modeling of trough concentrations.}
 \usage{
-pk.tss.monoexponential(..., tss.fraction = 0.9, output = c("population",
-  "popind", "individual", "single"), check = TRUE, verbose = FALSE)
+pk.tss.monoexponential(..., tss.fraction = 0.9,
+  output = c("population", "popind", "individual", "single"),
+  check = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{\dots}{See \code{\link{pk.tss.data.prep}}}

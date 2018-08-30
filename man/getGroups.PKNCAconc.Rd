@@ -13,8 +13,8 @@ object).}
 
 \method{getGroups}{PKNCAdose}(...)
 
-\method{getGroups}{PKNCAresults}(object, form = formula(object$data$conc),
-  level, data = object$result, sep)
+\method{getGroups}{PKNCAresults}(object,
+  form = formula(object$data$conc), level, data = object$result, sep)
 }
 \arguments{
 \item{object}{The object to extract the data from}

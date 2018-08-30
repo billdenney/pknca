@@ -28,9 +28,11 @@ pk.calc.auc.last(conc, time, ..., options = list())
 
 pk.calc.auc.inf(conc, time, ..., options = list(), lambda.z)
 
-pk.calc.auc.inf.obs(conc, time, clast.obs, ..., options = list(), lambda.z)
+pk.calc.auc.inf.obs(conc, time, clast.obs, ..., options = list(),
+  lambda.z)
 
-pk.calc.auc.inf.pred(conc, time, clast.pred, ..., options = list(), lambda.z)
+pk.calc.auc.inf.pred(conc, time, clast.pred, ..., options = list(),
+  lambda.z)
 
 pk.calc.auc.all(conc, time, ..., options = list())
 
@@ -40,9 +42,11 @@ pk.calc.aumc.last(conc, time, ..., options = list())
 
 pk.calc.aumc.inf(conc, time, ..., options = list(), lambda.z)
 
-pk.calc.aumc.inf.obs(conc, time, clast.obs, ..., options = list(), lambda.z)
+pk.calc.aumc.inf.obs(conc, time, clast.obs, ..., options = list(),
+  lambda.z)
 
-pk.calc.aumc.inf.pred(conc, time, clast.pred, ..., options = list(), lambda.z)
+pk.calc.aumc.inf.pred(conc, time, clast.pred, ..., options = list(),
+  lambda.z)
 
 pk.calc.aumc.all(conc, time, ..., options = list())
 }

@@ -11,21 +11,21 @@ extrapolation of concentrations for the beginning and end of the
 interval.}
 \usage{
 pk.calc.aucint(conc, time, interval = NULL, start = NULL, end = NULL,
-  clast = pk.calc.clast.obs(conc, time), lambda.z = NA, time.dose = NULL,
-  route = "extravascular", duration.dose = 0, method = NULL,
-  auc.type = "AUClast", ..., options = list())
+  clast = pk.calc.clast.obs(conc, time), lambda.z = NA,
+  time.dose = NULL, route = "extravascular", duration.dose = 0,
+  method = NULL, auc.type = "AUClast", ..., options = list())
 
-pk.calc.aucint.last(conc, time, start = NULL, end = NULL, time.dose, ...,
-  options = list())
+pk.calc.aucint.last(conc, time, start = NULL, end = NULL, time.dose,
+  ..., options = list())
 
-pk.calc.aucint.all(conc, time, start = NULL, end = NULL, time.dose, ...,
-  options = list())
+pk.calc.aucint.all(conc, time, start = NULL, end = NULL, time.dose,
+  ..., options = list())
 
 pk.calc.aucint.inf.obs(conc, time, start = NULL, end = NULL, time.dose,
   lambda.z, clast.obs, ..., options = list())
 
-pk.calc.aucint.inf.pred(conc, time, start = NULL, end = NULL, time.dose,
-  lambda.z, clast.pred, ..., options = list())
+pk.calc.aucint.inf.pred(conc, time, start = NULL, end = NULL,
+  time.dose, lambda.z, clast.pred, ..., options = list())
 }
 \arguments{
 \item{conc}{Concentration measured}

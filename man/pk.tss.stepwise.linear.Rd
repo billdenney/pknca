@@ -5,8 +5,8 @@
 \title{Compute the time to steady state using stepwise test of linear
 trend}
 \usage{
-pk.tss.stepwise.linear(..., min.points = 3, level = 0.95, verbose = FALSE,
-  check = TRUE)
+pk.tss.stepwise.linear(..., min.points = 3, level = 0.95,
+  verbose = FALSE, check = TRUE)
 }
 \arguments{
 \item{\dots}{See \code{\link{pk.tss.data.prep}}}

@@ -4,7 +4,8 @@
 \alias{pk.tss}
 \title{Compute the time to steady-state (tss)}
 \usage{
-pk.tss(..., type = c("monoexponential", "stepwise.linear"), check = TRUE)
+pk.tss(..., type = c("monoexponential", "stepwise.linear"),
+  check = TRUE)
 }
 \arguments{
 \item{\dots}{Passed to \code{\link{pk.tss.monoexponential}} or

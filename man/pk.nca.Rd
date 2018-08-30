@@ -10,13 +10,22 @@ pk.nca(data)
 \item{data}{A PKNCAdata object}
 }
 \value{
-A data frame with a row for each interval for each grouping
-in the concentration data.
+A \code{PKNCAresults} object.
 }
 \description{
-The computations assume that all calculation options are set in
-\code{\link{PKNCA.options}}.
+The \code{pk.nca} function computes the NCA parameters from a
+\code{PKNCAdata} onject.  All options for the calculation and input data are
+set in prior functions (\code{PKNCAconc}, \code{PKNCAdose}, and
+\code{PKNCAdata}).  Options for calculations are set either in
+\code{PKNCAdata} or with the current default options in \code{PKNCA.options}.
+}
+\details{
+When performing calculations, all time results are relative to the start of
+the interval.  For example, if an interval starts at 168 hours, ends at 192
+hours, and and the maximum concentration is at 169 hours,
+\code{tmax=169-168=1}.
 }
 \seealso{
-\code{\link{PKNCAdata}}, \code{\link{PKNCA.options}}
+\code{\link{PKNCAdata}}, \code{\link{PKNCA.options}},
+ \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}}
 }

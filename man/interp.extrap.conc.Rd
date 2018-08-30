@@ -10,8 +10,8 @@ concentrations after the last measurement.}
 \usage{
 interp.extrap.conc(conc, time, time.out, lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time), options = list(),
-  interp.method = NULL, extrap.method = "AUCinf", ..., conc.blq = NULL,
-  conc.na = NULL, check = TRUE)
+  interp.method = NULL, extrap.method = "AUCinf", ...,
+  conc.blq = NULL, conc.na = NULL, check = TRUE)
 
 interpolate.conc(conc, time, time.out, options = list(),
   interp.method = NULL, conc.blq = NULL, conc.na = NULL,
@@ -19,11 +19,13 @@ interpolate.conc(conc, time, time.out, options = list(),
 
 extrapolate.conc(conc, time, time.out, lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time), extrap.method = "AUCinf",
-  options = list(), conc.na = NULL, conc.blq = NULL, ..., check = TRUE)
+  options = list(), conc.na = NULL, conc.blq = NULL, ...,
+  check = TRUE)
 
-interp.extrap.conc.dose(conc, time, time.dose, route.dose = "extravascular",
-  duration.dose = NA, time.out, out.after = FALSE, options = list(),
-  conc.blq = NULL, conc.na = NULL, ..., check = TRUE)
+interp.extrap.conc.dose(conc, time, time.dose,
+  route.dose = "extravascular", duration.dose = NA, time.out,
+  out.after = FALSE, options = list(), conc.blq = NULL,
+  conc.na = NULL, ..., check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}

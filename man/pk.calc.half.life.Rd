@@ -4,10 +4,11 @@
 \alias{pk.calc.half.life}
 \title{Compute the half-life and associated parameters}
 \usage{
-pk.calc.half.life(conc, time, tmax, tlast, manually.selected.points = FALSE,
-  options = list(), min.hl.points = NULL, adj.r.squared.factor = NULL,
-  conc.blq = NULL, conc.na = NULL, first.tmax = NULL,
-  allow.tmax.in.half.life = NULL, check = TRUE)
+pk.calc.half.life(conc, time, tmax, tlast,
+  manually.selected.points = FALSE, options = list(),
+  min.hl.points = NULL, adj.r.squared.factor = NULL, conc.blq = NULL,
+  conc.na = NULL, first.tmax = NULL, allow.tmax.in.half.life = NULL,
+  check = TRUE)
 }
 \arguments{
 \item{conc}{Concentration measured}
@@ -69,13 +70,16 @@ A data frame with one row and columns for
  }
 }
 \description{
-Compute the half-life and associated parameters
+The terminal elimination half-life is estimated from the final points in the
+concentration-time curve using semi-log regression (\code{log(conc)~time})
+with automated selection of the points for calculation (unless
+\code{manually.selected.points} is \code{TRUE}).
 }
 \details{
 If \code{manually.selected.points} is \code{FALSE} (default), the
-half-life is calculated by computing the best fit line for all 
-available sets of points.  The best one is chosen by the following 
-rules in order:
+half-life is calculated by computing the best fit line for all points at or
+after tmax (based on the value of \code{allow.tmax.in.half.life}.  The best
+half-life is chosen by the following rules in order:
 
 \itemize{
  \item{At least \code{min.hl.points} points included} 

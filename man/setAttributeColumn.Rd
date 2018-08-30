@@ -5,8 +5,8 @@
 \title{Add an attribute to an object where the attribute is added as a name 
 to the names of the object.}
 \usage{
-setAttributeColumn(object, attr_name, col_or_value, col_name, default_value,
-  stop_if_default, warn_if_default, message_if_default)
+setAttributeColumn(object, attr_name, col_or_value, col_name,
+  default_value, stop_if_default, warn_if_default, message_if_default)
 }
 \arguments{
 \item{object}{The object to set the attribute column on.}

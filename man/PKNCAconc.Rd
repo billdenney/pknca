@@ -13,8 +13,8 @@ PKNCAconc(data, ...)
 
 \method{PKNCAconc}{tbl_df}(data, ...)
 
-\method{PKNCAconc}{data.frame}(data, formula, subject, time.nominal, exclude,
-  duration, volume, exclude_half.life, include_half.life, ...)
+\method{PKNCAconc}{data.frame}(data, formula, subject, time.nominal,
+  exclude, duration, volume, exclude_half.life, include_half.life, ...)
 }
 \arguments{
 \item{data}{A data frame with concentration (or amount for
