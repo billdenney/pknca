@@ -13,6 +13,8 @@ the dosing including dose amount and route.
   parameters for intervals.
 * Multiple dose data with a single concentration measurement no longer
   generates an error (fixes #84).
+* The "start" and "end" columns may now be dropped from the summary of
+  `PKNCAresults` objects.
 
 # PKNCA 0.8.5
 

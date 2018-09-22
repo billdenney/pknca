@@ -194,3 +194,18 @@ test_that("PKNCAresults summary", {
                           stringsAsFactors=FALSE),
                info="N is optionally omitted")
 })
+
+test_that("dropping `start` and `end` from groups is allowed with a warning.", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  
+  expect_warning(
+    current_summary <- summary(myresult, drop.group=c("ID", "start")),
+    regex="drop.group including start or end may result", fixed=TRUE
+  )
+  expect_false("start" %in% names(current_summary))
+})

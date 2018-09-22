@@ -135,8 +135,10 @@ summary.PKNCAresults <- function(object, ...,
                                  not.requested.string=".",
                                  not.calculated.string="NC") {
   allGroups <- getGroups(object)
-  groups <- unique(c("start", "end",
-                     setdiff(names(allGroups), drop.group)))
+  if (any(c("start", "end") %in% drop.group)) {
+    warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
+  }
+  groups <- unique(setdiff(c("start", "end", names(allGroups)), drop.group))
   exclude_col <- object$exclude
   # Ensure that the exclude_col is NA instead of "" for subsequent processing.
   object$result[[exclude_col]] <- normalize_exclude(object$result[[exclude_col]])
