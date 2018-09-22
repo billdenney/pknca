@@ -56,14 +56,18 @@ test_that("setExcludeColumn", {
                info="setExcludeColumn gives error on non-character value")
 
   # Zero-row data works
-  expect_equal(setExcludeColumn(list(data=data.frame())),
-               list(data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
-                    exclude="exclude"),
-               info="setExcludeColumn works with zero-row data")
-  expect_equal(setExcludeColumn(list(data=data.frame()), exclude="foo"),
-               list(data=data.frame(foo=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
-                    exclude="foo"),
-               info="setExcludeColumn works with zero-row data")
+  expect_equal(
+    expect_warning(setExcludeColumn(list(data=data.frame()))),
+    list(data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
+         exclude="exclude"),
+    info="setExcludeColumn works with zero-row data"
+  )
+  expect_equal(
+    setExcludeColumn(list(data=data.frame()), exclude="foo"),
+    list(data=data.frame(foo=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
+         exclude="foo"),
+    info="setExcludeColumn works with zero-row data"
+  )
 })
 
 test_that("exclude.default", {

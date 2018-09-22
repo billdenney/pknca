@@ -3,8 +3,12 @@ context("Check Conversion")
 test_that("check.conversion", {
   good <- LETTERS
   expect_equal(check.conversion(good, as.character), good)
-  expect_error(check.conversion(good, as.numeric),
-               regexp="26 new NA value\\(s\\) created during conversion")
+  expect_error(
+    expect_warning(
+      check.conversion(good, as.numeric)
+    ),
+    regexp="26 new NA value\\(s\\) created during conversion"
+  )
   good <- 1:5
   expect_equal(check.conversion(good, as.character),
                as.character(good))
@@ -73,9 +77,8 @@ test_that("Rounding", {
   expect_equal(roundString(1234567, digits=3, sci_range=5), "1.234567000e6",
                info="sci_range works with roundString (even if it looks odd)")
   expect_warning(roundString(1234567, digits=3, si_range=5),
-                 regexp="The si_range argument is deprecated, please use sci_range",
-                 info="sci_range works with roundString (even if it looks odd)")
-  expect_equal(roundString(1234567, digits=3, si_range=5),
+                 regexp="The si_range argument is deprecated, please use sci_range")
+  expect_equal(roundString(1234567, digits=3, sci_range=5),
                roundString(1234567, digits=3, sci_range=5),
                info="sci_range works with roundString (even if it looks odd)")
   expect_equal(roundString(1234567, digits=3, sci_range=5, sci_sep="x10^"),
@@ -101,7 +104,7 @@ test_that("Significance", {
   expect_warning(signifString(123456.05, 3, si_range=6),
                 regexp="The si_range argument is deprecated, please use sci_range")
   expect_equal(signifString(123456.05, 3, sci_range=6),
-               signifString(123456.05, 3, si_range=6),
+               expect_warning(signifString(123456.05, 3, si_range=6)),
                info="si_range and sci_range arguments are treated equally.")
   expect_equal(signifString(123456.05, 3, sci_range=6), "123000")
   expect_equal(signifString(123456.05, 3, sci_range=5), "1.23e5")

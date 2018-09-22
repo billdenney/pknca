@@ -176,18 +176,24 @@ test_that("superposition inputs", {
                regexp="lambda.z must be a number",
                info="lambda.z must be a number (factor)")
 
-  expect_equal(superposition(conc=c(4, 2, 1, 0.5),
-                             time=0:3,
-                             tau=24,
-                             n.tau=Inf,
-                             check.blq=FALSE),
-               superposition(conc=c(4, 2, 1, 0.5),
-                             time=0:3,
-                             tau=24,
-                             clast.pred=TRUE,
-                             n.tau=Inf,
-                             check.blq=FALSE),
-               info="clast.pred may be provided as 'TRUE'")
+  expect_equal(
+    expect_warning(
+      superposition(conc=c(4, 2, 1, 0.5),
+                    time=0:3,
+                    tau=24,
+                    n.tau=Inf,
+                    check.blq=FALSE)
+    ),
+    expect_warning(
+      superposition(conc=c(4, 2, 1, 0.5),
+                    time=0:3,
+                    tau=24,
+                    clast.pred=TRUE,
+                    n.tau=Inf,
+                    check.blq=FALSE)
+    ),
+    info="clast.pred may be provided as 'TRUE'"
+  )
   
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred=c(1, 2)),

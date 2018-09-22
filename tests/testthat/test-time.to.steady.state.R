@@ -294,12 +294,16 @@ test_that("pk.tss.stepwise.linear", {
 test_that("pk.tss.monoexponential", {
   tmpdata <- generate.data()
   expect_equal(
-    pk.tss.monoexponential(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           verbose=FALSE),
+    expect_warning(
+      pk.tss.monoexponential(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        verbose=FALSE
+      )
+    ),
     data.frame(subject=factor(c(1, 10, 2:9)),
                tss.monoexponential.population=4.57618156812974,
                tss.monoexponential.popind=c(
@@ -385,19 +389,24 @@ test_that("pk.tss", {
   ## Ensure that pk.tss will go to the correct type of model
   tmpdata <- generate.data()
   expect_equal(
-    pk.tss(conc=tmpdata$conc,
-           time=tmpdata$time,
-           subject=tmpdata$subject,
-           treatment=tmpdata$treatment,
-           time.dosing=0:14,
-           verbose=FALSE,
-           type="monoexponential"),
-    pk.tss.monoexponential(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           verbose=FALSE))
+    expect_warning(
+      pk.tss(conc=tmpdata$conc,
+             time=tmpdata$time,
+             subject=tmpdata$subject,
+             treatment=tmpdata$treatment,
+             time.dosing=0:14,
+             verbose=FALSE,
+             type="monoexponential")
+    ),
+    expect_warning(
+      pk.tss.monoexponential(conc=tmpdata$conc,
+                             time=tmpdata$time,
+                             subject=tmpdata$subject,
+                             treatment=tmpdata$treatment,
+                             time.dosing=0:14,
+                             verbose=FALSE)
+    )
+  )
 
   expect_equal(
     pk.tss(conc=tmpdata$conc,
@@ -416,24 +425,29 @@ test_that("pk.tss", {
 
   ## pk.tss will calculate both if requested
   expect_equal(
-    pk.tss(conc=tmpdata$conc,
-           time=tmpdata$time,
-           subject=tmpdata$subject,
-           treatment=tmpdata$treatment,
-           time.dosing=0:14,
-           verbose=FALSE,
-           type=c("monoexponential", "stepwise.linear")),
-    merge(pk.tss.monoexponential(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           verbose=FALSE),
-          pk.tss.stepwise.linear(conc=tmpdata$conc,
-                                 time=tmpdata$time,
-                                 subject=tmpdata$subject,
-                                 treatment=tmpdata$treatment,
-                                 time.dosing=0:14,
-                                 verbose=FALSE),
-          all=TRUE))
+    expect_warning(
+      pk.tss(conc=tmpdata$conc,
+             time=tmpdata$time,
+             subject=tmpdata$subject,
+             treatment=tmpdata$treatment,
+             time.dosing=0:14,
+             verbose=FALSE,
+             type=c("monoexponential", "stepwise.linear"))
+    ),
+    merge(
+      expect_warning(
+        pk.tss.monoexponential(conc=tmpdata$conc,
+                               time=tmpdata$time,
+                               subject=tmpdata$subject,
+                               treatment=tmpdata$treatment,
+                               time.dosing=0:14,
+                               verbose=FALSE)
+      ),
+      pk.tss.stepwise.linear(conc=tmpdata$conc,
+                             time=tmpdata$time,
+                             subject=tmpdata$subject,
+                             treatment=tmpdata$treatment,
+                             time.dosing=0:14,
+                             verbose=FALSE),
+      all=TRUE))
 })
