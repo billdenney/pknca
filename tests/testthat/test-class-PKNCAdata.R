@@ -256,3 +256,58 @@ test_that("splitting PKNCAdata", {
                    intervals=check.interval.specification(data.frame(start=0, end=24, aucinf.obs=TRUE)),
                    options=list())))
 })
+
+test_that("no intervals auto-determined (Fix GitHub issue #84)", {
+  tmp_conc <-
+    data.frame(
+      Subject=1,
+      Treatment=c(1, rep(2, 6)),
+      Time=c(0, 1:6),
+      Conc=1
+    )
+  tmp_dose <-
+    data.frame(
+      Subject=1,
+      Treatment=c(1, 2),
+      Time=c(0, 1),
+      Dose=1
+    )
+  
+  interval_1 <- PKNCA.options("single.dose.aucs")[c(1:2, 1:2),]
+  interval_1$start <- rep(0:1, each=2)
+  interval_1$end <- c(interval_1$end[1:2], interval_1$end[3:4] + 1)
+  interval_1 <- cbind(interval_1, data.frame(Treatment=rep(1:2, each=2), Subject=1))
+  two_single_dose_treatments <-
+    PKNCAdata(
+      PKNCAconc(data=tmp_conc, Conc~Time|Treatment+Subject),
+      PKNCAdose(data=tmp_dose, Dose~Time|Treatment+Subject)
+    )
+  expect_equal(
+    two_single_dose_treatments$intervals,
+    interval_1,
+    check.attributes=FALSE
+  )
+  interval_2 <-
+    check.interval.specification(
+      data.frame(start=1, end=c(2, Inf),
+                 auclast=c(TRUE, FALSE),
+                 cmax=c(TRUE, FALSE),
+                 tmax=c(TRUE, FALSE),
+                 half.life=c(FALSE, TRUE),
+                 Treatment=2,
+                 Subject=1
+      )
+    )
+  expect_warning(
+    two_multiple_dose_treatments <-
+      PKNCAdata(
+        PKNCAconc(data=tmp_conc, Conc~Time|Treatment+Subject),
+        PKNCAdose(data=tmp_dose, Dose~Time|Subject)
+      ),
+    regexp="No intervals generated"
+  )
+  expect_equal(
+    two_multiple_dose_treatments$intervals,
+    interval_2
+  )
+})

@@ -107,14 +107,21 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
       tmp.group <- groupid[i,,drop=FALSE]
       if (!is.null(tmp.conc.dose[[i]]$conc)) {
         rownames(tmp.group) <- NULL
-        new.intervals <-
-          cbind(
-            tmp.group,
-            choose.auc.intervals(tmp.conc.dose[[i]]$conc$data[,indep.var.conc],
-                                 tmp.conc.dose[[i]]$dose$data[,indep.var.dose],
-                                 options=options))
-        intervals <-
-          rbind(intervals, new.intervals)
+        generated_intervals <-
+          choose.auc.intervals(
+            tmp.conc.dose[[i]]$conc$data[,indep.var.conc],
+            tmp.conc.dose[[i]]$dose$data[,indep.var.dose],
+            options=options
+          )
+        if (nrow(generated_intervals)) {
+          new.intervals <- cbind(tmp.group, generated_intervals)
+          intervals <- rbind(intervals, new.intervals)
+        } else {
+          warning("No intervals generated likely due to limited concentration data for ",
+                  paste(names(tmp.group),
+                        unlist(lapply(tmp.group, as.character)),
+                        sep="=", collapse=", "))
+        }
       } else {
         warning("No intervals generated due to no concentration data for ",
                 paste(names(tmp.group),

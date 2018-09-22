@@ -11,6 +11,8 @@ the dosing including dose amount and route.
   sci_sep arguments.
 * Documentation is improved, especially around the selection of
   parameters for intervals.
+* Multiple dose data with a single concentration measurement no longer
+  generates an error (fixes #84).
 
 # PKNCA 0.8.5
 
