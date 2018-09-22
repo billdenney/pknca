@@ -174,8 +174,8 @@ summary.PKNCAresults <- function(object, ...,
       if (any(current.interval[,n])) {
         currentData <- merge(
           ret[i, groups, drop=FALSE],
-          object$result[object$result$PPTESTCD %in% n &
-                          is.na(object$result[[exclude_col]]),,drop=FALSE])
+          object$result[object$result$PPTESTCD %in% n,,drop=FALSE])
+        currentData$PPORRES[!is.na(currentData[[exclude_col]])] <- NA
         if (nrow(currentData) == 0) {
           warning("No results to summarize for ", n, " in result row ", i)
         } else {

@@ -209,3 +209,68 @@ test_that("dropping `start` and `end` from groups is allowed with a warning.", {
   )
   expect_false("start" %in% names(current_summary))
 })
+
+test_that("summary.PKNCAresults manages exclusions as missing not as non-existent.", {
+  ## Note that generate.conc sets the random seed, so it doesn't have
+  ## to happen here.
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  myresult_excluded <-
+    exclude(
+      myresult,
+      reason="testing",
+      mask=with(as.data.frame(myresult),
+                PPTESTCD %in% "auclast" & ID %in% 1)
+    )
+  myresult_excluded2 <-
+    exclude(
+      myresult,
+      reason="testing",
+      mask=with(as.data.frame(myresult),
+                PPTESTCD %in% "auclast")
+    )
+  ## Testing the summarization
+  mysummary <- summary(myresult)
+  mysummary_excluded <- summary(myresult_excluded)
+  mysummary_excluded2 <- summary(myresult_excluded2)
+  expect_equal(mysummary,
+               data.frame(start=0,
+                          end=c(24, Inf),
+                          treatment="Trt 1",
+                          N="2",
+                          auclast=c("13.8 [2.51]", "."),
+                          cmax=c(".", "0.970 [4.29]"),
+                          tmax=c(".", "3.00 [2.00, 4.00]"),
+                          half.life=c(".", "14.2 [2.79]"),
+                          aucinf.obs=c(".", "20.5 [6.84]"),
+                          stringsAsFactors=FALSE),
+               info="simple summary of PKNCAresults performs as expected")
+  expect_equal(mysummary_excluded,
+               data.frame(start=0,
+                          end=c(24, Inf),
+                          treatment="Trt 1",
+                          N="2",
+                          auclast=c("14.0 [NC]", "."),
+                          cmax=c(".", "0.970 [4.29]"),
+                          tmax=c(".", "3.00 [2.00, 4.00]"),
+                          half.life=c(".", "14.2 [2.79]"),
+                          aucinf.obs=c(".", "20.5 [6.84]"),
+                          stringsAsFactors=FALSE),
+               info="summary of PKNCAresults correctly excludes auclast when requested")
+  expect_equal(mysummary_excluded2,
+               data.frame(start=0,
+                          end=c(24, Inf),
+                          treatment="Trt 1",
+                          N="2",
+                          auclast=c("NC", "."),
+                          cmax=c(".", "0.970 [4.29]"),
+                          tmax=c(".", "3.00 [2.00, 4.00]"),
+                          half.life=c(".", "14.2 [2.79]"),
+                          aucinf.obs=c(".", "20.5 [6.84]"),
+                          stringsAsFactors=FALSE),
+               info="summary of PKNCAresults correctly excludes all of auclast when requested")
+})

@@ -6,6 +6,9 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.0
 
+* Issue fixed with summarization of data that has exclusions.
+  Exclusions are now correctly handled as missing instead of never
+  calculated.
 * parseFormula now internally uses NULL for no-group formula definitions.
 * signifString and roundString now have sci_range (deprecating si_range) and
   sci_sep arguments.
