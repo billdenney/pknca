@@ -228,7 +228,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options) {
             duration.dose.group=dose_data_group[[col.duration.dose]],
             route.group=dose_data_group[[col.route]],
             # Generic data
-            interval=all.intervals[i,],
+            interval=all.intervals[i, , drop=FALSE],
             options=options)
           if (!is.null(col.include_half.life)) {
             args$include_half.life <- conc_data_interval[[col.include_half.life]]
@@ -305,8 +305,9 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose.group=NULL, time.dose.group=NULL, duration.dose.group=NULL, route.group=NULL,
                             include_half.life=NULL, exclude_half.life=NULL,
                             interval, options=list()) {
-  if (!is.data.frame(interval))
+  if (!is.data.frame(interval)) {
     stop("interval must be a data.frame")
+  }
   if (nrow(interval) != 1)
     stop("interval must be a one-row data.frame")
   ## Prepare the return value using SDTM names
@@ -325,13 +326,16 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   }
   ## Make sure that we calculate all of the dependencies.  Do this in
   ## reverse order for dependencies of dependencies.
-  for (n in rev(names(all.intervals)))
-    if (interval[1,n])
-      for (deps in all.intervals[[n]]$depends)
+  for (n in rev(names(all.intervals))) {
+    if (interval[[1,n]]) {
+      for (deps in all.intervals[[n]]$depends) {
         interval[1,deps] <- TRUE
+      }
+    }
+  }
   ## Do the calculations
   for (n in names(all.intervals))
-    if (interval[1,n] & !is.na(all.intervals[[n]]$FUN)) {
+    if (interval[[1,n]] & !is.na(all.intervals[[n]]$FUN)) {
       call.args <- list()
       ## Prepare to call the function by setting up its arguments.
       ## Ignore the "..." argument if it exists.

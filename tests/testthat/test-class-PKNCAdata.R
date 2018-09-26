@@ -322,3 +322,19 @@ test_that("Ensure that unexpected arguments to PKNCAdata give an error (related 
   expect_error(mydata <- PKNCAdata(obj.conc, obj.dose, 1),
                regexp="Unknown argument")
 })
+
+test_that("intervals may be a tibble", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=1, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  obj.conc <-
+    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  obj.dose <-
+    PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  intervals <- data.frame(start=0, end=24, aucinf.obs=TRUE)
+  mydata_tibble <- PKNCAdata(obj.conc, obj.dose, intervals=as_data_frame(intervals))
+  mydata <- PKNCAdata(obj.conc, obj.dose, intervals=intervals)
+  expect_equal(
+    as.data.frame(pk.nca(mydata_tibble)),
+    as.data.frame(pk.nca(mydata))
+  )
+})
