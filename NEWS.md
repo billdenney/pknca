@@ -18,6 +18,8 @@ the dosing including dose amount and route.
   generates an error (fixes #84).
 * The "start" and "end" columns may now be dropped from the summary of
   `PKNCAresults` objects.
+* `PKNCAdata()` is more restrictive on unknown arguments issuing an error
+  when unknonwn arguments are present.
 
 # PKNCA 0.8.5
 

@@ -52,6 +52,9 @@ PKNCAdata.PKNCAdose <- function(data.conc, data.dose, ...) {
 PKNCAdata.default <- function(data.conc, data.dose, ...,
                               formula.conc, formula.dose,
                               intervals, options=list()) {
+  if (length(list(...))) {
+    stop("Unknown argument provided to PKNCAdata.  All arguments other than `data.conc` and `data.dose` must be named.")
+  }
   ret <- list()
   ## Generate the conc element
   if (inherits(data.conc, "PKNCAconc")) {

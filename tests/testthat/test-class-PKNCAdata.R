@@ -311,3 +311,14 @@ test_that("no intervals auto-determined (Fix GitHub issue #84)", {
     interval_2
   )
 })
+
+test_that("Ensure that unexpected arguments to PKNCAdata give an error (related to issue #83)", {
+  tmp.conc <- generate.conc(nsub=2, ntreat=1, time.points=0:24)
+  tmp.dose <- generate.dose(tmp.conc)
+  obj.conc <-
+    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
+  obj.dose <-
+    PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
+  expect_error(mydata <- PKNCAdata(obj.conc, obj.dose, 1),
+               regexp="Unknown argument")
+})
