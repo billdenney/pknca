@@ -8,6 +8,8 @@ pk.calc.kel(mrt)
 }
 \arguments{
 \item{mrt}{the mean residence time}
+
+\item{kel}{is \code{1/mrt}, not to be confused with lambda.z.}
 }
 \value{
 the numeric value of the elimination rate

@@ -96,8 +96,7 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
 #' \code{stepwise.linear} or \code{monoexponential}
 #' @return A data frame with columns as defined from
 #' \code{pk.tss.monoexponential} and/or \code{pk.tss.stepwise.linear}.
-#' @seealso \code{\link{pk.tss.monoexponential}},
-#' \code{\link{pk.tss.stepwise.linear}}
+#' @family Time to steady-state calculations
 #' @export
 pk.tss <- function(...,
                    type=c("monoexponential", "stepwise.linear"),

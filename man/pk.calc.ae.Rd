@@ -20,6 +20,8 @@ The amount excreted during the interval
 Calculate amount excreted (typically in urine or feces)
 }
 \details{
+ae is \code{sum(conc*volume)}.
+
 The units for the concentration and volume should match such
   that \code{sum(conc*volume)} has units of mass or moles.
 }

@@ -66,5 +66,7 @@ A PKNCAconc object that can be used for automated NCA.
 Create a PKNCAconc object
 }
 \seealso{
-\code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
+Other PKNCA objects: \code{\link{PKNCAdata}},
+  \code{\link{PKNCAdose}}, \code{\link{PKNCAresults}}
 }
+\concept{PKNCA objects}

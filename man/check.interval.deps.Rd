@@ -21,5 +21,10 @@ row updated with any additional calculations that must be done to
 fulfill all dependencies.
 }
 \seealso{
-\code{\link{check.interval.specification}}
+Other Interval specifications: \code{\link{add.interval.col}},
+  \code{\link{check.interval.specification}},
+  \code{\link{choose.auc.intervals}},
+  \code{\link{get.interval.cols}},
+  \code{\link{get.parameter.deps}}
 }
+\concept{Interval specifications}

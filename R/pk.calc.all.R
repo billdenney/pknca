@@ -14,7 +14,8 @@
 #' @param data A PKNCAdata object
 #' @return A \code{PKNCAresults} object.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}},
-#'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}}
+#'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
+#'  \code{\link{exclude}}
 #' @export
 #' @importFrom utils capture.output
 #' @importFrom dplyr bind_rows

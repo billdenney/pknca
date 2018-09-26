@@ -15,3 +15,6 @@ the numeric value of the effective half-life
 \description{
 Calculate the effective half-life
 }
+\details{
+thalf.eff is \code{log(2)*mrt}.
+}

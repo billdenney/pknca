@@ -24,3 +24,8 @@ A formula (optionally with portions removed)
 \description{
 Convert the parsed formula back into the original
 }
+\seealso{
+Other Formula parsing: \code{\link{findOperator}},
+  \code{\link{parseFormula}}
+}
+\concept{Formula parsing}

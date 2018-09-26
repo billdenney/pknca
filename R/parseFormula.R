@@ -28,6 +28,7 @@
 #' ## parseFormula("a~b", require.groups=TRUE) # This is an error
 #' parseFormula("a~b|c")
 #' parseFormula("a~b|c")$groups
+#' @family Formula parsing
 #' @export
 parseFormula <- function (form,
                           require.groups=FALSE,
@@ -103,6 +104,7 @@ print.parseFormula <- function(x, ...) {
 #' dropping the left hand side?
 #' @param \dots Unused.
 #' @return A formula (optionally with portions removed)
+#' @family Formula parsing
 #' @export
 formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
   if (identical(x$lhs, NA) | drop.lhs) {
@@ -127,6 +129,7 @@ formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
 #' @return The side of the operator requested, NA if requesting the
 #' left side of a unary operator, and NULL if the operator is not
 #' found.
+#' @family Formula parsing
 #' @export
 findOperator <- function(x, op, side) {
   side <- match.arg(tolower(side),

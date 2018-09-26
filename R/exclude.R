@@ -30,6 +30,7 @@
 #'         reason="Carryover",
 #'         mask=c(TRUE, rep(FALSE, 6)))
 #' @export
+#' @family Result exclusions
 #' @importFrom dplyr "%>%"
 #' @importFrom dplyr n
 #' @importFrom rlang syms

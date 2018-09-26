@@ -8,6 +8,7 @@ nlme::getGroups
 #' @param x The object to extract the formula from
 #' @param \dots Unused
 #' @return The vector of the dependent variable from the object.
+#' @family PKNCA object extractors
 #' @export
 getDepVar <- function(x, ...)
   UseMethod("getDepVar", x)
@@ -18,6 +19,7 @@ getDepVar <- function(x, ...)
 #' @param x The object to extract the formula from
 #' @param \dots Unused
 #' @return The vector of the independent variable from the object.
+#' @family PKNCA object extractors
 #' @export
 getIndepVar <- function(x, ...)
   UseMethod("getIndepVar", x)
@@ -54,6 +56,7 @@ getColumnValueOrNot <- function(data, value, prefix="X") {
 #' object.
 #'
 #' @param object The object to get the data name from.
+#' @family PKNCA object extractors
 #' @return A character scalar with the name of the data object (or NULL
 #'   if the method does not apply).
 getDataName <- function(object)

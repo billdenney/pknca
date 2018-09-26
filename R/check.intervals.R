@@ -16,14 +16,13 @@
 #' @return x The potentially updated data frame with the interval 
 #'   calculation specification.
 #'
-#' @seealso \code{\link{check.interval.deps}}, \code{\link{get.parameter.deps}},
-#'   \code{\link{get.interval.cols}}, and the vignette "Selection of Calculation
-#'   Intervals"
+#' @family Interval specifications
+#' @seealso The vignette "Selection of Calculation Intervals"
 #' @export
 check.interval.specification <- function(x) {
   if (!is.data.frame(x)) {
-    ## Just a warning and let as.data.frame make it an error if
-    ## it can't be coerced.
+    # Just a warning and let as.data.frame make it an error if it can't be
+    # coerced.
     warning("Interval specification must be a data.frame")
     x <- as.data.frame(x, stringsAsFactors=FALSE)
   }
@@ -94,6 +93,7 @@ check.interval.specification <- function(x) {
 #' @return A character vector of parameter names that depend on the 
 #'   parameter \code{x}.  If none depend on \code{x}, then the result 
 #'   will be an empty vector.
+#' @family Interval specifications
 #' @export
 get.parameter.deps <- function(x) {
   all.intervals <- get.interval.cols()
@@ -166,15 +166,15 @@ get.parameter.deps <- function(x) {
 #' @param x A data frame with one or morw rows of the PKNCA interval
 #' @return The interval specification with additional calculations
 #' added where requested outputs require them.
-#' @seealso \code{\link{check.interval.specification}}
+#' @family Interval specifications
 check.interval.deps <- function(x) {
-  ## Ensure that the input is a valid interval specification
+  # Ensure that the input is a valid interval specification
   ret <- check.interval.specification(x)
   colspec <- get.interval.cols()
   for (n in names(colspec)) {
     if (is.logical(ret[,n])) {
-      ## This is a calculation to complete, otherwise it's something
-      ## informative but not caluclated.
+      # This is a calculation to complete, otherwise it's something informative
+      # but not caluclated.
       mask.calculated <- ret[,n]
       for (deps in colspec[[n]]$depends)
         ret[,deps] <- mask.calculated | ret[,deps]

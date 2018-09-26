@@ -39,4 +39,8 @@ Define how NCA parameters are summarized.
 }
 \seealso{
 \code{\link{summary.PKNCAresults}}
+
+Other PKNCA calculation and summary settings: \code{\link{PKNCA.choose.option}},
+  \code{\link{PKNCA.options}}
 }
+\concept{PKNCA calculation and summary settings}

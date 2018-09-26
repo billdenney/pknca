@@ -52,3 +52,7 @@ my_result_excluded <- exclude(my_result,
                               FUN=exclude_nca_max.aucinf.pext())
 as.data.frame(my_result_excluded)
 }
+\seealso{
+Other Result exclusions: \code{\link{exclude}}
+}
+\concept{Result exclusions}

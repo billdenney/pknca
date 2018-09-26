@@ -34,7 +34,7 @@
 #'   those points and bypassing automatic point selection).
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
-#' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCAdose}}
+#' @family PKNCA objects
 #' @export
 PKNCAconc <- function(data, ...)
   UseMethod("PKNCAconc")

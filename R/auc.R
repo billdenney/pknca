@@ -45,8 +45,8 @@
 #'   passed to \code{pk.calc.auxc}
 #' @return A numeric value for the AU(M)C
 #' @aliases pk.calc.auc pk.calc.aumc pk.calc.auc.last
-#' @seealso \code{\link{pk.calc.auc.all}}, \code{\link{pk.calc.auc.last}},
-#'   \code{\link{clean.conc.blq}}
+#' @family AUC calculations
+#' @seealso \code{\link{clean.conc.blq}}
 #' @references
 #' 
 #' Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods - Linear

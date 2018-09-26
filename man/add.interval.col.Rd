@@ -86,3 +86,11 @@ add.interval.col("cmax.dn",
                  depends=c("cmax"))
 }
 }
+\seealso{
+Other Interval specifications: \code{\link{check.interval.deps}},
+  \code{\link{check.interval.specification}},
+  \code{\link{choose.auc.intervals}},
+  \code{\link{get.interval.cols}},
+  \code{\link{get.parameter.deps}}
+}
+\concept{Interval specifications}

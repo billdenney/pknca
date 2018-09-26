@@ -17,3 +17,11 @@ A character vector of parameter names that depend on the
 \description{
 Get all columns that depend on a parameter
 }
+\seealso{
+Other Interval specifications: \code{\link{add.interval.col}},
+  \code{\link{check.interval.deps}},
+  \code{\link{check.interval.specification}},
+  \code{\link{choose.auc.intervals}},
+  \code{\link{get.interval.cols}}
+}
+\concept{Interval specifications}

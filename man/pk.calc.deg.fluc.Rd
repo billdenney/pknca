@@ -19,3 +19,6 @@ The degree of fluctuation around the average concentration.
 \description{
 Determine the degree of fluctuation
 }
+\details{
+deg.fluc is \code{100*(cmax - cmin)/cav}.
+}

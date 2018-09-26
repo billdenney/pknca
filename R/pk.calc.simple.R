@@ -193,6 +193,8 @@ add.interval.col("clast.obs",
 PKNCA.set.summary("clast.obs", business.geomean, business.geocv)
 
 #' Calculate the effective half-life
+#' 
+#' @details thalf.eff is \code{log(2)*mrt}.
 #'
 #' @param mrt the mean residence time to infinity
 #' @return the numeric value of the effective half-life
@@ -244,6 +246,8 @@ add.interval.col("thalf.eff.iv.last",
 PKNCA.set.summary("thalf.eff.iv.last", business.geomean, business.geocv)
 
 #' Calculate the AUC percent extrapolated
+#' 
+#' @details aucpext is \code{100*(1-auclast/aucinf)}.
 #' 
 #' @param auclast the area under the curve from time 0 to the last 
 #'   measurement above the limit of quantification
@@ -301,6 +305,8 @@ PKNCA.set.summary("aucpext.pred", business.mean, business.sd)
 
 #' Calculate the elimination rate (Kel)
 #'
+#' @param kel is \code{1/mrt}, not to be confused with lambda.z.
+#'
 #' @param mrt the mean residence time
 #' @return the numeric value of the elimination rate
 #' @export
@@ -351,6 +357,8 @@ add.interval.col("kel.iv.last",
 PKNCA.set.summary("kel.iv.last", business.geomean, business.geocv)
 
 #' Calculate the (observed oral) clearance
+#' 
+#' @details cl is \code{dose/auc}.
 #' 
 #' @param dose the dose administered
 #' @param auc The area under the concentration-time curve.
@@ -408,6 +416,8 @@ add.interval.col("cl.pred",
 PKNCA.set.summary("cl.pred", business.geomean, business.geocv)
 
 #' Calculate the absolute (or relative) bioavailability
+#' 
+#' @details f is \code{(auc2/dose2)/(auc1/dose1)}.
 #'
 #' @param dose1 The dose administered in route or method 1
 #' @param dose2 The dose administered in route or method 2
@@ -434,8 +444,11 @@ add.interval.col("f",
                  depends=c())
 PKNCA.set.summary("f", business.geomean, business.geocv)
 
-#' Calculate the mean residence time (MRT) for single-dose data or 
-#' linear multiple-dose data.
+#' Calculate the mean residence time (MRT) for single-dose data or linear
+#' multiple-dose data.
+#'
+#' @details mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose =
+#'   0} for oral administration.
 #' 
 #' @param auc the AUC from 0 to infinity or 0 to tau
 #' @param aumc the AUMC from 0 to infinity or 0 to tau
@@ -503,8 +516,11 @@ add.interval.col("mrt.iv.last",
                  depends=list("auclast", "aumclast"))
 PKNCA.set.summary("mrt.iv.last", business.geomean, business.geocv)
 
-#' Calculate the mean residence time (MRT) for multiple-dose data with
-#' nonlinear kinetics.
+#' Calculate the mean residence time (MRT) for multiple-dose data with nonlinear
+#' kinetics.
+#'
+#' @details mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and
+#' should only be used for multiple dosing with equal intervals between doses.
 #' 
 #' @param auctau the AUC from time 0 to the end of the dosing interval 
 #'   (tau).
@@ -543,6 +559,8 @@ PKNCA.set.summary("mrt.md.pred", business.geomean, business.geocv)
 
 #' Calculate the terminal volume of distribution (Vz)
 #'
+#' @details vz is \code{cl/lambda.z}.
+#'
 #' @param cl the clearance (or apparent observed clearance)
 #' @param lambda.z the elimination rate
 #' @export
@@ -573,6 +591,7 @@ PKNCA.set.summary("vz.pred", business.geomean, business.geocv)
 
 #' Calculate the steady-state volume of distribution (Vss)
 #'
+#' @details vss is \code{cl*mrt}.
 #' @param cl the clearance
 #' @param mrt the mean residence time
 #' @return the volume of distribution at steady-state
@@ -641,6 +660,8 @@ PKNCA.set.summary("vss.md.pred", business.geomean, business.geocv)
 #' Calculate the volume of distribution (Vd) or observed volume of
 #' distribution (Vd/F)
 #' 
+#' @details vd is \code{dose/(aucinf * lambda.z)}.
+#' 
 #' @param dose One or more doses given during an interval
 #' @param aucinf Area under the curve to infinity (either predicted or
 #'   observed).
@@ -685,6 +706,8 @@ add.interval.col("vd.pred",
 PKNCA.set.summary("vd.pred", business.geomean, business.geocv)
 
 #' Calculate the average concentration during an interval.
+#' 
+#' @details cav is \code{auclast/(end-start)}.
 #'
 #' @param auclast The area under the curve during the interval
 #' @param start The starting time of the interval
@@ -736,6 +759,8 @@ PKNCA.set.summary("ctrough", business.geomean, business.geocv)
 
 #' Determine the peak-to-trough ratio
 #'
+#' @details ptr is \code{cmax/cmin}.
+#'
 #' @param cmax The maximum observed concentration
 #' @param cmin The minimum observed concentration
 #' @return The ratio of cmax to cmin (if cmin == 0, NA)
@@ -778,6 +803,8 @@ PKNCA.set.summary("tlag", business.median, business.range)
 
 #' Determine the degree of fluctuation
 #' 
+#' @details deg.fluc is \code{100*(cmax - cmin)/cav}.
+#'
 #' @param cmax The maximum observed concentration
 #' @param cmin The minimum observed concentration
 #' @param cav The average concentration in the interval
@@ -798,6 +825,8 @@ add.interval.col("deg.fluc",
 PKNCA.set.summary("deg.fluc", business.mean, business.sd)
 
 #' Determine the PK swing
+#' 
+#' @details swing is \code{100*(cmax - cmin)/cmin}.
 #' 
 #' @param cmax The maximum observed concentration
 #' @param cmin The minimum observed concentration

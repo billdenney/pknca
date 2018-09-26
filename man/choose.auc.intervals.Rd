@@ -40,6 +40,15 @@ Intervals for AUC are selected by the following metrics:
 }
 \seealso{
 \code{\link{pk.calc.auc}}, \code{\link{pk.calc.aumc}},
-\code{\link{pk.calc.half.life}}, \code{\link{find.tau}},
-\code{\link{check.interval.specification}}, \code{\link{PKNCA.options}}
+\code{\link{pk.calc.half.life}}, \code{\link{PKNCA.options}}
+
+Other Interval specifications: \code{\link{add.interval.col}},
+  \code{\link{check.interval.deps}},
+  \code{\link{check.interval.specification}},
+  \code{\link{get.interval.cols}},
+  \code{\link{get.parameter.deps}}
+
+Other Interval determination: \code{\link{find.tau}}
 }
+\concept{Interval determination}
+\concept{Interval specifications}

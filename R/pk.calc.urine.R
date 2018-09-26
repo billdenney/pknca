@@ -1,5 +1,7 @@
 #' Calculate amount excreted (typically in urine or feces)
-#' 
+#'
+#' @details ae is \code{sum(conc*volume)}.
+#'  
 #' @param conc The concentration in the sample
 #' @param volume The volume (or mass) of the sample
 #' @param check Should the concentration and volume data be checked?
@@ -18,6 +20,8 @@ add.interval.col("ae",
 PKNCA.set.summary("ae", business.geomean, business.geocv)
 
 #' Calculate renal clearance
+#' 
+#' @details clr is \code{sum(ae)/auc}.
 #' 
 #' @param ae The amount excreted in urine (as a numeric scalar or
 #'   vector)
@@ -51,6 +55,8 @@ PKNCA.set.summary("clr.pred", business.geomean, business.geocv)
 
 #' Calculate fraction excreted (typically in urine or feces)
 #' 
+#' @details fe is \code{sum(ae)/dose}
+#'
 #' @param ae The amount excreted (as a numeric scalar or vector)
 #' @param dose The dose (as a numeric scalar or vector)
 #' @return The fraction of dose excreted.

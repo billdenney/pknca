@@ -28,8 +28,8 @@
 #' @details If \code{data.dose} is not given or is \code{NA}, then the 
 #'   \code{intervals} must be given.  At least one of \code{data.dose}
 #'   and \code{intervals} must be given.
-#' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdose}}, 
-#'   \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
+#' @family PKNCA objects
+#' @seealso \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
 #' @export
 PKNCAdata <- function(data.conc, data.dose, ...)
   UseMethod("PKNCAdata", data.conc)

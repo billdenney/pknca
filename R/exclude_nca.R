@@ -22,6 +22,7 @@
 #'                               FUN=exclude_nca_max.aucinf.pext())
 #' as.data.frame(my_result_excluded)
 #' @name exclude_nca
+#' @family Result exclusions
 NULL
 
 #' @describeIn exclude_nca Exclude based on span.ratio

@@ -3,8 +3,8 @@
 \name{pk.calc.mrt}
 \alias{pk.calc.mrt}
 \alias{pk.calc.mrt.iv}
-\title{Calculate the mean residence time (MRT) for single-dose data or 
-linear multiple-dose data.}
+\title{Calculate the mean residence time (MRT) for single-dose data or linear
+multiple-dose data.}
 \usage{
 pk.calc.mrt(auc, aumc)
 
@@ -22,8 +22,12 @@ duration for an IV infusion)}
 the numeric value of the mean residence time
 }
 \description{
-Calculate the mean residence time (MRT) for single-dose data or 
-linear multiple-dose data.
+Calculate the mean residence time (MRT) for single-dose data or linear
+multiple-dose data.
+}
+\details{
+mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose =
+  0} for oral administration.
 }
 \section{Functions}{
 \itemize{

@@ -23,6 +23,8 @@ Calculate the volume of distribution (Vd) or observed volume of
 distribution (Vd/F)
 }
 \details{
+vd is \code{dose/(aucinf * lambda.z)}.
+
 If \code{dose} is the same length as the other inputs, then
   the output will be the same length as all of the inputs; the 
   function assumes that you are calculating for multiple intervals 

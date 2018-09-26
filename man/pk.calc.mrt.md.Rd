@@ -2,8 +2,8 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.mrt.md}
 \alias{pk.calc.mrt.md}
-\title{Calculate the mean residence time (MRT) for multiple-dose data with
-nonlinear kinetics.}
+\title{Calculate the mean residence time (MRT) for multiple-dose data with nonlinear
+kinetics.}
 \usage{
 pk.calc.mrt.md(auctau, aumctau, aucinf, tau)
 }
@@ -20,10 +20,13 @@ single-dose data)}
 \item{tau}{the dosing interval}
 }
 \description{
-Calculate the mean residence time (MRT) for multiple-dose data with
-nonlinear kinetics.
+Calculate the mean residence time (MRT) for multiple-dose data with nonlinear
+kinetics.
 }
 \details{
+mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and
+should only be used for multiple dosing with equal intervals between doses.
+
 Note that if \code{aucinf == auctau} (as would be the 
   assumption with linear kinetics), the equation becomes the same as 
   the single-dose MRT.

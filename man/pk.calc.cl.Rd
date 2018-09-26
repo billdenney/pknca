@@ -18,6 +18,8 @@ the numeric value of the total (CL) or observed oral clearance (CL/F)
 Calculate the (observed oral) clearance
 }
 \details{
+cl is \code{dose/auc}.
+
 If \code{dose} is the same length as the other inputs, then the 
   output will be the same length as all of the inputs; the function assumes 
   that you are calculating for multiple intervals simultaneously.  If the 

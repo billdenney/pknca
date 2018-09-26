@@ -14,3 +14,6 @@ pk.calc.vz(cl, lambda.z)
 \description{
 Calculate the terminal volume of distribution (Vz)
 }
+\details{
+vz is \code{cl/lambda.z}.
+}

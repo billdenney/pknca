@@ -43,7 +43,7 @@
 #'   per group.  When the right side is missing, PKNCA assumes that the 
 #'   same dose is given in every interval.  When given as a two-sided 
 #'   formula
-#' @seealso \code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
+#' @family PKNCA objects
 #' @export
 PKNCAdose <- function(data, ...)
   UseMethod("PKNCAdose")

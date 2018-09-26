@@ -159,6 +159,8 @@ and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical
 Press, 2000.  164-7.
 }
 \seealso{
-\code{\link{pk.calc.auc.all}}, \code{\link{pk.calc.auc.last}},
-  \code{\link{clean.conc.blq}}
+\code{\link{clean.conc.blq}}
+
+Other AUC calculations: \code{\link{pk.calc.aucint}}
 }
+\concept{AUC calculations}

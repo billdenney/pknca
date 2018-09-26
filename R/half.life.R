@@ -70,6 +70,7 @@
 #' lambda-z."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
 #' and Applications, 4th Edition.  Stockholm, Sweden: Swedish 
 #' Pharmaceutical Press, 2000.  167-9.
+#' @family NCA parameter calculations
 #' @export
 pk.calc.half.life <- function(conc, time, tmax, tlast,
                               manually.selected.points=FALSE,

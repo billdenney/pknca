@@ -19,6 +19,8 @@ The renal clearance as a number
 Calculate renal clearance
 }
 \details{
+clr is \code{sum(ae)/auc}.
+
 The units for the \code{ae} and \code{auc} should match such
   that \code{ae/auc} has units of volume/time.
 }

@@ -14,6 +14,7 @@
 #' @param check Run \code{\link{check.conc.time}}?
 #' @return The concentration and time measurements (data frame) filtered
 #'   and cleaned as requested relative to NA in the concentration.
+#' @family Data cleaners
 #' @export
 clean.conc.na <- function(conc, time, ...,
                           options=list(),
@@ -79,7 +80,7 @@ clean.conc.na <- function(conc, time, ...,
 #'   \item{a number}{Set the BLQ values to that number}
 #' }
 #'
-#' @seealso \code{\link{clean.conc.na}}
+#' @family Data cleaners
 #' @export
 clean.conc.blq <- function(conc, time,
                            ...,

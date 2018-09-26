@@ -19,3 +19,8 @@ The vector of the independent variable from the object.
 Get the independent variable (right hand side of the formula) from
 a PKNCA object.
 }
+\seealso{
+Other PKNCA object extractors: \code{\link{getDataName.PKNCAconc}},
+  \code{\link{getDepVar}}
+}
+\concept{PKNCA object extractors}

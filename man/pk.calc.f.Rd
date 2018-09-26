@@ -20,3 +20,6 @@ route or method 2}
 \description{
 Calculate the absolute (or relative) bioavailability
 }
+\details{
+f is \code{(auc2/dose2)/(auc1/dose1)}.
+}

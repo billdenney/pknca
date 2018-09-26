@@ -21,3 +21,6 @@ The numeric value of the AUC percent extrapolated or
 \description{
 Calculate the AUC percent extrapolated
 }
+\details{
+aucpext is \code{100*(1-auclast/aucinf)}.
+}

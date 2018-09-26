@@ -24,7 +24,7 @@
 #' 
 #' @return A scalar float for the first time when steady-state is
 #'   achieved or \code{NA} if it is not observed.
-#' @seealso \code{\link{pk.tss}}, \code{\link{pk.tss.stepwise.linear}}
+#' @family Time to steady-state calculations
 #' @references
 #' Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
 #' Estimating Time to Steady State with Examples from Phase 1 Studies.

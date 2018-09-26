@@ -311,7 +311,7 @@
 #'   \item{a single value is requested}{the current value of that option is returned as a scalar} 
 #'   \item{multiple values are requested}{the current values of those options are returned as a list}
 #' }
-#' @seealso \code{\link{PKNCA.choose.option}}
+#' @family PKNCA calculation and summary settings
 #' @examples
 #' 
 #' PKNCA.options()
@@ -404,7 +404,7 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE, name, value) {
 #' @param options The non-default options to choose from.
 #' @return The value of the option first from the \code{options} list and if it
 #'   is not there then from the current settings.
-#' @seealso \code{\link{PKNCA.options}}
+#' @family PKNCA calculation and summary settings
 #' @export
 PKNCA.choose.option <- function(name, value=NULL, options=list())
   if (!is.null(value)) {
@@ -446,6 +446,7 @@ PKNCA.options.describe <- function(name) {
 #' @param reset Reset all the summary instructions
 #' @return All current summary settings (invisibly)
 #' @seealso \code{\link{summary.PKNCAresults}}
+#' @family PKNCA calculation and summary settings
 #' @export
 PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
                               reset=FALSE) {

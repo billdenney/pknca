@@ -58,6 +58,9 @@ If \code{data.dose} is not given or is \code{NA}, then the
   and \code{intervals} must be given.
 }
 \seealso{
-\code{\link{PKNCAconc}}, \code{\link{PKNCAdose}}, 
-  \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
+\code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
+
+Other PKNCA objects: \code{\link{PKNCAconc}},
+  \code{\link{PKNCAdose}}, \code{\link{PKNCAresults}}
 }
+\concept{PKNCA objects}

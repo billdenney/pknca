@@ -29,8 +29,8 @@
 #'   \code{interp.extrap.conc}
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
-#' @seealso \code{\link{pk.calc.auxc}}, \code{\link{PKNCA.options}},
-#'   \code{\link{interp.extrap.conc.dose}}
+#' @family AUC calculations
+#' @seealso \code{\link{PKNCA.options}}, \code{\link{interp.extrap.conc.dose}}
 #' @export
 pk.calc.aucint <- function(conc, time,
                            interval=NULL, start=NULL, end=NULL,

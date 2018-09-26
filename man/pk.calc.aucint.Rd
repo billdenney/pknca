@@ -87,6 +87,8 @@ for AUCinf.pred
 }}
 
 \seealso{
-\code{\link{pk.calc.auxc}}, \code{\link{PKNCA.options}},
-  \code{\link{interp.extrap.conc.dose}}
+\code{\link{PKNCA.options}}, \code{\link{interp.extrap.conc.dose}}
+
+Other AUC calculations: \code{\link{pk.calc.auxc}}
 }
+\concept{AUC calculations}

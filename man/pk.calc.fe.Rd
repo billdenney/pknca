@@ -18,6 +18,8 @@ The fraction of dose excreted.
 Calculate fraction excreted (typically in urine or feces)
 }
 \details{
+fe is \code{sum(ae)/dose}
+
 The units for \code{ae} and \code{dose} should be the same
   so that \code{ae/dose} is a unitless fraction.
 }

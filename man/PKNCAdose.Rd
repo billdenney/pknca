@@ -75,5 +75,7 @@ The \code{formula} for a \code{PKNCAdose} object can be
   formula
 }
 \seealso{
-\code{\link{PKNCAconc}}, \code{\link{PKNCAdata}}
+Other PKNCA objects: \code{\link{PKNCAconc}},
+  \code{\link{PKNCAdata}}, \code{\link{PKNCAresults}}
 }
+\concept{PKNCA objects}

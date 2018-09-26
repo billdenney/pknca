@@ -21,6 +21,7 @@ the dosing including dose amount and route.
 * `PKNCAdata()` is more restrictive on unknown arguments issuing an error
   when unknonwn arguments are present.
 * `intervals` argument to `PKNCAdata()` may now be a tibble (fixes #72).
+* Documentation has been extensively updated (fixes #81).
 
 # PKNCA 0.8.5
 

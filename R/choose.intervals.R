@@ -23,9 +23,10 @@
 #' \code{auc.type}, and \code{half.life}.  See
 #' \code{\link{check.interval.specification}} for column definitions.
 #' The data frame may have zero rows if no intervals could be found.
+#' @family Interval specifications
+#' @family Interval determination
 #' @seealso \code{\link{pk.calc.auc}}, \code{\link{pk.calc.aumc}},
-#' \code{\link{pk.calc.half.life}}, \code{\link{find.tau}},
-#' \code{\link{check.interval.specification}}, \code{\link{PKNCA.options}}
+#' \code{\link{pk.calc.half.life}}, \code{\link{PKNCA.options}}
 #' @export
 choose.auc.intervals <- function(time.conc, time.dosing,
                                  options=list(),
@@ -126,6 +127,7 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #'   \item If none of the \code{choices} can minimize the number of
 #'         unique values, then -1 is returned.
 #' }
+#' @family Interval determination
 #' @export
 find.tau <- function(x, na.action=na.omit,
                      options=list(),

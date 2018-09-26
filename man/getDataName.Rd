@@ -39,3 +39,8 @@ object.
 \item \code{default}: If no data name exists, returns NULL.
 }}
 
+\seealso{
+Other PKNCA object extractors: \code{\link{getDepVar}},
+  \code{\link{getIndepVar}}
+}
+\concept{PKNCA object extractors}

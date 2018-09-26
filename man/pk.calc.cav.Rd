@@ -19,3 +19,6 @@ The Cav (average concentration during the interval)
 \description{
 Calculate the average concentration during an interval.
 }
+\details{
+cav is \code{auclast/(end-start)}.
+}

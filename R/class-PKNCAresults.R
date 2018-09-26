@@ -12,6 +12,7 @@
 #'   should have values of \code{NA} or \code{""} for concentrations to
 #'   include and non-empty text for concentrations to exclude.
 #' @return A PKNCAresults object with each of the above within.
+#' @family PKNCA objects
 #' @export
 PKNCAresults <- function(result, data, exclude) {
   ## Add all the parts into the object

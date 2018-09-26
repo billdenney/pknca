@@ -17,3 +17,6 @@ the volume of distribution at steady-state
 \description{
 Calculate the steady-state volume of distribution (Vss)
 }
+\details{
+vss is \code{cl*mrt}.
+}

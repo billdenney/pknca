@@ -71,6 +71,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #'                  depends=c("cmax"))
 #' }
 #' @importFrom utils getAnywhere
+#' @family Interval specifications
 #' @export
 add.interval.col <- function(name,
                              FUN,
@@ -186,6 +187,7 @@ sort.interval.cols <- function() {
 #'   Calculation Intervals"
 #' @examples
 #' get.interval.cols()
+#' @family Interval specifications
 #' @export
 get.interval.cols <- function() {
   sort.interval.cols()
