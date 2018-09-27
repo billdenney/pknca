@@ -6,8 +6,8 @@ r:
   - release
   - devel
 
-r_packages:
-  - covr
+r_github_packages:
+  - r-lib/covr
 
 after_success:
   - Rscript -e 'cov <- covr::package_coverage()' -e 'print(cov)' -e 'covr::codecov(coverage = cov)'
