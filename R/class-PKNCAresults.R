@@ -128,7 +128,7 @@ roundingSummarize <- function(x, name) {
 #' @param ... Ignored.
 #' @return A data frame of NCA parameter results summarized according to the 
 #'   summarization settings.
-#' @seealso \code{\link{PKNCA.set.summary}}
+#' @seealso \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
 #' @export
 summary.PKNCAresults <- function(object, ...,
                                  drop.group=object$data$conc$subject,
@@ -263,8 +263,12 @@ as_summary_PKNCAresults <- function(data, caption) {
   )
 }
 
-#' @describeIn summary.PKNCAresults print the results summary
+#' Print the results summary
 #' @param x A summary_PKNCAresults object
+#' @param ... passed to print.data.frame (\code{row.names} is always set to
+#'   \code{FALSE})
+#' @return \code{x} invisibly
+#' @seealso \code{\link{summary.PKNCAresults}}
 #' @export
 print.summary_PKNCAresults <- function(x, ...) {
   print.data.frame(x, row.names=FALSE, ...)

@@ -38,5 +38,5 @@ Summarize PKNCA results
 Excluded results will not be included in the summary.
 }
 \seealso{
-\code{\link{PKNCA.set.summary}}
+\code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
 }
