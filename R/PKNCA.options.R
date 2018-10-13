@@ -429,6 +429,7 @@ PKNCA.options.describe <- function(name) {
 #' @param name The parameter name or a vector of parameter names.  It
 #'   must have already been defined (see
 #'   \code{\link{add.interval.col}}).
+#' @param description A single-line description of the summary
 #' @param point The function to calculate the point estimate for the
 #'   summary.  The function will be called as \code{point(x)} and must
 #'   return a scalar value (typically a number, NA, or a string).
@@ -447,9 +448,19 @@ PKNCA.options.describe <- function(name) {
 #' @return All current summary settings (invisibly)
 #' @seealso \code{\link{summary.PKNCAresults}}
 #' @family PKNCA calculation and summary settings
+#' @examples
+#' \dontrun{
+#' PKNCA.set.summary(
+#'   name="half.life",
+#'   description="arithmetic mean and standard deviation",
+#'   point=business.mean,
+#'   spread=business.sd,
+#'   rounding=list(signif=3)
+#' )
+#' }
 #' @export
-PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
-                              reset=FALSE) {
+PKNCA.set.summary <- function(name, description, point, spread,
+                              rounding=list(signif=3), reset=FALSE) {
   if (reset) {
     current <- list()
   } else {
@@ -460,38 +471,59 @@ PKNCA.set.summary <- function(name, point, spread, rounding=list(signif=3),
       assign("summary", current, envir=.PKNCAEnv)
     return(invisible(current))
   }
-  ## Confirm that the name exists
+  # Confirm that the name exists
   if (!all(found_names <- name %in% names(get("interval.cols", envir=.PKNCAEnv)))) {
     stop(paste("You must first define the parameter name with add.interval.col.  Parameters not yet defined are:",
                paste(name[!found_names], collapse=", ")))
   }
-  ## Confirm that point is a function
-  if (!is.function(point))
-    stop("point must be a function")
-  for (current_name in name)
-    current[[current_name]] <- list(point=point)
-  ## Confirm that spread is a function (if given)
-  if (!missing(spread)) {
-    if (!is.function(spread))
-      stop("spread must be a function")
-    for (current_name in name)
-      current[[current_name]]$spread <- spread
+  # Reset all names to prep for settings below
+  for (current_name in name) {
+    current[[current_name]] <- list()
   }
-  ## Confirm that rounding is either a single-entry list or a function
+  # Confirm that description is a scalar character string
+  if (!is.character(description)) {
+    stop("`description` must be a character string.")
+  } else if (length(description) != 1) {
+    stop("`description` must be a scalar.")
+  }
+  for (current_name in name) {
+    current[[current_name]]$description <- description
+  }
+  # Confirm that point is a function
+  if (!is.function(point)) {
+    stop("`point` must be a function")
+  }
+  for (current_name in name) {
+    current[[current_name]]$point <- point
+  }
+  # Confirm that spread is a function (if given)
+  if (!missing(spread)) {
+    if (!is.function(spread)) {
+      stop("spread must be a function")
+    }
+    for (current_name in name) {
+      current[[current_name]]$spread <- spread
+    }
+  }
+  # Confirm that rounding is either a single-entry list or a function
   if (is.list(rounding)) {
-    if (length(rounding) != 1)
+    if (length(rounding) != 1) {
       stop("rounding must have a single value in the list")
-    if (!(names(rounding) %in% c("signif", "round")))
+    }
+    if (!(names(rounding) %in% c("signif", "round"))) {
       stop("When a list, rounding must have a name of either 'signif' or 'round'")
-    for (current_name in name)
+    }
+    for (current_name in name) {
       current[[current_name]]$rounding <- rounding
+    }
   } else if (is.function(rounding)) {
-    for (current_name in name)
+    for (current_name in name) {
       current[[current_name]]$rounding <- rounding
+    }
   } else {
     stop("rounding must be either a list or a function")
   }
-  ## Set the summary parameters
+  # Set the summary parameters
   assign("summary", current, envir=.PKNCAEnv)
   invisible(current)
 }

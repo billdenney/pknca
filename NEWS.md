@@ -6,6 +6,10 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.0
 
+* Breaking Change: `summary.PKNCAresults()` now provides a caption
+  including the summary method for each parameter.  If you change
+  summary functions using `PKNCA.set.summary()`, you must now use the
+  `description` option to set the description of the summary.
 * Issue fixed with summarization of data that has exclusions.
   Exclusions are now correctly handled as missing instead of never
   calculated.

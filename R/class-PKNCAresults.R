@@ -162,7 +162,7 @@ summary.PKNCAresults <- function(object, ...,
   ret <- cbind(ret,
                resultDataCols)
   ret[,names(resultDataCols)] <- not.requested.string
-  ## Loop over every group that needs summarization
+  # Loop over every group that needs summarization
   for (i in seq_len(nrow(ret)))
     ## Loop over every column that needs summarziation
     for (n in names(resultDataCols)) {
@@ -229,5 +229,45 @@ summary.PKNCAresults <- function(object, ...,
     }
     ret$N <- as.character(ret$N)
   }
-  ret
+  # Extract the summarization descriptions for the caption
+  summary_descriptions <-
+    unlist(
+      lapply(
+        X=summaryInstructions[names(resultDataCols)],
+        FUN=`[[`,
+        i="description"
+      )
+    )
+  simplified_summary_descriptions <- summary_descriptions[!duplicated(summary_descriptions)]
+  for (idx in seq_along(simplified_summary_descriptions)) {
+    names(simplified_summary_descriptions)[idx] <-
+      paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
+            collapse=", ")
+  }
+  as_summary_PKNCAresults(
+    ret,
+    caption=paste(
+      names(simplified_summary_descriptions),
+      simplified_summary_descriptions,
+      sep=": ",
+      collapse="; "
+    )
+  )
+}
+
+as_summary_PKNCAresults <- function(data, caption) {
+  structure(
+    data,
+    caption=caption,
+    class=c("summary_PKNCAresults", "data.frame")
+  )
+}
+
+#' @describeIn summary.PKNCAresults print the results summary
+#' @param x A summary_PKNCAresults object
+#' @export
+print.summary_PKNCAresults <- function(x, ...) {
+  print.data.frame(x, row.names=FALSE, ...)
+  cat("\nCaption: ", attr(x, "caption"))
+  invisible(x)
 }

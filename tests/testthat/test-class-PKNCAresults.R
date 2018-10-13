@@ -99,18 +99,25 @@ test_that("PKNCAresults summary", {
   ## Testing the summarization
   mysummary <- summary(myresult)
   expect_true(is.data.frame(mysummary))
-  expect_equal(mysummary,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("13.8 [2.51]", "."),
-                          cmax=c(".", "0.970 [4.29]"),
-                          tmax=c(".", "3.00 [2.00, 4.00]"),
-                          half.life=c(".", "14.2 [2.79]"),
-                          aucinf.obs=c(".", "20.5 [6.84]"),
-                          stringsAsFactors=FALSE),
-               info="simple summary of PKNCAresults performs as expected")
+  expect_equal(
+    mysummary,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("13.8 [2.51]", "."),
+        cmax=c(".", "0.970 [4.29]"),
+        tmax=c(".", "3.00 [2.00, 4.00]"),
+        half.life=c(".", "14.2 [2.79]"),
+        aucinf.obs=c(".", "20.5 [6.84]"),
+        stringsAsFactors=FALSE
+      ),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="simple summary of PKNCAresults performs as expected"
+  )
   
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpconc$conc[tmpconc$ID %in% 2] <- 0
@@ -124,18 +131,25 @@ test_that("PKNCAresults summary", {
   #               regexp="Too few points for half-life calculation")
   myresult <- pk.nca(mydata)
   mysummary <- summary(myresult)
-  expect_equal(mysummary,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("13.5 [NC]", "."),
-                          cmax=c(".", "1.00 [NC]"),
-                          tmax=c(".", "4.00 [4.00, 4.00]"),
-                          half.life=c(".", "16.1 [NC]"),
-                          aucinf.obs=c(".", "21.5 [NC]"),
-                          stringsAsFactors=FALSE),
-               info="summary of PKNCAresults with some missing values results in NA for spread")
+  expect_equal(
+    mysummary,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("13.5 [NC]", "."),
+        cmax=c(".", "1.00 [NC]"),
+        tmax=c(".", "4.00 [4.00, 4.00]"),
+        half.life=c(".", "16.1 [NC]"),
+        aucinf.obs=c(".", "21.5 [NC]"),
+        stringsAsFactors=FALSE
+      ),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="summary of PKNCAresults with some missing values results in NA for spread"
+  )
   
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpconc$conc <- 0
@@ -149,50 +163,69 @@ test_that("PKNCAresults summary", {
   #               regexp="Too few points for half-life calculation")
   myresult <- pk.nca(mydata)
   mysummary <- summary(myresult)
-  expect_equal(mysummary,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("NC", "."),
-                          cmax=c(".", "NC"),
-                          tmax=c(".", "NC"),
-                          half.life=c(".", "NC"),
-                          aucinf.obs=c(".", "NC"),
-                          stringsAsFactors=FALSE),
-               info="summary of PKNCAresults without most results gives NC")
+  expect_equal(
+    mysummary,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("NC", "."),
+        cmax=c(".", "NC"),
+        tmax=c(".", "NC"),
+        half.life=c(".", "NC"),
+        aucinf.obs=c(".", "NC"),
+        stringsAsFactors=FALSE),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="summary of PKNCAresults without most results gives NC"
+  )
   
   mysummary <- summary(myresult,
                        not.requested.string="NR",
                        not.calculated.string="NoCalc")
-  expect_equal(mysummary,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("NoCalc", "NR"),
-                          cmax=c("NR", "NoCalc"),
-                          tmax=c("NR", "NoCalc"),
-                          half.life=c("NR", "NoCalc"),
-                          aucinf.obs=c("NR", "NoCalc"),
-                          stringsAsFactors=FALSE),
-               info="Summary respects the not.requested.string and not.calculated.string")
+  expect_equal(
+    mysummary,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("NoCalc", "NR"),
+        cmax=c("NR", "NoCalc"),
+        tmax=c("NR", "NoCalc"),
+        half.life=c("NR", "NoCalc"),
+        aucinf.obs=c("NR", "NoCalc"),
+        stringsAsFactors=FALSE
+      ),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="Summary respects the not.requested.string and not.calculated.string"
+  )
   
   mysummary <- summary(myresult,
                        summarize.n.per.group=FALSE,
                        not.requested.string="NR",
                        not.calculated.string="NoCalc")
-  expect_equal(mysummary,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          auclast=c("NoCalc", "NR"),
-                          cmax=c("NR", "NoCalc"),
-                          tmax=c("NR", "NoCalc"),
-                          half.life=c("NR", "NoCalc"),
-                          aucinf.obs=c("NR", "NoCalc"),
-                          stringsAsFactors=FALSE),
-               info="N is optionally omitted")
+  expect_equal(
+    mysummary,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        auclast=c("NoCalc", "NR"),
+        cmax=c("NR", "NoCalc"),
+        tmax=c("NR", "NoCalc"),
+        half.life=c("NR", "NoCalc"),
+        aucinf.obs=c("NR", "NoCalc"),
+        stringsAsFactors=FALSE),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="N is optionally omitted"
+  )
 })
 
 test_that("dropping `start` and `end` from groups is allowed with a warning.", {
@@ -237,40 +270,81 @@ test_that("summary.PKNCAresults manages exclusions as missing not as non-existen
   mysummary <- summary(myresult)
   mysummary_excluded <- summary(myresult_excluded)
   mysummary_excluded2 <- summary(myresult_excluded2)
-  expect_equal(mysummary,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("13.8 [2.51]", "."),
-                          cmax=c(".", "0.970 [4.29]"),
-                          tmax=c(".", "3.00 [2.00, 4.00]"),
-                          half.life=c(".", "14.2 [2.79]"),
-                          aucinf.obs=c(".", "20.5 [6.84]"),
-                          stringsAsFactors=FALSE),
-               info="simple summary of PKNCAresults performs as expected")
-  expect_equal(mysummary_excluded,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("14.0 [NC]", "."),
-                          cmax=c(".", "0.970 [4.29]"),
-                          tmax=c(".", "3.00 [2.00, 4.00]"),
-                          half.life=c(".", "14.2 [2.79]"),
-                          aucinf.obs=c(".", "20.5 [6.84]"),
-                          stringsAsFactors=FALSE),
-               info="summary of PKNCAresults correctly excludes auclast when requested")
-  expect_equal(mysummary_excluded2,
-               data.frame(start=0,
-                          end=c(24, Inf),
-                          treatment="Trt 1",
-                          N="2",
-                          auclast=c("NC", "."),
-                          cmax=c(".", "0.970 [4.29]"),
-                          tmax=c(".", "3.00 [2.00, 4.00]"),
-                          half.life=c(".", "14.2 [2.79]"),
-                          aucinf.obs=c(".", "20.5 [6.84]"),
-                          stringsAsFactors=FALSE),
-               info="summary of PKNCAresults correctly excludes all of auclast when requested")
+  expect_equal(
+    mysummary,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("13.8 [2.51]", "."),
+        cmax=c(".", "0.970 [4.29]"),
+        tmax=c(".", "3.00 [2.00, 4.00]"),
+        half.life=c(".", "14.2 [2.79]"),
+        aucinf.obs=c(".", "20.5 [6.84]"),
+        stringsAsFactors=FALSE
+      ),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="simple summary of PKNCAresults performs as expected"
+  )
+  expect_equal(
+    mysummary_excluded,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("14.0 [NC]", "."),
+        cmax=c(".", "0.970 [4.29]"),
+        tmax=c(".", "3.00 [2.00, 4.00]"),
+        half.life=c(".", "14.2 [2.79]"),
+        aucinf.obs=c(".", "20.5 [6.84]"),
+        stringsAsFactors=FALSE
+      ),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="summary of PKNCAresults correctly excludes auclast when requested")
+  expect_equal(
+    mysummary_excluded2,
+    as_summary_PKNCAresults(
+      data.frame(
+        start=0,
+        end=c(24, Inf),
+        treatment="Trt 1",
+        N="2",
+        auclast=c("NC", "."),
+        cmax=c(".", "0.970 [4.29]"),
+        tmax=c(".", "3.00 [2.00, 4.00]"),
+        half.life=c(".", "14.2 [2.79]"),
+        aucinf.obs=c(".", "20.5 [6.84]"),
+        stringsAsFactors=FALSE
+      ),
+      caption="auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    ),
+    info="summary of PKNCAresults correctly excludes all of auclast when requested"
+  )
+})
+
+test_that("print.summary_PKNCAresults works", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+
+  expect_output(
+    print(summary(myresult)),
+    paste(
+      " start end treatment N     auclast         cmax              tmax   half.life.*", 
+      "     0  24     Trt 1 2 13.8 \\[2.51\\]            .                 .           ..*", 
+      "     0 Inf     Trt 1 2           . 0.970 \\[4.29\\] 3.00 \\[2.00, 4.00\\] 14.2 \\[2.79\\].*", 
+      "",
+      "Caption:  auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation",
+      sep="\n"
+    )
+  )
 })

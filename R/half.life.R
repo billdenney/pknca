@@ -230,46 +230,86 @@ add.interval.col("half.life",
                  values=c(FALSE, TRUE),
                  desc="The (terminal) half-life",
                  depends=c("tmax", "tlast"))
-PKNCA.set.summary("half.life", business.mean, business.sd)
+PKNCA.set.summary(
+  name="half.life",
+  description="arithmetic mean and standard deviation",
+  point=business.mean,
+  spread=business.sd
+)
 add.interval.col("r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The r^2 value of the half-life calculation",
                  depends=c("half.life"))
-PKNCA.set.summary("r.squared", business.mean, business.sd)
+PKNCA.set.summary(
+  name="r.squared",
+  description="arithmetic mean and standard deviation",
+  point=business.mean,
+  spread=business.sd
+)
 add.interval.col("adj.r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The adjusted r^2 value of the half-life calculation",
                  depends=c("half.life"))
-PKNCA.set.summary("adj.r.squared", business.mean, business.sd)
+PKNCA.set.summary(
+  name="adj.r.squared",
+  description="arithmetic mean and standard deviation",
+  point=business.mean,
+  spread=business.sd
+)
 add.interval.col("lambda.z",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The elimination rate of the terminal half-life",
                  depends=c("half.life"))
-PKNCA.set.summary("lambda.z", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="lambda.z",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
 add.interval.col("lambda.z.time.first",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The first time point used for the calculation of half-life",
                  depends=c("half.life"))
-PKNCA.set.summary("lambda.z.time.first", business.median, business.range)
+PKNCA.set.summary(
+  name="lambda.z.time.first",
+  description="median and range",
+  point=business.median,
+  spread=business.range
+)
 add.interval.col("lambda.z.n.points",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The number of points used for the calculation of half-life",
                  depends=c("half.life"))
-PKNCA.set.summary("lambda.z.n.points", business.median, business.range)
+PKNCA.set.summary(
+  name="lambda.z.n.points",
+  description="median and range",
+  point=business.median,
+  spread=business.range
+)
 add.interval.col("clast.pred",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The concentration at Tlast as predicted by the half-life",
                  depends=c("half.life"))
-PKNCA.set.summary("clast.pred", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="clast.pred",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
 add.interval.col("span.ratio",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The ratio of the half-life to the duration used for half-life calculation",
                  depends=c("half.life"))
-PKNCA.set.summary("span.ratio", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="span.ratio",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)

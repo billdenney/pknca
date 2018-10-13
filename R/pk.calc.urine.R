@@ -17,7 +17,12 @@ add.interval.col("ae",
                  FUN="pk.calc.ae",
                  values=c(FALSE, TRUE),
                  desc="The amount excreted (typically into urine or feces)")
-PKNCA.set.summary("ae", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="ae",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
 
 #' Calculate renal clearance
 #' 
@@ -39,19 +44,34 @@ add.interval.col("clr.last",
                  values=c(FALSE, TRUE),
                  formalsmap=list(auc="auclast"),
                  desc="The renal clearance calculated using AUClast")
-PKNCA.set.summary("clr.last", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="clr.last",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
 add.interval.col("clr.obs",
                  FUN="pk.calc.clr",
                  values=c(FALSE, TRUE),
                  formalsmap=list(auc="aucinf.obs"),
                  desc="The renal clearance calculated using AUCinf,obs")
-PKNCA.set.summary("clr.obs", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="clr.obs",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
 add.interval.col("clr.pred",
                  FUN="pk.calc.clr",
                  values=c(FALSE, TRUE),
                  formalsmap=list(auc="aucinf.pred"),
                  desc="The renal clearance calculated using AUCinf,pred")
-PKNCA.set.summary("clr.pred", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="clr.pred",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
 
 #' Calculate fraction excreted (typically in urine or feces)
 #' 
@@ -71,4 +91,9 @@ add.interval.col("fe",
                  FUN="pk.calc.fe",
                  values=c(FALSE, TRUE),
                  desc="The fraction of the dose excreted")
-PKNCA.set.summary("fe", business.geomean, business.geocv)
+PKNCA.set.summary(
+  name="fe",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
