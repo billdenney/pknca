@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -71,12 +71,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h4 class="author"><em>Bill Denney</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#load-the-data">Load the data</a></li>
+<li><a href="#compute-the-superposition-from-single-dose-data-to-steady-state">Compute the Superposition from Single-Dose Data to Steady-State</a></li>
+<li><a href="#nonstandard-superposition-computations">Nonstandard Superposition Computations</a><ul>
+<li><a href="#compute-the-superposition-from-single-dose-data-to-a-specific-dose">Compute the Superposition from Single-Dose Data to a Specific Dose</a></li>
+<li><a href="#compute-the-superposition-from-single-dose-data-with-1-dose-per-interval">Compute the Superposition from Single-Dose Data with &gt;1 Dose Per Interval</a><ul>
+<li><a href="#show-the-curve-to-steady-state">Show the Curve to Steady-State</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#time-point-selection-and-addition">Time Point Selection and Addition</a></li>
+<li><a href="#interpolation-and-extrapolation-methods">Interpolation and Extrapolation Methods</a></li>
+</ul>
+</div>
 
 <p>Examples simplify understanding. Below is an example of how to use the theophylline dataset to estimate the concentration for each subject after multiple doses.</p>
 <div id="load-the-data" class="section level1">
 <h1>Load the data</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## It is always a good idea to look at the data
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(datasets::Theoph))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(datasets<span class="op">::</span>Theoph))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -134,7 +148,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(datasets::Theo
 </table>
 <p>The columns that we will be interested in for our analysis are conc, Time, and Subject in the concentration data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## By default it is groupedData; convert it to a data frame for use
-my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(datasets::Theoph), conc~Time|Subject)</code></pre></div>
+my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(datasets<span class="op">::</span>Theoph), conc<span class="op">~</span>Time<span class="op">|</span>Subject)</code></pre></div>
 </div>
 <div id="compute-the-superposition-from-single-dose-data-to-steady-state" class="section level1">
 <h1>Compute the Superposition from Single-Dose Data to Steady-State</h1>
@@ -142,7 +156,7 @@ my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">steady.state &lt;-<span class="st"> </span><span class="kw">superposition</span>(my.conc, <span class="dt">tau=</span><span class="dv">24</span>)</code></pre></div>
 <pre><code>## Error in superposition.numeric(tmp.data[[x]]$data[[conc.col]], tmp.data[[x]]$data[[time.col]], : The first concentration must be 0 (and not NA).  To change this set check.blq=FALSE.</code></pre>
 <p>The error noting that the first concentration must be zero is due to the fact that superposition usually occurs with single-dose data. If the first concentration is nonzero, the data are not likely to be single-dose (or a data error should be fixed). Let’s find the offending data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(<span class="kw">subset</span>(datasets::Theoph, Time ==<span class="st"> </span><span class="dv">0</span> &amp;<span class="st"> </span>conc &gt;<span class="st"> </span><span class="dv">0</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">subset</span>(datasets<span class="op">::</span>Theoph, Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>conc <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>),
              <span class="dt">caption=</span><span class="st">&quot;Nonzero predose measurements&quot;</span>)</code></pre></div>
 <table>
 <caption>Nonzero predose measurements</caption>
@@ -185,13 +199,13 @@ my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span cl
 </table>
 <p>For this example, we will assume that these were errors, correct them to zero, and recalculate.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Correct nonzero concentrations at time 0 to be BLQ.
-theoph.corrected &lt;-<span class="st"> </span>datasets::Theoph
-theoph.corrected$conc[theoph.corrected$Time ==<span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span>
-my.conc.corrected &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(theoph.corrected, conc~Time|Subject)
+theoph.corrected &lt;-<span class="st"> </span>datasets<span class="op">::</span>Theoph
+theoph.corrected<span class="op">$</span>conc[theoph.corrected<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="dv">0</span>
+my.conc.corrected &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(theoph.corrected, conc<span class="op">~</span>Time<span class="op">|</span>Subject)
 
 ## Calculate the new steady-state concentrations with 24 hour dosing
 steady.state &lt;-<span class="st"> </span><span class="kw">superposition</span>(my.conc.corrected, <span class="dt">tau=</span><span class="dv">24</span>)
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(steady.state, <span class="dt">n=</span><span class="dv">14</span>),
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(steady.state, <span class="dt">n=</span><span class="dv">14</span>),
              <span class="dt">caption=</span><span class="st">&quot;Superposition at steady-state&quot;</span>)</code></pre></div>
 <table>
 <caption>Superposition at steady-state</caption>
@@ -284,7 +298,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(steady.state, 
 <p>If simulation to a specific dose is needed, the number of dosing intervals (<code>n.tau</code>) can be specified.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Calculate the unsteady-state concentrations with 24 hour dosing
 unsteady.state &lt;-<span class="st"> </span><span class="kw">superposition</span>(my.conc.corrected, <span class="dt">tau=</span><span class="dv">24</span>, <span class="dt">n.tau=</span><span class="dv">2</span>)
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(unsteady.state, <span class="dt">n=</span><span class="dv">14</span>),
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(unsteady.state, <span class="dt">n=</span><span class="dv">14</span>),
              <span class="dt">caption=</span><span class="st">&quot;Superposition before steady-state&quot;</span>)</code></pre></div>
 <table>
 <caption>Superposition before steady-state</caption>
@@ -374,7 +388,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(unsteady.state
 <p>Some dosing intervals are more complex than once per X hours (or days or weeks or…). To predict more complex dosing with superposition, give the dose times within the interval. The <code>dose.times</code> must all be less than <code>tau</code> (otherwise they are not in the interval).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Calculate the new steady-state concentrations with 24 hour dosing
 complex.interval.steady.state &lt;-<span class="st"> </span><span class="kw">superposition</span>(my.conc.corrected, <span class="dt">tau=</span><span class="dv">24</span>, <span class="dt">dose.times=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>))
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(complex.interval.steady.state, <span class="dt">n=</span><span class="dv">10</span>),
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(complex.interval.steady.state, <span class="dt">n=</span><span class="dv">10</span>),
              <span class="dt">caption=</span><span class="st">&quot;Superposition at steady-state with complex dosing&quot;</span>)</code></pre></div>
 <table>
 <caption>Superposition at steady-state with complex dosing</caption>
@@ -438,7 +452,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(complex.interv
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(conc~time, <span class="dt">groups=</span>Subject, <span class="dt">type=</span><span class="st">&quot;l&quot;</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(conc<span class="op">~</span>time, <span class="dt">groups=</span>Subject, <span class="dt">type=</span><span class="st">&quot;l&quot;</span>,
        <span class="dt">data=</span>complex.interval.steady.state)</code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>With this more complex dosing interval, the number of time points estimated increases. The next section describes the selection of time points.</p>
@@ -447,10 +461,10 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(complex.interv
 <p>To determine the concentration curve to get to steady-state, you can give all the dose times considered required to get to steady-state. To do this, specify tau as the total time to steady-state, specify <code>n.tau</code> as <code>1</code> to indicate that only one round of dosing should be administered.</p>
 <p>This command does not technically go to steady-state; if the <code>dose.times</code> are not sufficiently long to reach steady-state, it only goes for as many doses as requested.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">up.to.steady.state &lt;-<span class="st"> </span><span class="kw">superposition</span>(my.conc.corrected,
-                                    <span class="dt">tau=</span><span class="dv">4</span>*<span class="dv">24</span>,
+                                    <span class="dt">tau=</span><span class="dv">4</span><span class="op">*</span><span class="dv">24</span>,
                                     <span class="dt">n.tau=</span><span class="dv">1</span>,
-                                    <span class="dt">dose.times=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">3</span>*<span class="dv">24</span>, <span class="dt">by=</span><span class="dv">12</span>))
-<span class="kw">xyplot</span>(conc~time,
+                                    <span class="dt">dose.times=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">3</span><span class="op">*</span><span class="dv">24</span>, <span class="dt">by=</span><span class="dv">12</span>))
+<span class="kw">xyplot</span>(conc<span class="op">~</span>time,
        <span class="dt">groups=</span>Subject,
        <span class="dt">data=</span>up.to.steady.state,
        <span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</code></pre></div>
@@ -468,17 +482,17 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(complex.interv
 <li>each time from the <code>additional.times</code> argument.</li>
 </ul>
 <p>How the number of time points increases can be seen by comparing the time points for subject 1 in the steady-state single dosing and the complex dosing examples above.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">steady.state$time[steady.state$Subject ==<span class="st"> </span><span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">steady.state<span class="op">$</span>time[steady.state<span class="op">$</span>Subject <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</code></pre></div>
 <pre><code>##  [1]  0.00  0.25  0.37  0.57  1.12  2.02  3.82  5.10  7.03  9.05 12.12
 ## [12] 24.00</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(steady.state$Subject ==<span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(steady.state<span class="op">$</span>Subject <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 <pre><code>## [1] 12</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complex.interval.steady.state$time[complex.interval.steady.state$Subject ==<span class="st"> </span><span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complex.interval.steady.state<span class="op">$</span>time[complex.interval.steady.state<span class="op">$</span>Subject <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</code></pre></div>
 <pre><code>##  [1]  0.00  0.25  0.37  0.57  1.12  2.00  2.02  2.25  2.37  2.57  3.12
 ## [12]  3.82  4.00  4.02  4.25  4.37  4.57  5.10  5.12  5.82  6.02  7.03
 ## [23]  7.10  7.82  9.03  9.05  9.10 11.03 11.05 12.12 13.05 14.12 16.12
 ## [34] 24.00</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(complex.interval.steady.state$Subject ==<span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(complex.interval.steady.state<span class="op">$</span>Subject <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 <pre><code>## [1] 34</code></pre>
 </div>
 <div id="interpolation-and-extrapolation-methods" class="section level1">
@@ -493,7 +507,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(complex.interv
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -95,7 +95,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>The simplest analysis requires concentration and dosing data, then five function calls can provide summarized results. (Please note that this and the other examples in this document are intended to show the typical workflow, but they are not intended to run directly. For an example to run directly, please see <a href="Example-theophylline.html">the theophylline example</a>.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PKNCA)
 <span class="kw">library</span>(dplyr, <span class="dt">quietly=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.4.4</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -106,9 +105,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##     intersect, setdiff, setequal, union</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Load the PK concentration data
 d.conc &lt;-<span class="st"> </span>datasets<span class="op">::</span>Theoph <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Subject=</span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(Subject)))</code></pre></div>
-<pre><code>## Warning: package 'bindrcpp' was built under R version 3.4.4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Generate the dosing data
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Subject=</span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(Subject)))
+## Generate the dosing data
 d.dose &lt;-<span class="st"> </span>d.conc[d.conc<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>,]
 d.dose<span class="op">$</span>Time &lt;-<span class="st"> </span><span class="dv">0</span>
 

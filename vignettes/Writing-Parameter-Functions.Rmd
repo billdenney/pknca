@@ -1,7 +1,10 @@
 ---
 title: "Writing PKNCA Parameter Functions"
-author: "William Denney"
-output: rmarkdown::html_vignette
+author: "Bill Denney"
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Writing PKNCA Parameter Functions}
   %\VignetteEngine{knitr::rmarkdown}
@@ -55,15 +58,16 @@ Just writing a function doesn't connect it to the rest of PKNCA.  You have to te
 
 # Tell PKNCA How to Summarize the Parameter
 
-For any parameter, PKNCA needs to know how to summarize it for the `summary` function of the `PKNCAresults` class.  To tell PKNCA how to summarize a parameter, use the `PKNCA.set.summary` function.  It takes at least these three arguments:
+For any parameter, PKNCA needs to know how to summarize it for the `summary` function of the `PKNCAresults` class.  To tell PKNCA how to summarize a parameter, use the `PKNCA.set.summary` function.  It takes at least these four arguments:
 
 * `name` must match an already existing parameter name (added by the `add.interval.col` function).
+* `description` is a human-readable description of the `point` and `spread` for use in table captions.
 * `point` is the function to calculate the point estimate (called as `point(x)`, and it must return a scalar).
 * `spread` is the function to calculate the spread (or variability).  The function will be called as `spread(x)` and must return a scalar or a two-long vector.
 
 # Putting It Together
 
-One of the most common examples is the function to calculate Cmax:
+One of the most common examples is the function to calculate C~max~:
 
     #' Determine maximum observed PK concentration
     #'
@@ -87,4 +91,4 @@ One of the most common examples is the function to calculate Cmax:
                      values=c(FALSE, TRUE),
                      desc="Maximum observed concentration",
                      depends=c())
-    PKNCA.set.summary("cmax", business.geomean, business.geocv)
+    PKNCA.set.summary("cmax", "geometric mean and geometric coefficient of variation", business.geomean, business.geocv)

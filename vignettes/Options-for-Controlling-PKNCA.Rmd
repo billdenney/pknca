@@ -1,7 +1,10 @@
 ---
 title: "Options for Controlling PKNCA"
-author: "William Denney"
-output: rmarkdown::html_vignette
+author: "Bill Denney"
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Options for Controlling PKNCA}
   %\VignetteEngine{knitr::rmarkdown}

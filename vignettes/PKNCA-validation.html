@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="William Denney" />
+<meta name="author" content="Bill Denney" />
 
 
 <title>PKNCA Validation</title>
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">PKNCA Validation</h1>
-<h4 class="author"><em>William Denney</em></h4>
+<h4 class="author"><em>Bill Denney</em></h4>
 
 
 <div id="TOC">
@@ -79,6 +79,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#interval-columns">Interval columns</a></li>
 <li><a href="#aic.list-testing">AIC.list testing</a></li>
 <li><a href="#auc-and-aumc">AUC and AUMC</a></li>
+<li><a href="#aucint">aucint</a></li>
 <li><a href="#auc-interval-checking">AUC interval checking</a></li>
 <li><a href="#determining-tau-for-aucs">Determining tau for AUCs</a></li>
 <li><a href="#class-generation-general">Class generation-general</a></li>
@@ -276,6 +277,57 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tbody>
 </table>
 </div>
+<div id="aucint" class="section level2">
+<h2>aucint</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Testing Filename</th>
+<th align="left">Test Description</th>
+<th align="right">Number of Tests</th>
+<th align="right">Number of Failed Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">test-aucint.R</td>
+<td align="left">AUCint gives errors appropriately</td>
+<td align="right">18</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">test-aucint.R</td>
+<td align="left">AUCint gives the same value when no interpolation/extrapolation is required</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-aucint.R</td>
+<td align="left">AUCint gives a warning and NA when it cannot interpolate or extrapolate a value</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">test-aucint.R</td>
+<td align="left">AUCint respects auc.type and does the correct calculations for each AUC type</td>
+<td align="right">9</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-aucint.R</td>
+<td align="left">aucint respects doses</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">test-aucint.R</td>
+<td align="left">aucint works with infinite intervals</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="auc-interval-checking" class="section level2">
 <h2>AUC interval checking</h2>
 <table>
@@ -357,13 +409,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="even">
 <td align="left">test-class-general.R</td>
 <td align="left">setAttributeColumn</td>
-<td align="right">1</td>
+<td align="right">19</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">test-class-general.R</td>
 <td align="left">getAttributeColumn</td>
-<td align="right">1</td>
+<td align="right">10</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -390,7 +442,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-class-PKNCAconc.R</td>
 <td align="left">PKNCAconc</td>
-<td align="right">11</td>
+<td align="right">12</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -492,6 +544,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">1</td>
 <td align="right">0</td>
 </tr>
+<tr class="even">
+<td align="left">test-class-PKNCAdata.R</td>
+<td align="left">no intervals auto-determined (Fix GitHub issue #84)</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -510,7 +568,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-class-PKNCAdose.R</td>
 <td align="left">PKNCAdose</td>
-<td align="right">11</td>
+<td align="right">12</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -573,13 +631,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-class-PKNCAresults.R</td>
 <td align="left">PKNCAresults generation</td>
-<td align="right">7</td>
+<td align="right">8</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">test-class-PKNCAresults.R</td>
 <td align="left">PKNCAresults summary</td>
 <td align="right">9</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-class-PKNCAresults.R</td>
+<td align="left">dropping <code>start</code> and <code>end</code> from groups is allowed with a warning.</td>
+<td align="right">2</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -633,7 +697,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="even">
 <td align="left">test-exclude.R</td>
 <td align="left">exclude.default</td>
-<td align="right">18</td>
+<td align="right">17</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -681,7 +745,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-general.functions.R</td>
 <td align="left">check.conversion</td>
-<td align="right">4</td>
+<td align="right">3</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -723,13 +787,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-general.functions.R</td>
 <td align="left">Rounding</td>
-<td align="right">17</td>
+<td align="right">21</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">test-general.functions.R</td>
 <td align="left">Significance</td>
-<td align="right">23</td>
+<td align="right">33</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -783,7 +847,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="even">
 <td align="left">test-interpolate.conc.R</td>
 <td align="left">interpolate.conc</td>
-<td align="right">30</td>
+<td align="right">32</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -794,8 +858,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tr>
 <tr class="even">
 <td align="left">test-interpolate.conc.R</td>
+<td align="left">interp.extrap.conc.dose handles all eventualities</td>
+<td align="right">25</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-interpolate.conc.R</td>
 <td align="left">interp.extrap.conc.dose</td>
-<td align="right">14</td>
+<td align="right">26</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -964,6 +1034,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">test-pk.calc.all.R</td>
 <td align="left">Volume-related calculations</td>
 <td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-pk.calc.all.R</td>
+<td align="left">pk.nca can calculate values with group-level data</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">test-pk.calc.all.R</td>
+<td align="left">Missing dose info for some subjects gives a warning, not a difficult-to-interpret error</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">test-pk.calc.all.R</td>
+<td align="left">Ensure that options are respected during pk.nca call</td>
+<td align="right">1</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1260,7 +1348,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="even">
 <td align="left">test-PKNCA.options.R</td>
 <td align="left">PKNCA.choose.option</td>
-<td align="right">5</td>
+<td align="right">9</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1285,6 +1373,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">test-PKNCA.options.R</td>
+<td align="left">PKNCA.set.summary exists for all paramters</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
 <td align="left">test-PKNCA.options.R</td>
 <td align="left">PKNCA.options.describe</td>
 <td align="right">1</td>
@@ -1374,13 +1468,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="odd">
 <td align="left">test-time.to.steady.state.R</td>
 <td align="left">pk.tss.monoexponential</td>
-<td align="right">7</td>
+<td align="right">9</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">test-time.to.steady.state.R</td>
 <td align="left">pk.tss</td>
-<td align="right">3</td>
+<td align="right">7</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1390,11 +1484,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="session-information" class="section level1">
 <h1>Session Information</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Sys.Date</span>()</code></pre></div>
-<pre><code>## [1] &quot;2017-11-24&quot;</code></pre>
+<pre><code>## [1] &quot;2018-10-13&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
-<pre><code>## R version 3.4.1 (2017-06-30)
+<pre><code>## R version 3.5.1 (2018-07-02)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 10 x64 (build 15063)
+## Running under: Windows 10 x64 (build 17134)
 ## 
 ## Matrix products: default
 ## 
@@ -1409,19 +1503,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] bindrcpp_0.2     dplyr_0.7.4.9000 PKNCA_0.8.1.9024 testthat_1.0.2  
-## [5] rmarkdown_1.8    knitr_1.17       cowplot_0.9.1    ggplot2_2.2.1   
+## [1] bindrcpp_0.2.2   dplyr_0.7.6      testthat_2.0.0   knitr_1.20      
+## [5] PKNCA_0.8.5.9005
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.13     highr_0.6        compiler_3.4.1   plyr_1.8.4      
-##  [5] bindr_0.1        tools_3.4.1      digest_0.6.12    evaluate_0.10.1 
-##  [9] tibble_1.3.4     gtable_0.2.0     nlme_3.1-131     lattice_0.20-35 
-## [13] pkgconfig_2.0.1  rlang_0.1.4      yaml_2.1.14      parallel_3.4.1  
-## [17] stringr_1.2.0    rprojroot_1.2    grid_3.4.1       tidyselect_0.2.3
-## [21] glue_1.2.0       R6_2.2.2         tidyr_0.7.2      purrr_0.2.3     
-## [25] magrittr_1.5     MASS_7.3-47      backports_1.1.0  scales_0.4.1    
-## [29] htmltools_0.3.6  assertthat_0.2.0 colorspace_1.3-2 stringi_1.1.5   
-## [33] lazyeval_0.2.0   munsell_0.4.3    crayon_1.3.2</code></pre>
+##  [1] Rcpp_0.12.19     bindr_0.1.1      magrittr_1.5     MASS_7.3-50     
+##  [5] tidyselect_0.2.4 lattice_0.20-35  R6_2.2.2         rlang_0.2.2     
+##  [9] highr_0.7        stringr_1.3.1    tools_3.5.1      parallel_3.5.1  
+## [13] grid_3.5.1       nlme_3.1-137     cli_1.0.0        withr_2.1.2     
+## [17] htmltools_0.3.6  yaml_2.2.0       rprojroot_1.3-2  digest_0.6.17   
+## [21] assertthat_0.2.0 tibble_1.4.2     crayon_1.3.4     tidyr_0.8.1     
+## [25] purrr_0.2.5      glue_1.3.0       evaluate_0.11    rmarkdown_1.10  
+## [29] stringi_1.2.4    compiler_3.5.1   pillar_1.3.0     backports_1.1.2 
+## [33] pkgconfig_2.0.2</code></pre>
 </div>
 
 

@@ -1,7 +1,10 @@
 ---
 title: "Superposition of Pharmacokinetic Data"
 author: "Bill Denney"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Superposition of Pharmacokinetic Data}
   %\VignetteEngine{knitr::rmarkdown}

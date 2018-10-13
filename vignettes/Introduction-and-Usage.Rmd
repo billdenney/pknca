@@ -4,6 +4,7 @@ author: "Bill Denney"
 output:
   rmarkdown::html_vignette:
     toc: yes
+    toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Introduction to PKNCA and Usage Instructions}
   %\VignetteEngine{knitr::rmarkdown}

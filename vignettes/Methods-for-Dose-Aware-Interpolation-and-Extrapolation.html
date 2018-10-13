@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="William Denney" />
+<meta name="author" content="Bill Denney" />
 
 
 <title>Methods Used for Dose-Aware Concentration Interpolation/Extrapolation</title>
@@ -30,9 +30,29 @@
 
 
 <h1 class="title toc-ignore">Methods Used for Dose-Aware Concentration Interpolation/Extrapolation</h1>
-<h4 class="author"><em>William Denney</em></h4>
+<h4 class="author"><em>Bill Denney</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#observed-concentration">Observed concentration</a></li>
+<li><a href="#impossible-combinations">Impossible combinations</a></li>
+<li><a href="#doses-with-no-concentrations-between">Doses with no concentrations between</a></li>
+<li><a href="#extrapolation">Extrapolation</a></li>
+<li><a href="#immediately-after-an-iv-bolus-without-a-concentration-next">Immediately after an IV bolus without a concentration next</a></li>
+<li><a href="#before-all-events">Before all events</a></li>
+<li><a href="#immediately-after-an-iv-bolus-with-a-concentration-next">Immediately after an IV bolus with a concentration next</a></li>
+<li><a href="#interpolation">Interpolation</a></li>
+<li><a href="#after-an-iv-bolus-with-a-concentration-next">After an IV bolus with a concentration next</a></li>
+<li><a href="#after-an-iv-bolus-without-a-concentration-next">After an IV bolus without a concentration next</a></li>
+<li><a href="#dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after">Dose as the last event in the timeline and requesting a concentration after</a></li>
+<li><a href="#dose-before-concentration-after-without-a-dose">Dose before, concentration after without a dose</a></li>
+</ul></li>
+<li><a href="#appendix-complete-methods-table">Appendix: Complete Methods Table</a></li>
+</ul>
+</div>
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>

@@ -1,7 +1,10 @@
 ---
 title: "Computing NCA Parameters for Theophylline"
 author: "Bill Denney"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Computing NCA Parameters for Theophylline}
   %\VignetteEngine{knitr::rmarkdown}
@@ -67,7 +70,7 @@ Parameter calculation will automatically split the data by the grouping factor(s
 
 ```{r calculationauto}
 my.results.automatic <- pk.nca(my.data.automatic)
-knitr::kable(head(my.results.automatic$result))
+knitr::kable(head(as.data.frame(my.results.automatic)))
 ```
 ```{r calculationautoshow, eval=FALSE}
 summary(my.results.automatic)
@@ -79,7 +82,7 @@ knitr::kable(summary(my.results.automatic))
 
 ```{r calculationmanual}
 my.results.manual <- pk.nca(my.data.manual)
-knitr::kable(head(my.results.manual$result))
+knitr::kable(head(as.data.frame(my.results.manual)))
 ```
 ```{r calculationmanualshow, eval=FALSE}
 summary(my.results.manual)

@@ -4,13 +4,13 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="William Denney" />
+<meta name="author" content="Bill Denney" />
 
 
 <title>Writing PKNCA Parameter Functions</title>
@@ -30,9 +30,21 @@
 
 
 <h1 class="title toc-ignore">Writing PKNCA Parameter Functions</h1>
-<h4 class="author"><em>William Denney</em></h4>
+<h4 class="author"><em>Bill Denney</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#writing-pknca-parameter-functions">Writing PKNCA Parameter Functions</a></li>
+<li><a href="#writing-the-parameter-function">Writing the Parameter Function</a><ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+</ul></li>
+<li><a href="#tell-pknca-about-the-parameter">Tell PKNCA about the Parameter</a></li>
+<li><a href="#tell-pknca-how-to-summarize-the-parameter">Tell PKNCA How to Summarize the Parameter</a></li>
+<li><a href="#putting-it-together">Putting It Together</a></li>
+</ul>
+</div>
 
 <div id="writing-pknca-parameter-functions" class="section level1">
 <h1>Writing PKNCA Parameter Functions</h1>
@@ -80,16 +92,17 @@
 </div>
 <div id="tell-pknca-how-to-summarize-the-parameter" class="section level1">
 <h1>Tell PKNCA How to Summarize the Parameter</h1>
-<p>For any parameter, PKNCA needs to know how to summarize it for the <code>summary</code> function of the <code>PKNCAresults</code> class. To tell PKNCA how to summarize a parameter, use the <code>PKNCA.set.summary</code> function. It takes at least these three arguments:</p>
+<p>For any parameter, PKNCA needs to know how to summarize it for the <code>summary</code> function of the <code>PKNCAresults</code> class. To tell PKNCA how to summarize a parameter, use the <code>PKNCA.set.summary</code> function. It takes at least these four arguments:</p>
 <ul>
 <li><code>name</code> must match an already existing parameter name (added by the <code>add.interval.col</code> function).</li>
+<li><code>description</code> is a human-readable description of the <code>point</code> and <code>spread</code> for use in table captions.</li>
 <li><code>point</code> is the function to calculate the point estimate (called as <code>point(x)</code>, and it must return a scalar).</li>
 <li><code>spread</code> is the function to calculate the spread (or variability). The function will be called as <code>spread(x)</code> and must return a scalar or a two-long vector.</li>
 </ul>
 </div>
 <div id="putting-it-together" class="section level1">
 <h1>Putting It Together</h1>
-<p>One of the most common examples is the function to calculate Cmax:</p>
+<p>One of the most common examples is the function to calculate C<sub>max</sub>:</p>
 <pre><code>#' Determine maximum observed PK concentration
 #'
 #' @param conc Concentration measured
@@ -112,7 +125,7 @@ add.interval.col(&quot;cmax&quot;,
                  values=c(FALSE, TRUE),
                  desc=&quot;Maximum observed concentration&quot;,
                  depends=c())
-PKNCA.set.summary(&quot;cmax&quot;, business.geomean, business.geocv)</code></pre>
+PKNCA.set.summary(&quot;cmax&quot;, &quot;geometric mean and geometric coefficient of variation&quot;, business.geomean, business.geocv)</code></pre>
 </div>
 
 
@@ -122,7 +135,7 @@ PKNCA.set.summary(&quot;cmax&quot;, business.geomean, business.geocv)</code></pr
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

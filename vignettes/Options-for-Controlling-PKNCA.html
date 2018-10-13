@@ -4,13 +4,13 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="William Denney" />
+<meta name="author" content="Bill Denney" />
 
 
 <title>Options for Controlling PKNCA</title>
@@ -30,13 +30,33 @@
 
 
 <h1 class="title toc-ignore">Options for Controlling PKNCA</h1>
-<h4 class="author"><em>William Denney</em></h4>
+<h4 class="author"><em>Bill Denney</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#options">Options</a><ul>
+<li><a href="#adj.r.squared.factor">adj.r.squared.factor</a></li>
+<li><a href="#max.missing">max.missing</a></li>
+<li><a href="#auc.method">auc.method</a></li>
+<li><a href="#conc.na">conc.na</a></li>
+<li><a href="#conc.blq">conc.blq</a></li>
+<li><a href="#first.tmax">first.tmax</a></li>
+<li><a href="#allow.tmax.in.half.life">allow.tmax.in.half.life</a></li>
+<li><a href="#min.hl.points">min.hl.points</a></li>
+<li><a href="#min.span.ratio">min.span.ratio</a></li>
+<li><a href="#max.aucinf.pext">max.aucinf.pext</a></li>
+<li><a href="#min.hl.r.squared">min.hl.r.squared</a></li>
+<li><a href="#tau.choices">tau.choices</a></li>
+<li><a href="#single.dose.aucs">single.dose.aucs</a></li>
+</ul></li>
+</ul>
+</div>
 
 <div id="summary" class="section level1">
 <h1>Summary</h1>
-<p>PKNCA has many options that control its function. These options have effects throughout the package. The options are controlled using either the <code>PKNCA.options</code> function or by passing the <code>options</code> argument to any of the functions with that as an argument. All options supported by the current version of PKNCA (0.8.0.9005) are listed below with their descriptions.</p>
+<p>PKNCA has many options that control its function. These options have effects throughout the package. The options are controlled using either the <code>PKNCA.options</code> function or by passing the <code>options</code> argument to any of the functions with that as an argument. All options supported by the current version of PKNCA (0.8.5.9005) are listed below with their descriptions.</p>
 </div>
 <div id="options" class="section level1">
 <h1>Options</h1>
@@ -114,6 +134,14 @@
 <th align="left">aucall</th>
 <th align="left">aumclast</th>
 <th align="left">aumcall</th>
+<th align="left">aucint.last</th>
+<th align="left">aucint.last.dose</th>
+<th align="left">aucint.all</th>
+<th align="left">aucint.all.dose</th>
+<th align="left">auclast.dn</th>
+<th align="left">aucall.dn</th>
+<th align="left">aumclast.dn</th>
+<th align="left">aumcall.dn</th>
 <th align="left">cmax</th>
 <th align="left">cmin</th>
 <th align="left">tmax</th>
@@ -124,12 +152,21 @@
 <th align="left">cl.all</th>
 <th align="left">f</th>
 <th align="left">mrt.last</th>
+<th align="left">mrt.iv.last</th>
+<th align="left">vss.last</th>
+<th align="left">vss.iv.last</th>
 <th align="left">cav</th>
 <th align="left">ctrough</th>
 <th align="left">ptr</th>
 <th align="left">tlag</th>
 <th align="left">deg.fluc</th>
 <th align="left">swing</th>
+<th align="left">ceoi</th>
+<th align="left">ae</th>
+<th align="left">clr.last</th>
+<th align="left">clr.obs</th>
+<th align="left">clr.pred</th>
+<th align="left">fe</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -138,26 +175,56 @@
 <th align="left">lambda.z.n.points</th>
 <th align="left">clast.pred</th>
 <th align="left">span.ratio</th>
+<th align="left">cmax.dn</th>
+<th align="left">cmin.dn</th>
+<th align="left">clast.obs.dn</th>
+<th align="left">clast.pred.dn</th>
+<th align="left">cav.dn</th>
+<th align="left">ctrough.dn</th>
+<th align="left">thalf.eff.last</th>
+<th align="left">thalf.eff.iv.last</th>
+<th align="left">kel.last</th>
+<th align="left">kel.iv.last</th>
 <th align="left">aucinf.obs</th>
 <th align="left">aucinf.pred</th>
 <th align="left">aumcinf.obs</th>
 <th align="left">aumcinf.pred</th>
+<th align="left">aucint.inf.obs</th>
+<th align="left">aucint.inf.obs.dose</th>
+<th align="left">aucint.inf.pred</th>
+<th align="left">aucint.inf.pred.dose</th>
+<th align="left">aucinf.obs.dn</th>
+<th align="left">aucinf.pred.dn</th>
+<th align="left">aumcinf.obs.dn</th>
+<th align="left">aumcinf.pred.dn</th>
 <th align="left">aucpext.obs</th>
 <th align="left">aucpext.pred</th>
 <th align="left">cl.obs</th>
 <th align="left">cl.pred</th>
 <th align="left">mrt.obs</th>
 <th align="left">mrt.pred</th>
+<th align="left">mrt.iv.obs</th>
+<th align="left">mrt.iv.pred</th>
+<th align="left">mrt.md.obs</th>
+<th align="left">mrt.md.pred</th>
 <th align="left">vz.obs</th>
 <th align="left">vz.pred</th>
 <th align="left">vss.obs</th>
 <th align="left">vss.pred</th>
+<th align="left">vss.iv.obs</th>
+<th align="left">vss.iv.pred</th>
+<th align="left">vss.md.obs</th>
+<th align="left">vss.md.pred</th>
 <th align="left">vd.obs</th>
 <th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
+<th align="left">thalf.eff.iv.obs</th>
+<th align="left">thalf.eff.iv.pred</th>
 <th align="left">kel.obs</th>
 <th align="left">kel.pred</th>
+<th align="left">kel.iv.obs</th>
+<th align="left">kel.iv.pred</th>
 </tr>
 </thead>
 <tbody>
@@ -165,6 +232,53 @@
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -220,6 +334,14 @@
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -236,6 +358,15 @@
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -244,7 +375,37 @@
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -277,7 +438,7 @@
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

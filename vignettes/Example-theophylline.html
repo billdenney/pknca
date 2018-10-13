@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -71,12 +71,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h4 class="author"><em>Bill Denney</em></h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#load-the-data">Load the data</a></li>
+<li><a href="#merge-the-concentration-and-dose">Merge the Concentration and Dose</a></li>
+<li><a href="#compute-the-parameters">Compute the parameters</a></li>
+<li><a href="#multiple-dose-example">Multiple Dose Example</a></li>
+</ul>
+</div>
 
 <p>Examples simplify understanding. Below is an example of how to use the theophylline dataset to generate NCA parameters.</p>
 <div id="load-the-data" class="section level1">
 <h1>Load the data</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## It is always a good idea to look at the data
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(datasets::Theoph))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(datasets<span class="op">::</span>Theoph))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -134,13 +142,13 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(datasets::Theo
 </table>
 <p>The columns that we will be interested in for our analysis are conc, Time, and Subject in the concentration data set and Dose, Time, and Subject for the dosing data set.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## By default it is groupedData; convert it to a data frame for use
-my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(datasets::Theoph), conc~Time|Subject)
+my.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(datasets<span class="op">::</span>Theoph), conc<span class="op">~</span>Time<span class="op">|</span>Subject)
 
 ## Dosing data needs to only have one row per dose, so subset for
 ## that first.
-d.dose &lt;-<span class="st"> </span><span class="kw">unique</span>(datasets::Theoph[datasets::Theoph$Time ==<span class="st"> </span><span class="dv">0</span>,
+d.dose &lt;-<span class="st"> </span><span class="kw">unique</span>(datasets<span class="op">::</span>Theoph[datasets<span class="op">::</span>Theoph<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>,
                                   <span class="kw">c</span>(<span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Subject&quot;</span>)])
-knitr::<span class="kw">kable</span>(d.dose,
+knitr<span class="op">::</span><span class="kw">kable</span>(d.dose,
              <span class="dt">caption=</span><span class="st">&quot;Example dosing data extracted from theophylline data set&quot;</span>)</code></pre></div>
 <table>
 <caption>Example dosing data extracted from theophylline data set</caption>
@@ -227,15 +235,13 @@ knitr::<span class="kw">kable</span>(d.dose,
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose, Dose~Time|Subject)</code></pre></div>
-<pre><code>## Assuming route of administration is extravascular</code></pre>
-<pre><code>## Assuming instant dosing (duration=0)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d.dose, Dose<span class="op">~</span>Time<span class="op">|</span>Subject)</code></pre></div>
 </div>
 <div id="merge-the-concentration-and-dose" class="section level1">
 <h1>Merge the Concentration and Dose</h1>
 <p>After loading the data, they must be combined to prepare for parameter calculation. Intervals for calculation will automatically be selected based on the <code>single.dose.aucs setting</code> in <code>PKNCA.options</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.data.automatic &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose)
-knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span class="st">&quot;single.dose.aucs&quot;</span>))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span class="st">&quot;single.dose.aucs&quot;</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -245,6 +251,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <th align="left">aucall</th>
 <th align="left">aumclast</th>
 <th align="left">aumcall</th>
+<th align="left">aucint.last</th>
+<th align="left">aucint.last.dose</th>
+<th align="left">aucint.all</th>
+<th align="left">aucint.all.dose</th>
+<th align="left">auclast.dn</th>
+<th align="left">aucall.dn</th>
+<th align="left">aumclast.dn</th>
+<th align="left">aumcall.dn</th>
 <th align="left">cmax</th>
 <th align="left">cmin</th>
 <th align="left">tmax</th>
@@ -255,12 +269,21 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <th align="left">cl.all</th>
 <th align="left">f</th>
 <th align="left">mrt.last</th>
+<th align="left">mrt.iv.last</th>
+<th align="left">vss.last</th>
+<th align="left">vss.iv.last</th>
 <th align="left">cav</th>
 <th align="left">ctrough</th>
 <th align="left">ptr</th>
 <th align="left">tlag</th>
 <th align="left">deg.fluc</th>
 <th align="left">swing</th>
+<th align="left">ceoi</th>
+<th align="left">ae</th>
+<th align="left">clr.last</th>
+<th align="left">clr.obs</th>
+<th align="left">clr.pred</th>
+<th align="left">fe</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -269,26 +292,56 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <th align="left">lambda.z.n.points</th>
 <th align="left">clast.pred</th>
 <th align="left">span.ratio</th>
+<th align="left">cmax.dn</th>
+<th align="left">cmin.dn</th>
+<th align="left">clast.obs.dn</th>
+<th align="left">clast.pred.dn</th>
+<th align="left">cav.dn</th>
+<th align="left">ctrough.dn</th>
+<th align="left">thalf.eff.last</th>
+<th align="left">thalf.eff.iv.last</th>
+<th align="left">kel.last</th>
+<th align="left">kel.iv.last</th>
 <th align="left">aucinf.obs</th>
 <th align="left">aucinf.pred</th>
 <th align="left">aumcinf.obs</th>
 <th align="left">aumcinf.pred</th>
+<th align="left">aucint.inf.obs</th>
+<th align="left">aucint.inf.obs.dose</th>
+<th align="left">aucint.inf.pred</th>
+<th align="left">aucint.inf.pred.dose</th>
+<th align="left">aucinf.obs.dn</th>
+<th align="left">aucinf.pred.dn</th>
+<th align="left">aumcinf.obs.dn</th>
+<th align="left">aumcinf.pred.dn</th>
 <th align="left">aucpext.obs</th>
 <th align="left">aucpext.pred</th>
 <th align="left">cl.obs</th>
 <th align="left">cl.pred</th>
 <th align="left">mrt.obs</th>
 <th align="left">mrt.pred</th>
+<th align="left">mrt.iv.obs</th>
+<th align="left">mrt.iv.pred</th>
+<th align="left">mrt.md.obs</th>
+<th align="left">mrt.md.pred</th>
 <th align="left">vz.obs</th>
 <th align="left">vz.pred</th>
 <th align="left">vss.obs</th>
 <th align="left">vss.pred</th>
+<th align="left">vss.iv.obs</th>
+<th align="left">vss.iv.pred</th>
+<th align="left">vss.md.obs</th>
+<th align="left">vss.md.pred</th>
 <th align="left">vd.obs</th>
 <th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
+<th align="left">thalf.eff.iv.obs</th>
+<th align="left">thalf.eff.iv.pred</th>
 <th align="left">kel.obs</th>
 <th align="left">kel.pred</th>
+<th align="left">kel.iv.obs</th>
+<th align="left">kel.iv.pred</th>
 </tr>
 </thead>
 <tbody>
@@ -296,6 +349,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -351,6 +451,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -367,6 +475,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -375,7 +492,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -398,7 +545,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(my.data.automatic$intervals)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(my.data.automatic<span class="op">$</span>intervals)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -408,6 +555,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <th align="left">aucall</th>
 <th align="left">aumclast</th>
 <th align="left">aumcall</th>
+<th align="left">aucint.last</th>
+<th align="left">aucint.last.dose</th>
+<th align="left">aucint.all</th>
+<th align="left">aucint.all.dose</th>
+<th align="left">auclast.dn</th>
+<th align="left">aucall.dn</th>
+<th align="left">aumclast.dn</th>
+<th align="left">aumcall.dn</th>
 <th align="left">cmax</th>
 <th align="left">cmin</th>
 <th align="left">tmax</th>
@@ -418,12 +573,21 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <th align="left">cl.all</th>
 <th align="left">f</th>
 <th align="left">mrt.last</th>
+<th align="left">mrt.iv.last</th>
+<th align="left">vss.last</th>
+<th align="left">vss.iv.last</th>
 <th align="left">cav</th>
 <th align="left">ctrough</th>
 <th align="left">ptr</th>
 <th align="left">tlag</th>
 <th align="left">deg.fluc</th>
 <th align="left">swing</th>
+<th align="left">ceoi</th>
+<th align="left">ae</th>
+<th align="left">clr.last</th>
+<th align="left">clr.obs</th>
+<th align="left">clr.pred</th>
+<th align="left">fe</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -432,26 +596,56 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <th align="left">lambda.z.n.points</th>
 <th align="left">clast.pred</th>
 <th align="left">span.ratio</th>
+<th align="left">cmax.dn</th>
+<th align="left">cmin.dn</th>
+<th align="left">clast.obs.dn</th>
+<th align="left">clast.pred.dn</th>
+<th align="left">cav.dn</th>
+<th align="left">ctrough.dn</th>
+<th align="left">thalf.eff.last</th>
+<th align="left">thalf.eff.iv.last</th>
+<th align="left">kel.last</th>
+<th align="left">kel.iv.last</th>
 <th align="left">aucinf.obs</th>
 <th align="left">aucinf.pred</th>
 <th align="left">aumcinf.obs</th>
 <th align="left">aumcinf.pred</th>
+<th align="left">aucint.inf.obs</th>
+<th align="left">aucint.inf.obs.dose</th>
+<th align="left">aucint.inf.pred</th>
+<th align="left">aucint.inf.pred.dose</th>
+<th align="left">aucinf.obs.dn</th>
+<th align="left">aucinf.pred.dn</th>
+<th align="left">aumcinf.obs.dn</th>
+<th align="left">aumcinf.pred.dn</th>
 <th align="left">aucpext.obs</th>
 <th align="left">aucpext.pred</th>
 <th align="left">cl.obs</th>
 <th align="left">cl.pred</th>
 <th align="left">mrt.obs</th>
 <th align="left">mrt.pred</th>
+<th align="left">mrt.iv.obs</th>
+<th align="left">mrt.iv.pred</th>
+<th align="left">mrt.md.obs</th>
+<th align="left">mrt.md.pred</th>
 <th align="left">vz.obs</th>
 <th align="left">vz.pred</th>
 <th align="left">vss.obs</th>
 <th align="left">vss.pred</th>
+<th align="left">vss.iv.obs</th>
+<th align="left">vss.iv.pred</th>
+<th align="left">vss.md.obs</th>
+<th align="left">vss.md.pred</th>
 <th align="left">vd.obs</th>
 <th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
+<th align="left">thalf.eff.iv.obs</th>
+<th align="left">thalf.eff.iv.pred</th>
 <th align="left">kel.obs</th>
 <th align="left">kel.pred</th>
+<th align="left">kel.iv.obs</th>
+<th align="left">kel.iv.pred</th>
 <th align="left">Subject</th>
 </tr>
 </thead>
@@ -507,6 +701,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">1</td>
 </tr>
 <tr class="even">
@@ -516,6 +757,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -532,6 +781,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -540,7 +798,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -566,6 +854,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -622,6 +957,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -638,6 +981,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -646,7 +998,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -719,6 +1101,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">3</td>
 </tr>
 <tr class="even">
@@ -728,6 +1157,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -744,6 +1181,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -752,7 +1198,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -778,6 +1254,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -834,6 +1357,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -850,6 +1381,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -858,7 +1398,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -931,6 +1501,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">5</td>
 </tr>
 <tr class="even">
@@ -940,6 +1557,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -956,6 +1581,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -964,7 +1598,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -990,6 +1654,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1046,6 +1757,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1062,6 +1781,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1070,7 +1798,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1143,6 +1901,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">7</td>
 </tr>
 <tr class="even">
@@ -1152,6 +1957,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1168,6 +1981,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1176,7 +1998,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1202,6 +2054,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1258,6 +2157,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1274,6 +2181,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1282,7 +2198,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1355,6 +2301,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">9</td>
 </tr>
 <tr class="even">
@@ -1364,6 +2357,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1380,6 +2381,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1388,7 +2398,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1414,6 +2454,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1470,6 +2557,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1486,6 +2581,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1494,7 +2598,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1567,6 +2701,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">11</td>
 </tr>
 <tr class="even">
@@ -1576,6 +2757,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1592,6 +2781,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1600,7 +2798,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1626,6 +2854,53 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1682,6 +2957,14 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -1698,6 +2981,15 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1706,7 +2998,37 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1739,7 +3061,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span
                            <span class="dt">auclast=</span><span class="ot">TRUE</span>)
 my.data.manual &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc, my.dose,
                             <span class="dt">intervals=</span>my.intervals)
-knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(my.data.manual<span class="op">$</span>intervals)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1749,6 +3071,14 @@ knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div
 <th align="left">aucall</th>
 <th align="left">aumclast</th>
 <th align="left">aumcall</th>
+<th align="left">aucint.last</th>
+<th align="left">aucint.last.dose</th>
+<th align="left">aucint.all</th>
+<th align="left">aucint.all.dose</th>
+<th align="left">auclast.dn</th>
+<th align="left">aucall.dn</th>
+<th align="left">aumclast.dn</th>
+<th align="left">aumcall.dn</th>
 <th align="left">cmax</th>
 <th align="left">cmin</th>
 <th align="left">tmax</th>
@@ -1759,12 +3089,21 @@ knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div
 <th align="left">cl.all</th>
 <th align="left">f</th>
 <th align="left">mrt.last</th>
+<th align="left">mrt.iv.last</th>
+<th align="left">vss.last</th>
+<th align="left">vss.iv.last</th>
 <th align="left">cav</th>
 <th align="left">ctrough</th>
 <th align="left">ptr</th>
 <th align="left">tlag</th>
 <th align="left">deg.fluc</th>
 <th align="left">swing</th>
+<th align="left">ceoi</th>
+<th align="left">ae</th>
+<th align="left">clr.last</th>
+<th align="left">clr.obs</th>
+<th align="left">clr.pred</th>
+<th align="left">fe</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -1773,26 +3112,56 @@ knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div
 <th align="left">lambda.z.n.points</th>
 <th align="left">clast.pred</th>
 <th align="left">span.ratio</th>
+<th align="left">cmax.dn</th>
+<th align="left">cmin.dn</th>
+<th align="left">clast.obs.dn</th>
+<th align="left">clast.pred.dn</th>
+<th align="left">cav.dn</th>
+<th align="left">ctrough.dn</th>
+<th align="left">thalf.eff.last</th>
+<th align="left">thalf.eff.iv.last</th>
+<th align="left">kel.last</th>
+<th align="left">kel.iv.last</th>
 <th align="left">aucinf.obs</th>
 <th align="left">aucinf.pred</th>
 <th align="left">aumcinf.obs</th>
 <th align="left">aumcinf.pred</th>
+<th align="left">aucint.inf.obs</th>
+<th align="left">aucint.inf.obs.dose</th>
+<th align="left">aucint.inf.pred</th>
+<th align="left">aucint.inf.pred.dose</th>
+<th align="left">aucinf.obs.dn</th>
+<th align="left">aucinf.pred.dn</th>
+<th align="left">aumcinf.obs.dn</th>
+<th align="left">aumcinf.pred.dn</th>
 <th align="left">aucpext.obs</th>
 <th align="left">aucpext.pred</th>
 <th align="left">cl.obs</th>
 <th align="left">cl.pred</th>
 <th align="left">mrt.obs</th>
 <th align="left">mrt.pred</th>
+<th align="left">mrt.iv.obs</th>
+<th align="left">mrt.iv.pred</th>
+<th align="left">mrt.md.obs</th>
+<th align="left">mrt.md.pred</th>
 <th align="left">vz.obs</th>
 <th align="left">vz.pred</th>
 <th align="left">vss.obs</th>
 <th align="left">vss.pred</th>
+<th align="left">vss.iv.obs</th>
+<th align="left">vss.iv.pred</th>
+<th align="left">vss.md.obs</th>
+<th align="left">vss.md.pred</th>
 <th align="left">vd.obs</th>
 <th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
+<th align="left">thalf.eff.iv.obs</th>
+<th align="left">thalf.eff.iv.pred</th>
 <th align="left">kel.obs</th>
 <th align="left">kel.pred</th>
+<th align="left">kel.iv.obs</th>
+<th align="left">kel.iv.pred</th>
 </tr>
 </thead>
 <tbody>
@@ -1803,22 +3172,6 @@ knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1828,6 +3181,69 @@ knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1855,7 +3271,7 @@ knitr::<span class="kw">kable</span>(my.data.manual$intervals)</code></pre></div
 <h1>Compute the parameters</h1>
 <p>Parameter calculation will automatically split the data by the grouping factor(s), subset by the interval, calculate all required parameters, record all options used for the calculations, and include data provenance to show that the calculation was performed as described. For all this, just call the <code>pk.nca</code> function with your PKNCAdata object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.results.automatic &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data.automatic)
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(my.results.automatic$result))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(<span class="kw">as.data.frame</span>(my.results.automatic)))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1956,7 +3372,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(my.results.aut
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.results.manual &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data.manual)
-knitr::<span class="kw">kable</span>(<span class="kw">head</span>(my.results.manual$result))</code></pre></div>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(<span class="kw">as.data.frame</span>(my.results.manual)))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2049,7 +3465,7 @@ knitr::<span class="kw">kable</span>(<span class="kw">head</span>(my.results.man
 <h1>Multiple Dose Example</h1>
 <p>Assessing multiple dose pharmacokinetics is conceptually the same as single-dose in PKNCA.</p>
 <p>To assess multiple dose PK, the theophylline data will be extended from single to multiple doses using superposition (see the <a href="Superposition.html">Superposition</a> vignette for more information).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(Theoph), conc~Time|Subject)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d.conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(Theoph), conc<span class="op">~</span>Time<span class="op">|</span>Subject)
 my.conc.multi &lt;-
 <span class="st">  </span><span class="kw">PKNCAconc</span>(
     <span class="kw">superposition</span>(d.conc,
@@ -2057,7 +3473,7 @@ my.conc.multi &lt;-
                   <span class="dt">dose.times=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">144</span>, <span class="dt">by=</span><span class="dv">24</span>),
                   <span class="dt">n.tau=</span><span class="dv">1</span>,
                   <span class="dt">check.blq=</span><span class="ot">FALSE</span>),
-    conc~time|Subject)
+    conc<span class="op">~</span>time<span class="op">|</span>Subject)
 my.conc.multi</code></pre></div>
 <pre><code>## Formula for concentration:
 ##  conc ~ time | Subject
@@ -2065,19 +3481,17 @@ my.conc.multi</code></pre></div>
 ## Nominal time column is not specified.
 ## 
 ## First 6 rows of concentration data:
-##  Subject     conc time exclude
-##        1  0.74000 0.00    &lt;NA&gt;
-##        1  2.84000 0.25    &lt;NA&gt;
-##        1  4.23875 0.37    &lt;NA&gt;
-##        1  6.57000 0.57    &lt;NA&gt;
-##        1 10.50000 1.12    &lt;NA&gt;
-##        1  9.66000 2.02    &lt;NA&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.dose.multi &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(<span class="kw">expand.grid</span>(<span class="dt">Subject=</span><span class="kw">unique</span>(my.conc.multi$data$Subject),
+##  Subject     conc time exclude volume duration
+##        1  0.74000 0.00    &lt;NA&gt;     NA        0
+##        1  2.84000 0.25    &lt;NA&gt;     NA        0
+##        1  4.23875 0.37    &lt;NA&gt;     NA        0
+##        1  6.57000 0.57    &lt;NA&gt;     NA        0
+##        1 10.50000 1.12    &lt;NA&gt;     NA        0
+##        1  9.66000 2.02    &lt;NA&gt;     NA        0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.dose.multi &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(<span class="kw">expand.grid</span>(<span class="dt">Subject=</span><span class="kw">unique</span>(my.conc.multi<span class="op">$</span>data<span class="op">$</span>Subject),
                                       <span class="dt">time=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">144</span>, <span class="dt">by=</span><span class="dv">24</span>)),
-                          ~time|Subject)</code></pre></div>
-<pre><code>## Assuming route of administration is extravascular</code></pre>
-<pre><code>## Assuming instant dosing (duration=0)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.dose.multi</code></pre></div>
+                          <span class="op">~</span>time<span class="op">|</span>Subject)
+my.dose.multi</code></pre></div>
 <pre><code>## Formula for dosing:
 ##  ~time | Subject
 ## Nominal time column is not specified.
@@ -2092,7 +3506,7 @@ my.conc.multi</code></pre></div>
 ##        6    0    &lt;NA&gt; extravascular        0</code></pre>
 <p>The superposition-simulated scenario is not especially realistic as it includes dense sampling on every day. With this scenario, the intervals automatically selected have an interval for every subject on every day.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc.multi, my.dose.multi)
-my.data$intervals[,<span class="kw">c</span>(<span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;start&quot;</span>, <span class="st">&quot;end&quot;</span>)]</code></pre></div>
+my.data<span class="op">$</span>intervals[,<span class="kw">c</span>(<span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;start&quot;</span>, <span class="st">&quot;end&quot;</span>)]</code></pre></div>
 <pre><code>##    Subject start end
 ## 1        1     0  24
 ## 2        1    24  48
@@ -2185,28 +3599,52 @@ my.data$intervals[,<span class="kw">c</span>(<span class="st">&quot;Subject&quot
                            <span class="dt">auclast=</span><span class="ot">TRUE</span>)
 my.data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(my.conc.multi, my.dose.multi,
                      <span class="dt">intervals=</span>my.intervals)
-my.data$intervals</code></pre></div>
-<pre><code>##   start end auclast aucall aumclast aumcall cmax  cmin  tmax tlast tfirst
-## 1     0  24    TRUE  FALSE    FALSE   FALSE TRUE FALSE FALSE FALSE  FALSE
-## 2   144 168    TRUE  FALSE    FALSE   FALSE TRUE FALSE FALSE FALSE  FALSE
-##   clast.obs cl.last cl.all     f mrt.last   cav ctrough   ptr  tlag
-## 1     FALSE   FALSE  FALSE FALSE    FALSE FALSE   FALSE FALSE FALSE
-## 2     FALSE   FALSE  FALSE FALSE    FALSE FALSE   FALSE FALSE FALSE
-##   deg.fluc swing half.life r.squared adj.r.squared lambda.z
-## 1    FALSE FALSE     FALSE     FALSE         FALSE    FALSE
-## 2    FALSE FALSE     FALSE     FALSE         FALSE    FALSE
-##   lambda.z.time.first lambda.z.n.points clast.pred span.ratio aucinf.obs
-## 1               FALSE             FALSE      FALSE      FALSE      FALSE
-## 2               FALSE             FALSE      FALSE      FALSE      FALSE
-##   aucinf.pred aumcinf.obs aumcinf.pred aucpext.obs aucpext.pred cl.obs
-## 1       FALSE       FALSE        FALSE       FALSE        FALSE  FALSE
-## 2       FALSE       FALSE        FALSE       FALSE        FALSE  FALSE
-##   cl.pred mrt.obs mrt.pred vz.obs vz.pred vss.obs vss.pred vd.obs vd.pred
-## 1   FALSE   FALSE    FALSE  FALSE   FALSE   FALSE    FALSE  FALSE   FALSE
-## 2   FALSE   FALSE    FALSE  FALSE   FALSE   FALSE    FALSE  FALSE   FALSE
-##   thalf.eff.obs thalf.eff.pred kel.obs kel.pred
-## 1         FALSE          FALSE   FALSE    FALSE
-## 2         FALSE          FALSE   FALSE    FALSE</code></pre>
+my.data<span class="op">$</span>intervals</code></pre></div>
+<pre><code>##   start end auclast aucall aumclast aumcall aucint.last aucint.last.dose
+## 1     0  24    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
+## 2   144 168    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
+##   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn
+## 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
+## 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
+##   cmax  cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last
+## 1 TRUE FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
+## 2 TRUE FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
+##   mrt.iv.last vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc
+## 1       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
+## 2       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
+##   swing  ceoi    ae clr.last clr.obs clr.pred    fe half.life r.squared
+## 1 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE     FALSE     FALSE
+## 2 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE     FALSE     FALSE
+##   adj.r.squared lambda.z lambda.z.time.first lambda.z.n.points clast.pred
+## 1         FALSE    FALSE               FALSE             FALSE      FALSE
+## 2         FALSE    FALSE               FALSE             FALSE      FALSE
+##   span.ratio cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn
+## 1      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
+## 2      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
+##   thalf.eff.last thalf.eff.iv.last kel.last kel.iv.last aucinf.obs
+## 1          FALSE             FALSE    FALSE       FALSE      FALSE
+## 2          FALSE             FALSE    FALSE       FALSE      FALSE
+##   aucinf.pred aumcinf.obs aumcinf.pred aucint.inf.obs aucint.inf.obs.dose
+## 1       FALSE       FALSE        FALSE          FALSE               FALSE
+## 2       FALSE       FALSE        FALSE          FALSE               FALSE
+##   aucint.inf.pred aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn
+## 1           FALSE                FALSE         FALSE          FALSE
+## 2           FALSE                FALSE         FALSE          FALSE
+##   aumcinf.obs.dn aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred
+## 1          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
+## 2          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
+##   mrt.obs mrt.pred mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs
+## 1   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
+## 2   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
+##   vz.pred vss.obs vss.pred vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred
+## 1   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
+## 2   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
+##   vd.obs vd.pred thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs
+## 1  FALSE   FALSE         FALSE          FALSE            FALSE
+## 2  FALSE   FALSE         FALSE          FALSE            FALSE
+##   thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs kel.iv.pred
+## 1             FALSE   FALSE    FALSE      FALSE       FALSE
+## 2             FALSE   FALSE    FALSE      FALSE       FALSE</code></pre>
 <p>After the data is ready, the calculations and summary can progress.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(my.data)
 <span class="kw">print</span>(my.results)</code></pre></div>
@@ -2268,13 +3706,13 @@ my.data$intervals</code></pre></div>
 ## Nominal time column is not specified.
 ## 
 ## First 6 rows of concentration data:
-##  Subject     conc time exclude
-##        1  0.74000 0.00    &lt;NA&gt;
-##        1  2.84000 0.25    &lt;NA&gt;
-##        1  4.23875 0.37    &lt;NA&gt;
-##        1  6.57000 0.57    &lt;NA&gt;
-##        1 10.50000 1.12    &lt;NA&gt;
-##        1  9.66000 2.02    &lt;NA&gt;
+##  Subject     conc time exclude volume duration
+##        1  0.74000 0.00    &lt;NA&gt;     NA        0
+##        1  2.84000 0.25    &lt;NA&gt;     NA        0
+##        1  4.23875 0.37    &lt;NA&gt;     NA        0
+##        1  6.57000 0.57    &lt;NA&gt;     NA        0
+##        1 10.50000 1.12    &lt;NA&gt;     NA        0
+##        1  9.66000 2.02    &lt;NA&gt;     NA        0
 ## Formula for dosing:
 ##  timeX ~ (time | Subject)
 ## Nominal time column is not specified.
@@ -2335,27 +3773,51 @@ my.data$intervals</code></pre></div>
 ## [1] NA
 ## 
 ## $single.dose.aucs
-##   start end auclast aucall aumclast aumcall  cmax  cmin  tmax tlast tfirst
-## 1     0  24    TRUE  FALSE    FALSE   FALSE FALSE FALSE FALSE FALSE  FALSE
-## 2     0 Inf   FALSE  FALSE    FALSE   FALSE  TRUE FALSE  TRUE FALSE  FALSE
-##   clast.obs cl.last cl.all     f mrt.last   cav ctrough   ptr  tlag
-## 1     FALSE   FALSE  FALSE FALSE    FALSE FALSE   FALSE FALSE FALSE
-## 2     FALSE   FALSE  FALSE FALSE    FALSE FALSE   FALSE FALSE FALSE
-##   deg.fluc swing half.life r.squared adj.r.squared lambda.z
-## 1    FALSE FALSE     FALSE     FALSE         FALSE    FALSE
-## 2    FALSE FALSE      TRUE     FALSE         FALSE    FALSE
-##   lambda.z.time.first lambda.z.n.points clast.pred span.ratio aucinf.obs
-## 1               FALSE             FALSE      FALSE      FALSE      FALSE
-## 2               FALSE             FALSE      FALSE      FALSE       TRUE
-##   aucinf.pred aumcinf.obs aumcinf.pred aucpext.obs aucpext.pred cl.obs
-## 1       FALSE       FALSE        FALSE       FALSE        FALSE  FALSE
-## 2       FALSE       FALSE        FALSE       FALSE        FALSE  FALSE
-##   cl.pred mrt.obs mrt.pred vz.obs vz.pred vss.obs vss.pred vd.obs vd.pred
-## 1   FALSE   FALSE    FALSE  FALSE   FALSE   FALSE    FALSE  FALSE   FALSE
-## 2   FALSE   FALSE    FALSE  FALSE   FALSE   FALSE    FALSE  FALSE   FALSE
-##   thalf.eff.obs thalf.eff.pred kel.obs kel.pred
-## 1         FALSE          FALSE   FALSE    FALSE
-## 2         FALSE          FALSE   FALSE    FALSE
+##   start end auclast aucall aumclast aumcall aucint.last aucint.last.dose
+## 1     0  24    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
+## 2     0 Inf   FALSE  FALSE    FALSE   FALSE       FALSE            FALSE
+##   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn
+## 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
+## 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
+##    cmax  cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last
+## 1 FALSE FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
+## 2  TRUE FALSE  TRUE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
+##   mrt.iv.last vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc
+## 1       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
+## 2       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
+##   swing  ceoi    ae clr.last clr.obs clr.pred    fe half.life r.squared
+## 1 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE     FALSE     FALSE
+## 2 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE      TRUE     FALSE
+##   adj.r.squared lambda.z lambda.z.time.first lambda.z.n.points clast.pred
+## 1         FALSE    FALSE               FALSE             FALSE      FALSE
+## 2         FALSE    FALSE               FALSE             FALSE      FALSE
+##   span.ratio cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn
+## 1      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
+## 2      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
+##   thalf.eff.last thalf.eff.iv.last kel.last kel.iv.last aucinf.obs
+## 1          FALSE             FALSE    FALSE       FALSE      FALSE
+## 2          FALSE             FALSE    FALSE       FALSE       TRUE
+##   aucinf.pred aumcinf.obs aumcinf.pred aucint.inf.obs aucint.inf.obs.dose
+## 1       FALSE       FALSE        FALSE          FALSE               FALSE
+## 2       FALSE       FALSE        FALSE          FALSE               FALSE
+##   aucint.inf.pred aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn
+## 1           FALSE                FALSE         FALSE          FALSE
+## 2           FALSE                FALSE         FALSE          FALSE
+##   aumcinf.obs.dn aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred
+## 1          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
+## 2          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
+##   mrt.obs mrt.pred mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs
+## 1   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
+## 2   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
+##   vz.pred vss.obs vss.pred vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred
+## 1   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
+## 2   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
+##   vd.obs vd.pred thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs
+## 1  FALSE   FALSE         FALSE          FALSE            FALSE
+## 2  FALSE   FALSE         FALSE          FALSE            FALSE
+##   thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs kel.iv.pred
+## 1             FALSE   FALSE    FALSE      FALSE       FALSE
+## 2             FALSE   FALSE    FALSE      FALSE       FALSE
 ## 
 ## 
 ## $exclude
@@ -2364,7 +3826,7 @@ my.data$intervals</code></pre></div>
 ## attr(,&quot;class&quot;)
 ## [1] &quot;PKNCAresults&quot; &quot;list&quot;        
 ## attr(,&quot;provenance&quot;)
-## Provenance hash 51b59f882a9f3a2811324a5ff10bb22b generated on 2017-05-25 15:02:49 with R version 3.3.2 (2016-10-31).</code></pre>
+## Provenance hash 51b59f882a9f3a2811324a5ff10bb22b generated on 2018-10-13 17:30:56 with R version 3.5.1 (2018-07-02).</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(my.results)</code></pre></div>
 <pre><code>##   start end  N     auclast        cmax
 ## 1     0  24 12 98.8 [23.0] 8.65 [17.0]
@@ -2378,7 +3840,7 @@ my.data$intervals</code></pre></div>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

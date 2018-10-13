@@ -1,7 +1,6 @@
 ---
 title: "AUC Calculation with PKNCA"
 author: "Bill Denney"
-date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: yes
@@ -54,7 +53,7 @@ data_obj <- PKNCAdata(data.conc=conc_obj,
                                            aucinf.pred=TRUE,
                                            aucinf.obs=TRUE))
 results_obj <- pk.nca(data_obj)
-kable(results_obj$result)
+kable(as.data.frame(results_obj))
 ```
 
 # AUC to the Last Value Above the Limit of Quantification (AUC~last~)
@@ -129,7 +128,7 @@ my_conc$conc_aucinf.obs[my_conc$BLOQ | is.na(my_conc$BLOQ)] <-
   interp.extrap.conc(conc=my_conc$conc,
                      time=my_conc$time,
                      time.out=my_conc$time[my_conc$BLOQ | is.na(my_conc$BLOQ)],
-                     lambda.z=results_obj$result$PPORRES[results_obj$result$PPTESTCD %in% "lambda.z"])
+                     lambda.z=as.data.frame(results_obj)$PPORRES[as.data.frame(results_obj)$PPTESTCD %in% "lambda.z"])
 
 # Extrapolate concentrations for aucinf.pred
 my_conc$conc_aucinf.pred <- my_conc$conc
@@ -137,10 +136,10 @@ my_conc$conc_aucinf.pred[my_conc$BLOQ | is.na(my_conc$BLOQ)] <-
   interp.extrap.conc(conc=my_conc$conc,
                      time=my_conc$time,
                      time.out=my_conc$time[my_conc$BLOQ | is.na(my_conc$BLOQ)],
-                     lambda.z=results_obj$result$PPORRES[results_obj$result$PPTESTCD %in% "lambda.z"],
-                     clast=results_obj$result$PPORRES[results_obj$result$PPTESTCD %in% "clast.pred"])
+                     lambda.z=as.data.frame(results_obj)$PPORRES[as.data.frame(results_obj)$PPTESTCD %in% "lambda.z"],
+                     clast=as.data.frame(results_obj)$PPORRES[as.data.frame(results_obj)$PPTESTCD %in% "clast.pred"])
 my_conc$conc_aucinf.pred[my_conc$time == tlast] <-
-  results_obj$result$PPORRES[results_obj$result$PPTESTCD %in% "clast.pred"]
+  as.data.frame(results_obj)$PPORRES[as.data.frame(results_obj)$PPTESTCD %in% "clast.pred"]
 
 ggplot(my_conc[!is.na(my_conc$conc),],
        aes(x=time,
@@ -189,7 +188,7 @@ When the starting and ending times are observed within the data, partial AUCs ca
 # Interpolation not required
 data_obs_obj <- PKNCAdata(conc_obj, intervals=data.frame(start=0, end=2, auclast=TRUE))
 results_obs_obj <- pk.nca(data_obs_obj)
-kable(results_obs_obj$result)
+kable(as.data.frame(results_obs_obj))
 ```
 
 When the starting and ending times are not observed within the data or when samples are below the limit of quantification, concentrations must be interpolated and added to the dataset before calculation as illustrated below.
@@ -209,5 +208,5 @@ kable(my_conc_interp)
 conc_interp_obj <- PKNCAconc(my_conc_interp, conc~time|subject)
 data_interp_obj <- PKNCAdata(conc_interp_obj, intervals=data.frame(start=0, end=1.5, auclast=TRUE))
 results_interp <- pk.nca(data_interp_obj)
-results_interp$result
+as.data.frame(results_interp)
 ```

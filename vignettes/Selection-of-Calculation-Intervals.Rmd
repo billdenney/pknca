@@ -1,9 +1,10 @@
 ---
 title: "Selection of Calculation Intervals"
-author: "William Denney"
+author: "Bill Denney"
 output:
   rmarkdown::html_vignette:
     toc: yes
+    toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Selection of Calculation Intervals}
   %\VignetteEngine{knitr::rmarkdown}
