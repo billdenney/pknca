@@ -160,3 +160,11 @@ test_that("get.parameter.deps", {
                c("cl.obs", "vss.iv.obs", "vss.obs", "vz.obs"),
                info="Parameters with dependencies return them.")
 })
+
+test_that("check.intervals requires a valid value", {
+  expect_error(
+    check.interval.specification(data.frame(start=0, end=1, cmax="A")),
+    regexp="Invalid value(s) in column cmax:A",
+    fixed=TRUE
+  )
+})

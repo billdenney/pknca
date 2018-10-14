@@ -162,3 +162,11 @@ test_that("Significance", {
                check.attributes=FALSE,
                info="Data frame digits are respected")
 })
+
+test_that("signifString stops when bad arguments are passed", {
+  expect_error(
+    signifString(1, foo=1),
+    regexp="Additional, unsupported arguments were passed",
+    fixed=TRUE
+  )
+})

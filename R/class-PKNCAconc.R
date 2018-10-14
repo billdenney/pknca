@@ -305,46 +305,6 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
 summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...)
   print.PKNCAconc(object, n=n, summarize=summarize)
 
-#' Plot a PKNCAconc object
-#'
-#' @param x The object to plot
-#' @param groups The grouping variable for the plot (typically the
-#' subject column)
-#' @param \dots Additional arguments passed to \code{xyplot}
-#' @param panel.formula The formula used for the call to xyplot
-#' (defaults to the group formula of \code{x})
-#' @param panel.formula.update Updates to the \code{panel.formula} to
-#' simplify modifications without having to fully specify the formula.
-#' @return A trellis object of the plot(s)
-#' @export
-plot.PKNCAconc <- function(x, ...,
-                           groups=x$subject,
-                           panel.formula=parseFormula(x)$groupFormula,
-                           panel.formula.update) {
-  ## Arguments that are set by default only overwrite if the user
-  ## doesn't specify others with the same name.
-  default.args <- list(lty=1, type="b", auto.key=list(columns=2),
-                       scales=list(alternating=FALSE))
-  call.args <- list(...)
-  set.defaults <- setdiff(names(default.args), names(call.args))
-  call.args[set.defaults] <- default.args[set.defaults]
-  ## Update the panel formula if applicable
-  if (!missing(panel.formula.update)) {
-    panel.formula <- stats::update(panel.formula, panel.formula.update)
-  }
-  conc.formula <- parseFormula(x)
-  ## If the groups are given, make sure that they are not in the
-  ## panel.formula.
-  if (!is.null(groups)) {
-    conc.formula$groupFormula <-
-      stats::update(panel.formula,
-                    stats::as.formula(sprintf(".~-%s", groups)))
-  }
-  call.args[["x"]] <- stats::formula(conc.formula)
-  call.args[["data"]] <- x$data
-  do.call(lattice::xyplot, call.args)
-}
-
 #' Divide into groups
 #' 
 #' \code{split.PKNCAconc} divides data into individual groups defined by

@@ -57,7 +57,7 @@ check.interval.specification <- function(x) {
           stop(sprintf("Interval column '%s' should not be a factor", n))
         interval.cols[[n]]$values(x[,n])
       } else {
-        stop("Invalid 'values' for column specification", n)
+        stop("Invalid 'values' for column specification ", n, " (please report this as a bug).") # nocov
       }
     }
   ## Now check specific columns

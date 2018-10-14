@@ -48,8 +48,8 @@ exclude_nca_span.ratio <- function(min.span.ratio) {
           ret[x$PPTESTCD %in% affected_parameters] <-
             sprintf("Span ratio < %g", min.span.ratio)
         }
-      } else if (length(idx_span.ratio) > 1) {
-        stop("Should not see more than one span.ratio")
+      } else if (length(idx_span.ratio) > 1) { # nocov
+        stop("Should not see more than one span.ratio (please report this as a bug)") # nocov
       }
     }
     ret
@@ -83,8 +83,8 @@ exclude_nca_max.aucinf.pext <-  function(max.aucinf.pext) {
             ret[x$PPTESTCD %in% affected_parameters[[ext_type]]] <-
               sprintf("AUC percent extrapolated > %g", max.aucinf.pext)
           }
-        } else if (length(idx_pext) > 1) {
-          stop("Should not see more than one aucpext.", ext_type)
+        } else if (length(idx_pext) > 1) { # nocov
+          stop("Should not see more than one aucpext.", ext_type, " (please report this as a bug)") # nocov
         }
       }
     }
@@ -115,8 +115,8 @@ exclude_nca_min.hl.r.squared <- function(min.hl.r.squared) {
           ret[x$PPTESTCD %in% affected_parameters] <-
             sprintf("Half-life r-squared < %g", min.hl.r.squared)
         }
-      } else if (length(idx_r.squared) > 1) {
-        stop("Should not see more than one r.squared")
+      } else if (length(idx_r.squared) > 1) { # nocov
+        stop("Should not see more than one r.squared (please report this as a bug)") # nocov
       }
     }
     ret

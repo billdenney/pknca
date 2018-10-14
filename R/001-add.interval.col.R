@@ -167,8 +167,8 @@ sort.interval.cols <- function() {
         ## be next.
         deps <- unique(unlist(current[[nextorder]]$depends))
         if (!all(deps %in% names(myorder)))
-          stop("Invalid dependencies for interval column:",
-               names(myorder)[nextorder])
+          stop("Invalid dependencies for interval column (please report this as a bug):", # nocov
+               names(myorder)[nextorder]) # nocov
         if (!any(is.na(myorder[deps]))) {
           myorder[nextorder] <- nextnum
           nextnum <- nextnum + 1

@@ -422,3 +422,11 @@ test_that("PKNCA.options.describe", {
                PKNCA:::.PKNCA.option.check[["adj.r.squared.factor"]](description=TRUE),
                info="Option descriptions are provided accurately.")
 })
+
+test_that("PKNCA.options fails when setting defaults and another option simultaneously", {
+  expect_error(
+    PKNCA.options(default=TRUE, tau.choices=24),
+    regexp="Cannot set default and set new options at the same time.",
+    fixed=TRUE
+  )
+})
