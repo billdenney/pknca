@@ -10,7 +10,7 @@
 \title{Estimate the concentration at dosing time for an IV bolus dose.}
 \usage{
 pk.calc.c0(conc, time, time.dose = 0, method = c("c0", "logslope",
-  "c1"), check = TRUE)
+  "c1", "cmin", "set0"), check = TRUE)
 
 pk.calc.c0.method.logslope(conc, time, time.dose = 0, check = TRUE)
 
@@ -44,9 +44,11 @@ Methods available for interpolation are below, and each
 has its own specific function.
 
 \describe{
-  \item{\code{c0}}{If the observed \code{conc} at \code{time.dose} is nonzero, return that.  This method should always be used first.}
+  \item{\code{c0}}{If the observed \code{conc} at \code{time.dose} is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.}
   \item{\code{logslope}}{Compute the semilog line between the first two measured times, and use that line to extrapolate backward to \code{time.dose}}
   \item{\code{c1}}{Use the first point after \code{time.dose}}
+  \item{\code{cmin}}{Set c0 to cmin during the interval.  This method should usually be used for multiple-dose oral data and IV infusion data.}
+  \item{\code{set0}}{Set c0 to zero (regardless of any other data).  This method should usually be used first for single-dose oral data.}
 }
 }
 \section{Functions}{
@@ -64,6 +66,6 @@ time.dose]} if it is nonzero.
 dose oral and IV infusion)
 
 \item \code{pk.calc.c0.method.cmin}: Use \code{C0} = Cmin (typically used for
-multiple dose oral and IV infusion)
+multiple dose oral and IV infusion but not IV bolus)
 }}
 
