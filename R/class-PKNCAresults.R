@@ -272,6 +272,6 @@ as_summary_PKNCAresults <- function(data, caption) {
 #' @export
 print.summary_PKNCAresults <- function(x, ...) {
   print.data.frame(x, row.names=FALSE, ...)
-  cat("\nCaption: ", attr(x, "caption"))
+  cat(paste0("\nCaption: ", attr(x, "caption"), "\n"), fill=TRUE)
   invisible(x)
 }

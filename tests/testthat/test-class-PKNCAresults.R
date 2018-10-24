@@ -341,9 +341,9 @@ test_that("print.summary_PKNCAresults works", {
     paste(
       " start end treatment N     auclast         cmax              tmax   half.life.*", 
       "     0  24     Trt 1 2 13.8 \\[2.51\\]            .                 .           ..*", 
-      "     0 Inf     Trt 1 2           . 0.970 \\[4.29\\] 3.00 \\[2.00, 4.00\\] 14.2 \\[2.79\\].*", 
+      "     0 Inf     Trt 1 2           . 0.970 \\[4.29\\] 3.00 \\[2.00, 4.00\\] 14.2 \\[2.79\\].*",
       "",
-      "Caption:  auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation",
+      "Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation",
       sep="\n"
     )
   )
