@@ -24,8 +24,11 @@ urine/feces), time, and the groups defined in \code{formula}.}
 
 \item{formula}{The formula defining the
 \code{concentration~time|groups} or \code{amount~time|groups} for
-urine/feces (In the remainder of the documentation, "concentration"
-will be used to describe concentration or amount.)}
+urine/feces (In the remainder of the documentation, "concentration" will be
+used to describe concentration or amount.)  One special aspect of the
+\code{groups} part of the formula is that the last group is typically
+assumed to be the \code{subject}; see the documentation for the
+\code{subject} argument for exceptions to this assumption.}
 
 \item{subject}{The column indicating the subject number (used for
 plotting).  If not provided, this defaults to the beginning of the
