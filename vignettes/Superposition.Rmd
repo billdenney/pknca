@@ -14,7 +14,7 @@ vignette: >
 ```{r setup, echo=FALSE, include=FALSE}
 library(PKNCA)
 library(knitr)
-library(lattice)
+library(ggplot2)
 ```
 
 Examples simplify understanding.  Below is an example of how to use
@@ -94,8 +94,9 @@ Some dosing intervals are more complex than once per X hours (or days or weeks o
 complex.interval.steady.state <- superposition(my.conc.corrected, tau=24, dose.times=c(0, 2, 4))
 knitr::kable(head(complex.interval.steady.state, n=10),
              caption="Superposition at steady-state with complex dosing")
-xyplot(conc~time, groups=Subject, type="l",
-       data=complex.interval.steady.state)
+ggplot(complex.interval.steady.state,
+       aes(y=conc, x=time, colour=Subject)) +
+  geom_line()
 ```
 
 With this more complex dosing interval, the number of time points estimated increases.  The next section describes the selection of time points.
@@ -111,12 +112,9 @@ up.to.steady.state <- superposition(my.conc.corrected,
                                     tau=4*24,
                                     n.tau=1,
                                     dose.times=seq(0, 3*24, by=12))
-xyplot(conc~time,
-       groups=Subject,
-       data=up.to.steady.state,
-       type="l")
+ggplot(up.to.steady.state, aes(x=time, y=conc, colour=Subject)) +
+  geom_line()
 ```
-
 
 # Time Point Selection and Addition
 
