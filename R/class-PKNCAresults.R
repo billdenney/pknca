@@ -36,6 +36,7 @@ PKNCAresults <- function(result, data, exclude) {
 #' @param out.format Should the output be 'long' (default) or 'wide'?
 #' @return A data frame of results
 #' @export
+#' @importFrom tidyr spread_
 as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
   ret <- x$result
   out.format <- match.arg(out.format)
