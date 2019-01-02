@@ -5,3 +5,4 @@ example.*?.R
 cran-comments.md
 ^\.github$
 ^LICENSE\.md$
+^CODE_OF_CONDUCT\.md$
