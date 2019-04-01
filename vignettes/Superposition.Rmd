@@ -118,7 +118,7 @@ ggplot(up.to.steady.state, aes(x=time, y=conc, colour=Subject)) +
 
 # Time Point Selection and Addition
 
-Superposition is often used to estimate NCA parameters with nonparametric methods.  To ensure that estimated parameters are as accurate as possible (espectially $C_max$), each dose has every post-dose time point included.  Specifically, each dose will have the following times:
+Superposition is often used to estimate NCA parameters with nonparametric methods.  To ensure that estimated parameters are as accurate as possible (especially $C_{max}$), each dose has every post-dose time point included.  Specifically, each dose will have the following times:
 
 * 0 (zero) and `tau`,
 * The time of each dose (the `dose.times` argument)
