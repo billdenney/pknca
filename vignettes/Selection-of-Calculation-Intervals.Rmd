@@ -18,7 +18,14 @@ knitr::opts_chunk$set(echo=TRUE,
 library(cowplot)
 library(PKNCA)
 library(knitr)
+library(ggplot2)
 source("../tests/testthat/generate.data.R")
+scale_colour_discrete <- scale_colour_hue
+scale_fill_discrete <- scale_fill_hue
+```
+
+```{r check-ggplot, include=!requireNamespace("ggplot2"), results="asis"}
+cat("ggplot2 is required for this vignette to work correctly.  Please install the ggplot2 library and retry building the vignette.")
 ```
 
 # Introduction
@@ -45,6 +52,8 @@ d.conc.multi <-
                 tau=168,
                 dose.times=seq(0, 168-24, by=24),
                 n.tau=1)
+```
+```{r intro_interval_plot-visualization, eval=requireNamespace("ggplot2")}
 # Plot the concentration-time data and the interval
 ggplot(d.conc.multi, aes(x=time, y=conc)) +
   geom_ribbon(data=d.conc.multi[d.conc.multi$time >= 144,],
@@ -104,6 +113,8 @@ d.conc <-
                   resid=0),
     conc~time|treatment+ID)
 print(d.conc)
+```
+```{r infinity_interval_plot-visualization, eval=requireNamespace("ggplot2")}
 # Use superposition to simulate multiple doses
 ggplot(d.conc$data[d.conc$data$time <= 48,], aes(x=time, y=conc)) +
   geom_ribbon(data=d.conc$data,
@@ -147,6 +158,8 @@ d.conc.multi <-
                 tau=168,
                 dose.times=seq(0, 168-24, by=24),
                 n.tau=1)
+```
+```{r multiple_intervals_plot-visualization, eval=requireNamespace("ggplot2")}
 # Plot the concentration-time data and the interval
 ggplot(d.conc.multi, aes(x=time, y=conc)) +
   geom_ribbon(data=d.conc.multi[d.conc.multi$time <= 24,],
@@ -188,6 +201,8 @@ d.conc <-
                   resid=0),
     conc~time|treatment+ID)
 print(d.conc)
+```
+```{r overlapping_intervals_plot-visualization, eval=requireNamespace("ggplot2")}
 # Use superposition to simulate multiple doses
 ggplot(d.conc$data, aes(x=time, y=conc)) +
   geom_ribbon(data=d.conc$data,
@@ -220,7 +235,7 @@ Some events have durations of times rather than instants in time associated with
 
 Durations data are selected based on both the beginning and ending of the duration existing within the interval.
 
-```{r interval_yes_no, echo=FALSE}
+```{r interval_yes_no, echo=FALSE, eval=requireNamespace("ggplot2")}
 ggplot_intervals <- function(definition, intervals) {
   intervals$within <-
     c("No", "Yes")[intervals$interval.start >= min(definition$start.x) &

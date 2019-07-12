@@ -15,11 +15,19 @@ vignette: >
 library(PKNCA)
 library(knitr)
 library(ggplot2)
+scale_colour_discrete <- scale_colour_hue
+scale_fill_discrete <- scale_fill_hue
+scale_colour_ordinal <- scale_colour_hue
+scale_fill_ordinal <- scale_fill_hue
 ```
 
 Examples simplify understanding.  Below is an example of how to use
 the theophylline dataset to estimate the concentration for each
 subject after multiple doses.
+
+```{r check-ggplot, include=!requireNamespace("ggplot2"), results="asis"}
+cat("ggplot2 is required for this vignette to work correctly.  Please install the ggplot2 library and retry building the vignette.")
+```
 
 # Load the data
 
@@ -94,6 +102,8 @@ Some dosing intervals are more complex than once per X hours (or days or weeks o
 complex.interval.steady.state <- superposition(my.conc.corrected, tau=24, dose.times=c(0, 2, 4))
 knitr::kable(head(complex.interval.steady.state, n=10),
              caption="Superposition at steady-state with complex dosing")
+```
+```{r ComplexInterval-visualization, eval=requireNamespace("ggplot2")}
 ggplot(complex.interval.steady.state,
        aes(y=conc, x=time, colour=Subject)) +
   geom_line()
@@ -112,6 +122,8 @@ up.to.steady.state <- superposition(my.conc.corrected,
                                     tau=4*24,
                                     n.tau=1,
                                     dose.times=seq(0, 3*24, by=12))
+```
+```{r to_steady_state-visualization, eval=requireNamespace("ggplot2")}
 ggplot(up.to.steady.state, aes(x=time, y=conc, colour=Subject)) +
   geom_line()
 ```

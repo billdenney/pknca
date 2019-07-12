@@ -18,47 +18,280 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -68,7 +301,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">AUC Calculation with PKNCA</h1>
-<h4 class="author"><em>Bill Denney</em></h4>
+<h4 class="author">Bill Denney</h4>
 
 
 <div id="TOC">
@@ -85,40 +318,43 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="preparation" class="section level1">
 <h1>Preparation</h1>
 <p>For the below examples, the following data will be used.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>({
-  <span class="kw">library</span>(PKNCA)
-  <span class="kw">library</span>(dplyr)
-  <span class="kw">library</span>(cowplot)
-  <span class="kw">library</span>(knitr)
-})
-my_conc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">1.2</span>, <span class="fl">1.1</span>, <span class="dv">0</span>, <span class="dv">0</span>),
-                      <span class="dt">time=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">24</span>),
-                      <span class="dt">subject=</span><span class="dv">1</span>)
-my_conc<span class="op">$</span>BLOQ &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc <span class="op">==</span><span class="st"> </span><span class="dv">0</span>
-my_conc<span class="op">$</span>measured &lt;-<span class="st"> </span><span class="ot">TRUE</span>
-
-<span class="kw">ggplot</span>(my_conc,
-       <span class="kw">aes</span>(<span class="dt">x=</span>time,
-           <span class="dt">y=</span>conc,
-           <span class="dt">shape=</span>BLOQ,
-           <span class="dt">group=</span>subject)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">suppressPackageStartupMessages</span>({</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">library</span>(PKNCA)</a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">library</span>(cowplot)</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="kw">library</span>(knitr)</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-7" title="7">})</a>
+<a class="sourceLine" id="cb1-8" title="8">scale_colour_discrete &lt;-<span class="st"> </span>scale_colour_hue</a>
+<a class="sourceLine" id="cb1-9" title="9">scale_fill_discrete &lt;-<span class="st"> </span>scale_fill_hue</a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11">my_conc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">1.2</span>, <span class="fl">1.1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb1-12" title="12">                      <span class="dt">time=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">24</span>),</a>
+<a class="sourceLine" id="cb1-13" title="13">                      <span class="dt">subject=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-14" title="14">my_conc<span class="op">$</span>BLOQ &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc <span class="op">==</span><span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-15" title="15">my_conc<span class="op">$</span>measured &lt;-<span class="st"> </span><span class="ot">TRUE</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">ggplot</span>(my_conc,</a>
+<a class="sourceLine" id="cb2-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
+<a class="sourceLine" id="cb2-3" title="3">           <span class="dt">y=</span>conc,</a>
+<a class="sourceLine" id="cb2-4" title="4">           <span class="dt">shape=</span>BLOQ,</a>
+<a class="sourceLine" id="cb2-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</a></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>For the purpose of illustration, NCA parameters will also be calculated for each of the AUC types below. Note that in the results, more parameters are returned than were requested. The additional parameters are the set of parameters required to calculate the requested parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc, conc<span class="op">~</span>time<span class="op">|</span>subject)
-data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(<span class="dt">data.conc=</span>conc_obj,
-                      <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>,
-                                           <span class="dt">end=</span><span class="dv">24</span>,
-                                           <span class="dt">aucall=</span><span class="ot">TRUE</span>,
-                                           <span class="dt">auclast=</span><span class="ot">TRUE</span>,
-                                           <span class="dt">aucinf.pred=</span><span class="ot">TRUE</span>,
-                                           <span class="dt">aucinf.obs=</span><span class="ot">TRUE</span>))
-results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc, conc<span class="op">~</span>time<span class="op">|</span>subject)</a>
+<a class="sourceLine" id="cb3-2" title="2">data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(<span class="dt">data.conc=</span>conc_obj,</a>
+<a class="sourceLine" id="cb3-3" title="3">                      <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb3-4" title="4">                                           <span class="dt">end=</span><span class="dv">24</span>,</a>
+<a class="sourceLine" id="cb3-5" title="5">                                           <span class="dt">aucall=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-6" title="6">                                           <span class="dt">auclast=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-7" title="7">                                           <span class="dt">aucinf.pred=</span><span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-8" title="8">                                           <span class="dt">aucinf.obs=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb3-9" title="9">results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</a></code></pre></div>
 <pre><code>## No dose information provided, calculations requiring dose will return NA.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obj))</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obj))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -257,127 +493,124 @@ results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_ob
 <div id="auc-to-the-last-value-above-the-limit-of-quantification-auclast" class="section level1">
 <h1>AUC to the Last Value Above the Limit of Quantification (AUC<sub>last</sub>)</h1>
 <p>AUC<sub>0-last</sub> calculates the AUC from time 0 to the last value above the limit of quantification, <code>tlast</code> (within PKNCA, this is the last value above 0). In the figure below, AUC<sub>0-last</sub> integrate the shaded region. Integration after <code>tlast</code> is 0.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tlast &lt;-<span class="st"> </span><span class="kw">pk.calc.tlast</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,
-                       <span class="dt">time=</span>my_conc<span class="op">$</span>time)
-tlast</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">tlast &lt;-<span class="st"> </span><span class="kw">pk.calc.tlast</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</a>
+<a class="sourceLine" id="cb6-2" title="2">                       <span class="dt">time=</span>my_conc<span class="op">$</span>time)</a>
+<a class="sourceLine" id="cb6-3" title="3">tlast</a></code></pre></div>
 <pre><code>## [1] 8</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_conc<span class="op">$</span>include_auclast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>tlast
-
-<span class="kw">ggplot</span>(my_conc,
-       <span class="kw">aes</span>(<span class="dt">x=</span>time,
-           <span class="dt">y=</span>conc,
-           <span class="dt">shape=</span>BLOQ,
-           <span class="dt">group=</span>subject)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_auclast,],
-              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),
-              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">my_conc<span class="op">$</span>include_auclast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>tlast</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">ggplot</span>(my_conc,</a>
+<a class="sourceLine" id="cb9-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
+<a class="sourceLine" id="cb9-3" title="3">           <span class="dt">y=</span>conc,</a>
+<a class="sourceLine" id="cb9-4" title="4">           <span class="dt">shape=</span>BLOQ,</a>
+<a class="sourceLine" id="cb9-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_auclast,],</a>
+<a class="sourceLine" id="cb9-7" title="7">              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),</a>
+<a class="sourceLine" id="cb9-8" title="8">              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</a></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="aucall" class="section level1">
 <h1>AUC<sub>all</sub></h1>
 <p>AUC<sub>all</sub> starts with AUC<sub>0-last</sub> and then integrates from <code>tlast</code> to the first point after <code>tlast</code> with a linear interpolation to zero. From the second point after <code>tlast</code> to <span class="math inline">\(\infty\)</span> is considered zero.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">first_after_tlast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>time <span class="op">&gt;</span><span class="st"> </span>tlast][<span class="dv">1</span>]
-first_after_tlast</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">first_after_tlast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>time <span class="op">&gt;</span><span class="st"> </span>tlast][<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb10-2" title="2">first_after_tlast</a></code></pre></div>
 <pre><code>## [1] 12</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_conc<span class="op">$</span>include_aucall &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>first_after_tlast
-
-<span class="kw">ggplot</span>(my_conc,
-       <span class="kw">aes</span>(<span class="dt">x=</span>time,
-           <span class="dt">y=</span>conc,
-           <span class="dt">shape=</span>BLOQ,
-           <span class="dt">group=</span>subject)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_aucall,],
-              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),
-              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">my_conc<span class="op">$</span>include_aucall &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>first_after_tlast</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">ggplot</span>(my_conc,</a>
+<a class="sourceLine" id="cb13-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
+<a class="sourceLine" id="cb13-3" title="3">           <span class="dt">y=</span>conc,</a>
+<a class="sourceLine" id="cb13-4" title="4">           <span class="dt">shape=</span>BLOQ,</a>
+<a class="sourceLine" id="cb13-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_aucall,],</a>
+<a class="sourceLine" id="cb13-7" title="7">              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),</a>
+<a class="sourceLine" id="cb13-8" title="8">              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</a></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="auc-to-infinity-aucinfty" class="section level1">
 <h1>AUC to Infinity (AUC<sub><span class="math inline">\(\infty\)</span></sub>)</h1>
 <p>AUC<sub>0-<span class="math inline">\(\infty\)</span></sub> is commonly used for single-dose data. It calculates the AUC<sub>0-last</sub> and then extrapolates to <span class="math inline">\(\infty\)</span> using the estimated half-life. Two starting points are used to estimate from <code>tlast</code> to <span class="math inline">\(\infty\)</span>, the observed or half-life predicted concentration at <code>tlast</code> (<code>clast.obs</code> and <code>clast.pred</code>).</p>
 <p>The two figures below illustrate the integration with AUC<sub>0-<span class="math inline">\(\infty\)</span>,obs</sub> and AUC~0-<span class="math inline">\(\infty\)</span>,pred$. The difference between the tow figures is most evident at time=8 where there is a discontinuity in integration at <code>tlast</code> due to using <code>clast.pred</code> after that point and <code>clast.obs</code> before that point. (To illustrate the integration differences, BLOQ indicator shapes have been removed. BLOQ is handled identically to previous figures.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Add one row to illustrate extrapolation beyond observed data</span>
-my_conc &lt;-
-<span class="st">  </span><span class="kw">rbind</span>(my_conc,
-        <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="ot">NA</span>,
-                   <span class="dt">time=</span><span class="dv">36</span>,
-                   <span class="dt">subject=</span><span class="dv">1</span>,
-                   <span class="dt">BLOQ=</span><span class="ot">NA</span>,
-                   <span class="dt">measured=</span><span class="ot">FALSE</span>,
-                   <span class="dt">include_auclast=</span><span class="ot">FALSE</span>,
-                   <span class="dt">include_aucall=</span><span class="ot">FALSE</span>))
-<span class="co"># Extrapolate concentrations for aucinf.obs</span>
-my_conc<span class="op">$</span>conc_aucinf.obs &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc
-my_conc<span class="op">$</span>conc_aucinf.obs[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-
-<span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,
-                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,
-                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],
-                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>])
-
-<span class="co"># Extrapolate concentrations for aucinf.pred</span>
-my_conc<span class="op">$</span>conc_aucinf.pred &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc
-my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-
-<span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,
-                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,
-                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],
-                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>],
-                     <span class="dt">clast=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>])
-my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>time <span class="op">==</span><span class="st"> </span>tlast] &lt;-
-<span class="st">  </span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>]
-
-<span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],
-       <span class="kw">aes</span>(<span class="dt">x=</span>time,
-           <span class="dt">y=</span>conc,
-           <span class="co">#shape=BLOQ,</span>
-           <span class="dt">group=</span>subject)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc,
-              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc_aucinf.obs),
-              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">  </span><span class="co">#geom_point(size=2) +</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,obs&quot;</span>)</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],
-       <span class="kw">aes</span>(<span class="dt">x=</span>time,
-           <span class="dt">y=</span>conc,
-           <span class="co">#shape=BLOQ,</span>
-           <span class="dt">group=</span>subject)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_ribbon</span>(
-    <span class="dt">data=</span><span class="kw">arrange</span>(
-      <span class="kw">bind_rows</span>(<span class="kw">mutate</span>(my_conc,
-                       <span class="dt">before=</span><span class="ot">FALSE</span>),
-                <span class="kw">mutate</span>(<span class="kw">filter</span>(my_conc, time <span class="op">==</span><span class="st"> </span>tlast),
-                       <span class="dt">conc_aucinf.pred=</span>conc,
-                       <span class="dt">before=</span><span class="ot">TRUE</span>)),
-      time, <span class="kw">desc</span>(before)),
-    <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>,
-        <span class="dt">ymax=</span>conc_aucinf.pred),
-    <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">  </span><span class="co">#geom_point(size=2) +</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,pred&quot;</span>)</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Add one row to illustrate extrapolation beyond observed data</span></a>
+<a class="sourceLine" id="cb14-2" title="2">my_conc &lt;-</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw">rbind</span>(my_conc,</a>
+<a class="sourceLine" id="cb14-4" title="4">        <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb14-5" title="5">                   <span class="dt">time=</span><span class="dv">36</span>,</a>
+<a class="sourceLine" id="cb14-6" title="6">                   <span class="dt">subject=</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb14-7" title="7">                   <span class="dt">BLOQ=</span><span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb14-8" title="8">                   <span class="dt">measured=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb14-9" title="9">                   <span class="dt">include_auclast=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb14-10" title="10">                   <span class="dt">include_aucall=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="co"># Extrapolate concentrations for aucinf.obs</span></a>
+<a class="sourceLine" id="cb14-12" title="12">my_conc<span class="op">$</span>conc_aucinf.obs &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc</a>
+<a class="sourceLine" id="cb14-13" title="13">my_conc<span class="op">$</span>conc_aucinf.obs[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-</a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</a>
+<a class="sourceLine" id="cb14-15" title="15">                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,</a>
+<a class="sourceLine" id="cb14-16" title="16">                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],</a>
+<a class="sourceLine" id="cb14-17" title="17">                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>])</a>
+<a class="sourceLine" id="cb14-18" title="18"></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="co"># Extrapolate concentrations for aucinf.pred</span></a>
+<a class="sourceLine" id="cb14-20" title="20">my_conc<span class="op">$</span>conc_aucinf.pred &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc</a>
+<a class="sourceLine" id="cb14-21" title="21">my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-</a>
+<a class="sourceLine" id="cb14-22" title="22"><span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</a>
+<a class="sourceLine" id="cb14-23" title="23">                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,</a>
+<a class="sourceLine" id="cb14-24" title="24">                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],</a>
+<a class="sourceLine" id="cb14-25" title="25">                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>],</a>
+<a class="sourceLine" id="cb14-26" title="26">                     <span class="dt">clast=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>])</a>
+<a class="sourceLine" id="cb14-27" title="27">my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>time <span class="op">==</span><span class="st"> </span>tlast] &lt;-</a>
+<a class="sourceLine" id="cb14-28" title="28"><span class="st">  </span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],</a>
+<a class="sourceLine" id="cb15-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
+<a class="sourceLine" id="cb15-3" title="3">           <span class="dt">y=</span>conc,</a>
+<a class="sourceLine" id="cb15-4" title="4">           <span class="co">#shape=BLOQ,</span></a>
+<a class="sourceLine" id="cb15-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc,</a>
+<a class="sourceLine" id="cb15-7" title="7">              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc_aucinf.obs),</a>
+<a class="sourceLine" id="cb15-8" title="8">              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="st">  </span><span class="co">#geom_point(size=2) +</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-12" title="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,obs&quot;</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],</a>
+<a class="sourceLine" id="cb16-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
+<a class="sourceLine" id="cb16-3" title="3">           <span class="dt">y=</span>conc,</a>
+<a class="sourceLine" id="cb16-4" title="4">           <span class="co">#shape=BLOQ,</span></a>
+<a class="sourceLine" id="cb16-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(</a>
+<a class="sourceLine" id="cb16-7" title="7">    <span class="dt">data=</span><span class="kw">arrange</span>(</a>
+<a class="sourceLine" id="cb16-8" title="8">      <span class="kw">bind_rows</span>(<span class="kw">mutate</span>(my_conc,</a>
+<a class="sourceLine" id="cb16-9" title="9">                       <span class="dt">before=</span><span class="ot">FALSE</span>),</a>
+<a class="sourceLine" id="cb16-10" title="10">                <span class="kw">mutate</span>(<span class="kw">filter</span>(my_conc, time <span class="op">==</span><span class="st"> </span>tlast),</a>
+<a class="sourceLine" id="cb16-11" title="11">                       <span class="dt">conc_aucinf.pred=</span>conc,</a>
+<a class="sourceLine" id="cb16-12" title="12">                       <span class="dt">before=</span><span class="ot">TRUE</span>)),</a>
+<a class="sourceLine" id="cb16-13" title="13">      time, <span class="kw">desc</span>(before)),</a>
+<a class="sourceLine" id="cb16-14" title="14">    <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb16-15" title="15">        <span class="dt">ymax=</span>conc_aucinf.pred),</a>
+<a class="sourceLine" id="cb16-16" title="16">    <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-17" title="17"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-18" title="18"><span class="st">  </span><span class="co">#geom_point(size=2) +</span></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-21" title="21"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,pred&quot;</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="partial-aucs" class="section level1">
 <h1>Partial AUCs</h1>
 <p>Partial AUCs integrate part of the area within a time range of interest. Partial AUCs are often of interest to assess bioequivalence with more detail than AUC<sub>0-<span class="math inline">\(\infty\)</span></sub> or AUC<sub>0-last</sub> may indicate. Within PKNCA, partial AUCs are treated like AUC<sub>last</sub> with start and end times separately selected. (In a future version of PKNCA, they will be more simply calculated using an AUC<sub>interval</sub>.)</p>
 <p>When the starting and ending times are observed within the data, partial AUCs can be calculated using the parameter <code>auclast</code> as illustrated below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Interpolation not required</span>
-data_obs_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="dv">2</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))
-results_obs_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obs_obj)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># Interpolation not required</span></a>
+<a class="sourceLine" id="cb17-2" title="2">data_obs_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="dv">2</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb17-3" title="3">results_obs_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obs_obj)</a></code></pre></div>
 <pre><code>## No dose information provided, calculations requiring dose will return NA.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obs_obj))</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obs_obj))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -401,16 +634,16 @@ results_obs_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(dat
 </tbody>
 </table>
 <p>When the starting and ending times are not observed within the data or when samples are below the limit of quantification, concentrations must be interpolated and added to the dataset before calculation as illustrated below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Interpolation required</span>
-my_conc_interp &lt;-
-<span class="st">  </span><span class="kw">arrange</span>(
-    <span class="kw">bind_rows</span>(
-      my_conc,
-      <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc, <span class="dt">time=</span>my_conc<span class="op">$</span>time, <span class="dt">time.out=</span><span class="fl">1.5</span>),
-                 <span class="dt">time=</span><span class="fl">1.5</span>,
-                 <span class="dt">subject=</span><span class="dv">1</span>)),
-    time)
-<span class="kw">kable</span>(my_conc_interp)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># Interpolation required</span></a>
+<a class="sourceLine" id="cb20-2" title="2">my_conc_interp &lt;-</a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="st">  </span><span class="kw">arrange</span>(</a>
+<a class="sourceLine" id="cb20-4" title="4">    <span class="kw">bind_rows</span>(</a>
+<a class="sourceLine" id="cb20-5" title="5">      my_conc,</a>
+<a class="sourceLine" id="cb20-6" title="6">      <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc, <span class="dt">time=</span>my_conc<span class="op">$</span>time, <span class="dt">time.out=</span><span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb20-7" title="7">                 <span class="dt">time=</span><span class="fl">1.5</span>,</a>
+<a class="sourceLine" id="cb20-8" title="8">                 <span class="dt">subject=</span><span class="dv">1</span>)),</a>
+<a class="sourceLine" id="cb20-9" title="9">    time)</a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="kw">kable</span>(my_conc_interp)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -549,11 +782,11 @@ my_conc_interp &lt;-
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">conc_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc_interp, conc<span class="op">~</span>time<span class="op">|</span>subject)
-data_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_interp_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="fl">1.5</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))
-results_interp &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_interp_obj)</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">conc_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc_interp, conc<span class="op">~</span>time<span class="op">|</span>subject)</a>
+<a class="sourceLine" id="cb21-2" title="2">data_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_interp_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="fl">1.5</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb21-3" title="3">results_interp &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_interp_obj)</a></code></pre></div>
 <pre><code>## No dose information provided, calculations requiring dose will return NA.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(results_interp)</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">as.data.frame</span>(results_interp)</a></code></pre></div>
 <pre><code>##   start end subject PPTESTCD PPORRES exclude
 ## 1     0 1.5       1  auclast  2.5625    &lt;NA&gt;</code></pre>
 </div>
