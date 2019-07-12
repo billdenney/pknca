@@ -424,19 +424,25 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       }
       # Do the calculation
       tmp.result <- do.call(all.intervals[[n]]$FUN, call.args)
+      exclude_reason <-
+        if (!is.null(attr(tmp.result, "exclude"))) {
+          attr(tmp.result, "exclude")
+        } else {
+          NA_character_
+        }
       ## If the function returns a data frame, save all the returned
       ## values, otherwise, save the value returned.
       if (is.data.frame(tmp.result)) {
         ret <- rbind(ret,
                      data.frame(PPTESTCD=names(tmp.result),
                                 PPORRES=unlist(tmp.result, use.names=FALSE),
-                                exclude=NA_character_,
+                                exclude=exclude_reason,
                                 stringsAsFactors=FALSE))
       } else {
         ret <- rbind(ret,
                      data.frame(PPTESTCD=n,
                                 PPORRES=tmp.result,
-                                exclude=NA_character_,
+                                exclude=exclude_reason,
                                 stringsAsFactors=FALSE))
       }
     }

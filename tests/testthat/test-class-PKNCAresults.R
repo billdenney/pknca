@@ -86,6 +86,56 @@ test_that("PKNCAresults generation", {
                info="Time shift does not affect aucint calculations.")
 })
 
+test_that("PKNCAresults has exclude, when applicable", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpconc$conc[tmpconc$ID %in% 2] <- 0
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  # Not capturing the warning due to R bug
+  # https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17122
+  #expect_warning(myresult <- pk.nca(mydata),
+  #               regexp="Too few points for half-life calculation")
+  myresult <- pk.nca(mydata)
+  myresult_df <- as.data.frame(myresult)
+  expect_true(
+    all(myresult_df$PPTESTCD %in%
+          c(
+            "adj.r.squared", "aucinf.obs", "auclast", "clast.obs",
+            "clast.pred", "cmax", "half.life", "lambda.z", "lambda.z.n.points",
+            "lambda.z.time.first", "r.squared", "span.ratio", "tlast", "tmax"
+          )
+    ),
+    info="verify that only expected results are present"
+  )
+  expect_equal(
+    unique(
+      myresult_df$exclude[
+        myresult_df$ID == 2 &
+          myresult_df$PPTESTCD %in%
+          c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
+            "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
+        ]
+    ),
+    "Too few points for half-life calculation (min.hl.points=3 with only 0 points)",
+    info="exclusions are propogated to results"
+  )
+  expect_equal(
+    unique(
+      myresult_df$exclude[
+        !(myresult_df$ID == 2 &
+            myresult_df$PPTESTCD %in%
+            c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
+              "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
+        )
+        ]
+    ),
+    NA_character_,
+    info="exclusions are propogated to results only when applicable"
+  )
+})
+
 test_that("PKNCAresults summary", {
   ## Note that generate.conc sets the random seed, so it doesn't have
   ## to happen here.

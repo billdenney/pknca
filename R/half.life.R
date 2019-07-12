@@ -83,12 +83,30 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
                               allow.tmax.in.half.life=NULL,
                               check=TRUE) {
   ## Check inputs
-  min.hl.points <- PKNCA.choose.option(name="min.hl.points", value=min.hl.points, options=options)
-  adj.r.squared.factor <- PKNCA.choose.option(name="adj.r.squared.factor", value=adj.r.squared.factor, options=options)
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
-  first.tmax <- PKNCA.choose.option(name="first.tmax", value=first.tmax, options=options)
-  allow.tmax.in.half.life <- PKNCA.choose.option(name="allow.tmax.in.half.life", value=allow.tmax.in.half.life, options=options)
+  min.hl.points <-
+    PKNCA.choose.option(
+      name="min.hl.points", value=min.hl.points, options=options
+    )
+  adj.r.squared.factor <-
+    PKNCA.choose.option(
+      name="adj.r.squared.factor", value=adj.r.squared.factor, options=options
+    )
+  conc.blq <-
+    PKNCA.choose.option(
+      name="conc.blq", value=conc.blq, options=options
+    )
+  conc.na <-
+    PKNCA.choose.option(
+      name="conc.na", value=conc.na, options=options
+    )
+  first.tmax <-
+    PKNCA.choose.option(
+      name="first.tmax", value=first.tmax, options=options
+    )
+  allow.tmax.in.half.life <-
+    PKNCA.choose.option(
+      name="allow.tmax.in.half.life", value=allow.tmax.in.half.life, options=options
+    )
   if (check) {
     check.conc.time(conc, time)
     data <- clean.conc.blq(conc, time, conc.blq=conc.blq, conc.na=conc.na)
@@ -116,11 +134,14 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     half.life=NA,
     ## T1/2 span range
     span.ratio=NA)
-  ret_replacements <- c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
-                        "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
+  ret_replacements <-
+    c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
+      "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
   if (missing(tmax)) {
-    ret$tmax <- pk.calc.tmax(data$conc, data$time,
-                             first.tmax=first.tmax, check=FALSE)
+    ret$tmax <-
+      pk.calc.tmax(
+        data$conc, data$time, first.tmax=first.tmax, check=FALSE
+      )
   } else {
     ret$tmax <- tmax
   }
@@ -131,14 +152,13 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   }
   ## Data frame to use for computation of half-life
   if (allow.tmax.in.half.life) {
-    dfK <- data[data$time >= ret$tmax,]
+    dfK <- data[data$time >= ret$tmax, ]
   } else {
-    dfK <- data[data$time > ret$tmax,]
+    dfK <- data[data$time > ret$tmax, ]
   }
   if (manually.selected.points) {
     if (nrow(data) > 0) {
-      fit <- fit_half_life(data=data,
-                           tlast=ret$tlast)
+      fit <- fit_half_life(data=data, tlast=ret$tlast)
       ret[,ret_replacements] <- fit[,ret_replacements]
     } else {
       warning("No data to manually fit for half-life (all concentrations may be 0)")
@@ -146,30 +166,38 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   } else if (nrow(dfK) >= min.hl.points) {
     ## If we have enough data to estimate a slope, then
     half_lives_for_selection <-
-      data.frame(r.squared=-Inf,
-                 adj.r.squared=-Inf,
-                 clast.pred=NA_real_,
-                 lambda.z=NA_real_,
-                 lambda.z.n.points=NA_integer_,
-                 lambda.z.time.first=dfK$time,
-                 log_conc=dfK$log_conc,
-                 span.ratio=NA_real_,
-                 half.life=NA_real_)
+      data.frame(
+        r.squared=-Inf,
+        adj.r.squared=-Inf,
+        clast.pred=NA_real_,
+        lambda.z=NA_real_,
+        lambda.z.n.points=NA_integer_,
+        lambda.z.time.first=dfK$time,
+        log_conc=dfK$log_conc,
+        span.ratio=NA_real_,
+        half.life=NA_real_
+      )
     half_lives_for_selection <-
-      half_lives_for_selection[order(-half_lives_for_selection$lambda.z.time.first),]
+      half_lives_for_selection[order(-half_lives_for_selection$lambda.z.time.first), ]
     for(i in min.hl.points:nrow(half_lives_for_selection)) {
       ## Fit the terminal slopes until the adjusted r-squared value
       ## is not improving (or it only gets worse by a small factor).
-      fit <- fit_half_life(
-        data=data.frame(log_conc=half_lives_for_selection$log_conc[1:i],
-                        time=half_lives_for_selection$lambda.z.time.first[1:i]),
-        tlast=ret$tlast)
+      fit <-
+        fit_half_life(
+          data=
+            data.frame(
+              log_conc=half_lives_for_selection$log_conc[1:i],
+              time=half_lives_for_selection$lambda.z.time.first[1:i]
+            ),
+          tlast=ret$tlast
+        )
       half_lives_for_selection[i,names(fit)] <- fit
     }
     ## Find the best model
     mask.best <-
-      (half_lives_for_selection$adj.r.squared > (max(half_lives_for_selection$adj.r.squared) - adj.r.squared.factor) &
-       half_lives_for_selection$lambda.z > 0)
+      half_lives_for_selection$adj.r.squared >
+      (max(half_lives_for_selection$adj.r.squared) - adj.r.squared.factor) &
+      half_lives_for_selection$lambda.z > 0
     ## Missing values are not the best
     mask.best[is.na(mask.best)] <- FALSE
     if (sum(mask.best) > 1) {
@@ -185,9 +213,12 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       ret[,ret_replacements] <- half_lives_for_selection[mask.best, ret_replacements]
     }
   } else {
-    warning(sprintf(
-      "Too few points for half-life calculation (min.hl.points=%g with only %g points)",
-      min.hl.points, nrow(dfK)))
+    attr(ret, "exclude") <-
+      sprintf(
+        "Too few points for half-life calculation (min.hl.points=%g with only %g points)",
+        min.hl.points, nrow(dfK)
+      )
+    warning(attr(ret, "exclude"))
   }
   ## Drop the inputs of tmax and tlast, if given.
   if (!missing(tmax))
@@ -213,12 +244,14 @@ fit_half_life <- function(data, tlast) {
   fit <- stats::lm(log_conc~time, data=data, na.action=stats::na.exclude)
   sfit <- summary(fit)
   ret <-
-    data.frame(r.squared=sfit$r.squared,
-               adj.r.squared=adj.r.squared(sfit$r.squared, nrow(data)),
-               lambda.z=-stats::coef(fit)["time"],
-               clast.pred=exp(stats::predict(fit, newdata=data.frame(time=tlast))),
-               lambda.z.time.first=min(data$time, na.rm=TRUE),
-               lambda.z.n.points=nrow(data))
+    data.frame(
+      r.squared=sfit$r.squared,
+      adj.r.squared=adj.r.squared(sfit$r.squared, nrow(data)),
+      lambda.z=-stats::coef(fit)["time"],
+      clast.pred=exp(stats::predict(fit, newdata=data.frame(time=tlast))),
+      lambda.z.time.first=min(data$time, na.rm=TRUE),
+      lambda.z.n.points=nrow(data)
+    )
   ret$half.life <- log(2)/ret$lambda.z
   ret$span.ratio <- (max(data$time) - min(data$time))/ret$half.life
   ret
