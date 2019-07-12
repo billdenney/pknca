@@ -13,7 +13,8 @@ interval.}
 pk.calc.aucint(conc, time, interval = NULL, start = NULL, end = NULL,
   clast = pk.calc.clast.obs(conc, time), lambda.z = NA,
   time.dose = NULL, route = "extravascular", duration.dose = 0,
-  method = NULL, auc.type = "AUClast", ..., options = list())
+  method = NULL, auc.type = "AUClast", conc.blq = NULL,
+  conc.na = NULL, check = TRUE, ..., options = list())
 
 pk.calc.aucint.last(conc, time, start = NULL, end = NULL, time.dose,
   ..., options = list())
@@ -33,8 +34,8 @@ pk.calc.aucint.inf.pred(conc, time, start = NULL, end = NULL,
 \item{time}{Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)}
 
-\item{interval}{Numeric vector of two numbers for the start and end
-time of integration}
+\item{interval}{Numeric vector of two numbers for the start and end time of
+integration}
 
 \item{start, end}{The start and end of the interval (cannot be given
 if \code{interval} is given)}
@@ -57,14 +58,24 @@ that no doses affecting concentrations are in the interval).}
 \item{method}{The method for integration (either 'lin up/log down' or
 'linear')}
 
-\item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf',
-'AUClast', and 'AUCall'.}
+\item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
+and 'AUCall'.}
+
+\item{conc.blq}{How to handle BLQ values in between the first and last above
+LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
+instructions.)}
+
+\item{conc.na}{How to handle missing concentration values.  (See 
+\code{\link{clean.conc.na}} for usage instructions.)}
+
+\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+and \code{\link{clean.conc.na}}?}
 
 \item{...}{Additional arguments passed to \code{pk.calc.auxc} and
 \code{interp.extrap.conc}}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default \code{\link{PKNCA.options}} for
+calculations.}
 }
 \description{
 Calculate the AUC over an interval with interpolation and/or

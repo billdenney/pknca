@@ -80,10 +80,13 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     check.conc.time(conc, time)
-    data <- clean.conc.blq(conc, time,
-                           conc.blq=conc.blq,
-                           conc.na=conc.na,
-                           check=FALSE)
+    data <-
+      clean.conc.blq(
+        conc, time,
+        conc.blq=conc.blq,
+        conc.na=conc.na,
+        check=FALSE
+      )
   } else {
     data <- data.frame(conc, time)
   }

@@ -2,11 +2,7 @@
 #' extrapolation of concentrations for the beginning and end of the
 #' interval.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement (must be monotonically
-#'   increasing and the same length as the concentration data)
-#' @param interval Numeric vector of two numbers for the start and end
-#'   time of integration
+#' @inheritParams pk.calc.auxc
 #' @param start,end The start and end of the interval (cannot be given
 #'   if \code{interval} is given)
 #' @param clast,clast.obs,clast.pred The last concentration above the
@@ -21,26 +17,41 @@
 #'   \code{\link{interp.extrap.conc.dose}}).  If \code{NULL},
 #'   \code{\link{interp.extrap.conc}} will be used instead (assuming
 #'   that no doses affecting concentrations are in the interval).
-#' @param method The method for integration (either 'lin up/log down' or
-#'   'linear')
-#' @param auc.type The type of AUC to compute.  Choices are 'AUCinf',
-#'   'AUClast', and 'AUCall'.
 #' @param ... Additional arguments passed to \code{pk.calc.auxc} and
 #'   \code{interp.extrap.conc}
-#' @param options List of changes to the default
-#'   \code{\link{PKNCA.options}} for calculations.
 #' @family AUC calculations
 #' @seealso \code{\link{PKNCA.options}}, \code{\link{interp.extrap.conc.dose}}
 #' @export
 pk.calc.aucint <- function(conc, time,
                            interval=NULL, start=NULL, end=NULL,
-                           clast=pk.calc.clast.obs(conc, time), lambda.z=NA,
-                           time.dose=NULL, route="extravascular", duration.dose=0,
+                           clast=pk.calc.clast.obs(conc, time),
+                           lambda.z=NA,
+                           time.dose=NULL,
+                           route="extravascular",
+                           duration.dose=0,
                            method=NULL,
-                           auc.type="AUClast", ...,
+                           auc.type="AUClast",
+                           conc.blq=NULL,
+                           conc.na=NULL,
+                           check=TRUE,
+                           ...,
                            options=list()) {
   # Check inputs
   method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
+  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
+  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
+  if (check) {
+    check.conc.time(conc, time)
+    data <-
+      clean.conc.blq(
+        conc, time,
+        conc.blq=conc.blq,
+        conc.na=conc.na,
+        check=FALSE
+      )
+  } else {
+    data <- data.frame(conc, time)
+  }
   if (is.null(interval)) {
     if (is.null(start) | is.null(end)) {
       stop("If interval is not given, start and end must be given.")
@@ -69,16 +80,16 @@ pk.calc.aucint <- function(conc, time,
   }
   missing_times <-
     if (is.infinite(interval[2])) {
-      setdiff(c(interval[1], time.dose), time)
+      setdiff(c(interval[1], time.dose), data$time)
     } else {
-      setdiff(c(interval, time.dose), time)
+      setdiff(c(interval, time.dose), data$time)
     }
   # Handle the potential double-calculation (before/after tlast) with AUCinf
   conc_clast <- NULL
   time_clast <- NULL
   if (auc.type %in% "AUCinf") {
-    tlast <- pk.calc.tlast(conc=conc, time=time)
-    if (clast != pk.calc.clast.obs(conc=conc, time=time) &
+    tlast <- pk.calc.tlast(conc=data$conc, time=data$time)
+    if (clast != pk.calc.clast.obs(conc=data$conc, time=data$time) &
         interval[2] > tlast) {
       # If using clast.pred, we need to doubly calculate at tlast.
       conc_clast <- clast
@@ -89,7 +100,7 @@ pk.calc.aucint <- function(conc, time,
     if (is.null(time.dose)) {
       missing_conc <-
         interp.extrap.conc(
-          conc=conc, time=time,
+          conc=data$conc, time=data$time,
           time.out=missing_times,
           interp.method=method,
           extrap.method=auc.type,
@@ -99,7 +110,7 @@ pk.calc.aucint <- function(conc, time,
     } else {
       missing_conc <-
         interp.extrap.conc.dose(
-          conc=conc, time=time,
+          conc=data$conc, time=data$time,
           time.out=missing_times,
           interp.method=method,
           extrap.method=auc.type,
@@ -112,8 +123,8 @@ pk.calc.aucint <- function(conc, time,
           out.after=FALSE,
           ...)
     }
-    new_data <- data.frame(conc=c(conc, conc_clast, missing_conc),
-                           time=c(time, time_clast, missing_times))
+    new_data <- data.frame(conc=c(data$conc, conc_clast, missing_conc),
+                           time=c(data$time, time_clast, missing_times))
     new_data <- new_data[new_data$time >= interval[1] &
                            new_data$time <= interval[2],]
     new_data <- new_data[order(new_data$time),]
@@ -136,8 +147,8 @@ pk.calc.aucint <- function(conc, time,
       return(NA_real_)
     }
   } else {
-    conc_interp <- conc
-    time_interp <- time
+    conc_interp <- data$conc
+    time_interp <- data$time
   }
   # AUCinf traces an AUClast curve if the interval is finite (because
   # the interval doesn't go to infinity) while AUCall and AUClast trace
