@@ -20,9 +20,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +32,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +50,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -327,8 +329,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="quick-start" class="section level1">
 <h1>Quick Start</h1>
 <p>The simplest analysis requires concentration and dosing data, then five function calls can provide summarized results. (Please note that this and the other examples in this document are intended to show the typical workflow, but they are not intended to run directly. For an example to run directly, please see <a href="Example-theophylline.html">the theophylline example</a>.)</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(PKNCA)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(dplyr, <span class="dt">quietly=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(PKNCA)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(dplyr, <span class="dt">quietly=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -337,35 +339,35 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">## Load the PK concentration data</span></a>
-<a class="sourceLine" id="cb5-2" title="2">d_conc &lt;-<span class="st"> </span>datasets<span class="op">::</span>Theoph <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Subject=</span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(Subject)))</a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">## Generate the dosing data</span></a>
-<a class="sourceLine" id="cb5-5" title="5">d_dose &lt;-<span class="st"> </span>d_conc[d_conc<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>,]</a>
-<a class="sourceLine" id="cb5-6" title="6">d_dose<span class="op">$</span>Time &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb5-7" title="7"></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">## Create a concentration object specifying the concentration, time, and</span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co">## subject columns.  (Note that any number of grouping levels is</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co">## supported; you are not restricted to just grouping by subject.)</span></a>
-<a class="sourceLine" id="cb5-11" title="11">conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d_conc,</a>
-<a class="sourceLine" id="cb5-12" title="12">                      conc<span class="op">~</span>Time<span class="op">|</span>Subject)</a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="co">## Create a dosing object specifying the dose, time, and subject</span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">## columns.  (Note that the grouping factors should be the same as or a</span></a>
-<a class="sourceLine" id="cb5-15" title="15"><span class="co">## subset of the grouping factors for concentration, and the grouping</span></a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="co">## columns must have the same names between concentration and dose</span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="co">## objects.)</span></a>
-<a class="sourceLine" id="cb5-18" title="18">dose_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d_dose,</a>
-<a class="sourceLine" id="cb5-19" title="19">                      Dose<span class="op">~</span>Time<span class="op">|</span>Subject)</a>
-<a class="sourceLine" id="cb5-20" title="20"><span class="co">## Combine the concentration and dosing information both to</span></a>
-<a class="sourceLine" id="cb5-21" title="21"><span class="co">## automatically define the intervals for NCA calculation and provide</span></a>
-<a class="sourceLine" id="cb5-22" title="22"><span class="co">## doses for calculations requiring dose.</span></a>
-<a class="sourceLine" id="cb5-23" title="23">data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</a>
-<a class="sourceLine" id="cb5-24" title="24"></a>
-<a class="sourceLine" id="cb5-25" title="25"><span class="co">## Calculate the NCA parameters</span></a>
-<a class="sourceLine" id="cb5-26" title="26">results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</a>
-<a class="sourceLine" id="cb5-27" title="27"></a>
-<a class="sourceLine" id="cb5-28" title="28"><span class="co">## Summarize the results</span></a>
-<a class="sourceLine" id="cb5-29" title="29"><span class="kw">summary</span>(results_obj)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">## Load the PK concentration data</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>d_conc &lt;-<span class="st"> </span>datasets<span class="op">::</span>Theoph <span class="op">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Subject=</span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(Subject)))</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">## Generate the dosing data</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>d_dose &lt;-<span class="st"> </span>d_conc[d_conc<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>,]</span>
+<span id="cb5-6"><a href="#cb5-6"></a>d_dose<span class="op">$</span>Time &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">## Create a concentration object specifying the concentration, time, and</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">## subject columns.  (Note that any number of grouping levels is</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">## supported; you are not restricted to just grouping by subject.)</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d_conc,</span>
+<span id="cb5-12"><a href="#cb5-12"></a>                      conc<span class="op">~</span>Time<span class="op">|</span>Subject)</span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">## Create a dosing object specifying the dose, time, and subject</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">## columns.  (Note that the grouping factors should be the same as or a</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co">## subset of the grouping factors for concentration, and the grouping</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="co">## columns must have the same names between concentration and dose</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="co">## objects.)</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>dose_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d_dose,</span>
+<span id="cb5-19"><a href="#cb5-19"></a>                      Dose<span class="op">~</span>Time<span class="op">|</span>Subject)</span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="co">## Combine the concentration and dosing information both to</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a><span class="co">## automatically define the intervals for NCA calculation and provide</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a><span class="co">## doses for calculations requiring dose.</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</span>
+<span id="cb5-24"><a href="#cb5-24"></a></span>
+<span id="cb5-25"><a href="#cb5-25"></a><span class="co">## Calculate the NCA parameters</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</span>
+<span id="cb5-27"><a href="#cb5-27"></a></span>
+<span id="cb5-28"><a href="#cb5-28"></a><span class="co">## Summarize the results</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a><span class="kw">summary</span>(results_obj)</span></code></pre></div>
 <pre><code>##  start end  N     auclast        cmax               tmax   half.life
 ##      0  24 12 74.6 [24.3]           .                  .           .
 ##      0 Inf 12           . 8.65 [17.0] 1.14 [0.630, 3.55] 8.18 [2.12]
@@ -386,7 +388,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h2>Calculation Options: the PKNCA.options Function</h2>
 <p>Different organizations have different requirements for computation and summarization of NCA. Options for how to perform calculations and summaries are handled by the <code>PKNCA.options</code> command.</p>
 <p>Default options have been set to commonly-used standard parameters. The current value for options can be found by running the command with no arguments:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">PKNCA.options</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">PKNCA.options</span>()</span></code></pre></div>
 <pre><code>## $adj.r.squared.factor
 ## [1] 1e-04
 ## 
@@ -478,91 +480,91 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 1             FALSE   FALSE    FALSE      FALSE       FALSE
 ## 2             FALSE   FALSE    FALSE      FALSE       FALSE</code></pre>
 <p>And, to reset the current values to the library defaults, run the function with the default argument set to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">PKNCA.options</span>(<span class="dt">default=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">PKNCA.options</span>(<span class="dt">default=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Each of the options is documented where it is used; for example, the first.tmax option is documented in the <code>pk.calc.tmax</code> function.</p>
 </div>
 <div id="summarization-options-the-pknca.set.summary-function" class="section level2">
 <h2>Summarization Options: the PKNCA.set.summary Function</h2>
 <p>On top of methods of calculation, summarization method preferences differ. Typical summarization preferences include selection of the measurement of central tendency and dispersion, handling of missing values, handling of values below the limit of quantification, and more. Beyond the method for summarization, presentation is managed through user preferences. Presentation is typically controlled by rounding to either a defined number of decimal places or significant figures.</p>
 <p>An example is that C<sub>max</sub> may be summarized by the geometric mean with the geometric CV using three significant figures, and having a summary result requires that at least half of the available values are present (not missing). The code below will set this example.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;cmax&quot;</span>,</a>
-<a class="sourceLine" id="cb10-2" title="2">                  <span class="dt">point=</span>business.geomean,</a>
-<a class="sourceLine" id="cb10-3" title="3">                  <span class="dt">spread=</span>business.geocv,</a>
-<a class="sourceLine" id="cb10-4" title="4">                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;cmax&quot;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>                  <span class="dt">point=</span>business.geomean,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>                  <span class="dt">spread=</span>business.geocv,</span>
+<span id="cb10-4"><a href="#cb10-4"></a>                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</span></code></pre></div>
 <p>Another example is that T<sub>max</sub> is usually summarized by the median and range, and as measurements are often taken with minute resolution and recorded in hours, reporting is usually to the second decimal place.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;tmax&quot;</span>,</a>
-<a class="sourceLine" id="cb11-2" title="2">                  <span class="dt">point=</span>business.median,</a>
-<a class="sourceLine" id="cb11-3" title="3">                  <span class="dt">spread=</span>business.range,</a>
-<a class="sourceLine" id="cb11-4" title="4">                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">round=</span><span class="dv">2</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;tmax&quot;</span>,</span>
+<span id="cb11-2"><a href="#cb11-2"></a>                  <span class="dt">point=</span>business.median,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>                  <span class="dt">spread=</span>business.range,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">round=</span><span class="dv">2</span>))</span></code></pre></div>
 <p>If the functions or default rounding options provided in the library do not meet the summarization needs, a user-supplied function can be used for rounding.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">median_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb12-2" title="2">  <span class="kw">median</span>(x, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb12-3" title="3">}</a>
-<a class="sourceLine" id="cb12-4" title="4">quantprob_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb12-5" title="5">  <span class="kw">quantile</span>(x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb12-6" title="6">}</a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;auclast&quot;</span>,</a>
-<a class="sourceLine" id="cb12-8" title="8">                  <span class="dt">point=</span>median_na,</a>
-<a class="sourceLine" id="cb12-9" title="9">                  <span class="dt">spread=</span>quantprob_na,</a>
-<a class="sourceLine" id="cb12-10" title="10">                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>median_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="kw">median</span>(x, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>}</span>
+<span id="cb12-4"><a href="#cb12-4"></a>quantprob_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="kw">quantile</span>(x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a>}</span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="st">&quot;auclast&quot;</span>,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>                  <span class="dt">point=</span>median_na,</span>
+<span id="cb12-9"><a href="#cb12-9"></a>                  <span class="dt">spread=</span>quantprob_na,</span>
+<span id="cb12-10"><a href="#cb12-10"></a>                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</span></code></pre></div>
 <p>In some cases multiple parameters may need the same summary functions (as often occurs with simulated data). Many parameters can be set simultaneously by specifying a vector of <code>name</code>s.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">median_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb13-2" title="2">  <span class="kw">median</span>(x, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb13-3" title="3">}</a>
-<a class="sourceLine" id="cb13-4" title="4">quantprob_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb13-5" title="5">  <span class="kw">quantile</span>(x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb13-6" title="6">}</a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="kw">c</span>(<span class="st">&quot;auclast&quot;</span>, <span class="st">&quot;cmax&quot;</span>, <span class="st">&quot;tmax&quot;</span>, <span class="st">&quot;half.life&quot;</span>, <span class="st">&quot;aucinf.pred&quot;</span>),</a>
-<a class="sourceLine" id="cb13-8" title="8">                  <span class="dt">point=</span>median_na,</a>
-<a class="sourceLine" id="cb13-9" title="9">                  <span class="dt">spread=</span>quantprob_na,</a>
-<a class="sourceLine" id="cb13-10" title="10">                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>median_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="kw">median</span>(x, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a>}</span>
+<span id="cb13-4"><a href="#cb13-4"></a>quantprob_na &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="kw">quantile</span>(x, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>), <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a>}</span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="kw">PKNCA.set.summary</span>(<span class="dt">name=</span><span class="kw">c</span>(<span class="st">&quot;auclast&quot;</span>, <span class="st">&quot;cmax&quot;</span>, <span class="st">&quot;tmax&quot;</span>, <span class="st">&quot;half.life&quot;</span>, <span class="st">&quot;aucinf.pred&quot;</span>),</span>
+<span id="cb13-8"><a href="#cb13-8"></a>                  <span class="dt">point=</span>median_na,</span>
+<span id="cb13-9"><a href="#cb13-9"></a>                  <span class="dt">spread=</span>quantprob_na,</span>
+<span id="cb13-10"><a href="#cb13-10"></a>                  <span class="dt">rounding=</span><span class="kw">list</span>(<span class="dt">signif=</span><span class="dv">3</span>))</span></code></pre></div>
 </div>
 </div>
 <div id="grouping-nca-data" class="section level1">
 <h1>Grouping NCA Data</h1>
 <p>As described in the <a href="#quick-start">quick start</a>, concentration and dose data are generally grouped to identify how to separate the data. Typical groups for concentration data include study, treatment, subject, and analyte. Typical groups for dose data include study, treatment, and subject. By default, summaries are produced based on the concentration groups dropping the subject (so that averages are taken across subjects within the other parameters).</p>
 <p>The quick start example can be extended to include multiple analytes as follows. The only difference is the <code>/analyte</code> formula element in the concentration data. The reason for the slash instead of the plus is that the last element before a slash is assumed to be the subject, and as noted before, the subject is (by default) excluded from the summary grouping (so that summaries are grouped by study, treatment, etc., but not by subject).</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co">## Generate a faux multi-study, multi-analyte dataset.</span></a>
-<a class="sourceLine" id="cb14-2" title="2">d_conc_parent &lt;-<span class="st"> </span>d_conc</a>
-<a class="sourceLine" id="cb14-3" title="3">d_conc_parent<span class="op">$</span>Subject &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(d_conc_parent<span class="op">$</span>Subject))</a>
-<a class="sourceLine" id="cb14-4" title="4">d_conc_parent<span class="op">$</span>Study &lt;-<span class="st"> </span>d_conc_parent<span class="op">$</span>Subject <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span></a>
-<a class="sourceLine" id="cb14-5" title="5">d_conc_parent<span class="op">$</span>Analyte &lt;-<span class="st"> &quot;Parent&quot;</span></a>
-<a class="sourceLine" id="cb14-6" title="6">d_conc_metabolite &lt;-<span class="st"> </span>d_conc_parent</a>
-<a class="sourceLine" id="cb14-7" title="7">d_conc_metabolite<span class="op">$</span>conc &lt;-<span class="st"> </span>d_conc_metabolite<span class="op">$</span>conc<span class="op">/</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb14-8" title="8">d_conc_metabolite<span class="op">$</span>Analyte &lt;-<span class="st"> &quot;Metabolite&quot;</span></a>
-<a class="sourceLine" id="cb14-9" title="9">d_conc_both &lt;-<span class="st"> </span><span class="kw">rbind</span>(d_conc_parent, d_conc_metabolite)</a>
-<a class="sourceLine" id="cb14-10" title="10">d_conc_both &lt;-<span class="st"> </span>d_conc_both[<span class="kw">with</span>(d_conc_both, <span class="kw">order</span>(Study, Subject, Time, Analyte)),]</a>
-<a class="sourceLine" id="cb14-11" title="11">d_dose_both &lt;-<span class="st"> </span>d_conc_both[d_conc_both<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>d_conc_both<span class="op">$</span>Analyte <span class="op">%in%</span><span class="st"> &quot;Parent&quot;</span>,</a>
-<a class="sourceLine" id="cb14-12" title="12">                           <span class="kw">c</span>(<span class="st">&quot;Study&quot;</span>, <span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>)]</a>
-<a class="sourceLine" id="cb14-13" title="13"></a>
-<a class="sourceLine" id="cb14-14" title="14"><span class="co">## Create a concentration object specifying the concentration, time,</span></a>
-<a class="sourceLine" id="cb14-15" title="15"><span class="co">## study, and subject columns.  (Note that any number of grouping</span></a>
-<a class="sourceLine" id="cb14-16" title="16"><span class="co">## levels is supporting; you are not restricted to this list.)</span></a>
-<a class="sourceLine" id="cb14-17" title="17">conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d_conc_both,</a>
-<a class="sourceLine" id="cb14-18" title="18">                      conc<span class="op">~</span>Time<span class="op">|</span>Study<span class="op">+</span>Subject<span class="op">/</span>Analyte)</a>
-<a class="sourceLine" id="cb14-19" title="19"><span class="co">## Create a dosing object specifying the dose, time, study, and</span></a>
-<a class="sourceLine" id="cb14-20" title="20"><span class="co">## subject columns.  (Note that the grouping factors should be a</span></a>
-<a class="sourceLine" id="cb14-21" title="21"><span class="co">## subset of the grouping factors for concentration, and the columns</span></a>
-<a class="sourceLine" id="cb14-22" title="22"><span class="co">## must have the same names between concentration and dose objects.)</span></a>
-<a class="sourceLine" id="cb14-23" title="23">dose_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d_dose_both,</a>
-<a class="sourceLine" id="cb14-24" title="24">                     Dose<span class="op">~</span>Time<span class="op">|</span>Study<span class="op">+</span>Subject)</a>
-<a class="sourceLine" id="cb14-25" title="25"></a>
-<a class="sourceLine" id="cb14-26" title="26"><span class="co"># Perform and summarize the PK data as previously described</span></a>
-<a class="sourceLine" id="cb14-27" title="27">data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</a>
-<a class="sourceLine" id="cb14-28" title="28">results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</a>
-<a class="sourceLine" id="cb14-29" title="29"><span class="kw">summary</span>(results_obj)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## Generate a faux multi-study, multi-analyte dataset.</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>d_conc_parent &lt;-<span class="st"> </span>d_conc</span>
+<span id="cb14-3"><a href="#cb14-3"></a>d_conc_parent<span class="op">$</span>Subject &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(d_conc_parent<span class="op">$</span>Subject))</span>
+<span id="cb14-4"><a href="#cb14-4"></a>d_conc_parent<span class="op">$</span>Study &lt;-<span class="st"> </span>d_conc_parent<span class="op">$</span>Subject <span class="op">&lt;=</span><span class="st"> </span><span class="dv">6</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>d_conc_parent<span class="op">$</span>Analyte &lt;-<span class="st"> &quot;Parent&quot;</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>d_conc_metabolite &lt;-<span class="st"> </span>d_conc_parent</span>
+<span id="cb14-7"><a href="#cb14-7"></a>d_conc_metabolite<span class="op">$</span>conc &lt;-<span class="st"> </span>d_conc_metabolite<span class="op">$</span>conc<span class="op">/</span><span class="dv">2</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>d_conc_metabolite<span class="op">$</span>Analyte &lt;-<span class="st"> &quot;Metabolite&quot;</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>d_conc_both &lt;-<span class="st"> </span><span class="kw">rbind</span>(d_conc_parent, d_conc_metabolite)</span>
+<span id="cb14-10"><a href="#cb14-10"></a>d_conc_both &lt;-<span class="st"> </span>d_conc_both[<span class="kw">with</span>(d_conc_both, <span class="kw">order</span>(Study, Subject, Time, Analyte)),]</span>
+<span id="cb14-11"><a href="#cb14-11"></a>d_dose_both &lt;-<span class="st"> </span>d_conc_both[d_conc_both<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>d_conc_both<span class="op">$</span>Analyte <span class="op">%in%</span><span class="st"> &quot;Parent&quot;</span>,</span>
+<span id="cb14-12"><a href="#cb14-12"></a>                           <span class="kw">c</span>(<span class="st">&quot;Study&quot;</span>, <span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>)]</span>
+<span id="cb14-13"><a href="#cb14-13"></a></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co">## Create a concentration object specifying the concentration, time,</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="co">## study, and subject columns.  (Note that any number of grouping</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co">## levels is supporting; you are not restricted to this list.)</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a>conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(d_conc_both,</span>
+<span id="cb14-18"><a href="#cb14-18"></a>                      conc<span class="op">~</span>Time<span class="op">|</span>Study<span class="op">+</span>Subject<span class="op">/</span>Analyte)</span>
+<span id="cb14-19"><a href="#cb14-19"></a><span class="co">## Create a dosing object specifying the dose, time, study, and</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a><span class="co">## subject columns.  (Note that the grouping factors should be a</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a><span class="co">## subset of the grouping factors for concentration, and the columns</span></span>
+<span id="cb14-22"><a href="#cb14-22"></a><span class="co">## must have the same names between concentration and dose objects.)</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a>dose_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d_dose_both,</span>
+<span id="cb14-24"><a href="#cb14-24"></a>                     Dose<span class="op">~</span>Time<span class="op">|</span>Study<span class="op">+</span>Subject)</span>
+<span id="cb14-25"><a href="#cb14-25"></a></span>
+<span id="cb14-26"><a href="#cb14-26"></a><span class="co"># Perform and summarize the PK data as previously described</span></span>
+<span id="cb14-27"><a href="#cb14-27"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</span>
+<span id="cb14-28"><a href="#cb14-28"></a>results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</span>
+<span id="cb14-29"><a href="#cb14-29"></a><span class="kw">summary</span>(results_obj)</span></code></pre></div>
 </div>
 <div id="selecting-calculation-intervals" class="section level1">
 <h1>Selecting Calculation Intervals</h1>
 <p>All NCA calculations require the inverval over which they are calculated. When the concentration and dosing information are combined to the PKNCAdata object, intervals are automatically determined. The exception to this automatic determination is if the user provides intervals.</p>
 <p>When selected either automatically or manually, intervals define at minimum a start time, an end time, and the parameters to be calculated. The parameter list is available from the <code>get.interval.cols</code> function. The parameters requested are specified by setting the entry in a data.frame as requested.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">intervals &lt;-</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">24</span>, <span class="ot">Inf</span>),</a>
-<a class="sourceLine" id="cb15-3" title="3">             <span class="dt">cmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb15-4" title="4">             <span class="dt">tmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb15-5" title="5">             <span class="dt">auclast=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb15-6" title="6">             <span class="dt">aucinf.obs=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>))</a></code></pre></div>
-<p>Intervals like the above is sufficient for designs with a single type of treatment– like single doses. For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set. See the <a href="manual-interval-specification">Manual Interval Specification</a> section below for more details.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>intervals &lt;-</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">24</span>, <span class="ot">Inf</span>),</span>
+<span id="cb15-3"><a href="#cb15-3"></a>             <span class="dt">cmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</span>
+<span id="cb15-4"><a href="#cb15-4"></a>             <span class="dt">tmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</span>
+<span id="cb15-5"><a href="#cb15-5"></a>             <span class="dt">auclast=</span><span class="ot">TRUE</span>,</span>
+<span id="cb15-6"><a href="#cb15-6"></a>             <span class="dt">aucinf.obs=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>))</span></code></pre></div>
+<p>Intervals like the above is sufficient for designs with a single type of treatment– like single doses. For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set. See the <a href="#manual-interval-specification">Manual Interval Specification</a> section below for more details.</p>
 <div id="selection-of-data-used-for-calculation" class="section level2">
 <h2>Selection of Data Used for Calculation</h2>
 <p>When choosing which data is used for a calculation, PKNCA will never look beyond the data specified in the group and interval. Groups are defined by the call to the <code>PKNCAconc</code> function, and they will typically define the measurement of a single analyte from a single individual receiving a single treatment. Intervals are subsets within a group by start and end time. PKNCA never examines data outside of the group and interval for standard NCA calculations. As an example, with data from 0 to 48 hours and an interval set to <code>start</code> at 0 and <code>end</code> at 24 with the calculation of <code>aucinf.obs</code>, any data after 24 hours will not be used for the half-life or AUC<sub>inf</sub> calculations.</p>
@@ -876,18 +878,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tbody>
 </table>
 <p>For multiple-dose studies, PKNCA selects one group at a time and compares the concentration and dosing times. When there is a concentation measurement between doses, an interval row is added. The dosing interval (<span class="math inline">\(\tau\)</span>) is determined by looking for pattern repeats within the dosing data using the <code>find.tau</code> function.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co">## find.tau can work when all doses have the same interval...</span></a>
-<a class="sourceLine" id="cb16-2" title="2">dose_times &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">168</span>, <span class="dt">by=</span><span class="dv">24</span>)</a>
-<a class="sourceLine" id="cb16-3" title="3"><span class="kw">print</span>(dose_times)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## find.tau can work when all doses have the same interval...</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>dose_times &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">168</span>, <span class="dt">by=</span><span class="dv">24</span>)</span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="kw">print</span>(dose_times)</span></code></pre></div>
 <pre><code>## [1]   0  24  48  72  96 120 144 168</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">PKNCA<span class="op">::</span><span class="kw">find.tau</span>(dose_times)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>PKNCA<span class="op">::</span><span class="kw">find.tau</span>(dose_times)</span></code></pre></div>
 <pre><code>## [1] 24</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">## or when the doses have mixed intervals (10 and 24 hours).</span></a>
-<a class="sourceLine" id="cb20-2" title="2">dose_times &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">168</span>, <span class="dt">by=</span><span class="dv">24</span>),</a>
-<a class="sourceLine" id="cb20-3" title="3">                     <span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">178</span>, <span class="dt">by=</span><span class="dv">24</span>)))</a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="kw">print</span>(dose_times)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">## or when the doses have mixed intervals (10 and 24 hours).</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>dose_times &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">168</span>, <span class="dt">by=</span><span class="dv">24</span>),</span>
+<span id="cb20-3"><a href="#cb20-3"></a>                     <span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">178</span>, <span class="dt">by=</span><span class="dv">24</span>)))</span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="kw">print</span>(dose_times)</span></code></pre></div>
 <pre><code>##  [1]   0  10  24  34  48  58  72  82  96 106 120 130 144 154 168 178</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">PKNCA<span class="op">::</span><span class="kw">find.tau</span>(dose_times)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>PKNCA<span class="op">::</span><span class="kw">find.tau</span>(dose_times)</span></code></pre></div>
 <pre><code>## [1] 24</code></pre>
 <p>After finding <span class="math inline">\(\tau\)</span>, PKNCA will also look after the last dose (or the beginning of the last dosing interval), and two additional intervals may be added:</p>
 <ul>
@@ -900,19 +902,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h2>Manual Interval Specification</h2>
 <p>Intervals can also be specified manually. Two use cases are common for manual specification: fully manual (never requesting the automatic intervals) and updating the automatic intervals.</p>
 <p>Fully manual intervals can be specified by providing it to the <code>PKNCAdata</code> call.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">intervals_manual &lt;-</a>
-<a class="sourceLine" id="cb24-2" title="2"><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">24</span>, <span class="ot">Inf</span>),</a>
-<a class="sourceLine" id="cb24-3" title="3">             <span class="dt">cmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb24-4" title="4">             <span class="dt">tmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb24-5" title="5">             <span class="dt">auclast=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb24-6" title="6">             <span class="dt">aucinf.obs=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb24-7" title="7">data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj, </a>
-<a class="sourceLine" id="cb24-8" title="8">                      <span class="dt">intervals=</span>intervals_manual)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>intervals_manual &lt;-</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">24</span>, <span class="ot">Inf</span>),</span>
+<span id="cb24-3"><a href="#cb24-3"></a>             <span class="dt">cmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</span>
+<span id="cb24-4"><a href="#cb24-4"></a>             <span class="dt">tmax=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>),</span>
+<span id="cb24-5"><a href="#cb24-5"></a>             <span class="dt">auclast=</span><span class="ot">TRUE</span>,</span>
+<span id="cb24-6"><a href="#cb24-6"></a>             <span class="dt">aucinf.obs=</span><span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>))</span>
+<span id="cb24-7"><a href="#cb24-7"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj, </span>
+<span id="cb24-8"><a href="#cb24-8"></a>                      <span class="dt">intervals=</span>intervals_manual)</span></code></pre></div>
 <p>To update the automatically-selected intervals, extract the intervals, modify them, and put them back.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</a>
-<a class="sourceLine" id="cb25-2" title="2">intervals_manual &lt;-<span class="st"> </span>data_obj<span class="op">$</span>intervals</a>
-<a class="sourceLine" id="cb25-3" title="3">intervals_manual<span class="op">$</span>aucinf.obs[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb25-4" title="4">data_obj<span class="op">$</span>intervals &lt;-<span class="st"> </span>intervals_manual</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>intervals_manual &lt;-<span class="st"> </span>data_obj<span class="op">$</span>intervals</span>
+<span id="cb25-3"><a href="#cb25-3"></a>intervals_manual<span class="op">$</span>aucinf.obs[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>data_obj<span class="op">$</span>intervals &lt;-<span class="st"> </span>intervals_manual</span></code></pre></div>
 </div>
 </div>
 

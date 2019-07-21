@@ -244,7 +244,7 @@ intervals <-
              aucinf.obs=c(FALSE, TRUE))
 ```
 
-Intervals like the above is sufficient for designs with a single type of treatment-- like single doses.  For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set.  See the [Manual Interval Specification](manual-interval-specification) section below for more details.
+Intervals like the above is sufficient for designs with a single type of treatment-- like single doses.  For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set.  See the [Manual Interval Specification](#manual-interval-specification) section below for more details.
 
 ## Selection of Data Used for Calculation
 

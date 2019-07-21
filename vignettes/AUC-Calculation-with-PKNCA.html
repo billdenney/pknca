@@ -20,9 +20,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +32,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +50,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -319,43 +321,43 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="preparation" class="section level1">
 <h1>Preparation</h1>
 <p>For the below examples, the following data will be used.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">suppressPackageStartupMessages</span>({</a>
-<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">library</span>(PKNCA)</a>
-<a class="sourceLine" id="cb1-3" title="3">  <span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">library</span>(cowplot)</a>
-<a class="sourceLine" id="cb1-5" title="5">  <span class="kw">library</span>(knitr)</a>
-<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-7" title="7">})</a>
-<a class="sourceLine" id="cb1-8" title="8">scale_colour_discrete &lt;-<span class="st"> </span>scale_colour_hue</a>
-<a class="sourceLine" id="cb1-9" title="9">scale_fill_discrete &lt;-<span class="st"> </span>scale_fill_hue</a>
-<a class="sourceLine" id="cb1-10" title="10"></a>
-<a class="sourceLine" id="cb1-11" title="11">my_conc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">1.2</span>, <span class="fl">1.1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb1-12" title="12">                      <span class="dt">time=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">24</span>),</a>
-<a class="sourceLine" id="cb1-13" title="13">                      <span class="dt">subject=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb1-14" title="14">my_conc<span class="op">$</span>BLOQ &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc <span class="op">==</span><span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb1-15" title="15">my_conc<span class="op">$</span>measured &lt;-<span class="st"> </span><span class="ot">TRUE</span></a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">ggplot</span>(my_conc,</a>
-<a class="sourceLine" id="cb2-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
-<a class="sourceLine" id="cb2-3" title="3">           <span class="dt">y=</span>conc,</a>
-<a class="sourceLine" id="cb2-4" title="4">           <span class="dt">shape=</span>BLOQ,</a>
-<a class="sourceLine" id="cb2-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">suppressPackageStartupMessages</span>({</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="kw">library</span>(PKNCA)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="kw">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="kw">library</span>(cowplot)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="kw">library</span>(knitr)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>})</span>
+<span id="cb1-8"><a href="#cb1-8"></a>scale_colour_discrete &lt;-<span class="st"> </span>scale_colour_hue</span>
+<span id="cb1-9"><a href="#cb1-9"></a>scale_fill_discrete &lt;-<span class="st"> </span>scale_fill_hue</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>my_conc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">1.2</span>, <span class="fl">1.1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1-12"><a href="#cb1-12"></a>                      <span class="dt">time=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">24</span>),</span>
+<span id="cb1-13"><a href="#cb1-13"></a>                      <span class="dt">subject=</span><span class="dv">1</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>my_conc<span class="op">$</span>BLOQ &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>my_conc<span class="op">$</span>measured &lt;-<span class="st"> </span><span class="ot">TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">ggplot</span>(my_conc,</span>
+<span id="cb2-2"><a href="#cb2-2"></a>       <span class="kw">aes</span>(<span class="dt">x=</span>time,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>           <span class="dt">y=</span>conc,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>           <span class="dt">shape=</span>BLOQ,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>           <span class="dt">group=</span>subject)) <span class="op">+</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>For the purpose of illustration, NCA parameters will also be calculated for each of the AUC types below. Note that in the results, more parameters are returned than were requested. The additional parameters are the set of parameters required to calculate the requested parameters.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc, conc<span class="op">~</span>time<span class="op">|</span>subject)</a>
-<a class="sourceLine" id="cb3-2" title="2">data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(<span class="dt">data.conc=</span>conc_obj,</a>
-<a class="sourceLine" id="cb3-3" title="3">                      <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb3-4" title="4">                                           <span class="dt">end=</span><span class="dv">24</span>,</a>
-<a class="sourceLine" id="cb3-5" title="5">                                           <span class="dt">aucall=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-6" title="6">                                           <span class="dt">auclast=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-7" title="7">                                           <span class="dt">aucinf.pred=</span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-8" title="8">                                           <span class="dt">aucinf.obs=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb3-9" title="9">results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc, conc<span class="op">~</span>time<span class="op">|</span>subject)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(<span class="dt">data.conc=</span>conc_obj,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                      <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>                                           <span class="dt">end=</span><span class="dv">24</span>,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>                                           <span class="dt">aucall=</span><span class="ot">TRUE</span>,</span>
+<span id="cb3-6"><a href="#cb3-6"></a>                                           <span class="dt">auclast=</span><span class="ot">TRUE</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>                                           <span class="dt">aucinf.pred=</span><span class="ot">TRUE</span>,</span>
+<span id="cb3-8"><a href="#cb3-8"></a>                                           <span class="dt">aucinf.obs=</span><span class="ot">TRUE</span>))</span>
+<span id="cb3-9"><a href="#cb3-9"></a>results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</span></code></pre></div>
 <pre><code>## No dose information provided, calculations requiring dose will return NA.</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obj))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obj))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -494,124 +496,124 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="auc-to-the-last-value-above-the-limit-of-quantification-auclast" class="section level1">
 <h1>AUC to the Last Value Above the Limit of Quantification (AUC<sub>last</sub>)</h1>
 <p>AUC<sub>0-last</sub> calculates the AUC from time 0 to the last value above the limit of quantification, <code>tlast</code> (within PKNCA, this is the last value above 0). In the figure below, AUC<sub>0-last</sub> integrate the shaded region. Integration after <code>tlast</code> is 0.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">tlast &lt;-<span class="st"> </span><span class="kw">pk.calc.tlast</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</a>
-<a class="sourceLine" id="cb6-2" title="2">                       <span class="dt">time=</span>my_conc<span class="op">$</span>time)</a>
-<a class="sourceLine" id="cb6-3" title="3">tlast</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tlast &lt;-<span class="st"> </span><span class="kw">pk.calc.tlast</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</span>
+<span id="cb6-2"><a href="#cb6-2"></a>                       <span class="dt">time=</span>my_conc<span class="op">$</span>time)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>tlast</span></code></pre></div>
 <pre><code>## [1] 8</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">my_conc<span class="op">$</span>include_auclast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>tlast</a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">ggplot</span>(my_conc,</a>
-<a class="sourceLine" id="cb9-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
-<a class="sourceLine" id="cb9-3" title="3">           <span class="dt">y=</span>conc,</a>
-<a class="sourceLine" id="cb9-4" title="4">           <span class="dt">shape=</span>BLOQ,</a>
-<a class="sourceLine" id="cb9-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_auclast,],</a>
-<a class="sourceLine" id="cb9-7" title="7">              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),</a>
-<a class="sourceLine" id="cb9-8" title="8">              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-12" title="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>my_conc<span class="op">$</span>include_auclast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>tlast</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">ggplot</span>(my_conc,</span>
+<span id="cb9-2"><a href="#cb9-2"></a>       <span class="kw">aes</span>(<span class="dt">x=</span>time,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>           <span class="dt">y=</span>conc,</span>
+<span id="cb9-4"><a href="#cb9-4"></a>           <span class="dt">shape=</span>BLOQ,</span>
+<span id="cb9-5"><a href="#cb9-5"></a>           <span class="dt">group=</span>subject)) <span class="op">+</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_auclast,],</span>
+<span id="cb9-7"><a href="#cb9-7"></a>              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),</span>
+<span id="cb9-8"><a href="#cb9-8"></a>              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="aucall" class="section level1">
 <h1>AUC<sub>all</sub></h1>
 <p>AUC<sub>all</sub> starts with AUC<sub>0-last</sub> and then integrates from <code>tlast</code> to the first point after <code>tlast</code> with a linear interpolation to zero. From the second point after <code>tlast</code> to <span class="math inline">\(\infty\)</span> is considered zero.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">first_after_tlast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>time <span class="op">&gt;</span><span class="st"> </span>tlast][<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb10-2" title="2">first_after_tlast</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>first_after_tlast &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>time <span class="op">&gt;</span><span class="st"> </span>tlast][<span class="dv">1</span>]</span>
+<span id="cb10-2"><a href="#cb10-2"></a>first_after_tlast</span></code></pre></div>
 <pre><code>## [1] 12</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">my_conc<span class="op">$</span>include_aucall &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>first_after_tlast</a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">ggplot</span>(my_conc,</a>
-<a class="sourceLine" id="cb13-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
-<a class="sourceLine" id="cb13-3" title="3">           <span class="dt">y=</span>conc,</a>
-<a class="sourceLine" id="cb13-4" title="4">           <span class="dt">shape=</span>BLOQ,</a>
-<a class="sourceLine" id="cb13-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_aucall,],</a>
-<a class="sourceLine" id="cb13-7" title="7">              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),</a>
-<a class="sourceLine" id="cb13-8" title="8">              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-11" title="11"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-12" title="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>my_conc<span class="op">$</span>include_aucall &lt;-<span class="st"> </span>my_conc<span class="op">$</span>time <span class="op">&lt;=</span><span class="st"> </span>first_after_tlast</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">ggplot</span>(my_conc,</span>
+<span id="cb13-2"><a href="#cb13-2"></a>       <span class="kw">aes</span>(<span class="dt">x=</span>time,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>           <span class="dt">y=</span>conc,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>           <span class="dt">shape=</span>BLOQ,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>           <span class="dt">group=</span>subject)) <span class="op">+</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc[my_conc<span class="op">$</span>include_aucall,],</span>
+<span id="cb13-7"><a href="#cb13-7"></a>              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc),</span>
+<span id="cb13-8"><a href="#cb13-8"></a>              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="auc-to-infinity-aucinfty" class="section level1">
 <h1>AUC to Infinity (AUC<sub><span class="math inline">\(\infty\)</span></sub>)</h1>
 <p>AUC<sub>0-<span class="math inline">\(\infty\)</span></sub> is commonly used for single-dose data. It calculates the AUC<sub>0-last</sub> and then extrapolates to <span class="math inline">\(\infty\)</span> using the estimated half-life. Two starting points are used to estimate from <code>tlast</code> to <span class="math inline">\(\infty\)</span>, the observed or half-life predicted concentration at <code>tlast</code> (<code>clast.obs</code> and <code>clast.pred</code>).</p>
 <p>The two figures below illustrate the integration with AUC<sub>0-<span class="math inline">\(\infty\)</span>,obs</sub> and AUC~0-<span class="math inline">\(\infty\)</span>,pred$. The difference between the tow figures is most evident at time=8 where there is a discontinuity in integration at <code>tlast</code> due to using <code>clast.pred</code> after that point and <code>clast.obs</code> before that point. (To illustrate the integration differences, BLOQ indicator shapes have been removed. BLOQ is handled identically to previous figures.)</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Add one row to illustrate extrapolation beyond observed data</span></a>
-<a class="sourceLine" id="cb14-2" title="2">my_conc &lt;-</a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw">rbind</span>(my_conc,</a>
-<a class="sourceLine" id="cb14-4" title="4">        <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb14-5" title="5">                   <span class="dt">time=</span><span class="dv">36</span>,</a>
-<a class="sourceLine" id="cb14-6" title="6">                   <span class="dt">subject=</span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb14-7" title="7">                   <span class="dt">BLOQ=</span><span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb14-8" title="8">                   <span class="dt">measured=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb14-9" title="9">                   <span class="dt">include_auclast=</span><span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb14-10" title="10">                   <span class="dt">include_aucall=</span><span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb14-11" title="11"><span class="co"># Extrapolate concentrations for aucinf.obs</span></a>
-<a class="sourceLine" id="cb14-12" title="12">my_conc<span class="op">$</span>conc_aucinf.obs &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc</a>
-<a class="sourceLine" id="cb14-13" title="13">my_conc<span class="op">$</span>conc_aucinf.obs[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-</a>
-<a class="sourceLine" id="cb14-14" title="14"><span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</a>
-<a class="sourceLine" id="cb14-15" title="15">                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,</a>
-<a class="sourceLine" id="cb14-16" title="16">                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],</a>
-<a class="sourceLine" id="cb14-17" title="17">                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>])</a>
-<a class="sourceLine" id="cb14-18" title="18"></a>
-<a class="sourceLine" id="cb14-19" title="19"><span class="co"># Extrapolate concentrations for aucinf.pred</span></a>
-<a class="sourceLine" id="cb14-20" title="20">my_conc<span class="op">$</span>conc_aucinf.pred &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc</a>
-<a class="sourceLine" id="cb14-21" title="21">my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-</a>
-<a class="sourceLine" id="cb14-22" title="22"><span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</a>
-<a class="sourceLine" id="cb14-23" title="23">                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,</a>
-<a class="sourceLine" id="cb14-24" title="24">                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],</a>
-<a class="sourceLine" id="cb14-25" title="25">                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>],</a>
-<a class="sourceLine" id="cb14-26" title="26">                     <span class="dt">clast=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>])</a>
-<a class="sourceLine" id="cb14-27" title="27">my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>time <span class="op">==</span><span class="st"> </span>tlast] &lt;-</a>
-<a class="sourceLine" id="cb14-28" title="28"><span class="st">  </span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>]</a></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],</a>
-<a class="sourceLine" id="cb15-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
-<a class="sourceLine" id="cb15-3" title="3">           <span class="dt">y=</span>conc,</a>
-<a class="sourceLine" id="cb15-4" title="4">           <span class="co">#shape=BLOQ,</span></a>
-<a class="sourceLine" id="cb15-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc,</a>
-<a class="sourceLine" id="cb15-7" title="7">              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc_aucinf.obs),</a>
-<a class="sourceLine" id="cb15-8" title="8">              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-10" title="10"><span class="st">  </span><span class="co">#geom_point(size=2) +</span></a>
-<a class="sourceLine" id="cb15-11" title="11"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-12" title="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-13" title="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,obs&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Add one row to illustrate extrapolation beyond observed data</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>my_conc &lt;-</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="st">  </span><span class="kw">rbind</span>(my_conc,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>        <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="ot">NA</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>                   <span class="dt">time=</span><span class="dv">36</span>,</span>
+<span id="cb14-6"><a href="#cb14-6"></a>                   <span class="dt">subject=</span><span class="dv">1</span>,</span>
+<span id="cb14-7"><a href="#cb14-7"></a>                   <span class="dt">BLOQ=</span><span class="ot">NA</span>,</span>
+<span id="cb14-8"><a href="#cb14-8"></a>                   <span class="dt">measured=</span><span class="ot">FALSE</span>,</span>
+<span id="cb14-9"><a href="#cb14-9"></a>                   <span class="dt">include_auclast=</span><span class="ot">FALSE</span>,</span>
+<span id="cb14-10"><a href="#cb14-10"></a>                   <span class="dt">include_aucall=</span><span class="ot">FALSE</span>))</span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co"># Extrapolate concentrations for aucinf.obs</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a>my_conc<span class="op">$</span>conc_aucinf.obs &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc</span>
+<span id="cb14-13"><a href="#cb14-13"></a>my_conc<span class="op">$</span>conc_aucinf.obs[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-</span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</span>
+<span id="cb14-15"><a href="#cb14-15"></a>                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,</span>
+<span id="cb14-16"><a href="#cb14-16"></a>                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],</span>
+<span id="cb14-17"><a href="#cb14-17"></a>                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>])</span>
+<span id="cb14-18"><a href="#cb14-18"></a></span>
+<span id="cb14-19"><a href="#cb14-19"></a><span class="co"># Extrapolate concentrations for aucinf.pred</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>my_conc<span class="op">$</span>conc_aucinf.pred &lt;-<span class="st"> </span>my_conc<span class="op">$</span>conc</span>
+<span id="cb14-21"><a href="#cb14-21"></a>my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)] &lt;-</span>
+<span id="cb14-22"><a href="#cb14-22"></a><span class="st">  </span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc,</span>
+<span id="cb14-23"><a href="#cb14-23"></a>                     <span class="dt">time=</span>my_conc<span class="op">$</span>time,</span>
+<span id="cb14-24"><a href="#cb14-24"></a>                     <span class="dt">time.out=</span>my_conc<span class="op">$</span>time[my_conc<span class="op">$</span>BLOQ <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(my_conc<span class="op">$</span>BLOQ)],</span>
+<span id="cb14-25"><a href="#cb14-25"></a>                     <span class="dt">lambda.z=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;lambda.z&quot;</span>],</span>
+<span id="cb14-26"><a href="#cb14-26"></a>                     <span class="dt">clast=</span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>])</span>
+<span id="cb14-27"><a href="#cb14-27"></a>my_conc<span class="op">$</span>conc_aucinf.pred[my_conc<span class="op">$</span>time <span class="op">==</span><span class="st"> </span>tlast] &lt;-</span>
+<span id="cb14-28"><a href="#cb14-28"></a><span class="st">  </span><span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPORRES[<span class="kw">as.data.frame</span>(results_obj)<span class="op">$</span>PPTESTCD <span class="op">%in%</span><span class="st"> &quot;clast.pred&quot;</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],</span>
+<span id="cb15-2"><a href="#cb15-2"></a>       <span class="kw">aes</span>(<span class="dt">x=</span>time,</span>
+<span id="cb15-3"><a href="#cb15-3"></a>           <span class="dt">y=</span>conc,</span>
+<span id="cb15-4"><a href="#cb15-4"></a>           <span class="co">#shape=BLOQ,</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>           <span class="dt">group=</span>subject)) <span class="op">+</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>my_conc,</span>
+<span id="cb15-7"><a href="#cb15-7"></a>              <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>, <span class="dt">ymax=</span>conc_aucinf.obs),</span>
+<span id="cb15-8"><a href="#cb15-8"></a>              <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="st">  </span><span class="co">#geom_point(size=2) +</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,obs&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAABMlBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZpAAZrYzMzM6AAA6ADo6OgA6Ojo6OmY6OpA6ZmY6ZpA6ZrY6kLY6kNtNTU1NTW5NTY5NbqtNjshmAABmOgBmOjpmOmZmkJBmkLZmkNtmtpBmtttmtv9uTU1uTW5uTY5ubo5ubqtuq+SDjm6OTU2OTW6OTY6Obk2ObquOyP+QOgCQZgCQZjqQZmaQkLaQtpCQttuQ2/+rbk2rbm6rbo6rjk2ryKurzaur5OSr5P+t2Oa2ZgC2Zjq2kDq2kGa2tpC2ttu225C229u22/+2/9u2///Ijk3I///bkDrbkGbbtmbbtpDb25Db27bb29vb2//b/7bb/9vb///kq27k///r6+v/tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///8I8HJRAAAACXBIWXMAAA7DAAAOwwHHb6hkAAALZklEQVR4nO3dC3cbRxUH8LGToKoF8pDSVOYZuyUhKVgUiF2gWG4oYOyoKRRqp7IiW97v/xWY5+7M7OPuS9Fq939PjqvKd2fv/DQz+5CPxAJEZrB1F9D0ABARACICQEQAiAgAEQEgIgBERG6gKdPRi56b//Q017bL8Z1z63/FZt5TRZuIx4ztqjq3VU1Xo4Hc7m8fMHbrcUILX/KuuE1ejXpBLCoBmWKo8GoTm9UOdKwLc4HmfVX0/VgLM7crapNKQAkYFYDqjnn/h1sHduMS6GrE7v83CP69o4eXFbP4U7UBTdlA7ODBmL8Ig+W4N2XbJ8FrPpS3fiELm/XZbVns2x3Gbp8YIJ2x1JuJp6yErz6Qm8tQv+Qt8x+f8Y0eq6fsrNd9tvXzcc8q7x/9QQxIVir55NZWC8e8CNMjUwUHEqWfBNFuywEtx9unV6Ptf+me3uqzO+d6Bu7yvdwVw1q8nDM5vvkj2WGTYQFZCWZzD0j/YlcDhVlTb7rzvulhagOJQtXvvw28FiygsIqr0a2+U89uISC9BMmeMz5qds1iIl4lXsqJeKF6YlT3zpcvmezcY7GdefFMRrgG2QliwZyaDkdA8/79c7mRztdZV6OtF8HbcQQkJoyaNDaQM2fcFqIpFlXBS3+gSg93WxJI+PcC01Nd0bdf/b4va5cv5PH2qdpBcLx1oF9cnREC2QmikbA/NtCtn/0z6p7JmjG1Aof957vTmxNA4X5CoKgKVbrICXdbdpGe96WTdTjSh4ueKWq6dTDvyxJmGijMsICcBLXouEByKrB7J2YN0k9P5e7DfNO2KJEAChu2gEwV+sxANG52WxZoxsLhrPbJR+fdP/z9f6N0oCijEFDwzY7seTaQGd6DQP9K9Nteg76+d1IIyOy2JNDV6PaOebXUPtVe1BoUjVN7ikUZiVPMAZIzJnr9//M7sbTb3fOmmB7FctfhCaNaywe6YJ84eYr1giBSFbstCcSNZ+bVMkB88eOHS3ulcxfpKCPczE1wgJg8HRASD86D5UtFGGV5i/RMO/BOitkvDs+v5SIQnQcNUqeYs0jztJf2bsucSauhIZ2n4QmNOX6KvchjpeB0DvNRRrSZex5gAYnTXHZ7JzzMh2cxJss9zB/raTVjPWe6RWfSveQ1SP2IDvN3denhbssByXrkdNphve/U8JYnWy+OxQmSONuS61swt08UwwxrMyfBAgq+5k18F54o8mOu1z15ovhLPQetqSZel29+wqv80Qv11NvP+ta1WCJQWIU6x/1xeKJ4X3Ss9qv5xPP11YReVCvE8ssDKmUzgeb9H/BBdRy/nCrazj3yinkzgaw1YtWxmUDWGrHqwB1FIgBEBICIABARACICQETkBfpeRJDvn44g9iDjcWrkSaqzIdMFAKXkAIjIARCRAyAiB0BEDoCInAJAl8Phh68AlOqz+ORVcPERgDInlkACUEaoEfQej5SE9l+pZPVwsffwyDx2gcN/rOMj6Pq5EXK3B5CJs/1MINZloMtHb8gR1Gmg4GI4pNagbgM54W4fAk0YgABUHohNAAQgALk5ACJyAETkAIjIqROI+wAIQAByc+oGmjAAAagkkPQBEIAA5OQAiMgBEJFTH5DyARCAAOTk1A40ib+x4VcEIAABqDiQ8QEQgMpFBFS2hc0IjCAvB1OMyAEQkQMgIgdARE79QPE3NvyKAAQgAAHI5ACIyAEQkQMgIgdARE5dQJEPgAAEICtnBUCxd378igAEIAAByOQAiMgBEJEDICIHQEQOgIgcABE5qwDy39jwKwJQR4EWe8Oh+eAFAMVDfOrC4uO0T14AUHApPhon9bM7ABSOouTPD3KBMhvZ7Mjs283hU/PQBcYIknH9LPQBUEIs9vaj/3G394C8u65+RS0FcnwAFI+LoYhcR7FuArnhbg8gAFUEcn0ARAG5dzz8igAEIAAByOQAiMhZEZBzOeZXBCAAAUjFcjywv6oSQD7Qsfqm2iQhd/uOAl2N1Lce29/qnBfIvtrwKwJQV4DU9zknf72ru31XgdR3LCd+/a27fWeB0sPdHkAASgTSXz5eapG2Lsf8iloDlHKOCCAT+jAPIPkwcQQBKHsNSjxFBJA1xViFRTq6HPMrag1QVrjbA4iKRKByTTU83F5Ny19qdGIEVblYnUQn035FrQHKf7sj0QdAnQfKP8WSgcypkF9Re4ByL9KdBUoPd3sAlQPSR3q/ovYA5X5frKtAud8X6yhQ1cM8gEggdSrkV9QaoMrnQa0Hyv2+WGeB0sPdPhVIngr5FQEIQACqDUgc6f2KAOQAMWtv8dIAJIiYWxGAko0ARBmxaLeJZXYbyJpsACKMAEQZpZQJICOUUiaAEoTaBbT45FU9QJPEMjce6HL4YTJQQR8ONLFKWEm/amuoANDZw7+kjKCiQJZQm4DCKRb7eJwyQJOsHTU4Sq1BpYAmsdexNSOoOlAkBKAMoMn3AMoGmgCIFGoXkBXO9uWBJgAigCZuObX1q7aG1gWUJASgRKDk67Kq/aqtoQYAJV6XVe1XbQ2tDShBCEBpQJP6+1VbQ+sDigsBKB0odl1WtV+1NdQUIP+6rGq/amtojUAxIQBlAk0ARABNAEQIAYgAmjiXrtX6VVtDDQOiiToFlChEEAGIIAIQYbSJQKV9soTSiABEEAGIIOoYECUUJwIQYQQggqhrQPmECr431AQgO94BUHP+nKihI0jEZo2g2oAKCOW+L9tdoJy3HbsMlOeWUcuACgvRRF0HIo0ARBC1DKikUAYRgAgiABFEbQOqIlT6nlF3gEreM+oSUIyodUDVhSZ+vwAUi1YD1SK0mj+XbRXQKv4atGVA9f+xYw1AtXSulkZUAIgMAOWNFgGtSEgHgHIGgHLGJgK9WyEdAMoZAMoZjQZqhJCOckDXz4aP3nQDyEQhoJvD/eDiIwClD6BPX1kfvbACoAYKFQJaPHkTXD8/ChI+P6imYHXFKooLi0z9zeUjAyTCXcOy/0Urnvcg43Fq5Dy/q62hMiMIQImRugYBSMXN4dPkoxiAzBBKOQ8CUFK42wMIQABKyQEQkVMWyIr3cvxM2CD/8yUrWk1DACIaAhDREICIhtr5DdY1BoCIABARACICQEQUBTKX+OJO0WJvONwPLofquwHkTf7h0PqiABk8yXtGPS3uNKkGqkTYgth7ldC9uDkcPjxyflEQyLzVIb4wQdxuXHz8Be+pvG10wSs9i1Upki6iuyZRPbwc1cCR/7sCEbVwUU16oXvBO3DpVlsQSN9mlF+YcClYJIkcTr/6zf7N57Heyhu3n/pDSH3hQtRA2QhbEHuv0I4M3ot4pUWBwhvV+masumnN7W8+/+vhPp9//pxJGUHhzdzornfZEC3IvVdsR/Ri8eTPFadY+FaH6qC4LcvXAd7mxVM++8Ro90eRc18yCg0kG6gUsgW592rtyF4s9vblGLCi0gi6fqa6d/38iydvTInunBFmlwmrtAIyDZQP2cIi2nuVpp4fue/kyCi3BpmjmCnq7NdDEbK3LpD77loU+ihWtVeqhYto71XibP/6t1WBwrc6eAdVcaEAfw3F45s/OcMlawTV5aMKq9SW6cVZ1Slmnwep122f/0eua/o8yFvjxAmG/1QQ6OOqaqBgBXZELVSdYrpy3j3v1cSZNBEAIgJARACICAARASAimgj09iSYv3+w7ip0NBCoOTgiAERE84DmfcYGHGn+/h/lI/5jNwiWY8a2T9dQTvOA5AgSQP0758GUiR/bp8txLwim/PE7jyYD7YrhtCufmInRczXafffVNBhILEXmx1T9QfTg3VezKUDrmF0yNgRotrWuI1sDgcRS4wMtx3wIrUWpgUDBMev5QPIwv5ZR1ESgRgWAiAAQEQAiAkBEAIgIABEBICIARASAiPg/kS8V9Z3VxfYAAAAASUVORK5CYII=" /><!-- --></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],</a>
-<a class="sourceLine" id="cb16-2" title="2">       <span class="kw">aes</span>(<span class="dt">x=</span>time,</a>
-<a class="sourceLine" id="cb16-3" title="3">           <span class="dt">y=</span>conc,</a>
-<a class="sourceLine" id="cb16-4" title="4">           <span class="co">#shape=BLOQ,</span></a>
-<a class="sourceLine" id="cb16-5" title="5">           <span class="dt">group=</span>subject)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-6" title="6"><span class="st">  </span><span class="kw">geom_ribbon</span>(</a>
-<a class="sourceLine" id="cb16-7" title="7">    <span class="dt">data=</span><span class="kw">arrange</span>(</a>
-<a class="sourceLine" id="cb16-8" title="8">      <span class="kw">bind_rows</span>(<span class="kw">mutate</span>(my_conc,</a>
-<a class="sourceLine" id="cb16-9" title="9">                       <span class="dt">before=</span><span class="ot">FALSE</span>),</a>
-<a class="sourceLine" id="cb16-10" title="10">                <span class="kw">mutate</span>(<span class="kw">filter</span>(my_conc, time <span class="op">==</span><span class="st"> </span>tlast),</a>
-<a class="sourceLine" id="cb16-11" title="11">                       <span class="dt">conc_aucinf.pred=</span>conc,</a>
-<a class="sourceLine" id="cb16-12" title="12">                       <span class="dt">before=</span><span class="ot">TRUE</span>)),</a>
-<a class="sourceLine" id="cb16-13" title="13">      time, <span class="kw">desc</span>(before)),</a>
-<a class="sourceLine" id="cb16-14" title="14">    <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb16-15" title="15">        <span class="dt">ymax=</span>conc_aucinf.pred),</a>
-<a class="sourceLine" id="cb16-16" title="16">    <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-17" title="17"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-18" title="18"><span class="st">  </span><span class="co">#geom_point(size=2) +</span></a>
-<a class="sourceLine" id="cb16-19" title="19"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-20" title="20"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-21" title="21"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,pred&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">ggplot</span>(my_conc[<span class="op">!</span><span class="kw">is.na</span>(my_conc<span class="op">$</span>conc),],</span>
+<span id="cb16-2"><a href="#cb16-2"></a>       <span class="kw">aes</span>(<span class="dt">x=</span>time,</span>
+<span id="cb16-3"><a href="#cb16-3"></a>           <span class="dt">y=</span>conc,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>           <span class="co">#shape=BLOQ,</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>           <span class="dt">group=</span>subject)) <span class="op">+</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(</span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="dt">data=</span><span class="kw">arrange</span>(</span>
+<span id="cb16-8"><a href="#cb16-8"></a>      <span class="kw">bind_rows</span>(<span class="kw">mutate</span>(my_conc,</span>
+<span id="cb16-9"><a href="#cb16-9"></a>                       <span class="dt">before=</span><span class="ot">FALSE</span>),</span>
+<span id="cb16-10"><a href="#cb16-10"></a>                <span class="kw">mutate</span>(<span class="kw">filter</span>(my_conc, time <span class="op">==</span><span class="st"> </span>tlast),</span>
+<span id="cb16-11"><a href="#cb16-11"></a>                       <span class="dt">conc_aucinf.pred=</span>conc,</span>
+<span id="cb16-12"><a href="#cb16-12"></a>                       <span class="dt">before=</span><span class="ot">TRUE</span>)),</span>
+<span id="cb16-13"><a href="#cb16-13"></a>      time, <span class="kw">desc</span>(before)),</span>
+<span id="cb16-14"><a href="#cb16-14"></a>    <span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">0</span>,</span>
+<span id="cb16-15"><a href="#cb16-15"></a>        <span class="dt">ymax=</span>conc_aucinf.pred),</span>
+<span id="cb16-16"><a href="#cb16-16"></a>    <span class="dt">fill=</span><span class="st">&quot;lightblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb16-17"><a href="#cb16-17"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb16-18"><a href="#cb16-18"></a><span class="st">  </span><span class="co">#geom_point(size=2) +</span></span>
+<span id="cb16-19"><a href="#cb16-19"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span>my_conc<span class="op">$</span>time) <span class="op">+</span></span>
+<span id="cb16-20"><a href="#cb16-20"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>)) <span class="op">+</span></span>
+<span id="cb16-21"><a href="#cb16-21"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Extrapolation using AUCinf,pred&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAABL1BMVEUAAAAAADoAAGYAOjoAOmYAOpAAZpAAZrYzMzM6AAA6ADo6OgA6Ojo6OmY6ZmY6ZpA6ZrY6kLY6kNtNTU1NTW5NTY5NbqtNjshmAABmOgBmOjpmOmZmkJBmkLZmkNtmtpBmtttmtv9uTU1uTW5uTY5ubo5ubqtuq+SDjm6OTU2OTW6OTY6Obk2ObquOyP+QOgCQZgCQZjqQZmaQkLaQtpCQttuQ2/+rbk2rbm6rbo6rjk2ryKurzaur5OSr5P+t2Oa2ZgC2Zjq2kDq2kGa2tpC2ttu225C229u22/+2/9u2///Ijk3I///bkDrbkGbbtmbbtpDb25Db27bb29vb2//b/7bb/9vb///kq27k///r6+v/tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///9Gz8KhAAAACXBIWXMAAA7DAAAOwwHHb6hkAAALd0lEQVR4nO2dCXvbxhGGV7JdhkkT26TjSD0tJbVrJxGbtpbSNhWVNG1VyYzd5pBsiqZE4f//hu4J7C6OwUURBL7v8aMg4Oxg5sXsAYAPwQIoU2zVATRdAEQIgAgBECEAIgRAhACIEAARyg1owrR60b7ZL09ytV2M7pxZ/yuaebuKuohrynZUnJsqpsutgWz3j/cYu/UowcPXPJUcIVQCZIKh5MUmmtUO6EgH5gKa9VXQ92Iepm4qqcoPKAFGBUB1a9b/+ca+7VwCutxi934Igv9u6/KyNI3vSlQZQBM2EAe4P+InYbAY9SZs8zh4yUt54zcysGmf3ZbBvt1m7PaxAaQtFrqZ2GUZfPuebC6lPuSe+Z8veKNHapdt9bLPNn496lnh/as/iAGSkUp8srXl4YgHoSyjgE0qIqr3j/VRygBajDZPLrc2/6MzvdVnd850D9zhx/tAlLU4nVNZ33xLJmwsLECWgWnuAdIf7GhAodXE6+6XWz1dpjYgEaj6/PvA82ADMgHrVGYmKnWU3ID0ECQzZxz1jhlMxFnioRyLE9UTVd07W3zDZHKPRDtz8oxFOAbZBmLAnJiEI0Cz/r0z2Ujba6vLrY3nwdtRBEh0GNVpbEAcW5SA6yHqYk7AMhVRsa/6+iilAAn+vcBkqiP6/ts/9mXs8kQebZ5IGHxrY1+fXG0RArINhJMwHxvQrV/9O0rPWE2ZGoHD/PnhdHMCUHgcC5AJWH06C7uq3Co3SM/6kpM1HenpomeCmmzsz/oyhKkGFFpYgBwDNei4gGRXYHePzRikd0/k4UN741uESAAKHVuATMDq02lYCdKkHKApC8tZeeV1+sGf/vnjVjqgyKIQoODVtsw8G5Ap70GgP1KFEI1B3909vklAl1u3t83ZUl5VrmoMUjH4XSyySOxiDiDZY6Lz/78/iKHdTs/rYrqK5aHDBaMaywc6YB+x38VEwHYqhnE5QBNBV58t45UPfnx6lJVyP2mQjizCZq6BA4jJ5YAgcf8sWHyjEEZW3iA91Rw4atH7xbr5pRwEonXQIKOLRQGrT7lv7lzM1NxV8ZW0Kg1ZvZNwQWPmTwHoVl8PB840H1lEzdx1gAVIlvnt7XCaD1cxxsqd5o90t5qyntPdopV0L3kMmsp1iQlYF+I0bD8tM81zTzIe2Z22We8n5VUu+Z4fCew9nvdduc6a2QvF0MJq5hhYgILvuIufwoUin+q99ORC8be6D1pdTZyXV7/gUb7/XO16+0XfuhZLBmQCNgt+EZVsIgfAvIDyypk5lit9PVpBi6/3qYDXE9Cs/zNeVEc5L6cy/Nw9ayegcGiqwVcrAYVDUw26aUBtEwARAiBCAEQIgAgBEKG8gN4IBfn+aQWxjYztVOUxqtORSQGAUmwAiLABIMIGgAgbACJsAIiwKQDoYjj88AUApfKZf/IiOP8IgDI7loAEQBlSFfQOV4pB+69UsjKc7z44NNsu4PAf63gFXT0zhNz2AGR0upcJiHUZ0MXD12QFdRpQcD4cUmNQtwE5ctuHgMYMgACoPCA2BiAAAiDXBoAIGwAibACIsKkTEOcDQAAEQK5N3YDGDIAAqCQgyQeAAAiAHBsAImwAiLCpD5DiA0AABECOTe2AxvEHG35EAARAAFQckOEDQABUThGgsh7WQ6ggzwZdjLABIMIGgAgbACJs6gcUf7DhRwRAAARAAGRsAIiwASDCBoAIGwAibOoCFPEBIAACIMtmCYBiT378iAAIgAAIgIwNABE2AETYABBhA0CEDQARNgBE2CwDkP9gw48IgDoKaL47HJofXgCguMSvLsw/TvvlBQAKLsRP46T+dgcAhVWU/PtBLqBMJ+utzNyuD56YTRcwKkjq6mnIB4ASNN/di/7Hbe8B8u66+hG1FJDDB4DiOh8K5ZrFugnIldsegACoIiCXDwBRgNw7Hn5EAARAAARAxgaACJslAXIux/yIAAiAAEhpMRrYr6oEIB/QUS8IUgi57TsK6HJLvXvZfqtzXkD21YYfEQB1BZB6n3Py613d9l0FpF5unPj6W7d9ZwGly20PQACUCEi/fLzUIG1djvkRtQZQyhoRgIz0NA9AcjOxggAoewxKXCICkNXFWIVBOroc8yNqDaAsue0BiFIioHKuGi43q0n5S41OVFCVi9VxtJj2I2oNoPy3OxL5AFDnAeXvYsmAzFLIj6g9gHIP0p0FlC63PQCVA6Rnej+i9gDK/Vysq4ByPxfrKKCq0zwAkYDUUsiPqDWAKq+DWg8o93OxzgJKl9s+FZBcCvkRARAAAVBtgMRM70cEQA4gZh0tHhoACUTMjQiAkhkBEMWIRYdNDLPbgKzOBkAEIwCiGKWECUCGUEqYAKQVMCeEpeRVm6NCgOafvACgDD4Xww+TARXj01pApw/+llJBRQG9SbhAqzmv2hyV6WKxn8cpCGitvxlTagwqDijxPLamgqoDGscv8WvOqzZHqwI0TggTgGxA43iYAJRAqF2ALDntywEa+2ECkAdo/AaASEIAlAloDEAEoDEAUYSWlFdtjlYOaOyEU1tetTlaHaA4IQBKBjS2wqktr9ocNQFQ0nVZ1bxqc7RCQDFCAJQKKH5dVjWv2hw1BFDsuqxqXrU5WiUgnxAAZQEaAxABaAxAFCEAIgCNnSuzannV5qhhgGhE6wioNJ9EQgQjACIQARCBqGOA0gmlMQIgAhEAEYi6BogiFGO0LoBsLRcQX2E3Sc2rIKE1rKDaAOUjVOzGdScBFbkv21FA+W87tgtQEUI5bxp1GVCeOyIdB5SDUcsAlSBEIAIgAhEAEYzaBqg0oTREAEQgAiCCUesAVSQUQwRABKL2AapOaGnfBm0PoCV92bFNgJbyXb4aANWSXE2E6v8mVusA1f1FoxYCqvd7NE0BVC+hUACUVwCUV2sL6MYIGQFQXgFQXjUcUAMIGZUEdPV0+PB1JwCFKgTo+mAvOP8IgNIL6NMX1k8vLAFQAwkVAjR//Dq4enYYJPx+UE1idWkZwYVBpn5y8dAAEnLHsOx/0YjnbWRsZ828tdjUv1CMKgiAEpU6BgGQ0vXBk+RZDIBMCaWsgwAoSW57AAIgAEqxASDCpiwgS+/k+JvQIP/+khEtxxEAEY4AiHAEQISjNf6d3psRABECIEIARAiACBUFZC7xxZ2i+e5wuBdcDNW7AeRN/uHQelGAFDfy9qjd4k6TclBFoQdx9CrSWVwfDB8cOh8UBGQedYgXJojbjfOPv+KZyttG5zzS01iUwug8umsSxcPDUQ4O/c8KKPJwXo30XGfBE7hwoy0ISN9mlC9MuBBYJBJZTr/7bO/6y1i28sbtp34JqRcuRA7KKvQgjl7BjxTPIh5pUUDhjWp9M1bdtObsr7/8+8Ee739+n0mpoPBmbnTXu6yEB3n0in5EFvPHf63YxcJHHSpBcVuWjwPc5/kT3vtEtftV5NyXjKQBSQeVJD3Io1fzI7OY7+7JGrBUqYKunqr0rp599fi1CdHtM4LZRcIorQAZB+UlPcyjo1dx9ezQfZIjVW4MMrOYCer090Mhma0LyH26FknPYlWzUh7Oo6NX0ene1edVAYWPOniCKriQAD+HYvv6L065ZFVQXXxUYJV8mSxOq3Yxex2kztse/48c1/Q6yBvjxALD3xUEel5VDgpGYCvyULWL6ch5et7ZxEqaEAARAiBCAEQIgAgBEKEmAnp7HMze3V91FFoNBNQcOEIARKh5gGZ9xgYc0uzdP8st/mcnCBYjxjZPVhBO8wDJChKA+nfOggkTfzZPFqNeEEz49o2ryYB2RDntyB1TUT2XWzs3H02DAYmhyPyZqC9ED24+mnUBtIreJbUmgKYbq5rZGghIDDU+oMWIl9BKKDUQUHDEej4gOc2vpIqaCKhRAiBCAEQIgAgBECEAIgRAhACIEAARAiBC/wfoSPGQOpJfGQAAAABJRU5ErkJggg==" /><!-- --></p>
 </div>
 <div id="partial-aucs" class="section level1">
 <h1>Partial AUCs</h1>
 <p>Partial AUCs integrate part of the area within a time range of interest. Partial AUCs are often of interest to assess bioequivalence with more detail than AUC<sub>0-<span class="math inline">\(\infty\)</span></sub> or AUC<sub>0-last</sub> may indicate. Within PKNCA, partial AUCs are treated like AUC<sub>last</sub> with start and end times separately selected. (In a future version of PKNCA, they will be more simply calculated using an AUC<sub>interval</sub>.)</p>
 <p>When the starting and ending times are observed within the data, partial AUCs can be calculated using the parameter <code>auclast</code> as illustrated below.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># Interpolation not required</span></a>
-<a class="sourceLine" id="cb17-2" title="2">data_obs_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="dv">2</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb17-3" title="3">results_obs_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obs_obj)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Interpolation not required</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>data_obs_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="dv">2</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))</span>
+<span id="cb17-3"><a href="#cb17-3"></a>results_obs_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obs_obj)</span></code></pre></div>
 <pre><code>## No dose information provided, calculations requiring dose will return NA.</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obs_obj))</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">kable</span>(<span class="kw">as.data.frame</span>(results_obs_obj))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -635,16 +637,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tbody>
 </table>
 <p>When the starting and ending times are not observed within the data or when samples are below the limit of quantification, concentrations must be interpolated and added to the dataset before calculation as illustrated below.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># Interpolation required</span></a>
-<a class="sourceLine" id="cb20-2" title="2">my_conc_interp &lt;-</a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="st">  </span><span class="kw">arrange</span>(</a>
-<a class="sourceLine" id="cb20-4" title="4">    <span class="kw">bind_rows</span>(</a>
-<a class="sourceLine" id="cb20-5" title="5">      my_conc,</a>
-<a class="sourceLine" id="cb20-6" title="6">      <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc, <span class="dt">time=</span>my_conc<span class="op">$</span>time, <span class="dt">time.out=</span><span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb20-7" title="7">                 <span class="dt">time=</span><span class="fl">1.5</span>,</a>
-<a class="sourceLine" id="cb20-8" title="8">                 <span class="dt">subject=</span><span class="dv">1</span>)),</a>
-<a class="sourceLine" id="cb20-9" title="9">    time)</a>
-<a class="sourceLine" id="cb20-10" title="10"><span class="kw">kable</span>(my_conc_interp)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Interpolation required</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>my_conc_interp &lt;-</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="st">  </span><span class="kw">arrange</span>(</span>
+<span id="cb20-4"><a href="#cb20-4"></a>    <span class="kw">bind_rows</span>(</span>
+<span id="cb20-5"><a href="#cb20-5"></a>      my_conc,</span>
+<span id="cb20-6"><a href="#cb20-6"></a>      <span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">interp.extrap.conc</span>(<span class="dt">conc=</span>my_conc<span class="op">$</span>conc, <span class="dt">time=</span>my_conc<span class="op">$</span>time, <span class="dt">time.out=</span><span class="fl">1.5</span>),</span>
+<span id="cb20-7"><a href="#cb20-7"></a>                 <span class="dt">time=</span><span class="fl">1.5</span>,</span>
+<span id="cb20-8"><a href="#cb20-8"></a>                 <span class="dt">subject=</span><span class="dv">1</span>)),</span>
+<span id="cb20-9"><a href="#cb20-9"></a>    time)</span>
+<span id="cb20-10"><a href="#cb20-10"></a><span class="kw">kable</span>(my_conc_interp)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -783,11 +785,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">conc_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc_interp, conc<span class="op">~</span>time<span class="op">|</span>subject)</a>
-<a class="sourceLine" id="cb21-2" title="2">data_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_interp_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="fl">1.5</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb21-3" title="3">results_interp &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_interp_obj)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>conc_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(my_conc_interp, conc<span class="op">~</span>time<span class="op">|</span>subject)</span>
+<span id="cb21-2"><a href="#cb21-2"></a>data_interp_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_interp_obj, <span class="dt">intervals=</span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="fl">1.5</span>, <span class="dt">auclast=</span><span class="ot">TRUE</span>))</span>
+<span id="cb21-3"><a href="#cb21-3"></a>results_interp &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_interp_obj)</span></code></pre></div>
 <pre><code>## No dose information provided, calculations requiring dose will return NA.</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">as.data.frame</span>(results_interp)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">as.data.frame</span>(results_interp)</span></code></pre></div>
 <pre><code>##   start end subject PPTESTCD PPORRES exclude
 ## 1     0 1.5       1  auclast  2.5625    &lt;NA&gt;</code></pre>
 </div>
