@@ -26,7 +26,7 @@ method.choices <- names(PKNCA:::interp.extrap.conc.dose.select)
 method.choices <-
   factor(method.choices, levels=method.choices, ordered=TRUE)
          
-all.combs <-
+all_combs <-
   expand.grid(event_before=setdiff(unlist(PKNCA:::event_choices_interp.extrap.conc.dose), "output_only"),
               event=setdiff(unlist(PKNCA:::event_choices_interp.extrap.conc.dose), "none"),
               event_after=setdiff(unlist(PKNCA:::event_choices_interp.extrap.conc.dose), "output_only"),
@@ -36,14 +36,14 @@ all.combs <-
 for (n in method.choices) {
   mask <-
     do.call(PKNCA:::interp.extrap.conc.dose.select[[n]]$select,
-            list(x=all.combs),
+            list(x=all_combs),
             envir=environment(pk.nca))
-  all.combs$Method[mask] <- n
+  all_combs$Method[mask] <- n
 }
 
-all.combs <-
-  all.combs[do.call(order,
-                    args=append(as.list(all.combs), list(na.last=FALSE))),]
+all_combs <-
+  all_combs[do.call(order,
+                    args=append(as.list(all_combs), list(na.last=FALSE))),]
 ```
 
 # Methods
@@ -57,13 +57,13 @@ For each of the summary tables below, the column headers are as follows:
 * **Event After**: The equivalent to "Event Before" but for the next event occurring after the requested output time.
 
 ```{r methodsummary, results="asis", echo=FALSE}
-methodorder <- names(sort(summary(factor(all.combs$Method)), decreasing=TRUE))
+methodorder <- names(sort(summary(factor(all_combs$Method)), decreasing=TRUE))
 
 for (n in methodorder) {
   cat("## ", n, "\n\n", sep="")
   cat(PKNCA:::interp.extrap.conc.dose.select[[n]]$description, "\n\n", sep="")
   print(knitr::kable(
-    all.combs[all.combs$Method %in% n,
+    all_combs[all_combs$Method %in% n,
               c("event_before","event", "event_after")],
     row.names=FALSE,
     col.names=c("Event Before", "Event At", "Event After")))
@@ -75,7 +75,7 @@ for (n in methodorder) {
 
 ```{r methodlisting, echo=FALSE}
 knitr::kable(
-  all.combs[,c("event_before", "event", "event_after", "Method")],
+  all_combs[,c("event_before", "event", "event_after", "Method")],
     row.names=FALSE,
     col.names=c("Event Before", "Event At", "Event After", "Method Used"))
 ```

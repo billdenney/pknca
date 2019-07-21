@@ -41,7 +41,7 @@ Time, and Subject in the concentration data.
 
 ```{r setupconc}
 ## By default it is groupedData; convert it to a data frame for use
-my.conc <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
 ```
 
 # Compute the Superposition from Single-Dose Data to Steady-State
@@ -51,7 +51,7 @@ concentration for each subject.  At minimum, the time between dosing
 (`tau`) must be provided.
 
 ```{r superposition, error=TRUE}
-steady.state <- superposition(my.conc, tau=24)
+steady_state <- superposition(conc_obj, tau=24)
 ```
 
 The error noting that the first concentration must be zero is due to
@@ -61,24 +61,25 @@ single-dose (or a data error should be fixed).  Let's find the offending data.
 
 ```{r findnonzero}
 knitr::kable(subset(datasets::Theoph, Time == 0 & conc > 0),
-             caption="Nonzero predose measurements")
+             caption="Nonzero predose measurements",
+             row.names=FALSE)
 ```
 
 For this example, we will assume that these were errors, correct them to zero, and recalculate.
 
 ```{r allownonzero}
 ## Correct nonzero concentrations at time 0 to be BLQ.
-theoph.corrected <- datasets::Theoph
-theoph.corrected$conc[theoph.corrected$Time == 0] <- 0
-my.conc.corrected <- PKNCAconc(theoph.corrected, conc~Time|Subject)
+theoph_corrected <- datasets::Theoph
+theoph_corrected$conc[theoph_corrected$Time == 0] <- 0
+conc_obj_corrected <- PKNCAconc(theoph_corrected, conc~Time|Subject)
 
 ## Calculate the new steady-state concentrations with 24 hour dosing
-steady.state <- superposition(my.conc.corrected, tau=24)
-knitr::kable(head(steady.state, n=14),
+steady_state <- superposition(conc_obj_corrected, tau=24)
+knitr::kable(head(steady_state, n=14),
              caption="Superposition at steady-state")
 ```
 
-The output is a `r class(steady.state)` including all the grouping factors as columns, a column for `conc`entration, and a column for `time`.  Time point selection ensures that the beginning and end of the interval are included and that every measured time that contributes to the interval is included.  The points at the beginning and end of the interval are very similar; they are within a tolerance of `r formals(PKNCA:::superposition.numeric)$steady.state.tol` as defined by the `steady.state.tol` argument to superposition.
+The output is a `r class(steady_state)` including all the grouping factors as columns, a column for `conc`entration, and a column for `time`.  Time point selection ensures that the beginning and end of the interval are included and that every measured time that contributes to the interval is included.  The points at the beginning and end of the interval are very similar; they are within a tolerance of `r formals(PKNCA:::superposition.numeric)$steady.state.tol` as defined by the `steady.state.tol` argument to superposition.
 
 # Nonstandard Superposition Computations
 
@@ -88,8 +89,8 @@ If simulation to a specific dose is needed, the number of dosing intervals (`n.t
 
 ```{r UnsteadyState}
 ## Calculate the unsteady-state concentrations with 24 hour dosing
-unsteady.state <- superposition(my.conc.corrected, tau=24, n.tau=2)
-knitr::kable(head(unsteady.state, n=14),
+unsteady_state <- superposition(conc_obj_corrected, tau=24, n.tau=2)
+knitr::kable(head(unsteady_state, n=14),
              caption="Superposition before steady-state")
 ```
 
@@ -99,12 +100,12 @@ Some dosing intervals are more complex than once per X hours (or days or weeks o
 
 ```{r ComplexInterval}
 ## Calculate the new steady-state concentrations with 24 hour dosing
-complex.interval.steady.state <- superposition(my.conc.corrected, tau=24, dose.times=c(0, 2, 4))
-knitr::kable(head(complex.interval.steady.state, n=10),
+complex_interval_steady_state <- superposition(conc_obj_corrected, tau=24, dose.times=c(0, 2, 4))
+knitr::kable(head(complex_interval_steady_state, n=10),
              caption="Superposition at steady-state with complex dosing")
 ```
 ```{r ComplexInterval-visualization, eval=requireNamespace("ggplot2")}
-ggplot(complex.interval.steady.state,
+ggplot(complex_interval_steady_state,
        aes(y=conc, x=time, colour=Subject)) +
   geom_line()
 ```
@@ -118,13 +119,13 @@ To determine the concentration curve to get to steady-state, you can give all th
 This command does not technically go to steady-state; if the `dose.times` are not sufficiently long to reach steady-state, it only goes for as many doses as requested.
 
 ```{r to_steady_state}
-up.to.steady.state <- superposition(my.conc.corrected,
+up_to_steady_state <- superposition(conc_obj_corrected,
                                     tau=4*24,
                                     n.tau=1,
                                     dose.times=seq(0, 3*24, by=12))
 ```
 ```{r to_steady_state-visualization, eval=requireNamespace("ggplot2")}
-ggplot(up.to.steady.state, aes(x=time, y=conc, colour=Subject)) +
+ggplot(up_to_steady_state, aes(x=time, y=conc, colour=Subject)) +
   geom_line()
 ```
 
@@ -139,11 +140,11 @@ Superposition is often used to estimate NCA parameters with nonparametric method
 
 How the number of time points increases can be seen by comparing the time points for subject 1 in the steady-state single dosing and the complex dosing examples above.
 
-```{r}
-steady.state$time[steady.state$Subject == 1]
-sum(steady.state$Subject == 1)
-complex.interval.steady.state$time[complex.interval.steady.state$Subject == 1]
-sum(complex.interval.steady.state$Subject == 1)
+```{r time-point-selection}
+steady_state$time[steady_state$Subject == 1]
+sum(steady_state$Subject == 1)
+complex_interval_steady_state$time[complex_interval_steady_state$Subject == 1]
+sum(complex_interval_steady_state$Subject == 1)
 ```
 
 # Interpolation and Extrapolation Methods

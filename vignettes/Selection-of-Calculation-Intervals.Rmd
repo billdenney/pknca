@@ -36,7 +36,7 @@ As a concrete example, consider the figure below shows the concentration-time pr
 
 ```{r intro_interval_plot, echo=FALSE}
 # Simulate concentration-time data and setup the PKNCAconc object
-d.conc <-
+d_conc <-
   PKNCAconc(
     generate.conc(nsub=1,
                   ntreat=1,
@@ -45,18 +45,18 @@ d.conc <-
                   nanalytes=1,
                   resid=0),
     conc~time|treatment+ID)
-print(d.conc)
+print(d_conc)
 # Use superposition to simulate multiple doses
-d.conc.multi <-
-  superposition(d.conc,
+d_conc_multi <-
+  superposition(d_conc,
                 tau=168,
                 dose.times=seq(0, 168-24, by=24),
                 n.tau=1)
 ```
 ```{r intro_interval_plot-visualization, eval=requireNamespace("ggplot2")}
 # Plot the concentration-time data and the interval
-ggplot(d.conc.multi, aes(x=time, y=conc)) +
-  geom_ribbon(data=d.conc.multi[d.conc.multi$time >= 144,],
+ggplot(d_conc_multi, aes(x=time, y=conc)) +
+  geom_ribbon(data=d_conc_multi[d_conc_multi$time >= 144,],
               aes(ymax=conc, ymin=0),
               fill="skyblue") +
   geom_point() + geom_line() +
@@ -66,10 +66,10 @@ ggplot(d.conc.multi, aes(x=time, y=conc)) +
        y="Concentration\n(arbitrary units)")
 ```
 ```{r intro_interval_spec}
-my.intervals <- data.frame(start=144, end=168, auclast=TRUE)
-knitr::kable(my.intervals)
+intervals_manual <- data.frame(start=144, end=168, auclast=TRUE)
+knitr::kable(intervals_manual)
 
-PKNCAdata(d.conc, intervals=my.intervals)
+PKNCAdata(d_conc, intervals=intervals_manual)
 ```
 
 # Group Matching
@@ -83,12 +83,15 @@ The groups for an interval prepare for summarization.  Typically the groups will
 As the matching occurs with all available columns, the grouping columns names are only required to the level of specificity for the calculations desired.  As an example, if you want AUC~inf,obs~ in subjects who received single doses and AUC~last~ on days 1 (0 to 24 hours) and 10 (216 to 240 hours) in subjects who received multiple doses, with treatment defined as "Drug 1 Single" or "Drug 1 Multiple", the intervals could be defined as below.
 
 ```{r select_group}
-my.intervals <- data.frame(treatment=c("Drug 1 Single", "Drug 1 Multiple", "Drug 1 Multiple"),
-                           start=c(0, 0, 216),
-                           end=c(Inf, 24, 240),
-                           aucinf.obs=c(TRUE, FALSE, FALSE),
-                           auclast=c(FALSE, TRUE, TRUE))
-knitr::kable(my.intervals)
+intervals_manual <-
+  data.frame(
+    treatment=c("Drug 1 Single", "Drug 1 Multiple", "Drug 1 Multiple"),
+    start=c(0, 0, 216),
+    end=c(Inf, 24, 240),
+    aucinf.obs=c(TRUE, FALSE, FALSE),
+    auclast=c(FALSE, TRUE, TRUE)
+  )
+knitr::kable(intervals_manual)
 ```
 
 # Intervals
@@ -103,7 +106,7 @@ The end of an interval may be infinity.  An interval to infinity works the same 
 
 ```{r infinity_interval_plot, echo=FALSE}
 # Simulate concentration-time data and setup the PKNCAconc object
-d.conc <-
+d_conc <-
   PKNCAconc(
     generate.conc(nsub=1,
                   ntreat=1,
@@ -112,12 +115,12 @@ d.conc <-
                   nanalytes=1,
                   resid=0),
     conc~time|treatment+ID)
-print(d.conc)
+print(d_conc)
 ```
 ```{r infinity_interval_plot-visualization, eval=requireNamespace("ggplot2")}
 # Use superposition to simulate multiple doses
-ggplot(d.conc$data[d.conc$data$time <= 48,], aes(x=time, y=conc)) +
-  geom_ribbon(data=d.conc$data,
+ggplot(d_conc$data[d_conc$data$time <= 48,], aes(x=time, y=conc)) +
+  geom_ribbon(data=d_conc$data,
               aes(ymax=conc, ymin=0),
               fill="skyblue") +
   geom_point() + geom_line() +
@@ -127,13 +130,16 @@ ggplot(d.conc$data[d.conc$data$time <= 48,], aes(x=time, y=conc)) +
        y="Concentration\n(arbitrary units)")
 ```
 ```{r infinity_interval_spec}
-my.intervals <- data.frame(start=0,
-                           end=Inf,
-                           auclast=TRUE,
-                           aucinf.obs=TRUE)
-print(my.intervals)
+intervals_manual <-
+  data.frame(
+    start=0,
+    end=Inf,
+    auclast=TRUE,
+    aucinf.obs=TRUE
+  )
+print(intervals_manual)
 
-my.data <- PKNCAdata(d.conc, intervals=my.intervals)
+my.data <- PKNCAdata(d_conc, intervals=intervals_manual)
 ```
 
 ## Multiple Intervals
@@ -142,7 +148,7 @@ More than one interval may be specified for the same subject or group of subject
 
 ```{r multiple_intervals_plot, echo=FALSE}
 # Simulate concentration-time data and setup the PKNCAconc object
-d.conc <-
+d_conc <-
   PKNCAconc(
     generate.conc(nsub=1,
                   ntreat=1,
@@ -151,21 +157,21 @@ d.conc <-
                   nanalytes=1,
                   resid=0),
     conc~time|treatment+ID)
-print(d.conc)
+print(d_conc)
 # Use superposition to simulate multiple doses
-d.conc.multi <-
-  superposition(d.conc,
+d_conc_multi <-
+  superposition(d_conc,
                 tau=168,
                 dose.times=seq(0, 168-24, by=24),
                 n.tau=1)
 ```
 ```{r multiple_intervals_plot-visualization, eval=requireNamespace("ggplot2")}
 # Plot the concentration-time data and the interval
-ggplot(d.conc.multi, aes(x=time, y=conc)) +
-  geom_ribbon(data=d.conc.multi[d.conc.multi$time <= 24,],
+ggplot(d_conc_multi, aes(x=time, y=conc)) +
+  geom_ribbon(data=d_conc_multi[d_conc_multi$time <= 24,],
               aes(ymax=conc, ymin=0),
               fill="skyblue") +
-  geom_ribbon(data=d.conc.multi[d.conc.multi$time >= 144,],
+  geom_ribbon(data=d_conc_multi[d_conc_multi$time >= 144,],
               aes(ymax=conc, ymin=0),
               fill="lightgreen") +
   geom_point() + geom_line() +
@@ -175,12 +181,15 @@ ggplot(d.conc.multi, aes(x=time, y=conc)) +
        y="Concentration\n(arbitrary units)")
 ```
 ```{r multiple_intervals_spec}
-my.intervals <- data.frame(start=c(0, 144),
-                           end=c(24, 168),
-                           auclast=TRUE)
-knitr::kable(my.intervals)
+intervals_manual <-
+  data.frame(
+    start=c(0, 144),
+    end=c(24, 168),
+    auclast=TRUE
+  )
+knitr::kable(intervals_manual)
 
-my.data <- PKNCAdata(d.conc, intervals=my.intervals)
+my.data <- PKNCAdata(d_conc, intervals=intervals_manual)
 ```
 
 # Overlapping Intervals and Different Calculations by Interval
@@ -191,7 +200,7 @@ The example of overlapping intervals also illustrates that different calculation
 
 ```{r overlapping_intervals_plot, echo=FALSE}
 # Simulate concentration-time data and setup the PKNCAconc object
-d.conc <-
+d_conc <-
   PKNCAconc(
     generate.conc(nsub=1,
                   ntreat=1,
@@ -200,16 +209,16 @@ d.conc <-
                   nanalytes=1,
                   resid=0),
     conc~time|treatment+ID)
-print(d.conc)
+print(d_conc)
 ```
 ```{r overlapping_intervals_plot-visualization, eval=requireNamespace("ggplot2")}
 # Use superposition to simulate multiple doses
-ggplot(d.conc$data, aes(x=time, y=conc)) +
-  geom_ribbon(data=d.conc$data,
+ggplot(d_conc$data, aes(x=time, y=conc)) +
+  geom_ribbon(data=d_conc$data,
               aes(ymax=conc, ymin=0),
               fill="lightgreen",
               alpha=0.5) +
-  geom_ribbon(data=d.conc$data[d.conc$data$time <= 24,],
+  geom_ribbon(data=d_conc$data[d_conc$data$time <= 24,],
               aes(ymax=conc, ymin=0),
               fill="skyblue",
               alpha=0.5) +
@@ -220,13 +229,16 @@ ggplot(d.conc$data, aes(x=time, y=conc)) +
        y="Concentration\n(arbitrary units)")
 ```
 ```{r overlapping_intervals_spec}
-my.intervals <- data.frame(start=0,
-                           end=c(24, Inf),
-                           auclast=TRUE,
-                           aucinf.obs=c(FALSE, TRUE))
-knitr::kable(my.intervals)
+intervals_manual <-
+  data.frame(
+    start=0,
+    end=c(24, Inf),
+    auclast=TRUE,
+    aucinf.obs=c(FALSE, TRUE)
+  )
+knitr::kable(intervals_manual)
 
-my.data <- PKNCAdata(d.conc, intervals=my.intervals)
+my.data <- PKNCAdata(d_conc, intervals=intervals_manual)
 ```
 
 # Intervals with Duration
