@@ -151,7 +151,7 @@ test_that("get.parameter.deps", {
                c("kel.obs"),
                info="Parameters that have nothing that depend on them return themselves only.")
   expect_equal(get.parameter.deps("ctrough"),
-               c("ctrough", "ctrough.dn"),
+               c("ctrough", "ctrough.dn", "ptr"),
                info="Parameters with formalsmap-related dependencies return themselves and the formalsmap-related dependencies.")
   expect_equal(get.parameter.deps("start"),
                character(0),

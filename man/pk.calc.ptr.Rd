@@ -4,19 +4,19 @@
 \alias{pk.calc.ptr}
 \title{Determine the peak-to-trough ratio}
 \usage{
-pk.calc.ptr(cmax, cmin)
+pk.calc.ptr(cmax, ctrough)
 }
 \arguments{
 \item{cmax}{The maximum observed concentration}
 
-\item{cmin}{The minimum observed concentration}
+\item{ctrough}{The last concentration in an interval}
 }
 \value{
-The ratio of cmax to cmin (if cmin == 0, NA)
+The ratio of cmax to ctrough (if ctrough == 0, NA)
 }
 \description{
 Determine the peak-to-trough ratio
 }
 \details{
-ptr is \code{cmax/cmin}.
+ptr is \code{cmax/ctrough}.
 }

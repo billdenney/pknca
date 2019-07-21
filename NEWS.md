@@ -12,6 +12,10 @@ the dosing including dose amount and route.
   including the summary method for each parameter.  If you change
   summary functions using `PKNCA.set.summary()`, you must now use the
   `description` option to set the description of the summary.
+* Breaking Change: ptr now accurately uses ctrough instead of cmin (fix #106)
+* Issue fixed where aucint* calculations now respect BLQ and NA rules like other calculations. (#104)
+* When half.life is not calculated due to insufficient number of points (default < 3), an exclusion reason is added. (#102)
+* tibbles now work as the interval argument for `PKNCAdata()` (fix #72)
 * Issue fixed with summarization of data that has exclusions.
   Exclusions are now correctly handled as missing instead of never
   calculated.
@@ -28,6 +32,8 @@ the dosing including dose amount and route.
   when unknonwn arguments are present.
 * `intervals` argument to `PKNCAdata()` may now be a tibble (fixes #72).
 * Documentation has been extensively updated (fixes #81).
+* CRAN changes: Vignettes now better respect not loading suggested
+  packages.  Tests are now more permissive in timing.
 
 # PKNCA 0.8.5
 

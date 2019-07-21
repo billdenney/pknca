@@ -963,16 +963,16 @@ PKNCA.set.summary(
 #'
 #' @param conc Observed concentrations during the interval
 #' @param time Times of \code{conc} observations
-#' @param start Starting time of the interval
-#' @return The concentration when \code{time == start}.  If none
+#' @param end End time of the interval
+#' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
 #' @export
-pk.calc.ctrough <- function(conc, time, start) {
+pk.calc.ctrough <- function(conc, time, end) {
   check.conc.time(conc, time)
-  mask.start <- time %in% start
-  if (sum(mask.start) == 1) {
-    conc[mask.start]
-  } else if (sum(mask.start) == 0) {
+  mask_end <- time %in% end
+  if (sum(mask_end) == 1) {
+    conc[mask_end]
+  } else if (sum(mask_end) == 0) {
     NA_real_
   } else {
     # This should be impossible as check.conc.time should catch
@@ -994,22 +994,22 @@ PKNCA.set.summary(
 
 #' Determine the peak-to-trough ratio
 #'
-#' @details ptr is \code{cmax/cmin}.
+#' @details ptr is \code{cmax/ctrough}.
 #'
 #' @param cmax The maximum observed concentration
-#' @param cmin The minimum observed concentration
-#' @return The ratio of cmax to cmin (if cmin == 0, NA)
+#' @param ctrough The last concentration in an interval
+#' @return The ratio of cmax to ctrough (if ctrough == 0, NA)
 #' @export
-pk.calc.ptr <- function(cmax, cmin) {
-  ret <- cmax/cmin
-  ret[cmin %in% 0] <- NA_real_
+pk.calc.ptr <- function(cmax, ctrough) {
+  ret <- cmax/ctrough
+  ret[ctrough %in% 0] <- NA_real_
   ret
 }
 add.interval.col("ptr",
                  FUN="pk.calc.ptr",
                  values=c(FALSE, TRUE),
                  desc="Peak-to-Trough ratio (fraction)",
-                 depends=c("cmax", "cmin"))
+                 depends=c("cmax", "ctrough"))
 PKNCA.set.summary(
   name="ptr",
   description="geometric mean and geometric coefficient of variation",

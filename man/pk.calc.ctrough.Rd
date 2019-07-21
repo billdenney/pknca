@@ -4,17 +4,17 @@
 \alias{pk.calc.ctrough}
 \title{Determine the trough (predose) concentration}
 \usage{
-pk.calc.ctrough(conc, time, start)
+pk.calc.ctrough(conc, time, end)
 }
 \arguments{
 \item{conc}{Observed concentrations during the interval}
 
 \item{time}{Times of \code{conc} observations}
 
-\item{start}{Starting time of the interval}
+\item{end}{End time of the interval}
 }
 \value{
-The concentration when \code{time == start}.  If none
+The concentration when \code{time == end}.  If none
   match, then \code{NA}
 }
 \description{

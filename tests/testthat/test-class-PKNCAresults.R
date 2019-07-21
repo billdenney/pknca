@@ -398,3 +398,19 @@ test_that("print.summary_PKNCAresults works", {
     )
   )
 })
+
+test_that("ptr works as a parameter", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  myinterval <- data.frame(start=0, end=24, ptr=TRUE)
+  mydata <- PKNCAdata(myconc, mydose, intervals=myinterval)
+  myresult <- pk.nca(mydata)
+  ptr_result <- as.data.frame(myresult)
+  expect_equal(
+    ptr_result$PPORRES[ptr_result$PPTESTCD %in% "ptr"],
+    c(2.9055, 2.9885),
+    tol=0.0001
+  )
+})

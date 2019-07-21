@@ -353,7 +353,7 @@ test_that("pk.calc.ctrough", {
 })
 
 test_that("pk.calc.ptr", {
-  expect_equal(pk.calc.ptr(cmax=2, cmin=1), 2,
+  expect_equal(pk.calc.ptr(cmax=2, ctrough=1), 2,
                info="Confirm that the ratio goes the right way")
   expect_equal(pk.calc.ptr(2, 0), NA_real_,
                info="Division by zero returns NA")
