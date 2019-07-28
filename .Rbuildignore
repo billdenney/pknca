@@ -1,8 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-example.*?.R
 ^\.travis\.yml$
 cran-comments.md
 ^\.github$
 ^LICENSE\.md$
 ^CODE_OF_CONDUCT\.md$
+^doc$
+^Meta$
