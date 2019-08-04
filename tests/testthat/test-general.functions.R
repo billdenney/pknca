@@ -170,3 +170,28 @@ test_that("signifString stops when bad arguments are passed", {
     fixed=TRUE
   )
 })
+
+test_that("max_na and min_na", {
+  expect_equal(max_zero_len(1), max(1))
+  expect_equal(max_zero_len(c(1, NA)), max(c(1, NA)))
+  expect_equal(max_zero_len(1, NA), max(1, NA))
+  expect_equal(max_zero_len(1, NA, na.rm=TRUE), max(1, NA, na.rm=TRUE))
+  expect_equal(
+    max_zero_len(c(), na.rm=TRUE),
+    NA
+  )
+  expect_equal(
+    max_zero_len(NA_integer_, na.rm=TRUE),
+    NA
+  )
+  expect_equal(
+    max_zero_len(NA_integer_, na.rm=TRUE, zero_length=NA_real_),
+    NA_real_,
+    info="zero_length/na.rm combinations are respected (made zero length)"
+  )
+  expect_equal(
+    max_zero_len(NA_integer_, na.rm=FALSE, zero_length=NA_real_),
+    NA_integer_,
+    info="zero_length/na.rm combinations are respected (NOT made zero length)"
+  )
+})

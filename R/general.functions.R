@@ -232,3 +232,40 @@ signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range
   }
   ret
 }
+
+#' Find the summary statistic value with a different value if the input is
+#' zero-length.
+#'
+#' @details If `na.rm` is `TRUE`, then `NA` values will be removed prior to the
+#'   check if `length(c(...)) == 0`.
+#'
+#' @param ... objects to find the summary_statistic for (combined with `c()`
+#'   prior to calculation)
+#' @param na.rm a logical indicating whether missing values should be removed
+#'   (see Details).
+#' @param zero_length The value to return if `length(x) == 0`
+#' @param FUN the summary statistic function (such as `max` or `min`)
+#' @return Either `zero_length` or `FUN(...)`
+#' @noRd
+zero_len_summary <- function(FUN) {
+  function(..., na.rm=FALSE, zero_length=NA) {
+    x <- c(...)
+    if (na.rm) {
+      x <- na.omit(x)
+    }
+    if (length(x) == 0) {
+      zero_length
+    } else {
+      FUN(x)
+    }
+  }
+}
+
+#' @describeIn zero_len_summary Find the maximum value with a different value if
+#'   the input is zero-length
+#' @noRd
+max_zero_len <- zero_len_summary(FUN=max)
+#' @describeIn zero_len_summary Find the minimum value with a different value if
+#'   the input is zero-length
+#' @noRd
+min_zero_len <- zero_len_summary(FUN=min)
