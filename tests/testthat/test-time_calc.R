@@ -55,6 +55,14 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       time_before_event=NA_real_
     )
   )
+  expect_error(
+    time_calc(
+      time_event=5,
+      time_obs=as.difftime(5, units="hours")
+    ),
+    regexp="Both `time_event` and `time_obs` must be the same class (numeric).",
+    fixed=TRUE
+  )
 })
 
 test_that("Numeric time_calc() is successful with all vector combinations of number and NA and numeric order.", {
