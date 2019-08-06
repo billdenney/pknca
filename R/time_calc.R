@@ -11,15 +11,21 @@
 #'   \item{event_number_after}{The index of `time_event` that is the first one after `time_obs` or `NA` if none are after.}
 #'   \item{time_before}{The minimum time that the current `time_obs` is before a `time_event`, 0 if at least one `time_obs == time_event`.}
 #'   \item{time_after}{The minimum time that the current `time_obs` is after a `time_event`, 0 if at least one `time_obs == time_event`.}
+#'   \item{time_after_first}{The time after the first event (may be negative or positive).}
 #' }
 #'
-#' `time_after` and `time_before` are calculated where 
+#' `time_after` and `time_before` are calculated if they are at the same time as
+#' a dose, they equal zero, and otherwise, they are calculated relative to the
+#' dose number in the `event_number_*` columns.
 #' @export
 time_calc <- function(time_event, time_obs, units=NULL)
   UseMethod("time_calc")
 
 time_calc.numeric <- function(time_event, time_obs, units=NULL) {
-  if (any(order(na.omit(time_event)) != seq_along(na.omit(time_event)))) {
+  if (length(time_event) == 0) {
+    warning("No events provided")
+    time_event <- NA_real_
+  } else if (any(order(na.omit(time_event)) != seq_along(na.omit(time_event)))) {
     stop("`time_event` must be sorted.")
   }
   if (!is.numeric(time_obs)) {
@@ -50,6 +56,12 @@ time_calc.numeric <- function(time_event, time_obs, units=NULL) {
     time_obs - time_event[ret$event_number_before]
   ret$time_before_event <-
     time_obs - time_event[ret$event_number_after]
+  ret$time_after_first <-
+    if (all(is.na(time_event))) {
+      NA_real_
+    } else {
+      time_obs - min(time_event, na.rm=TRUE)
+    }
   ret
 }
 
