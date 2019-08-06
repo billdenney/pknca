@@ -7,7 +7,8 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       event_number_before=1,
       event_number_after=1,
       time_after_event=0,
-      time_before_event=0
+      time_before_event=0,
+      time_after_first=0
     )
   )
   expect_equal(
@@ -16,7 +17,8 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       event_number_before=NA_integer_,
       event_number_after=1,
       time_after_event=NA_real_,
-      time_before_event=-1
+      time_before_event=-1,
+      time_after_first=-1
     )
   )
   expect_equal(
@@ -25,7 +27,8 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       event_number_before=1,
       event_number_after=NA_integer_,
       time_after_event=1,
-      time_before_event=NA_real_
+      time_before_event=NA_real_,
+      time_after_first=1
     )
   )
   expect_equal(
@@ -34,7 +37,8 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       event_number_before=NA_integer_,
       event_number_after=NA_integer_,
       time_after_event=NA_real_,
-      time_before_event=NA_real_
+      time_before_event=NA_real_,
+      time_after_first=NA_real_
     )
   )
   expect_equal(
@@ -43,7 +47,8 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       event_number_before=NA_integer_,
       event_number_after=NA_integer_,
       time_after_event=NA_real_,
-      time_before_event=NA_real_
+      time_before_event=NA_real_,
+      time_after_first=NA_real_
     )
   )
   expect_equal(
@@ -52,7 +57,8 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
       event_number_before=NA_integer_,
       event_number_after=NA_integer_,
       time_after_event=NA_real_,
-      time_before_event=NA_real_
+      time_before_event=NA_real_,
+      time_after_first=NA_real_
     )
   )
   expect_error(
@@ -63,6 +69,14 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
     regexp="Both `time_event` and `time_obs` must be the same class (numeric).",
     fixed=TRUE
   )
+  expect_equal(
+    expect_warning(
+      time_calc(time_event=numeric(0), time_obs=1),
+      regexp="No events provided",
+      fixed=TRUE
+    ),
+    time_calc(time_event=NA_real_, time_obs=1)
+  )
 })
 
 test_that("Numeric time_calc() is successful with all vector combinations of number and NA and numeric order.", {
@@ -72,7 +86,8 @@ test_that("Numeric time_calc() is successful with all vector combinations of num
       event_number_before=c(NA_integer_, 1, 1, 1, 2, 2, 2, 3, 3),
       event_number_after=c(1, 1, 2, 2, 2, 3, 3, 3, NA_integer_),
       time_after_event=c(NA_real_, 0, 1, 9, 0, 1, 9, 0, 1),
-      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_)
+      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_),
+      time_after_first=c(-1, 0, 1, 9, 10, 11, 19, 20, 21)
     )
   )
   expect_equal(
@@ -81,7 +96,8 @@ test_that("Numeric time_calc() is successful with all vector combinations of num
       event_number_before=c(NA_integer_, 1, 1, 1, 3, 3, 3, 4, 4),
       event_number_after=c(1, 1, 2, 2, 2, 4, 4, 4, NA_integer_),
       time_after_event=c(NA_real_, 0, 1, 9, 0, 1, 9, 0, 1),
-      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_)
+      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_),
+      time_after_first=c(-1, 0, 1, 9, 10, 11, 19, 20, 21)
     ),
     info="Duplicated events are counted as the first for event_number_before and the last for event_number_after."
   )
@@ -91,7 +107,8 @@ test_that("Numeric time_calc() is successful with all vector combinations of num
       event_number_before=c(NA_integer_, 1, 1, 1, 3, 3, 3, 4, 4),
       event_number_after=c(1, 1, 2, 2, 2, 4, 4, 4, NA_integer_),
       time_after_event=c(NA_real_, 0, 1, 9, 0, 1, 9, 0, 1),
-      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_)
+      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_),
+      time_after_first=c(-1, 0, 1, 9, 10, 11, 19, 20, 21)
     ),
     info="NA time_event is ignored."
   )
@@ -101,7 +118,8 @@ test_that("Numeric time_calc() is successful with all vector combinations of num
       event_number_before=c(NA_integer_, 1, 1, 1, 4, 4, 4, 5, 5),
       event_number_after=c(1, 1, 2, 2, 2, 5, 5, 5, NA_integer_),
       time_after_event=c(NA_real_, 0, 1, 9, 0, 1, 9, 0, 1),
-      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_)
+      time_before_event=c(-1, 0, -9, -1, 0, -9, -1, 0, NA_real_),
+      time_after_first=c(-1, 0, 1, 9, 10, 11, 19, 20, 21)
     ),
     info="NA time_event is counted correctly in the middle."
   )
@@ -122,7 +140,8 @@ test_that("POSIXt objects work", {
       event_number_before=NA_integer_,
       event_number_after=1L,
       time_after_event=NA_real_,
-      time_before_event=-16/60
+      time_before_event=-16/60,
+      time_after_first=-16/60
     )
   )
   expect_equal(
@@ -135,7 +154,8 @@ test_that("POSIXt objects work", {
       event_number_before=NA_integer_,
       event_number_after=1L,
       time_after_event=NA_real_,
-      time_before_event=-16/1440
+      time_before_event=-16/1440,
+      time_after_first=-16/1440
     ),
     info="Units are respected"
   )
@@ -149,7 +169,8 @@ test_that("POSIXt objects work", {
       event_number_before=NA_integer_,
       event_number_after=1L,
       time_after_event=NA_real_,
-      time_before_event=-16/60
+      time_before_event=-16/60,
+      time_after_first=-16/60
     ),
     info="Mixed POSIXlt and POSIXct inputs work"
   )
