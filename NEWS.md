@@ -6,9 +6,10 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.1.9000+ (not released)
 
-* New feature: the `time_calc()` function will help convert time
-  values to be relative to events (such as calculating time after and
-  before doses)
+* New feature: the `time_calc()` function will help convert time values to be
+  relative to events (such as calculating time after and before doses)
+* Fix issue summarizing results when "start" and "end" are dropped and there are
+  multiple interval rows matched for a single group.
 
 # PKNCA 0.9.1
 
@@ -23,8 +24,10 @@ the dosing including dose amount and route.
   summary functions using `PKNCA.set.summary()`, you must now use the
   `description` option to set the description of the summary.
 * Breaking Change: ptr now accurately uses ctrough instead of cmin (fix #106)
-* Issue fixed where aucint* calculations now respect BLQ and NA rules like other calculations. (#104)
-* When half.life is not calculated due to insufficient number of points (default < 3), an exclusion reason is added. (#102)
+* Issue fixed where aucint* calculations now respect BLQ and NA rules like other
+  calculations. (#104)
+* When half.life is not calculated due to insufficient number of points (default
+  < 3), an exclusion reason is added. (#102)
 * tibbles now work as the interval argument for `PKNCAdata()` (fix #72)
 * Issue fixed with summarization of data that has exclusions.
   Exclusions are now correctly handled as missing instead of never

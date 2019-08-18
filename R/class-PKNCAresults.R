@@ -89,10 +89,10 @@ getGroups.PKNCAresults <- function(object,
 #' @return A string of the rounded value
 #' @export
 roundingSummarize <- function(x, name) {
-  summaryInstructions <- PKNCA.set.summary()
-  if (!(name %in% names(summaryInstructions)))
+  summary_instructions <- PKNCA.set.summary()
+  if (!(name %in% names(summary_instructions)))
     stop(name, "is not in the summarization instructions from PKNCA.set.summary")
-  roundingInstructions <- summaryInstructions[[name]]$rounding
+  roundingInstructions <- summary_instructions[[name]]$rounding
   if (is.function(roundingInstructions)) {
     ret <- roundingInstructions(x)
   } else if (is.list(roundingInstructions)) {
@@ -158,75 +158,89 @@ summary.PKNCAresults <- function(object, ...,
                                  summarize.n.per.group=TRUE,
                                  not.requested.string=".",
                                  not.calculated.string="NC") {
-  allGroups <- getGroups(object)
+  all_group_cols <- getGroups(object)
   if (any(c("start", "end") %in% drop.group)) {
     warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
   }
-  groups <- unique(setdiff(c("start", "end", names(allGroups)), drop.group))
+  group_cols <- unique(setdiff(c("start", "end", names(all_group_cols)), drop.group))
   exclude_col <- object$exclude
   # Ensure that the exclude_col is NA instead of "" for subsequent processing.
-  object$result[[exclude_col]] <- normalize_exclude(object$result[[exclude_col]])
-  summaryFormula <- stats::as.formula(paste0("~", paste(groups, collapse="+")))
-  summaryInstructions <- PKNCA.set.summary()
+  raw_results <- object$result
+  raw_results[[exclude_col]] <- normalize_exclude(raw_results[[exclude_col]])
+  summary_instructions <- PKNCA.set.summary()
   ## Find any parameters that request any summaries
-  resultDataCols <- 
-    lapply(object$data$intervals[,
-                                 setdiff(
-                                   intersect(names(object$data$intervals),
-                                             names(get.interval.cols())),
-                                   c("start", "end")),
-                                 drop=FALSE],
-           FUN=any)
-  resultDataCols <- as.data.frame(resultDataCols[unlist(resultDataCols)])
-  ret <- unique(object$result[, groups, drop=FALSE])
+  parameter_cols <-
+    setdiff(
+      intersect(
+        names(object$data$intervals),
+        names(get.interval.cols())),
+      c("start", "end")
+    )
+  # Columns that will have reported results
+  result_data_cols <-
+    lapply(
+      X=object$data$intervals[, parameter_cols, drop=FALSE],
+      FUN=any
+    )
+  result_data_cols <- as.data.frame(result_data_cols[unlist(result_data_cols)])
+  # If no other value is filled in, then the default is that it was not
+  # requested.
+  result_data_cols[, names(result_data_cols)] <- not.requested.string
+  # Rows that will have results
+  ret_group_cols <- unique(raw_results[, group_cols, drop=FALSE])
+  simplified_results <-
+    raw_results[raw_results$PPTESTCD %in% names(result_data_cols), , drop=FALSE]
+  ret <- unique(raw_results[, group_cols, drop=FALSE])
   if (summarize.n.per.group) {
-    ret$N <- NA
+    ret$N <- NA_integer_
   }
-  ret <- cbind(ret,
-               resultDataCols)
-  ret[,names(resultDataCols)] <- not.requested.string
+  ret <- cbind(ret, result_data_cols)
   # Loop over every group that needs summarization
-  for (i in seq_len(nrow(ret)))
+  for (row_idx in seq_len(nrow(ret)))
     ## Loop over every column that needs summarziation
-    for (n in names(resultDataCols)) {
+    for (current_parameter in names(result_data_cols)) {
       ## Select the rows of the intervals that match the current row
       ## from the return value.
-      current.interval <-
-        merge(ret[i, groups, drop=FALSE],
-              object$data$intervals[,intersect(names(object$data$intervals),
-                                               c(groups, n))])
-      if (any(current.interval[,n])) {
-        currentData <- merge(
-          ret[i, groups, drop=FALSE],
-          object$result[object$result$PPTESTCD %in% n,,drop=FALSE])
-        currentData$PPORRES[!is.na(currentData[[exclude_col]])] <- NA
-        if (nrow(currentData) == 0) {
-          warning("No results to summarize for ", n, " in result row ", i)
+      current_interval <-
+        merge(
+          ret[row_idx, group_cols, drop=FALSE],
+          object$data$intervals[,
+                                intersect(names(object$data$intervals),
+                                          c(group_cols, current_parameter)),
+                                drop=FALSE]
+        )
+      if (any(current_interval[,current_parameter])) {
+        current_data <- merge(
+          ret[row_idx, group_cols, drop=FALSE],
+          simplified_results[simplified_results$PPTESTCD %in% current_parameter,,drop=FALSE])
+        # Exclude value, when required
+        current_data$PPORRES[!is.na(current_data[[exclude_col]])] <- NA
+        if (nrow(current_data) == 0) {
+          warning("No results to summarize for ", current_parameter, " in result row ", row_idx)
         } else {
           if (summarize.n.per.group) {
-            ret$N[i] <- max(ret$N[i], nrow(currentData), na.rm=TRUE)
+            ret$N[row_idx] <- max(ret$N[row_idx], nrow(current_data), na.rm=TRUE)
           }
           ## Calculation is required
-          if (is.null(summaryInstructions[[n]])) {
-            stop("No summary function is set for parameter ", n, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
+          if (is.null(summary_instructions[[current_parameter]])) {
+            stop("No summary function is set for parameter ", current_parameter, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
           }
-          point <- summaryInstructions[[n]]$point(
-            currentData$PPORRES)
-          na.point <- is.na(point)
-          na.spread <- NA
+          point <- summary_instructions[[current_parameter]]$point(current_data$PPORRES)
+          na_point <- is.na(point)
+          na_spread <- NA
           ## Round the point estimate
-          point <- roundingSummarize(point, n)
+          point <- roundingSummarize(point, current_parameter)
           current <- point
-          if ("spread" %in% names(summaryInstructions[[n]])) {
-            spread <- summaryInstructions[[n]]$spread(
-              currentData$PPORRES)
-            na.spread <- all(is.na(spread))
-            if (na.spread) {
+          if ("spread" %in% names(summary_instructions[[current_parameter]])) {
+            spread <- summary_instructions[[current_parameter]]$spread(
+              current_data$PPORRES)
+            na_spread <- all(is.na(spread))
+            if (na_spread) {
               ## The spread couldn't be calculated, so show that
               spread <- not.calculated.string
             } else {
               ## Round the spread
-              spread <- roundingSummarize(spread, n)
+              spread <- roundingSummarize(spread, current_parameter)
             }
             ## Collapse the spread into a usable form if it is
             ## longer than one (e.g. a range or a confidence
@@ -236,10 +250,10 @@ summary.PKNCAresults <- function(object, ...,
           }
           ## Determine if the results were all missing, and if so, give
           ## the not.calculated.string
-          if (na.point & (na.spread %in% c(NA, TRUE))) {
-            ret[i,n] <- not.calculated.string
+          if (na_point & (na_spread %in% c(NA, TRUE))) {
+            ret[row_idx, current_parameter] <- not.calculated.string
           } else {
-            ret[i,n] <- current
+            ret[row_idx, current_parameter] <- current
           }
         }
       }
@@ -256,7 +270,7 @@ summary.PKNCAresults <- function(object, ...,
   summary_descriptions <-
     unlist(
       lapply(
-        X=summaryInstructions[names(resultDataCols)],
+        X=summary_instructions[names(result_data_cols)],
         FUN=`[[`,
         i="description"
       )
