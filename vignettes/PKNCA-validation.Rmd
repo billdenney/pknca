@@ -29,10 +29,10 @@ testing_results <- "Tests were not run because tests are not installed."
 To run the tests, the package must be installed with its tests:
 
 * To install from CRAN:
-    * `install.packages(pkgs="PKNCA", INSTALL_opts="--install-tests")`
+    * `install.packages(pkgs="PKNCA", INSTALL_opts="--install-tests", type="source")`
 * To install from GitHub:
     * `library(devtools)`
-    * `install_github("billdenney/pknca", args="--install-tests")`
+    * `install_github("billdenney/pknca", INSTALL_opts="--install-tests")`
 
 Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.
 
@@ -60,6 +60,7 @@ cat("# Testing Log\n\n")
 all_contexts <- unique(test_log$context)
 test_log_printing <-
   test_log %>%
+  select(context, file, test, nb, failed) %>%
   rename(`Testing Filename`=file,
          `Test Description`=test,
          `Number of Tests`=nb,
@@ -69,10 +70,7 @@ for (current_context in all_contexts) {
   current_log <-
     test_log_printing[
       test_log_printing$context %in% current_context,
-      setdiff(names(test_log_printing),
-              c("context", "skipped",
-                "error", "warning",
-                "user", "system", "real")),
+      setdiff(names(test_log_printing), "context"), # context is in the header
       drop=FALSE]
   cat("## ", current_context, "\n\n")
   print(kable(x=current_log,
