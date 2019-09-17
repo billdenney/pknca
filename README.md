@@ -30,8 +30,8 @@ Citation information for the PKNCA package is available with a call to
 `citation(package="PKNCA")`.  The preferred citation until publication
 of version 1.0 is below:
 
-Denney W, Duvvuri S and Buckeridge C (2015). “Simple, Automatic
-Noncompartmental Analysis: The PKNCA R Package.” _Journal of
+Denney W, Duvvuri S and Buckeridge C (2015). "Simple, Automatic
+Noncompartmental Analysis: The PKNCA R Package." _Journal of
 Pharmacokinetics and Pharmacodynamics_, *42*(1), pp. 11-107,S65. ISSN
 1573-8744, doi: 10.1007/s10928-015-9432-2, <URL:
 https://github.com/billdenney/pknca>.
