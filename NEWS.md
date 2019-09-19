@@ -10,6 +10,11 @@ the dosing including dose amount and route.
   relative to events (such as calculating time after and before doses)
 * Fix issue summarizing results when "start" and "end" are dropped and there are
   multiple interval rows matched for a single group.
+* Enable exclusions to be prevented when the input arguments suggest exclusion,
+  but the parameter calculating function may be aware of better information about
+  exclusion.
+* Ensure that exclusions are maintained if an earlier parameter is excluded
+  during the initial parameter calculations (Fix #112).
 
 # PKNCA 0.9.1
 

@@ -24,15 +24,23 @@ test_that("pk.calc.auxc", {
   expect_equal(v2, NA,
                info="All concentrations NA is NA")
   ## All concentrations are 0, return 0
-  expect_equal(pk.calc.auxc(conc=c(0, 0), time=2:3, interval=c(2, 3),
-                            method="linear"),
-               0,
-               info="All zeros is zero")
+  expect_equal(
+    pk.calc.auxc(
+      conc=c(0, 0), time=2:3, interval=c(2, 3),
+      method="linear"
+    ),
+    structure(0, exclude="DO NOT EXCLUDE"),
+    info="All zeros is zero"
+  )
   ## Concentrations mix 0 and NA, return 0
-  expect_equal(pk.calc.auxc(conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
-                            method="linear"),
-               0,
-               info="Mixed zeros and NA is still zero.")
+  expect_equal(
+    pk.calc.auxc(
+      conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
+      method="linear"
+    ),
+    structure(0, exclude="DO NOT EXCLUDE"),
+    info="Mixed zeros and NA is still zero."
+  )
   ## Invalid integration method
   expect_error(pk.calc.auxc(conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
                             method="foo"),

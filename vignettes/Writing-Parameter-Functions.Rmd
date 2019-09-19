@@ -36,7 +36,9 @@ The starting point to writing a new NCA parameter is writing the function that c
 * `options` are the PKNCA options used for the current calculation usually as defined by the `PKNCA.option` function (though these options may be over-ridden by the `options` argument to the `PKNCAdata` function.
 * Or, any NCA parameters by name (as given by `names(get.interval.cols())`).
 
-The function should return either a scalar which is the value for the parameter (usually the case) or a data.frame with parameters named for each parameter calculated.  For an example of returning a data.frame, see the `half.life` function.  The return value may have an attribute of `exclude` (set by `attr(return_value, "exclude") <- "reason"`) which will be included in the `exclude` column for results.
+The function should return either a scalar which is the value for the parameter (usually the case) or a data.frame with parameters named for each parameter calculated.  For an example of returning a data.frame, see the `half.life` function.
+
+The return value may have an attribute of `exclude` (set by `attr(return_value, "exclude") <- "reason"`).  If the `exclude` attribute is set to a character string, then that string will be included in the `exclude` column for results.  If any of the input parameters have an exclude attribute set, then those are also added to the `exclude` column.  The exception to the setting of the `exclude` column is if the `exclude` attribute is `"DO NOT EXCLUDE"`, then the `exclude` column is set to `NA_character_`.
 
 ## Best Practices
 

@@ -97,7 +97,7 @@ test_that("PKNCAresults has exclude, when applicable", {
   # https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17122
   #expect_warning(myresult <- pk.nca(mydata),
   #               regexp="Too few points for half-life calculation")
-  myresult <- pk.nca(mydata)
+  suppressWarnings(myresult <- pk.nca(mydata))
   myresult_df <- as.data.frame(myresult)
   expect_true(
     all(myresult_df$PPTESTCD %in%
@@ -179,7 +179,7 @@ test_that("PKNCAresults summary", {
   # https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17122
   #expect_warning(myresult <- pk.nca(mydata),
   #               regexp="Too few points for half-life calculation")
-  myresult <- pk.nca(mydata)
+  suppressWarnings(myresult <- pk.nca(mydata))
   mysummary <- summary(myresult)
   expect_equal(
     mysummary,
@@ -211,7 +211,7 @@ test_that("PKNCAresults summary", {
   # https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17122
   #expect_warning(myresult <- pk.nca(mydata),
   #               regexp="Too few points for half-life calculation")
-  myresult <- pk.nca(mydata)
+  suppressWarnings(myresult <- pk.nca(mydata))
   mysummary <- summary(myresult)
   expect_equal(
     mysummary,
@@ -412,5 +412,38 @@ test_that("ptr works as a parameter", {
     ptr_result$PPORRES[ptr_result$PPTESTCD %in% "ptr"],
     c(2.9055, 2.9885),
     tol=0.0001
+  )
+})
+
+test_that("exclude values are maintained in derived parameters during automatic calculation (#112)", {
+  my_conc <-
+    data.frame(
+      conc=c(0, 2.5, 3, 2.7, 2.3),
+      time=c(0:4),
+      subject=1
+    )
+  
+  conc_obj <- PKNCAconc(my_conc, conc~time|subject)
+  data_obj <-
+    PKNCAdata(
+      data.conc=conc_obj,
+      intervals=
+        data.frame(
+          start=0,
+          end=Inf,
+          aucinf.obs=TRUE
+        )
+    )
+  expect_message(
+    expect_warning(
+      results_obj <- pk.nca(data_obj),
+      regexp="Too few points for half-life"
+    ),
+    regexp="No dose information provided"
+  )
+  d_results <- as.data.frame(results_obj)
+  expect_equal(
+    d_results$exclude[d_results$PPTESTCD == "aucinf.obs"],
+    d_results$exclude[d_results$PPTESTCD == "half.life"]
   )
 })

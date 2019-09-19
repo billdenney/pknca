@@ -338,6 +338,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   for (n in names(all.intervals))
     if (interval[[1,n]] & !is.na(all.intervals[[n]]$FUN)) {
       call.args <- list()
+      exclude_from_argument <- character(0)
       ## Prepare to call the function by setting up its arguments.
       ## Ignore the "..." argument if it exists.
       arglist <- setdiff(names(formals(get(all.intervals[[n]]$FUN))),
@@ -395,6 +396,8 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
           call.args[[arg_formal]] <- options
         } else if (any(mask.arg <- ret$PPTESTCD %in% arg_mapped)) {
           call.args[[arg_formal]] <- ret$PPORRES[mask.arg]
+          exclude_from_argument <-
+            c(exclude_from_argument, ret$exclude[mask.arg])
         } else {
           ## Give an error if there is not a default argument.
           ## FIXME: checking if the class is a name isn't perfect.  
@@ -424,9 +427,18 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       }
       # Do the calculation
       tmp.result <- do.call(all.intervals[[n]]$FUN, call.args)
+      # The handling of the exclude column is documented in the
+      # "Writing-Parameter-Functions.Rmd" vignette.  Document any changes to
+      # this section of code there.
       exclude_reason <-
-        if (!is.null(attr(tmp.result, "exclude"))) {
-          attr(tmp.result, "exclude")
+        na.omit(c(
+          exclude_from_argument, attr(tmp.result, "exclude")
+        ))
+      exclude_reason <-
+        if (identical(attr(tmp.result, "exclude"), "DO NOT EXCLUDE")) {
+          NA_character_
+        } else if (length(exclude_reason) > 0) {
+          paste(exclude_reason, collapse="; ")
         } else {
           NA_character_
         }

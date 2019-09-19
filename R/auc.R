@@ -10,6 +10,8 @@
 #' Extrapolation beyond Clast occurs using the half-life and Clast,obs;
 #' Clast,pred is not yet supported.
 #' 
+#' If all conc input are zero, then the AU(M)C is zero.
+#' 
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement (must be monotonically
 #'   increasing and the same length as the concentration data)
@@ -43,7 +45,7 @@
 #'   measurement to infinite time (not required for AUC or AUMC functions.
 #' @param ... For functions other than \code{pk.calc.auxc}, these values are
 #'   passed to \code{pk.calc.auxc}
-#' @return A numeric value for the AU(M)C
+#' @return A numeric value for the AU(M)C.
 #' @aliases pk.calc.auc pk.calc.aumc pk.calc.auc.last
 #' @family AUC calculations
 #' @seealso \code{\link{clean.conc.blq}}
@@ -94,8 +96,8 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     ## All the data were missing
     return(NA)
   } else if (all(data$conc %in% c(0, NA))) {
-    ## All the data were missing or 0
-    return(0)
+    ## All the data were missing or 0 before excluding points
+    return(structure(0, exclude="DO NOT EXCLUDE"))
   }
   auc.type <- match.arg(auc.type, c("AUClast", "AUCinf", "AUCall"))
   if (interval[1] >= interval[2])
@@ -152,15 +154,14 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                           time <= interval.end))
   ## Set the overall tlast
   tlast <- pk.calc.tlast(data$conc, data$time, check=FALSE)
-  if (is.na(tlast)) {
+  if (all(data$conc %in% 0)) {
+    ## All the data were missing or 0 after excluding points
+    ret <- structure(0, exclude="DO NOT EXCLUDE")
+  } else if (is.na(tlast)) {
     ## All concentrations are BLQ (note that this has to be checked
     ## after full subsetting and interpolation to ensure that it is
     ## still true)
-    if (all(data$conc %in% 0)) {
-      ret <- 0
-    } else {
-      stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
-    }
+    stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
   } else {
     ## ############################
     ## Compute the AUxC

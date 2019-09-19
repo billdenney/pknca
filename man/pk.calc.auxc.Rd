@@ -100,7 +100,7 @@ measurement to infinite time (not required for AUC or AUMC functions.}
 passed to \code{pk.calc.auxc}}
 }
 \value{
-A numeric value for the AU(M)C
+A numeric value for the AU(M)C.
 }
 \description{
 Compute the area under the curve (AUC) and the area under the moment curve
@@ -113,6 +113,8 @@ parameter to \code{c(0, "last")}.
 
 Extrapolation beyond Clast occurs using the half-life and Clast,obs;
 Clast,pred is not yet supported.
+
+If all conc input are zero, then the AU(M)C is zero.
 }
 \section{Functions}{
 \itemize{

@@ -20,9 +20,12 @@ A data.frame with columns for:
   \item{event_number_after}{The index of `time_event` that is the first one after `time_obs` or `NA` if none are after.}
   \item{time_before}{The minimum time that the current `time_obs` is before a `time_event`, 0 if at least one `time_obs == time_event`.}
   \item{time_after}{The minimum time that the current `time_obs` is after a `time_event`, 0 if at least one `time_obs == time_event`.}
+  \item{time_after_first}{The time after the first event (may be negative or positive).}
 }
 
-`time_after` and `time_before` are calculated where
+`time_after` and `time_before` are calculated if they are at the same time as
+a dose, they equal zero, and otherwise, they are calculated relative to the
+dose number in the `event_number_*` columns.
 }
 \description{
 Times relative to an event (typically dosing)
