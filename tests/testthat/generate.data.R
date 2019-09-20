@@ -28,20 +28,24 @@ generate.conc <- function(nsub, ntreat, time.points, nstudies=NA, nanalytes=NA, 
     for (j in seq_len(nsub))
       for (k in seq_len(nanalytes))
         for (m in seq_len(nstudies)) {
-          ret <- rbind(ret,
-                       data.frame(study=paste("Study", m),
-                                  treatment=paste("Trt", i),
-                                  ID=j,
-                                  time=time.points,
-                                  conc=exp(
-                                    rnorm(length(time.points), mean=0, sd=resid))*
-                                    one.cmt.oral(time.points,
-                                                 dose=i,
-                                                 v=1,
-                                                 ka=1,
-                                                 kel=0.05),
-                                  analyte=paste("Analyte", k),
-                                  stringsAsFactors=FALSE))
+          ret <- rbind(
+            ret,
+            data.frame(
+              study=paste("Study", m),
+              treatment=paste("Trt", i),
+              ID=j,
+              time=time.points,
+              conc=exp(
+                rnorm(length(time.points), mean=0, sd=resid))*
+                one.cmt.oral(time.points,
+                             dose=i,
+                             v=1,
+                             ka=1,
+                             kel=0.05),
+              analyte=paste("Analyte", k),
+              stringsAsFactors=FALSE
+            )
+          )
         }
   if (!nanalytes.include)
     ret$analyte <- NULL
@@ -56,8 +60,13 @@ generate.conc <- function(nsub, ntreat, time.points, nstudies=NA, nanalytes=NA, 
 #' \code{\link{generate.conc}}
 #' @return A data frame of dosing data
 generate.dose <- function(concdata) {
-  ret <- unique(concdata[,setdiff(names(concdata),
-                                  c("time", "conc", "analyte"))])
+  ret <-
+    unique(
+      concdata[
+        ,
+        setdiff(names(concdata), c("time", "conc", "analyte"))
+        ]
+    )
   ret$dose <- as.numeric(factor(ret$treatment))
   ret$time <- 0
   ret

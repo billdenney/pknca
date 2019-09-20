@@ -79,25 +79,35 @@ choose.auc.intervals <- function(time.conc, time.dosing,
     tau <- find.tau(time.dosing)
     if (!is.na(tau)) {
       if ((max(time.dosing) + tau) %in% time.conc) {
-        ret <- rbind(
-          ret,
-          check.interval.specification(
-            data.frame(start=max(time.dosing),
-                       end=max(time.dosing) + tau,
-                       cmax=TRUE,
-                       tmax=TRUE,
-                       auclast=TRUE,
-                       stringsAsFactors=FALSE)))
+        ret <-
+          rbind(
+            ret,
+            check.interval.specification(
+              data.frame(
+                start=max(time.dosing),
+                end=max(time.dosing) + tau,
+                cmax=TRUE,
+                tmax=TRUE,
+                auclast=TRUE,
+                stringsAsFactors=FALSE
+              )
+            )
+          )
       }
       ## If the maximum concentration measurement time is beyond the
       ## max dosing time + tau, calculate a half-life.
       if ((max(time.dosing) + tau) < max(time.conc)) {
-        ret <- rbind(
-          ret,
-          check.interval.specification(
-            data.frame(start=max(time.dosing),
-                       end=Inf,
-                       half.life=TRUE)))
+        ret <-
+          rbind(
+            ret,
+            check.interval.specification(
+              data.frame(
+                start=max(time.dosing),
+                end=Inf,
+                half.life=TRUE
+              )
+            )
+          )
       }
     }
   }
@@ -142,7 +152,8 @@ find.tau <- function(x, na.action=na.omit,
   } else if (identical(tau.choices, NA)) {
     all.deltas <-
       sort(unique(
-        as.vector(sapply(x, FUN=function(x, y) x - y, y=x))))
+        as.vector(sapply(x, FUN=function(x, y) x - y, y=x))
+      ))
     tau.choices <- all.deltas[all.deltas > 0]
   }
   if (is.na(ret) &

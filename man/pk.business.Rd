@@ -2,29 +2,36 @@
 % Please edit documentation in R/002-pk.business.rules.R
 \name{pk.business}
 \alias{pk.business}
-\title{Run any function with a maximum missing fraction of X and 0s
-possibly counting as missing.  The maximum fraction missing comes
-from \code{PKNCA.options("max.missing")}.}
+\title{Run any function with a maximum missing fraction of X and 0s possibly
+counting as missing.  The maximum fraction missing comes from
+\code{PKNCA.options("max.missing")}.}
 \usage{
 pk.business(FUN, zero.missing = FALSE, max.missing)
 }
 \arguments{
-\item{FUN}{function to run.  The function is called as FUN(x, ...)
+\item{FUN}{function to run.  The function is called as \code{FUN(x, ...)}
 with missing values removed.}
 
-\item{zero.missing}{Are zeros counted as missing?  If \code{TRUE}
-then include them in the missing count.}
+\item{zero.missing}{Are zeros counted as missing?  If \code{TRUE} then
+include them in the missing count.}
 
-\item{max.missing}{The maximum fraction of the data allowed to be
-missing (a number between 0 and 1, inclusive).}
+\item{max.missing}{The maximum fraction of the data allowed to be missing (a
+number between 0 and 1, inclusive).}
 }
 \value{
-A version of FUN that can be called with parameters that
-are checked for missingness (and zeros) with missing (and zeros)
-removed before the call.  If \code{max.missing} is exceeded, then
-NA is returned.
+A version of FUN that can be called with parameters that are checked
+  for missingness (and zeros) with missing (and zeros) removed before the
+  call.  If \code{max.missing} is exceeded, then NA is returned.
 }
 \description{
-Note that all missing values are removed prior to calling the
-function.  The function is called with the
+Note that all missing values are removed prior to calling the function.
+}
+\examples{
+my_mean <- pk.business(FUN=mean)
+mean(c(1:3, NA))
+# Less than half missing results in the summary statistic of the available
+# values.
+my_mean(c(1:3, NA))
+# More than half missing results in a missing value
+my_mean(c(1:3, rep(NA, 4)))
 }

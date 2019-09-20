@@ -144,21 +144,32 @@ test_that("check.interval.deps", {
 })
 
 test_that("get.parameter.deps", {
-  expect_error(get.parameter.deps("foo"),
-               regexp="x must be the name of an NCA parameter listed by the function 'get.interval.cols'",
-               info="The argument must be a parameter.")
-  expect_equal(get.parameter.deps("kel.obs"),
-               c("kel.obs"),
-               info="Parameters that have nothing that depend on them return themselves only.")
-  expect_equal(get.parameter.deps("ctrough"),
-               c("ctrough", "ctrough.dn", "ptr"),
-               info="Parameters with formalsmap-related dependencies return themselves and the formalsmap-related dependencies.")
-  expect_equal(get.parameter.deps("start"),
-               character(0),
-               info="Special columns that are not actually parameters have no dependencies (including themselves).")
-  expect_equal(get.parameter.deps("cl.obs"),
-               c("cl.obs", "vss.iv.obs", "vss.obs", "vz.obs"),
-               info="Parameters with dependencies return them.")
+  expect_error(
+    get.parameter.deps("foo"),
+    regexp="`x` must be the name of an NCA parameter listed by the function `get.interval.cols()`",
+    info="The argument must be a parameter.",
+    fixed=TRUE
+  )
+  expect_equal(
+    get.parameter.deps("kel.obs"),
+    c("kel.obs"),
+    info="Parameters that have nothing that depend on them return themselves only."
+  )
+  expect_equal(
+    get.parameter.deps("ctrough"),
+    c("ctrough", "ctrough.dn", "ptr"),
+    info="Parameters with formalsmap-related dependencies return themselves and the formalsmap-related dependencies."
+  )
+  expect_equal(
+    get.parameter.deps("start"),
+    character(0),
+    info="Special columns that are not actually parameters have no dependencies (including themselves)."
+  )
+  expect_equal(
+    get.parameter.deps("cl.obs"),
+    c("cl.obs", "vss.iv.obs", "vss.obs", "vz.obs"),
+    info="Parameters with dependencies return them."
+  )
 })
 
 test_that("check.intervals requires a valid value", {

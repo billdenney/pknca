@@ -18,22 +18,26 @@ geocv(x, na.rm = FALSE)
 \item{na.rm}{Should missing values be removed?}
 }
 \value{
-The scalar value of the geometric mean, geometric standard 
-  deviation, or geometric coefficient of variation.
+The scalar value of the geometric mean, geometric standard deviation,
+  or geometric coefficient of variation.
 }
 \description{
 Compute the geometric mean, sd, and CV
 }
 \section{Functions}{
 \itemize{
-\item \code{geosd}: Compute the geometric standard deviation,
-\code{exp(sd(log(x)))}.
+\item \code{geosd}: Compute the geometric standard deviation, \code{exp(sd(log(x)))}.
 
 \item \code{geocv}: Compute the geometric coefficient of variation,
 \code{sqrt(exp(sd(log(x))^2)-1)*100}.
 }}
 
+\examples{
+geomean(1:3)
+geosd(1:3)
+geocv(1:3)
+}
 \references{
-Kirkwood T. B.L. Geometric means and measures of
-dispersion. Biometrics 1979; 35: 908-909
+Kirkwood T. B.L. Geometric means and measures of dispersion.
+  Biometrics 1979; 35: 908-909
 }

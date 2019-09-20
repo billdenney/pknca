@@ -173,8 +173,8 @@ pk.calc.aucint <- function(conc, time,
               check=FALSE)
 }
 
-#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
-#'   for AUClast
+#' @describeIn pk.calc.aucint
+#' Interpolate or extrapolate concentrations for AUClast
 #' @export
 pk.calc.aucint.last <- function(conc, time, start=NULL, end=NULL, time.dose, ..., options=list()) {
   if (missing(time.dose))
@@ -186,8 +186,8 @@ pk.calc.aucint.last <- function(conc, time, start=NULL, end=NULL, time.dose, ...
                  ...,
                  auc.type="AUClast")
 }
-#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
-#'   for AUCall
+#' @describeIn pk.calc.aucint
+#' Interpolate or extrapolate concentrations for AUCall
 #' @export
 pk.calc.aucint.all <- function(conc, time, start=NULL, end=NULL, time.dose, ..., options=list()) {
   if (missing(time.dose))
@@ -199,8 +199,8 @@ pk.calc.aucint.all <- function(conc, time, start=NULL, end=NULL, time.dose, ...,
                  ...,
                  auc.type="AUCall")
 }
-#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
-#'   for AUCinf.obs
+#' @describeIn pk.calc.aucint
+#' Interpolate or extrapolate concentrations for AUCinf.obs
 #' @export
 pk.calc.aucint.inf.obs <- function(conc, time, start=NULL, end=NULL, time.dose, lambda.z, clast.obs, ..., options=list()) {
   if (missing(time.dose))
@@ -212,8 +212,8 @@ pk.calc.aucint.inf.obs <- function(conc, time, start=NULL, end=NULL, time.dose, 
                  options=options, ...,
                  auc.type="AUCinf")
 }
-#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations
-#'   for AUCinf.pred
+#' @describeIn pk.calc.aucint
+#' Interpolate or extrapolate concentrations for AUCinf.pred
 #' @export
 pk.calc.aucint.inf.pred <- function(conc, time, start=NULL, end=NULL, time.dose, lambda.z, clast.pred, ..., options=list()) {
   if (missing(time.dose))
@@ -301,7 +301,8 @@ PKNCA.set.summary(
   name="aucint.inf.obs.dose",
   description="geometric mean and geometric coefficient of variation",
   point=business.geomean,
-  spread=business.geocv)
+  spread=business.geocv
+)
 
 add.interval.col("aucint.inf.pred",
                  FUN="pk.calc.aucint.inf.pred",

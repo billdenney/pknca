@@ -2,8 +2,7 @@
 % Please edit documentation in R/check.intervals.R
 \name{check.interval.specification}
 \alias{check.interval.specification}
-\title{Check the formatting of a calculation interval specification data 
-frame.}
+\title{Check the formatting of a calculation interval specification data frame.}
 \usage{
 check.interval.specification(x)
 }
@@ -12,20 +11,19 @@ check.interval.specification(x)
 interval}
 }
 \value{
-x The potentially updated data frame with the interval 
-  calculation specification.
+x The potentially updated data frame with the interval calculation
+  specification.
 }
 \description{
-Calculation interval specifications are data frames defining what 
-calculations will be required and summarized from all time intervals.
-Note: parameters which are not requested may be calculated if it is 
-required for (or computed at the same time as) a requested parameter.
+Calculation interval specifications are data frames defining what
+calculations will be required and summarized from all time intervals. Note:
+parameters which are not requested may be calculated if it is required for
+(or computed at the same time as) a requested parameter.
 }
 \details{
-\code{start} and \code{end} time must always be given as columns, and
-the \code{start} must be before the \code{end}.  Other columns define
-the parameters to be calculated and the groupings to apply the
-intervals to.
+\code{start} and \code{end} time must always be given as columns, and the
+\code{start} must be before the \code{end}.  Other columns define the
+parameters to be calculated and the groupings to apply the intervals to.
 }
 \seealso{
 The vignette "Selection of Calculation Intervals"

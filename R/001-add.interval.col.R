@@ -127,12 +127,15 @@ add.interval.col <- function(name,
     }
   }
   current <- get("interval.cols", envir=.PKNCAEnv)
-  current[[name]] <- list(FUN=FUN,
-                          values=values,
-                          desc=desc,
-                          formalsmap=formalsmap,
-                          depends=depends,
-                          datatype=datatype)
+  current[[name]] <-
+    list(
+      FUN=FUN,
+      values=values,
+      desc=desc,
+      formalsmap=formalsmap,
+      depends=depends,
+      datatype=datatype
+    )
   assign("interval.cols", current, envir=.PKNCAEnv)
 }
 
@@ -183,8 +186,8 @@ sort.interval.cols <- function() {
 #' Get the columns that can be used in an interval specification
 #' @return A list with named elements for each parameter.  Each list element
 #'   contains the parameter definition.
-#' @seealso \code{\link{check.interval.specification}} and the vignette "Selection of
-#'   Calculation Intervals"
+#' @seealso \code{\link{check.interval.specification}()} and the vignette
+#'   "Selection of Calculation Intervals"
 #' @examples
 #' get.interval.cols()
 #' @family Interval specifications
