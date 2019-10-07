@@ -161,7 +161,12 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       fit <- fit_half_life(data=data, tlast=ret$tlast)
       ret[,ret_replacements] <- fit[,ret_replacements]
     } else {
-      warning("No data to manually fit for half-life (all concentrations may be 0)")
+      warning("No data to manually fit for half-life (all concentrations may be 0 or excluded)")
+      ret <-
+        structure(
+          ret,
+          exclude="No data to manually fit for half-life (all concentrations may be 0 or excluded)"
+        )
     }
   } else if (nrow(dfK) >= min.hl.points) {
     ## If we have enough data to estimate a slope, then
@@ -170,7 +175,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         r.squared=-Inf,
         adj.r.squared=-Inf,
         clast.pred=NA_real_,
-        lambda.z=NA_real_,
+        lambda.z=-Inf,
         lambda.z.n.points=NA_integer_,
         lambda.z.time.first=dfK$time,
         log_conc=dfK$log_conc,
@@ -194,23 +199,28 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       half_lives_for_selection[i,names(fit)] <- fit
     }
     ## Find the best model
-    mask.best <-
-      half_lives_for_selection$adj.r.squared >
-      (max(half_lives_for_selection$adj.r.squared) - adj.r.squared.factor) &
-      half_lives_for_selection$lambda.z > 0
+    mask_best <-
+      half_lives_for_selection$lambda.z > 0 &
+      if (min.hl.points == 2 & nrow(half_lives_for_selection) == 2) {
+        warning("2 points used for half-life calculation")
+        TRUE
+      } else {
+        half_lives_for_selection$adj.r.squared >
+          (max(half_lives_for_selection$adj.r.squared) - adj.r.squared.factor)
+      }
     ## Missing values are not the best
-    mask.best[is.na(mask.best)] <- FALSE
-    if (sum(mask.best) > 1) {
+    mask_best[is.na(mask_best)] <- FALSE
+    if (sum(mask_best) > 1) {
       ## If more than one models qualify, choose the one with the
       ## most points used.
-      mask.best <-
-        (mask.best &
-           half_lives_for_selection$lambda.z.n.points == max(half_lives_for_selection$lambda.z.n.points[mask.best]))
+      mask_best <-
+        (mask_best &
+           half_lives_for_selection$lambda.z.n.points == max(half_lives_for_selection$lambda.z.n.points[mask_best]))
     }
     ## If the half-life fit, set all associated parameters
-    if (any(mask.best)) {
+    if (any(mask_best)) {
       ## Put in all the computed values
-      ret[,ret_replacements] <- half_lives_for_selection[mask.best, ret_replacements]
+      ret[,ret_replacements] <- half_lives_for_selection[mask_best, ret_replacements]
     }
   } else {
     attr(ret, "exclude") <-

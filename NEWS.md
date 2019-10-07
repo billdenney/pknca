@@ -15,6 +15,8 @@ the dosing including dose amount and route.
   exclusion.
 * Ensure that exclusions are maintained if an earlier parameter is excluded
   during the initial parameter calculations (Fix #112).
+* Two-point half-life calculation works and adjusted r-squared gives a warning
+  instead of an error with 2 points (Fix #114).
 
 # PKNCA 0.9.1
 
