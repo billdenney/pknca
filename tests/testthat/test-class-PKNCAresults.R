@@ -447,3 +447,22 @@ test_that("exclude values are maintained in derived parameters during automatic 
     d_results$exclude[d_results$PPTESTCD == "half.life"]
   )
 })
+
+test_that("ctrough is correctly calculated", {
+  my_conc <- data.frame(time=0:6, conc=2^(0:-6), subject=1)
+  conc_obj <- PKNCAconc(my_conc, conc~time|subject)
+  data_obj <-
+    PKNCAdata(
+      data.conc=conc_obj,
+      intervals=
+        data.frame(
+          start=0,
+          end=c(6, Inf),
+          ctrough=TRUE
+        )
+    )
+  expect_equal(
+    as.data.frame(pk.nca(data_obj))$PPORRES,
+    c(2^-6, NA_real_)
+  )
+})
