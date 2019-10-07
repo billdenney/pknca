@@ -6,8 +6,13 @@ test_that("adj.r.squared", {
   expect_equal(adj.r.squared(0.5, 5), 1-0.5*4/3)
 
   ## Ensure that N must be an integer > 2
-  expect_error(adj.r.squared(1, 2),
-               regexp="n must be > 2")
+  expect_equal(
+    expect_warning(
+      adj.r.squared(1, 2),
+      regexp="n must be > 2"
+    ),
+    structure(NA_real_, exclude="n must be > 2")
+  )
 })
 
 test_that("pk.calc.cmax", {

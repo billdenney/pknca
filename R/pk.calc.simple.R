@@ -7,9 +7,12 @@
 #' @return The numeric adjusted r-squared value
 #' @export
 adj.r.squared <- function(r.sq, n) {
-  if (n <= 2)
-    stop("n must be > 2")
-  1-(1-r.sq)*(n-1)/(n-2)
+  if (n <= 2) {
+    warning("n must be > 2 for adj.r.squared")
+    structure(NA_real_, exclude="n must be > 2")
+  } else {
+    1-(1-r.sq)*(n-1)/(n-2)
+  }
 }
 
 #' Determine maximum observed PK concentration
