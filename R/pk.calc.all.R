@@ -12,6 +12,8 @@
 #' \code{tmax=169-168=1}.
 #' 
 #' @param data A PKNCAdata object
+#' @param verbose Indicate, by \code{message()}, the current state of
+#'   calculation.
 #' @return A \code{PKNCAresults} object.
 #' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}},
 #'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
@@ -19,11 +21,12 @@
 #' @export
 #' @importFrom utils capture.output
 #' @importFrom dplyr bind_rows
-pk.nca <- function(data) {
+pk.nca <- function(data, verbose=FALSE) {
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
     results <- data.frame()
   } else {
+    if (verbose) message("Setting up dosing information")
     if (identical(NA, data$dose)) {
       # If no dose information is given, add NULL dose information.
       message("No dose information provided, calculations requiring dose will return NA.")
@@ -42,12 +45,14 @@ pk.nca <- function(data) {
       data$dose$formula <-
         stats::update.formula(data$dose$formula, paste0(col.dose, "~."))
     }
+    if (verbose) message("Setting up options")
     ## Merge the options into the default options.
     tmp.opt <- PKNCA.options()
     tmp.opt[names(data$options)] <- data$options
     data$options <- tmp.opt
     splitdata <- split.PKNCAdata(data)
     # Calculations will only be performed when an interval is requested
+    if (verbose) message("Checking that intervals have concentration and dose data.")
     mask_has_interval <-
       sapply(splitdata,
              FUN=function(x) {
@@ -85,11 +90,16 @@ pk.nca <- function(data) {
                 collapse="\n"))
     }
     ## Calculate the results
+    if (verbose) message("Starting NCA calculations.")
     tmp.results <- list()
     tmp.results[mask_has_interval] <-
-      parallel::mclapply(X=splitdata[mask_has_interval],
-                         FUN=pk.nca.intervals,
-                         options=data$options)
+      parallel::mclapply(
+        X=splitdata[mask_has_interval],
+        FUN=pk.nca.intervals,
+        options=data$options,
+        verbose=verbose
+      )
+    if (verbose) message("Combining completed results.")
     ## Put the group parameters with the results
     for (i in seq_len(length(tmp.results))) {
       ## If no calculations were performed, the results are NULL.
@@ -118,7 +128,7 @@ pk.nca <- function(data) {
 ## further to the calculation routines.
 ##
 ## This is simply a helper for pk.nca
-pk.nca.intervals <- function(conc.dose, intervals, options) {
+pk.nca.intervals <- function(conc.dose, intervals, options, verbose=FALSE) {
   if (is.null(conc.dose$conc)) {
     ## No data; potentially placebo data (the warning would have
     ## already been generated from making the PKNCAdata object.

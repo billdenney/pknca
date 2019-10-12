@@ -4,10 +4,13 @@
 \alias{pk.nca}
 \title{Compute NCA parameters for each interval for each subject.}
 \usage{
-pk.nca(data)
+pk.nca(data, verbose = FALSE)
 }
 \arguments{
 \item{data}{A PKNCAdata object}
+
+\item{verbose}{Indicate, by \code{message()}, the current state of
+calculation.}
 }
 \value{
 A \code{PKNCAresults} object.
