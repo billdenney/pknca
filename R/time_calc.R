@@ -1,7 +1,5 @@
 #' Times relative to an event (typically dosing)
 #' 
-#' @details 
-#' 
 #' @param time_event A vector of times for events
 #' @param time_obs A vector of times for observations
 #' @param units Passed to `base::as.numeric.difftime()`

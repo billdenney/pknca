@@ -30,6 +30,3 @@ dose number in the `event_number_*` columns.
 \description{
 Times relative to an event (typically dosing)
 }
-\details{
-
-}
