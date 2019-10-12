@@ -155,6 +155,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
 #' @param \dots Unused
 #' @return A formula object
 #' @export
+#' @importFrom stats formula
 formula.PKNCAconc <- function(x, ...)
   x$formula
 
@@ -167,6 +168,7 @@ formula.PKNCAconc <- function(x, ...)
 #' @return A data frame with the columns from the object in formula
 #' order.
 #' @export
+#' @importFrom stats model.frame
 model.frame.PKNCAconc <- function(formula, ...)
   formula$data[, all.vars(formula$formula), drop=FALSE]
 
@@ -221,6 +223,7 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
 #' Extract all the original data from a PKNCAconc or PKNCAdose object
 #' @param object R object to extract the data from.
 #' @export
+#' @importFrom nlme getData
 getData.PKNCAconc <- function(object)
   object$data
 
@@ -259,6 +262,8 @@ setDuration.PKNCAconc <- function(object, duration, ...) {
 #' @param \dots Arguments passed to \code{print.formula} and
 #' \code{print.data.frame}
 #' @export
+#' @importFrom stats formula
+#' @importFrom utils head
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))
   print(stats::formula(x), ...)

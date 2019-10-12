@@ -19,8 +19,10 @@
 #'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
 #'  \code{\link{exclude}}
 #' @export
-#' @importFrom utils capture.output
 #' @importFrom dplyr bind_rows
+#' @importFrom parallel mclapply
+#' @importFrom stats as.formula update.formula
+#' @importFrom utils capture.output
 pk.nca <- function(data, verbose=FALSE) {
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
@@ -32,10 +34,15 @@ pk.nca <- function(data, verbose=FALSE) {
       message("No dose information provided, calculations requiring dose will return NA.")
       tmp.dose.data <- unique(getGroups(data$conc))
       data$dose <-
-        PKNCAdose(data=tmp.dose.data,
-                  formula=as.formula(
-                    paste0(".~.|",
-                           paste(names(tmp.dose.data), collapse="+"))))
+        PKNCAdose(
+          data=tmp.dose.data,
+          formula=stats::as.formula(
+            paste0(
+              ".~.|",
+              paste(names(tmp.dose.data), collapse="+")
+            )
+          )
+        )
     }
     if (identical(all.vars(parseFormula(data$dose)$lhs), character())) {
       ## If dose amount is not given, give a false dose column with all 
@@ -77,10 +84,14 @@ pk.nca <- function(data, verbose=FALSE) {
       for (current_idx in which(mask_missing_dose)) {
         tmp_dose_data <- unique(getGroups(splitdata[[current_idx]]$conc))
         splitdata[[current_idx]]$dose <-
-          PKNCAdose(data=tmp_dose_data,
-                    formula=as.formula(
-                      paste0(".~.|",
-                             paste(names(tmp_dose_data), collapse="+"))))
+          PKNCAdose(
+            data=tmp_dose_data,
+            formula=stats::as.formula(
+              paste0(
+                ".~.|",
+                paste(names(tmp_dose_data), collapse="+"))
+            )
+          )
         missing_groups <- append(missing_groups, tmp_dose_data)
       }
       warning("The following intervals are missing dosing data:\n",
@@ -308,7 +319,7 @@ pk.nca.intervals <- function(conc.dose, intervals, options, verbose=FALSE) {
 #'   parameters for the \code{interval}
 #'
 #' @seealso \code{\link{check.interval.specification}}
-#' @importFrom stats setNames
+#' @importFrom stats na.omit setNames
 #' @export
 pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose, route,
@@ -441,7 +452,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       # "Writing-Parameter-Functions.Rmd" vignette.  Document any changes to
       # this section of code there.
       exclude_reason <-
-        na.omit(c(
+        stats::na.omit(c(
           exclude_from_argument, attr(tmp.result, "exclude")
         ))
       exclude_reason <-

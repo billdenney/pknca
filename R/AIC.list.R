@@ -11,6 +11,7 @@
 #' \code{AIC}.  If \code{assess.best} is true, then there will be
 #' another column \code{isBest}.
 #' @export
+#' @importFrom stats AIC logLik
 AIC.list <- function(object, ..., assess.best=TRUE) {
   allAICs <-
     lapply(object, FUN=function(subobject, ...) {
@@ -70,6 +71,7 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
 #' @return The model which is assessed as best.  If more than one are
 #' equal, the first is chosen.
 #' @export
+#' @importFrom stats AIC
 get.best.model <- function(object, ...)
   object[stats::AIC(object, ...)$isBest %in% "Best Model"][[1]]
 

@@ -205,12 +205,14 @@ setDuration.PKNCAdose <- function(object, duration, rate, dose, ...) {
 
 #' @rdname formula.PKNCAconc
 #' @export
+#' @importFrom stats formula
 formula.PKNCAdose <-  function(x, ...) {
   x$formula
 }
 
 #' @rdname model.frame.PKNCAconc
 #' @export
+#' @importFrom stats model.frame
 model.frame.PKNCAdose <- function(formula, ...) {
   cbind(getDepVar.PKNCAdose(formula),
         getIndepVar.PKNCAdose(formula),
@@ -247,6 +249,7 @@ getGroups.PKNCAdose <- function(...) {
 
 #' @rdname getData.PKNCAconc
 #' @export
+#' @importFrom nlme getData
 getData.PKNCAdose <-  function(object)
   object$data
 
@@ -256,6 +259,7 @@ getDataName.PKNCAdose <- function(object)
 
 #' @rdname print.PKNCAconc
 #' @export
+#' @importFrom utils head
 print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
   cat("Formula for dosing:\n ")
   print(stats::formula(x), showEnv=FALSE, ...)

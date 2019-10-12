@@ -247,11 +247,12 @@ signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range
 #' @param FUN the summary statistic function (such as `max` or `min`)
 #' @return Either `zero_length` or `FUN(...)`
 #' @noRd
+#' @importFrom stats na.omit
 zero_len_summary <- function(FUN) {
   function(..., na.rm=FALSE, zero_length=NA) { #nocov
     x <- c(...)
     if (na.rm) {
-      x <- na.omit(x)
+      x <- stats::na.omit(x)
     }
     if (length(x) == 0) {
       zero_length

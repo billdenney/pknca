@@ -4,7 +4,7 @@
 \alias{find.tau}
 \title{Find the repeating interval within a vector of doses}
 \usage{
-find.tau(x, na.action = na.omit, options = list(),
+find.tau(x, na.action = stats::na.omit, options = list(),
   tau.choices = NULL)
 }
 \arguments{

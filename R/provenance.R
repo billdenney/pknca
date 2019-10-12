@@ -8,6 +8,8 @@
 #' @return The object with provenance as an added item
 #' @seealso \code{\link{checkProvenance}}
 #' @export
+#' @importFrom digest digest
+#' @importFrom utils sessionInfo
 addProvenance <- function(object, replace=FALSE) {
   if (replace) {
     attr(object, "provenance") <- NULL

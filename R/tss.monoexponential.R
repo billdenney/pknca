@@ -102,6 +102,7 @@ pk.tss.monoexponential <- function(...,
 #'
 #' @param data The data used for the model
 #' @return a list with elements for each of the variables
+#' @importFrom stats median
 tss.monoexponential.generate.formula <- function(data) {
   ## Setup the correct ctrough.ss by treatment or not.
   if ("treatment" %in% names(data)) {
@@ -166,6 +167,8 @@ tss.monoexponential.generate.formula <- function(data) {
 #' provided).  The columns will be named
 #' \code{tss.monoexponential.population} and/or
 #' \code{tss.monoexponential.popind}.
+#' @importFrom nlme fixef nlme ranef
+#' @importFrom stats AIC
 pk.tss.monoexponential.population <- function(data,
                                               output=c(
                                                 "population",
@@ -282,6 +285,8 @@ pk.tss.monoexponential.population <- function(data,
 #' \code{tss.monoexponential.population} and/or
 #' \code{tss.monoexponential.popind}.
 #' @importFrom dplyr group_by_
+#' @importFrom nlme gnls
+#' @importFrom stats coef median
 pk.tss.monoexponential.individual <- function(data,
                                               output=c(
                                                 "individual",

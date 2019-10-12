@@ -27,6 +27,8 @@
 #' Estimating Time to Steady State with Examples from Phase 1 Studies.
 #' AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
 #' @export
+#' @importFrom nlme intervals lme
+#' @importFrom stats confint coef glm
 pk.tss.stepwise.linear <- function(...,
                                    min.points=3, level=0.95, verbose=FALSE,
                                    check=TRUE) {

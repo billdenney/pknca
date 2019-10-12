@@ -19,11 +19,12 @@
 time_calc <- function(time_event, time_obs, units=NULL)
   UseMethod("time_calc")
 
+#' @importFrom stats na.omit
 time_calc.numeric <- function(time_event, time_obs, units=NULL) {
   if (length(time_event) == 0) {
     warning("No events provided")
     time_event <- NA_real_
-  } else if (any(order(na.omit(time_event)) != seq_along(na.omit(time_event)))) {
+  } else if (any(order(stats::na.omit(time_event)) != seq_along(stats::na.omit(time_event)))) {
     stop("`time_event` must be sorted.")
   }
   if (!is.numeric(time_obs)) {

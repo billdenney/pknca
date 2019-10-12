@@ -146,7 +146,8 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' }
 #' @family Interval determination
 #' @export
-find.tau <- function(x, na.action=na.omit,
+#' @importFrom stats na.omit
+find.tau <- function(x, na.action=stats::na.omit,
                      options=list(),
                      tau.choices=NULL) {
   # Check inputs

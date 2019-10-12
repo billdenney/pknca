@@ -49,6 +49,7 @@ as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
 #' Extract all the original data from a PKNCAconc or PKNCAdose object
 #' @param object R object to extract the data from.
 #' @export
+#' @importFrom nlme getData
 getData.PKNCAresults <- function(object)
   object$result
 
