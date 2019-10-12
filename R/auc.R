@@ -168,21 +168,30 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
         tlast != max(data$time)) {
       # Include the first point after tlast if it exists and we are
       # looking for AUCall
-      idx_1 <- 1:sum(data$time <= tlast)
+      idx_1 <- seq_len(sum(data$time <= tlast))
     } else {
-      idx_1 <- 1:(sum(data$time <= tlast) - 1)
+      idx_1 <- seq_len(sum(data$time <= tlast) - 1)
     }
     idx_2 <- idx_1 + 1
-    ret <- fun.linear(data$conc[idx_1], data$conc[idx_2],
-                      data$time[idx_1], data$time[idx_2])
-    if (method %in% "lin up/log down") {
+    if (method %in% "linear") {
+      ret <- fun.linear(data$conc[idx_1], data$conc[idx_2],
+                        data$time[idx_1], data$time[idx_2])
+    } else if (method %in% "lin up/log down") {
       # Compute log down if required (and if the later point is not 0)
-      mask.down <- (data$conc[idx_2] < data$conc[idx_1] &
+      mask_down <- (data$conc[idx_2] < data$conc[idx_1] &
                       data$conc[idx_2] != 0)
-      idx_1 <- idx_1[mask.down]
-      idx_2 <- idx_2[mask.down]
-      ret[mask.down] <- fun.log(data$conc[idx_1], data$conc[idx_2],
-                                data$time[idx_1], data$time[idx_2])
+      mask_up <- !mask_down
+      idx_1_down <- idx_1[mask_down]
+      idx_2_down <- idx_2[mask_down]
+      idx_1_up <- idx_1[mask_up]
+      idx_2_up <- idx_2[mask_up]
+      ret <- rep(NA_real_, length(idx_1))
+      ret[mask_up] <-
+        fun.linear(data$conc[idx_1_up], data$conc[idx_2_up],
+                   data$time[idx_1_up], data$time[idx_2_up])
+      ret[mask_down] <-
+        fun.log(data$conc[idx_1_down], data$conc[idx_2_down],
+                data$time[idx_1_down], data$time[idx_2_down])
     } else if (!(method %in% "linear")) {
       # This should have already been caught, but the test exists to double-check
       stop("Invalid AUC integration method") # nocov
