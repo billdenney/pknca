@@ -17,6 +17,8 @@ the dosing including dose amount and route.
   during the initial parameter calculations (Fix #112).
 * Two-point half-life calculation works and adjusted r-squared gives a warning
   instead of an error with 2 points (Fix #114).
+* Half-life calculation time was decreased by using `.lm.fit()` instead of
+  `lm()` decreasing time for a full NCA run by ~30% (and half-life by ~50%).
 
 # PKNCA 0.9.1
 

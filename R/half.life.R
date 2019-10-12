@@ -250,15 +250,16 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
 #'   "adj.r.squared", "PROB", "lambda.z", "clast.pred", 
 #'   "lambda.z.n.points", "half.life", "span.ratio"
 #' @seealso \code{\link{pk.calc.half.life}}
+#' @importFrom stats .lm.fit
 fit_half_life <- function(data, tlast) {
-  fit <- stats::lm(log_conc~time, data=data, na.action=stats::na.exclude)
-  sfit <- summary(fit)
+  fit <- stats::.lm.fit(x=cbind(1, data$time), y=data$log_conc)
+  r_squared <- 1 - sum(fit$residuals^2)/sum((data$log_conc - mean(data$log_conc))^2)
   ret <-
     data.frame(
-      r.squared=sfit$r.squared,
-      adj.r.squared=adj.r.squared(sfit$r.squared, nrow(data)),
-      lambda.z=-stats::coef(fit)["time"],
-      clast.pred=exp(stats::predict(fit, newdata=data.frame(time=tlast))),
+      r.squared=r_squared,
+      adj.r.squared=adj.r.squared(r_squared, nrow(data)),
+      lambda.z=-fit$coefficients[2],
+      clast.pred=exp(sum(fit$coefficients*c(1, tlast))),
       lambda.z.time.first=min(data$time, na.rm=TRUE),
       lambda.z.n.points=nrow(data)
     )

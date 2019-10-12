@@ -28,7 +28,7 @@
 #' @importFrom digest digest
 #' @importFrom nlme fixef getData gnls intervals lme nlme ranef
 #' @importFrom parallel mclapply
-#' @importFrom stats AIC as.formula coef confint formula glm logLik lm 
+#' @importFrom stats AIC as.formula coef confint formula glm logLik
 #'   median model.frame na.exclude na.omit predict sd update 
 #'   update.formula
 #' @importFrom utils head sessionInfo

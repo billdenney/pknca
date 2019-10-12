@@ -177,20 +177,20 @@ test_that("superposition inputs", {
                info="lambda.z must be a number (factor)")
 
   expect_equal(
-    expect_warning(
-      superposition(conc=c(4, 2, 1, 0.5),
-                    time=0:3,
-                    tau=24,
-                    n.tau=Inf,
-                    check.blq=FALSE)
+    superposition(
+      conc=c(4, 2, 1, 0.5),
+      time=0:3,
+      tau=24,
+      n.tau=Inf,
+      check.blq=FALSE
     ),
-    expect_warning(
-      superposition(conc=c(4, 2, 1, 0.5),
-                    time=0:3,
-                    tau=24,
-                    clast.pred=TRUE,
-                    n.tau=Inf,
-                    check.blq=FALSE)
+    superposition(
+      conc=c(4, 2, 1, 0.5),
+      time=0:3,
+      tau=24,
+      clast.pred=TRUE,
+      n.tau=Inf,
+      check.blq=FALSE
     ),
     info="clast.pred may be provided as 'TRUE'"
   )
@@ -319,14 +319,12 @@ test_that("superposition math", {
                data.frame(conc=c(3, 3, 3, 3.5),
                           time=0:3))
   ## With half-life extrapolation
-  expect_warning(v1 <- superposition(conc=c1, time=t1, tau=3, n.tau=3),
-                 regexp="essentially perfect fit")
+  v1 <- superposition(conc=c1, time=t1, tau=3, n.tau=3)
   expect_equal(v1,
                data.frame(conc=c(3.5, 3.25, 3.125, 3.5625),
                           time=0:3))
   ## To steady-state
-  expect_warning(v2 <- superposition(conc=c1, time=t1, tau=3, n.tau=Inf),
-                 regexp="essentially perfect fit")
+  v2 <- superposition(conc=c1, time=t1, tau=3, n.tau=Inf)
   expect_equal(v2,
                data.frame(conc=c(3.571, 3.286, 3.143, 3.571),
                           time=0:3),
@@ -359,11 +357,13 @@ test_that("superposition math", {
                             5, 5.5, 24)))
 
   ## Dose scaling
-  expect_warning(v1 <- superposition(conc=c1, time=t1, dose.input=1, tau=24,
-                                     dose.times=c(0, 0.5),
-                                     dose.amount=1,
-                                     additional.times=c(2.5, 3.5)),
-                 regexp="essentially perfect fit")
+  v1 <-
+    superposition(
+      conc=c1, time=t1, dose.input=1, tau=24,
+      dose.times=c(0, 0.5),
+      dose.amount=1,
+      additional.times=c(2.5, 3.5)
+    )
   expect_equal(v1,
                data.frame(conc=c(
                             4.6047e-06,
@@ -386,11 +386,13 @@ test_that("superposition math", {
                tol=0.001,
                info="Dose scaling with matching input and output doses")
 
-  expect_warning(v2 <- superposition(conc=c1, time=t1, dose.input=1, tau=24,
-                                     dose.times=c(0, 0.5),
-                                     dose.amount=c(0.5, 5),
-                                     additional.times=c(2.5, 3.5)),
-                 regexp="essentially perfect fit")
+  v2 <-
+    superposition(
+      conc=c1, time=t1, dose.input=1, tau=24,
+      dose.times=c(0, 0.5),
+      dose.amount=c(0.5, 5),
+      additional.times=c(2.5, 3.5)
+    )
   expect_equal(v2,
                data.frame(conc=c(
                             1.444e-05,

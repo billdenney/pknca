@@ -3,25 +3,23 @@ context("Half-life")
 test_that("pk.calc.half.life", {
   ## Confirm that half-life is correctly calculated with a simple
   ## exponential decay
-  expect_warning(v1 <-
+  v1 <-
     pk.calc.half.life(conc=c(1, 0.5, 0.25),
                       time=c(0, 1, 2),
                       min.hl.points=3,
                       allow.tmax.in.half.life=TRUE,
-                      adj.r.squared.factor=0.0001)$half.life,
-                 regexp="essentially perfect fit: summary may be unreliable")
+                      adj.r.squared.factor=0.0001)$half.life
   expect_equal(v1, 1)
 
   ## Ensure that when input data is not checked, the code works
   ## correctly.
-  expect_warning(v2 <-
+  v2 <-
     pk.calc.half.life(conc=c(1, 0.5, 0.25),
                       time=c(0, 1, 2),
                       min.hl.points=3,
                       allow.tmax.in.half.life=TRUE,
                       adj.r.squared.factor=0.0001,
-                      check=FALSE)$half.life,
-                 regexp="essentially perfect fit: summary may be unreliable")
+                      check=FALSE)$half.life
                  
   expect_equal(v2, 1)
 
