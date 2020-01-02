@@ -11,8 +11,7 @@ signifString(x, ...)
 
 \method{signifString}{data.frame}(x, ...)
 
-\method{signifString}{default}(x, digits = 6, sci_range = 6,
-  sci_sep = "e", si_range, ...)
+\method{signifString}{default}(x, digits = 6, sci_range = 6, sci_sep = "e", si_range, ...)
 }
 \arguments{
 \item{x}{The number to round}

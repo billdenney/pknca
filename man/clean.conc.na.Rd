@@ -5,8 +5,7 @@
 \title{Handle NA values in the concentration measurements as requested by 
 the user.}
 \usage{
-clean.conc.na(conc, time, ..., options = list(), conc.na = NULL,
-  check = TRUE)
+clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}
@@ -32,6 +31,7 @@ NA concentrations (and their associated times) will be removed then
 the BLQ values in the middle
 }
 \seealso{
-Other Data cleaners: \code{\link{clean.conc.blq}}
+Other Data cleaners: 
+\code{\link{clean.conc.blq}()}
 }
 \concept{Data cleaners}

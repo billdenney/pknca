@@ -9,8 +9,13 @@
 \alias{pk.calc.c0.method.cmin}
 \title{Estimate the concentration at dosing time for an IV bolus dose.}
 \usage{
-pk.calc.c0(conc, time, time.dose = 0, method = c("c0", "logslope",
-  "c1", "cmin", "set0"), check = TRUE)
+pk.calc.c0(
+  conc,
+  time,
+  time.dose = 0,
+  method = c("c0", "logslope", "c1", "cmin", "set0"),
+  check = TRUE
+)
 
 pk.calc.c0.method.logslope(conc, time, time.dose = 0, check = TRUE)
 

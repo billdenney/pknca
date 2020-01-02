@@ -4,8 +4,14 @@
 \alias{PKNCA.set.summary}
 \title{Define how NCA parameters are summarized.}
 \usage{
-PKNCA.set.summary(name, description, point, spread,
-  rounding = list(signif = 3), reset = FALSE)
+PKNCA.set.summary(
+  name,
+  description,
+  point,
+  spread,
+  rounding = list(signif = 3),
+  reset = FALSE
+)
 }
 \arguments{
 \item{name}{The parameter name or a vector of parameter names.  It
@@ -53,7 +59,8 @@ PKNCA.set.summary(
 \seealso{
 \code{\link{summary.PKNCAresults}}
 
-Other PKNCA calculation and summary settings: \code{\link{PKNCA.choose.option}},
-  \code{\link{PKNCA.options}}
+Other PKNCA calculation and summary settings: 
+\code{\link{PKNCA.choose.option}()},
+\code{\link{PKNCA.options}()}
 }
 \concept{PKNCA calculation and summary settings}

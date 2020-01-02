@@ -4,8 +4,7 @@
 \alias{formula.parseFormula}
 \title{Convert the parsed formula back into the original}
 \usage{
-\method{formula}{parseFormula}(x, drop.groups = FALSE,
-  drop.lhs = FALSE, ...)
+\method{formula}{parseFormula}(x, drop.groups = FALSE, drop.lhs = FALSE, ...)
 }
 \arguments{
 \item{x}{The parsed formula object to revert to the original}
@@ -25,7 +24,8 @@ A formula (optionally with portions removed)
 Convert the parsed formula back into the original
 }
 \seealso{
-Other Formula parsing: \code{\link{findOperator}},
-  \code{\link{parseFormula}}
+Other Formula parsing: 
+\code{\link{findOperator}()},
+\code{\link{parseFormula}()}
 }
 \concept{Formula parsing}

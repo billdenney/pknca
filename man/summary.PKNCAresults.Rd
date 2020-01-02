@@ -4,9 +4,14 @@
 \alias{summary.PKNCAresults}
 \title{Summarize PKNCA results}
 \usage{
-\method{summary}{PKNCAresults}(object, ...,
-  drop.group = object$data$conc$subject, summarize.n.per.group = TRUE,
-  not.requested.string = ".", not.calculated.string = "NC")
+\method{summary}{PKNCAresults}(
+  object,
+  ...,
+  drop.group = object$data$conc$subject,
+  summarize.n.per.group = TRUE,
+  not.requested.string = ".",
+  not.calculated.string = "NC"
+)
 }
 \arguments{
 \item{object}{The results to summarize}

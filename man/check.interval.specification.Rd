@@ -28,10 +28,11 @@ parameters to be calculated and the groupings to apply the intervals to.
 \seealso{
 The vignette "Selection of Calculation Intervals"
 
-Other Interval specifications: \code{\link{add.interval.col}},
-  \code{\link{check.interval.deps}},
-  \code{\link{choose.auc.intervals}},
-  \code{\link{get.interval.cols}},
-  \code{\link{get.parameter.deps}}
+Other Interval specifications: 
+\code{\link{add.interval.col}()},
+\code{\link{check.interval.deps}()},
+\code{\link{choose.auc.intervals}()},
+\code{\link{get.interval.cols}()},
+\code{\link{get.parameter.deps}()}
 }
 \concept{Interval specifications}

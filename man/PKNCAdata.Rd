@@ -13,8 +13,15 @@ PKNCAdata(data.conc, data.dose, ...)
 
 \method{PKNCAdata}{PKNCAdose}(data.conc, data.dose, ...)
 
-\method{PKNCAdata}{default}(data.conc, data.dose, ..., formula.conc,
-  formula.dose, intervals, options = list())
+\method{PKNCAdata}{default}(
+  data.conc,
+  data.dose,
+  ...,
+  formula.conc,
+  formula.dose,
+  intervals,
+  options = list()
+)
 }
 \arguments{
 \item{data.conc}{Concentration data as a \code{PKNCAconc} object or a
@@ -60,7 +67,9 @@ If \code{data.dose} is not given or is \code{NA}, then the
 \seealso{
 \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
 
-Other PKNCA objects: \code{\link{PKNCAconc}},
-  \code{\link{PKNCAdose}}, \code{\link{PKNCAresults}}
+Other PKNCA objects: 
+\code{\link{PKNCAconc}()},
+\code{\link{PKNCAdose}()},
+\code{\link{PKNCAresults}()}
 }
 \concept{PKNCA objects}

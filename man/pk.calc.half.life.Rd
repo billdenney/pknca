@@ -4,11 +4,21 @@
 \alias{pk.calc.half.life}
 \title{Compute the half-life and associated parameters}
 \usage{
-pk.calc.half.life(conc, time, tmax, tlast,
-  manually.selected.points = FALSE, options = list(),
-  min.hl.points = NULL, adj.r.squared.factor = NULL, conc.blq = NULL,
-  conc.na = NULL, first.tmax = NULL, allow.tmax.in.half.life = NULL,
-  check = TRUE)
+pk.calc.half.life(
+  conc,
+  time,
+  tmax,
+  tlast,
+  manually.selected.points = FALSE,
+  options = list(),
+  min.hl.points = NULL,
+  adj.r.squared.factor = NULL,
+  conc.blq = NULL,
+  conc.na = NULL,
+  first.tmax = NULL,
+  allow.tmax.in.half.life = NULL,
+  check = TRUE
+)
 }
 \arguments{
 \item{conc}{Concentration measured}

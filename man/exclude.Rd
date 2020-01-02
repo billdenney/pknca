@@ -56,6 +56,7 @@ exclude(myconc,
         mask=c(TRUE, rep(FALSE, 6)))
 }
 \seealso{
-Other Result exclusions: \code{\link{exclude_nca}}
+Other Result exclusions: 
+\code{\link{exclude_nca}}
 }
 \concept{Result exclusions}

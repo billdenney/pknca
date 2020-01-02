@@ -20,7 +20,8 @@ Get the dependent variable (left hand side of the formula) from a
 PKNCA object.
 }
 \seealso{
-Other PKNCA object extractors: \code{\link{getDataName.PKNCAconc}},
-  \code{\link{getIndepVar}}
+Other PKNCA object extractors: 
+\code{\link{getDataName.PKNCAconc}()},
+\code{\link{getIndepVar}()}
 }
 \concept{PKNCA object extractors}

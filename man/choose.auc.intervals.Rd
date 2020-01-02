@@ -4,8 +4,12 @@
 \alias{choose.auc.intervals}
 \title{Choose intervals to compute AUCs from time and dosing information}
 \usage{
-choose.auc.intervals(time.conc, time.dosing, options = list(),
-  single.dose.aucs = NULL)
+choose.auc.intervals(
+  time.conc,
+  time.dosing,
+  options = list(),
+  single.dose.aucs = NULL
+)
 }
 \arguments{
 \item{time.conc}{Time of concentration measurement}
@@ -42,13 +46,15 @@ Intervals for AUC are selected by the following metrics:
 \code{\link{pk.calc.auc}}, \code{\link{pk.calc.aumc}},
 \code{\link{pk.calc.half.life}}, \code{\link{PKNCA.options}}
 
-Other Interval specifications: \code{\link{add.interval.col}},
-  \code{\link{check.interval.deps}},
-  \code{\link{check.interval.specification}},
-  \code{\link{get.interval.cols}},
-  \code{\link{get.parameter.deps}}
+Other Interval specifications: 
+\code{\link{add.interval.col}()},
+\code{\link{check.interval.deps}()},
+\code{\link{check.interval.specification}()},
+\code{\link{get.interval.cols}()},
+\code{\link{get.parameter.deps}()}
 
-Other Interval determination: \code{\link{find.tau}}
+Other Interval determination: 
+\code{\link{find.tau}()}
 }
 \concept{Interval determination}
 \concept{Interval specifications}

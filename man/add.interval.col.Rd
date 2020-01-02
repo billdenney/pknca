@@ -4,9 +4,15 @@
 \alias{add.interval.col}
 \title{Add columns for calculations within PKNCA intervals}
 \usage{
-add.interval.col(name, FUN, values = c(FALSE, TRUE), depends = c(),
-  desc = "", formalsmap = list(), datatype = c("interval",
-  "individual", "population"))
+add.interval.col(
+  name,
+  FUN,
+  values = c(FALSE, TRUE),
+  depends = c(),
+  desc = "",
+  formalsmap = list(),
+  datatype = c("interval", "individual", "population")
+)
 }
 \arguments{
 \item{name}{The column name as a character string}
@@ -87,10 +93,11 @@ add.interval.col("cmax.dn",
 }
 }
 \seealso{
-Other Interval specifications: \code{\link{check.interval.deps}},
-  \code{\link{check.interval.specification}},
-  \code{\link{choose.auc.intervals}},
-  \code{\link{get.interval.cols}},
-  \code{\link{get.parameter.deps}}
+Other Interval specifications: 
+\code{\link{check.interval.deps}()},
+\code{\link{check.interval.specification}()},
+\code{\link{choose.auc.intervals}()},
+\code{\link{get.interval.cols}()},
+\code{\link{get.parameter.deps}()}
 }
 \concept{Interval specifications}

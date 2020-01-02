@@ -4,12 +4,28 @@
 \alias{pk.nca.interval}
 \title{Compute all PK parameters for a single concentration-time data set}
 \usage{
-pk.nca.interval(conc, time, volume, duration.conc, dose, time.dose,
-  duration.dose, route, conc.group = NULL, time.group = NULL,
-  volume.group = NULL, duration.conc.group = NULL, dose.group = NULL,
-  time.dose.group = NULL, duration.dose.group = NULL,
-  route.group = NULL, include_half.life = NULL,
-  exclude_half.life = NULL, interval, options = list())
+pk.nca.interval(
+  conc,
+  time,
+  volume,
+  duration.conc,
+  dose,
+  time.dose,
+  duration.dose,
+  route,
+  conc.group = NULL,
+  time.group = NULL,
+  volume.group = NULL,
+  duration.conc.group = NULL,
+  dose.group = NULL,
+  time.dose.group = NULL,
+  duration.dose.group = NULL,
+  route.group = NULL,
+  include_half.life = NULL,
+  exclude_half.life = NULL,
+  interval,
+  options = list()
+)
 }
 \arguments{
 \item{conc, conc.group}{Concentration measured for the current

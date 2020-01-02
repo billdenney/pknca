@@ -13,8 +13,18 @@ PKNCAconc(data, ...)
 
 \method{PKNCAconc}{tbl_df}(data, ...)
 
-\method{PKNCAconc}{data.frame}(data, formula, subject, time.nominal,
-  exclude, duration, volume, exclude_half.life, include_half.life, ...)
+\method{PKNCAconc}{data.frame}(
+  data,
+  formula,
+  subject,
+  time.nominal,
+  exclude,
+  duration,
+  volume,
+  exclude_half.life,
+  include_half.life,
+  ...
+)
 }
 \arguments{
 \item{data}{A data frame with concentration (or amount for
@@ -69,7 +79,9 @@ A PKNCAconc object that can be used for automated NCA.
 Create a PKNCAconc object
 }
 \seealso{
-Other PKNCA objects: \code{\link{PKNCAdata}},
-  \code{\link{PKNCAdose}}, \code{\link{PKNCAresults}}
+Other PKNCA objects: 
+\code{\link{PKNCAdata}()},
+\code{\link{PKNCAdose}()},
+\code{\link{PKNCAresults}()}
 }
 \concept{PKNCA objects}

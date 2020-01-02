@@ -10,11 +10,25 @@ superposition(conc, ...)
 
 \method{superposition}{PKNCAconc}(conc, ...)
 
-\method{superposition}{numeric}(conc, time, dose.input, tau,
-  dose.times = 0, dose.amount, n.tau = Inf, options = list(),
-  lambda.z, clast.pred = FALSE, tlast, additional.times = c(),
-  check.blq = TRUE, interp.method = NULL, extrap.method = "AUCinf",
-  steady.state.tol = 0.001, ...)
+\method{superposition}{numeric}(
+  conc,
+  time,
+  dose.input,
+  tau,
+  dose.times = 0,
+  dose.amount,
+  n.tau = Inf,
+  options = list(),
+  lambda.z,
+  clast.pred = FALSE,
+  tlast,
+  additional.times = c(),
+  check.blq = TRUE,
+  interp.method = NULL,
+  extrap.method = "AUCinf",
+  steady.state.tol = 0.001,
+  ...
+)
 }
 \arguments{
 \item{conc}{Concentration measured}

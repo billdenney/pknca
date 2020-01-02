@@ -24,7 +24,8 @@ Choose either the value from an option list or the current set value for an
 option.
 }
 \seealso{
-Other PKNCA calculation and summary settings: \code{\link{PKNCA.options}},
-  \code{\link{PKNCA.set.summary}}
+Other PKNCA calculation and summary settings: 
+\code{\link{PKNCA.options}()},
+\code{\link{PKNCA.set.summary}()}
 }
 \concept{PKNCA calculation and summary settings}

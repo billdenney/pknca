@@ -3,7 +3,6 @@
 \docType{package}
 \name{PKNCA}
 \alias{PKNCA}
-\alias{PKNCA-package}
 \title{Compute noncompartmental pharmacokinetics}
 \description{
 Compute pharmacokinetic (PK) noncompartmental analysis (NCA) 

@@ -40,7 +40,8 @@ object.
 }}
 
 \seealso{
-Other PKNCA object extractors: \code{\link{getDepVar}},
-  \code{\link{getIndepVar}}
+Other PKNCA object extractors: 
+\code{\link{getDepVar}()},
+\code{\link{getIndepVar}()}
 }
 \concept{PKNCA object extractors}

@@ -5,8 +5,7 @@
 \title{Extract the parameter results from a PKNCAresults and return them
 as a data frame.}
 \usage{
-\method{as.data.frame}{PKNCAresults}(x, ..., out.format = c("long",
-  "wide"))
+\method{as.data.frame}{PKNCAresults}(x, ..., out.format = c("long", "wide"))
 }
 \arguments{
 \item{x}{The object to extract results from}

@@ -8,13 +8,17 @@
 \title{Get the groups (right hand side after the \code{|} from a PKNCA 
 object).}
 \usage{
-\method{getGroups}{PKNCAconc}(object, form = formula(object), level,
-  data = getData(object), sep)
+\method{getGroups}{PKNCAconc}(object, form = formula(object), level, data = getData(object), sep)
 
 \method{getGroups}{PKNCAdose}(...)
 
-\method{getGroups}{PKNCAresults}(object,
-  form = formula(object$data$conc), level, data = object$result, sep)
+\method{getGroups}{PKNCAresults}(
+  object,
+  form = formula(object$data$conc),
+  level,
+  data = object$result,
+  sep
+)
 }
 \arguments{
 \item{object}{The object to extract the data from}

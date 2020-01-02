@@ -4,8 +4,7 @@
 \alias{find.tau}
 \title{Find the repeating interval within a vector of doses}
 \usage{
-find.tau(x, na.action = stats::na.omit, options = list(),
-  tau.choices = NULL)
+find.tau(x, na.action = stats::na.omit, options = list(), tau.choices = NULL)
 }
 \arguments{
 \item{x}{the vector to find the interval within}
@@ -37,6 +36,7 @@ This is intended to find the interval over which x repeats by the
 rule unique(mod(x, interval)) is minimized.
 }
 \seealso{
-Other Interval determination: \code{\link{choose.auc.intervals}}
+Other Interval determination: 
+\code{\link{choose.auc.intervals}()}
 }
 \concept{Interval determination}

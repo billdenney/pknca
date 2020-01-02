@@ -13,8 +13,7 @@ PKNCAdose(data, ...)
 
 \method{PKNCAdose}{tbl_df}(data, ...)
 
-\method{PKNCAdose}{data.frame}(data, formula, route, rate, duration,
-  time.nominal, exclude, ...)
+\method{PKNCAdose}{data.frame}(data, formula, route, rate, duration, time.nominal, exclude, ...)
 }
 \arguments{
 \item{data}{A data frame with time and the groups defined in 
@@ -75,7 +74,9 @@ The \code{formula} for a \code{PKNCAdose} object can be
   formula
 }
 \seealso{
-Other PKNCA objects: \code{\link{PKNCAconc}},
-  \code{\link{PKNCAdata}}, \code{\link{PKNCAresults}}
+Other PKNCA objects: 
+\code{\link{PKNCAconc}()},
+\code{\link{PKNCAdata}()},
+\code{\link{PKNCAresults}()}
 }
 \concept{PKNCA objects}
