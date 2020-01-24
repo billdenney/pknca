@@ -1,7 +1,7 @@
 #' Generate a PKNCAresults object
 #'
 #' This function should not be run directly.  The object is created
-#' for summarization and plotting.
+#' for summarization.
 #'
 #' @param result a data frame with NCA calculation results and groups.
 #' Each row is one interval and each column is a group name or the

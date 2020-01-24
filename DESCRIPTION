@@ -21,12 +21,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-Description: Compute standard Non-Compartmental Analysis (NCA)
-    parameters and summarize them.  In addition to this core work, it
-    also provides standardized plotting routines, basic assessments
-    for biocomparison or drug interaction, and model-based estimation
-    routines for calculating doses to reach specific values of AUC or
-    Cmax.
+Description: Compute standard Non-Compartmental Analysis (NCA) parameters for
+    typical pharmacokinetic analyses and summarize them.
 License: AGPL-3
 URL: https://github.com/billdenney/pknca
 BugReports: https://github.com/billdenney/pknca/issues

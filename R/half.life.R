@@ -115,24 +115,23 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   }
   data$log_conc <- log(data$conc)
   data <- data[data$conc > 0,]
-  ## Prepare the return values
+  # Prepare the return values
   ret <- data.frame(
-    ## Terminal elimination slope
+    # Terminal elimination slope
     lambda.z=NA,
-    ## R-squared of terminal elimination slope
+    # R-squared of terminal elimination slope
     r.squared=NA,
-    ## Adjusted r-squared of terminal elimination slope
+    # Adjusted r-squared of terminal elimination slope
     adj.r.squared=NA,
-    ## First time point used in the slope estimation
-    ## (for plotting later)
+    # First time point used in the slope estimation (for plotting later)
     lambda.z.time.first=NA,
-    ## Number of points in the half-life estimate
+    # Number of points in the half-life estimate
     lambda.z.n.points=NA,
-    ## Concentration at Tlast predicted by the half-life
+    # Concentration at Tlast predicted by the half-life
     clast.pred=NA,
-    ## Half-life
+    # Half-life
     half.life=NA,
-    ## T1/2 span range
+    # T1/2 span ratio
     span.ratio=NA)
   ret_replacements <-
     c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",

@@ -9,16 +9,14 @@
 #'   \code{groups} part of the formula is that the last group is typically
 #'   assumed to be the \code{subject}; see the documentation for the
 #'   \code{subject} argument for exceptions to this assumption.
-#' @param subject The column indicating the subject number (used for
-#'   plotting).  If not provided, this defaults to the beginning of the
-#'   inner groups: For example with
-#'   \code{concentration~time|Study+Subject/Analyte}, the inner groups
-#'   start with the first grouping variable before a \code{/},
-#'   \code{Subject}.  If there is only one grouping variable, it is
-#'   assumed to be the subject (e.g. \code{concentration~time|Subject}),
-#'   and if there are multiple grouping variables without a \code{/},
-#'   subject is assumed to be the last one.  For single-subject data, it
-#'   is assigned as \code{NULL}.
+#' @param subject The column indicating the subject number.  If not provided,
+#'   this defaults to the beginning of the inner groups: For example with
+#'   \code{concentration~time|Study+Subject/Analyte}, the inner groups start
+#'   with the first grouping variable before a \code{/}, \code{Subject}.  If
+#'   there is only one grouping variable, it is assumed to be the subject (e.g.
+#'   \code{concentration~time|Subject}), and if there are multiple grouping
+#'   variables without a \code{/}, subject is assumed to be the last one.  For
+#'   single-subject data, it is assigned as \code{NULL}.
 #' @param time.nominal (optional) The name of the nominal time column
 #'   (if the main time variable is actual time.  The \code{time.nominal}
 #'   is not used during calculations; it is available to assist with
