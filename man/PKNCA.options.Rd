@@ -55,6 +55,8 @@ PKNCA.options(name="auc.method")
 PKNCA.options(auc.method="lin up/log down", min.hl.points=3)
 }
 \seealso{
+\code{\link{PKNCA.options.describe}}
+
 Other PKNCA calculation and summary settings: 
 \code{\link{PKNCA.choose.option}()},
 \code{\link{PKNCA.set.summary}()}

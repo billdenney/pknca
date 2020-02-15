@@ -312,6 +312,7 @@
 #'   \item{multiple values are requested}{the current values of those options are returned as a list}
 #' }
 #' @family PKNCA calculation and summary settings
+#' @seealso \code{\link{PKNCA.options.describe}}
 #' @examples
 #' 
 #' PKNCA.options()
@@ -420,6 +421,7 @@ PKNCA.choose.option <- function(name, value=NULL, options=list())
 #' @param name The option name requested.
 #' @return A character string of the description.
 #' @seealso \code{\link{PKNCA.options}}
+#' @export
 PKNCA.options.describe <- function(name) {
   .PKNCA.option.check[[name]](description=TRUE)
 }

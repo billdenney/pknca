@@ -31,7 +31,7 @@ The data frame may have zero rows if no intervals could be found.
 Intervals for AUC are selected by the following metrics:
 \enumerate{
   \item If only one dose is administered, use the
-        \code{PKNCA.options("single.dose.auc")}
+        \code{PKNCA.options("single.dose.aucs")}
   \item If more than one dose is administered, estimate the AUC
         between any two doses that have PK taken at both of the
         dosing times and at least one time  between the doses.
