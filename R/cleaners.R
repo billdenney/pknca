@@ -24,7 +24,7 @@ clean.conc.na <- function(conc, time, ...,
   if (check)
     check.conc.time(conc, time)
   ## Prep it as a data frame
-  ret <- data.frame(conc, time, ...)
+  ret <- data.frame(conc, time, ..., stringsAsFactors=FALSE)
   if (conc.na %in% "drop") {
     ## If it is set to "drop" then omit the NA concentrations
     ret <- ret[!is.na(conc),]

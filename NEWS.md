@@ -4,7 +4,7 @@ will continue until then.  These will be especially noticable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
-# PKNCA 0.9.1.9000+ (not released)
+# PKNCA 0.9.2 (not released)
 
 * New feature: the `time_calc()` function will help convert time values to be
   relative to events (such as calculating time after and before doses)
@@ -19,6 +19,9 @@ the dosing including dose amount and route.
   instead of an error with 2 points (Fix #114).
 * Half-life calculation time was decreased by using `.lm.fit()` instead of
   `lm()` decreasing time for a full NCA run by ~30% (and half-life by ~50%).
+* For R version 4.0, much more care was taken not to create factors from strings
+  unless required (see
+  https://developer.r-project.org/Blog/public/2020/02/16/stringsasfactors/index.html)
 
 # PKNCA 0.9.1
 

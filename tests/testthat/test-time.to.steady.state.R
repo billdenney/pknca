@@ -7,12 +7,16 @@ test_that("pk.tss.data.prep", {
   treatment.test <- LETTERS[1:5]
   time.dosing.test <- 0
   ## Confirm that any NAs in time.dosing are an error
-  expect_error(pk.tss.data.prep(conc=conc.test,
-                                time=time.test,
-                                subject=subject.test,
-                                treatment=treatment.test,
-                                time.dosing=NA),
-               regexp="time.dosing may not contain any NA values")
+  expect_error(
+    pk.tss.data.prep(
+      conc=conc.test,
+      time=time.test,
+      subject=subject.test,
+      treatment=treatment.test,
+      time.dosing=NA
+    ),
+    regexp="time.dosing may not contain any NA values"
+  )
 
   expect_error(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
@@ -83,15 +87,22 @@ test_that("pk.tss.data.prep", {
   subject.test <- letters[1:10]
   treatment.test <- LETTERS[1:10]
   time.dosing.test <- 0
-  expect_equal(pk.tss.data.prep(conc=conc.test,
-                                time=time.test,
-                                subject=subject.test,
-                                treatment=treatment.test,
-                                time.dosing=time.dosing.test),
-               data.frame(conc=c(1, 6), time=c(0, 0),
-                          subject=c("a", "f"),
-                          treatment=c("A", "F")),
-               check.attributes=FALSE)
+  expect_equal(
+    pk.tss.data.prep(
+      conc=conc.test,
+      time=time.test,
+      subject=subject.test,
+      treatment=treatment.test,
+      time.dosing=time.dosing.test
+    ),
+    data.frame(
+      conc=c(1, 6), time=c(0, 0),
+      subject=factor(c("a", "f")),
+      treatment=factor(c("A", "F")),
+      stringsAsFactors=FALSE
+    ),
+    check.attributes=FALSE
+  )
 
   ## Check a multi-row output with treatments dropped
   conc.test <- 1:10
@@ -99,14 +110,22 @@ test_that("pk.tss.data.prep", {
   subject.test <- letters[1:10]
   treatment.test <- rep(LETTERS[1:5], 2)
   time.dosing.test <- 0
-  expect_equal(pk.tss.data.prep(conc=conc.test,
-                                time=time.test,
-                                subject=subject.test,
-                                treatment=treatment.test,
-                                time.dosing=time.dosing.test),
-               data.frame(conc=c(1, 6), time=c(0, 0),
-                          subject=c("a", "f")),
-               check.attributes=FALSE)
+  expect_equal(
+    pk.tss.data.prep(
+      conc=conc.test,
+      time=time.test,
+      subject=subject.test,
+      treatment=treatment.test,
+      time.dosing=time.dosing.test
+    ),
+    data.frame(
+      conc=c(1, 6),
+      time=c(0, 0),
+      subject=factor(c("a", "f")),
+      stringsAsFactors=FALSE
+    ),
+    check.attributes=FALSE
+  )
 })
 
 ## This data will be used multiple times in testing, and it is
@@ -114,13 +133,21 @@ test_that("pk.tss.data.prep", {
 generate.data <- function() {
   set.seed(5)
   tmpdata <-
-    merge(data.frame(subject=factor(1:10),
-                     css.re=rnorm(10, sd=0.2),
-                     tss.re=rnorm(10, sd=0.2),
-                     treatment=rep(c("A", "B"), each=5)),
-          data.frame(treatment=c("A", "B"),
-                     css.mean=c(5, 10),
-                     tss.mean=5))
+    merge(
+      data.frame(
+        subject=factor(1:10),
+        css.re=rnorm(10, sd=0.2),
+        tss.re=rnorm(10, sd=0.2),
+        treatment=rep(c("A", "B"), each=5),
+        stringsAsFactors=FALSE
+      ),
+      data.frame(
+        treatment=c("A", "B"),
+        css.mean=c(5, 10),
+        tss.mean=5,
+        stringsAsFactors=FALSE
+      )
+    )
   tmpdata <- merge(tmpdata, data.frame(time=0:14))
   tmpdata$conc.resid <- rnorm(nrow(tmpdata), sd=0.05)
   tmpdata$conc <- with(tmpdata,
@@ -304,24 +331,28 @@ test_that("pk.tss.monoexponential", {
         verbose=FALSE
       )
     ),
-    data.frame(subject=factor(c(1, 10, 2:9)),
-               tss.monoexponential.population=4.57618156812974,
-               tss.monoexponential.popind=c(
-                 5.14156352865421, 4.64862524830397, 4.45956707917941,
-                 4.41492203844343, 4.6782583033301, 4.0823047621517,
-                 4.96242115751172, 4.52424147509819, 3.70338406668837,
-                 5.1465280219363),
-               treatment=c("A", "B", "A", "A", "A",
-                 "A", "B", "B", "B", "B"),
-               tss.monoexponential.individual=c(
-                 5.87784329336254, 4.71066285661623, 4.51882509145954,
-                 3.91269286106442, 4.74475071729459, 3.99341726779716,
-                 5.08737230904342, 4.50068650719192, 3.4876172020751,
-                 5.35051537086801),
-               tss.monoexponential.single=4.56067603534),
+    data.frame(
+      subject=factor(as.character(c(1, 10, 2:9))),
+      tss.monoexponential.population=4.57618156812974,
+      tss.monoexponential.popind=c(
+        5.14156352865421, 4.64862524830397, 4.45956707917941,
+        4.41492203844343, 4.6782583033301, 4.0823047621517,
+        4.96242115751172, 4.52424147509819, 3.70338406668837,
+        5.1465280219363),
+      treatment=
+        factor(c("A", "B", "A", "A", "A", "A", "B", "B", "B", "B")),
+      tss.monoexponential.individual=c(
+        5.87784329336254, 4.71066285661623, 4.51882509145954,
+        3.91269286106442, 4.74475071729459, 3.99341726779716,
+        5.08737230904342, 4.50068650719192, 3.4876172020751,
+        5.35051537086801),
+      tss.monoexponential.single=4.56067603534,
+      stringsAsFactors=FALSE
+    ),
     tolerance=1e-4,
     check.attributes=FALSE,
-    info="pk.tss.monoexponential 1")
+    info="pk.tss.monoexponential 1"
+  )
 
   ## Warnings and errors
   expect_warning(

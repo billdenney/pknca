@@ -109,5 +109,8 @@ pk.tss.stepwise.linear <- function(...,
     }, silent=!verbose)
     remaining.time <- remaining.time[-1]
   }
-  data.frame(tss.stepwise.linear=ret)
+  data.frame(
+    tss.stepwise.linear=ret,
+    stringsAsFactors=FALSE
+  )
 }

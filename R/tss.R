@@ -60,8 +60,12 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
     ## Shrink the data to just the predose data
     ret <- subset(ret, time %in% time.dosing)
   } else {
-    dosing <- data.frame(subject=subject.dosing,
-                         time=time.dosing)
+    dosing <-
+      data.frame(
+        subject=subject.dosing,
+        time=time.dosing,
+        stringsAsFactors=FALSE
+      )
     ## Shrink the data to just the predose data (by subject)
     ret <- merge(ret, dosing)
   }
@@ -71,8 +75,10 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
       ## Drop the "subject" column from single-subject data
       ret$subject <- NULL
     } else if (!is.factor(ret$subject)) {
-      ## Make sure that it is a factor otherwise
-      ret$subject <- factor(ret$subject)
+      ## Make sure that it is a factor made from a character vector because the
+      ## output subject numbering will come from row.names of the random
+      ## effects.
+      ret$subject <- factor(as.character(ret$subject))
     }
   }
   if ("treatment" %in% names(ret)) {

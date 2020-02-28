@@ -139,9 +139,11 @@ tss.monoexponential.generate.formula <- function(data) {
          "Tss"=list(formula=tss~1|subject),
          "Ctrough.ss"=list(formula=ctrough.ss~1|subject))
   ## Return the list of parameters to test
-  list(ctrough.by=ctrough.by,
-       tss.by=tss.by,
-       ranef.by=ranef.by)
+  list(
+    ctrough.by=ctrough.by,
+    tss.by=tss.by,
+    ranef.by=ranef.by
+  )
 }
 
 #' A helper function to estimate population and popind outputs for
@@ -212,12 +214,18 @@ pk.tss.monoexponential.population <- function(data,
         }, silent=!verbose)
         ## Put the current model (or model attempt) into the list of
         ## models.
-        models <- append(models,
-                         list(
-                           list(desc=current.desc,
-                                model=current.model,
-                                summary=current.model.summary,
-                                AIC=current.aic)))
+        models <-
+          append(
+            models,
+            list(
+              list(
+                desc=current.desc,
+                model=current.model,
+                summary=current.model.summary,
+                AIC=current.aic
+              )
+            )
+          )
       }
     }
   }
@@ -230,30 +238,46 @@ pk.tss.monoexponential.population <- function(data,
       length(all.model.summary) == 0) {
     warning("No population model for monoexponential Tss converged, no results given")
     ret <-
-      data.frame(tss.monoexponential.population=NA,
-                 tss.monoexponential.popind=NA,
-                 subject=unique(data[["subject"]]),
-                 stringsAsFactors=FALSE)
+      data.frame(
+        tss.monoexponential.population=NA,
+        tss.monoexponential.popind=NA,
+        subject=unique(data[["subject"]]),
+        stringsAsFactors=FALSE
+      )
   } else {
     best.model <-
       models[all.model.summary$AIC %in%
              min(all.model.summary$AIC, na.rm=TRUE)][[1]]$model
-    ret <- data.frame(tss.monoexponential.population=nlme::fixef(best.model)[["tss"]])
+    ret <-
+      data.frame(
+        tss.monoexponential.population=nlme::fixef(best.model)[["tss"]],
+        stringsAsFactors=FALSE
+      )
     best.ranef <- nlme::ranef(best.model)
     if ("tss" %in% names(best.ranef)) {
-      ret <- merge(
-        ret,
-        data.frame(
-          tss.monoexponential.popind=(best.ranef$tss +
-                                      ret$tss.monoexponential.population),
-          subject=rownames(best.ranef)),
-        all=TRUE)
+      ret <-
+        merge(
+          ret,
+          data.frame(
+            tss.monoexponential.popind=(best.ranef$tss +
+                                          ret$tss.monoexponential.population),
+            subject=factor(rownames(best.ranef)),
+            stringsAsFactors=FALSE
+          ),
+          all=TRUE
+        )
     } else if ("popind" %in% output) {
       warning("tss.monoexponential.popind was requested, but the best model did not include a random effect for tss.  Set to NA.")
-      ret <- merge(ret,
-                   data.frame(tss.monoexponential.popind=NA,
-                              subject=unique(data$subject)),
-                   all=TRUE)
+      ret <-
+        merge(
+          ret,
+          data.frame(
+            tss.monoexponential.popind=NA,
+            subject=unique(data$subject),
+            stringsAsFactors=FALSE
+          ),
+          all=TRUE
+        )
     }
   }
   ## Return the requested columns
@@ -327,10 +351,16 @@ pk.tss.monoexponential.individual <- function(data,
     data_maybe_grouped %>%
     dplyr::summarize(
       tss.monoexponential.single=
-        fit.tss(data.frame(time=.$time,
-                           tss.constant=.$tss.constant,
-                           conc=.$conc,
-                           treatment=.$treatment)))
+        fit.tss(
+          data.frame(
+            time=.$time,
+            tss.constant=.$tss.constant,
+            conc=.$conc,
+            treatment=.$treatment,
+            stringsAsFactors=FALSE
+          )
+        )
+    )
   if ("subject" %in% names(data) &
       "individual" %in% output) {
     data_grouped <-
@@ -346,16 +376,25 @@ pk.tss.monoexponential.individual <- function(data,
     ret.sub <-
       data_grouped %>%
       dplyr::summarize_(
-        .dots=list(tss.monoexponential.individual=~fit.tss(data.frame(time=time,
-                                                                      tss.constant=tss.constant,
-                                                                      conc=conc))))
+        .dots=list(
+          tss.monoexponential.individual=
+            ~fit.tss(
+              data.frame(
+                time=time,
+                tss.constant=tss.constant,
+                conc=conc,
+                stringsAsFactors=FALSE
+              )
+            )
+        )
+      )
     ret <- merge(ret, ret.sub, all=TRUE)
   }
   ## Return the requested columns
   as.data.frame(
-    ret[,c(intersect(names(ret),
-                     c("subject", "treatment")),
+    ret[,c(intersect(names(ret), c("subject", "treatment")),
            paste("tss.monoexponential", output, sep=".")),
         drop=FALSE],
-    stringsAsFactors=FALSE)
+    stringsAsFactors=FALSE
+  )
 }
