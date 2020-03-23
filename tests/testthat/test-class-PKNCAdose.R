@@ -85,11 +85,17 @@ test_that("PKNCAdose", {
                regexp="Rows that are not unique per group and time",
                info="Duplicated key rows")
   
-  expect_equal(PKNCAdose(tmp.dose,
-                         formula=dose~time|treatment+ID),
-               PKNCAdose(tbl_df(tmp.dose),
-                         formula=dose~time|treatment+ID),
-               info="tbl_df and data.frame classes both work and create identical objects")
+  expect_equal(
+    PKNCAdose(
+      tmp.dose,
+      formula=dose~time|treatment+ID
+    ),
+    PKNCAdose(
+      tibble::as_tibble(tmp.dose),
+      formula=dose~time|treatment+ID
+    ),
+    info="tibble and data.frame classes both work and create identical objects"
+  )
 })
 
 test_that("PKNCAdose without a data.frame as input", {

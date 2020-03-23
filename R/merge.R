@@ -38,8 +38,10 @@ merge.splitlist <- function(...) {
     } else {
       finalgroupid <-
         dplyr::full_join(
-          finalgroupid, groups[[i]],
-          by=intersect(names(finalgroupid), names(groups[[i]])))
+          finalgroupid,
+          groups[[i]],
+          by=intersect(names(finalgroupid), names(groups[[i]]))
+        )
     }
   }
   # Combine elements

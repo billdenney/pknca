@@ -50,11 +50,17 @@ test_that("PKNCAconc", {
                regexp="Rows that are not unique per group and time",
                info="Duplicated key rows")
   
-  expect_equal(PKNCAconc(tmp.conc.analyte,
-                         formula=conc~time|treatment+ID/analyte),
-               PKNCAconc(tbl_df(tmp.conc.analyte),
-                         formula=conc~time|treatment+ID/analyte),
-               info="tbl_df and data.frame classes both work and create identical objects")
+  expect_equal(
+    PKNCAconc(
+      tmp.conc.analyte,
+      formula=conc~time|treatment+ID/analyte
+    ),
+    PKNCAconc(
+      tibble::as_tibble(tmp.conc.analyte),
+      formula=conc~time|treatment+ID/analyte
+    ),
+    info="tibble and data.frame classes both work and create identical objects"
+  )
 })
 
 test_that("PKNCAconc with input other than data.frames", {

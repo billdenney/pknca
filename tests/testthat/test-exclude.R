@@ -195,9 +195,11 @@ test_that("exclude.default", {
   # Check exclusion for PKNCAresults class
   result_obj_not_1 <- result_obj
   result_obj_not_1$result$exclude[result_obj_not_1$result$ID == 1] <- "Not 1"
-  expect_equal(exclude(result_obj, reason="Not 1", FUN=function(x, ...) x$ID == 1),
-               result_obj_not_1,
-               info="exclude works for PKNCAresults object")
+  expect_equal(
+    exclude(result_obj, reason="Not 1", FUN=function(x, ...) x$ID == 1),
+    result_obj_not_1,
+    info="exclude works for PKNCAresults object"
+  )
 
   expect_false(any(summary(result_obj)$cl.last == summary(result_obj_not_1)$cl.last),
                info="summary.PKNCAresults respects exclude")

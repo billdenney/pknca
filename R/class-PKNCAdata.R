@@ -96,8 +96,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     ## Generate the intervals for each grouping of concentration and
     ## dosing.
     tmp.conc.dose <-
-      merge.splitlist(conc=split(ret$conc),
-                      dose=split(ret$dose))
+      merge.splitlist(
+        conc=split(ret$conc),
+        dose=split(ret$dose)
+      )
     groupid <- attributes(tmp.conc.dose)$groupid
     rownames(groupid) <- NULL
     intervals <- data.frame()

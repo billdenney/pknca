@@ -4,7 +4,12 @@ will continue until then.  These will be especially noticable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
-# PKNCA 0.9.2 (not released)
+# PKNCA 0.9.3
+
+* Changes required for compatibility dplyr version 1.0.  No functionality
+  changed.
+
+# PKNCA 0.9.2
 
 * New feature: the `time_calc()` function will help convert time values to be
   relative to events (such as calculating time after and before doses)

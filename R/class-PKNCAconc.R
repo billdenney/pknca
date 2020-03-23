@@ -336,34 +336,44 @@ split.PKNCAconc <- function(x, f=getGroups(x), drop=TRUE, ...) {
   } else {
     ## Do the initial separation and extract the groupid information
     f_new <-
-      as.factor(
+      as.character(
         do.call(
           paste,
-          append(as.list(f), list(sep="\n"))))
+          append(as.list(f), list(sep="\n"))
+        )
+      )
     ret <- split(x=x$data, f=f_new, drop=drop, sep="\n")
     groupid <- unique(f)
     ## reorder the output to align with the input grouping order
     ret.idx <-
-      factor(names(ret),
-             levels=do.call(paste, append(as.list(groupid), list(sep="\n"))),
-             ordered=TRUE)
+      factor(
+        names(ret),
+        levels=do.call(paste, append(as.list(groupid), list(sep="\n"))),
+        ordered=TRUE
+      )
     ret <- ret[order(ret.idx)]
     ## Reset the data in each split to a "data" element within a list.
-    ret <- lapply(ret,
-                  function(y, newclass) {
-                    ret <- list(data=y)
-                    class(ret) <- newclass
-                    ret
-                  },
-                  newclass=class(x))
+    ret <-
+      lapply(
+        ret,
+        function(y, newclass) {
+          ret <- list(data=y)
+          class(ret) <- newclass
+          ret
+        },
+        newclass=class(x)
+      )
     ## Add the other features back into the data
     for (n in setdiff(names(x), "data")) {
-      ret <- lapply(ret,
-                    function(x, name, value) {
-                      x[[name]] <- value
-                      x
-                    },
-                    name=n, value=x[[n]])
+      ret <-
+        lapply(
+          ret,
+          function(x, name, value) {
+            x[[name]] <- value
+            x
+          },
+          name=n, value=x[[n]]
+        )
     }
   }
   attr(ret, "groupid") <- groupid

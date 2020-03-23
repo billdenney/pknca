@@ -45,19 +45,31 @@ exclude.default <- function(object, reason, mask, FUN) {
   # Check inputs
   if (missing(mask) & !missing(FUN)) {
     # operate on one group at a time
-    groupnames <- c(names(getGroups(object)),
-                    intersect(names(object[[dataname]]),
-                              c("start", "end")))
+    groupnames <-
+      unique(c(
+        names(getGroups(object)),
+        intersect(names(object[[dataname]]),
+                  c("start", "end"))
+      ))
     mask_df <-
       object[[dataname]] %>%
       dplyr::mutate(row_number_XXX=1:n()) %>%
       dplyr::group_by(!!! rlang::syms(groupnames)) %>%
-      dplyr::mutate(exclude_current_group_XXX_row_num=row_number_XXX,
-                    exclude_current_group_XXX=do.call(FUN,
-                                                      list(as.data.frame(., stringsAsFactors=FALSE)[.$row_number_XXX %in% row_number_XXX,,drop=FALSE],
-                                                           object))) %>%
-      dplyr::mutate(exclude_lengths_match=length(exclude_current_group_XXX) ==
-                      length(exclude_current_group_XXX_row_num))
+      dplyr::mutate(
+        exclude_current_group_XXX_row_num=row_number_XXX,
+        exclude_current_group_XXX=
+          do.call(
+            FUN,
+            list(
+              as.data.frame(., stringsAsFactors=FALSE)[.$row_number_XXX %in% row_number_XXX,,drop=FALSE],
+              object
+            )
+          )
+      ) %>%
+      dplyr::mutate(
+        exclude_lengths_match=length(exclude_current_group_XXX) ==
+          length(exclude_current_group_XXX_row_num)
+      )
     # Extract the output and ensure that the output order equals the input order
     mask <- mask_df$exclude_current_group_XXX[order(mask_df$exclude_current_group_XXX_row_num)]
     if (is.character(mask)) {
