@@ -8,3 +8,4 @@ cran-comments.md
 ^doc$
 ^Meta$
 ^codecov\.yml$
+^CRAN-RELEASE$
