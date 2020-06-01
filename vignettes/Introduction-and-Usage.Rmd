@@ -39,7 +39,7 @@ library(dplyr, quietly=TRUE)
 
 ## Load the PK concentration data
 d_conc <-
-  datasets::Theoph %>%
+  as.data.frame(datasets::Theoph) %>%
   mutate(Subject=as.numeric(as.character(Subject)))
 ## Generate the dosing data
 d_dose <- d_conc[d_conc$Time == 0,]
