@@ -21,8 +21,7 @@ Suggests:
     ggplot2,
     knitr,
     rmarkdown,
-    testthat,
-    tibble
+    testthat
 Description: Compute standard Non-Compartmental Analysis (NCA) parameters for
     typical pharmacokinetic analyses and summarize them.
 License: AGPL-3
