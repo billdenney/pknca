@@ -55,7 +55,7 @@ formal parameter names and the values should be one of the following:
     \item{"conc"}{Concentration measurements for the current interval.}
     \item{"time"}{Times associated with concentration measurements for the current interval (values start at 0 at the beginning of the current interval).}
     \item{"volume"}{Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).}
-    \item{"duration.conc"}{Durations assocuated with concentration measurements for the current interval.}
+    \item{"duration.conc"}{Durations associated with concentration measurements for the current interval.}
     \item{"dose"}{Dose amounts assocuated with the current interval.}
     \item{"time.dose"}{Time of dose start associated with the current interval (values start at 0 at the beginning of the current interval).}
     \item{"duration.dose"}{Duration of dose (typically infusion duration) for doses in the current interval.}

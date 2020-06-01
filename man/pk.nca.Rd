@@ -17,7 +17,7 @@ A \code{PKNCAresults} object.
 }
 \description{
 The \code{pk.nca} function computes the NCA parameters from a
-\code{PKNCAdata} onject.  All options for the calculation and input data are
+\code{PKNCAdata} object.  All options for the calculation and input data are
 set in prior functions (\code{PKNCAconc}, \code{PKNCAdose}, and
 \code{PKNCAdata}).  Options for calculations are set either in
 \code{PKNCAdata} or with the current default options in \code{PKNCA.options}.

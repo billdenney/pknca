@@ -14,7 +14,7 @@ measurement above the limit of quantification}
 }
 \value{
 The numeric value of the AUC percent extrapolated or 
-  \code{NA_real_} if andy of the following are true 
+  \code{NA_real_} if any of the following are true 
   \code{is.na(aucinf)}, \code{is.na(auclast)}, \code{aucinf <= 0},
   or \code{auclast <= 0}.
 }

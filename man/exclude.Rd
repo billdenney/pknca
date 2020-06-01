@@ -38,7 +38,7 @@ Only one of \code{mask} or \code{FUN} may be given.  If
   \code{FUN(current_group, object)}, and it must return a logical 
   vector equivalent to \code{mask} or a character vector with the 
   reason text given when data should be excluded or 
-  \code{NA_character_} when the data shoudl be included (for the
+  \code{NA_character_} when the data should be included (for the
   current exclusion test).
 }
 \section{Methods (by class)}{

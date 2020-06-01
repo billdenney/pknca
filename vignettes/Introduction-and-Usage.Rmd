@@ -82,7 +82,7 @@ requirements are that concentration, dose, and time must all be
 numeric (and not factors).  Grouping variables have no specific
 requirements; they can be any mode.
 
-Values below the limit of quantificaiton are coded as zeros (`0`), and missing values are coded as `NA`.
+Values below the limit of quantification are coded as zeros (`0`), and missing values are coded as `NA`.
 
 # Options: Make PKNCA Work Your Way
 
@@ -230,7 +230,7 @@ summary(results_obj)
 
 # Selecting Calculation Intervals
 
-All NCA calculations require the inverval over which they are
+All NCA calculations require the interval over which they are
 calculated.  When the concentration and dosing information are
 combined to the PKNCAdata object, intervals are automatically
 determined.  The exception to this automatic determination is if the
@@ -269,7 +269,7 @@ Single dose data has a simple interval selection:  the option `single.dose.aucs`
 knitr::kable(PKNCA.options()$single.dose.aucs)
 ```
 
-For multiple-dose studies, PKNCA selects one group at a time and compares the concentration and dosing times.  When there is a concentation measurement between doses, an interval row is added.  The dosing interval ($\tau$) is determined by looking for pattern repeats within the dosing data using the `find.tau` function.
+For multiple-dose studies, PKNCA selects one group at a time and compares the concentration and dosing times.  When there is a concentration measurement between doses, an interval row is added.  The dosing interval ($\tau$) is determined by looking for pattern repeats within the dosing data using the `find.tau` function.
 
 ```{r}
 ## find.tau can work when all doses have the same interval...

@@ -179,9 +179,9 @@ get.parameter.deps <- function(x) {
 #' row updated with any additional calculations that must be done to
 #' fulfill all dependencies.
 #'
-#' @param x A data frame with one or morw rows of the PKNCA interval
-#' @return The interval specification with additional calculations
-#' added where requested outputs require them.
+#' @param x A data frame with one or more rows of the PKNCA interval
+#' @return The interval specification with additional calculations added where
+#'   requested outputs require them.
 #' @family Interval specifications
 check.interval.deps <- function(x) {
   # Ensure that the input is a valid interval specification

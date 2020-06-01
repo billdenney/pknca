@@ -72,19 +72,17 @@ getDataName.default <- function(object) {
 #' 
 #' @param object The object to set the attribute column on.
 #' @param attr_name The attribute name to set
-#' @param col_or_value If this exists as a column in the data, it is
-#'   used as the \code{col_name}.  If not, this becomes the
-#'   \code{default_value}.
-#' @param col_name The name of the column within the dataset to use (if 
-#'   missing, uses \code{attr_name})
-#' @param default_value The value to fill in the column if the column 
-#'   does not exist (the column is filled with \code{NA} if it does not 
-#'   exist and no value is provided).
-#' @param stop_if_default,warn_if_default,message_if_default A character
-#'   string to provide as an error, a warning, or a messagemessage to 
-#'   the user if the \code{default_value} is used.  They are tested in 
-#'   order (if stop, the code stops; if warning, the message is ignored;
-#'   and message last).
+#' @param col_or_value If this exists as a column in the data, it is used as the
+#'   \code{col_name}.  If not, this becomes the \code{default_value}.
+#' @param col_name The name of the column within the dataset to use (if missing,
+#'   uses \code{attr_name})
+#' @param default_value The value to fill in the column if the column does not
+#'   exist (the column is filled with \code{NA} if it does not exist and no
+#'   value is provided).
+#' @param stop_if_default,warn_if_default,message_if_default A character string
+#'   to provide as an error, a warning, or a message to the user if the
+#'   \code{default_value} is used.  They are tested in order (if stop, the code
+#'   stops; if warning, the message is ignored; and message last).
 #' @return The object with the attribute column added to the data.
 #' @seealso \code{\link{getAttributeColumn}}
 setAttributeColumn <- function(object, attr_name, col_or_value, col_name, default_value,

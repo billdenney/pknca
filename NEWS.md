@@ -1,6 +1,6 @@
 Note that backward compatibility of function arguments will not be
 (near-)guaranteed until version 1.0.  Argument and function changes
-will continue until then.  These will be especially noticable around
+will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
@@ -8,6 +8,7 @@ the dosing including dose amount and route.
 
 * Additional changes required for compatibility dplyr version 1.0 and CRAN
   checks.  No functionality changed.
+* Minor typographical and documentation consistency cleanups throughout.
 
 # PKNCA 0.9.3
 
@@ -64,7 +65,7 @@ the dosing including dose amount and route.
 * The "start" and "end" columns may now be dropped from the summary of
   `PKNCAresults` objects.
 * `PKNCAdata()` is more restrictive on unknown arguments issuing an error
-  when unknonwn arguments are present.
+  when unknown arguments are present.
 * `intervals` argument to `PKNCAdata()` may now be a tibble (fixes #72).
 * Documentation has been extensively updated (fixes #81).
 * CRAN changes: Vignettes now better respect not loading suggested

@@ -21,22 +21,20 @@ setAttributeColumn(
 
 \item{attr_name}{The attribute name to set}
 
-\item{col_or_value}{If this exists as a column in the data, it is
-used as the \code{col_name}.  If not, this becomes the
-\code{default_value}.}
+\item{col_or_value}{If this exists as a column in the data, it is used as the
+\code{col_name}.  If not, this becomes the \code{default_value}.}
 
-\item{col_name}{The name of the column within the dataset to use (if 
-missing, uses \code{attr_name})}
+\item{col_name}{The name of the column within the dataset to use (if missing,
+uses \code{attr_name})}
 
-\item{default_value}{The value to fill in the column if the column 
-does not exist (the column is filled with \code{NA} if it does not 
-exist and no value is provided).}
+\item{default_value}{The value to fill in the column if the column does not
+exist (the column is filled with \code{NA} if it does not exist and no
+value is provided).}
 
-\item{stop_if_default, warn_if_default, message_if_default}{A character
-string to provide as an error, a warning, or a messagemessage to 
-the user if the \code{default_value} is used.  They are tested in 
-order (if stop, the code stops; if warning, the message is ignored;
-and message last).}
+\item{stop_if_default, warn_if_default, message_if_default}{A character string
+to provide as an error, a warning, or a message to the user if the
+\code{default_value} is used.  They are tested in order (if stop, the code
+stops; if warning, the message is ignored; and message last).}
 }
 \value{
 The object with the attribute column added to the data.

@@ -2,7 +2,7 @@
 #' trend
 #'
 #' A linear slope is fit through the data to find when it becomes
-#' non-significant.  Note that this is less preferrred than the
+#' non-significant.  Note that this is less preferred than the
 #' \code{pk.tss.monoexponential} due to the fact that with more time
 #' or more subjects the performance of the test changes (see
 #' reference).

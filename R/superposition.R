@@ -24,7 +24,7 @@
 #' either give the value for clast.pred here or set it to true (for
 #' automatic calculation from the half-life).
 #' @param tlast The time of last observed concentration above the
-#' limit of quantificaiton.  This is calculated if not provided.
+#' limit of quantification.  This is calculated if not provided.
 #' @param additional.times Times to include in the final outputs in
 #' addition to the standard times (see details).  All
 #' \code{min(additional.times)} must be >= 0, and the

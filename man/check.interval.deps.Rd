@@ -9,11 +9,11 @@ fulfill all dependencies.}
 check.interval.deps(x)
 }
 \arguments{
-\item{x}{A data frame with one or morw rows of the PKNCA interval}
+\item{x}{A data frame with one or more rows of the PKNCA interval}
 }
 \value{
-The interval specification with additional calculations
-added where requested outputs require them.
+The interval specification with additional calculations added where
+  requested outputs require them.
 }
 \description{
 Take in a single row of an interval specification and return that
