@@ -91,7 +91,7 @@ test_that("PKNCAdose", {
       formula=dose~time|treatment+ID
     ),
     PKNCAdose(
-      tibble::as_tibble(tmp.dose),
+      dplyr::as_tibble(tmp.dose),
       formula=dose~time|treatment+ID
     ),
     info="tibble and data.frame classes both work and create identical objects"

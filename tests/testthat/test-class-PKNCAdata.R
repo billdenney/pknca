@@ -331,7 +331,7 @@ test_that("intervals may be a tibble", {
   obj.dose <-
     PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
   intervals <- data.frame(start=0, end=24, aucinf.obs=TRUE)
-  mydata_tibble <- PKNCAdata(obj.conc, obj.dose, intervals=as_tibble(intervals))
+  mydata_tibble <- PKNCAdata(obj.conc, obj.dose, intervals=dplyr::as_tibble(intervals))
   mydata <- PKNCAdata(obj.conc, obj.dose, intervals=intervals)
   expect_equal(
     as.data.frame(pk.nca(mydata_tibble)),

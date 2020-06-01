@@ -56,7 +56,7 @@ test_that("PKNCAconc", {
       formula=conc~time|treatment+ID/analyte
     ),
     PKNCAconc(
-      tibble::as_tibble(tmp.conc.analyte),
+      dplyr::as_tibble(tmp.conc.analyte),
       formula=conc~time|treatment+ID/analyte
     ),
     info="tibble and data.frame classes both work and create identical objects"
