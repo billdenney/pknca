@@ -423,7 +423,7 @@ test_that("pk.calc.auc", {
 
   ## Confirm that AUC method checking works
   expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 3), method="wrong"),
-               regex='should be one of',
+               regexp='should be one of',
                info="Method names are confirmed for pk.calc.auc")
 
   ## Confirm that everything works even when check is FALSE

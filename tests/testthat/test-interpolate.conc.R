@@ -637,7 +637,7 @@ test_that("interp.extrap.conc.dose", {
       conc=c(0, 1, 2, 1, 0.5, 0.25),
       time=c(-1, 1:5),
       time.dose=0,
-      route="foo",
+      route.dose="foo",
       duration.dose=NA,
       time.out=c(-1, -0.1, 0, 0.1, 7),
       out.after=FALSE
@@ -650,7 +650,7 @@ test_that("interp.extrap.conc.dose", {
       conc=c(0, 1, 2, 1, 0.5, 0.25),
       time=c(-1, 1:5),
       time.dose=0,
-      route=c("extravascular", "extravascular"),
+      route.dose=c("extravascular", "extravascular"),
       duration.dose=NA,
       time.out=c(-1, -0.1, 0, 0.1, 7),
       out.after=FALSE
@@ -663,7 +663,7 @@ test_that("interp.extrap.conc.dose", {
       conc=c(0, 1, 2, 1, 0.5, 0.25),
       time=c(-1, 1:5),
       time.dose=0,
-      route="extravascular",
+      route.dose="extravascular",
       duration.dose="A",
       time.out=c(-1, -0.1, 0, 0.1, 7),
       out.after=FALSE
@@ -676,7 +676,7 @@ test_that("interp.extrap.conc.dose", {
       conc=c(0, 1, 2, 1, 0.5, 0.25),
       time=c(-1, 1:5),
       time.dose=0,
-      route="extravascular",
+      route.dose="extravascular",
       duration.dose=factor("A"),
       time.out=c(-1, -0.1, 0, 0.1, 7),
       out.after=FALSE
@@ -689,7 +689,7 @@ test_that("interp.extrap.conc.dose", {
       conc=c(0, 1, 2, 1, 0.5, 0.25),
       time=c(-1, 1:5),
       time.dose=0,
-      route="extravascular",
+      route.dose="extravascular",
       duration.dose=c(1, NA),
       time.out=c(-1, -0.1, 0, 0.1, 7),
       out.after=FALSE

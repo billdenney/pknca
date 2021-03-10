@@ -38,7 +38,9 @@ test_that("provenance", {
   expect_output(print.provenance(fakeprov),
                 regexp="Provenance hash a generated on b with c.",
                 info="Provenance prints correctly")
-  expect_equal(print.provenance(fakeprov),
-               invisible("Provenance hash a generated on b with c."),
-               info="Provenance printing returns an invisible string with the information in it.")
+  expect_equal(
+    print.provenance(fakeprov),
+    invisible("Provenance hash a generated on b with c."),
+    info="Provenance printing returns an invisible string with the information in it."
+  )
 })

@@ -71,7 +71,7 @@ test_that("pk.nca", {
       exclude=NA_character_,
       stringsAsFactors=FALSE)
   expect_equal(myresult$result, verify.result,
-               tol=0.001,
+               tolerance=0.001,
                info=paste("The specific order of the levels isn't important--",
                           "the fact that they are factors and that the set",
                           "doesn't change is important."))
@@ -105,7 +105,7 @@ test_that("pk.nca", {
   verify.result.multi$start <- verify.result.multi$start + 2
   verify.result.multi$end <- verify.result.multi$end + 2
   expect_equal(myresult.multi$result, verify.result.multi,
-               tol=0.001,
+               tolerance=0.001,
                info="Shifted dosing works the same as un-shifted where time parameters like tmax and tlast are reported relative to the start of the interval")
 
   tmpconc <- generate.conc(2, 1, 0:24)
@@ -116,14 +116,14 @@ test_that("pk.nca", {
                       intervals=data.frame(start=0, end=Inf, cmax=TRUE))
   myresult <- pk.nca(mydata)
   expect_equal(myresult$result$PPORRES,
-               c(0.99981, 0.94097), tol=0.00001,
+               c(0.99981, 0.94097), tolerance=0.00001,
                info="Calculations work with a single row of intervals and a single parameter requested")
 
   mydata <- PKNCAdata(myconc, mydose,
                       intervals=data.frame(start=0, end=Inf, cl.obs=TRUE))
   myresult <- pk.nca(mydata)
   expect_equal(subset(myresult$result, PPTESTCD %in% "cl.obs")$PPORRES,
-               c(0.04640, 0.05111), tol=0.0001,
+               c(0.04640, 0.05111), tolerance=0.0001,
                info="PK intervals work with passing in dose as a parameter")
 
   tmpconc <- generate.conc(2, 1, 0:24)
@@ -134,7 +134,7 @@ test_that("pk.nca", {
                       intervals=data.frame(start=0, end=24, cmax=TRUE, cav=TRUE))
   myresult <- pk.nca(mydata)
   expect_equal(subset(myresult$result, PPTESTCD %in% "cav")$PPORRES,
-               c(0.5642, 0.5846), tol=0.0001,
+               c(0.5642, 0.5846), tolerance=0.0001,
                info="PK intervals work with passing in start and end as parameters")
   
   ## Ensure that the correct number of doses are included in parameters that use dosing.
@@ -149,7 +149,7 @@ test_that("pk.nca", {
   myresult <- pk.nca(mydata)
   expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.obs"],
                4/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "aucinf.obs"],
-               tol=0.0001,
+               tolerance=0.0001,
                info="The correct number of doses is selected for an interval (>=start and <end), 4 doses and not 5")
 
   mydata <- PKNCAdata(myconc, mydose,
@@ -157,7 +157,7 @@ test_that("pk.nca", {
   myresult <- pk.nca(mydata)
   expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.last"],
                1/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "auclast"],
-               tol=0.0001,
+               tolerance=0.0001,
                info="The correct number of doses is selected for an interval (>=start and <end), 1 dose and not 5")
 
   mydata <- PKNCAdata(myconc, mydose,
@@ -165,7 +165,7 @@ test_that("pk.nca", {
   myresult <- pk.nca(mydata)
   expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.last"],
                NA/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "auclast"],
-               tol=0.0001,
+               tolerance=0.0001,
                info="The correct number of doses is selected for an interval (>=start and <end), no doses selected")
   
 })
@@ -246,7 +246,7 @@ test_that("pk.calc.all with duration.dose required", {
   myresult <- pk.nca(mydata)
   expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "mrt.iv.last"],
                c(10.36263, 10.12515),
-               tol=1e-5,
+               tolerance=1e-5,
                info="duration.dose is used when requested")
 })
 

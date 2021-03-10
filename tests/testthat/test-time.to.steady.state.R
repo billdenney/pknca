@@ -184,7 +184,7 @@ test_that("pk.tss.stepwise.linear", {
                            min.points=c(3, 4),
                            time.dosing=0:14,
                            verbose=FALSE),
-    regex="Only first value of min.points is used",
+    regexp="Only first value of min.points is used",
     info="pk.tss.stepwise.linear 2")
 
   ## Check the level input
@@ -196,7 +196,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level="A",
                            verbose=FALSE),
-    regex="level must be a number",
+    regexp="level must be a number",
     info="pk.tss.stepwise.linear 3")
 
   expect_error(
@@ -207,7 +207,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=2,
                            verbose=FALSE),
-    regex="level must be between 0 and 1, exclusive",
+    regexp="level must be between 0 and 1, exclusive",
     info="pk.tss.stepwise.linear 4")
   
   expect_error(
@@ -218,7 +218,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=-1,
                            verbose=FALSE),
-    regex="level must be between 0 and 1, exclusive",
+    regexp="level must be between 0 and 1, exclusive",
     info="pk.tss.stepwise.linear 5")
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -228,7 +228,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=0,
                            verbose=FALSE),
-    regex="level must be between 0 and 1, exclusive",
+    regexp="level must be between 0 and 1, exclusive",
     info="pk.tss.stepwise.linear 6")
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -238,7 +238,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=1,
                            verbose=FALSE),
-    regex="level must be between 0 and 1, exclusive",
+    regexp="level must be between 0 and 1, exclusive",
     info="pk.tss.stepwise.linear 7")
 
   expect_warning(
@@ -249,7 +249,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=c(0.95, 0.99),
                            verbose=FALSE),
-    regex="Only first value of level is being used",
+    regexp="Only first value of level is being used",
     info="pk.tss.stepwise.linear 8")
 
   ## This is mainly to test verbosity
@@ -261,7 +261,7 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=c(0.95, 0.99),
                            verbose=FALSE),
-    regex="Only first value of level is being used",
+    regexp="Only first value of level is being used",
     info="pk.tss.stepwise.linear 9")
 
   ## Ensure that the first value really is used

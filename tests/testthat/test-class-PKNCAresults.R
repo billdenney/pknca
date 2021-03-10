@@ -52,17 +52,17 @@ test_that("PKNCAresults generation", {
       exclude=NA_character_,
       stringsAsFactors=FALSE)
   expect_equal(myresult$result, verify.result,
-               tol=0.001,
+               tolerance=0.001,
                info="The specific order of the levels isn't important-- the fact that they are factors and that the set doesn't change is important.")
   
   ## Test conversion to a data.frame
-  expect_equal(as.data.frame(myresult), verify.result, tol=0.001,
+  expect_equal(as.data.frame(myresult), verify.result, tolerance=0.001,
                info="Conversion of PKNCAresults to a data.frame in long format (default long format)")
-  expect_equal(as.data.frame(myresult, out.format="long"), verify.result, tol=0.001,
+  expect_equal(as.data.frame(myresult, out.format="long"), verify.result, tolerance=0.001,
                info="Conversion of PKNCAresults to a data.frame in long format (specifying long format)")
   expect_equal(as.data.frame(myresult, out.format="wide"),
                tidyr::spread_(verify.result, "PPTESTCD", "PPORRES"),
-               tol=0.001,
+               tolerance=0.001,
                info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)")
 
   tmpconc <- generate.conc(2, 1, 0:24)
@@ -288,7 +288,7 @@ test_that("dropping `start` and `end` from groups is allowed with a warning.", {
   
   expect_warning(
     current_summary <- summary(myresult, drop.group=c("ID", "start")),
-    regex="drop.group including start or end may result", fixed=TRUE
+    regexp="drop.group including start or end may result", fixed=TRUE
   )
   expect_false("start" %in% names(current_summary))
 })
@@ -411,7 +411,7 @@ test_that("ptr works as a parameter", {
   expect_equal(
     ptr_result$PPORRES[ptr_result$PPTESTCD %in% "ptr"],
     c(2.9055, 2.9885),
-    tol=0.0001
+    tolerance=0.0001
   )
 })
 

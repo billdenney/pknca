@@ -122,9 +122,9 @@ test_that("parseFormula", {
                r7,
                check.attributes=FALSE)
   expect_error(parseFormula(f2, require.groups=TRUE),
-               regex="rhs of formula must be a conditioning expression")
+               regexp="rhs of formula must be a conditioning expression")
   expect_error(parseFormula(f1, require.two.sided=TRUE),
-               regex="formula is one-sided with require.two.sided set to TRUE")
+               regexp="formula is one-sided with require.two.sided set to TRUE")
 })
 
 test_that("formula.parseFormula", {

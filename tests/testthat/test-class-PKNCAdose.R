@@ -75,7 +75,7 @@ test_that("PKNCAdose", {
   tmp.dose.na <- tmp.dose
   tmp.dose.na$time[1] <- NA
   expect_error(PKNCAdose(tmp.dose.na, formula=dose~time|treatment+ID),
-               regex="Some but not all values are missing for the independent variable",
+               regexp="Some but not all values are missing for the independent variable",
                info="Dose time must either all or none be NA.")
   ## Keys must be unique
   bad.dose.analyte <- unique(tmp.conc.analyte[,c("treatment", "ID", "analyte")])

@@ -328,7 +328,7 @@ test_that("superposition math", {
   expect_equal(v2,
                data.frame(conc=c(3.571, 3.286, 3.143, 3.571),
                           time=0:3),
-               tol=0.001)
+               tolerance=0.001)
 
   ## all zeros input gives all zeros output
   expect_equal(superposition(conc=rep(0, 6), time=0:5, tau=24),
@@ -383,7 +383,7 @@ test_that("superposition math", {
                             4.6047e-06),
                           time=c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                             5, 5.5, 6, 6.5, 24)),
-               tol=0.001,
+               tolerance=0.001,
                info="Dose scaling with matching input and output doses")
 
   v2 <-
@@ -412,7 +412,7 @@ test_that("superposition math", {
                             1.444e-05),
                           time=c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                             5, 5.5, 6, 6.5, 24)),
-               tol=0.001,
+               tolerance=0.001,
                info="Dose scaling with different input and output doses")
 
   expect_warning(v3 <- superposition(conc=c(0, 2, 3, 5, 6, 3, 1, 0),
@@ -429,7 +429,7 @@ test_that("superposition math", {
                              lambda.z=1, clast.pred=1, tlast=12),
                data.frame(conc=c(6.144e-6, 2, 3, 5, 6, 3, 1, 6.144e-6),
                           time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24)),
-               tol=0.001,
+               tolerance=0.001,
                info="Uncalculable lambda.z with extrapolation to steady-state with lambda.z given, gives conc values")
 })
 
