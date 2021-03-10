@@ -49,6 +49,18 @@
       return("lin up/log down")
     match.arg(x, c("lin up/log down", "linear"))
   },
+  conc_above=function(x, default=FALSE, description=FALSE) {
+    if (description) {
+      return(
+        "For the time_above parameter, what concentration should the value be above?"
+      )
+    }
+    if (default)
+      return(NA_real_)
+    stopifnot("conc_above must be a scalar"=length(x) == 1)
+    stopifnot("conc_above must be numeric"=is.numeric(x))
+    x
+  },
   conc.na=function(x, default=FALSE, description=FALSE) {
     if (description)
       return(paste(

@@ -58,6 +58,7 @@ test_that("PKNCA.options", {
                list(adj.r.squared.factor=0.0001,
                     max.missing=0.5,
                     auc.method="lin up/log down",
+                    conc_above=NA_real_,
                     conc.na="drop",
                     conc.blq=list(
                       first="keep",
@@ -121,7 +122,7 @@ test_that("PKNCA.options", {
                "lin up/log down",
                info="auc.method selection works for lin up/log down")
   expect_error(PKNCA.options(auc.method="foo", check=TRUE),
-               regex="should be one of",
+               regexp="should be one of",
                info="auc.method is a valid method")
 
   # conc.na
