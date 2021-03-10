@@ -4,6 +4,10 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
+# PKNCA 0.9.5 (in development)
+
+* Add time_above parameter to calcualte time above a given concentration.
+
 # PKNCA 0.9.4
 
 * Additional changes required for compatibility dplyr version 1.0 and CRAN
