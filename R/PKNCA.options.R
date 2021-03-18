@@ -307,7 +307,7 @@
 #' included in the summary.
 #' 
 #' See the vignette 'Options for Controlling PKNCA' for a current list
-#' of options.
+#' of options (\code{vignette("Options-for-Controlling-PKNCA", package="PKNCA")}).
 #' 
 #' @param \dots options to set or get the value for
 #' @param default (re)sets all default options

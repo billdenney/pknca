@@ -44,7 +44,7 @@ used during summarization and are used for assessing what values are
 included in the summary.
 
 See the vignette 'Options for Controlling PKNCA' for a current list
-of options.
+of options (\code{vignette("Options-for-Controlling-PKNCA", package="PKNCA")}).
 }
 \examples{
 

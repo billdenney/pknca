@@ -28,12 +28,11 @@
 #' @param tlast Time of last concentration above the limit of 
 #'   quantification (will be calculated and included in the return data 
 #'   frame if not given)
-#' @param manually.selected.points Have the points being input been 
-#'   manually selected?  The impact of setting this to \code{TRUE} is 
-#'   that no selection for the best points will be done.  When
-#'   \code{TRUE}, this option causes the options of
-#'   \code{adj.r.squared.factor}, \code{min.hl.points}, and
-#'   \code{allow.tmax.in.half.life} to be ignored.
+#' @param manually.selected.points Have the input points (\code{conc} and
+#'   \code{time}) been manually selected?  The impact of setting this to
+#'   \code{TRUE} is that no selection for the best points will be done.  When
+#'   \code{TRUE}, this option causes the options of \code{adj.r.squared.factor},
+#'   \code{min.hl.points}, and \code{allow.tmax.in.half.life} to be ignored.
 #' @param options List of changes to the default 
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @param min.hl.points The minimum number of points that must be 
