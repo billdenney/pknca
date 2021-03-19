@@ -25,7 +25,7 @@ Suggests:
 Description: Compute standard Non-Compartmental Analysis (NCA) parameters for
     typical pharmacokinetic analyses and summarize them.
 License: AGPL-3
-URL: https://github.com/billdenney/pknca
+URL: http://billdenney.github.io/pknca, https://github.com/billdenney/pknca
 BugReports: https://github.com/billdenney/pknca/issues
 NeedsCompilation: no
 VignetteBuilder: knitr
