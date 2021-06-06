@@ -179,3 +179,45 @@ test_that("check.intervals requires a valid value", {
     fixed=TRUE
   )
 })
+
+test_that("check.intervals works with tibble input (fix #141)", {
+  e.dat <-
+    data.frame(
+      conc=c(0.5,2,5,9.2,12,2,1.85,1.08,0.5,0.3,2.4,4.5,10.2,15,2.6,1.65,1.1,
+             0.5,2,5,9.2,12,2,1.85,1.08,NA,0.3,2.4,4.5,10.2,15,2.6,1.65,1.1),
+      time=c(seq(264.2,312.2,3),seq(264,312,3)),
+      ARM=rep(c(rep(1,8),rep(2,9)),2),
+      SUBJ=c(rep(1,17),rep(2,17)),
+      Dose=c(rep(5,17)),rep(5,17)
+    )
+  
+  intervals_manual_first <-
+    e.dat %>%
+    dplyr::group_by(SUBJ) %>%
+    dplyr::summarize(
+      start=time[dplyr::between(time, 264, 265)],
+      end=time[dplyr::between(time, 288, 289)]
+    )
+  intervals_manual_second <-
+    e.dat %>%
+    dplyr::group_by(SUBJ) %>%
+    dplyr::summarize(
+      start=time[dplyr::between(time, 288, 289)],
+      end=time[dplyr::between(time, 312, 313)]
+    )
+  intervals_manual <-
+    dplyr::bind_rows(
+      intervals_manual_first,
+      intervals_manual_second
+    ) %>%
+    dplyr::mutate(
+      auclast=TRUE,
+      aucall=TRUE,
+      tlast=TRUE
+    )
+  # There is some other issue here where intervals are having an issue being a tibble
+  expect_equal(
+    check.interval.specification(intervals_manual)$start,
+    intervals_manual$start
+  )
+})

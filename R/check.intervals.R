@@ -24,20 +24,22 @@ check.interval.specification <- function(x) {
     warning("Interval specification must be a data.frame")
     x <- as.data.frame(x, stringsAsFactors=FALSE)
   }
-  if (nrow(x) == 0)
+  if (nrow(x) == 0) {
     stop("interval specification has no rows")
+  }
   # Confirm that the minimal columns (start and end) exist
-  if (length(missing.required.cols <- setdiff(c("start", "end"), names(x))) > 0)
+  if (length(missing.required.cols <- setdiff(c("start", "end"), names(x))) > 0) {
     stop(sprintf("Column(s) %s missing from interval specification",
                  paste0("'", missing.required.cols, "'",
                         collapse=", ")))
+  }
   interval_cols <- get.interval.cols()
   # Check the edit of each column
-  for (n in names(interval_cols))
+  for (n in names(interval_cols)) {
     if (!(n %in% names(x))) {
       if (is.vector(interval_cols[[n]]$values)) {
         ## Set missing columns to the default value
-        x[,n] <- interval_cols[[n]]$values[1]
+        x[[n]] <- interval_cols[[n]]$values[1]
       } else {
         # It would probably take malicious code to get here (altering
         # the intervals without using add.interval.col
@@ -46,18 +48,20 @@ check.interval.specification <- function(x) {
     } else {
       ## Confirm the edits of the given columns
       if (is.vector(interval_cols[[n]]$values)) {
-        if (!all(x[,n] %in% interval_cols[[n]]$values))
+        if (!all(x[[n]] %in% interval_cols[[n]]$values))
           stop(sprintf("Invalid value(s) in column %s:", n),
-               paste(unique(setdiff(x[,n], interval_cols[[n]]$values)),
+               paste(unique(setdiff(x[[n]], interval_cols[[n]]$values)),
                      collapse=", "))
       } else if (is.function(interval_cols[[n]]$values)) {
-        if (is.factor(x[,n]))
+        if (is.factor(x[[n]])) {
           stop(sprintf("Interval column '%s' should not be a factor", n))
-        interval_cols[[n]]$values(x[,n])
+        }
+        interval_cols[[n]]$values(x[[n]])
       } else {
         stop("Invalid 'values' for column specification ", n, " (please report this as a bug).") # nocov
       }
     }
+  }
   ## Now check specific columns
   ## ##############################
   ## start and end
@@ -75,7 +79,7 @@ check.interval.specification <- function(x) {
   for (n in setdiff(names(interval_cols), c("start", "end")))
     mask_calculated <-
       (mask_calculated |
-       !(x[,n] %in% c(NA, FALSE)))
+       !(x[[n]] %in% c(NA, FALSE)))
   if (any(!mask_calculated))
     warning("Nothing to be calculated in interval specification number(s): ",
             paste((1:nrow(x))[!mask_calculated], collapse=", "))

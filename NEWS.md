@@ -11,6 +11,7 @@ the dosing including dose amount and route.
   are given for first, middle, and last (related to #145).  This only affects
   datasets where BLQ is being replaced with a nonzero value (not a common
   scenario).
+* Fix issue where intervals could not be tibbles (#141)
 
 # PKNCA 0.9.4
 
