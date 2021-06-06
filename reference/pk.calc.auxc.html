@@ -166,7 +166,7 @@ purposes when analyzing PK in drug development.</p>
   interval <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='cn'>Inf</span><span class='op'>)</span>,
   clast <span class='op'>=</span> <span class='fu'><a href='pk.calc.clast.obs.html'>pk.calc.clast.obs</a></span><span class='op'>(</span><span class='va'>conc</span>, <span class='va'>time</span>, check <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>,
   lambda.z <span class='op'>=</span> <span class='cn'>NA</span>,
-  auc.type <span class='op'>=</span> <span class='st'>"AUClast"</span>,
+  auc.type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AUClast"</span>, <span class='st'>"AUCinf"</span>, <span class='st'>"AUCall"</span><span class='op'>)</span>,
   options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   method <span class='op'>=</span> <span class='cn'>NULL</span>,
   conc.blq <span class='op'>=</span> <span class='cn'>NULL</span>,
