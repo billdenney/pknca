@@ -124,23 +124,23 @@ clean.conc.blq <- function(conc, time,
         stop("There is a bug in cleaning the conc.blq with position names") # nocov
       }
       ## Choose the rule to apply
-      this.rule <-
+      this_rule <-
         if (is.list(conc.blq)) {
           conc.blq[[n]]
         } else {
           conc.blq
         }
-      if (this.rule %in% "keep") {
+      if (this_rule %in% "keep") {
         ## Do nothing
-      } else if (this.rule %in% "drop") {
+      } else if (this_rule %in% "drop") {
         ret <- ret[!mask,]
-      } else if (is.numeric(this.rule)) {
-        ret$conc[mask] <- conc.blq
+      } else if (is.numeric(this_rule)) {
+        ret$conc[mask] <- this_rule
       } else {
         # This case should already have been captured by the PKNCA.options
         # call above.
         stop(sprintf("Unknown how to handle conc.blq rule %s", # nocov
-                     as.character(this.rule)))                 # nocov
+                     as.character(this_rule)))                 # nocov
       }
     }
   }

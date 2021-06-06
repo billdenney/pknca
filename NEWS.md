@@ -7,6 +7,10 @@ the dosing including dose amount and route.
 # PKNCA 0.9.5 (in development)
 
 * Add time_above parameter to calcualte time above a given concentration.
+* Fix numeric BLQ replacement when the value is a number and different values
+  are given for first, middle, and last (related to #145).  This only affects
+  datasets where BLQ is being replaced with a nonzero value (not a common
+  scenario).
 
 # PKNCA 0.9.4
 
