@@ -69,7 +69,7 @@
 pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                          clast=pk.calc.clast.obs(conc, time, check=FALSE),
                          lambda.z=NA,
-                         auc.type="AUClast",
+                         auc.type=c("AUClast", "AUCinf", "AUCall"),
                          options=list(),
                          method=NULL,
                          conc.blq=NULL,
@@ -99,7 +99,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     # All the data were missing or 0 before excluding points
     return(structure(0, exclude="DO NOT EXCLUDE"))
   }
-  auc.type <- match.arg(auc.type, c("AUClast", "AUCinf", "AUCall"))
+  auc.type <- match.arg(auc.type)
   if (interval[1] >= interval[2])
     stop("The AUC interval must be increasing")
   if (auc.type %in% "AUCinf" &

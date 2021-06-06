@@ -141,13 +141,15 @@ add.interval.col <- function(name,
 
 ## Add the start and end interval columns
 add.interval.col("start",
-                 FUN=NA,
-                 values=as.numeric,
-                 desc="Starting time of the interval")
+  FUN = NA,
+  values = as.numeric,
+  desc = "Starting time of the interval"
+)
 add.interval.col("end",
-                 FUN=NA,
-                 values=as.numeric,
-                 desc="Ending time of the interval (potentially infinity)")
+  FUN = NA,
+  values = as.numeric,
+  desc = "Ending time of the interval (potentially infinity)"
+)
 
 #' Sort the interval columns by dependencies.
 #'

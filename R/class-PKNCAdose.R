@@ -136,8 +136,9 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
 #' @param ... Arguments passed to another setRoute function
 #' @return The object with an updated route
 #' @export
-setRoute <- function(object, ...)
+setRoute <- function(object, ...) {
   UseMethod("setRoute")
+}
 #' @rdname setRoute
 #' @export
 setRoute.PKNCAdose <- function(object, route, ...) {

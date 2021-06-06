@@ -72,8 +72,9 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
 #' equal, the first is chosen.
 #' @export
 #' @importFrom stats AIC
-get.best.model <- function(object, ...)
+get.best.model <- function(object, ...) {
   object[stats::AIC(object, ...)$isBest %in% "Best Model"][[1]]
+}
 
 #' Get the first model from a list of models
 #'
