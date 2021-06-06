@@ -22,7 +22,7 @@ pk.calc.auxc(
   interval = c(0, Inf),
   clast = pk.calc.clast.obs(conc, time, check = FALSE),
   lambda.z = NA,
-  auc.type = "AUClast",
+  auc.type = c("AUClast", "AUCinf", "AUCall"),
   options = list(),
   method = NULL,
   conc.blq = NULL,
