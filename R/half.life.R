@@ -4,6 +4,9 @@
 #' concentration-time curve using semi-log regression (\code{log(conc)~time})
 #' with automated selection of the points for calculation (unless
 #' \code{manually.selected.points} is \code{TRUE}).
+#' 
+#' See the "Half-Life Calculation" vignette for more details on the calculation
+#' methods used.
 #'
 #' @details If \code{manually.selected.points} is \code{FALSE} (default), the
 #' half-life is calculated by computing the best fit line for all points at or
@@ -12,8 +15,8 @@
 #' 
 #' \itemize{
 #'  \item{At least \code{min.hl.points} points included} 
-#'  \item{A \code{lambda.z} > 0}
-#'  \item{The best adjusted r-squared (within \code{adj.r.squared.factor})}
+#'  \item{A \code{lambda.z} > 0 and at the same time the best adjusted r-squared
+#'  (within \code{adj.r.squared.factor})}
 #'  \item{The one with the most points included}
 #' }
 #' 
@@ -204,7 +207,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         TRUE
       } else {
         half_lives_for_selection$adj.r.squared >
-          (max(half_lives_for_selection$adj.r.squared) - adj.r.squared.factor)
+          (max(half_lives_for_selection$adj.r.squared, na.rm=TRUE) - adj.r.squared.factor)
       }
     ## Missing values are not the best
     mask_best[is.na(mask_best)] <- FALSE

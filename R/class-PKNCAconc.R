@@ -29,10 +29,12 @@
 #'   typically used for urine or feces measurements.
 #' @param duration (optional) The duration of collection as is typically
 #'   used for concentration measurements in urine or feces.
-#' @param exclude_half.life,include_half.life Points to exclude from the
-#'   half-life calculation (still using normal selection rules for the
-#'   other points) or to include for the half-life (using specifically
-#'   those points and bypassing automatic point selection).
+#' @param exclude_half.life,include_half.life A character scalar for the column
+#'   name in the dataset of the points to exclude from the half-life calculation
+#'   (still using normal curve-stripping selection rules for the other points)
+#'   or to include for the half-life (using specifically those points and
+#'   bypassing automatic curve-stripping point selection).  See the "Half-Life
+#'   Calculation" vignette for more details on the use of these arguments.
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @family PKNCA objects

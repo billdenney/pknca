@@ -1,0 +1,140 @@
+---
+title: "Half-Life Calculation"
+author: "Bill Denney"
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 6
+vignette: >
+  %\VignetteIndexEntry{Half-Life Calculation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo=FALSE, include=FALSE}
+library(PKNCA)
+library(dplyr)
+```
+
+# Introduction
+
+Half-life is calculated by fitting the natural logarithm of concentration by time.  The default calculation method is curve stripping (described in more detail below).  Manual half-life points with no automated half-life selection can be performed, or specific points can be excluded while still performing curve stripping.
+
+# Curve Stripping Method
+
+When automatic point selection is performed for curve stripping, the algorithm described below is used.
+
+## Select the Points
+
+All sets of points that are applicable according to the current options are selected.
+
+* Drop all BLQ values, then
+* Choose all sets of points that start from the $T_{last}$ and step back:
+    * at least `r PKNCA.options("min.hl.points")` points (customizable with `PKNCA.options("min.hl.points")`)
+    * `r c("Not including", "Including")[PKNCA.options("allow.tmax.in.half.life") + 1]` $T_{max}$ (customizable with `PKNCA.options("allow.tmax.in.half.life")`)
+
+As a specific example, if measurements were at 0, 1, 2, 3, 4, 6, 8, 12, and 24 hours; if $T_{last}$ is 12 hours; and if $T_{max}$ is 1 hour then the default point sets that would be fit are:
+
+1. 6, 8, and 12 hours;
+2. 4, 6, 8, and 12 hours;
+3. 3, 4, 6, 8, and 12 hours; and
+4. 2, 3, 4, 6, 8, and 12 hours.
+
+If `PKNCA.options("min.hl.points")` were set to `4`, then the 6, 8, and 12 hour set would not be fit.  If `PKNCA.options("allow.tmax.in.half.life")` were set to `TRUE`, then 1, 2, 3, 4, 6, 8, and 12 hours would be fit.
+
+## Select the Best Fit
+
+After fitting all points, the best fit among the set of possible fit is selected by the following rules:
+
+1. $\lambda_z > 0$ and at the same time the maximum r-squared must be within an adjusted $r^2$ factor of the best.
+    1. The adjusted $r^2$ factor is controlled by `PKNCA.options("adj.r.squared.factor")` and it defaults to `r PKNCA.options("adj.r.squared.factor")`.
+    2. These rules must be met simultaneously, so if the maximum adjusted $r^2$ is for a line with $\lambda_z \leq 0$, the half-life may end up being unreportable.
+2. If fitting the log-linear concentration-time line fails, then it is not the best line.
+3. If more than one fit still meets the criteria above, then choose the fit with the most points included.
+
+```{r check-ggplot, include=!requireNamespace("dplyr"), results="asis"}
+cat("dplyr is required for this vignette to work correctly.  Please install the dplyr library and retry building the vignette.")
+```
+
+## Example
+
+```{r normal-example}
+# Perform calculations for subject 1, only
+data_conc <- as.data.frame(datasets::Theoph)[datasets::Theoph$Subject == 1, ]
+
+# Keep all points
+conc_obj <-
+  PKNCAconc(
+    data_conc,
+    conc~Time|Subject
+  )
+
+# Only calculate half-life and parameters required for half-life
+current_intervals <- data.frame(start=0, end=Inf, half.life=TRUE)
+data_obj <- PKNCAdata(conc_obj, intervals=current_intervals)
+result_obj <- pk.nca(data_obj)
+
+# Extract the results for subject 1 
+as.data.frame(result_obj)
+```
+
+
+# Manual Point Selection
+
+## Exclusion of Specific Points with Curve Stripping
+
+In some cases, specific points will be known outliers, or there may be another reason to exclude specific points.  And, with those points excluded, the half-life should be calculated using the normal curve stripping methods described above.
+
+To exclude specific points but otherwise use curve stripping, use the `exclude_half.life` option as the column name in the concentration dataset for `PKNCAconc()` as illustrated below.
+
+```{r exclude-points}
+data_conc$exclude_hl <- data_conc$Time == 12.12
+# Confirm that we will be excluding exactly one point
+stopifnot(sum(data_conc$exclude_hl) == 1)
+
+# Drop one point
+conc_obj_exclude1 <-
+  PKNCAconc(
+    data_conc,
+    conc~Time|Subject,
+    exclude_half.life="exclude_hl"
+  )
+
+data_obj_exclude1 <- PKNCAdata(conc_obj_exclude1, intervals=current_intervals)
+
+# Perform the calculations
+result_obj_exclude1 <- pk.nca(data_obj_exclude1)
+
+# Results differ when excluding the 12-hour point for subject 1 (compare to
+# example in the previous section)
+as.data.frame(result_obj_exclude1)
+```
+
+## Specification of the Exact Points for Analysis
+
+In other cases, the exact points to use for half-life calculation are known, and automatic point selection with curve stripping should not be performed.
+
+To exclude specific points but otherwise use curve stripping, use the `include_half.life` option as the column name in the concentration dataset for `PKNCAconc()` as illustrated below.
+
+```{r include-points}
+data_conc$include_hl <- data_conc$Time > 3
+# Confirm that we will be excluding exactly one point
+stopifnot(sum(data_conc$include_hl) == 6)
+
+# Drop one point
+conc_obj_include6 <-
+  PKNCAconc(
+    data_conc,
+    conc~Time|Subject,
+    include_half.life="include_hl"
+  )
+
+data_obj_include6 <- PKNCAdata(conc_obj_include6, intervals=current_intervals)
+
+# Perform the calculations
+result_obj_include6 <- pk.nca(data_obj_include6)
+
+# Results differ when including 6 points (compare to example in the previous
+# section)
+as.data.frame(result_obj_include6)
+```
