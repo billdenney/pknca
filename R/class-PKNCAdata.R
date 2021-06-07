@@ -58,8 +58,9 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   ret <- list()
   ## Generate the conc element
   if (inherits(data.conc, "PKNCAconc")) {
-    if (!missing(formula.conc))
+    if (!missing(formula.conc)) {
       warning("data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
+    }
     ret$conc <- data.conc
   } else {
     ret$conc <- PKNCAconc(data.conc, formula=formula.conc)
@@ -77,8 +78,9 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     ret$dose <- PKNCAdose(data.dose, formula.dose)
   }
   ## Check the options
-  if (!is.list(options))
+  if (!is.list(options)) {
     stop("options must be a list.")
+  }
   if (length(options) > 0) {
     if (is.null(names(options)))
       stop("options must have names.")
