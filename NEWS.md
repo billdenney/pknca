@@ -12,6 +12,11 @@ the dosing including dose amount and route.
   datasets where BLQ is being replaced with a nonzero value (not a common
   scenario).
 * Fix issue where intervals could not be tibbles (#141)
+* Fix minor issue where only the first exclusion reason would show in the
+  exclusion column and other reasons would be ignored (#113). Note that the
+  impact of this bug is minimal as the result would have been excluded from
+  summaries for the first reason found, but if there were multiple reasons for
+  exclusion the subsequent reasons would not be recorded.
 
 # PKNCA 0.9.4
 

@@ -1,5 +1,7 @@
 context("exclude")
 
+source("generate.data.R")
+
 test_that("setExcludeColumn", {
   ## exclude argument not given
   expect_equal(setExcludeColumn(list(data=data.frame(a=1),
@@ -72,7 +74,6 @@ test_that("setExcludeColumn", {
 
 test_that("exclude.default", {
   ## Check inputs
-  source("generate.data.R")
   my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   obj1 <- PKNCAconc(my_conc, formula=conc~time|treatment+ID)
 
@@ -207,7 +208,6 @@ test_that("exclude.default", {
 
 # Issue #55
 test_that("normalize_exclude makes blanks into NA_character_", {
-  source("generate.data.R")
   my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   my_conc$exclude <- c("", rep(NA_character_, nrow(my_conc) - 1))
   obj1 <- PKNCAconc(my_conc,
@@ -223,4 +223,34 @@ test_that("normalize_exclude makes blanks into NA_character_", {
                info="normalize_exclude makes blanks into NA_character_ and leaves non-blank alone.")
   expect_equal(normalize_exclude(1:5), 1:5,
                info="normalize_exclude works with bare vectors (as opposed to PKNCA objects)")
+})
+
+test_that("multiple exclusions for the same row provide all the reasons (fix #113)", {
+  my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  my_conc$exclude <- c("", rep(NA_character_, nrow(my_conc) - 1))
+  result_obj <-
+    pk.nca(PKNCAdata(
+      PKNCAconc(
+        my_conc,
+        formula=conc~time|treatment+ID,
+        exclude="exclude"
+      ),
+      intervals=data.frame(start=0, end=Inf, cmax=TRUE)
+    ))
+  result_excl1 <-
+    exclude(
+      result_obj,
+      reason="test1",
+      mask=c(TRUE, TRUE, rep(FALSE, nrow(as.data.frame(result_obj)) - 2))
+    )
+  result_excl2 <-
+    exclude(
+      result_excl1,
+      reason="test2",
+      mask=c(TRUE, FALSE, TRUE, rep(FALSE, nrow(as.data.frame(result_obj)) - 3))
+    )
+  expect_equal(
+    as.data.frame(result_excl2)$exclude,
+    c("test1; test2", "test1", "test2", rep(NA_character_, 7))
+  )
 })

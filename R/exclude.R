@@ -108,7 +108,7 @@ exclude.default <- function(object, reason, mask, FUN) {
     ret[mask.one] <- reason[mask.one]
   }
   if (any(mask.multiple)) {
-    ret[mask.multiple] <- paste(ret[mask.multiple], reason[mask.one], sep="; ")
+    ret[mask.multiple] <- paste(ret[mask.multiple], reason[mask.multiple], sep="; ")
   }
   object[[dataname]][,object$exclude] <- ret
   object
