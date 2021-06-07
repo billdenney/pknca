@@ -104,6 +104,9 @@ manually.selected.points is TRUE)." />
       <a href="../articles/Example-theophylline.html">Computing NCA Parameters for Theophylline</a>
     </li>
     <li>
+      <a href="../articles/Half-Life-Calculation.html">Half-Life Calculation</a>
+    </li>
+    <li>
       <a href="../articles/Introduction-and-Usage.html">Introduction to PKNCA and Usage Instructions</a>
     </li>
     <li>
@@ -114,6 +117,9 @@ manually.selected.points is TRUE)." />
     </li>
     <li>
       <a href="../articles/PKNCA-validation.html">PKNCA Validation</a>
+    </li>
+    <li>
+      <a href="../articles/Post-Processing.html">Post-Processing</a>
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
@@ -269,14 +275,16 @@ to be included in the half-life slope calculation.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If <code>manually.selected.points</code> is <code>FALSE</code> (default), the
+    <p>See the "Half-Life Calculation" vignette for more details on the calculation
+methods used.</p>
+<p>If <code>manually.selected.points</code> is <code>FALSE</code> (default), the
 half-life is calculated by computing the best fit line for all points at or
 after tmax (based on the value of <code>allow.tmax.in.half.life</code>.  The best
 half-life is chosen by the following rules in order:</p>
 <ul>
 <li><p>At least <code>min.hl.points</code> points included</p></li>
-<li><p>A <code>lambda.z</code> &gt; 0</p></li>
-<li><p>The best adjusted r-squared (within <code>adj.r.squared.factor</code>)</p></li>
+<li><p>A <code>lambda.z</code> &gt; 0 and at the same time the best adjusted r-squared
+ (within <code>adj.r.squared.factor</code>)</p></li>
 <li><p>The one with the most points included</p></li>
 </ul>
 

@@ -331,6 +331,9 @@
     <loc>http://billdenney.github.io/pknca/articles/Example-theophylline.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/articles/Half-Life-Calculation.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/articles/Introduction-and-Usage.html</loc>
   </url>
   <url>
@@ -341,6 +344,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/articles/PKNCA-validation.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/Post-Processing.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html</loc>

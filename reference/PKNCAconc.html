@@ -101,6 +101,9 @@
       <a href="../articles/Example-theophylline.html">Computing NCA Parameters for Theophylline</a>
     </li>
     <li>
+      <a href="../articles/Half-Life-Calculation.html">Half-Life Calculation</a>
+    </li>
+    <li>
       <a href="../articles/Introduction-and-Usage.html">Introduction to PKNCA and Usage Instructions</a>
     </li>
     <li>
@@ -111,6 +114,9 @@
     </li>
     <li>
       <a href="../articles/PKNCA-validation.html">PKNCA Validation</a>
+    </li>
+    <li>
+      <a href="../articles/Post-Processing.html">Post-Processing</a>
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
@@ -237,10 +243,12 @@ typically used for urine or feces measurements.</p></td>
     </tr>
     <tr>
       <th>exclude_half.life, include_half.life</th>
-      <td><p>Points to exclude from the
-half-life calculation (still using normal selection rules for the
-other points) or to include for the half-life (using specifically
-those points and bypassing automatic point selection).</p></td>
+      <td><p>A character scalar for the column
+name in the dataset of the points to exclude from the half-life calculation
+(still using normal curve-stripping selection rules for the other points)
+or to include for the half-life (using specifically those points and
+bypassing automatic curve-stripping point selection).  See the "Half-Life
+Calculation" vignette for more details on the use of these arguments.</p></td>
     </tr>
     </table>
 
