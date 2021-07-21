@@ -50,7 +50,7 @@ knitr::kable(PKNCA.options("single.dose.aucs"))
 knitr::kable(data_obj_automatic$intervals)
 ```
 
-Intervals for calculation can also be specified manually.  Manual specification requires at least columns for `start` time, `end` time, and the parameters requested.  The manual specification can also include any grouping factors from the concentration data set.  Column order of the intervals is not important.  When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter.  Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC~0-$\infinity$~, you do not have to specify it in the parameters requested.
+Intervals for calculation can also be specified manually.  Manual specification requires at least columns for `start` time, `end` time, and the parameters requested.  The manual specification can also include any grouping factors from the concentration data set.  Column order of the intervals is not important.  When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter.  Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC~0-$\infty$~, you do not have to specify it in the parameters requested.
 
 ```{r manualintervals}
 intervals_manual <- data.frame(start=0,
