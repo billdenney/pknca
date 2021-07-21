@@ -3323,7 +3323,7 @@
 </tr>
 </tbody>
 </table>
-<p>Intervals for calculation can also be specified manually. Manual specification requires at least columns for <code>start</code> time, <code>end</code> time, and the parameters requested. The manual specification can also include any grouping factors from the concentration data set. Column order of the intervals is not important. When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter. Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC<sub>0-<span class="math inline">\(\infinity\)</span></sub>, you do not have to specify it in the parameters requested.</p>
+<p>Intervals for calculation can also be specified manually. Manual specification requires at least columns for <code>start</code> time, <code>end</code> time, and the parameters requested. The manual specification can also include any grouping factors from the concentration data set. Column order of the intervals is not important. When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter. Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC<sub>0-<span class="math inline">\(\infty\)</span></sub>, you do not have to specify it in the parameters requested.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">intervals_manual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>,
                                end<span class="op">=</span><span class="cn">Inf</span>,
@@ -4200,7 +4200,7 @@
 ## attr(,"class")
 ## [1] "PKNCAresults" "list"        
 ## attr(,"provenance")
-## Provenance hash 51b59f882a9f3a2811324a5ff10bb22b generated on 2021-06-07 18:49:10 with R version 4.1.0 (2021-05-18).</code></pre>
+## Provenance hash 51b59f882a9f3a2811324a5ff10bb22b generated on 2021-07-21 18:19:17 with R version 4.1.0 (2021-05-18).</code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span></code></pre></div>
 <pre><code>##  start end  N     auclast        cmax
