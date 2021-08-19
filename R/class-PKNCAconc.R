@@ -70,6 +70,14 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     stop("The left hand side of the formula must have exactly one variable")
   if (length(all.vars(parsedForm$rhs)) != 1)
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
+  # Do some general checking of the concentration and time data to give an early
+  # error if the data are not correct.  Do not check monotonic.time because the
+  # data may contain information for more than one subject.
+  check.conc.time(
+    conc=data[[as.character(parsedForm$lhs)]],
+    time=data[[as.character(parsedForm$rhs)]],
+    monotonic.time=FALSE
+  )
   ## Values must be unique (one value per measurement)
   key.cols <- c(all.vars(parsedForm$rhs),
                 all.vars(parsedForm$groupFormula))

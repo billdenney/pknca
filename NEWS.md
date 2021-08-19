@@ -6,6 +6,7 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.5 (in development)
 
+* PKNCAconc objects are checked earlier for valid data (#154)
 * Add time_above parameter to calcualte time above a given concentration.
 * Fix numeric BLQ replacement when the value is a number and different values
   are given for first, middle, and last (related to #145).  This only affects
