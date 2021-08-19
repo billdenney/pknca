@@ -161,6 +161,7 @@
 <a href="#pknca-095-in-development" class="anchor"></a>PKNCA 0.9.5 (in development)<small> Unreleased </small>
 </h1>
 <ul>
+<li>PKNCAconc objects are checked earlier for valid data (<a href='https://github.com/billdenney/pknca/issues/154'>#154</a>)</li>
 <li>Add time_above parameter to calcualte time above a given concentration.</li>
 <li>Fix numeric BLQ replacement when the value is a number and different values are given for first, middle, and last (related to <a href='https://github.com/billdenney/pknca/issues/145'>#145</a>). This only affects datasets where BLQ is being replaced with a nonzero value (not a common scenario).</li>
 <li>Fix issue where intervals could not be tibbles (<a href='https://github.com/billdenney/pknca/issues/141'>#141</a>)</li>
