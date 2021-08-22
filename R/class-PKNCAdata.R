@@ -168,12 +168,14 @@ print.PKNCAdata <- function(x, ...) {
 #' Extract all the original data from a PKNCAconc or PKNCAdose object
 #' @param object R object to extract the data from.
 #' @export
-getData.PKNCAdata <- function(object)
+getData.PKNCAdata <- function(object) {
   object$data
+}
 
 #' @rdname getDataName
-getDataName.PKNCAdata <- function(object)
+getDataName.PKNCAdata <- function(object) {
   "data"
+}
 
 #' Summarize a PKNCAdata object showing important details about the
 #' concentration, dosing, and interval information.

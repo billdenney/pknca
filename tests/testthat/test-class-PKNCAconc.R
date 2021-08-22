@@ -74,6 +74,8 @@ test_that("PKNCAconc with input other than data.frames", {
 
 test_that("model frame and parameter extractions", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp_conc_single <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
+
   expect_equal(model.frame(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
                tmp.conc[,c("conc", "time", "treatment", "ID")],
                info="model.frame.PKNCAconc extracts the correct components")
@@ -114,6 +116,16 @@ test_that("model frame and parameter extractions", {
   expect_error(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level="foo"),
                regexp="Not all levels are listed in the group names",
                info="getGroups.PKNCAconc gives an error if a group name is not present")
+  
+  expect_equal(
+    group_vars.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
+    c("treatment", "ID")
+  )
+  expect_equal(
+    group_vars.PKNCAconc(PKNCAconc(tmp_conc_single, formula=conc~time)),
+    character(0),
+    info="Ungrouped data works with group_vars"
+  )
 })
 
 test_that("split.PKNCAconc", {

@@ -248,6 +248,12 @@ getGroups.PKNCAdose <- function(...) {
   getGroups.PKNCAconc(...)
 }
 
+#' @describeIn group_vars.PKNCAconc Get group_vars for a PKNCAdose object
+#' @exportS3Method dplyr::group_vars
+group_vars.PKNCAdose <- function(x) {
+  group_vars.PKNCAconc(x)
+}
+
 #' @rdname getData.PKNCAconc
 #' @export
 #' @importFrom nlme getData

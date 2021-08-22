@@ -228,6 +228,15 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
   data[, grpnames, drop=FALSE]
 }
 
+#' Get grouping variables for a PKNCA object
+#'
+#' @param x The PKNCA object
+#' @return A character vector (possibly empty) of the grouping variables
+#' @exportS3Method dplyr::group_vars
+group_vars.PKNCAconc <- function(x) {
+  all.vars(parseFormula(as.formula(x))$groups)
+}
+
 #' Extract all the original data from a PKNCAconc or PKNCAdose object
 #' @param object R object to extract the data from.
 #' @export

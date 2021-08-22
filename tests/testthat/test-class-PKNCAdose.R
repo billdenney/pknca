@@ -109,6 +109,7 @@ test_that("PKNCAdose without a data.frame as input", {
 
 test_that("PKNCAdose model.frame", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp_conc_single <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
   tmp.conc.analyte <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
                                     nanalytes=2)
   tmp.conc.study <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
@@ -116,6 +117,7 @@ test_that("PKNCAdose model.frame", {
   tmp.conc.analyte.study <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
                                           nanalytes=2, nstudies=2)
   tmp.dose <- generate.dose(tmp.conc)
+  tmp_dose_single <- generate.dose(tmp_conc_single)
 
   mydose1 <- PKNCAdose(formula=dose~time|treatment+ID, data=tmp.dose)
   expect_equal(getDepVar.PKNCAdose(mydose1),
@@ -185,6 +187,16 @@ test_that("PKNCAdose model.frame", {
   expect_error(PKNCAdose(formula=dose~.|treatment+ID, data=rbind(tmp.dose, tmp.dose)),
                regexp="Rows that are not unique per group and time.*found within dosing data",
                info="Dosing must have unique values with time and group")
+  
+  expect_equal(
+    group_vars.PKNCAdose(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)),
+    c("treatment", "ID")
+  )
+  expect_equal(
+    group_vars.PKNCAdose(PKNCAdose(tmp_dose_single, formula=dose~time)),
+    character(0),
+    info="Ungrouped data works with group_vars"
+  )
 })
 
 test_that("print.PKNCAdose", {
