@@ -57,22 +57,21 @@ superposition <- function(conc, ...)
 superposition.PKNCAconc <- function(conc, ...) {
   ## Split the data by grouping and extract just the concentration and
   ## time columns
-  tmp.data <- split.PKNCAconc(conc)
-  groupinfo <- attr(tmp.data, 'groupid')
-  tmp.results <-
+  nested_data <- prepare_PKNCAconc(conc)
+  tmp_results <-
     parallel::mclapply(
-      X=seq_along(tmp.data),
-      FUN=function(x, conc.col, time.col, ...) {
-        cbind(groupinfo[x,,drop=FALSE],
-              superposition.numeric(tmp.data[[x]]$data[[conc.col]],
-                                    tmp.data[[x]]$data[[time.col]],
-                                    ...),
-              row.names=NULL)
-      },
-      conc.col=as.character(parseFormula(conc)$lhs),
-      time.col=as.character(parseFormula(conc)$rhs),
-      ...)
-  dplyr::bind_rows(tmp.results)
+      X=seq_len(nrow(nested_data)),
+      FUN=function(idx) {
+        superposition.numeric(
+          conc=nested_data$data_conc[[idx]]$conc,
+          time=nested_data$data_conc[[idx]]$time,
+          ...
+        )
+      }
+    )
+  # Replace the concentration data with the new results
+  nested_data$data_conc <- tmp_results
+  tidyr::unnest(nested_data, cols="data_conc")
 }
 
 #' @rdname superposition

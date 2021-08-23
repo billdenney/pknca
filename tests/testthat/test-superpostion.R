@@ -438,8 +438,12 @@ test_that("PKNCAconc superposition", {
                       data=data.frame(ID=rep(1:2, each=7),
                                       conc=rep(c(0, 1, 2, 3, 2, 1, 0.5), 2),
                                       time=rep(0:6, 2)))
-  expect_equal(superposition(myconc, tau=3, n.tau=2),
-               data.frame(ID=rep(1:2, each=4),
-                          conc=rep(c(3, 3, 3, 3.5), 2),
-                          time=rep(0:3, 2)))
+  expect_equal(
+    superposition(myconc, tau=3, n.tau=2),
+    tibble::tibble(
+      ID=rep(1:2, each=4),
+      conc=rep(c(3, 3, 3, 3.5), 2),
+      time=rep(0:3, 2)
+    )
+  )
 })

@@ -128,53 +128,6 @@ test_that("model frame and parameter extractions", {
   )
 })
 
-test_that("split.PKNCAconc", {
-  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
-  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
-  expect_equal(base::split(myconc), split.PKNCAconc(myconc),
-               info="The generic is correctly called")
-  tmpsplit <- split.PKNCAconc(myconc)
-  expect_true(all(sapply(tmpsplit,
-                         function(x) {
-                           all(names(x) == names(myconc))
-                         })),
-               info="All parameter names are accurately transferred")
-  expect_true(all(sapply(tmpsplit,
-                         function(x) {
-                           x_nodata <- x
-                           x_nodata$data <- NULL
-                           mc_nodata <- myconc
-                           mc_nodata$data <- NULL
-                           identical(x_nodata, mc_nodata)
-                         })),
-              info="All values (other than data) are accurately transferred.")
-  expect_equal(split.PKNCAconc(NA),
-               {
-                 tmp <- list(NA)
-                 attr(tmp, "groupid") <- data.frame(NA)[,c()]
-                 tmp
-               },
-               info="NA split returns an effectively null split.")
-  
-  # There is a "feature" of base R split where NA values are ignored as
-  # levels of the factor.  PKNCA works around this "feature".
-  # This has 2 not 4 groups
-  #
-  # mydata <- data.frame(A=rep(c(NA_character_, "A"), each=4),
-  #                      B=rep(1:2, 4),
-  #                      C=11:18,
-  #                      stringsAsFactors=FALSE)
-  # split(mydata, f=mydata[,c("A", "B")])
-  
-  tmp_conc_na <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
-  tmp_conc_na$treatment[tmp_conc_na$treatment %in% "Trt 1"] <- NA_character_
-  myconc_na <- PKNCAconc(tmp_conc_na, formula=conc~time|treatment+ID)
-  tmp_myconc_na_split <- split(myconc_na)
-  expect_equal(length(tmp_myconc_na_split),
-               4,
-               info="NA values in groups are kept not dropped")
-})
-
 test_that("print.PKNCAconc", {
   tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
   myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)

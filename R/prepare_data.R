@@ -81,10 +81,10 @@ prepare_PKNCA_general <- function(.dat, cols, exclude, group_cols, data_name, in
       character(0)
     }
   data_no_exclude <-
-    .dat[
+    as.data.frame(.dat[
       is.na(normalize_exclude(.dat[[exclude]])),,
       drop=FALSE
-    ]
+    ])
   data_standard <-
     standardize_column_names(
       x=data_no_exclude,

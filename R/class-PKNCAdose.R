@@ -305,7 +305,3 @@ print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
 #' @rdname print.PKNCAconc
 #' @export
 summary.PKNCAdose <- summary.PKNCAconc
-
-#' @rdname split.PKNCAconc
-#' @export
-split.PKNCAdose <- split.PKNCAconc
