@@ -11,9 +11,11 @@ Imports:
     digest,
     nlme,
     parallel,
+    purrr,
     rlang,
     stats,
     tidyr,
+    tibble,
     utils
 Suggests:
     covr,

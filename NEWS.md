@@ -6,6 +6,10 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.5 (in development)
 
+* The internals of how PKNCA performs calculations had a significant update. The
+  only user-visible change should be that PKNCA does not perform parallel
+  computations as of this version. Parallel computation is planned to return in
+  the near future.
 * PKNCAconc objects are checked earlier for valid data (#154)
 * Add time_above parameter to calcualte time above a given concentration.
 * Fix numeric BLQ replacement when the value is a number and different values

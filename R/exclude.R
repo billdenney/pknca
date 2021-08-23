@@ -149,18 +149,18 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
       exclude <-
         setdiff(c("exclude", paste0("exclude.", max(names(object[[dataname]])))),
                 names(object[[dataname]]))[1]
-      object[[dataname]][,exclude] <- rep(NA_character_, nrow(object[[dataname]]))
+      object[[dataname]][[exclude]] <- rep(NA_character_, nrow(object[[dataname]]))
     } else if (nrow(object[[dataname]]) == 0) {
-      object[[dataname]][,exclude] <- rep(NA_character_, nrow(object[[dataname]]))
+      object[[dataname]][[exclude]] <- rep(NA_character_, nrow(object[[dataname]]))
     } else if (!(exclude %in% names(object[[dataname]]))) {
       stop("exclude, if given, must be a column name in the input data.")
     } else {
-      if (is.factor(object[[dataname]][,exclude])) {
-        object[[dataname]][,exclude] <- as.character(object[[dataname]][,exclude])
-      } else if (is.logical(object[[dataname]][,exclude]) &
-                 all(is.na(object[[dataname]][,exclude]))) {
-        object[[dataname]][,exclude] <- rep(NA_character_, nrow(object[[dataname]]))
-      } else if (!is.character(object[[dataname]][,exclude])) {
+      if (is.factor(object[[dataname]][[exclude]])) {
+        object[[dataname]][[exclude]] <- as.character(object[[dataname]][[exclude]])
+      } else if (is.logical(object[[dataname]][[exclude]]) &
+                 all(is.na(object[[dataname]][[exclude]]))) {
+        object[[dataname]][[exclude]] <- rep(NA_character_, nrow(object[[dataname]]))
+      } else if (!is.character(object[[dataname]][[exclude]])) {
         stop("exclude column must be character vector or something convertable to character without loss of information.")
       }
     }
