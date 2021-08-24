@@ -12,6 +12,7 @@ the dosing including dose amount and route.
   the near future.
   * Breaking change:  As part of this change, the split methods for PKNCAconc
     and PKNCAdose objects were removed along with the merge.splitList function.
+* Single-subject (ungrouped) analysis works without creating a dummy group (#74)
 * PKNCAconc objects are checked earlier for valid data (#154)
 * Add time_above parameter to calcualte time above a given concentration.
 * Fix numeric BLQ replacement when the value is a number and different values

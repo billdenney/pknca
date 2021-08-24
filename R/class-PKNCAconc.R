@@ -284,7 +284,7 @@ setDuration.PKNCAconc <- function(object, duration, ...) {
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))
   print(stats::formula(x), ...)
-  if (is.na(x$subject)) {
+  if (is.na(x$subject) || (length(x$subject) == 0)) {
     cat("As a single-subject dataset.\n")
   } else {
     cat(sprintf("With %d subjects defined in the '%s' column.\n",

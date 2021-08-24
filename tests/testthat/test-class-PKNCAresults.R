@@ -490,3 +490,25 @@ test_that("ctrough is correctly calculated", {
     c(2^-6, NA_real_)
   )
 })
+
+test_that("single subject, ungrouped data works (#74)", {
+  my_conc <- data.frame(time=0:6, conc=2^(0:-6))
+  conc_obj <- PKNCAconc(my_conc, conc~time)
+  data_obj <-
+    PKNCAdata(
+      data.conc=conc_obj,
+      intervals=
+        data.frame(
+          start=0,
+          end=Inf,
+          cmax=TRUE
+        )
+    )
+  expect_equal(
+    expect_message(
+      as.data.frame(pk.nca(data_obj))$PPORRES,
+      regexp="No dose information provided",
+    ),
+    1
+  )
+})
