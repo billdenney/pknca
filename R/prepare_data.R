@@ -210,7 +210,7 @@ standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing
   stopifnot("all cols must be named"=!any(names(cols) %in% ""))
   stopifnot("all original cols names must be names of x"=all(unlist(cols) %in% names(x)))
   stopifnot("group_cols must be NULL or a character vector"=is.null(group_cols) || is.character(group_cols))
-  if (!is.null(group_cols)) {
+  if (!is.null(group_cols) && (length(group_cols) > 0)) {
     stopifnot("group_cols must not overlap with other column names"=!any(group_cols %in% unlist(cols)))
     stopifnot("group_cols must not overlap with standardized column names"=!any(group_cols %in% names(cols)))
     new_group_cols <- paste0("group", seq_along(group_cols))
@@ -233,7 +233,7 @@ standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing
 }
 
 restore_group_col_names <- function(x, group_cols=NULL) {
-  if (is.null(group_cols)) {
+  if (is.null(group_cols) || (length(group_cols) == 0)) {
     return(x)
   }
   new_group_cols <- paste0("group", seq_along(group_cols))
