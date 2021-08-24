@@ -174,40 +174,44 @@
 <span class="co"># Without any exclusions applied, the 'exclude' column is all NA.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES exclude
-## 1      0  24       1             auclast  92.3654416    &lt;NA&gt;
-## 2      0 Inf       1                cmax  10.5000000    &lt;NA&gt;
-## 3      0 Inf       1                tmax   1.1200000    &lt;NA&gt;
-## 4      0 Inf       1               tlast  24.3700000    &lt;NA&gt;
-## 5      0 Inf       1           clast.obs   3.2800000    &lt;NA&gt;
-## 6      0 Inf       1            lambda.z   0.0484570    &lt;NA&gt;
-## 7      0 Inf       1           r.squared   0.9999997    &lt;NA&gt;
-## 8      0 Inf       1       adj.r.squared   0.9999995    &lt;NA&gt;
-## 9      0 Inf       1 lambda.z.time.first   9.0500000    &lt;NA&gt;
-## 10     0 Inf       1   lambda.z.n.points   3.0000000    &lt;NA&gt;
-## 11     0 Inf       1          clast.pred   3.2801465    &lt;NA&gt;
-## 12     0 Inf       1           half.life  14.3043776    &lt;NA&gt;
-## 13     0 Inf       1          span.ratio   1.0710008    &lt;NA&gt;
-## 14     0 Inf       1          aucinf.obs 214.9236316    &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 14 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;  
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;   
+##  2       1     0   Inf cmax                 10.5    &lt;NA&gt;   
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;   
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;   
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;   
+##  6       1     0   Inf lambda.z              0.0485 &lt;NA&gt;   
+##  7       1     0   Inf r.squared             1.00   &lt;NA&gt;   
+##  8       1     0   Inf adj.r.squared         1.00   &lt;NA&gt;   
+##  9       1     0   Inf lambda.z.time.first   9.05   &lt;NA&gt;   
+## 10       1     0   Inf lambda.z.n.points     3      &lt;NA&gt;   
+## 11       1     0   Inf clast.pred            3.28   &lt;NA&gt;   
+## 12       1     0   Inf half.life            14.3    &lt;NA&gt;   
+## 13       1     0   Inf span.ratio            1.07   &lt;NA&gt;   
+## 14       1     0   Inf aucinf.obs          215.     &lt;NA&gt;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># With exclusions applied, the 'exclude' column has the reason for exclusion.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">results_excl_span</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES        exclude
-## 1      0  24       1             auclast  92.3654416           &lt;NA&gt;
-## 2      0 Inf       1                cmax  10.5000000           &lt;NA&gt;
-## 3      0 Inf       1                tmax   1.1200000           &lt;NA&gt;
-## 4      0 Inf       1               tlast  24.3700000           &lt;NA&gt;
-## 5      0 Inf       1           clast.obs   3.2800000           &lt;NA&gt;
-## 6      0 Inf       1            lambda.z   0.0484570 Span ratio &lt; 2
-## 7      0 Inf       1           r.squared   0.9999997 Span ratio &lt; 2
-## 8      0 Inf       1       adj.r.squared   0.9999995 Span ratio &lt; 2
-## 9      0 Inf       1 lambda.z.time.first   9.0500000 Span ratio &lt; 2
-## 10     0 Inf       1   lambda.z.n.points   3.0000000 Span ratio &lt; 2
-## 11     0 Inf       1          clast.pred   3.2801465 Span ratio &lt; 2
-## 12     0 Inf       1           half.life  14.3043776 Span ratio &lt; 2
-## 13     0 Inf       1          span.ratio   1.0710008 Span ratio &lt; 2
-## 14     0 Inf       1          aucinf.obs 214.9236316 Span ratio &lt; 2</code></pre>
+<pre><code>## # A tibble: 14 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude       
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;         
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;          
+##  2       1     0   Inf cmax                 10.5    &lt;NA&gt;          
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;          
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;          
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;          
+##  6       1     0   Inf lambda.z              0.0485 Span ratio &lt; 2
+##  7       1     0   Inf r.squared             1.00   Span ratio &lt; 2
+##  8       1     0   Inf adj.r.squared         1.00   Span ratio &lt; 2
+##  9       1     0   Inf lambda.z.time.first   9.05   Span ratio &lt; 2
+## 10       1     0   Inf lambda.z.n.points     3      Span ratio &lt; 2
+## 11       1     0   Inf clast.pred            3.28   Span ratio &lt; 2
+## 12       1     0   Inf half.life            14.3    Span ratio &lt; 2
+## 13       1     0   Inf span.ratio            1.07   Span ratio &lt; 2
+## 14       1     0   Inf aucinf.obs          215.     Span ratio &lt; 2</code></pre>
 <p>You may also write your own exclusion function. The exclusion functions built-into PKNCA are a bit more complex than required because they handle options and manage general functionality that may not apply to a user-specific need. To write your own exclusion function, it should follow the description of how to write your own exclusion function as described in the details section of <code><a href="../reference/exclude.html">?exclude</a></code>.</p>
 </div>
 <div id="excluding-specific-results" class="section level3">
@@ -233,56 +237,45 @@
 <span class="va">results_obj</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES exclude
-## 1      0  24       1             auclast  92.3654416    &lt;NA&gt;
-## 2      0 Inf       1                cmax  10.5000000    &lt;NA&gt;
-## 3      0 Inf       1                tmax   1.1200000    &lt;NA&gt;
-## 4      0 Inf       1               tlast  24.3700000    &lt;NA&gt;
-## 5      0 Inf       1           clast.obs   3.2800000    &lt;NA&gt;
-## 6      0 Inf       1            lambda.z   0.0484570    &lt;NA&gt;
-## 7      0 Inf       1           r.squared   0.9999997    &lt;NA&gt;
-## 8      0 Inf       1       adj.r.squared   0.9999995    &lt;NA&gt;
-## 9      0 Inf       1 lambda.z.time.first   9.0500000    &lt;NA&gt;
-## 10     0 Inf       1   lambda.z.n.points   3.0000000    &lt;NA&gt;
-## 11     0 Inf       1          clast.pred   3.2801465    &lt;NA&gt;
-## 12     0 Inf       1           half.life  14.3043776    &lt;NA&gt;
-## 13     0 Inf       1          span.ratio   1.0710008    &lt;NA&gt;
-## 14     0 Inf       1          aucinf.obs 214.9236316    &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 14 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;  
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;   
+##  2       1     0   Inf cmax                 10.5    &lt;NA&gt;   
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;   
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;   
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;   
+##  6       1     0   Inf lambda.z              0.0485 &lt;NA&gt;   
+##  7       1     0   Inf r.squared             1.00   &lt;NA&gt;   
+##  8       1     0   Inf adj.r.squared         1.00   &lt;NA&gt;   
+##  9       1     0   Inf lambda.z.time.first   9.05   &lt;NA&gt;   
+## 10       1     0   Inf lambda.z.n.points     3      &lt;NA&gt;   
+## 11       1     0   Inf clast.pred            3.28   &lt;NA&gt;   
+## 12       1     0   Inf half.life            14.3    &lt;NA&gt;   
+## 13       1     0   Inf span.ratio            1.07   &lt;NA&gt;   
+## 14       1     0   Inf aucinf.obs          215.     &lt;NA&gt;</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># With exclusions applied, the 'exclude' column has the reason for exclusion.</span>
 <span class="va">results_excl_specific</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES
-## 1      0  24       1             auclast  92.3654416
-## 2      0 Inf       1                cmax  10.5000000
-## 3      0 Inf       1                tmax   1.1200000
-## 4      0 Inf       1               tlast  24.3700000
-## 5      0 Inf       1           clast.obs   3.2800000
-## 6      0 Inf       1            lambda.z   0.0484570
-## 7      0 Inf       1           r.squared   0.9999997
-## 8      0 Inf       1       adj.r.squared   0.9999995
-## 9      0 Inf       1 lambda.z.time.first   9.0500000
-## 10     0 Inf       1   lambda.z.n.points   3.0000000
-## 11     0 Inf       1          clast.pred   3.2801465
-## 12     0 Inf       1           half.life  14.3043776
-## 13     0 Inf       1          span.ratio   1.0710008
-## 14     0 Inf       1          aucinf.obs 214.9236316
-##                             exclude
-## 1                              &lt;NA&gt;
-## 2  Cmax was actually above the ULOQ
-## 3                              &lt;NA&gt;
-## 4                              &lt;NA&gt;
-## 5                              &lt;NA&gt;
-## 6                              &lt;NA&gt;
-## 7                              &lt;NA&gt;
-## 8                              &lt;NA&gt;
-## 9                              &lt;NA&gt;
-## 10                             &lt;NA&gt;
-## 11                             &lt;NA&gt;
-## 12                             &lt;NA&gt;
-## 13                             &lt;NA&gt;
-## 14                             &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 14 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude                     
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;                       
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;                        
+##  2       1     0   Inf cmax                 10.5    Cmax was actually above the…
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;                        
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;                        
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;                        
+##  6       1     0   Inf lambda.z              0.0485 &lt;NA&gt;                        
+##  7       1     0   Inf r.squared             1.00   &lt;NA&gt;                        
+##  8       1     0   Inf adj.r.squared         1.00   &lt;NA&gt;                        
+##  9       1     0   Inf lambda.z.time.first   9.05   &lt;NA&gt;                        
+## 10       1     0   Inf lambda.z.n.points     3      &lt;NA&gt;                        
+## 11       1     0   Inf clast.pred            3.28   &lt;NA&gt;                        
+## 12       1     0   Inf half.life            14.3    &lt;NA&gt;                        
+## 13       1     0   Inf span.ratio            1.07   &lt;NA&gt;                        
+## 14       1     0   Inf aucinf.obs          215.     &lt;NA&gt;</code></pre>
 </div>
 <div id="multiple-exclusions" class="section level3">
 <h3 class="hasAnchor">
@@ -317,36 +310,23 @@
 <span class="va">results_excl_multi</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES
-## 1      0  24       1             auclast  92.3654416
-## 2      0 Inf       1                cmax  10.5000000
-## 3      0 Inf       1                tmax   1.1200000
-## 4      0 Inf       1               tlast  24.3700000
-## 5      0 Inf       1           clast.obs   3.2800000
-## 6      0 Inf       1            lambda.z   0.0484570
-## 7      0 Inf       1           r.squared   0.9999997
-## 8      0 Inf       1       adj.r.squared   0.9999995
-## 9      0 Inf       1 lambda.z.time.first   9.0500000
-## 10     0 Inf       1   lambda.z.n.points   3.0000000
-## 11     0 Inf       1          clast.pred   3.2801465
-## 12     0 Inf       1           half.life  14.3043776
-## 13     0 Inf       1          span.ratio   1.0710008
-## 14     0 Inf       1          aucinf.obs 214.9236316
-##                                    exclude
-## 1                                     &lt;NA&gt;
-## 2         Cmax was actually above the ULOQ
-## 3                                     &lt;NA&gt;
-## 4                                     &lt;NA&gt;
-## 5                                     &lt;NA&gt;
-## 6  Span ratio &lt; 2; Issue with lambda.z fit
-## 7                           Span ratio &lt; 2
-## 8                           Span ratio &lt; 2
-## 9                           Span ratio &lt; 2
-## 10                          Span ratio &lt; 2
-## 11                          Span ratio &lt; 2
-## 12                          Span ratio &lt; 2
-## 13                          Span ratio &lt; 2
-## 14                          Span ratio &lt; 2</code></pre>
+<pre><code>## # A tibble: 14 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude                     
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;                       
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;                        
+##  2       1     0   Inf cmax                 10.5    Cmax was actually above the…
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;                        
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;                        
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;                        
+##  6       1     0   Inf lambda.z              0.0485 Span ratio &lt; 2; Issue with …
+##  7       1     0   Inf r.squared             1.00   Span ratio &lt; 2              
+##  8       1     0   Inf adj.r.squared         1.00   Span ratio &lt; 2              
+##  9       1     0   Inf lambda.z.time.first   9.05   Span ratio &lt; 2              
+## 10       1     0   Inf lambda.z.n.points     3      Span ratio &lt; 2              
+## 11       1     0   Inf clast.pred            3.28   Span ratio &lt; 2              
+## 12       1     0   Inf half.life            14.3    Span ratio &lt; 2              
+## 13       1     0   Inf span.ratio            1.07   Span ratio &lt; 2              
+## 14       1     0   Inf aucinf.obs          215.     Span ratio &lt; 2</code></pre>
 </div>
 </div>
 </div>
@@ -384,52 +364,56 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES exclude
-## 1      0  24       1             auclast  92.3654416    &lt;NA&gt;
-## 2      0 Inf       1                cmax  10.5000000    &lt;NA&gt;
-## 3      0 Inf       1                tmax   1.1200000    &lt;NA&gt;
-## 4      0 Inf       1               tlast  24.3700000    &lt;NA&gt;
-## 5      0 Inf       1           clast.obs   3.2800000    &lt;NA&gt;
-## 6      0 Inf       1            lambda.z   0.0484570    &lt;NA&gt;
-## 7      0 Inf       1           r.squared   0.9999997    &lt;NA&gt;
-## 8      0 Inf       1       adj.r.squared   0.9999995    &lt;NA&gt;
-## 9      0 Inf       1 lambda.z.time.first   9.0500000    &lt;NA&gt;
-## 10     0 Inf       1   lambda.z.n.points   3.0000000    &lt;NA&gt;
-## 11     0 Inf       1          clast.pred   3.2801465    &lt;NA&gt;
-## 12     0 Inf       1           half.life  14.3043776    &lt;NA&gt;
-## 13     0 Inf       1          span.ratio   1.0710008    &lt;NA&gt;
-## 14     0 Inf       1          aucinf.obs 214.9236316    &lt;NA&gt;
-## 15     0  24       2             auclast  67.2345578    &lt;NA&gt;
-## 16     0 Inf       2                cmax   8.3300000    &lt;NA&gt;
-## 17     0 Inf       2                tmax   1.9200000    &lt;NA&gt;
-## 18     0 Inf       2               tlast  24.3000000    &lt;NA&gt;
-## 19     0 Inf       2           clast.obs   0.9000000    &lt;NA&gt;
-## 20     0 Inf       2            lambda.z   0.1040864    &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 20 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;  
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;   
+##  2       1     0   Inf cmax                 10.5    &lt;NA&gt;   
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;   
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;   
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;   
+##  6       1     0   Inf lambda.z              0.0485 &lt;NA&gt;   
+##  7       1     0   Inf r.squared             1.00   &lt;NA&gt;   
+##  8       1     0   Inf adj.r.squared         1.00   &lt;NA&gt;   
+##  9       1     0   Inf lambda.z.time.first   9.05   &lt;NA&gt;   
+## 10       1     0   Inf lambda.z.n.points     3      &lt;NA&gt;   
+## 11       1     0   Inf clast.pred            3.28   &lt;NA&gt;   
+## 12       1     0   Inf half.life            14.3    &lt;NA&gt;   
+## 13       1     0   Inf span.ratio            1.07   &lt;NA&gt;   
+## 14       1     0   Inf aucinf.obs          215.     &lt;NA&gt;   
+## 15       2     0    24 auclast              67.2    &lt;NA&gt;   
+## 16       2     0   Inf cmax                  8.33   &lt;NA&gt;   
+## 17       2     0   Inf tmax                  1.92   &lt;NA&gt;   
+## 18       2     0   Inf tlast                24.3    &lt;NA&gt;   
+## 19       2     0   Inf clast.obs             0.9    &lt;NA&gt;   
+## 20       2     0   Inf lambda.z              0.104  &lt;NA&gt;</code></pre>
 <p>Excluded values remain in the listing.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">results_excl_span</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES        exclude
-## 1      0  24       1             auclast  92.3654416           &lt;NA&gt;
-## 2      0 Inf       1                cmax  10.5000000           &lt;NA&gt;
-## 3      0 Inf       1                tmax   1.1200000           &lt;NA&gt;
-## 4      0 Inf       1               tlast  24.3700000           &lt;NA&gt;
-## 5      0 Inf       1           clast.obs   3.2800000           &lt;NA&gt;
-## 6      0 Inf       1            lambda.z   0.0484570 Span ratio &lt; 2
-## 7      0 Inf       1           r.squared   0.9999997 Span ratio &lt; 2
-## 8      0 Inf       1       adj.r.squared   0.9999995 Span ratio &lt; 2
-## 9      0 Inf       1 lambda.z.time.first   9.0500000 Span ratio &lt; 2
-## 10     0 Inf       1   lambda.z.n.points   3.0000000 Span ratio &lt; 2
-## 11     0 Inf       1          clast.pred   3.2801465 Span ratio &lt; 2
-## 12     0 Inf       1           half.life  14.3043776 Span ratio &lt; 2
-## 13     0 Inf       1          span.ratio   1.0710008 Span ratio &lt; 2
-## 14     0 Inf       1          aucinf.obs 214.9236316 Span ratio &lt; 2
-## 15     0  24       2             auclast  67.2345578           &lt;NA&gt;
-## 16     0 Inf       2                cmax   8.3300000           &lt;NA&gt;
-## 17     0 Inf       2                tmax   1.9200000           &lt;NA&gt;
-## 18     0 Inf       2               tlast  24.3000000           &lt;NA&gt;
-## 19     0 Inf       2           clast.obs   0.9000000           &lt;NA&gt;
-## 20     0 Inf       2            lambda.z   0.1040864           &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 20 × 6
+##    Subject start   end PPTESTCD             PPORRES exclude       
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;         
+##  1       1     0    24 auclast              92.4    &lt;NA&gt;          
+##  2       1     0   Inf cmax                 10.5    &lt;NA&gt;          
+##  3       1     0   Inf tmax                  1.12   &lt;NA&gt;          
+##  4       1     0   Inf tlast                24.4    &lt;NA&gt;          
+##  5       1     0   Inf clast.obs             3.28   &lt;NA&gt;          
+##  6       1     0   Inf lambda.z              0.0485 Span ratio &lt; 2
+##  7       1     0   Inf r.squared             1.00   Span ratio &lt; 2
+##  8       1     0   Inf adj.r.squared         1.00   Span ratio &lt; 2
+##  9       1     0   Inf lambda.z.time.first   9.05   Span ratio &lt; 2
+## 10       1     0   Inf lambda.z.n.points     3      Span ratio &lt; 2
+## 11       1     0   Inf clast.pred            3.28   Span ratio &lt; 2
+## 12       1     0   Inf half.life            14.3    Span ratio &lt; 2
+## 13       1     0   Inf span.ratio            1.07   Span ratio &lt; 2
+## 14       1     0   Inf aucinf.obs          215.     Span ratio &lt; 2
+## 15       2     0    24 auclast              67.2    &lt;NA&gt;          
+## 16       2     0   Inf cmax                  8.33   &lt;NA&gt;          
+## 17       2     0   Inf tmax                  1.92   &lt;NA&gt;          
+## 18       2     0   Inf tlast                24.3    &lt;NA&gt;          
+## 19       2     0   Inf clast.obs             0.9    &lt;NA&gt;          
+## 20       2     0   Inf lambda.z              0.104  &lt;NA&gt;</code></pre>
 </div>
 </div>
   </div>

@@ -161,6 +161,11 @@
 <a href="#pknca-095-in-development" class="anchor"></a>PKNCA 0.9.5 (in development)<small> Unreleased </small>
 </h1>
 <ul>
+<li>The internals of how PKNCA performs calculations had a significant update. The only user-visible change should be that PKNCA does not perform parallel computations as of this version. Parallel computation is planned to return in the near future.
+<ul>
+<li>Breaking change: As part of this change, the split methods for PKNCAconc and PKNCAdose objects were removed along with the merge.splitList function.</li>
+</ul>
+</li>
 <li>PKNCAconc objects are checked earlier for valid data (<a href='https://github.com/billdenney/pknca/issues/154'>#154</a>)</li>
 <li>Add time_above parameter to calcualte time above a given concentration.</li>
 <li>Fix numeric BLQ replacement when the value is a number and different values are given for first, middle, and last (related to <a href='https://github.com/billdenney/pknca/issues/145'>#145</a>). This only affects datasets where BLQ is being replaced with a nonzero value (not a common scenario).</li>

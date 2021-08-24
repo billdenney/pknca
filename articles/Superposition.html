@@ -194,11 +194,10 @@
 <p>With a simple call, we can have the estimated steady-state concentration for each subject. At minimum, the time between dosing (<code>tau</code>) must be provided.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">steady_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/superposition.html">superposition</a></span><span class="op">(</span><span class="va">conc_obj</span>, tau<span class="op">=</span><span class="fl">24</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in parallel::mclapply(X = seq_along(tmp.data), FUN = function(x, : all
-## scheduled cores encountered errors in user code</code></pre>
-<pre><code>## Error: Argument 1 must have names.</code></pre>
+<pre><code>## Warning in parallel::mclapply(X = seq_len(nrow(nested_data)), FUN =
+## function(idx) {: all scheduled cores encountered errors in user code</code></pre>
 <p>The error noting that the first concentration must be zero is due to the fact that superposition usually occurs with single-dose data. If the first concentration is nonzero, the data are not likely to be single-dose (or a data error should be fixed). Let’s find the offending data.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html">Theoph</a></span>, <span class="va">Time</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">conc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>,
              caption<span class="op">=</span><span class="st">"Nonzero predose measurements"</span>,
              row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -236,9 +235,9 @@
 </tbody>
 </table>
 <p>For this example, we will assume that these were errors, correct them to zero, and recalculate.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Correct nonzero concentrations at time 0 to be BLQ.</span>
-<span class="va">theoph_corrected</span> <span class="op">&lt;-</span> <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html">Theoph</a></span>
+<span class="va">theoph_corrected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html">Theoph</a></span><span class="op">)</span>
 <span class="va">theoph_corrected</span><span class="op">$</span><span class="va">conc</span><span class="op">[</span><span class="va">theoph_corrected</span><span class="op">$</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span>
 <span class="va">conc_obj_corrected</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">theoph_corrected</span>, <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span><span class="op">)</span>
 
@@ -326,7 +325,7 @@
 </tr>
 </tbody>
 </table>
-<p>The output is a data.frame including all the grouping factors as columns, a column for <code>conc</code>entration, and a column for <code>time</code>. Time point selection ensures that the beginning and end of the interval are included and that every measured time that contributes to the interval is included. The points at the beginning and end of the interval are very similar; they are within a tolerance of 0.001 as defined by the <code>steady.state.tol</code> argument to superposition.</p>
+<p>The output is a tbl_df, tbl, data.frame including all the grouping factors as columns, a column for <code>conc</code>entration, and a column for <code>time</code>. Time point selection ensures that the beginning and end of the interval are included and that every measured time that contributes to the interval is included. The points at the beginning and end of the interval are very similar; they are within a tolerance of 0.001 as defined by the <code>steady.state.tol</code> argument to superposition.</p>
 </div>
 <div id="nonstandard-superposition-computations" class="section level1">
 <h1 class="hasAnchor">
@@ -335,7 +334,7 @@
 <h2 class="hasAnchor">
 <a href="#compute-the-superposition-from-single-dose-data-to-a-specific-dose" class="anchor"></a>Compute the Superposition from Single-Dose Data to a Specific Dose</h2>
 <p>If simulation to a specific dose is needed, the number of dosing intervals (<code>n.tau</code>) can be specified.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Calculate the unsteady-state concentrations with 24 hour dosing</span>
 <span class="va">unsteady_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/superposition.html">superposition</a></span><span class="op">(</span><span class="va">conc_obj_corrected</span>, tau<span class="op">=</span><span class="fl">24</span>, n.tau<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">unsteady_state</span>, n<span class="op">=</span><span class="fl">14</span><span class="op">)</span>,
@@ -425,7 +424,7 @@
 <h2 class="hasAnchor">
 <a href="#compute-the-superposition-from-single-dose-data-with-1-dose-per-interval" class="anchor"></a>Compute the Superposition from Single-Dose Data with &gt;1 Dose Per Interval</h2>
 <p>Some dosing intervals are more complex than once per X hours (or days or weeks or…). To predict more complex dosing with superposition, give the dose times within the interval. The <code>dose.times</code> must all be less than <code>tau</code> (otherwise they are not in the interval).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Calculate the new steady-state concentrations with 24 hour dosing</span>
 <span class="va">complex_interval_steady_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/superposition.html">superposition</a></span><span class="op">(</span><span class="va">conc_obj_corrected</span>, tau<span class="op">=</span><span class="fl">24</span>, dose.times<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">complex_interval_steady_state</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span>,
@@ -490,7 +489,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">complex_interval_steady_state</span>,
        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">conc</span>, x<span class="op">=</span><span class="va">time</span>, colour<span class="op">=</span><span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -501,12 +500,12 @@
 <a href="#show-the-curve-to-steady-state" class="anchor"></a>Show the Curve to Steady-State</h3>
 <p>To determine the concentration curve to get to steady-state, you can give all the dose times considered required to get to steady-state. To do this, specify tau as the total time to steady-state, specify <code>n.tau</code> as <code>1</code> to indicate that only one round of dosing should be administered.</p>
 <p>This command does not technically go to steady-state; if the <code>dose.times</code> are not sufficiently long to reach steady-state, it only goes for as many doses as requested.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">up_to_steady_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/superposition.html">superposition</a></span><span class="op">(</span><span class="va">conc_obj_corrected</span>,
                                     tau<span class="op">=</span><span class="fl">4</span><span class="op">*</span><span class="fl">24</span>,
                                     n.tau<span class="op">=</span><span class="fl">1</span>,
                                     dose.times<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">*</span><span class="fl">24</span>, by<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">up_to_steady_state</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">conc</span>, colour<span class="op">=</span><span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="Superposition_files/figure-html/to_steady_state-visualization-1.png" width="700"></p>
@@ -524,18 +523,18 @@
 <li>each time from the <code>additional.times</code> argument.</li>
 </ul>
 <p>How the number of time points increases can be seen by comparing the time points for subject 1 in the steady-state single dosing and the complex dosing examples above.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">steady_state</span><span class="op">$</span><span class="va">time</span><span class="op">[</span><span class="va">steady_state</span><span class="op">$</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>##  [1]  0.00  0.25  0.37  0.57  1.12  2.02  3.82  5.10  7.03  9.05 12.12 24.00</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">steady_state</span><span class="op">$</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 12</code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">complex_interval_steady_state</span><span class="op">$</span><span class="va">time</span><span class="op">[</span><span class="va">complex_interval_steady_state</span><span class="op">$</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>##  [1]  0.00  0.25  0.37  0.57  1.12  2.00  2.02  2.25  2.37  2.57  3.12  3.82
 ## [13]  4.00  4.02  4.25  4.37  4.57  5.10  5.12  5.82  6.02  7.03  7.10  7.82
 ## [25]  9.03  9.05  9.10 11.03 11.05 12.12 13.05 14.12 16.12 24.00</code></pre>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">complex_interval_steady_state</span><span class="op">$</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 34</code></pre>
 </div>

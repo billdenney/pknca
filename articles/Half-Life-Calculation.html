@@ -192,17 +192,19 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Extract the results for subject 1 </span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD    PPORRES exclude
-## 1      0 Inf       1                tmax  1.1200000    &lt;NA&gt;
-## 2      0 Inf       1               tlast 24.3700000    &lt;NA&gt;
-## 3      0 Inf       1            lambda.z  0.0484570    &lt;NA&gt;
-## 4      0 Inf       1           r.squared  0.9999997    &lt;NA&gt;
-## 5      0 Inf       1       adj.r.squared  0.9999995    &lt;NA&gt;
-## 6      0 Inf       1 lambda.z.time.first  9.0500000    &lt;NA&gt;
-## 7      0 Inf       1   lambda.z.n.points  3.0000000    &lt;NA&gt;
-## 8      0 Inf       1          clast.pred  3.2801465    &lt;NA&gt;
-## 9      0 Inf       1           half.life 14.3043776    &lt;NA&gt;
-## 10     0 Inf       1          span.ratio  1.0710008    &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 10 × 6
+##    Subject start   end PPTESTCD            PPORRES exclude
+##    &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;  
+##  1 1           0   Inf tmax                 1.12   &lt;NA&gt;   
+##  2 1           0   Inf tlast               24.4    &lt;NA&gt;   
+##  3 1           0   Inf lambda.z             0.0485 &lt;NA&gt;   
+##  4 1           0   Inf r.squared            1.00   &lt;NA&gt;   
+##  5 1           0   Inf adj.r.squared        1.00   &lt;NA&gt;   
+##  6 1           0   Inf lambda.z.time.first  9.05   &lt;NA&gt;   
+##  7 1           0   Inf lambda.z.n.points    3      &lt;NA&gt;   
+##  8 1           0   Inf clast.pred           3.28   &lt;NA&gt;   
+##  9 1           0   Inf half.life           14.3    &lt;NA&gt;   
+## 10 1           0   Inf span.ratio           1.07   &lt;NA&gt;</code></pre>
 </div>
 </div>
 <div id="manual-point-selection" class="section level1">
@@ -235,17 +237,19 @@
 <code class="sourceCode R"><span class="co"># Results differ when excluding the 12-hour point for subject 1 (compare to</span>
 <span class="co"># example in the previous section)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj_exclude1</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD     PPORRES exclude
-## 1      0 Inf       1                tmax  1.12000000    &lt;NA&gt;
-## 2      0 Inf       1               tlast 24.37000000    &lt;NA&gt;
-## 3      0 Inf       1            lambda.z  0.04818346    &lt;NA&gt;
-## 4      0 Inf       1           r.squared  0.99958943    &lt;NA&gt;
-## 5      0 Inf       1       adj.r.squared  0.99938414    &lt;NA&gt;
-## 6      0 Inf       1 lambda.z.time.first  5.10000000    &lt;NA&gt;
-## 7      0 Inf       1   lambda.z.n.points  4.00000000    &lt;NA&gt;
-## 8      0 Inf       1          clast.pred  3.27895654    &lt;NA&gt;
-## 9      0 Inf       1           half.life 14.38558406    &lt;NA&gt;
-## 10     0 Inf       1          span.ratio  1.33953546    &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 10 × 6
+##    Subject start   end PPTESTCD            PPORRES exclude
+##    &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;  
+##  1 1           0   Inf tmax                 1.12   &lt;NA&gt;   
+##  2 1           0   Inf tlast               24.4    &lt;NA&gt;   
+##  3 1           0   Inf lambda.z             0.0482 &lt;NA&gt;   
+##  4 1           0   Inf r.squared            1.00   &lt;NA&gt;   
+##  5 1           0   Inf adj.r.squared        0.999  &lt;NA&gt;   
+##  6 1           0   Inf lambda.z.time.first  5.1    &lt;NA&gt;   
+##  7 1           0   Inf lambda.z.n.points    4      &lt;NA&gt;   
+##  8 1           0   Inf clast.pred           3.28   &lt;NA&gt;   
+##  9 1           0   Inf half.life           14.4    &lt;NA&gt;   
+## 10 1           0   Inf span.ratio           1.34   &lt;NA&gt;</code></pre>
 </div>
 <div id="specification-of-the-exact-points-for-analysis" class="section level2">
 <h2 class="hasAnchor">
@@ -274,17 +278,19 @@
 <code class="sourceCode R"><span class="co"># Results differ when including 6 points (compare to example in the previous</span>
 <span class="co"># section)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj_include6</span><span class="op">)</span></code></pre></div>
-<pre><code>##    start end Subject            PPTESTCD    PPORRES exclude
-## 1      0 Inf       1                tmax  1.1200000    &lt;NA&gt;
-## 2      0 Inf       1               tlast 24.3700000    &lt;NA&gt;
-## 3      0 Inf       1            lambda.z  0.0475144    &lt;NA&gt;
-## 4      0 Inf       1           r.squared  0.9987305    &lt;NA&gt;
-## 5      0 Inf       1       adj.r.squared  0.9984131    &lt;NA&gt;
-## 6      0 Inf       1 lambda.z.time.first  3.8200000    &lt;NA&gt;
-## 7      0 Inf       1   lambda.z.n.points  6.0000000    &lt;NA&gt;
-## 8      0 Inf       1          clast.pred  3.2966914    &lt;NA&gt;
-## 9      0 Inf       1           half.life 14.5881510    &lt;NA&gt;
-## 10     0 Inf       1          span.ratio  1.4086775    &lt;NA&gt;</code></pre>
+<pre><code>## # A tibble: 10 × 6
+##    Subject start   end PPTESTCD            PPORRES exclude
+##    &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;  
+##  1 1           0   Inf tmax                 1.12   &lt;NA&gt;   
+##  2 1           0   Inf tlast               24.4    &lt;NA&gt;   
+##  3 1           0   Inf lambda.z             0.0475 &lt;NA&gt;   
+##  4 1           0   Inf r.squared            0.999  &lt;NA&gt;   
+##  5 1           0   Inf adj.r.squared        0.998  &lt;NA&gt;   
+##  6 1           0   Inf lambda.z.time.first  3.82   &lt;NA&gt;   
+##  7 1           0   Inf lambda.z.n.points    6      &lt;NA&gt;   
+##  8 1           0   Inf clast.pred           3.30   &lt;NA&gt;   
+##  9 1           0   Inf half.life           14.6    &lt;NA&gt;   
+## 10 1           0   Inf span.ratio           1.41   &lt;NA&gt;</code></pre>
 </div>
 </div>
   </div>

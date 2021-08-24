@@ -136,10 +136,10 @@
     <loc>http://billdenney.github.io/pknca/reference/getIndepVar.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/interp.extrap.conc.html</loc>
+    <loc>http://billdenney.github.io/pknca/reference/group_vars.PKNCAconc.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/merge.splitlist.html</loc>
+    <loc>http://billdenney.github.io/pknca/reference/interp.extrap.conc.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/model.frame.PKNCAconc.html</loc>
@@ -250,6 +250,9 @@
     <loc>http://billdenney.github.io/pknca/reference/pk.nca.interval.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/pk.nca.intervals.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/pk.tss.html</loc>
   </url>
   <url>
@@ -305,9 +308,6 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/sort.interval.cols.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/reference/split.PKNCAconc.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/summary.PKNCAdata.html</loc>

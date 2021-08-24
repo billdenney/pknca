@@ -217,36 +217,23 @@ provided).</p></td>
 </div><div class='output co'>#&gt; <span class='message'>No dose information provided, calculations requiring dose will return NA.</span></div><div class='input'><span class='va'>my_result_excluded</span> <span class='op'>&lt;-</span> <span class='fu'><a href='exclude.html'>exclude</a></span><span class='op'>(</span><span class='va'>my_result</span>,
                               FUN<span class='op'>=</span><span class='fu'>exclude_nca_max.aucinf.pext</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>my_result_excluded</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    start end subject            PPTESTCD     PPORRES
-#&gt; 1      0 Inf       1             auclast  3.47287143
-#&gt; 2      0 Inf       1                tmax  0.00000000
-#&gt; 3      0 Inf       1               tlast  3.00000000
-#&gt; 4      0 Inf       1           clast.obs  1.00000000
-#&gt; 5      0 Inf       1            lambda.z  0.09531018
-#&gt; 6      0 Inf       1           r.squared  1.00000000
-#&gt; 7      0 Inf       1       adj.r.squared  1.00000000
-#&gt; 8      0 Inf       1 lambda.z.time.first  1.00000000
-#&gt; 9      0 Inf       1   lambda.z.n.points  3.00000000
-#&gt; 10     0 Inf       1          clast.pred  1.00000000
-#&gt; 11     0 Inf       1           half.life  7.27254090
-#&gt; 12     0 Inf       1          span.ratio  0.27500705
-#&gt; 13     0 Inf       1          aucinf.obs 13.96493011
-#&gt; 14     0 Inf       1         aucpext.obs 75.13148009
-#&gt;                          exclude
-#&gt; 1                           &lt;NA&gt;
-#&gt; 2                           &lt;NA&gt;
-#&gt; 3                           &lt;NA&gt;
-#&gt; 4                           &lt;NA&gt;
-#&gt; 5                           &lt;NA&gt;
-#&gt; 6                           &lt;NA&gt;
-#&gt; 7                           &lt;NA&gt;
-#&gt; 8                           &lt;NA&gt;
-#&gt; 9                           &lt;NA&gt;
-#&gt; 10                          &lt;NA&gt;
-#&gt; 11                          &lt;NA&gt;
-#&gt; 12                          &lt;NA&gt;
-#&gt; 13 AUC percent extrapolated &gt; 20
-#&gt; 14 AUC percent extrapolated &gt; 20</div></pre>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 14 × 6</span>
+#&gt;    subject start   end PPTESTCD            PPORRES exclude                      
+#&gt;      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                        
+#&gt; <span style='color: #BCBCBC;'> 1</span>       1     0   <span style='color: #BB0000;'>Inf</span> auclast              3.47   <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 2</span>       1     0   <span style='color: #BB0000;'>Inf</span> tmax                 0      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 3</span>       1     0   <span style='color: #BB0000;'>Inf</span> tlast                3      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 4</span>       1     0   <span style='color: #BB0000;'>Inf</span> clast.obs            1      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 5</span>       1     0   <span style='color: #BB0000;'>Inf</span> lambda.z             0.095<span style='text-decoration: underline;'>3</span> <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 6</span>       1     0   <span style='color: #BB0000;'>Inf</span> r.squared            1      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 7</span>       1     0   <span style='color: #BB0000;'>Inf</span> adj.r.squared        1      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 8</span>       1     0   <span style='color: #BB0000;'>Inf</span> lambda.z.time.first  1      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'> 9</span>       1     0   <span style='color: #BB0000;'>Inf</span> lambda.z.n.points    3      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'>10</span>       1     0   <span style='color: #BB0000;'>Inf</span> clast.pred           1      <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'>11</span>       1     0   <span style='color: #BB0000;'>Inf</span> half.life            7.27   <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'>12</span>       1     0   <span style='color: #BB0000;'>Inf</span> span.ratio           0.275  <span style='color: #BB0000;'>NA</span>                           
+#&gt; <span style='color: #BCBCBC;'>13</span>       1     0   <span style='color: #BB0000;'>Inf</span> aucinf.obs          14.0    AUC percent extrapolated &gt; 20
+#&gt; <span style='color: #BCBCBC;'>14</span>       1     0   <span style='color: #BB0000;'>Inf</span> aucpext.obs         75.1    AUC percent extrapolated &gt; 20</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

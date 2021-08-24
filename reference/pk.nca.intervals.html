@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse a formula into its component parts. — parseFormula • PKNCA</title>
+<title>Compute NCA for multiple intervals — pk.nca.intervals • PKNCA</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Parse a formula into its component parts. — parseFormula" />
-<meta property="og:description" content="This function supports parsing" />
+<meta property="og:title" content="Compute NCA for multiple intervals — pk.nca.intervals" />
+<meta property="og:description" content="Compute NCA for multiple intervals" />
 
 
 
@@ -153,108 +153,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse a formula into its component parts.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/billdenney/pknca/blob/master/R/parseFormula.R'><code>R/parseFormula.R</code></a></small>
-    <div class="hidden name"><code>parseFormula.Rd</code></div>
+    <h1>Compute NCA for multiple intervals</h1>
+    <small class="dont-index">Source: <a href='https://github.com/billdenney/pknca/blob/master/R/pk.calc.all.R'><code>R/pk.calc.all.R</code></a></small>
+    <div class="hidden name"><code>pk.nca.intervals.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function supports parsing</p>
+    <p>Compute NCA for multiple intervals</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parseFormula</span><span class='op'>(</span><span class='va'>form</span>, require.groups <span class='op'>=</span> <span class='cn'>FALSE</span>, require.two.sided <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>pk.nca.intervals</span><span class='op'>(</span>
+  <span class='va'>data_conc</span>,
+  <span class='va'>data_dose</span>,
+  <span class='va'>data_intervals</span>,
+  <span class='va'>options</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>form</th>
-      <td><p>the formula to extract into its parts</p></td>
+      <th>data_conc</th>
+      <td><p>A data.frame or tibble with standardized column names as
+output from <code>prepare_PKNCAconc()</code></p></td>
     </tr>
     <tr>
-      <th>require.groups</th>
-      <td><p>is it an error not to have groups?</p></td>
+      <th>data_dose</th>
+      <td><p>A data.frame or tibble with standardized column names as
+output from <code>prepare_PKNCAdose()</code></p></td>
     </tr>
     <tr>
-      <th>require.two.sided</th>
-      <td><p>is it an error to have a one-sided
-formula?</p></td>
+      <th>data_intervals</th>
+      <td><p>A data.frame or tibble with standardized column names
+as output from <code>prepare_PKNCAintervals()</code></p></td>
+    </tr>
+    <tr>
+      <th>options</th>
+      <td><p>List of changes to the default 
+<code><a href='PKNCA.options.html'>PKNCA.options</a></code> for calculations.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Indicate, by <code><a href='https://rdrr.io/r/base/message.html'>message()</a></code>, the current state of
+calculation.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A parseFormula class list with elements of</p><dl>
-  <dt>model</dt><dd><p>The left~right side of the model (excluding groups)</p></dd>
-  <dt>lhs</dt><dd><p>The call for the left hand side</p></dd>
-  <dt>rhs</dt><dd><p>The call for the right hand side (excluding groups)</p></dd>
-  <dt>groups</dt><dd><p>The call for the groups</p></dd>
-  <dt>groupFormula</dt><dd><p>A formula form of the groups</p></dd>
-  <dt>env</dt><dd><p>The original formula's environment</p></dd>
+    <p>A data.frame with all NCA results</p>
 
-</dl>
-
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function extracts the left hand side (<code>lhs</code>), right hand
-side (<code>rhs</code>), groups (<code>groups</code> and as a formula,
-<code>grpFormula</code>), the environment (<code>env</code>, and the original
-left/right hand side of the model (<code>model</code>).</p>
-<p>This function borrows heavily from the <code>parseGroupFormula</code>
-function in the doBy package.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other Formula parsing: 
-<code><a href='findOperator.html'>findOperator</a>()</code>,
-<code><a href='formula.parseFormula.html'>formula.parseFormula</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b"</span>, require.groups<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $model
-#&gt; a ~ b
-#&gt; &lt;environment: 0x7f999d5f45c8&gt;
-#&gt; 
-#&gt; $lhs
-#&gt; a
-#&gt; 
-#&gt; $rhs
-#&gt; b
-#&gt; 
-#&gt; $groups
-#&gt; NULL
-#&gt; 
-#&gt; $groupFormula
-#&gt; NULL
-#&gt; 
-#&gt; $env
-#&gt; &lt;environment: 0x7f999d5f45c8&gt;
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "parseFormula" "list"        </div><div class='input'><span class='co'>## parseFormula("a~b", require.groups=TRUE) # This is an error</span>
-<span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b|c"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $model
-#&gt; a ~ b
-#&gt; &lt;environment: 0x7f999d734fb0&gt;
-#&gt; 
-#&gt; $lhs
-#&gt; a
-#&gt; 
-#&gt; $rhs
-#&gt; b
-#&gt; 
-#&gt; $groups
-#&gt; c
-#&gt; 
-#&gt; $groupFormula
-#&gt; ~c
-#&gt; &lt;environment: 0x7f999d734fb0&gt;
-#&gt; 
-#&gt; $env
-#&gt; &lt;environment: 0x7f999d734fb0&gt;
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "parseFormula" "list"        </div><div class='input'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b|c"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>groups</span>
-</div><div class='output co'>#&gt; c</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
