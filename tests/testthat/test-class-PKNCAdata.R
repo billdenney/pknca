@@ -76,9 +76,11 @@ test_that("PKNCAdata", {
   obj.conc <-
     PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
   obj.dose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
-  expect_warning(PKNCAdata(obj.conc, obj.dose),
-                 regexp="No intervals generated due to no concentration data for treatment=Trt 1, ID=1",
-                 info="Missing concentration data with dose data gives a warning.")
+  expect_warning(
+    PKNCAdata(obj.conc, obj.dose),
+    regexp="treatment=Trt 1; ID=1; data_intervals=NULL: No intervals generated due to no concentration data",
+    info="Missing concentration data with dose data gives a warning."
+  )
   
   expect_warning(PKNCAdata(obj.conc, obj.dose, formula.conc=a~b),
                  regexp="data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
@@ -235,28 +237,6 @@ No options are set differently than default.",
                 info="Generic summary.PKNCAdata works.")
 })
 
-test_that("splitting PKNCAdata", {
-  tmp.conc <- generate.conc(nsub=2, ntreat=1, time.points=0:24)
-  obj.conc <-
-    PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
-  intervals <- data.frame(start=0, end=24, aucinf.obs=TRUE)
-  mydata <- PKNCAdata(obj.conc, intervals=intervals)
-
-  splitconc <- split(obj.conc)
-  expect_equal(split(mydata),
-               list(
-                 "Trt 1\n1"=list(
-                   conc=splitconc[[1]],
-                   dose=NA,
-                   intervals=check.interval.specification(data.frame(start=0, end=24, aucinf.obs=TRUE)),
-                   options=list()),
-                 "Trt 1\n2"=list(
-                   conc=splitconc[[2]],
-                   dose=NA,
-                   intervals=check.interval.specification(data.frame(start=0, end=24, aucinf.obs=TRUE)),
-                   options=list())))
-})
-
 test_that("no intervals auto-determined (Fix GitHub issue #84)", {
   tmp_conc <-
     data.frame(
@@ -289,13 +269,14 @@ test_that("no intervals auto-determined (Fix GitHub issue #84)", {
   )
   interval_2 <-
     check.interval.specification(
-      data.frame(start=1, end=c(2, Inf),
-                 auclast=c(TRUE, FALSE),
-                 cmax=c(TRUE, FALSE),
-                 tmax=c(TRUE, FALSE),
-                 half.life=c(FALSE, TRUE),
-                 Treatment=2,
-                 Subject=1
+      tibble(
+        start=1, end=c(2, Inf),
+        auclast=c(TRUE, FALSE),
+        cmax=c(TRUE, FALSE),
+        tmax=c(TRUE, FALSE),
+        half.life=c(FALSE, TRUE),
+        Treatment=2,
+        Subject=1
       )
     )
   expect_warning(

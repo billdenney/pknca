@@ -74,6 +74,8 @@ test_that("PKNCAconc with input other than data.frames", {
 
 test_that("model frame and parameter extractions", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
+  tmp_conc_single <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
+
   expect_equal(model.frame(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
                tmp.conc[,c("conc", "time", "treatment", "ID")],
                info="model.frame.PKNCAconc extracts the correct components")
@@ -114,53 +116,16 @@ test_that("model frame and parameter extractions", {
   expect_error(getGroups.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID), level="foo"),
                regexp="Not all levels are listed in the group names",
                info="getGroups.PKNCAconc gives an error if a group name is not present")
-})
-
-test_that("split.PKNCAconc", {
-  tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
-  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
-  expect_equal(base::split(myconc), split.PKNCAconc(myconc),
-               info="The generic is correctly called")
-  tmpsplit <- split.PKNCAconc(myconc)
-  expect_true(all(sapply(tmpsplit,
-                         function(x) {
-                           all(names(x) == names(myconc))
-                         })),
-               info="All parameter names are accurately transferred")
-  expect_true(all(sapply(tmpsplit,
-                         function(x) {
-                           x_nodata <- x
-                           x_nodata$data <- NULL
-                           mc_nodata <- myconc
-                           mc_nodata$data <- NULL
-                           identical(x_nodata, mc_nodata)
-                         })),
-              info="All values (other than data) are accurately transferred.")
-  expect_equal(split.PKNCAconc(NA),
-               {
-                 tmp <- list(NA)
-                 attr(tmp, "groupid") <- data.frame(NA)[,c()]
-                 tmp
-               },
-               info="NA split returns an effectively null split.")
   
-  # There is a "feature" of base R split where NA values are ignored as
-  # levels of the factor.  PKNCA works around this "feature".
-  # This has 2 not 4 groups
-  #
-  # mydata <- data.frame(A=rep(c(NA_character_, "A"), each=4),
-  #                      B=rep(1:2, 4),
-  #                      C=11:18,
-  #                      stringsAsFactors=FALSE)
-  # split(mydata, f=mydata[,c("A", "B")])
-  
-  tmp_conc_na <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
-  tmp_conc_na$treatment[tmp_conc_na$treatment %in% "Trt 1"] <- NA_character_
-  myconc_na <- PKNCAconc(tmp_conc_na, formula=conc~time|treatment+ID)
-  tmp_myconc_na_split <- split(myconc_na)
-  expect_equal(length(tmp_myconc_na_split),
-               4,
-               info="NA values in groups are kept not dropped")
+  expect_equal(
+    group_vars.PKNCAconc(PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)),
+    c("treatment", "ID")
+  )
+  expect_equal(
+    group_vars.PKNCAconc(PKNCAconc(tmp_conc_single, formula=conc~time)),
+    character(0),
+    info="Ungrouped data works with group_vars"
+  )
 })
 
 test_that("print.PKNCAconc", {

@@ -4,11 +4,13 @@ source("generate.data.R")
 
 test_that("setExcludeColumn", {
   ## exclude argument not given
-  expect_equal(setExcludeColumn(list(data=data.frame(a=1),
-                                     exclude="fake")),
-               list(data=data.frame(a=1),
-                    exclude="fake"),
-               info="setExcludeColumn does nothing if the exclude name is already given.")
+  expect_equal(
+    setExcludeColumn(list(data=data.frame(a=1),
+                          exclude="fake")),
+    list(data=data.frame(a=1),
+         exclude="fake"),
+    info="setExcludeColumn does nothing if the exclude name is already given."
+  )
   expect_equal(setExcludeColumn(list(data=data.frame(a=1))),
                list(data=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
                     exclude="exclude"),

@@ -97,45 +97,54 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   } else if (missing(intervals)) {
     ## Generate the intervals for each grouping of concentration and
     ## dosing.
-    tmp.conc.dose <-
-      merge.splitlist(
-        conc=split(ret$conc),
-        dose=split(ret$dose)
-      )
-    groupid <- attributes(tmp.conc.dose)$groupid
-    rownames(groupid) <- NULL
-    intervals <- data.frame()
-    indep.var.conc <- all.vars(parseFormula(ret$conc)$rhs)
-    indep.var.dose <- all.vars(parseFormula(ret$dose)$rhs)
-    if (identical(indep.var.dose, ".")) {
+    if (identical(all.vars(parseFormula(ret$dose)$rhs), ".")) {
       stop("Dose times were not given, so intervals must be manually specified.")
     }
-    for (i in seq_len(nrow(groupid))) {
-      tmp.group <- groupid[i,,drop=FALSE]
-      if (!is.null(tmp.conc.dose[[i]]$conc)) {
-        rownames(tmp.group) <- NULL
+    n_conc_dose <-
+      full_join_PKNCAconc_PKNCAdose(
+        conc=ret$conc,
+        dose=ret$dose
+      )
+    n_conc_dose$data_intervals <- rep(list(NULL), nrow(n_conc_dose))
+    for (idx in seq_len(nrow(n_conc_dose))) {
+      current_conc <- n_conc_dose$data_conc[[idx]]
+      current_dose <- n_conc_dose$data_dose[[idx]]
+      current_group <-
+        n_conc_dose[
+          idx,
+          setdiff(names(n_conc_dose), c("data_conc", "data_dose")),
+          drop=FALSE
+        ]
+      warning_prefix <-
+        if (ncol(current_group) > 0) {
+          paste0(
+            paste(names(current_group), unlist(lapply(current_group, as.character)), sep="=", collapse="; "),
+            ": "
+          )
+        } else {
+          ""
+        }
+      if (!is.null(current_conc)) {
         generated_intervals <-
           choose.auc.intervals(
-            tmp.conc.dose[[i]]$conc$data[,indep.var.conc],
-            tmp.conc.dose[[i]]$dose$data[,indep.var.dose],
+            current_conc$time,
+            current_dose$time,
             options=options
           )
-        if (nrow(generated_intervals)) {
-          new.intervals <- cbind(tmp.group, generated_intervals)
-          intervals <- rbind(intervals, new.intervals)
+        if (nrow(generated_intervals) > 0) {
+          n_conc_dose$data_intervals[[idx]] <- generated_intervals
         } else {
-          warning("No intervals generated likely due to limited concentration data for ",
-                  paste(names(tmp.group),
-                        unlist(lapply(tmp.group, as.character)),
-                        sep="=", collapse=", "))
+          warning(warning_prefix, "No intervals generated likely due to limited concentration data")
         }
       } else {
-        warning("No intervals generated due to no concentration data for ",
-                paste(names(tmp.group),
-                      unlist(lapply(tmp.group, as.character)),
-                      sep="=", collapse=", "))
+        warning(warning_prefix, "No intervals generated due to no concentration data")
       }
     }
+    intervals <-
+      tidyr::unnest(
+        n_conc_dose[, setdiff(names(n_conc_dose), c("data_conc", "data_dose")), drop=FALSE],
+        cols="data_intervals"
+      )
   }
   ret$intervals <- check.interval.specification(intervals)
   ## Assign the class and give it all back to the user.
@@ -168,76 +177,20 @@ print.PKNCAdata <- function(x, ...) {
 #' Extract all the original data from a PKNCAconc or PKNCAdose object
 #' @param object R object to extract the data from.
 #' @export
-getData.PKNCAdata <- function(object)
+getData.PKNCAdata <- function(object) {
   object$data
+}
 
 #' @rdname getDataName
-getDataName.PKNCAdata <- function(object)
+getDataName.PKNCAdata <- function(object) {
   "data"
+}
 
 #' Summarize a PKNCAdata object showing important details about the
 #' concentration, dosing, and interval information.
 #' @param object The PKNCAdata object to summarize.
 #' @param ... arguments passed on to \code{\link{print.PKNCAdata}}
 #' @export
-summary.PKNCAdata <- function(object, ...)
+summary.PKNCAdata <- function(object, ...) {
   print.PKNCAdata(object, summarize=TRUE, ...)
-
-#' @rdname split.PKNCAconc
-#' @export
-split.PKNCAdata <- function(x, ...) {
-  interval.group.cols <- intersect(names(x$intervals),
-                                   all.vars(parseFormula(x$conc$formula)$groups))
-  if (length(interval.group.cols) > 0) {
-    # If the intervals need to be split across the groups
-    tmp.interval.split <-
-      split.PKNCAconc(list(data=x$intervals),
-                      f=x$intervals[, interval.group.cols, drop=FALSE])
-    tmp.attr <- attributes(tmp.interval.split)
-    tmp.interval.split <- lapply(tmp.interval.split, function(x) x$data)
-    attributes(tmp.interval.split) <- tmp.attr
-    if (identical(NA, x$dose)) {
-      ret <-
-        merge.splitlist(conc=split.PKNCAconc(x$conc),
-                        intervals=tmp.interval.split)
-      ret <- lapply(X=ret,
-                    FUN=function(x) {
-                      x$dose <- NA
-                      x
-                    })
-    } else {
-      ret <-
-        merge.splitlist(conc=split.PKNCAconc(x$conc),
-                        dose=split.PKNCAdose(x$dose),
-                        intervals=tmp.interval.split)
-    }
-  } else {
-    # If the intervals apply to all groups
-    if (identical(NA, x$dose)) {
-      ret <- lapply(X=split.PKNCAconc(x$conc),
-                    FUN=function(x) {
-                      list(conc=x,
-                           dose=NA)
-                    })
-    } else {
-      ret <-
-        merge.splitlist(conc=split.PKNCAconc(x$conc),
-                        dose=split.PKNCAdose(x$dose))
-    }
-    ret <- lapply(X=ret,
-                  FUN=function(x, intervals) {
-                    x$intervals <- intervals
-                    x
-                  }, intervals=x$intervals)
-  }
-  for (n in setdiff(names(x), c("conc", "dose", "intervals"))) {
-    # Add any other attributes to all the splits (like options)
-    ret <-
-      lapply(ret, function(x, name, value) {
-        x[[name]] <- value
-        x
-      },
-      name=n, value=x[[n]])
-  }
-  ret
 }
