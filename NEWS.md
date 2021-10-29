@@ -14,7 +14,7 @@ the dosing including dose amount and route.
     and PKNCAdose objects were removed along with the merge.splitList function.
 * Single-subject (ungrouped) analysis works without creating a dummy group (#74)
 * PKNCAconc objects are checked earlier for valid data (#154)
-* Add time_above parameter to calcualte time above a given concentration.
+* Add time_above parameter to calculate time above a given concentration.
 * Fix numeric BLQ replacement when the value is a number and different values
   are given for first, middle, and last (related to #145).  This only affects
   datasets where BLQ is being replaced with a nonzero value (not a common

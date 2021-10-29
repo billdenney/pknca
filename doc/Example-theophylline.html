@@ -1,38 +1,54 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Bill Denney" />
 
 
 <title>Computing NCA Parameters for Theophylline</title>
 
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -52,7 +68,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -109,189 +125,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#header {
-text-align: center;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
 
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -319,8 +154,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Examples simplify understanding. Below is an example of how to use the theophylline dataset to generate NCA parameters.</p>
 <div id="load-the-data" class="section level1">
 <h1>Load the data</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## It is always a good idea to look at the data</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(datasets<span class="op">::</span>Theoph))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## It is always a good idea to look at the data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(datasets<span class="sc">::</span>Theoph))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -377,20 +212,20 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tbody>
 </table>
 <p>The columns that we will be interested in for our analysis are conc, Time, and Subject in the concentration data set and Dose, Time, and Subject for the dosing data set.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">## By default it is groupedData; convert it to a data frame for use</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>conc_obj &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(datasets<span class="op">::</span>Theoph), conc<span class="op">~</span>Time<span class="op">|</span>Subject)</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">## Dosing data needs to only have one row per dose, so subset for</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">## that first.</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>d_dose &lt;-<span class="st"> </span><span class="kw">unique</span>(datasets<span class="op">::</span>Theoph[datasets<span class="op">::</span>Theoph<span class="op">$</span>Time <span class="op">==</span><span class="st"> </span><span class="dv">0</span>,</span>
-<span id="cb2-7"><a href="#cb2-7"></a>                                  <span class="kw">c</span>(<span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Subject&quot;</span>)])</span>
-<span id="cb2-8"><a href="#cb2-8"></a>knitr<span class="op">::</span><span class="kw">kable</span>(d_dose,</span>
-<span id="cb2-9"><a href="#cb2-9"></a>             <span class="dt">caption=</span><span class="st">&quot;Example dosing data extracted from theophylline data set&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## By default it is groupedData; convert it to a data frame for use</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>conc_obj <span class="ot">&lt;-</span> <span class="fu">PKNCAconc</span>(<span class="fu">as.data.frame</span>(datasets<span class="sc">::</span>Theoph), conc<span class="sc">~</span>Time<span class="sc">|</span>Subject)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Dosing data needs to only have one row per dose, so subset for</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## that first.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>d_dose <span class="ot">&lt;-</span> <span class="fu">unique</span>(datasets<span class="sc">::</span>Theoph[datasets<span class="sc">::</span>Theoph<span class="sc">$</span>Time <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">c</span>(<span class="st">&quot;Dose&quot;</span>, <span class="st">&quot;Time&quot;</span>, <span class="st">&quot;Subject&quot;</span>)])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(d_dose,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption=</span><span class="st">&quot;Example dosing data extracted from theophylline data set&quot;</span>)</span></code></pre></div>
 <table>
 <caption>Example dosing data extracted from theophylline data set</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">Dose</th>
 <th align="right">Time</th>
 <th align="left">Subject</th>
@@ -398,87 +233,187 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </thead>
 <tbody>
 <tr class="odd">
-<td>1</td>
+<td align="left">1</td>
 <td align="right">4.02</td>
 <td align="right">0</td>
 <td align="left">1</td>
 </tr>
 <tr class="even">
-<td>12</td>
+<td align="left">12</td>
 <td align="right">4.40</td>
 <td align="right">0</td>
 <td align="left">2</td>
 </tr>
 <tr class="odd">
-<td>23</td>
+<td align="left">23</td>
 <td align="right">4.53</td>
 <td align="right">0</td>
 <td align="left">3</td>
 </tr>
 <tr class="even">
-<td>34</td>
+<td align="left">34</td>
 <td align="right">4.40</td>
 <td align="right">0</td>
 <td align="left">4</td>
 </tr>
 <tr class="odd">
-<td>45</td>
+<td align="left">45</td>
 <td align="right">5.86</td>
 <td align="right">0</td>
 <td align="left">5</td>
 </tr>
 <tr class="even">
-<td>56</td>
+<td align="left">56</td>
 <td align="right">4.00</td>
 <td align="right">0</td>
 <td align="left">6</td>
 </tr>
 <tr class="odd">
-<td>67</td>
+<td align="left">67</td>
 <td align="right">4.95</td>
 <td align="right">0</td>
 <td align="left">7</td>
 </tr>
 <tr class="even">
-<td>78</td>
+<td align="left">78</td>
 <td align="right">4.53</td>
 <td align="right">0</td>
 <td align="left">8</td>
 </tr>
 <tr class="odd">
-<td>89</td>
+<td align="left">89</td>
 <td align="right">3.10</td>
 <td align="right">0</td>
 <td align="left">9</td>
 </tr>
 <tr class="even">
-<td>100</td>
+<td align="left">100</td>
 <td align="right">5.50</td>
 <td align="right">0</td>
 <td align="left">10</td>
 </tr>
 <tr class="odd">
-<td>111</td>
+<td align="left">111</td>
 <td align="right">4.92</td>
 <td align="right">0</td>
 <td align="left">11</td>
 </tr>
 <tr class="even">
-<td>122</td>
+<td align="left">122</td>
 <td align="right">5.30</td>
 <td align="right">0</td>
 <td align="left">12</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dose_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(d_dose, Dose<span class="op">~</span>Time<span class="op">|</span>Subject)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dose_obj <span class="ot">&lt;-</span> <span class="fu">PKNCAdose</span>(d_dose, Dose<span class="sc">~</span>Time<span class="sc">|</span>Subject)</span></code></pre></div>
 </div>
 <div id="merge-the-concentration-and-dose" class="section level1">
 <h1>Merge the Concentration and Dose</h1>
 <p>After loading the data, they must be combined to prepare for parameter calculation. Intervals for calculation will automatically be selected based on the <code>single.dose.aucs setting</code> in <code>PKNCA.options</code></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>data_obj_automatic &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">PKNCA.options</span>(<span class="st">&quot;single.dose.aucs&quot;</span>))</span></code></pre></div>
-<table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_obj_automatic <span class="ot">&lt;-</span> <span class="fu">PKNCAdata</span>(conc_obj, dose_obj)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">PKNCA.options</span>(<span class="st">&quot;single.dose.aucs&quot;</span>))</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">start</th>
@@ -520,6 +455,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <th align="left">clr.obs</th>
 <th align="left">clr.pred</th>
 <th align="left">fe</th>
+<th align="left">time_above</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -679,6 +615,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
@@ -698,6 +635,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -781,8 +719,109 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>knitr<span class="op">::</span><span class="kw">kable</span>(data_obj_automatic<span class="op">$</span>intervals)</span></code></pre></div>
-<table>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data_obj_automatic<span class="sc">$</span>intervals)</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">start</th>
@@ -824,6 +863,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <th align="left">clr.obs</th>
 <th align="left">clr.pred</th>
 <th align="left">fe</th>
+<th align="left">time_above</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -984,6 +1024,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">1</td>
 </tr>
 <tr class="even">
@@ -1004,6 +1045,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1090,6 +1132,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1226,6 +1269,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1384,6 +1428,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">3</td>
 </tr>
 <tr class="even">
@@ -1404,6 +1449,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1490,6 +1536,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1626,6 +1673,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1784,6 +1832,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">5</td>
 </tr>
 <tr class="even">
@@ -1804,6 +1853,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1890,6 +1940,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2026,6 +2077,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2184,6 +2236,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">7</td>
 </tr>
 <tr class="even">
@@ -2204,6 +2257,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2290,6 +2344,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2426,6 +2481,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2584,6 +2640,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">9</td>
 </tr>
 <tr class="even">
@@ -2604,6 +2661,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2690,6 +2748,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2826,6 +2885,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2984,6 +3044,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">11</td>
 </tr>
 <tr class="even">
@@ -3004,6 +3065,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3090,6 +3152,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3204,6 +3267,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3288,17 +3352,117 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<p>Intervals for calculation can also be specified manually. Manual specification requires at least columns for <code>start</code> time, <code>end</code> time, and the parameters requested. The manual specification can also include any grouping factors from the concentration data set. Column order of the intervals is not important. When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter. Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC<sub>0-<span class="math inline">\(\infinity\)</span></sub>, you do not have to specify it in the parameters requested.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>intervals_manual &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="dv">0</span>,</span>
-<span id="cb6-2"><a href="#cb6-2"></a>                               <span class="dt">end=</span><span class="ot">Inf</span>,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>                               <span class="dt">cmax=</span><span class="ot">TRUE</span>,</span>
-<span id="cb6-4"><a href="#cb6-4"></a>                               <span class="dt">tmax=</span><span class="ot">TRUE</span>,</span>
-<span id="cb6-5"><a href="#cb6-5"></a>                               <span class="dt">aucinf.obs=</span><span class="ot">TRUE</span>,</span>
-<span id="cb6-6"><a href="#cb6-6"></a>                               <span class="dt">auclast=</span><span class="ot">TRUE</span>)</span>
-<span id="cb6-7"><a href="#cb6-7"></a>data_obj_manual &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj, dose_obj,</span>
-<span id="cb6-8"><a href="#cb6-8"></a>                             <span class="dt">intervals=</span>intervals_manual)</span>
-<span id="cb6-9"><a href="#cb6-9"></a>knitr<span class="op">::</span><span class="kw">kable</span>(data_obj_manual<span class="op">$</span>intervals)</span></code></pre></div>
-<table>
+<p>Intervals for calculation can also be specified manually. Manual specification requires at least columns for <code>start</code> time, <code>end</code> time, and the parameters requested. The manual specification can also include any grouping factors from the concentration data set. Column order of the intervals is not important. When intervals are manually specified, they are expanded to the full interval set when added to a PKNCAdata object (in other words, a column is created for each parameter. Also, PKNCA automatically calculates parameters required for the NCA, so while lambda.z is required for calculating AUC<sub>0-<span class="math inline">\(\infty\)</span></sub>, you do not have to specify it in the parameters requested.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>intervals_manual <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">start=</span><span class="dv">0</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">end=</span><span class="cn">Inf</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">cmax=</span><span class="cn">TRUE</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">tmax=</span><span class="cn">TRUE</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">aucinf.obs=</span><span class="cn">TRUE</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">auclast=</span><span class="cn">TRUE</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>data_obj_manual <span class="ot">&lt;-</span> <span class="fu">PKNCAdata</span>(conc_obj, dose_obj,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">intervals=</span>intervals_manual)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data_obj_manual<span class="sc">$</span>intervals)</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="0%" />
+<col width="1%" />
+<col width="1%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="right">start</th>
@@ -3340,6 +3504,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <th align="left">clr.obs</th>
 <th align="left">clr.pred</th>
 <th align="left">fe</th>
+<th align="left">time_above</th>
 <th align="left">half.life</th>
 <th align="left">r.squared</th>
 <th align="left">adj.r.squared</th>
@@ -3419,6 +3584,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3506,14 +3672,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="compute-the-parameters" class="section level1">
 <h1>Compute the parameters</h1>
 <p>Parameter calculation will automatically split the data by the grouping factor(s), subset by the interval, calculate all required parameters, record all options used for the calculations, and include data provenance to show that the calculation was performed as described. For all this, just call the <code>pk.nca</code> function with your PKNCAdata object.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>results_obj_automatic &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj_automatic)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(<span class="kw">as.data.frame</span>(results_obj_automatic)))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>results_obj_automatic <span class="ot">&lt;-</span> <span class="fu">pk.nca</span>(data_obj_automatic)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(<span class="fu">as.data.frame</span>(results_obj_automatic)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
+<th align="left">Subject</th>
 <th align="right">start</th>
 <th align="right">end</th>
-<th align="left">Subject</th>
 <th align="left">PPTESTCD</th>
 <th align="right">PPORRES</th>
 <th align="left">exclude</th>
@@ -3521,56 +3687,56 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">1</td>
 <td align="right">0</td>
 <td align="right">24</td>
-<td align="left">1</td>
 <td align="left">auclast</td>
 <td align="right">92.365442</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">1</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">cmax</td>
 <td align="right">10.500000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
+<td align="left">1</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">tmax</td>
 <td align="right">1.120000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">1</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">tlast</td>
 <td align="right">24.370000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
+<td align="left">1</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">clast.obs</td>
 <td align="right">3.280000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">1</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">lambda.z</td>
 <td align="right">0.048457</td>
 <td align="left">NA</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">summary</span>(results_obj_automatic)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results_obj_automatic)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3607,14 +3773,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>results_obj_manual &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj_manual)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(<span class="kw">as.data.frame</span>(results_obj_manual)))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>results_obj_manual <span class="ot">&lt;-</span> <span class="fu">pk.nca</span>(data_obj_manual)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(<span class="fu">as.data.frame</span>(results_obj_manual)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
+<th align="left">Subject</th>
 <th align="right">start</th>
 <th align="right">end</th>
-<th align="left">Subject</th>
 <th align="left">PPTESTCD</th>
 <th align="right">PPORRES</th>
 <th align="left">exclude</th>
@@ -3622,56 +3788,56 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">6</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">auclast</td>
-<td align="right">147.234748</td>
+<td align="right">71.6970150</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">6</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">cmax</td>
-<td align="right">10.500000</td>
+<td align="right">6.4400000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
+<td align="left">6</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">tmax</td>
-<td align="right">1.120000</td>
+<td align="right">1.1500000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">6</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">tlast</td>
-<td align="right">24.370000</td>
+<td align="right">23.8500000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
+<td align="left">6</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">clast.obs</td>
-<td align="right">3.280000</td>
+<td align="right">0.9200000</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
+<td align="left">6</td>
 <td align="right">0</td>
 <td align="right">Inf</td>
-<td align="left">1</td>
 <td align="left">lambda.z</td>
-<td align="right">0.048457</td>
+<td align="right">0.0877957</td>
 <td align="left">NA</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">summary</span>(results_obj_manual)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results_obj_manual)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3701,16 +3867,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1>Multiple Dose Example</h1>
 <p>Assessing multiple dose pharmacokinetics is conceptually the same as single-dose in PKNCA.</p>
 <p>To assess multiple dose PK, the theophylline data will be extended from single to multiple doses using superposition (see the <a href="Superposition.html">Superposition</a> vignette for more information).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>d_conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="kw">as.data.frame</span>(Theoph), conc<span class="op">~</span>Time<span class="op">|</span>Subject)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>conc_obj_multi &lt;-</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw">PKNCAconc</span>(</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    <span class="kw">superposition</span>(d_conc,</span>
-<span id="cb11-5"><a href="#cb11-5"></a>                  <span class="dt">tau=</span><span class="dv">168</span>,</span>
-<span id="cb11-6"><a href="#cb11-6"></a>                  <span class="dt">dose.times=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">144</span>, <span class="dt">by=</span><span class="dv">24</span>),</span>
-<span id="cb11-7"><a href="#cb11-7"></a>                  <span class="dt">n.tau=</span><span class="dv">1</span>,</span>
-<span id="cb11-8"><a href="#cb11-8"></a>                  <span class="dt">check.blq=</span><span class="ot">FALSE</span>),</span>
-<span id="cb11-9"><a href="#cb11-9"></a>    conc<span class="op">~</span>time<span class="op">|</span>Subject)</span>
-<span id="cb11-10"><a href="#cb11-10"></a>conc_obj_multi</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d_conc <span class="ot">&lt;-</span> <span class="fu">PKNCAconc</span>(<span class="fu">as.data.frame</span>(Theoph), conc<span class="sc">~</span>Time<span class="sc">|</span>Subject)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>conc_obj_multi <span class="ot">&lt;-</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">PKNCAconc</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">superposition</span>(d_conc,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">tau=</span><span class="dv">168</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">dose.times=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">144</span>, <span class="at">by=</span><span class="dv">24</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">n.tau=</span><span class="dv">1</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">check.blq=</span><span class="cn">FALSE</span>),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    conc<span class="sc">~</span>time<span class="sc">|</span>Subject)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>conc_obj_multi</span></code></pre></div>
 <pre><code>## Formula for concentration:
 ##  conc ~ time | Subject
 ## With 12 subjects defined in the &#39;Subject&#39; column.
@@ -3724,10 +3890,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##        1  6.57000 0.57    &lt;NA&gt;     NA        0
 ##        1 10.50000 1.12    &lt;NA&gt;     NA        0
 ##        1  9.66000 2.02    &lt;NA&gt;     NA        0</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>dose_obj_multi &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(<span class="kw">expand.grid</span>(<span class="dt">Subject=</span><span class="kw">unique</span>(conc_obj_multi<span class="op">$</span>data<span class="op">$</span>Subject),</span>
-<span id="cb13-2"><a href="#cb13-2"></a>                                      <span class="dt">time=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">144</span>, <span class="dt">by=</span><span class="dv">24</span>)),</span>
-<span id="cb13-3"><a href="#cb13-3"></a>                          <span class="op">~</span>time<span class="op">|</span>Subject)</span>
-<span id="cb13-4"><a href="#cb13-4"></a>dose_obj_multi</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dose_obj_multi <span class="ot">&lt;-</span> <span class="fu">PKNCAdose</span>(<span class="fu">expand.grid</span>(<span class="at">Subject=</span><span class="fu">unique</span>(conc_obj_multi<span class="sc">$</span>data<span class="sc">$</span>Subject),</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">time=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">144</span>, <span class="at">by=</span><span class="dv">24</span>)),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                          <span class="sc">~</span>time<span class="sc">|</span>Subject)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>dose_obj_multi</span></code></pre></div>
 <pre><code>## Formula for dosing:
 ##  ~time | Subject
 ## Nominal time column is not specified.
@@ -3741,199 +3907,93 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##        5    0    &lt;NA&gt; extravascular        0
 ##        6    0    &lt;NA&gt; extravascular        0</code></pre>
 <p>The superposition-simulated scenario is not especially realistic as it includes dense sampling on every day. With this scenario, the intervals automatically selected have an interval for every subject on every day.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj_multi, dose_obj_multi)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>data_obj<span class="op">$</span>intervals[,<span class="kw">c</span>(<span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;start&quot;</span>, <span class="st">&quot;end&quot;</span>)]</span></code></pre></div>
-<pre><code>##    Subject start end
-## 1        1     0  24
-## 2        1    24  48
-## 3        1    48  72
-## 4        1    72  96
-## 5        1    96 120
-## 6        1   120 144
-## 7        1   144 168
-## 8        2     0  24
-## 9        2    24  48
-## 10       2    48  72
-## 11       2    72  96
-## 12       2    96 120
-## 13       2   120 144
-## 14       2   144 168
-## 15       3     0  24
-## 16       3    24  48
-## 17       3    48  72
-## 18       3    72  96
-## 19       3    96 120
-## 20       3   120 144
-## 21       3   144 168
-## 22       4     0  24
-## 23       4    24  48
-## 24       4    48  72
-## 25       4    72  96
-## 26       4    96 120
-## 27       4   120 144
-## 28       4   144 168
-## 29       5     0  24
-## 30       5    24  48
-## 31       5    48  72
-## 32       5    72  96
-## 33       5    96 120
-## 34       5   120 144
-## 35       5   144 168
-## 36       6     0  24
-## 37       6    24  48
-## 38       6    48  72
-## 39       6    72  96
-## 40       6    96 120
-## 41       6   120 144
-## 42       6   144 168
-## 43       7     0  24
-## 44       7    24  48
-## 45       7    48  72
-## 46       7    72  96
-## 47       7    96 120
-## 48       7   120 144
-## 49       7   144 168
-## 50       8     0  24
-## 51       8    24  48
-## 52       8    48  72
-## 53       8    72  96
-## 54       8    96 120
-## 55       8   120 144
-## 56       8   144 168
-## 57       9     0  24
-## 58       9    24  48
-## 59       9    48  72
-## 60       9    72  96
-## 61       9    96 120
-## 62       9   120 144
-## 63       9   144 168
-## 64      10     0  24
-## 65      10    24  48
-## 66      10    48  72
-## 67      10    72  96
-## 68      10    96 120
-## 69      10   120 144
-## 70      10   144 168
-## 71      11     0  24
-## 72      11    24  48
-## 73      11    48  72
-## 74      11    72  96
-## 75      11    96 120
-## 76      11   120 144
-## 77      11   144 168
-## 78      12     0  24
-## 79      12    24  48
-## 80      12    48  72
-## 81      12    72  96
-## 82      12    96 120
-## 83      12   120 144
-## 84      12   144 168</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data_obj <span class="ot">&lt;-</span> <span class="fu">PKNCAdata</span>(conc_obj_multi, dose_obj_multi)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data_obj<span class="sc">$</span>intervals[,<span class="fu">c</span>(<span class="st">&quot;Subject&quot;</span>, <span class="st">&quot;start&quot;</span>, <span class="st">&quot;end&quot;</span>)]</span></code></pre></div>
+<pre><code>## # A tibble: 84 x 3
+##    Subject start   end
+##    &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 1           0    24
+##  2 1          24    48
+##  3 1          48    72
+##  4 1          72    96
+##  5 1          96   120
+##  6 1         120   144
+##  7 1         144   168
+##  8 2           0    24
+##  9 2          24    48
+## 10 2          48    72
+## # ... with 74 more rows</code></pre>
 <p>In a more realistic scenario, dense PK sampling occurs for every subject on the first and last days. To select those intervals manually, specify the intervals of interest in the <code>intervals</code> argument to the PKNCAdata function call. The intervals are automatically expanded not to calculate anything that was not requested.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>intervals_manual &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">144</span>),</span>
-<span id="cb17-2"><a href="#cb17-2"></a>                               <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">24</span>, <span class="dv">168</span>),</span>
-<span id="cb17-3"><a href="#cb17-3"></a>                               <span class="dt">cmax=</span><span class="ot">TRUE</span>,</span>
-<span id="cb17-4"><a href="#cb17-4"></a>                               <span class="dt">auclast=</span><span class="ot">TRUE</span>)</span>
-<span id="cb17-5"><a href="#cb17-5"></a>data_obj &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(conc_obj_multi, dose_obj_multi,</span>
-<span id="cb17-6"><a href="#cb17-6"></a>                      <span class="dt">intervals=</span>intervals_manual)</span>
-<span id="cb17-7"><a href="#cb17-7"></a>data_obj<span class="op">$</span>intervals</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>intervals_manual <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">start=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">144</span>),</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">end=</span><span class="fu">c</span>(<span class="dv">24</span>, <span class="dv">168</span>),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">cmax=</span><span class="cn">TRUE</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">auclast=</span><span class="cn">TRUE</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>data_obj <span class="ot">&lt;-</span> <span class="fu">PKNCAdata</span>(conc_obj_multi, dose_obj_multi,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">intervals=</span>intervals_manual)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>data_obj<span class="sc">$</span>intervals</span></code></pre></div>
 <pre><code>##   start end auclast aucall aumclast aumcall aucint.last aucint.last.dose
 ## 1     0  24    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
 ## 2   144 168    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
-##   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn
-## 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
-## 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
-##   cmax  cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last
-## 1 TRUE FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
-## 2 TRUE FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
-##   mrt.iv.last vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc
-## 1       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
-## 2       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
-##   swing  ceoi    ae clr.last clr.obs clr.pred    fe half.life r.squared
-## 1 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE     FALSE     FALSE
-## 2 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE     FALSE     FALSE
-##   adj.r.squared lambda.z lambda.z.time.first lambda.z.n.points clast.pred
-## 1         FALSE    FALSE               FALSE             FALSE      FALSE
-## 2         FALSE    FALSE               FALSE             FALSE      FALSE
-##   span.ratio cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn
-## 1      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
-## 2      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
-##   thalf.eff.last thalf.eff.iv.last kel.last kel.iv.last aucinf.obs
-## 1          FALSE             FALSE    FALSE       FALSE      FALSE
-## 2          FALSE             FALSE    FALSE       FALSE      FALSE
-##   aucinf.pred aumcinf.obs aumcinf.pred aucint.inf.obs aucint.inf.obs.dose
-## 1       FALSE       FALSE        FALSE          FALSE               FALSE
-## 2       FALSE       FALSE        FALSE          FALSE               FALSE
-##   aucint.inf.pred aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn
-## 1           FALSE                FALSE         FALSE          FALSE
-## 2           FALSE                FALSE         FALSE          FALSE
-##   aumcinf.obs.dn aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred
-## 1          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
-## 2          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
-##   mrt.obs mrt.pred mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs
-## 1   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
-## 2   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
-##   vz.pred vss.obs vss.pred vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred
-## 1   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
-## 2   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
-##   vd.obs vd.pred thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs
-## 1  FALSE   FALSE         FALSE          FALSE            FALSE
-## 2  FALSE   FALSE         FALSE          FALSE            FALSE
-##   thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs kel.iv.pred
-## 1             FALSE   FALSE    FALSE      FALSE       FALSE
-## 2             FALSE   FALSE    FALSE      FALSE       FALSE</code></pre>
+##   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn cmax
+## 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE TRUE
+## 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE TRUE
+##    cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last mrt.iv.last
+## 1 FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE
+## 2 FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE
+##   vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc swing  ceoi    ae
+## 1    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE
+## 2    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE
+##   clr.last clr.obs clr.pred    fe time_above half.life r.squared adj.r.squared
+## 1    FALSE   FALSE    FALSE FALSE      FALSE     FALSE     FALSE         FALSE
+## 2    FALSE   FALSE    FALSE FALSE      FALSE     FALSE     FALSE         FALSE
+##   lambda.z lambda.z.time.first lambda.z.n.points clast.pred span.ratio cmax.dn
+## 1    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE
+## 2    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE
+##   cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn thalf.eff.last
+## 1   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE
+## 2   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE
+##   thalf.eff.iv.last kel.last kel.iv.last aucinf.obs aucinf.pred aumcinf.obs
+## 1             FALSE    FALSE       FALSE      FALSE       FALSE       FALSE
+## 2             FALSE    FALSE       FALSE      FALSE       FALSE       FALSE
+##   aumcinf.pred aucint.inf.obs aucint.inf.obs.dose aucint.inf.pred
+## 1        FALSE          FALSE               FALSE           FALSE
+## 2        FALSE          FALSE               FALSE           FALSE
+##   aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn aumcinf.obs.dn
+## 1                FALSE         FALSE          FALSE          FALSE
+## 2                FALSE         FALSE          FALSE          FALSE
+##   aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred mrt.obs mrt.pred
+## 1           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE
+## 2           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE
+##   mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs vz.pred vss.obs vss.pred
+## 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE
+## 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE
+##   vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred vd.obs vd.pred thalf.eff.obs
+## 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
+## 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
+##   thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs
+## 1          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE
+## 2          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE
+##   kel.iv.pred
+## 1       FALSE
+## 2       FALSE</code></pre>
 <p>After the data is ready, the calculations and summary can progress.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>results_obj &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(data_obj)</span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">print</span>(results_obj)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>results_obj <span class="ot">&lt;-</span> <span class="fu">pk.nca</span>(data_obj)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_obj)</span></code></pre></div>
 <pre><code>## $result
-##    start end Subject PPTESTCD    PPORRES exclude
-## 1      0  24       1  auclast 151.189916    &lt;NA&gt;
-## 2      0  24       1     cmax  10.500000    &lt;NA&gt;
-## 3    144 168       1  auclast 214.860975    &lt;NA&gt;
-## 4    144 168       1     cmax  15.096727    &lt;NA&gt;
-## 5      0  24       2  auclast  88.457261    &lt;NA&gt;
-## 6      0  24       2     cmax   8.330000    &lt;NA&gt;
-## 7    144 168       2  auclast  97.381127    &lt;NA&gt;
-## 8    144 168       2     cmax   9.221742    &lt;NA&gt;
-## 9      0  24       3  auclast  95.698098    &lt;NA&gt;
-## 10     0  24       3     cmax   8.200000    &lt;NA&gt;
-## 11   144 168       3  auclast 106.131322    &lt;NA&gt;
-## 12   144 168       3     cmax   9.252474    &lt;NA&gt;
-## 13     0  24       4  auclast 101.860775    &lt;NA&gt;
-## 14     0  24       4     cmax   8.600000    &lt;NA&gt;
-## 15   144 168       4  auclast 114.219220    &lt;NA&gt;
-## 16   144 168       4     cmax   9.815170    &lt;NA&gt;
-## 17     0  24       5  auclast 117.621805    &lt;NA&gt;
-## 18     0  24       5     cmax  11.400000    &lt;NA&gt;
-## 19   144 168       5  auclast 136.309916    &lt;NA&gt;
-## 20   144 168       5     cmax  13.096191    &lt;NA&gt;
-## 21     0  24       6  auclast  71.834110    &lt;NA&gt;
-## 22     0  24       6     cmax   6.440000    &lt;NA&gt;
-## 23   144 168       6  auclast  82.177601    &lt;NA&gt;
-## 24   144 168       6     cmax   7.374375    &lt;NA&gt;
-## 25     0  24       7  auclast  89.021716    &lt;NA&gt;
-## 26     0  24       7     cmax   7.090000    &lt;NA&gt;
-## 27   144 168       7  auclast 100.992404    &lt;NA&gt;
-## 28   144 168       7     cmax   8.069847    &lt;NA&gt;
-## 29     0  24       8  auclast  86.655906    &lt;NA&gt;
-## 30     0  24       8     cmax   7.560000    &lt;NA&gt;
-## 31   144 168       8  auclast 102.163105    &lt;NA&gt;
-## 32   144 168       8     cmax   8.807391    &lt;NA&gt;
-## 33     0  24       9  auclast  83.447367    &lt;NA&gt;
-## 34     0  24       9     cmax   9.030000    &lt;NA&gt;
-## 35   144 168       9  auclast  97.525881    &lt;NA&gt;
-## 36   144 168       9     cmax  10.308349    &lt;NA&gt;
-## 37     0  24      10  auclast 136.329998    &lt;NA&gt;
-## 38     0  24      10     cmax  10.210000    &lt;NA&gt;
-## 39   144 168      10  auclast 167.865640    &lt;NA&gt;
-## 40   144 168      10     cmax  12.382817    &lt;NA&gt;
-## 41     0  24      11  auclast  77.824409    &lt;NA&gt;
-## 42     0  24      11     cmax   8.000000    &lt;NA&gt;
-## 43   144 168      11  auclast  86.903095    &lt;NA&gt;
-## 44   144 168      11     cmax   8.878024    &lt;NA&gt;
-## 45     0  24      12  auclast 115.043218    &lt;NA&gt;
-## 46     0  24      12     cmax   9.750000    &lt;NA&gt;
-## 47   144 168      12  auclast 125.838198    &lt;NA&gt;
-## 48   144 168      12     cmax  10.746939    &lt;NA&gt;
+## # A tibble: 48 x 6
+##    Subject start   end PPTESTCD PPORRES exclude
+##    &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;  
+##  1 6           0    24 auclast    71.8  &lt;NA&gt;   
+##  2 6           0    24 cmax        6.44 &lt;NA&gt;   
+##  3 6         144   168 auclast    82.2  &lt;NA&gt;   
+##  4 6         144   168 cmax        7.37 &lt;NA&gt;   
+##  5 7           0    24 auclast    89.0  &lt;NA&gt;   
+##  6 7           0    24 cmax        7.09 &lt;NA&gt;   
+##  7 7         144   168 auclast   101.   &lt;NA&gt;   
+##  8 7         144   168 cmax        8.07 &lt;NA&gt;   
+##  9 8           0    24 auclast    86.7  &lt;NA&gt;   
+## 10 8           0    24 cmax        7.56 &lt;NA&gt;   
+## # ... with 38 more rows
 ## 
 ## $data
 ## Formula for concentration:
@@ -3950,17 +4010,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##        1 10.50000 1.12    &lt;NA&gt;     NA        0
 ##        1  9.66000 2.02    &lt;NA&gt;     NA        0
 ## Formula for dosing:
-##  timeX ~ (time | Subject)
+##  ~time | Subject
 ## Nominal time column is not specified.
 ## 
 ## First 6 rows of dosing data:
-##  Subject time exclude         route duration timeX
-##        1    0    &lt;NA&gt; extravascular        0    NA
-##        2    0    &lt;NA&gt; extravascular        0    NA
-##        3    0    &lt;NA&gt; extravascular        0    NA
-##        4    0    &lt;NA&gt; extravascular        0    NA
-##        5    0    &lt;NA&gt; extravascular        0    NA
-##        6    0    &lt;NA&gt; extravascular        0    NA
+##  Subject time exclude         route duration
+##        1    0    &lt;NA&gt; extravascular        0
+##        2    0    &lt;NA&gt; extravascular        0
+##        3    0    &lt;NA&gt; extravascular        0
+##        4    0    &lt;NA&gt; extravascular        0
+##        5    0    &lt;NA&gt; extravascular        0
+##        6    0    &lt;NA&gt; extravascular        0
 ## 
 ## With 2 rows of AUC specifications.
 ## Options changed from default are:
@@ -3972,6 +4032,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 
 ## $auc.method
 ## [1] &quot;lin up/log down&quot;
+## 
+## $conc_above
+## [1] NA
 ## 
 ## $conc.na
 ## [1] &quot;drop&quot;
@@ -4012,48 +4075,48 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##   start end auclast aucall aumclast aumcall aucint.last aucint.last.dose
 ## 1     0  24    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
 ## 2     0 Inf   FALSE  FALSE    FALSE   FALSE       FALSE            FALSE
-##   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn
-## 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
-## 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE
-##    cmax  cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last
-## 1 FALSE FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
-## 2  TRUE FALSE  TRUE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE
-##   mrt.iv.last vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc
-## 1       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
-## 2       FALSE    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE
-##   swing  ceoi    ae clr.last clr.obs clr.pred    fe half.life r.squared
-## 1 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE     FALSE     FALSE
-## 2 FALSE FALSE FALSE    FALSE   FALSE    FALSE FALSE      TRUE     FALSE
-##   adj.r.squared lambda.z lambda.z.time.first lambda.z.n.points clast.pred
-## 1         FALSE    FALSE               FALSE             FALSE      FALSE
-## 2         FALSE    FALSE               FALSE             FALSE      FALSE
-##   span.ratio cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn
-## 1      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
-## 2      FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE
-##   thalf.eff.last thalf.eff.iv.last kel.last kel.iv.last aucinf.obs
-## 1          FALSE             FALSE    FALSE       FALSE      FALSE
-## 2          FALSE             FALSE    FALSE       FALSE       TRUE
-##   aucinf.pred aumcinf.obs aumcinf.pred aucint.inf.obs aucint.inf.obs.dose
-## 1       FALSE       FALSE        FALSE          FALSE               FALSE
-## 2       FALSE       FALSE        FALSE          FALSE               FALSE
-##   aucint.inf.pred aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn
-## 1           FALSE                FALSE         FALSE          FALSE
-## 2           FALSE                FALSE         FALSE          FALSE
-##   aumcinf.obs.dn aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred
-## 1          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
-## 2          FALSE           FALSE       FALSE        FALSE  FALSE   FALSE
-##   mrt.obs mrt.pred mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs
-## 1   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
-## 2   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE  FALSE
-##   vz.pred vss.obs vss.pred vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred
-## 1   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
-## 2   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE
-##   vd.obs vd.pred thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs
-## 1  FALSE   FALSE         FALSE          FALSE            FALSE
-## 2  FALSE   FALSE         FALSE          FALSE            FALSE
-##   thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs kel.iv.pred
-## 1             FALSE   FALSE    FALSE      FALSE       FALSE
-## 2             FALSE   FALSE    FALSE      FALSE       FALSE
+##   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn  cmax
+## 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE FALSE
+## 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE  TRUE
+##    cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last mrt.iv.last
+## 1 FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE
+## 2 FALSE  TRUE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE
+##   vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc swing  ceoi    ae
+## 1    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE
+## 2    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE
+##   clr.last clr.obs clr.pred    fe time_above half.life r.squared adj.r.squared
+## 1    FALSE   FALSE    FALSE FALSE      FALSE     FALSE     FALSE         FALSE
+## 2    FALSE   FALSE    FALSE FALSE      FALSE      TRUE     FALSE         FALSE
+##   lambda.z lambda.z.time.first lambda.z.n.points clast.pred span.ratio cmax.dn
+## 1    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE
+## 2    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE
+##   cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn thalf.eff.last
+## 1   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE
+## 2   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE
+##   thalf.eff.iv.last kel.last kel.iv.last aucinf.obs aucinf.pred aumcinf.obs
+## 1             FALSE    FALSE       FALSE      FALSE       FALSE       FALSE
+## 2             FALSE    FALSE       FALSE       TRUE       FALSE       FALSE
+##   aumcinf.pred aucint.inf.obs aucint.inf.obs.dose aucint.inf.pred
+## 1        FALSE          FALSE               FALSE           FALSE
+## 2        FALSE          FALSE               FALSE           FALSE
+##   aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn aumcinf.obs.dn
+## 1                FALSE         FALSE          FALSE          FALSE
+## 2                FALSE         FALSE          FALSE          FALSE
+##   aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred mrt.obs mrt.pred
+## 1           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE
+## 2           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE
+##   mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs vz.pred vss.obs vss.pred
+## 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE
+## 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE
+##   vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred vd.obs vd.pred thalf.eff.obs
+## 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
+## 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
+##   thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs
+## 1          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE
+## 2          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE
+##   kel.iv.pred
+## 1       FALSE
+## 2       FALSE
 ## 
 ## 
 ## $exclude
@@ -4062,8 +4125,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## attr(,&quot;class&quot;)
 ## [1] &quot;PKNCAresults&quot; &quot;list&quot;        
 ## attr(,&quot;provenance&quot;)
-## Provenance hash 51b59f882a9f3a2811324a5ff10bb22b generated on 2019-09-19 12:55:47 with R version 3.6.1 (2019-07-05).</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">summary</span>(results_obj)</span></code></pre></div>
+## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2021-10-29 14:18:10 with R version 4.1.0 (2021-05-18).</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results_obj)</span></code></pre></div>
 <pre><code>##  start end  N     auclast        cmax
 ##      0  24 12 98.8 [23.0] 8.65 [17.0]
 ##    144 168 12  115 [28.4] 10.0 [21.0]
