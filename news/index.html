@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@
 </li>
 <li>Single-subject (ungrouped) analysis works without creating a dummy group (<a href='https://github.com/billdenney/pknca/issues/74'>#74</a>)</li>
 <li>PKNCAconc objects are checked earlier for valid data (<a href='https://github.com/billdenney/pknca/issues/154'>#154</a>)</li>
-<li>Add time_above parameter to calcualte time above a given concentration.</li>
+<li>Add time_above parameter to calculate time above a given concentration.</li>
 <li>Fix numeric BLQ replacement when the value is a number and different values are given for first, middle, and last (related to <a href='https://github.com/billdenney/pknca/issues/145'>#145</a>). This only affects datasets where BLQ is being replaced with a nonzero value (not a common scenario).</li>
 <li>Fix issue where intervals could not be tibbles (<a href='https://github.com/billdenney/pknca/issues/141'>#141</a>)</li>
 <li>Fix minor issue where only the first exclusion reason would show in the exclusion column and other reasons would be ignored (<a href='https://github.com/billdenney/pknca/issues/113'>#113</a>). Note that the impact of this bug is minimal as the result would have been excluded from summaries for the first reason found, but if there were multiple reasons for exclusion the subsequent reasons would not be recorded.</li>
