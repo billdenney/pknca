@@ -1,0 +1,298 @@
+---
+title: "PKNCA Training Session 1 of 2"
+author: "William Denney"
+date: "5 November 2021"
+output:
+  ioslides_presentation:
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+requireNamespace("pmxTools")
+library(PKNCA)
+library(tidyverse)
+breaks_hours <- function(n=5, Q=c(1, 6, 4, 12, 2, 24, 168), ...) {
+  n_default <- n
+  Q_default <- Q
+  function(x, n = n_default, Q=Q_default) {
+    x <- x[is.finite(x)]
+    if (length(x) == 0) {
+      return(numeric())
+    }
+    rng <- range(x)
+    labeling::extended(rng[1], rng[2], m=n, Q=Q, ...)
+  }
+}
+
+scale_x_hours <- function(..., breaks=breaks_hours()) {
+  ggplot2::scale_x_continuous(..., breaks=breaks)
+}
+```
+
+<style>
+.forceBreak { -webkit-column-break-after: always; break-after: column; }
+</style>
+
+# Introduction to PKNCA and Basics of Its Use
+
+## Introduction to PKNCA {.build .smaller}
+
+PKNCA is a tool for calculating noncompartmental analysis (NCA) results for pharmacokinetic (PK) data.
+
+... but, you already knew that or you wouldn't be here.
+
+PKNCA has several foci:
+
+* be regulatory-ready
+    * it has approximately 100% test coverage.
+* be reproducible
+    * it has a focus on being scriptable.
+* get the right answer or none at all
+    * it will try to know what you want,
+    * but all decisions can be overridden, and
+    * if there is a question that may cause an error or an unanticipated result, either no result will output or an error will be raised.
+
+# Dataset Basics
+
+## NCA Data are Not Tidy ***as a Single Dataset***
+
+"Tidy datasets... have a specific structure: each variable is a column, each observation is a row, and each type of observational unit is a table." - Hadley Wickham (https://doi.org/10.18637/jss.v059.i10)
+
+CDISC has NCA tidied, and PKNCA follows that model:
+
+* concentration-time is a dataset (PC domain; `PKNCAconc()` object)
+* dose-time is a dataset (EX/EC domains; `PKNCAdose()` object)
+* NCA is a dataset (PP domain; `pk.nca()` output)
+
+## Dataset Basics: Minimum data
+
+PKNCA requires at minimum concentration, time, and what you want to calculate.
+
+```{r fig.width=6, fig.height=4}
+conc <-
+  datasets::Theoph %>%
+  filter(Subject %in% 1)
+ggplot(conc, aes(x=Time, y=conc)) +
+  geom_line() +
+  scale_x_hours()
+```
+
+## Dataset Basics: What columns are needed?
+
+Column names are provided by the input to `PKNCAconc()` and `PKNCAdose()`; they are not hard-coded.
+
+Columns that can be used include:
+
+* `PKNCAconc()`: concentration, time, groups; data exclusions; half-life inclusion and exclusion
+* `PKNCAdose()`: dose, time, groups; route, rate/duration of infusion; data exclusions
+* intervals given to `PKNCAdata()`: groups, start, end, and any NCA parameters to calculate
+
+# PKNCA Functions
+
+## What functions are the most used?
+
+* `PKNCAconc()`: define a concentration-time `PKNCAconc` object
+    * All information about concentration data are given:  concentration, time
+    * Optional information includes: grouping information (usually given), data to exclude, half-life inclusion and exclusion columns
+* `PKNCAdose()`: define a dose-time `PKNCAdose` object (optional)
+    * dose amount and time are both optional
+    * Optional information includes: rate or duration of infusion, data to exclude
+* `PKNCAdata()`: combine `PKNCAconc`, optionally `PKNCAdose`, and optionally `intervals` into a `PKNCAdata` object
+    * the `PKNCAconc` object must be given; the `PKNCAdose` object is optional; interval definitions are usually given; calculation options may be given
+* `pk.nca()`: calculate the NCA parameters from a data object into a `PKNCAresult` object
+
+## How do I do a simple calculation? all steps {.smaller}
+
+We will break this down in subsequent slides.
+
+```{r echo=TRUE}
+d_conc <-
+  datasets::Theoph %>%
+  filter(Subject %in% 1)
+o_conc <- PKNCAconc(conc~Time, data=d_conc)
+d_dose <-
+  datasets::Theoph %>%
+  filter(Subject %in% 1) %>%
+  filter(Time == 0)
+o_dose <- PKNCAdose(Dose~Time, data=d_dose)
+o_data <- PKNCAdata(o_conc, o_dose)
+o_result <- pk.nca(o_data)
+```
+
+## How do I do a simple calculation? Concentration data {.smaller}
+
+```{r echo=TRUE}
+# Load your dataset as a data.frame
+d_conc <-
+  datasets::Theoph %>%
+  filter(Subject %in% 1)
+# Take a look at the data
+pander::pander(head(d_conc, 2))
+# Define the PKNCAconc object indicating the concentration and time columns, the
+# dataset, and any other options.
+o_conc <- PKNCAconc(conc~Time, data=d_conc)
+```
+
+## How do I do a simple calculation? Dose data {.smaller}
+
+```{r echo=TRUE}
+# Load your dataset as a data.frame
+d_dose <-
+  datasets::Theoph %>%
+  filter(Subject %in% 1) %>%
+  filter(Time == 0)
+# Take a look at the data
+pander::pander(d_dose)
+# Define the PKNCAdose object indicating the dose amount and time columns, the
+# dataset, and any other options.
+o_dose <- PKNCAdose(Dose~Time, data=d_dose)
+```
+
+## How do I do a simple calculation? Calculate results {.smaller}
+
+```{r echo=TRUE}
+# Combine the PKNCAconc and PKNCAdose objects.  You can add interval
+# specifications and calculation options here.
+o_data <- PKNCAdata(o_conc, o_dose)
+# Calculate the results
+o_result <- pk.nca(o_data)
+```
+
+## How do I do a simple calculation?  Get results
+
+To calculate summary statistics, use `summary()`; to extract all individual-level results, use `as.data.frame()`.
+
+The `"caption"` attribute of the summary describes how the summary statistics were calculated for each parameter.  (Hint: `pander::pander()` knows how to use that to put the caption on a table in a report.)
+
+The individual results contain the columns for start time, end time, grouping variables (none in this example), parameter names, values, and if the value should be excluded.
+
+## How do I do a simple calculation?  Get summary results {.smaller}
+
+```{r echo=TRUE}
+# Look at summarized results
+pander::pander(summary(o_result))
+```
+
+## How do I do a simple calculation?  Get individual results {.smaller}
+
+```{r}
+# Look at individual results
+pander::pander(head(as.data.frame(o_result), 3))
+```
+
+# PKNCA datasets
+
+## How does PKNCA think about data?
+
+Three types of data are used for calculation in PKNCA:
+
+* concentration-time (`PKNCAconc`),
+* dose-time (`PKNCAdose`), and
+* intervals.
+
+`PKNCAconc` and `PKNCAdose` objects can optionally have groups.  The groups in a `PKNCAdose` object must be the same or fewer than the groups in `PKNCAconc` object (for example, all subjects in a treatment arm may receive the same dose).
+
+## What is an "interval" and how is it different than a "group"? {.columns-2 .smaller}
+
+```{r interval-vs-groups-setup, echo=FALSE}
+last_dose_time <- 24
+dose_interval <- 8
+dose_times <- seq(0, last_dose_time-dose_interval, by=dose_interval)
+d_conc_superposition <-
+  superposition(
+    o_conc,
+    dose.times=dose_times,
+    tau=last_dose_time,
+    check.blq=FALSE,
+    n.tau=1
+  )
+```
+
+A **group** separates one full concentration-time profile for a subject that you may ever want to consider at the same time.  Usually, it groups by study, treatment, analyte, and subject (other groups can be useful depending on the study design).
+
+An **interval** selects a time range within a **group**.
+
+One time can be in zero or more intervals, but only zero or one group.  Intervals can be adjacent (0-12 and 12-24) or overlap (0-12 and 0-24).  In other words, one sample may be used in more than one interval, but one sample will never be used in more than one group.
+
+**Legend:**  The group contains all points on the figure.  Shaded regions indicate intervals.  Arrows indicate points shared between intervals within the group.
+
+<p class="forceBreak"></p>
+
+```{r fig.width=4, fig.height=4}
+d_intervals <-
+  tibble(
+    start=dose_times,
+    end=dose_times + dose_interval
+  ) %>%
+  mutate(
+    name=sprintf("Interval %g", row_number()),
+    height=max(d_conc_superposition$conc)*1.03,
+    width=dose_interval,
+    x=(start+end)/2,
+    y=height/2
+  )
+d_interval_arrows <-
+  d_conc_superposition %>%
+  filter(time != 0 & time %in% dose_times) %>%
+  mutate(
+    name1=sprintf("Interval %g", row_number()),
+    name2=sprintf("Interval %g", row_number() + 1),
+  )
+ggplot(d_conc_superposition, aes(x=time, y=conc)) +
+  geom_tile(
+    data=d_intervals,
+    aes(x=x, y=y, width=width, height=height, colour=name, fill=name),
+    alpha=0.2,
+    inherit.aes=FALSE,
+    show.legend=FALSE
+  ) +
+  geom_segment(
+    data=d_interval_arrows,
+    aes(x=time - 0.8, xend=time - 0.1, y=conc-2.1, yend=conc - 0.1, colour=name2),
+    arrow=arrow(length=unit(0.1, "inches")),
+    inherit.aes=FALSE,
+    show.legend=FALSE
+  ) +
+  geom_segment(
+    data=d_interval_arrows,
+    aes(x=time + 0.8, xend=time + 0.1, y=conc-2.1, yend=conc - 0.1, colour=name1),
+    arrow=arrow(length=unit(0.1, "inches")),
+    inherit.aes=FALSE,
+    show.legend=FALSE
+  ) +
+  geom_line() +
+  geom_point() +
+  scale_x_hours() +
+  labs(
+    title=sprintf("Dosing Q%gH", dose_interval)
+  )
+```
+
+## Common data management requirements before sending data to PKNCA
+
+1. Imputation of time zero is required for AUC calculation.
+2. Imputation of the ending time is suggested but not required.
+3. Time must not be missing for `PKNCAconc` (if given to `PKNCAdose`, it must not be missing).
+4. Below the limit of quantification (BLQ) concentrations must be set to zero (not `NA`).
+
+# Calculations above the hood
+
+## Setup your concentration data
+
+## Setup your dosing data (if you have it)
+
+## Prepare your data for calculation
+
+## Calculate results
+
+# Extracting results
+
+## Extract summary results
+
+## Extract individual calculation results
+
+# Hands-on workshop
+
+## Single-dose oral administration
+
