@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
       </span>
     </div>
 
@@ -82,6 +82,9 @@
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
+    </li>
+    <li>
+      <a href="../articles/Training-Session-1-of-2.html">PKNCA Training Session 1 of 2</a>
     </li>
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
@@ -140,8 +143,8 @@
 <li>Drop all BLQ values, then</li>
 <li>Choose all sets of points that start from the <span class="math inline">\(T_{last}\)</span> and step back:
 <ul>
-<li>at least 3 points (customizable with <code><a href="../reference/PKNCA.options.html">PKNCA.options("min.hl.points")</a></code>)</li>
-<li>Not including <span class="math inline">\(T_{max}\)</span> (customizable with <code><a href="../reference/PKNCA.options.html">PKNCA.options("allow.tmax.in.half.life")</a></code>)</li>
+<li>at least 3 points (customizable with <code>PKNCA.options("min.hl.points")</code>)</li>
+<li>Not including <span class="math inline">\(T_{max}\)</span> (customizable with <code>PKNCA.options("allow.tmax.in.half.life")</code>)</li>
 </ul>
 </li>
 </ul>
@@ -152,7 +155,7 @@
 <li>3, 4, 6, 8, and 12 hours; and</li>
 <li>2, 3, 4, 6, 8, and 12 hours.</li>
 </ol>
-<p>If <code><a href="../reference/PKNCA.options.html">PKNCA.options("min.hl.points")</a></code> were set to <code>4</code>, then the 6, 8, and 12 hour set would not be fit. If <code><a href="../reference/PKNCA.options.html">PKNCA.options("allow.tmax.in.half.life")</a></code> were set to <code>TRUE</code>, then 1, 2, 3, 4, 6, 8, and 12 hours would be fit.</p>
+<p>If <code>PKNCA.options("min.hl.points")</code> were set to <code>4</code>, then the 6, 8, and 12 hour set would not be fit. If <code>PKNCA.options("allow.tmax.in.half.life")</code> were set to <code>TRUE</code>, then 1, 2, 3, 4, 6, 8, and 12 hours would be fit.</p>
 </div>
 <div id="select-the-best-fit" class="section level2">
 <h2 class="hasAnchor">
@@ -162,7 +165,7 @@
 <li>
 <span class="math inline">\(\lambda_z &gt; 0\)</span> and at the same time the maximum r-squared must be within an adjusted <span class="math inline">\(r^2\)</span> factor of the best.
 <ol style="list-style-type: decimal">
-<li>The adjusted <span class="math inline">\(r^2\)</span> factor is controlled by <code><a href="../reference/PKNCA.options.html">PKNCA.options("adj.r.squared.factor")</a></code> and it defaults to 10^{-4}.</li>
+<li>The adjusted <span class="math inline">\(r^2\)</span> factor is controlled by <code>PKNCA.options("adj.r.squared.factor")</code> and it defaults to 10^{-4}.</li>
 <li>These rules must be met simultaneously, so if the maximum adjusted <span class="math inline">\(r^2\)</span> is for a line with <span class="math inline">\(\lambda_z \leq 0\)</span>, the half-life may end up being unreportable.</li>
 </ol>
 </li>

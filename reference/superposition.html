@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
       </span>
     </div>
 
@@ -123,6 +123,9 @@
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
+    </li>
+    <li>
+      <a href="../articles/Training-Session-1-of-2.html">PKNCA Training Session 1 of 2</a>
     </li>
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
@@ -217,8 +220,8 @@ equal to the input dose.</p></td>
     <tr>
       <th>dose.times</th>
       <td><p>The time of dosing within the dosing interval.
-The <code><a href='https://rdrr.io/r/base/Extremes.html'>min(dose.times)</a></code> must be &gt;= 0, and the
-<code><a href='https://rdrr.io/r/base/Extremes.html'>max(dose.times)</a></code> must be &lt; <code>tau</code>.  There may be more
+The <code>min(dose.times)</code> must be &gt;= 0, and the
+<code>max(dose.times)</code> must be &lt; <code>tau</code>.  There may be more
 than one dose times given as a vector.</p></td>
     </tr>
     <tr>
@@ -258,8 +261,8 @@ limit of quantification.  This is calculated if not provided.</p></td>
       <th>additional.times</th>
       <td><p>Times to include in the final outputs in
 addition to the standard times (see details).  All
-<code><a href='https://rdrr.io/r/base/Extremes.html'>min(additional.times)</a></code> must be &gt;= 0, and the
-<code><a href='https://rdrr.io/r/base/Extremes.html'>max(additional.times)</a></code> must be &lt;= <code>tau</code>.</p></td>
+<code>min(additional.times)</code> must be &gt;= 0, and the
+<code>max(additional.times)</code> must be &lt;= <code>tau</code>.</p></td>
     </tr>
     <tr>
       <th>check.blq</th>

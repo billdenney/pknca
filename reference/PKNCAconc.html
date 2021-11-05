@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
       </span>
     </div>
 
@@ -123,6 +123,9 @@
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
+    </li>
+    <li>
+      <a href="../articles/Training-Session-1-of-2.html">PKNCA Training Session 1 of 2</a>
     </li>
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
@@ -211,10 +214,10 @@ assumed to be the <code>subject</code>; see the documentation for the
       <td><p>The column indicating the subject number.  If not provided,
 this defaults to the beginning of the inner groups: For example with
 <code>concentration~time|Study+Subject/Analyte</code>, the inner groups start
-with the first grouping variable before a <code><a href='https://rdrr.io/r/base/Arithmetic.html'>/</a></code>, <code>Subject</code>.  If
+with the first grouping variable before a <code>/</code>, <code>Subject</code>.  If
 there is only one grouping variable, it is assumed to be the subject (e.g.
 <code>concentration~time|Subject</code>), and if there are multiple grouping
-variables without a <code><a href='https://rdrr.io/r/base/Arithmetic.html'>/</a></code>, subject is assumed to be the last one.  For
+variables without a <code>/</code>, subject is assumed to be the last one.  For
 single-subject data, it is assigned as <code>NULL</code>.</p></td>
     </tr>
     <tr>

@@ -73,7 +73,7 @@ parameters." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
       </span>
     </div>
 
@@ -126,6 +126,9 @@ parameters." />
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
     </li>
     <li>
+      <a href="../articles/Training-Session-1-of-2.html">PKNCA Training Session 1 of 2</a>
+    </li>
+    <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
     </li>
   </ul>
@@ -176,24 +179,24 @@ article</a>)</p>
 data.frame then run the following code.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># Load concentration-time data into a data.frame called d.conc</span>
-<span class='co'># with columns named "conc", "time", and "subject".</span>
-<span class='va'>my.conc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PKNCAconc.html'>PKNCAconc</a></span><span class='op'>(</span><span class='va'>d.conc</span>, <span class='va'>conc</span><span class='op'>~</span><span class='va'>time</span><span class='op'>|</span><span class='va'>subject</span><span class='op'>)</span>
-<span class='co'># Load dose-time data into a data.frame called d.dose</span>
-<span class='co'># with columns named "dose", "time", and "subject".</span>
-<span class='va'>my.dose</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PKNCAdose.html'>PKNCAdose</a></span><span class='op'>(</span><span class='va'>d.dose</span>, <span class='va'>dose</span><span class='op'>~</span><span class='va'>time</span><span class='op'>|</span><span class='va'>subject</span><span class='op'>)</span>
-<span class='co'># Combine the concentration-time and dose-time data into an object</span>
-<span class='co'># ready for calculations.</span>
-<span class='va'>my.data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PKNCAdata.html'>PKNCAdata</a></span><span class='op'>(</span><span class='va'>my.conc</span>, <span class='va'>my.dose</span><span class='op'>)</span>
-<span class='co'># Perform the calculations</span>
-<span class='va'>my.results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='pk.nca.html'>pk.nca</a></span><span class='op'>(</span><span class='va'>my.data</span><span class='op'>)</span>
-<span class='co'># Look at summary results</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>my.results</span><span class='op'>)</span>
-<span class='co'># Look at a listing of results</span>
-<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>my.results</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># Load concentration-time data into a data.frame called d.conc</span></span>
+<span class='r-in'><span class='co'># with columns named "conc", "time", and "subject".</span></span>
+<span class='r-in'><span class='va'>my.conc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PKNCAconc.html'>PKNCAconc</a></span><span class='op'>(</span><span class='va'>d.conc</span>, <span class='va'>conc</span><span class='op'>~</span><span class='va'>time</span><span class='op'>|</span><span class='va'>subject</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Load dose-time data into a data.frame called d.dose</span></span>
+<span class='r-in'><span class='co'># with columns named "dose", "time", and "subject".</span></span>
+<span class='r-in'><span class='va'>my.dose</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PKNCAdose.html'>PKNCAdose</a></span><span class='op'>(</span><span class='va'>d.dose</span>, <span class='va'>dose</span><span class='op'>~</span><span class='va'>time</span><span class='op'>|</span><span class='va'>subject</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Combine the concentration-time and dose-time data into an object</span></span>
+<span class='r-in'><span class='co'># ready for calculations.</span></span>
+<span class='r-in'><span class='va'>my.data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PKNCAdata.html'>PKNCAdata</a></span><span class='op'>(</span><span class='va'>my.conc</span>, <span class='va'>my.dose</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Perform the calculations</span></span>
+<span class='r-in'><span class='va'>my.results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='pk.nca.html'>pk.nca</a></span><span class='op'>(</span><span class='va'>my.data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Look at summary results</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>my.results</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Look at a listing of results</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>my.results</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

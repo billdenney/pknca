@@ -77,7 +77,7 @@ provide the default options." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
       </span>
     </div>
 
@@ -128,6 +128,9 @@ provide the default options." />
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
+    </li>
+    <li>
+      <a href="../articles/Training-Session-1-of-2.html">PKNCA Training Session 1 of 2</a>
     </li>
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
@@ -228,106 +231,109 @@ of options (<code><a href='../articles/Options-for-Controlling-PKNCA.html'>vigne
 <code><a href='PKNCA.set.summary.html'>PKNCA.set.summary</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>PKNCA.options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $adj.r.squared.factor
-#&gt; [1] 1e-04
-#&gt; 
-#&gt; $max.missing
-#&gt; [1] 0.5
-#&gt; 
-#&gt; $auc.method
-#&gt; [1] "lin up/log down"
-#&gt; 
-#&gt; $conc_above
-#&gt; [1] NA
-#&gt; 
-#&gt; $conc.na
-#&gt; [1] "drop"
-#&gt; 
-#&gt; $conc.blq
-#&gt; $conc.blq$first
-#&gt; [1] "keep"
-#&gt; 
-#&gt; $conc.blq$middle
-#&gt; [1] "drop"
-#&gt; 
-#&gt; $conc.blq$last
-#&gt; [1] "keep"
-#&gt; 
-#&gt; 
-#&gt; $first.tmax
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $allow.tmax.in.half.life
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $min.hl.points
-#&gt; [1] 3
-#&gt; 
-#&gt; $min.span.ratio
-#&gt; [1] 2
-#&gt; 
-#&gt; $max.aucinf.pext
-#&gt; [1] 20
-#&gt; 
-#&gt; $min.hl.r.squared
-#&gt; [1] 0.9
-#&gt; 
-#&gt; $tau.choices
-#&gt; [1] NA
-#&gt; 
-#&gt; $single.dose.aucs
-#&gt;   start end auclast aucall aumclast aumcall aucint.last aucint.last.dose
-#&gt; 1     0  24    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE
-#&gt; 2     0 Inf   FALSE  FALSE    FALSE   FALSE       FALSE            FALSE
-#&gt;   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn  cmax
-#&gt; 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE FALSE
-#&gt; 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE  TRUE
-#&gt;    cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last mrt.iv.last
-#&gt; 1 FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE
-#&gt; 2 FALSE  TRUE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE
-#&gt;   vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc swing  ceoi    ae
-#&gt; 1    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE
-#&gt; 2    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE
-#&gt;   clr.last clr.obs clr.pred    fe time_above half.life r.squared adj.r.squared
-#&gt; 1    FALSE   FALSE    FALSE FALSE      FALSE     FALSE     FALSE         FALSE
-#&gt; 2    FALSE   FALSE    FALSE FALSE      FALSE      TRUE     FALSE         FALSE
-#&gt;   lambda.z lambda.z.time.first lambda.z.n.points clast.pred span.ratio cmax.dn
-#&gt; 1    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE
-#&gt; 2    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE
-#&gt;   cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn thalf.eff.last
-#&gt; 1   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE
-#&gt; 2   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE
-#&gt;   thalf.eff.iv.last kel.last kel.iv.last aucinf.obs aucinf.pred aumcinf.obs
-#&gt; 1             FALSE    FALSE       FALSE      FALSE       FALSE       FALSE
-#&gt; 2             FALSE    FALSE       FALSE       TRUE       FALSE       FALSE
-#&gt;   aumcinf.pred aucint.inf.obs aucint.inf.obs.dose aucint.inf.pred
-#&gt; 1        FALSE          FALSE               FALSE           FALSE
-#&gt; 2        FALSE          FALSE               FALSE           FALSE
-#&gt;   aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn aumcinf.obs.dn
-#&gt; 1                FALSE         FALSE          FALSE          FALSE
-#&gt; 2                FALSE         FALSE          FALSE          FALSE
-#&gt;   aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred mrt.obs mrt.pred
-#&gt; 1           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE
-#&gt; 2           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE
-#&gt;   mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs vz.pred vss.obs vss.pred
-#&gt; 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE
-#&gt; 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE
-#&gt;   vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred vd.obs vd.pred thalf.eff.obs
-#&gt; 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
-#&gt; 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE
-#&gt;   thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs
-#&gt; 1          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE
-#&gt; 2          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE
-#&gt;   kel.iv.pred
-#&gt; 1       FALSE
-#&gt; 2       FALSE
-#&gt; </div><div class='input'><span class='fu'>PKNCA.options</span><span class='op'>(</span>default<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>PKNCA.options</span><span class='op'>(</span><span class='st'>"auc.method"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "lin up/log down"</div><div class='input'><span class='fu'>PKNCA.options</span><span class='op'>(</span>name<span class='op'>=</span><span class='st'>"auc.method"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "lin up/log down"</div><div class='input'><span class='fu'>PKNCA.options</span><span class='op'>(</span>auc.method<span class='op'>=</span><span class='st'>"lin up/log down"</span>, min.hl.points<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='fu'>PKNCA.options</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $adj.r.squared.factor</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1e-04</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max.missing</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $auc.method</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "lin up/log down"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conc_above</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conc.na</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "drop"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conc.blq</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conc.blq$first</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "keep"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conc.blq$middle</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "drop"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $conc.blq$last</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "keep"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $first.tmax</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $allow.tmax.in.half.life</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min.hl.points</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min.span.ratio</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $max.aucinf.pext</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $min.hl.r.squared</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tau.choices</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $single.dose.aucs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   start end auclast aucall aumclast aumcall aucint.last aucint.last.dose</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1     0  24    TRUE  FALSE    FALSE   FALSE       FALSE            FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2     0 Inf   FALSE  FALSE    FALSE   FALSE       FALSE            FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   aucint.all aucint.all.dose auclast.dn aucall.dn aumclast.dn aumcall.dn  cmax</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      FALSE           FALSE      FALSE     FALSE       FALSE      FALSE  TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    cmin  tmax tlast tfirst clast.obs cl.last cl.all     f mrt.last mrt.iv.last</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 FALSE FALSE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 FALSE  TRUE FALSE  FALSE     FALSE   FALSE  FALSE FALSE    FALSE       FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   vss.last vss.iv.last   cav ctrough   ptr  tlag deg.fluc swing  ceoi    ae</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2    FALSE       FALSE FALSE   FALSE FALSE FALSE    FALSE FALSE FALSE FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   clr.last clr.obs clr.pred    fe time_above half.life r.squared adj.r.squared</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    FALSE   FALSE    FALSE FALSE      FALSE     FALSE     FALSE         FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2    FALSE   FALSE    FALSE FALSE      FALSE      TRUE     FALSE         FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lambda.z lambda.z.time.first lambda.z.n.points clast.pred span.ratio cmax.dn</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2    FALSE               FALSE             FALSE      FALSE      FALSE   FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn thalf.eff.last</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   FALSE        FALSE         FALSE  FALSE      FALSE          FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   thalf.eff.iv.last kel.last kel.iv.last aucinf.obs aucinf.pred aumcinf.obs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1             FALSE    FALSE       FALSE      FALSE       FALSE       FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2             FALSE    FALSE       FALSE       TRUE       FALSE       FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   aumcinf.pred aucint.inf.obs aucint.inf.obs.dose aucint.inf.pred</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        FALSE          FALSE               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        FALSE          FALSE               FALSE           FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   aucint.inf.pred.dose aucinf.obs.dn aucinf.pred.dn aumcinf.obs.dn</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                FALSE         FALSE          FALSE          FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                FALSE         FALSE          FALSE          FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   aumcinf.pred.dn aucpext.obs aucpext.pred cl.obs cl.pred mrt.obs mrt.pred</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2           FALSE       FALSE        FALSE  FALSE   FALSE   FALSE    FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   mrt.iv.obs mrt.iv.pred mrt.md.obs mrt.md.pred vz.obs vz.pred vss.obs vss.pred</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE   FALSE    FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred vd.obs vd.pred thalf.eff.obs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      FALSE       FALSE      FALSE       FALSE  FALSE   FALSE         FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          FALSE            FALSE             FALSE   FALSE    FALSE      FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   kel.iv.pred</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>PKNCA.options</span><span class='op'>(</span>default<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>PKNCA.options</span><span class='op'>(</span><span class='st'>"auc.method"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "lin up/log down"</span>
+<span class='r-in'><span class='fu'>PKNCA.options</span><span class='op'>(</span>name<span class='op'>=</span><span class='st'>"auc.method"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "lin up/log down"</span>
+<span class='r-in'><span class='fu'>PKNCA.options</span><span class='op'>(</span>auc.method<span class='op'>=</span><span class='st'>"lin up/log down"</span>, min.hl.points<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

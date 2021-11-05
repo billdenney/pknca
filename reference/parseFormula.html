@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
       </span>
     </div>
 
@@ -123,6 +123,9 @@
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
+    </li>
+    <li>
+      <a href="../articles/Training-Session-1-of-2.html">PKNCA Training Session 1 of 2</a>
     </li>
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
@@ -209,52 +212,55 @@ function in the doBy package.</p>
 <code><a href='formula.parseFormula.html'>formula.parseFormula</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b"</span>, require.groups<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $model
-#&gt; a ~ b
-#&gt; &lt;environment: 0x7f85acd19568&gt;
-#&gt; 
-#&gt; $lhs
-#&gt; a
-#&gt; 
-#&gt; $rhs
-#&gt; b
-#&gt; 
-#&gt; $groups
-#&gt; NULL
-#&gt; 
-#&gt; $groupFormula
-#&gt; NULL
-#&gt; 
-#&gt; $env
-#&gt; &lt;environment: 0x7f85acd19568&gt;
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "parseFormula" "list"        </div><div class='input'><span class='co'>## parseFormula("a~b", require.groups=TRUE) # This is an error</span>
-<span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b|c"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $model
-#&gt; a ~ b
-#&gt; &lt;environment: 0x7f85ad323978&gt;
-#&gt; 
-#&gt; $lhs
-#&gt; a
-#&gt; 
-#&gt; $rhs
-#&gt; b
-#&gt; 
-#&gt; $groups
-#&gt; c
-#&gt; 
-#&gt; $groupFormula
-#&gt; ~c
-#&gt; &lt;environment: 0x7f85ad323978&gt;
-#&gt; 
-#&gt; $env
-#&gt; &lt;environment: 0x7f85ad323978&gt;
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "parseFormula" "list"        </div><div class='input'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b|c"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>groups</span>
-</div><div class='output co'>#&gt; c</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b"</span>, require.groups<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $model</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> a ~ b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fa928921b20&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $lhs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $rhs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $groups</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $groupFormula</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $env</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fa928921b20&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"class")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "parseFormula" "list"        </span>
+<span class='r-in'><span class='co'>## parseFormula("a~b", require.groups=TRUE) # This is an error</span></span>
+<span class='r-in'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b|c"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $model</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> a ~ b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fa927e523e0&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $lhs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $rhs</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $groups</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $groupFormula</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ~c</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fa927e523e0&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $env</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fa927e523e0&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"class")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "parseFormula" "list"        </span>
+<span class='r-in'><span class='fu'>parseFormula</span><span class='op'>(</span><span class='st'>"a~b|c"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>groups</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> c</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
