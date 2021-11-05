@@ -32,6 +32,61 @@ scale_x_hours <- function(..., breaks=breaks_hours()) {
 
 <style>
 .forceBreak { -webkit-column-break-after: always; break-after: column; }
+
+<!-- from https://stackoverflow.com/questions/1909648/stacking-divs-on-top-of-each-other -->
+.container {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  background-color: yellow;
+  /* important part */
+  display: grid;
+  place-items: center;
+  grid-template-areas: "inner-div";
+}
+
+.inner {
+  /* important part */
+  grid-area: inner-div;
+}
+
+.bigStrikethroughOuter {
+  <!-- text-decoration: line-through; -->
+  font-size: 8em;
+  text-align: center;
+  color: red;
+  background: 
+  linear-gradient(to top left,
+    transparent 0%,
+    transparent calc(50% - 0.05em),
+    red calc(50% - 0.05em),
+    red 50%,
+    red calc(50% + 0.05em),
+    transparent calc(50% + 0.05em),
+    transparent 100%),
+  linear-gradient(to top right,
+    transparent 0%,
+    transparent calc(50% - 0.05em),
+    red calc(50% - 0.05em),
+    red 50%,
+    red calc(50% + 0.05em),
+    transparent calc(50% + 0.05em),
+    transparent 100%);
+}
+
+.bigStrikethroughInner {
+  color: blue;
+  font-size: 8em;
+}
+
+.autoImageWidth {
+  width: auto !important; /*override the width below*/
+  max-width: 100%;
+  float: left;
+  clear: both;
+  text-align: center;
+}
+
 </style>
 
 # Introduction to PKNCA and Basics of Its Use
@@ -53,6 +108,24 @@ PKNCA has several foci:
     * but all decisions can be overridden, and
     * if there is a question that may cause an error or an unanticipated result, either no result will output or an error will be raised.
 
+## Enjoy! {.build}
+
+I hope that you have a whale of a good time during this training.
+
+![](https://apps-afsc.fisheries.noaa.gov/Quarterly/amj2005/images/killerwhales.jpg)
+
+(Foreshadowing...)
+
+## Some NCA Definitions
+
+* **C~max~**: The maximum observed concentration
+* **T~max~**: The time of the maximum observed concentration
+* **t~last~**: The time of the last concentration above the limit of quantification
+* **AUC**: Area under the concentration-time curve.  Some important AUC variants are:
+    * **AUC~last~**: AUC from time zero to t~last~
+    * **AUC~int~**: AUC from time zero to the end of an interval of time, often extrapolated or interpolated (e.g. AUC~0-24hr~)
+    * **AUC~&infin;~**: AUC from time zero to t~last~ then extrapolated from t~last~ to time infinity using the half life
+
 # Dataset Basics
 
 ## NCA Data are Not Tidy ***as a Single Dataset***
@@ -63,7 +136,7 @@ CDISC has NCA tidied, and PKNCA follows that model:
 
 * concentration-time is a dataset (PC domain; `PKNCAconc()` object)
 * dose-time is a dataset (EX/EC domains; `PKNCAdose()` object)
-* NCA is a dataset (PP domain; `pk.nca()` output)
+* NCA results are a dataset (PP domain; `pk.nca()` output)
 
 ## Dataset Basics: Minimum data
 
@@ -88,6 +161,95 @@ Columns that can be used include:
 * `PKNCAdose()`: dose, time, groups; route, rate/duration of infusion; data exclusions
 * intervals given to `PKNCAdata()`: groups, start, end, and any NCA parameters to calculate
 
+## Dataset Basics:  Example data
+
+In the following slides, abbreviated data from an example study where two treatments ("A" and "B") are administered to two subjects (1 and 2).
+
+* For PKNCA, the groups will be **Treatment** and **Subject**.
+    * PKNCA considers groups in order with the subject identifier as the last group (or the last group before a forward slash, `/`, if `/` is present).
+    * When indicated in order (`...|Treatment+Subject`), PKNCA automatically knows to keep **Treatment** and drop **Subject** for summaries (more on that later).
+
+## Dataset Basics:  Example concentration data {.columns-2}
+
+```{r}
+conc_data <-
+  withr::with_seed(5, {
+    data.frame(
+      Subject=rep(1:2, each=6),
+      Treatment=rep(c("A", "B", "A", "B"), each=3),
+      Time=rep(c(0, 2, 8), 4),
+      Conc=rep(c(0, 2, 0.5), 4)*exp(rnorm(n=12, sd=0.05))
+    )
+  })
+```
+
+```{r}
+pander::pander(conc_data %>% filter(Subject == 1))
+```
+
+<p class="forceBreak"></p>
+
+```{r}
+pander::pander(conc_data %>% filter(Subject == 2))
+```
+
+## Dataset Basics:  Example dosing data
+
+```{r}
+dose_data <-
+  data.frame(
+    Subject=rep(1:2, each=2),
+    Treatment=c("A", "B", "A", "B"),
+    Time=0,
+    Dose=10
+  )
+```
+
+```{r}
+pander::pander(dose_data %>% filter(Subject == 1))
+```
+
+<p class="forceBreak"></p>
+
+```{r}
+pander::pander(dose_data %>% filter(Subject == 2))
+```
+
+## Dataset Basics:  Example interval data
+
+```{r, echo=TRUE}
+d_interval_1 <-
+  data.frame(
+    start=0, end=8,
+    cmax=TRUE, tmax=TRUE, auclast=TRUE
+  )
+```
+
+```{r}
+pander::pander(d_interval_1)
+```
+
+Groups are not required, if you want the same intervals calculated for each group.
+
+## Hands-on: First NCA calculation with PKNCA
+
+```{r echo=TRUE}
+library(tidyverse)
+library(PKNCA)
+# Concentration data setup
+d_conc <-
+  datasets::Theoph %>%
+  filter(Subject %in% 1)
+o_conc <- PKNCAconc(conc~Time, data=d_conc)
+# Setup intervals for calculation
+d_intervals <- data.frame(start=0, end=24, cmax=TRUE, tmax=TRUE, auclast=TRUE, aucint.inf.obs=TRUE)
+# Combine concentration and dose
+o_data <- PKNCAdata(o_conc, intervals=d_intervals)
+# Calculate the results (suppressMessages() hides a message that isn't needed now)
+o_result <- suppressMessages(pk.nca(o_data))
+# summary(o_result)
+```
+
 # PKNCA Functions
 
 ## What functions are the most used?
@@ -102,21 +264,25 @@ Columns that can be used include:
     * the `PKNCAconc` object must be given; the `PKNCAdose` object is optional; interval definitions are usually given; calculation options may be given
 * `pk.nca()`: calculate the NCA parameters from a data object into a `PKNCAresult` object
 
-## How do I do a simple calculation? all steps {.smaller}
+## How do I do a simple calculation? all steps
 
 We will break this down in subsequent slides.
 
 ```{r echo=TRUE}
+# Concentration data setup
 d_conc <-
   datasets::Theoph %>%
   filter(Subject %in% 1)
 o_conc <- PKNCAconc(conc~Time, data=d_conc)
+# Dose data setup
 d_dose <-
   datasets::Theoph %>%
   filter(Subject %in% 1) %>%
   filter(Time == 0)
 o_dose <- PKNCAdose(Dose~Time, data=d_dose)
+# Combine concentration and dose
 o_data <- PKNCAdata(o_conc, o_dose)
+# Calculate the results
 o_result <- pk.nca(o_data)
 ```
 
@@ -178,14 +344,17 @@ pander::pander(summary(o_result))
 
 ```{r}
 # Look at individual results
-pander::pander(head(as.data.frame(o_result), 3))
+pander::pander(head(
+  as.data.frame(o_result),
+  n=3
+))
 ```
 
 # PKNCA datasets
 
 ## How does PKNCA think about data?
 
-Three types of data are used for calculation in PKNCA:
+Three types of data are inputs for calculation in PKNCA:
 
 * concentration-time (`PKNCAconc`),
 * dose-time (`PKNCAdose`), and
@@ -269,20 +438,140 @@ ggplot(d_conc_superposition, aes(x=time, y=conc)) +
   )
 ```
 
-## Common data management requirements before sending data to PKNCA
+## Common data management requirements before sending data to PKNCA {.smaller}
 
-1. Imputation of time zero is required for AUC calculation.
-2. Imputation of the ending time is suggested but not required.
-3. Time must not be missing for `PKNCAconc` (if given to `PKNCAdose`, it must not be missing).
-4. Below the limit of quantification (BLQ) concentrations must be set to zero (not `NA`).
+1. Time must not be missing for `PKNCAconc` (if given to `PKNCAdose`, it must not be missing).
+2. Below the limit of quantification (BLQ) concentrations must be set to zero (not `NA`).
+3. Imputation of time zero is required for AUC calculation.
+4. Especially for actual-time calculations, imputation of the beginning of the interval is usually needed.
+
+Columns must be created for:
+
+* Concentration or dose,
+* Time
+* Groups
+    * usually columns for study, treatment arm, subject;
+    * sometimes analyte, formulation, period (needed in case the same subject receives the same treatment arm multiple times)
+
+## Setup your concentration data {.columns-2}
+
+* Concentration data must be numeric
+
+<p class="forceBreak"></p>
+
+<div class="bigStrikethroughOuter">
+<div class="bigStrikethroughInner">A</div>
+</div>
+
+## Setup your concentration data {.columns-2}
+
+* Concentration data must be numeric
+* Time must be numeric and not be missing
+
+<p class="forceBreak"></p>
+
+<div class="bigStrikethroughOuter">
+<div class="bigStrikethroughInner">NA</div>
+</div>
+
+## Setup your concentration data {.columns-2}
+
+* Concentration data must be numeric
+* Time must be numeric and not be missing
+* Groups can be anything, setup at the level of the individual
+
+<p class="forceBreak"></p>
+
+<div class="autoImageWidth">
+![](https://apps-afsc.fisheries.noaa.gov/Quarterly/amj2005/images/killerwhales.jpg)<br />
+Group: <span style="color: green;">&#128504;</span> a pod of killer whales
+</div>
+
+## Setup your dosing data (if you have it and even if you don't) {.smaller}
+
+Normal dosing data setup: `PKNCAdose(dose~time|actarm+usubjid, data=d_dose)`
+
+* Dose amount must be numeric &mdash; or it can be omitted
+    * `PKNCAdose(~time|actarm+usubjid, data=d_dose)`
+* Time must be numeric and not be missing &mdash; or it can be omitted
+    * `PKNCAdose(dose~.|actarm+usubjid, data=d_dose)`
+* Groups can be anything &mdash; may be grouped at a higher level than the individual
+    * Useful when all dose amounts and times are the same within an arm: `PKNCAdose(dose~time|actarm, data=d_dose)`
+    * Useful dose amount is the same at all times within an arm: `PKNCAdose(dose~.|actarm, data=d_dose)`
+    * Useful when times are all the same within an arm but dose may differ: `PKNCAdose(~time|actarm, data=d_dose)`
+
+## Define your intervals
+
+Intervals have columns for:
+
+* `start` and `end` times for the interval,
+* groups matching any level of grouping; intervals apply by a merge/join with the groups
+* parameters to calculate (`TRUE` means to calculate it; `FALSE` means don't).  The full list of available parameters is in the [selection of calculation intervals vignette](http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1).
+    * You only have to specify the parameter you want, not all parameters.
+
+## Define your intervals: example
+
+* For time 0 to 24, calculate AUClast
+* For time 0 to infinity, calculate cmax, tmax, half.life, and aucinf.obs
+
+```{r}
+PKNCA.options("single.dose.aucs") %>%
+  select(c(all_of(c("start", "end")), where(~is.logical(.x) && any(.x)))) %>%
+  pander::pander()
+```
 
 # Calculations above the hood
 
-## Setup your concentration data
-
-## Setup your dosing data (if you have it)
-
 ## Prepare your data for calculation
+
+```{r echo=TRUE}
+d_conc <-
+  datasets::Theoph %>%
+  mutate(
+    Treatment=
+      case_when(
+        Dose <= median(Dose)~"Low dose",
+        TRUE~"High dose"
+      )
+  )
+# The study was single-dose
+d_dose <-
+  d_conc %>%
+  select(Treatment, Subject, Dose) %>%
+  unique() %>%
+  mutate(dose_time=0)
+```
+
+## Calculate without dosing data {.build}
+
+```{r echo=TRUE}
+o_conc <- PKNCAconc(conc~Time|Treatment+Subject, data=d_conc)
+try({
+  o_data <- PKNCAdata(o_conc)
+  summary(pk.nca(o_data))
+})
+```
+
+Whoops!  Without dosing, we need intervals.
+
+## Calculate without dosing data, try 2
+
+```{r echo=TRUE}
+o_conc <- PKNCAconc(conc~Time|Treatment+Subject, data=d_conc)
+d_intervals <- data.frame(start=0, end=Inf, cmax=TRUE, tmax=TRUE, half.life=TRUE, aucinf.obs=TRUE)
+o_data_manual_intervals <- PKNCAdata(o_conc, intervals=d_intervals)
+summary(pk.nca(o_data_manual_intervals))
+```
+
+## Dosing data helps with interval setup
+
+```{r echo=TRUE}
+o_conc <- PKNCAconc(conc~Time|Treatment+Subject, data=d_conc)
+o_dose <- PKNCAdose(Dose~dose_time|Treatment+Subject, data=d_dose)
+o_data_auto_intervals <- PKNCAdata(o_conc, o_dose)
+o_data_auto_intervals$intervals$aucint.inf.obs <- TRUE
+summary(pk.nca(o_data_auto_intervals))
+```
 
 ## Calculate results
 
@@ -292,7 +581,180 @@ ggplot(d_conc_superposition, aes(x=time, y=conc)) +
 
 ## Extract individual calculation results
 
+## AUC considerations with PKNCA (1/3) {.columns-2}
+
+```{r auc-considerations-setup, warning=FALSE}
+d_conc <-
+  datasets::Theoph %>%
+  filter(Subject == 1)
+o_conc <- PKNCAconc(conc~Time, data=d_conc)
+d_interval_int <- data.frame(start=0, end=Inf, half.life=TRUE)
+o_data_int <- PKNCAdata(o_conc, intervals=d_interval_int)
+o_nca_int <- suppressMessages(pk.nca(o_data_int))
+lambda_z_int <-
+  o_nca_int %>%
+  as.data.frame() %>%
+  filter(PPTESTCD %in% "lambda.z") %>%
+  "[["("PPORRES")
+
+d_interval_inf <- data.frame(start=0, end=24, half.life=TRUE)
+o_data_inf <- PKNCAdata(o_conc, intervals=d_interval_inf)
+o_nca_inf <- suppressMessages(pk.nca(o_data_inf))
+lambda_z_inf <-
+  o_nca_inf %>%
+  as.data.frame() %>%
+  filter(PPTESTCD %in% "lambda.z") %>%
+  "[["("PPORRES")
+
+tlast <- 
+  o_nca_inf %>%
+  as.data.frame() %>%
+  filter(PPTESTCD %in% "tlast") %>%
+  "[["("PPORRES")
+
+d_auc_calcs <-
+  d_conc %>%
+  bind_rows(
+    tibble(Time=seq(12, 60))
+  ) %>%
+  mutate(
+    conc_all_int=
+      interp.extrap.conc(
+        conc=conc[!is.na(conc)],
+        time=Time[!is.na(conc)],
+        time.out=Time,
+        lambda.z=lambda_z_int
+      ),
+    conc_all_inf=
+      interp.extrap.conc(
+        conc=conc[!is.na(conc) & Time <= 24],
+        time=Time[!is.na(conc) & Time <= 24],
+        time.out=Time,
+        lambda.z=lambda_z_inf
+      ),
+    conc_last=
+      case_when(
+        Time <= 24~conc,
+        TRUE~NA_real_
+      ),
+    conc_int=
+      case_when(
+        Time <= 24 & Time >= tlast~conc_all_int,
+        TRUE~NA_real_
+      ),
+    conc_inf=
+      case_when(
+        Time >= tlast~conc_all_inf,
+        TRUE~NA_real_
+      )
+  ) %>%
+  arrange(Time)
+auc_figure_time_max <- 36
+p_auc_calcs <-
+  ggplot(d_auc_calcs, aes(x=Time, y=conc)) +
+  # AUCinf (with a work-around for https://github.com/tidyverse/ggplot2/issues/4661)
+  geom_area(
+    data=d_auc_calcs %>% filter(Time <= auc_figure_time_max),
+    aes(y=conc_inf, colour="AUCinf", fill="AUCinf"),
+    alpha=0.2,
+    na.rm=TRUE
+  ) +
+  geom_line(
+    data=d_auc_calcs,
+    aes(y=conc_inf, colour="AUCinf"),
+    na.rm=TRUE
+  ) +
+  # AUCint
+  geom_area(
+    aes(y=conc_int, colour="AUCint", fill="AUCint"),
+    alpha=0.2,
+    na.rm=TRUE
+  ) +
+  # AUClast
+  geom_area(
+    aes(y=conc_last, colour="AUClast", fill="AUClast"),
+    na.rm=TRUE
+  ) +
+  geom_point(show.legend=FALSE,
+    na.rm=TRUE) +
+  geom_line(show.legend=FALSE,
+    na.rm=TRUE) +
+  geom_vline(xintercept=24, linetype="63") +
+  scale_x_continuous(breaks=seq(0, auc_figure_time_max, by=6)) +
+  coord_cartesian(xlim=c(0, auc_figure_time_max)) +
+  labs(
+    colour="AUC type",
+    fill="AUC type"
+  )
+```
+
+```{r warning=FALSE, out.width="100%"}
+p_auc_calcs
+```
+
+<p class="forceBreak"></p>
+
+The considerations below mainly apply to actual-time data; nominal-time data usually have measurements at the start and end time for the interval.
+
+With an interval start and end of 0 and 24 (and the last measurement time just after 24 hours):
+
+* **AUC~last~** is calculated only based on points within the interval (the AUClast color in the figure)
+
+## AUC considerations with PKNCA (2/3) {.columns-2}
+
+```{r warning=FALSE, out.width="100%"}
+p_auc_calcs
+```
+
+<p class="forceBreak"></p>
+
+The considerations below mainly apply to actual-time data; nominal-time data usually have measurements at the start and end time for the interval.
+
+With an interval start and end of 0 and 24 (and the last measurement time just after 24 hours):
+
+* **AUC~int~** looks at the points in the interval, and if there is no measurement at the interval end time, interpolates or extrapolates to the interval end time (the AUClast and AUCint color in the figure)
+
+## AUC considerations with PKNCA (2/3) {.columns-2}
+
+```{r warning=FALSE, out.width="100%"}
+p_auc_calcs
+```
+
+<p class="forceBreak"></p>
+
+The considerations below mainly apply to actual-time data; nominal-time data usually have measurements at the start and end time for the interval.
+
+With an interval start and end of 0 and 24 (and the last measurement time just after 24 hours):
+
+* **AUC~&infin;~** is calculated based on AUC~last~, t~last~, and the half-life from t~last~, only using data within the interval-- no data after the end of the interval.
+* Ensure that the interval used for calculating AUC~&infin;~ includes all the points desired (usually, `end=Inf`).
+
 # Hands-on workshop
 
-## Single-dose oral administration
+## Steady-state intramuscular administration
 
+The data for the exercise are from a PK study of amikacin in a killer whale and a beluga whale.  (DOI: 10.1638/03-078)
+
+![](https://apps-afsc.fisheries.noaa.gov/Quarterly/amj2005/images/killerwhales.jpg)
+
+(Callback...)
+
+## Steady-state intramuscular administration
+
+```{r eval=FALSE, echo=TRUE}
+library(PKNCA)
+
+d_conc <- read.csv("c:/tmp/whale_conc.csv")
+d_dose <- read.csv("c:/tmp/whale_dose.csv")
+head(d_conc)
+head(d_dose)
+
+o_conc <- PKNCAconc(concentration~time|Animal, data=d_conc)
+o_dose <- PKNCAdose(dose~time|Animal, data=d_dose)
+o_data <- PKNCAdata(o_conc, o_dose)
+o_data$intervals
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+summary(o_nca, drop.group=c())
+as.data.frame(o_nca)
+```
