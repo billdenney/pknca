@@ -211,8 +211,21 @@ standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing
   stopifnot("all original cols names must be names of x"=all(unlist(cols) %in% names(x)))
   stopifnot("group_cols must be NULL or a character vector"=is.null(group_cols) || is.character(group_cols))
   if (!is.null(group_cols) && (length(group_cols) > 0)) {
-    stopifnot("group_cols must not overlap with other column names"=!any(group_cols %in% unlist(cols)))
-    stopifnot("group_cols must not overlap with standardized column names"=!any(group_cols %in% names(cols)))
+    # Give a clear error message if group columns overlap
+    mask_overlap_colvalues <- group_cols %in% unlist(cols)
+    mask_overlap_colnames <- group_cols %in% names(cols)
+    if (any(mask_overlap_colvalues)) {
+      stop(
+        "group_cols must not overlap with other column names.  Change the name of the following groups: ",
+        paste(group_cols[mask_overlap_colvalues], collapse=", ")
+      )
+    }
+    if (any(mask_overlap_colnames)) {
+      stop(
+        "group_cols must not overlap with standardized column names.  Change the name of the following groups: ",
+        paste(group_cols[mask_overlap_colnames], collapse=", ")
+      )
+    }
     new_group_cols <- paste0("group", seq_along(group_cols))
   } else {
     new_group_cols <- NULL

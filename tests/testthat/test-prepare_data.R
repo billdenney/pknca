@@ -1,6 +1,8 @@
 library(dplyr)
 source("generate.data.R")
 
+# prepare_* ####
+
 test_that("prepare_*", {
   tmp_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   tmp_dose <- generate.dose(tmp_conc)
@@ -47,6 +49,8 @@ test_that("prepare_*", {
     )
   )
 })
+
+# full_join for PKNCAconc, PKNCAdose, and PKNCAdata ####
 
 test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
   tmp_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
@@ -120,6 +124,8 @@ test_that("check_reserved_column_names", {
   )
 })
 
+# standardize_column_names ####
+
 test_that("standardize_column_names", {
   # One column works
   expect_equal(
@@ -134,12 +140,12 @@ test_that("standardize_column_names", {
   # group_cols overlap with cols values fails
   expect_error(
     standardize_column_names(data.frame(a=1, b=2), cols=list(c="a", d="b"), group_cols="b"),
-    regexp="group_cols must not overlap with other column names"
+    regexp="group_cols must not overlap with other column names.  Change the name of the following groups: b"
   )
   # group_cols overlap with cols names fails
   expect_error(
     standardize_column_names(data.frame(a=1, b=2), cols=list(c="a", d="b"), group_cols="c"),
-    regexp="group_cols must not overlap with standardized column names"
+    regexp="group_cols must not overlap with standardized column names.  Change the name of the following groups: c"
   )
   # group_cols works
   expect_equal(
@@ -168,6 +174,8 @@ test_that("standardize_column_names", {
     data.frame(group1=1, d=2, dose=3)
   )
 })
+
+# restore_group_col_names ####
 
 test_that("restore_group_col_names", {
   d <- data.frame(a=1, group1=2)
