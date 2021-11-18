@@ -1,7 +1,7 @@
 ---
 title: "PKNCA Training Session 1 of 2"
 author: "William Denney"
-date: "5 November 2021"
+date: "19 November 2021"
 output:
   ioslides_presentation:
     widescreen: true
@@ -94,6 +94,8 @@ scale_x_hours <- function(..., breaks=breaks_hours()) {
 </style>
 
 # Introduction to PKNCA and Basics of Its Use
+
+Creation of these materials were supported by funding from the Metrum Research Group.
 
 ## Introduction to PKNCA {.build .smaller}
 
