@@ -1,12 +1,12 @@
 ---
-title: "PKNCA Training Session 1 of 2"
+title: "PKNCA Training Sessions"
 author: "William Denney"
 date: "19 November 2021"
 output:
   ioslides_presentation:
     widescreen: true
 vignette: >
-  %\VignetteIndexEntry{PKNCA Training Session 1 of 2}
+  %\VignetteIndexEntry{PKNCA Training Sessions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -89,6 +89,107 @@ scale_x_hours <- function(..., breaks=breaks_hours()) {
   float: left;
   clear: both;
   text-align: center;
+}
+
+<!-- imessages -->
+
+.imessage {
+  font-family: helvetica;
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat {
+  width: 300px;
+  border: solid 1px #EEE;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.messages {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.yours {
+  align-items: flex-start;
+}
+
+.yours .message {
+  margin-right: 25%;
+  background-color: #eee;
+  position: relative;
+}
+
+.yours .message.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
+  background: #eee;
+  border-bottom-right-radius: 15px;
+}
+.yours .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 20px;
+  background: white;
+  border-bottom-right-radius: 10px;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+.mine .message {
+  color: white;
+  margin-left: 25%;
+  background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.mine .message.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  right: -8px;
+  height: 20px;
+  width: 20px;
+  background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+  background-attachment: fixed;
+  border-bottom-left-radius: 15px;
+}
+
+.mine .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 20px;
+  background: white;
+  border-bottom-left-radius: 10px;
 }
 
 </style>
@@ -755,4 +856,500 @@ o_nca <- pk.nca(o_data)
 summary(o_nca)
 summary(o_nca, drop.group=c())
 as.data.frame(o_nca)
+```
+
+# Day 2 Start
+
+# Control your data
+
+## Including and excluding data points
+
+Data may be included/excluded in two ways:
+
+* Overall: excluded a row of data from all analyses
+* Half-life: excluded from half-life calculations, but included in all other analyses
+
+For both ways of including/excluding data, it is defined by a column in the input data.  The column is either `NA` or an empty string (`""`) to indicate "no" or any other text to indicate "yes".
+
+## Exclude data points overall {.columns-2}
+
+Use the `exclude` argument for `PKNCAconc()` or `PKNCAdose()`.
+
+When you use `exclude`, this is how you give your data to PKNCA:
+
+```{r exclude-example-1, echo=TRUE}
+d_before_exclude <-
+  data.frame(
+    time=0:4,
+    conc=c(0, 2, 1, 0.5, 0.25),
+    not_this=c(NA, "Not this", NA, NA, NA)
+  )
+o_conc <-
+  PKNCAconc(
+    data=d_before_exclude,
+    conc~time,
+    exclude="not_this"
+  )
+```
+
+<p class="forceBreak"></p>
+
+And, this is how PKNCA thinks about it:
+
+```{r exclude-example-2, echo=TRUE}
+pander::pander(
+  d_before_exclude %>%
+    filter(is.na(not_this))
+)
+```
+
+## Exclude data points overall
+
+```{r, echo=TRUE, eval=FALSE}
+o_conc <- PKNCAconc(data=d_before_exclude, conc~time, exclude="not_this")
+```
+
+<div class="imessage">
+<div class="yours messages">
+  <div class="message last">Hey babe, did you get my 5 rows of data?</div>
+</div>
+<div class="mine messages">
+  <div class="message last">I only saw 4 rows.  Are you sure you sent 5?</div>
+</div>
+<div class="yours messages">
+  <div class="message last">Yep, definitely 5 check that last slide. &#128544;</div>
+</div>
+<div class="mine messages">
+  <div class="message">...</div>
+  <div class="message last">New phone.  Who dis?</div>
+</div>
+</div>
+
+## Digression: How is &lambda;z automatically calculated? {.smaller}
+
+* Filter the data from the first point after t~max~ (or from t~max~ if `allow.tmax.in.half.life=TRUE`) to t~last~ and excluding BLQ in the middle.
+* Fit the semi-log line from 3 points before t~last~ (3 can be changed with the `min.hl.points` option) to t~last~.
+    * Repeat for all sets of points from there to the first point included.
+    * If that 3 points are not available, it is not calculated.
+* Among the fits, select the best adjusted r^2^ (within a tolerance of `adj.r.squared.factor`).
+* Require &lambda;z` > 0`.
+* If more than one fit is available at this point, select the one with the most points included.
+
+Note: WinNonlin first requires &lambda;z` > 0` then selects for adjusted r^2^.  Therefore, WinNonlin will occasionally provide a half-life when PKNCA will not, but the fit line is not as good (as measured by r^2^).  The selection of filtering order is an intentional feature with PKNCA, and it generally has minimal impact on summary statistics becuase the quality of the half-life fit is usually low in this scenario.
+
+## &lambda;z control (manual exclusions and inclusions of data points)
+
+Use the `exclude_half.life` or `include_half.life` argument for `PKNCAconc()`.  The two arguments behave very differently in how points are selected for half-life.
+
+`exclude_half.life` uses the same automatic point selection method of curve stripping (described before), but it excludes individual points from that calculation.
+
+`include_half.life` uses no automatic point selection method, and only points specifically noted by the analyst are included.
+
+# Less-common calculations
+
+## Urine calculations
+
+```{r echo=TRUE}
+d_urine <-
+  data.frame(
+    conc=c(1, 2, 3),
+    urine_volume=c(200, 100, 300),
+    time=c(1, 2, 3)
+  )
+o_conc <- PKNCAconc(data=d_urine, conc~time, volume="urine_volume")
+d_intervals <- data.frame(start=0, end=24, ae=TRUE)
+o_data <- PKNCAdata(o_conc, intervals=d_intervals)
+o_nca <- suppressMessages(pk.nca(o_data))
+summary(o_nca)
+```
+
+## Urine calculations: understanding what is happening and potential hiccups
+
+Intervals for urine are treated the same as any other interval type.  Specifically, PKNCA does not look outside the start and end of the interval.
+
+* Watch out for e.g. a 24-hour urine amount to be included in more than one interval because start = 0 and end = 24.
+* Watch out for an actual start or end time to be outside of the interval and therefore to be omitted from calculations.
+
+# Calculations below the hood
+
+## PKNCA only calculates what is required, not every possible parameter (1 of 2)
+
+If you don't need a parameter, PKNCA won't calculate it.
+
+For example, if all you need is `cmax`, all you'll get is `cmax`.
+
+```{r echo=TRUE}
+o_conc <- PKNCAconc(data=data.frame(conc=2^-(1:4), time=0:3), conc~time)
+o_data <- PKNCAdata(o_conc, intervals=data.frame(start=0, end=Inf, cmax=TRUE))
+o_nca <- suppressMessages(pk.nca(o_data))
+as.data.frame(o_nca)
+```
+
+## PKNCA only calculates what is required, not every possible parameter (2 of 2) {.columns-2 .smaller}
+
+If you need AUC~0-\infty~, PKNCA will calculate other required parameters behind the scenes.
+
+```{r echo=TRUE}
+o_data <-
+  PKNCAdata(
+    o_conc,
+    intervals=
+      data.frame(
+        start=0, end=Inf,
+        aucinf.obs=TRUE
+      )
+  )
+o_nca <- suppressMessages(pk.nca(o_data))
+```
+
+<p class="forceBreak"></p>
+
+```{r echo=TRUE}
+as.data.frame(o_nca)
+```
+
+## How to select the correct parameters for calculations (aka, why are there `r sum(grepl(x=names(PKNCA.options("single.dose.aucs")), pattern="^auc"))` types of AUC in PKNCA?)
+
+CDISC has one set of names, but they are not precise (e.g. AUCINT doesn't tell the interpolation/extrapolation method).
+
+PKNCA tries to be everything to everyone (in terms of parameters calculated), and it simultaneously tries to be precise.  That yields many parameters.
+
+See the Selection of Calculation Intervals vignette in the [Parameters Available for Calculation in an Interval section](http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1) for all available parameters.
+
+## When are intervals (partly) ignored? {.smaller}
+
+Very few parameters reach outside of the `start` and `end` of an interval for additional information about what is being calculated.  As of the writing of these training materials (PKNCA version 0.9.5), the only parameters that look outside are the `aucint` class of parameters.
+
+AUC~int~ may look after the end of the interval to calculate the concentration at `end`.
+
+Note: Watch out for a dose before the next concentration (e.g. a dose at 24 hours but the prior sample is around 12 and the next is around 25):
+
+```{r fig.height=3}
+d_prep <-
+  datasets::Theoph %>%
+  filter(Subject == 1) %>%
+  mutate(
+    conc=
+      case_when(
+        Time == 0~0,
+        TRUE~conc
+      )
+  )
+d_plot <-
+  superposition(
+    conc=d_prep$conc,
+    time=d_prep$Time,
+    tau=48,
+    n.tau=1,
+    dose.times=24*(0:1)
+  ) %>%
+  # Pretend that we missed the predose sample
+  filter(
+    !between(time, 23, 24.5)
+  )
+# Pretend that there was a dose at 24
+ggplot(d_plot, aes(x=time, y=conc)) +
+  geom_point() + geom_line() +
+  geom_vline(xintercept=24) +
+  scale_x_hours()
+```
+
+# Control your results
+
+## Excluding results (Not the best way) {.smaller}
+
+A simple way to exclude a value from results is to convert the results to a data.frame and then drop the rows you don't want:
+
+```{r exclude-setup}
+o_conc <- PKNCAconc(data=data.frame(conc=2^-(1:4), time=0:3), conc~time)
+o_data <-
+  PKNCAdata(
+    o_conc,
+    intervals=
+      data.frame(
+        start=0, end=Inf,
+        aucinf.obs=TRUE
+      )
+  )
+o_nca <- suppressMessages(pk.nca(o_data))
+```
+
+```{r exclude-not-best, echo=TRUE}
+as.data.frame(o_nca) %>%
+  filter(PPTESTCD != "half.life")
+```
+
+But, parameters derived from half-life remain.
+
+## Excluding results (The best way, 1/2) {.columns-2 .smaller}
+
+When you use the `exclude()` function, parameters that are dependent on an excluded parameter will be excluded.
+
+```{r exclude-best, echo=TRUE}
+o_nca_excluded <-
+  o_nca %>%
+  exclude(FUN=exclude_nca_span.ratio(3))
+as.data.frame(o_nca_excluded)
+```
+
+## Excluding results (The best way, 2/2) {.smaller}
+
+Now, everything dependent on the half-life is excluded in summaries.
+
+```{r echo=TRUE}
+summary(o_nca)
+summary(o_nca_excluded)
+```
+
+# NCA-related calculations
+
+## Superposition {.smaller .columns-2}
+
+Superposition assumes linear kinetics and can convert a single-dose profile to multi-dose.
+
+```{r echo=TRUE}
+# Subject 2 is selected for a BLQ time=0 concentration
+d_prep <-
+  datasets::Theoph %>%
+  filter(Subject == 2)
+# Superposition to steady-state is the default
+d_ss <-
+  superposition(
+    conc=d_prep$conc,
+    time=d_prep$Time,
+    tau=24
+  )
+# Going to steady-state is also an option
+# (n.tau=2 means the second dose)
+d_second_dose <-
+  superposition(
+    conc=d_prep$conc,
+    time=d_prep$Time,
+    tau=24,
+    n.tau=2
+  )
+```
+
+<p class="forceBreak"></p>
+
+```{r echo=TRUE}
+# Want the profile for the first two doses
+# together?
+d_first_two <-
+  superposition(
+    conc=d_prep$conc,
+    time=d_prep$Time,
+    tau=48, # 48 hours
+    n.tau=1, # One tau interval (0 to 48 hours)
+    dose.times=c(0, 24)
+  )
+```
+
+```{r, fig.height=3, fig.width=3}
+ggplot(d_ss, aes(x=time, y=conc)) +
+  geom_point() + geom_line() +
+  scale_y_continuous(limits=c(0, NA))
+```
+
+## Time-to-Steady-state calculations {.smaller}
+
+Time-to-steady-state (tss) can be useful as a method to confirm that a subject is at steady-state.  PKNCA can calculate tss using trough concentrations either with a monoexponential increase toward steady-state (preferred) or a linear trend back from the final point.
+
+```{r echo=TRUE}
+dose_times <- seq(0, 96-1, by=6)
+d_multidose <-
+  superposition(
+    conc=d_prep$conc,
+    time=d_prep$Time,
+    tau=96, # 48 hours
+    n.tau=1, # One tau interval (0 to 48 hours)
+    dose.times=dose_times
+  )
+pk.tss.monoexponential(
+  conc=d_multidose$conc, time=d_multidose$time, subject=rep(1, nrow(d_multidose)),
+  time.dosing=dose_times, subject.dosing=rep(1, length(dose_times)),
+  output="single"
+)
+```
+
+# Reporting
+
+## Graphics are intentionally not part of PKNCA, but there are some tricks that can help...
+
+Generate all individual profiles using the groups that you defined:
+
+```{r echo=TRUE}
+o_conc <- PKNCAconc(conc~Time|Subject, data=datasets::Theoph)
+d_plot <-
+  grouped_df(data=datasets::Theoph, vars=names(getGroups(o_conc))) %>%
+  nest() %>%
+  mutate(
+    figure=
+      lapply(
+        pmap(
+          .l=list(data=data),
+          .f=ggplot,
+          aes(x=Time, y=conc)
+        ),
+        FUN="+",
+        geom_line()
+      )
+  )
+# d_plot$figure
+```
+
+## Best practices for Data -> PKNCA -> knitr
+
+Make summary tables using the `summary()` function on the NCA results, and use `pander::pander()` to make a pretty table with captions.
+
+```{r echo=TRUE}
+pander::pander(summary(o_nca))
+```
+
+Make an NCA data listing using the `as.data.frame()` function on the NCA results.
+
+```{r echo=TRUE, eval=FALSE}
+pander::pander(as.data.frame(o_nca))
+```
+
+# Limitations
+
+## Units (especially clearance)
+
+PKNCA does not (yet) support units.  The most common place where that becomes an issue is with clearance which ends up having unusual units like "mg/(hr*ng/mL)" (with units of mg for dosing, hr for time, and ng/mL for concentration).
+
+## Data imputation
+
+Some data points are required for inputs such as:
+
+* the start of the interval for AUC,
+* the end of the interval for some calculations (e.g. AUC~last~ vs AUC~int~), and
+* interpolated concentrations at the end of a urine interval for urinary PK calculations.
+
+## IV bolus AUC (need to add C0)
+
+PKNCA does not have an IV-aware AUC calculation (yet).  So, C0 must be separately imputed.
+
+## Combined, multi-subject data (e.g. sparse animal sampling)
+
+Averaging the concentration at a time point will allow for the mean sparse sampling result.  But general sparse sampling methods are not (yet) implemented.
+
+## Secondary parameters (e.g. bioavailability and renal clearance)
+
+PKNCA does not (yet) have the ability to calculate secondary PK parameters that require looking at more than one group/interval at a time.  (If you have good ideas for how to define the intervals for that, please let me know.)
+
+# Hands-on
+
+## Single- and Multiple-dose, single analyte: Setup the underlying datasets {.smaller}
+
+```{r, echo=TRUE}
+d_conc <-
+  datasets::Theoph %>%
+  rename(time=Time) %>%
+  mutate(
+    Subject=as.character(Subject)
+  )
+d_multidose <-
+  PKNCAconc(conc~time|Subject, data=d_conc) %>%
+  superposition(tau=24, check.blq=FALSE)
+d_singledose_single_analyte <-
+  d_conc %>%
+  mutate(
+    Study_Part="Single"
+  )
+d_multidose_single_analyte <-
+  d_conc %>%
+  mutate(Day=1) %>%
+  bind_rows(
+    d_multidose %>% mutate(time=time + 120, Day=6)
+  ) %>%
+  mutate(
+    Study_Part="Multiple"
+  )
+```
+
+## Single- and Multiple-dose, single analyte: Setup the concentration and dose datasets {.smaller}
+
+```{r, echo=TRUE}
+d_single_multi_conc <- bind_rows(d_singledose_single_analyte, d_multidose_single_analyte)
+d_single_multi_dose <-
+  d_single_multi_conc %>%
+  filter(
+    (Study_Part %in% "Single" & time == 0) |
+      (Study_Part %in% "Multiple" & (time %% 24) == 0)
+  )
+```
+
+## Single- and Multiple-dose, single analyte: Perform basic analysis {.smaller}
+
+```{r, echo=TRUE}
+o_conc <- PKNCAconc(data=d_single_multi_conc, conc~time|Study_Part+Subject)
+o_dose <- PKNCAdose(data=d_single_multi_dose, Dose~time|Study_Part+Subject)
+o_data <- PKNCAdata(o_conc, o_dose)
+o_data$intervals %>% select(-Subject) %>% unique() %>% as.data.frame()
+o_nca <- pk.nca(o_data)
+```
+
+## Single- and Multiple-dose, single analyte: Use intervals for fewer subjects {.smaller}
+
+```{r echo=TRUE}
+d_intervals <-
+  data.frame(
+    start=0,
+    end=24,
+    Subject=c("1", "2"),
+    Study_Part="Single",
+    aucinf.obs=TRUE
+  )
+o_data <- PKNCAdata(o_conc, o_dose, intervals=d_intervals)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+```
+
+## Single- and Multiple-dose, single analyte: Use custom intervals per subjects {.smaller}
+
+```{r echo=TRUE}
+# Find the time closest to 12 hours
+d_intervals_prep <-
+  d_single_multi_conc %>%
+  filter(Study_Part == "Single") %>%
+  mutate(
+    time_deviation=abs(time-12)
+  ) %>%
+  group_by(Subject, Study_Part) %>%
+  filter(time %in% time[time_deviation == min(time_deviation)])
+d_intervals <-
+  d_intervals_prep %>%
+  select(Study_Part, Subject, end=time) %>%
+  mutate(
+    start=0,
+    aucinf.obs=TRUE
+  )
+o_data <- PKNCAdata(o_conc, o_dose, intervals=d_intervals)
+
+o_nca <- pk.nca(o_data)
+summary(o_nca, drop.group=c("Subject", "end"))
+```
+
+## Single- and Multiple-dose, parent and metabolite
+
+```{r, echo=TRUE}
+d_single_multi_conc_multi_analyte <-
+  bind_rows(
+    d_single_multi_conc %>% mutate(Analyte="Parent"),
+    d_single_multi_conc %>%
+      mutate(
+        Analyte="Metabolite",
+        conc=conc/2
+      )
+  )
+o_conc <-
+  PKNCAconc(
+    data=d_single_multi_conc_multi_analyte,
+    conc~time|Study_Part+Subject/Analyte
+  )
+o_dose <- PKNCAdose(data=d_single_multi_dose, Dose~time|Study_Part+Subject)
+o_data <- PKNCAdata(o_conc, o_dose)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
 ```
