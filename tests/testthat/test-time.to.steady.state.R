@@ -405,15 +405,18 @@ test_that("pk.tss.monoexponential", {
     regexp="tss.fraction is usually >= 0.8")
   
   expect_equal(
-    pk.tss.monoexponential(conc=c(0, 1000),
-                           time=0:1,
-                           subject=c(1, 1),
-                           treatment=c("A", "A"),
-                           time.dosing=0:1,
-                           tss.fraction=0.9,
-                           output="single"),
+    pk.tss.monoexponential(
+      conc=c(0, 1000),
+      time=0:1,
+      subject=c(1, 1),
+      treatment=c("A", "A"),
+      time.dosing=0:1,
+      tss.fraction=0.9,
+      output="single"
+    ),
     data.frame(tss.monoexponential.single=NA_real_),
-    info="Single-subject data fitting works when it does not converge.")
+    info="Single-subject data fitting works when it does not converge."
+  )
 })
 
 test_that("pk.tss", {
@@ -481,4 +484,26 @@ test_that("pk.tss", {
                              time.dosing=0:14,
                              verbose=FALSE),
       all=TRUE))
+})
+
+test_that("pk.tss.monoexponential with single-subject data", {
+  d_prep <- datasets::Theoph[datasets::Theoph$Subject %in% 2, ]
+  dose_times <- seq(0, 96-1, by=6)
+  d_multidose <-
+    superposition(
+      conc=d_prep$conc,
+      time=d_prep$Time,
+      tau=96, # 48 hours
+      n.tau=1, # One tau interval (0 to 48 hours)
+      dose.times=dose_times
+    )
+  expect_equal(
+    pk.tss.monoexponential(
+      conc=d_multidose$conc, time=d_multidose$time, subject=rep(1, nrow(d_multidose)),
+      time.dosing=dose_times, subject.dosing=rep(1, length(dose_times)),
+      output="single"
+    ),
+    data.frame(tss.monoexponential.single=22.53),
+    tolerance=0.001
+  )
 })

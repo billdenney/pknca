@@ -330,3 +330,8 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
 summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...) {
   print.PKNCAconc(object, n=n, summarize=summarize)
 }
+
+#' @export
+as.data.frame.PKNCAconc <- function(x, ...) {
+  x$data
+}

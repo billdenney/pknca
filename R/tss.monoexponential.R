@@ -316,26 +316,29 @@ pk.tss.monoexponential.individual <- function(data,
                                                 "individual",
                                                 "single"),
                                               verbose=FALSE) {
-  fit.tss <- function(d) {
-    tss <- NA_real_
-    try({
-      current.model <-
-        nlme::gnls(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
-                   params=list(
-                     ctrough.ss~1,
-                     tss~1),
-                   start=c(
-                     mean(d$conc),
-                     stats::median(unique(d$time))),
-                   data=d,
-                   verbose=verbose)
-      if (!is.null(current.model)) {
-        tss <- stats::coef(current.model)[["tss"]]
+  fit_tss <- function(d) {
+    current_model <-
+      try({
+        nlme::gnls(
+          conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
+          params=list(
+            ctrough.ss~1,
+            tss~1),
+          start=c(
+            mean(d$conc),
+            stats::median(unique(d$time))),
+          data=d,
+          verbose=verbose
+        )
+      }, silent=!verbose)
+    tss <-
+      if (inherits(current_model, "try-error")) {
+        NA_real_
+      } else if (is.null(current_model)) {
+        NA_real_
+      } else {
+        stats::coef(current_model)[["tss"]]
       }
-    }, silent=!verbose)
-    if (is.null(tss)) {
-      tss <- NA_real_
-    }
     tss
   }
   output <- match.arg(output, several.ok=TRUE)
@@ -351,12 +354,11 @@ pk.tss.monoexponential.individual <- function(data,
     data_maybe_grouped %>%
     dplyr::summarize(
       tss.monoexponential.single=
-        fit.tss(
+        fit_tss(
           data.frame(
             time=.$time,
             tss.constant=.$tss.constant,
             conc=.$conc,
-            treatment=.$treatment,
             stringsAsFactors=FALSE
           )
         )
@@ -378,7 +380,7 @@ pk.tss.monoexponential.individual <- function(data,
       dplyr::summarize_(
         .dots=list(
           tss.monoexponential.individual=
-            ~fit.tss(
+            ~fit_tss(
               data.frame(
                 time=time,
                 tss.constant=tss.constant,
