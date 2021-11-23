@@ -160,7 +160,7 @@ sort.interval.cols <- function() {
   myorder <- rep(NA, length(current))
   names(myorder) <- names(current)
   nextnum <- 1
-  while (any(is.na(myorder)))
+  while (any(is.na(myorder))) {
     for (nextorder in (1:length(myorder))[is.na(myorder)]) {
       if (length(current[[nextorder]]$depends) == 0) {
         ## If it doesn't depend on anything then it can go next in
@@ -171,15 +171,22 @@ sort.interval.cols <- function() {
         ## If all of its dependencies already have values, then it can
         ## be next.
         deps <- unique(unlist(current[[nextorder]]$depends))
-        if (!all(deps %in% names(myorder)))
-          stop("Invalid dependencies for interval column (please report this as a bug):", # nocov
-               names(myorder)[nextorder]) # nocov
+        missing_deps <- deps[!(deps %in% names(myorder))]
+        if (length(missing_deps) > 0) {
+          stop(
+            "Invalid dependencies for interval column (please report this as a bug): ", # nocov
+            names(myorder)[nextorder], # nocov
+            " The following dependencies are missing: ", # nocov
+            paste(missing_deps, collapse=", ") # nocov
+          ) # nocov
+        }
         if (!any(is.na(myorder[deps]))) {
           myorder[nextorder] <- nextnum
           nextnum <- nextnum + 1
         }
       }
     }
+  }
   current <- current[names(sort(myorder))]
   assign("interval.cols", current, envir=.PKNCAEnv)
   invisible(myorder)

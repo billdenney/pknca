@@ -110,8 +110,9 @@ pk.calc.c0.method.c1 <- function(conc, time, time.dose=0, check=TRUE) {
 
 #' @describeIn pk.calc.c0 Use \code{C0} = 0 (typically used for single
 #' dose oral and IV infusion)
-pk.calc.c0.method.set0 <- function(conc, time, time.dose=0, check=TRUE)
+pk.calc.c0.method.set0 <- function(conc, time, time.dose=0, check=TRUE) {
   0
+}
 
 #' @describeIn pk.calc.c0 Use \code{C0} = Cmin (typically used for
 #' multiple dose oral and IV infusion but not IV bolus)

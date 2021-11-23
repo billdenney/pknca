@@ -281,7 +281,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   ## that are not listed for calculation.  Then loop over the
   ## calculations in order confirming what needs to be passed from a
   ## previous calculation to a later calculation.
-  all.intervals <- get.interval.cols()
+  all_intervals <- get.interval.cols()
   ## Set the dose to NA if its length is zero
   if (length(dose) == 0) {
     dose <- NA
@@ -290,81 +290,81 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   }
   ## Make sure that we calculate all of the dependencies.  Do this in
   ## reverse order for dependencies of dependencies.
-  for (n in rev(names(all.intervals))) {
+  for (n in rev(names(all_intervals))) {
     if (interval[[1,n]]) {
-      for (deps in all.intervals[[n]]$depends) {
+      for (deps in all_intervals[[n]]$depends) {
         interval[1,deps] <- TRUE
       }
     }
   }
   ## Do the calculations
-  for (n in names(all.intervals))
-    if (interval[[1,n]] & !is.na(all.intervals[[n]]$FUN)) {
-      call.args <- list()
+  for (n in names(all_intervals))
+    if (interval[[1,n]] & !is.na(all_intervals[[n]]$FUN)) {
+      call_args <- list()
       exclude_from_argument <- character(0)
       ## Prepare to call the function by setting up its arguments.
       ## Ignore the "..." argument if it exists.
-      arglist <- setdiff(names(formals(get(all.intervals[[n]]$FUN))),
+      arglist <- setdiff(names(formals(get(all_intervals[[n]]$FUN))),
                          "...")
       arglist <- stats::setNames(object=as.list(arglist), arglist)
-      arglist[names(all.intervals[[n]]$formalsmap)] <- all.intervals[[n]]$formalsmap
+      arglist[names(all_intervals[[n]]$formalsmap)] <- all_intervals[[n]]$formalsmap
       # Drop arguments that were set to NULL by the formalsmap
       arglist <- arglist[!sapply(arglist, is.null)]
       for (arg_formal in names(arglist)) {
         arg_mapped <- arglist[[arg_formal]]
         if (arg_mapped == "conc") {
-          call.args[[arg_formal]] <- conc
+          call_args[[arg_formal]] <- conc
         } else if (arg_mapped == "time") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg_formal]] <- time - interval$start[1]
+          call_args[[arg_formal]] <- time - interval$start[1]
         } else if (arg_mapped == "volume") {
-          call.args[[arg_formal]] <- volume
+          call_args[[arg_formal]] <- volume
         } else if (arg_mapped == "duration.conc") {
-          call.args[[arg_formal]] <- duration.conc
+          call_args[[arg_formal]] <- duration.conc
         } else if (arg_mapped == "dose") {
-          call.args[[arg_formal]] <- dose
+          call_args[[arg_formal]] <- dose
         } else if (arg_mapped == "time.dose") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg_formal]] <- time.dose - interval$start[1]
+          call_args[[arg_formal]] <- time.dose - interval$start[1]
         } else if (arg_mapped == "duration.dose") {
-          call.args[[arg_formal]] <- duration.dose
+          call_args[[arg_formal]] <- duration.dose
         } else if (arg_mapped == "route") {
-          call.args[[arg_formal]] <- route
+          call_args[[arg_formal]] <- route
         } else if (arg_mapped == "conc.group") {
-          call.args[[arg_formal]] <- conc.group
+          call_args[[arg_formal]] <- conc.group
         } else if (arg_mapped == "time.group") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg_formal]] <- time.group
+          call_args[[arg_formal]] <- time.group
         } else if (arg_mapped == "volume.group") {
-          call.args[[arg_formal]] <- volume.group
+          call_args[[arg_formal]] <- volume.group
         } else if (arg_mapped == "duration.conc.group") {
-          call.args[[arg_formal]] <- duration.conc.group
+          call_args[[arg_formal]] <- duration.conc.group
         } else if (arg_mapped == "dose.group") {
-          call.args[[arg_formal]] <- dose.group
+          call_args[[arg_formal]] <- dose.group
         } else if (arg_mapped == "time.dose.group") {
           ## Realign the time to be relative to the start of the
           ## interval
-          call.args[[arg_formal]] <- time.dose.group
+          call_args[[arg_formal]] <- time.dose.group
         } else if (arg_mapped == "duration.dose.group") {
-          call.args[[arg_formal]] <- duration.dose.group
+          call_args[[arg_formal]] <- duration.dose.group
         } else if (arg_mapped == "route.group") {
-          call.args[[arg_formal]] <- route.group
+          call_args[[arg_formal]] <- route.group
         } else if (arg_mapped %in% c("start", "end")) {
           ## Provide the start and end of the interval if they are requested
-          call.args[[arg_formal]] <- interval[[arg_mapped]]
+          call_args[[arg_formal]] <- interval[[arg_mapped]]
         } else if (arg_mapped == "options") {
-          call.args[[arg_formal]] <- options
-        } else if (any(mask.arg <- ret$PPTESTCD %in% arg_mapped)) {
-          call.args[[arg_formal]] <- ret$PPORRES[mask.arg]
+          call_args[[arg_formal]] <- options
+        } else if (any(mask_arg <- ret$PPTESTCD %in% arg_mapped)) {
+          call_args[[arg_formal]] <- ret$PPORRES[mask_arg]
           exclude_from_argument <-
-            c(exclude_from_argument, ret$exclude[mask.arg])
+            c(exclude_from_argument, ret$exclude[mask_arg])
         } else {
           ## Give an error if there is not a default argument.
           ## FIXME: checking if the class is a name isn't perfect.  
-          if (class(formals(get(all.intervals[[n]]$FUN))[[arg_formal]]) == "name") {
+          if (class(formals(get(all_intervals[[n]]$FUN))[[arg_formal]]) == "name") {
             arg_text <-
               if (arg_formal == arg_mapped) {
                 sprintf("'%s'", arg_formal)
@@ -373,32 +373,32 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
               }
             stop(sprintf(
               "Cannot find argument %s for NCA function '%s'",
-              arg_text, all.intervals[[n]]$FUN))
+              arg_text, all_intervals[[n]]$FUN))
           }
         }
       }
       # Apply manual inclusion and exclusion
       if (n %in% "half.life") {
         if (!is.null(include_half.life)) {
-          call.args$conc <- call.args$conc[include_half.life]
-          call.args$time <- call.args$time[include_half.life]
-          call.args$manually.selected.points <- TRUE
+          call_args$conc <- call_args$conc[include_half.life]
+          call_args$time <- call_args$time[include_half.life]
+          call_args$manually.selected.points <- TRUE
         } else if (!is.null(exclude_half.life)) {
-          call.args$conc <- call.args$conc[!exclude_half.life]
-          call.args$time <- call.args$time[!exclude_half.life]
+          call_args$conc <- call_args$conc[!exclude_half.life]
+          call_args$time <- call_args$time[!exclude_half.life]
         }
       }
       # Do the calculation
-      tmp.result <- do.call(all.intervals[[n]]$FUN, call.args)
+      tmp_result <- do.call(all_intervals[[n]]$FUN, call_args)
       # The handling of the exclude column is documented in the
       # "Writing-Parameter-Functions.Rmd" vignette.  Document any changes to
       # this section of code there.
       exclude_reason <-
         stats::na.omit(c(
-          exclude_from_argument, attr(tmp.result, "exclude")
+          exclude_from_argument, attr(tmp_result, "exclude")
         ))
       exclude_reason <-
-        if (identical(attr(tmp.result, "exclude"), "DO NOT EXCLUDE")) {
+        if (identical(attr(tmp_result, "exclude"), "DO NOT EXCLUDE")) {
           NA_character_
         } else if (length(exclude_reason) > 0) {
           paste(exclude_reason, collapse="; ")
@@ -407,19 +407,24 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         }
       ## If the function returns a data frame, save all the returned
       ## values, otherwise, save the value returned.
-      if (is.data.frame(tmp.result)) {
-        ret <- rbind(ret,
-                     data.frame(PPTESTCD=names(tmp.result),
-                                PPORRES=unlist(tmp.result, use.names=FALSE),
-                                exclude=exclude_reason,
-                                stringsAsFactors=FALSE))
+      if (is.data.frame(tmp_result)) {
+        single_result <-
+          data.frame(
+            PPTESTCD=names(tmp_result),
+            PPORRES=unlist(tmp_result, use.names=FALSE),
+            exclude=exclude_reason,
+            stringsAsFactors=FALSE
+          )
       } else {
-        ret <- rbind(ret,
-                     data.frame(PPTESTCD=n,
-                                PPORRES=tmp.result,
-                                exclude=exclude_reason,
-                                stringsAsFactors=FALSE))
+        single_result <-
+          data.frame(
+            PPTESTCD=n,
+            PPORRES=tmp_result,
+            exclude=exclude_reason,
+            stringsAsFactors=FALSE
+          )
       }
+      ret <- rbind(ret, single_result)
     }
   ret
 }
