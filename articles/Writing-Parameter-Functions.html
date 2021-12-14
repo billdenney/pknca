@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -97,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/billdenney/pknca/">
+  <a href="https://github.com/billdenney/pknca/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -116,27 +112,27 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Writing PKNCA Parameter Functions</h1>
-                        <h4 class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill Denney</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/master/vignettes/Writing-Parameter-Functions.Rmd"><code>vignettes/Writing-Parameter-Functions.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/Writing-Parameter-Functions.Rmd" class="external-link"><code>vignettes/Writing-Parameter-Functions.Rmd</code></a></small>
       <div class="hidden name"><code>Writing-Parameter-Functions.Rmd</code></div>
 
     </div>
 
     
     
-<div id="writing-pknca-parameter-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#writing-pknca-parameter-functions" class="anchor"></a>Writing PKNCA Parameter Functions</h1>
+<div class="section level1">
+<h1 id="writing-pknca-parameter-functions">Writing PKNCA Parameter Functions<a class="anchor" aria-label="anchor" href="#writing-pknca-parameter-functions"></a>
+</h1>
 <p>The PKNCA package is designed to be comprehensive in its coverage of the needs of an noncompartmental analysis (NCA) specialist. While it has many NCA parameters specified, it may not have all parameters defined, and its design is modular to accept new parameter definitions. From its inception, PKNCA is built in modules to allow addition of new components (or removal of unnecessary ones). Defining new NCA parameters is straight-forward, and this guide will describe how it is done. The three parts to writing a new NCA parameter in PKNCA are described below.</p>
 </div>
-<div id="writing-the-parameter-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#writing-the-parameter-function" class="anchor"></a>Writing the Parameter Function</h1>
-<div id="requirements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#requirements" class="anchor"></a>Requirements</h2>
+<div class="section level1">
+<h1 id="writing-the-parameter-function">Writing the Parameter Function<a class="anchor" aria-label="anchor" href="#writing-the-parameter-function"></a>
+</h1>
+<div class="section level2">
+<h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
+</h2>
 <p>The starting point to writing a new NCA parameter is writing the function that calculates the parameter value. The function can be passed any of the following arguments. The arguments must be named as described below:</p>
 <ul>
 <li>
@@ -160,9 +156,9 @@
 <p>The function should return either a scalar which is the value for the parameter (usually the case) or a data.frame with parameters named for each parameter calculated. For an example of returning a data.frame, see the <code>half.life</code> function.</p>
 <p>The return value may have an attribute of <code>exclude</code> (set by <code>attr(return_value, "exclude") &lt;- "reason"</code>). If the <code>exclude</code> attribute is set to a character string, then that string will be included in the <code>exclude</code> column for results. If any of the input parameters have an exclude attribute set, then those are also added to the <code>exclude</code> column. The exception to the setting of the <code>exclude</code> column is if the <code>exclude</code> attribute is <code>"DO NOT EXCLUDE"</code>, then the <code>exclude</code> column is set to <code>NA_character_</code>.</p>
 </div>
-<div id="best-practices" class="section level2">
-<h2 class="hasAnchor">
-<a href="#best-practices" class="anchor"></a>Best Practices</h2>
+<div class="section level2">
+<h2 id="best-practices">Best Practices<a class="anchor" aria-label="anchor" href="#best-practices"></a>
+</h2>
 <ul>
 <li>Use the function <code>check.conc.time</code> if the function takes either <code>conc</code> or <code>time</code> as an input.</li>
 <li>Make sure that you check for missing values (<code>NA</code>) in your inputs.</li>
@@ -171,9 +167,9 @@
 </ul>
 </div>
 </div>
-<div id="tell-pknca-about-the-parameter" class="section level1">
-<h1 class="hasAnchor">
-<a href="#tell-pknca-about-the-parameter" class="anchor"></a>Tell PKNCA about the Parameter</h1>
+<div class="section level1">
+<h1 id="tell-pknca-about-the-parameter">Tell PKNCA about the Parameter<a class="anchor" aria-label="anchor" href="#tell-pknca-about-the-parameter"></a>
+</h1>
 <p>Just writing a function doesn’t connect it to the rest of PKNCA. You have to tell PKNCA that the function exists and a few more details about it. To do this, you need to use the <code>add.interval.col</code> function. The function takes up to seven arguments:</p>
 <ul>
 <li>
@@ -190,9 +186,9 @@
 <code>desc</code> is a text description of the parameter.</li>
 </ul>
 </div>
-<div id="tell-pknca-how-to-summarize-the-parameter" class="section level1">
-<h1 class="hasAnchor">
-<a href="#tell-pknca-how-to-summarize-the-parameter" class="anchor"></a>Tell PKNCA How to Summarize the Parameter</h1>
+<div class="section level1">
+<h1 id="tell-pknca-how-to-summarize-the-parameter">Tell PKNCA How to Summarize the Parameter<a class="anchor" aria-label="anchor" href="#tell-pknca-how-to-summarize-the-parameter"></a>
+</h1>
 <p>For any parameter, PKNCA needs to know how to summarize it for the <code>summary</code> function of the <code>PKNCAresults</code> class. To tell PKNCA how to summarize a parameter, use the <code>PKNCA.set.summary</code> function. It takes at least these four arguments:</p>
 <ul>
 <li>
@@ -205,33 +201,33 @@
 <code>spread</code> is the function to calculate the spread (or variability). The function will be called as <code>spread(x)</code> and must return a scalar or a two-long vector.</li>
 </ul>
 </div>
-<div id="putting-it-together" class="section level1">
-<h1 class="hasAnchor">
-<a href="#putting-it-together" class="anchor"></a>Putting It Together</h1>
+<div class="section level1">
+<h1 id="putting-it-together">Putting It Together<a class="anchor" aria-label="anchor" href="#putting-it-together"></a>
+</h1>
 <p>One of the most common examples is the function to calculate C<sub>max</sub>:</p>
-<pre><code>#' Determine maximum observed PK concentration
-#'
-#' @param conc Concentration measured
-#' @param check Run \code{\link{check.conc.time}}?
-#' @return a number for the maximum concentration or NA if all
-#' concentrations are missing
-#' @export
-pk.calc.cmax &lt;- function(conc, check=TRUE) {
-  if (check)
-    check.conc.time(conc=conc)
-  if (length(conc) == 0 | all(is.na(conc))) {
-    NA
-  } else {
-    max(conc, na.rm=TRUE)
-  }
-}
-## Add the column to the interval specification
-add.interval.col("cmax",
-                 FUN="pk.calc.cmax",
-                 values=c(FALSE, TRUE),
-                 desc="Maximum observed concentration",
-                 depends=c())
-PKNCA.set.summary("cmax", "geometric mean and geometric coefficient of variation", business.geomean, business.geocv)</code></pre>
+<pre><code><span class="co">#' Determine maximum observed PK concentration</span>
+<span class="co">#'</span>
+<span class="co">#' @param conc Concentration measured</span>
+<span class="co">#' @param check Run \code{\link{check.conc.time}}?</span>
+<span class="co">#' @return a number for the maximum concentration or NA if all</span>
+<span class="co">#' concentrations are missing</span>
+<span class="co">#' @export</span>
+<span class="va">pk.calc.cmax</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">conc</span>, <span class="va">check</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="va">check</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/check.conc.time.html">check.conc.time</a></span><span class="op">(</span>conc<span class="op">=</span><span class="va">conc</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="cn">NA</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">conc</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span>
+<span class="co">## Add the column to the interval specification</span>
+<span class="fu"><a href="../reference/add.interval.col.html">add.interval.col</a></span><span class="op">(</span><span class="st">"cmax"</span>,
+                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,
+                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,
+                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span>,
+                 depends<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span><span class="st">"cmax"</span>, <span class="st">"geometric mean and geometric coefficient of variation"</span>, <span class="va">business.geomean</span>, <span class="va">business.geocv</span><span class="op">)</span></code></pre>
 </div>
   </div>
 
@@ -246,11 +242,13 @@ PKNCA.set.summary("cmax", "geometric mean and geometric coefficient of variation
 
 
       <footer><div class="copyright">
-  <p>Developed by Bill Denney, Clare Buckeridge.</p>
+  <p></p>
+<p>Developed by Bill Denney, Clare Buckeridge.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -258,6 +256,8 @@ PKNCA.set.summary("cmax", "geometric mean and geometric coefficient of variation
 
   
 
+
+  
 
   </body>
 </html>

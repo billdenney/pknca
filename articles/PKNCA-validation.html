@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -97,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/billdenney/pknca/">
+  <a href="https://github.com/billdenney/pknca/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -116,19 +112,19 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>PKNCA Validation</h1>
-                        <h4 class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill Denney</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/master/vignettes/PKNCA-validation.Rmd"><code>vignettes/PKNCA-validation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/PKNCA-validation.Rmd" class="external-link"><code>vignettes/PKNCA-validation.Rmd</code></a></small>
       <div class="hidden name"><code>PKNCA-validation.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level1">
+<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h1>
 <p>To run the tests, the package must be installed with its tests:</p>
 <ul>
 <li>To install from CRAN:
@@ -138,7 +134,7 @@
 </li>
 <li>To install from GitHub:
 <ul>
-<li><code><a href="https://devtools.r-lib.org/">library(devtools)</a></code></li>
+<li><code><a href="https://devtools.r-lib.org/" class="external-link">library(devtools)</a></code></li>
 <li><code>install_github("billdenney/pknca", INSTALL_opts="--install-tests")</code></li>
 </ul>
 </li>
@@ -146,48 +142,49 @@
 <p>Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.</p>
 <p>Re-running this vignette in your local environment will confirm that local results match those in the original package development. Test success is confirmed by the existence of no failed tests; warnings are expected during testing (and not shown in this vignette for that reason); and some tests may be skipped, but those are expected as well.</p>
 </div>
-<div id="summary-of-testing" class="section level1">
-<h1 class="hasAnchor">
-<a href="#summary-of-testing" class="anchor"></a>Summary of Testing</h1>
+<div class="section level1">
+<h1 id="summary-of-testing">Summary of Testing<a class="anchor" aria-label="anchor" href="#summary-of-testing"></a>
+</h1>
 <p>The following sentence is dynamically generated to summarize the testing results: Tests were not run because tests are not installed.</p>
 </div>
-<div id="session-information" class="section level1">
-<h1 class="hasAnchor">
-<a href="#session-information" class="anchor"></a>Session Information</h1>
+<div class="section level1">
+<h1 id="session-information">Session Information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "2021-11-19"</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] "2021-12-14"</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.2 (2021-11-01)
-## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Big Sur 10.16
-## 
-## Matrix products: default
-## BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
-## 
-## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-## 
-## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
-## 
-## other attached packages:
-## [1] dplyr_1.0.7      testthat_3.1.0   knitr_1.36       PKNCA_0.9.5.9000
-## 
-## loaded via a namespace (and not attached):
-##  [1] compiler_4.1.2    pillar_1.6.4      tools_4.1.2       digest_0.6.28    
-##  [5] evaluate_0.14     memoise_2.0.0     lifecycle_1.0.1   tibble_3.1.6     
-##  [9] nlme_3.1-153      lattice_0.20-45   pkgconfig_2.0.3   rlang_0.4.12     
-## [13] DBI_1.1.1         yaml_2.2.1        parallel_4.1.2    pkgdown_1.6.1    
-## [17] xfun_0.28         fastmap_1.1.0     stringr_1.4.0     generics_0.1.1   
-## [21] desc_1.4.0        fs_1.5.0          vctrs_0.3.8       systemfonts_1.0.2
-## [25] rprojroot_2.0.2   grid_4.1.2        tidyselect_1.1.1  glue_1.5.0       
-## [29] R6_2.5.1          textshaping_0.3.6 fansi_0.5.0       rmarkdown_2.11   
-## [33] purrr_0.3.4       tidyr_1.1.4       magrittr_2.0.1    htmltools_0.5.2  
-## [37] ellipsis_0.3.2    assertthat_0.2.1  ragg_1.1.3        utf8_1.2.2       
-## [41] stringi_1.7.5     cachem_1.0.6      crayon_1.4.2</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## R version 4.1.2 (2021-11-01)</span>
+<span class="co">## Platform: x86_64-apple-darwin17.0 (64-bit)</span>
+<span class="co">## Running under: macOS Big Sur 10.16</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dylib</span>
+<span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">## [1] dplyr_1.0.7      testthat_3.1.1   knitr_1.36       PKNCA_0.9.5.9000</span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] bslib_0.3.1       compiler_4.1.2    pillar_1.6.4      jquerylib_0.1.4  </span>
+<span class="co">##  [5] tools_4.1.2       digest_0.6.29     lattice_0.20-45   nlme_3.1-153     </span>
+<span class="co">##  [9] jsonlite_1.7.2    evaluate_0.14     memoise_2.0.1     lifecycle_1.0.1  </span>
+<span class="co">## [13] tibble_3.1.6      pkgconfig_2.0.3   rlang_0.4.12      DBI_1.1.1        </span>
+<span class="co">## [17] parallel_4.1.2    yaml_2.2.1        pkgdown_2.0.1     xfun_0.28        </span>
+<span class="co">## [21] fastmap_1.1.0     stringr_1.4.0     desc_1.4.0        generics_0.1.1   </span>
+<span class="co">## [25] fs_1.5.2          sass_0.4.0        vctrs_0.3.8       systemfonts_1.0.2</span>
+<span class="co">## [29] grid_4.1.2        rprojroot_2.0.2   tidyselect_1.1.1  glue_1.5.1       </span>
+<span class="co">## [33] R6_2.5.1          textshaping_0.3.6 fansi_0.5.0       rmarkdown_2.11   </span>
+<span class="co">## [37] tidyr_1.1.4       purrr_0.3.4       magrittr_2.0.1    htmltools_0.5.2  </span>
+<span class="co">## [41] ellipsis_0.3.2    assertthat_0.2.1  ragg_1.1.3        utf8_1.2.2       </span>
+<span class="co">## [45] stringi_1.7.6     cachem_1.0.6      crayon_1.4.2</span></code></pre>
 </div>
   </div>
 
@@ -202,11 +199,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Bill Denney, Clare Buckeridge.</p>
+  <p></p>
+<p>Developed by Bill Denney, Clare Buckeridge.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -214,6 +213,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -98,7 +94,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/billdenney/pknca/">
+  <a href="https://github.com/billdenney/pknca/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -117,31 +113,31 @@
   <div class="contents col-md-9">
 
 
-<div id="the-pknca-r-package" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#the-pknca-r-package" class="anchor"></a>The PKNCA R Package</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="the-pknca-r-package">The PKNCA R Package<a class="anchor" aria-label="anchor" href="#the-pknca-r-package"></a>
+</h1></div>
 <p>The PKNCA R package is designed to perform all noncompartmental analysis (NCA) calculations for pharmacokinetic (PK) data. The package is broadly separated into two parts (calculation and summary) with some additional housekeeping functions.</p>
 <p>The primary and secondary goals of the PKNCA package are to 1) only give correct answers to the specific questions being asked and 2) automate as much as possible to simplify the task of the analyst. When automation would leave ambiguity or make a choice that the analyst may have an alternate preference for, it is either not used or is possible to override.</p>
 <p>Note that backward compatibility will not be guaranteed until version 1.0. Argument and function changes will continue until then. These will be especially noticeable around the inclusion of IV NCA parameters and additional specifications of the dosing including dose amount and route.</p>
 </div>
-<div id="citation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#citation" class="anchor"></a>Citation</h1>
+<div class="section level1">
+<h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h1>
 <p>Citation information for the PKNCA package is available with a call to <code>citation(package="PKNCA")</code>. The preferred citation until publication of version 1.0 is below:</p>
-<p>Denney W, Duvvuri S and Buckeridge C (2015). “Simple, Automatic Noncompartmental Analysis: The PKNCA R Package.” <em>Journal of Pharmacokinetics and Pharmacodynamics</em>, <em>42</em>(1), pp. 11-107,S65. ISSN 1573-8744, doi: 10.1007/s10928-015-9432-2, &lt;URL: <a href="https://github.com/billdenney/pknca" class="uri">https://github.com/billdenney/pknca</a>&gt;.</p>
+<p>Denney W, Duvvuri S and Buckeridge C (2015). “Simple, Automatic Noncompartmental Analysis: The PKNCA R Package.” <em>Journal of Pharmacokinetics and Pharmacodynamics</em>, <em>42</em>(1), pp. 11-107,S65. ISSN 1573-8744, doi: 10.1007/s10928-015-9432-2, &lt;URL: <a href="https://github.com/billdenney/pknca" class="external-link uri">https://github.com/billdenney/pknca</a>&gt;.</p>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
-<div id="from-cran" class="section level2">
-<h2 class="hasAnchor">
-<a href="#from-cran" class="anchor"></a>From CRAN</h2>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<div class="section level2">
+<h2 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
+</h2>
 <p>The current stable version of PKNCA is available on CRAN. You can install it and its dependencies using the following command:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"PKNCA"</span>)</span></code></pre></div>
 </div>
-<div id="from-github" class="section level2">
-<h2 class="hasAnchor">
-<a href="#from-github" class="anchor"></a>From GitHub</h2>
+<div class="section level2">
+<h2 id="from-github">From GitHub<a class="anchor" aria-label="anchor" href="#from-github"></a>
+</h2>
 <p>To install the development version from GitHub, install the devtools package and then type the following commands:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">install.packages</span>(<span class="st">"Rcpp"</span>)</span>
@@ -149,9 +145,9 @@
 <span id="cb2-4"><a href="#cb2-4"></a><span class="kw">install_github</span>(<span class="st">"billdenney/pknca"</span>)</span></code></pre></div>
 </div>
 </div>
-<div id="calculating-parameters" class="section level1">
-<h1 class="hasAnchor">
-<a href="#calculating-parameters" class="anchor"></a>Calculating parameters</h1>
+<div class="section level1">
+<h1 id="calculating-parameters">Calculating parameters<a class="anchor" aria-label="anchor" href="#calculating-parameters"></a>
+</h1>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load the package</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="kw">library</span>(PKNCA)</span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co"># Set the business rule options with the PKNCA.options() function</span></span>
@@ -174,74 +170,78 @@
 <span id="cb3-20"><a href="#cb3-20"></a><span class="kw">summary</span>(myresults)</span></code></pre></div>
 <p>More help is available in the function help files, and be sure to look at the PKNCA.options function for many choices to make PKNCA conform to your company’s business rules for calculations and summarization.</p>
 </div>
-<div id="feature-requests" class="section level1">
-<h1 class="hasAnchor">
-<a href="#feature-requests" class="anchor"></a>Feature requests</h1>
-<p>Please use the github issues page (<a href="https://github.com/billdenney/pknca/issues" class="uri">https://github.com/billdenney/pknca/issues</a>) to make feature requests and bug reports.</p>
+<div class="section level1">
+<h1 id="feature-requests">Feature requests<a class="anchor" aria-label="anchor" href="#feature-requests"></a>
+</h1>
+<p>Please use the github issues page (<a href="https://github.com/billdenney/pknca/issues" class="external-link uri">https://github.com/billdenney/pknca/issues</a>) to make feature requests and bug reports.</p>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=PKNCA">https://​cloud.r-project.org/​package=PKNCA</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/billdenney/pknca/">https://​github.com/​billdenney/​pknca/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/billdenney/pknca/issues">https://​github.com/​billdenney/​pknca/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=PKNCA" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/billdenney/pknca/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/billdenney/pknca/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/AGPL-3">AGPL-3</a></small></li>
+<li><small><a href="https://www.r-project.org/Licenses/AGPL-3" class="external-link">AGPL-3</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing PKNCA</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Bill Denney <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5759-428X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Clare Buckeridge <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html#citation">Citing PKNCA</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=PKNCA"><img src="http://www.r-pkg.org/badges/version/PKNCA" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://github.com/billdenney/pknca/actions"><img src="https://github.com/billdenney/pknca/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/github/billdenney/pknca?branch=master"><img src="https://codecov.io/github/billdenney/pknca/coverage.svg?branch=master" alt="Code_Coverage_Badge"></a></li>
-<li><a href="https://bestpractices.coreinfrastructure.org/projects/2054"><img src="https://bestpractices.coreinfrastructure.org/projects/2054/badge" alt="CII Best Practices"></a></li>
+<li>Bill Denney <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5759-428X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Clare Buckeridge <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=PKNCA" class="external-link"><img src="http://www.r-pkg.org/badges/version/PKNCA" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://github.com/billdenney/pknca/actions" class="external-link"><img src="https://github.com/billdenney/pknca/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/github/billdenney/pknca?branch=master" class="external-link"><img src="https://codecov.io/github/billdenney/pknca/coverage.svg?branch=master" alt="Code_Coverage_Badge"></a></li>
+<li><a href="https://bestpractices.coreinfrastructure.org/projects/2054" class="external-link"><img src="https://bestpractices.coreinfrastructure.org/projects/2054/badge" alt="CII Best Practices"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Bill Denney, Clare Buckeridge.</p>
+  <p></p>
+<p>Developed by Bill Denney, Clare Buckeridge.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -249,6 +249,8 @@
 
   
 
+
+  
 
   </body>
 </html>

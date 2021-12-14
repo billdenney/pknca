@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -97,7 +93,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/billdenney/pknca/">
+  <a href="https://github.com/billdenney/pknca/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -116,24 +112,24 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Methods Used for Dose-Aware Concentration Interpolation/Extrapolation</h1>
-                        <h4 class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill Denney</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/master/vignettes/Methods-for-Dose-Aware-Interpolation-and-Extrapolation.Rmd"><code>vignettes/Methods-for-Dose-Aware-Interpolation-and-Extrapolation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/Methods-for-Dose-Aware-Interpolation-and-Extrapolation.Rmd" class="external-link"><code>vignettes/Methods-for-Dose-Aware-Interpolation-and-Extrapolation.Rmd</code></a></small>
       <div class="hidden name"><code>Methods-for-Dose-Aware-Interpolation-and-Extrapolation.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div class="section level1">
+<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h1>
 <p>Interpolation and extrapolation with awareness of doses occurring before, at the same time of, or after the requested interpolation time point must account for many interactions. To ensure clarity in the interpolation/extrapolation methods and the decisions made by the algorithm, each potential choice is listed below with its accompanying calculation method. The code used to generate the table is the same as the code within the function.</p>
 </div>
-<div id="methods" class="section level1">
-<h1 class="hasAnchor">
-<a href="#methods" class="anchor"></a>Methods</h1>
+<div class="section level1">
+<h1 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
+</h1>
 <p>The method list below is described and sorted in order of how many scenarios the method is applied to in the list.</p>
 <p>For each of the summary tables below, the column headers are as follows:</p>
 <ul>
@@ -144,9 +140,9 @@
 <li>
 <strong>Event After</strong>: The equivalent to “Event Before” but for the next event occurring after the requested output time.</li>
 </ul>
-<div id="observed-concentration" class="section level2">
-<h2 class="hasAnchor">
-<a href="#observed-concentration" class="anchor"></a>Observed concentration</h2>
+<div class="section level2">
+<h2 id="observed-concentration">Observed concentration<a class="anchor" aria-label="anchor" href="#observed-concentration"></a>
+</h2>
 <p>Copy the input concentration at the given time to the output.</p>
 <table class="table">
 <thead><tr class="header">
@@ -598,9 +594,9 @@
 </tbody>
 </table>
 </div>
-<div id="impossible-combinations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#impossible-combinations" class="anchor"></a>Impossible combinations</h2>
+<div class="section level2">
+<h2 id="impossible-combinations">Impossible combinations<a class="anchor" aria-label="anchor" href="#impossible-combinations"></a>
+</h2>
 <p>The event combination cannot exist.</p>
 <table class="table">
 <thead><tr class="header">
@@ -872,9 +868,9 @@
 </tbody>
 </table>
 </div>
-<div id="doses-with-no-concentrations-between" class="section level2">
-<h2 class="hasAnchor">
-<a href="#doses-with-no-concentrations-between" class="anchor"></a>Doses with no concentrations between</h2>
+<div class="section level2">
+<h2 id="doses-with-no-concentrations-between">Doses with no concentrations between<a class="anchor" aria-label="anchor" href="#doses-with-no-concentrations-between"></a>
+</h2>
 <p>Two doses with no concentrations between them, return NA.</p>
 <table class="table">
 <thead><tr class="header">
@@ -966,9 +962,9 @@
 </tbody>
 </table>
 </div>
-<div id="extrapolation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#extrapolation" class="anchor"></a>Extrapolation</h2>
+<div class="section level2">
+<h2 id="extrapolation">Extrapolation<a class="anchor" aria-label="anchor" href="#extrapolation"></a>
+</h2>
 <p>Extrapolate from a concentration to a dose</p>
 <table class="table">
 <thead><tr class="header">
@@ -1060,9 +1056,9 @@
 </tbody>
 </table>
 </div>
-<div id="immediately-after-an-iv-bolus-without-a-concentration-next" class="section level2">
-<h2 class="hasAnchor">
-<a href="#immediately-after-an-iv-bolus-without-a-concentration-next" class="anchor"></a>Immediately after an IV bolus without a concentration next</h2>
+<div class="section level2">
+<h2 id="immediately-after-an-iv-bolus-without-a-concentration-next">Immediately after an IV bolus without a concentration next<a class="anchor" aria-label="anchor" href="#immediately-after-an-iv-bolus-without-a-concentration-next"></a>
+</h2>
 <p>Cannot calculate C0 without a concentration after an IV bolus; return NA.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1144,9 +1140,9 @@
 </tbody>
 </table>
 </div>
-<div id="before-all-events" class="section level2">
-<h2 class="hasAnchor">
-<a href="#before-all-events" class="anchor"></a>Before all events</h2>
+<div class="section level2">
+<h2 id="before-all-events">Before all events<a class="anchor" aria-label="anchor" href="#before-all-events"></a>
+</h2>
 <p>Interpolation before any events is NA or zero (0) depending on the value of conc.origin. conc.origin defaults to zero which is the implicit assumption that a complete washout occurred and there is no endogenous source of the analyte.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1208,9 +1204,9 @@
 </tbody>
 </table>
 </div>
-<div id="immediately-after-an-iv-bolus-with-a-concentration-next" class="section level2">
-<h2 class="hasAnchor">
-<a href="#immediately-after-an-iv-bolus-with-a-concentration-next" class="anchor"></a>Immediately after an IV bolus with a concentration next</h2>
+<div class="section level2">
+<h2 id="immediately-after-an-iv-bolus-with-a-concentration-next">Immediately after an IV bolus with a concentration next<a class="anchor" aria-label="anchor" href="#immediately-after-an-iv-bolus-with-a-concentration-next"></a>
+</h2>
 <p>Calculate C0 for the time immediately after an IV bolus. First, attempt using log slope back-extrapolation. If that fails, use the first concentration after the dose as C0.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1262,9 +1258,9 @@
 </tbody>
 </table>
 </div>
-<div id="interpolation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#interpolation" class="anchor"></a>Interpolation</h2>
+<div class="section level2">
+<h2 id="interpolation">Interpolation<a class="anchor" aria-label="anchor" href="#interpolation"></a>
+</h2>
 <p>With concentrations before and after and not an IV bolus before, interpolate between observed concentrations.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1301,9 +1297,9 @@
 </tbody>
 </table>
 </div>
-<div id="after-an-iv-bolus-with-a-concentration-next" class="section level2">
-<h2 class="hasAnchor">
-<a href="#after-an-iv-bolus-with-a-concentration-next" class="anchor"></a>After an IV bolus with a concentration next</h2>
+<div class="section level2">
+<h2 id="after-an-iv-bolus-with-a-concentration-next">After an IV bolus with a concentration next<a class="anchor" aria-label="anchor" href="#after-an-iv-bolus-with-a-concentration-next"></a>
+</h2>
 <p>First, calculate C0 using log slope back-extrapolation (falling back to the first post-dose concentration if that fails). Then, interpolate between C0 and the first post-dose concentration.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1325,9 +1321,9 @@
 </tbody>
 </table>
 </div>
-<div id="after-an-iv-bolus-without-a-concentration-next" class="section level2">
-<h2 class="hasAnchor">
-<a href="#after-an-iv-bolus-without-a-concentration-next" class="anchor"></a>After an IV bolus without a concentration next</h2>
+<div class="section level2">
+<h2 id="after-an-iv-bolus-without-a-concentration-next">After an IV bolus without a concentration next<a class="anchor" aria-label="anchor" href="#after-an-iv-bolus-without-a-concentration-next"></a>
+</h2>
 <p>Between an IV bolus and anything other than a concentration, interpolation cannot occur. Return NA</p>
 <table class="table">
 <thead><tr class="header">
@@ -1349,9 +1345,9 @@
 </tbody>
 </table>
 </div>
-<div id="dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after" class="section level2">
-<h2 class="hasAnchor">
-<a href="#dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after" class="anchor"></a>Dose as the last event in the timeline and requesting a concentration after</h2>
+<div class="section level2">
+<h2 id="dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after">Dose as the last event in the timeline and requesting a concentration after<a class="anchor" aria-label="anchor" href="#dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after"></a>
+</h2>
 <p>Cannot estimate the concentration after a dose without concentrations after the dose, return NA.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1373,9 +1369,9 @@
 </tbody>
 </table>
 </div>
-<div id="dose-before-concentration-after-without-a-dose" class="section level2">
-<h2 class="hasAnchor">
-<a href="#dose-before-concentration-after-without-a-dose" class="anchor"></a>Dose before, concentration after without a dose</h2>
+<div class="section level2">
+<h2 id="dose-before-concentration-after-without-a-dose">Dose before, concentration after without a dose<a class="anchor" aria-label="anchor" href="#dose-before-concentration-after-without-a-dose"></a>
+</h2>
 <p>If the concentration at the dose is estimable, interpolate. Otherwise, NA.</p>
 <table class="table">
 <thead><tr class="header">
@@ -1391,9 +1387,9 @@
 </table>
 </div>
 </div>
-<div id="appendix-complete-methods-table" class="section level1">
-<h1 class="hasAnchor">
-<a href="#appendix-complete-methods-table" class="anchor"></a>Appendix: Complete Methods Table</h1>
+<div class="section level1">
+<h1 id="appendix-complete-methods-table">Appendix: Complete Methods Table<a class="anchor" aria-label="anchor" href="#appendix-complete-methods-table"></a>
+</h1>
 <table class="table">
 <colgroup>
 <col width="16%">
@@ -2720,11 +2716,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Bill Denney, Clare Buckeridge.</p>
+  <p></p>
+<p>Developed by Bill Denney, Clare Buckeridge.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -2732,6 +2730,8 @@
 
   
 
+
+  
 
   </body>
 </html>
