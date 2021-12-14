@@ -174,11 +174,11 @@ sort.interval.cols <- function() {
         missing_deps <- deps[!(deps %in% names(myorder))]
         if (length(missing_deps) > 0) {
           stop(
-            "Invalid dependencies for interval column (please report this as a bug): ", # nocov
-            names(myorder)[nextorder], # nocov
-            " The following dependencies are missing: ", # nocov
-            paste(missing_deps, collapse=", ") # nocov
-          ) # nocov
+            "Invalid dependencies for interval column (please report this as a bug): ",
+            names(myorder)[nextorder],
+            " The following dependencies are missing: ",
+            paste(missing_deps, collapse=", ")
+          )
         }
         if (!any(is.na(myorder[deps]))) {
           myorder[nextorder] <- nextnum

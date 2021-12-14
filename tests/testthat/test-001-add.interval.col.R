@@ -121,3 +121,20 @@ test_that("add.interval.col", {
 
 # Reset the original state
 assign("interval.cols", original_state, envir=PKNCA:::.PKNCAEnv)
+
+test_that("", {
+  add.interval.col(
+    name="fake_parameter", FUN="mean",
+    formalsmap=list(x="values"),
+    desc="test addition",
+    depends="does_not_exist"
+  )
+  expect_error(
+    sort.interval.cols(),
+    regexp="Invalid dependencies for interval column (please report this as a bug): fake_parameter The following dependencies are missing: does_not_exist",
+    fixed=TRUE
+  )
+})
+
+# Reset the original state
+assign("interval.cols", original_state, envir=PKNCA:::.PKNCAEnv)
