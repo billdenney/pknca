@@ -100,7 +100,7 @@
   <span class="va">name</span>,
   <span class="va">FUN</span>,
   values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,
-  depends <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,
+  depends <span class="op">=</span> <span class="cn">NULL</span>,
   desc <span class="op">=</span> <span class="st">""</span>,
   formalsmap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
   datatype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"individual"</span>, <span class="st">"population"</span><span class="op">)</span>
@@ -222,14 +222,13 @@ formal parameter names and the values should be one of the following:</p>
 <span class="r-in"><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax"</span>,</span>
 <span class="r-in">                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,</span>
 <span class="r-in">                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span>,</span>
-<span class="r-in">                 depends<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax.dn"</span>,</span>
 <span class="r-in">                 FUN<span class="op">=</span><span class="st">"pk.calc.dn"</span>,</span>
 <span class="r-in">                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration, dose normalized"</span>,</span>
 <span class="r-in">                 formalsmap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parameter<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span>,</span>
-<span class="r-in">                 depends<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cmax"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in">                 depends<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
