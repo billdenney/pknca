@@ -144,7 +144,7 @@ test_that("exclude.default", {
                info="A function returning a vector works")
 
   obj7 <- obj1
-  obj7$data <- obj7$data[nrow(obj7$data):1,]
+  obj7$data <- obj7$data[rev(seq_len(nrow(obj7$data))),]
   exclude_1 <- function(x, ...) {
     ifelse(x$ID == 1,
            "Drop 1",

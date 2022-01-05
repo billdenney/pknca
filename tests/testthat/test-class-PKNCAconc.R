@@ -257,7 +257,7 @@ test_that("PKNCAconc with nominal time added", {
 
 test_that("PKNCAconc with volume added", {
   tmp.conc <- generate.conc(nsub=2, ntreat=2, time.points=0:24)
-  tmp.conc$vol <- 1:nrow(tmp.conc)
+  tmp.conc$vol <- seq_len(nrow(tmp.conc))
   myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, volume="vol")
   expect_equal(myconc,
                structure(
@@ -285,12 +285,12 @@ test_that("PKNCAconc with volume added", {
                       columns=list(volume="volume",
                                    duration="duration")),
                  class=c("PKNCAconc", "list")))
-  myconc_manual_vol_vector <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, volume=1:nrow(tmp.conc))
+  myconc_manual_vol_vector <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, volume=seq_len(nrow(tmp.conc)))
   expect_equal(myconc_manual_vol_vector,
                structure(
                  list(data=cbind(tmp.conc,
                                  data.frame(exclude=NA_character_,
-                                            volume=1:nrow(tmp.conc),
+                                            volume=seq_len(nrow(tmp.conc)),
                                             duration=0,
                                             stringsAsFactors=FALSE)),
                       formula=conc~time|treatment+ID,

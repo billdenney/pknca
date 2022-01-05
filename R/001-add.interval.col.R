@@ -61,14 +61,13 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' add.interval.col("cmax",
 #'                  FUN="pk.calc.cmax",
 #'                  values=c(FALSE, TRUE),
-#'                  desc="Maximum observed concentration",
-#'                  depends=c())
+#'                  desc="Maximum observed concentration")
 #' add.interval.col("cmax.dn",
 #'                  FUN="pk.calc.dn",
 #'                  values=c(FALSE, TRUE),
 #'                  desc="Maximum observed concentration, dose normalized",
 #'                  formalsmap=list(parameter="cmax"),
-#'                  depends=c("cmax"))
+#'                  depends="cmax")
 #' }
 #' @importFrom utils getAnywhere
 #' @family Interval specifications
@@ -76,7 +75,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 add.interval.col <- function(name,
                              FUN,
                              values=c(FALSE, TRUE),
-                             depends=c(),
+                             depends=NULL,
                              desc="",
                              formalsmap=list(),
                              datatype=c("interval",
@@ -161,7 +160,7 @@ sort.interval.cols <- function() {
   names(myorder) <- names(current)
   nextnum <- 1
   while (any(is.na(myorder))) {
-    for (nextorder in (1:length(myorder))[is.na(myorder)]) {
+    for (nextorder in seq_along(myorder)[is.na(myorder)]) {
       if (length(current[[nextorder]]$depends) == 0) {
         ## If it doesn't depend on anything then it can go next in
         ## order.

@@ -15,7 +15,7 @@
 AIC.list <- function(object, ..., assess.best=TRUE) {
   allAICs <-
     lapply(object, FUN=function(subobject, ...) {
-      ## Return the AIC of the new model relative to the reference model
+      # Return the AIC of the new model relative to the reference model
       if (identical(NA, subobject)) {
         ret <- data.frame(AIC=NA, df=NA, indentation=0)
       } else {
@@ -40,23 +40,23 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
   ret <- data.frame()
   for (i in seq_len(length(allAICs))) {
     tmpAICs <- allAICs[[i]]
-    ## If the best value has already been established, drop it for
-    ## assessment later.
+    # If the best value has already been established, drop it for assessment
+    # later.
     tmpAICs$isBest <- NULL
-    ## Assign the corret rownames to tmpAICs
+    # Assign the correct rownames to tmpAICs
     if (!(retnames[i] %in% ""))
       if (nrow(tmpAICs) > 1 |
-          !identical(rownames(tmpAICs), as.character(1:nrow(tmpAICs)))) {
+          !identical(rownames(tmpAICs), as.character(seq_len(nrow(tmpAICs))))) {
         rownames(tmpAICs) <- paste(retnames[i], rownames(tmpAICs))
       } else {
         rownames(tmpAICs) <- retnames[i]
       }
-    ## Add tmpAICs to the data frame to return
+    # Add tmpAICs to the data frame to return
     ret <- rbind(ret, tmpAICs)
   }
   if (assess.best) {
     ret$isBest <- ""
-    ## The next row prevents warnings about no data when na.rm=TRUE
+    # The next row prevents warnings about no data when na.rm=TRUE
     if (any(!is.na(ret$AIC)))
       ret$isBest[ret$AIC %in% min(ret$AIC, na.rm=TRUE)] <- "Best Model"
   }
@@ -89,12 +89,12 @@ get.first.model <- function(object) {
     while (identical(NA, ret) & idx < length(object)) {
       idx <- idx + 1
       if (identical(NA, object[[idx]])) {
-        ## Do nothing
+        # Do nothing
       } else if (inherits(object[[idx]], "list")) {
         ret <- get.first.model(object[[idx]])
       } else {
-        ## It is neither NA or a list, it's our first usable object;
-        ## return it.
+        # It is neither NA or a list, it's our first usable object;
+        # return it.
         ret <- object[[idx]]
       }
     }

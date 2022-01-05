@@ -315,7 +315,7 @@ test_that("No interval requested (e.g. for placebo)", {
 
 test_that("Volume-related calculations", {
   tmpconc <- generate.conc(2, 1, c(4, 12, 24))
-  tmpconc$conc <- 1:nrow(tmpconc)
+  tmpconc$conc <- seq_len(nrow(tmpconc))
   tmpconc$vol <- 2
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID, volume="vol")
@@ -389,7 +389,7 @@ test_that("Ensure that options are respected during pk.nca call", {
   
   conc.data <- c(0, 1, 2, 1.3, 0.4, 0.35, 0.125)
   time.data <- c(0, 1, 2, 4,   8,   24,   48)
-  concs <- merge(doses[c("ID")], data.frame(Conc=conc.data, Time=time.data))
+  concs <- merge(doses["ID"], data.frame(Conc=conc.data, Time=time.data))
   
   myconc <- PKNCA::PKNCAconc(concs, formula=Conc~Time|ID)
   mydose <- PKNCA::PKNCAdose(doses, formula=Dose~Time|ID)

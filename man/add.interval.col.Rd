@@ -8,7 +8,7 @@ add.interval.col(
   name,
   FUN,
   values = c(FALSE, TRUE),
-  depends = c(),
+  depends = NULL,
   desc = "",
   formalsmap = list(),
   datatype = c("interval", "individual", "population")
@@ -82,14 +82,13 @@ formal parameter names and the values should be one of the following:
 add.interval.col("cmax",
                  FUN="pk.calc.cmax",
                  values=c(FALSE, TRUE),
-                 desc="Maximum observed concentration",
-                 depends=c())
+                 desc="Maximum observed concentration")
 add.interval.col("cmax.dn",
                  FUN="pk.calc.dn",
                  values=c(FALSE, TRUE),
                  desc="Maximum observed concentration, dose normalized",
                  formalsmap=list(parameter="cmax"),
-                 depends=c("cmax"))
+                 depends="cmax")
 }
 }
 \seealso{

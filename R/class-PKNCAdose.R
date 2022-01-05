@@ -270,7 +270,7 @@ getDataName.PKNCAdose <- function(object)
 print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
   cat("Formula for dosing:\n ")
   print(stats::formula(x), showEnv=FALSE, ...)
-  if (!is.null(time_nom_data <- getAttributeColumn(x, attr_name="time.nominal", warn_missing=c()))) {
+  if (!is.null(time_nom_data <- getAttributeColumn(x, attr_name="time.nominal", warn_missing=character()))) {
     cat("Nominal time column is: ", names(time_nom_data), "\n", sep="")
   } else {
     cat("Nominal time column is not specified.\n")

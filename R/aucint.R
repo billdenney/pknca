@@ -230,8 +230,7 @@ add.interval.col("aucint.last",
                  FUN="pk.calc.aucint.last",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
-                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
-                 depends=c())
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL))
 PKNCA.set.summary(
   name="aucint.last",
   description="geometric mean and geometric coefficient of variation",
@@ -243,8 +242,7 @@ add.interval.col("aucint.last.dose",
                  FUN="pk.calc.aucint.last",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with zeros (matching AUClast)",
-                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
-                 depends=c())
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"))
 PKNCA.set.summary(
   name="aucint.last.dose",
   description="geometric mean and geometric coefficient of variation",
@@ -256,8 +254,7 @@ add.interval.col("aucint.all",
                  FUN="pk.calc.aucint.all",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
-                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL),
-                 depends=c())
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose=NULL))
 PKNCA.set.summary(
   name="aucint.all",
   description="geometric mean and geometric coefficient of variation",
@@ -269,8 +266,7 @@ add.interval.col("aucint.all.dose",
                  FUN="pk.calc.aucint.all",
                  values=c(FALSE, TRUE),
                  desc="The area under the concentration time curve in the interval extrapolating from Tlast to infinity with the triangle from Tlast to the next point and zero thereafter (matching AUCall)",
-                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"),
-                 depends=c())
+                 formalsmap=list(conc="conc.group", time="time.group", time.dose="time.dose.group"))
 PKNCA.set.summary(
   name="aucint.all.dose",
   description="geometric mean and geometric coefficient of variation",

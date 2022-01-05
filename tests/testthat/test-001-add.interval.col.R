@@ -83,7 +83,7 @@ test_that("add.interval.col", {
       values=c(FALSE, TRUE),
       desc="test addition",
       formalsmap=list(),
-      depends=c(),
+      depends=NULL,
       datatype="interval"
     ),
     info="interval column assignment works with FUN=NA")
@@ -97,7 +97,7 @@ test_that("add.interval.col", {
       values=c(FALSE, TRUE),
       desc="test addition",
       formalsmap=list(),
-      depends=c(),
+      depends=NULL,
       datatype="interval"
     ),
     info="interval column assignment works with FUN=a character string"
@@ -112,7 +112,7 @@ test_that("add.interval.col", {
       values=c(FALSE, TRUE),
       desc="test addition",
       formalsmap=list(x="values"),
-      depends=c(),
+      depends=NULL,
       datatype="interval"
     ),
     info="interval column assignment works with FUN=NA"

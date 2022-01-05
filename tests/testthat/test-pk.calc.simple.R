@@ -33,7 +33,7 @@ test_that("pk.calc.cmax", {
   expect_equal(pk.calc.cmax(c(1, NA, 3, NA)), 3)
 
   ## Confirm that no data gives NA with a warning
-  expect_warning(v3 <- pk.calc.cmax(c()))
+  expect_warning(v3 <- pk.calc.cmax(numeric()))
   expect_equal(v3, NA)
 })
 
@@ -55,20 +55,24 @@ test_that("pk.calc.cmin", {
   expect_equal(pk.calc.cmin(c(1, NA, 3, NA)), 1)
 
   ## Confirm that no data gives NA with a warning
-  expect_warning(v3 <- pk.calc.cmin(c()))
+  expect_warning(v3 <- pk.calc.cmin(numeric()))
   expect_equal(v3, NA)
 })
 
 test_that("pk.calc.tmax", {
   ## No data give a warning and NA
-  expect_warning(v1 <- pk.calc.tmax(c(), c()))
+  expect_warning(v1 <- pk.calc.tmax(numeric(), numeric()))
   expect_equal(v1, NA)
 
   ## Either concentration or time is missing, give an error
-  expect_error(pk.calc.tmax(conc=c()),
-               regexp="time must be given")
-  expect_error(pk.calc.tmax(time=c()),
-               regexp="conc must be given")
+  expect_error(
+    pk.calc.tmax(conc=numeric()),
+    regexp="time must be given"
+  )
+  expect_error(
+    pk.calc.tmax(time=numeric()),
+    regexp="conc must be given"
+  )
 
   ## It calculates tmax correctly based on the use.first option
   expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), first.tmax=TRUE),
@@ -83,10 +87,14 @@ test_that("pk.calc.tmax", {
 
 test_that("pk.calc.tlast", {
   ## Either concentration or time is missing, give an error
-  expect_error(pk.calc.tlast(conc=c()),
-               regexp="time must be given")
-  expect_error(pk.calc.tlast(time=c()),
-               regexp="conc must be given")
+  expect_error(
+    pk.calc.tlast(conc=numeric()),
+    regexp="time must be given"
+  )
+  expect_error(
+    pk.calc.tlast(time=numeric()),
+    regexp="conc must be given"
+  )
 
   ## It calculates tlast correctly
   expect_equal(pk.calc.tlast(c(1, 2), c(0, 1)),
@@ -133,8 +141,10 @@ test_that("pk.calc.clast.obs", {
 
 test_that("pk.calc.thalf.eff", {
   ## No input gives equivalent no output
-  expect_equal(pk.calc.thalf.eff(c()),
-               numeric())
+  expect_equal(
+    pk.calc.thalf.eff(numeric()),
+    numeric()
+  )
   
   ## NA input gives equivalent NA output
   expect_equal(pk.calc.thalf.eff(NA),
@@ -149,12 +159,16 @@ test_that("pk.calc.thalf.eff", {
 
 test_that("pk.calc.kel", {
   ## No input gives equivalent no output
-  expect_equal(pk.calc.kel(c()),
-               numeric())
+  expect_equal(
+    pk.calc.kel(numeric()),
+    numeric()
+  )
   
   ## NA input gives equivalent NA output
-  expect_equal(pk.calc.kel(NA),
-               as.numeric(NA))
+  expect_equal(
+    pk.calc.kel(NA),
+    as.numeric(NA)
+  )
 
   ## Numbers mixed with NA give appropriate output
   d1 <- c(0, 1, NA, 3)

@@ -358,7 +358,7 @@ interp.extrap.conc.dose <- function(conc, time,
   data_out <-
     data.frame(out=TRUE,
                out_after=out.after,
-               out_order=1:length(time.out),
+               out_order=seq_along(time.out),
                time=time.out)
   data_all <-
     merge(merge(data_conc,
@@ -486,7 +486,7 @@ iecd_before_value <- function(data_all, current_idx, conc.origin=0, ...) {
 # Interpolation ####
 iecd_interp_select <- function(x) {
   x$event_before %in% c("conc_dose_iv_bolus_after", "conc_dose", "conc") &
-    x$event %in% c("output_only") &
+    x$event %in% "output_only" &
     x$event_after %in% c("conc_dose", "conc") &
     !(x$event_before %in% "conc_dose" &
         x$event_after %in% "conc_dose")
@@ -565,8 +565,8 @@ iecd_iv_noconc_select <- function(x) {
 
 # After an IV bolus with a concentration next ####
 iecd_afteriv_conc_select <- function(x) {
-  x$event_before %in% c("dose_iv_bolus_after") &
-    x$event %in% c("output_only") &
+  x$event_before %in% "dose_iv_bolus_after" &
+    x$event %in% "output_only" &
     x$event_after %in% c("conc_dose", "conc")
 }
 iecd_afteriv_conc_value <- function(data_all, current_idx, ...) {
@@ -592,7 +592,7 @@ iecd_afteriv_conc_value <- function(data_all, current_idx, ...) {
 
 # After an IV bolus without a concentration next ####
 iecd_afteriv_noconc_select <- function(x) {
-  x$event_before %in% c("dose_iv_bolus_after") &
+  x$event_before %in% "dose_iv_bolus_after" &
     x$event %in% "output_only" &
     x$event_after %in% c("dose", "none")
 }

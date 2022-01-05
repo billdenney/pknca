@@ -285,7 +285,7 @@ add.interval.col("r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The r^2 value of the half-life calculation",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="r.squared",
   description="arithmetic mean and standard deviation",
@@ -296,7 +296,7 @@ add.interval.col("adj.r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The adjusted r^2 value of the half-life calculation",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="adj.r.squared",
   description="arithmetic mean and standard deviation",
@@ -307,7 +307,7 @@ add.interval.col("lambda.z",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The elimination rate of the terminal half-life",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="lambda.z",
   description="geometric mean and geometric coefficient of variation",
@@ -318,7 +318,7 @@ add.interval.col("lambda.z.time.first",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The first time point used for the calculation of half-life",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="lambda.z.time.first",
   description="median and range",
@@ -329,7 +329,7 @@ add.interval.col("lambda.z.n.points",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The number of points used for the calculation of half-life",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="lambda.z.n.points",
   description="median and range",
@@ -340,7 +340,7 @@ add.interval.col("clast.pred",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The concentration at Tlast as predicted by the half-life",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="clast.pred",
   description="geometric mean and geometric coefficient of variation",
@@ -351,7 +351,7 @@ add.interval.col("span.ratio",
                  FUN=NA,
                  values=c(FALSE, TRUE),
                  desc="The ratio of the half-life to the duration used for half-life calculation",
-                 depends=c("half.life"))
+                 depends="half.life")
 PKNCA.set.summary(
   name="span.ratio",
   description="geometric mean and geometric coefficient of variation",

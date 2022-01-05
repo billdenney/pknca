@@ -177,9 +177,9 @@ test_that("getAttributeColumn", {
   # when warnings aren't requested, they should not be given
   expect_silent(getAttributeColumn(object=obj1, attr_name="bar", warn_missing="column"))
   expect_silent(getAttributeColumn(object=obj3, attr_name="foo", warn_missing="attr"))
-  expect_silent(getAttributeColumn(object=obj3, attr_name="foo", warn_missing=c()))
-  expect_silent(getAttributeColumn(object=obj3, attr_name="bar", warn_missing=c()))
-  expect_error(getAttributeColumn(object=obj3, attr_name="foo", warn_missing=c("foo")),
+  expect_silent(getAttributeColumn(object=obj3, attr_name="foo", warn_missing=character()))
+  expect_silent(getAttributeColumn(object=obj3, attr_name="bar", warn_missing=character()))
+  expect_error(getAttributeColumn(object=obj3, attr_name="foo", warn_missing="foo"),
                info="warn_missing must have a valid value")
 })
 

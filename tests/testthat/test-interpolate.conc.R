@@ -589,7 +589,7 @@ test_that("interp.extrap.conc", {
     interp.extrap.conc(
       conc=c(0, 1, 0.5, 1, 0),
       time=0:4,
-      time.out=c(),
+      time.out=numeric(),
       interp.method="lin up/log down"
     ),
     regexp="time.out must be a vector with at least one element"

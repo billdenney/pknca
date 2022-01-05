@@ -22,7 +22,7 @@ superposition(conc, ...)
   lambda.z,
   clast.pred = FALSE,
   tlast,
-  additional.times = c(),
+  additional.times = numeric(),
   check.blq = TRUE,
   interp.method = NULL,
   extrap.method = "AUCinf",

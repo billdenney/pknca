@@ -82,7 +82,7 @@ check.interval.specification <- function(x) {
        !(x[[n]] %in% c(NA, FALSE)))
   if (any(!mask_calculated))
     warning("Nothing to be calculated in interval specification number(s): ",
-            paste((1:nrow(x))[!mask_calculated], collapse=", "))
+            paste(seq_len(nrow(x))[!mask_calculated], collapse=", "))
   ## Put the columns in the right order and return the checked data
   ## frame
   x[,

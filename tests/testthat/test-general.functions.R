@@ -177,7 +177,7 @@ test_that("max_na and min_na", {
   expect_equal(max_zero_len(1, NA), max(1, NA))
   expect_equal(max_zero_len(1, NA, na.rm=TRUE), max(1, NA, na.rm=TRUE))
   expect_equal(
-    max_zero_len(c(), na.rm=TRUE),
+    max_zero_len(numeric(), na.rm=TRUE),
     NA
   )
   expect_equal(

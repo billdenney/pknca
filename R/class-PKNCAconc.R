@@ -300,13 +300,14 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
     cat("\n")
     grp <- getGroups(x)
     if (ncol(grp) > 0) {
-      tmp.summary <- data.frame(Group.Name=names(grp),
+      tmp_summary <- data.frame(Group.Name=names(grp),
                                 Count=0)
-      for (i in 1:ncol(grp))
-        tmp.summary$Count[i] <- nrow(unique(grp[,1:i,drop=FALSE]))
+      for (i in seq_len(ncol(grp))) {
+        tmp_summary$Count[i] <- nrow(unique(grp[,1:i,drop=FALSE]))
+      }
       cat("Group summary:\n")
-      names(tmp.summary) <- gsub("\\.", " ", names(tmp.summary))
-      print.data.frame(tmp.summary, row.names=FALSE)
+      names(tmp_summary) <- gsub("\\.", " ", names(tmp_summary))
+      print.data.frame(tmp_summary, row.names=FALSE)
     } else {
       cat("No groups.\n")
     }

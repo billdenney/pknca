@@ -156,9 +156,11 @@ test_that("clean.conc.blq", {
 
   ## If all values are BLQ, drops all rows
   d.test <- data.frame(conc=0, time=1:3)
-  expect_equal(clean.conc.blq(d.test$conc, d.test$time,
-                                conc.blq="drop", conc.na="drop"),
-               d.test[c(),])
+  expect_equal(
+    clean.conc.blq(d.test$conc, d.test$time,
+                   conc.blq="drop", conc.na="drop"),
+    d.test[logical(),]
+  )
 
   ## If there are BLQ values in the middle, it drops or keeps those or
   ## sets them to a number

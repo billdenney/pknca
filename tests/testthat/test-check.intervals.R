@@ -152,7 +152,7 @@ test_that("get.parameter.deps", {
   )
   expect_equal(
     get.parameter.deps("kel.obs"),
-    c("kel.obs"),
+    "kel.obs",
     info="Parameters that have nothing that depend on them return themselves only."
   )
   expect_equal(

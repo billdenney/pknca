@@ -60,8 +60,7 @@ pk.calc.time_above <- function(conc, time,
 add.interval.col("time_above",
                  FUN="pk.calc.time_above",
                  values=c(FALSE, TRUE),
-                 desc="Time above a given concentration",
-                 depends=c())
+                 desc="Time above a given concentration")
 PKNCA.set.summary(
   name="time_above",
   description="arithmetic mean and standard deviation",

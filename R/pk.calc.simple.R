@@ -36,7 +36,7 @@ add.interval.col("cmax",
                  FUN="pk.calc.cmax",
                  values=c(FALSE, TRUE),
                  desc="Maximum observed concentration",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="cmax",
   description="geometric mean and geometric coefficient of variation",
@@ -61,7 +61,7 @@ add.interval.col("cmin",
                  FUN="pk.calc.cmin",
                  values=c(FALSE, TRUE),
                  desc="Minimum observed concentration",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="cmin",
   description="geometric mean and geometric coefficient of variation",
@@ -119,7 +119,7 @@ add.interval.col("tmax",
                  FUN="pk.calc.tmax",
                  values=c(FALSE, TRUE),
                  desc="Time of the maximum observed concentration",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="tmax",
   description="median and range",
@@ -155,7 +155,7 @@ add.interval.col("tlast",
                  FUN="pk.calc.tlast",
                  values=c(FALSE, TRUE),
                  desc="Time of the last concentration observed above the limit of quantification",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="tlast",
   description="median and range",
@@ -184,7 +184,7 @@ add.interval.col("tfirst",
                  FUN="pk.calc.tfirst",
                  values=c(FALSE, TRUE),
                  desc="Time of the first concentration above the limit of quantification",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="tfirst",
   description="median and range",
@@ -217,7 +217,7 @@ add.interval.col("clast.obs",
                  FUN="pk.calc.clast.obs",
                  values=c(FALSE, TRUE),
                  desc="The last concentration observed above the limit of quantification",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="clast.obs",
   description="geometric mean and geometric coefficient of variation",
@@ -240,7 +240,7 @@ add.interval.col("thalf.eff.obs",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRTobs)",
                  formalsmap=list(mrt="mrt.obs"),
-                 depends=c("mrt.obs"))
+                 depends="mrt.obs")
 PKNCA.set.summary(
   name="thalf.eff.obs",
   description="geometric mean and geometric coefficient of variation",
@@ -252,7 +252,7 @@ add.interval.col("thalf.eff.pred",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRTpred)",
                  formalsmap=list(mrt="mrt.pred"),
-                 depends=c("mrt.pred"))
+                 depends="mrt.pred")
 PKNCA.set.summary(
   name="thalf.eff.pred",
   description="geometric mean and geometric coefficient of variation",
@@ -264,7 +264,7 @@ add.interval.col("thalf.eff.last",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRTlast)",
                  formalsmap=list(mrt="mrt.last"),
-                 depends=c("mrt.last"))
+                 depends="mrt.last")
 PKNCA.set.summary(
   name="thalf.eff.last",
   description="geometric mean and geometric coefficient of variation",
@@ -276,7 +276,7 @@ add.interval.col("thalf.eff.iv.obs",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the intravenous MRTobs)",
                  formalsmap=list(mrt="mrt.iv.obs"),
-                 depends=c("mrt.iv.obs"))
+                 depends="mrt.iv.obs")
 PKNCA.set.summary(
   name="thalf.eff.iv.obs",
   description="geometric mean and geometric coefficient of variation",
@@ -288,7 +288,7 @@ add.interval.col("thalf.eff.iv.pred",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the intravenous MRTpred)",
                  formalsmap=list(mrt="mrt.iv.pred"),
-                 depends=c("mrt.iv.pred"))
+                 depends="mrt.iv.pred")
 PKNCA.set.summary(
   name="thalf.eff.iv.pred",
   description="geometric mean and geometric coefficient of variation",
@@ -300,7 +300,7 @@ add.interval.col("thalf.eff.iv.last",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the intravenous MRTlast)",
                  formalsmap=list(mrt="mrt.iv.last"),
-                 depends=c("mrt.iv.last"))
+                 depends="mrt.iv.last")
 PKNCA.set.summary(
   name="thalf.eff.iv.last",
   description="geometric mean and geometric coefficient of variation",
@@ -391,7 +391,7 @@ add.interval.col("kel.obs",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the MRT with observed Clast)",
                  formalsmap=list(mrt="mrt.obs"),
-                 depends=c("mrt.obs"))
+                 depends="mrt.obs")
 PKNCA.set.summary(
   name="kel.obs",
   description="geometric mean and geometric coefficient of variation",
@@ -403,7 +403,7 @@ add.interval.col("kel.pred",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the MRT with predicted Clast)",
                  formalsmap=list(mrt="mrt.pred"),
-                 depends=c("mrt.pred"))
+                 depends="mrt.pred")
 PKNCA.set.summary(
   name="kel.pred",
   description="geometric mean and geometric coefficient of variation",
@@ -415,7 +415,7 @@ add.interval.col("kel.last",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the MRT using AUClast)",
                  formalsmap=list(mrt="mrt.last"),
-                 depends=c("mrt.last"))
+                 depends="mrt.last")
 PKNCA.set.summary(
   name="kel.last",
   description="geometric mean and geometric coefficient of variation",
@@ -427,7 +427,7 @@ add.interval.col("kel.iv.obs",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the intravenous MRTobs)",
                  formalsmap=list(mrt="mrt.iv.obs"),
-                 depends=c("mrt.iv.obs"))
+                 depends="mrt.iv.obs")
 PKNCA.set.summary(
   name="kel.iv.obs",
   description="geometric mean and geometric coefficient of variation",
@@ -439,7 +439,7 @@ add.interval.col("kel.iv.pred",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the intravenous MRTpred)",
                  formalsmap=list(mrt="mrt.iv.pred"),
-                 depends=c("mrt.iv.pred"))
+                 depends="mrt.iv.pred")
 PKNCA.set.summary(
   name="kel.iv.pred",
   description="geometric mean and geometric coefficient of variation",
@@ -451,7 +451,7 @@ add.interval.col("kel.iv.last",
                  values=c(FALSE, TRUE),
                  desc="Elimination rate (as calculated from the intravenous MRTlast)",
                  formalsmap=list(mrt="mrt.iv.last"),
-                 depends=c("mrt.iv.last"))
+                 depends="mrt.iv.last")
 PKNCA.set.summary(
   name="kel.iv.last",
   description="geometric mean and geometric coefficient of variation",
@@ -494,7 +494,7 @@ add.interval.col("cl.last",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated to Clast",
                  formalsmap=list(auc="auclast"),
-                 depends=c("auclast"))
+                 depends="auclast")
 PKNCA.set.summary(
   name="cl.last",
   description="geometric mean and geometric coefficient of variation",
@@ -506,7 +506,7 @@ add.interval.col("cl.all",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated with AUCall",
                  formalsmap=list(auc="aucall"),
-                 depends=c("aucall"))
+                 depends="aucall")
 PKNCA.set.summary(
   name="cl.all",
   description="geometric mean and geometric coefficient of variation",
@@ -518,7 +518,7 @@ add.interval.col("cl.obs",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated with observed Clast",
                  formalsmap=list(auc="aucinf.obs"),
-                 depends=c("aucinf.obs"))
+                 depends="aucinf.obs")
 PKNCA.set.summary(
   name="cl.obs",
   description="geometric mean and geometric coefficient of variation",
@@ -530,7 +530,7 @@ add.interval.col("cl.pred",
                  values=c(FALSE, TRUE),
                  desc="Clearance or observed oral clearance calculated with predicted Clast",
                  formalsmap=list(auc="aucinf.pred"),
-                 depends=list("aucinf.pred"))
+                 depends="aucinf.pred")
 PKNCA.set.summary(
   name="cl.pred",
   description="geometric mean and geometric coefficient of variation",
@@ -564,7 +564,7 @@ add.interval.col("f",
                  FUN="pk.calc.f",
                  values=c(FALSE, TRUE),
                  desc="Bioavailability or relative bioavailability",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="f",
   description="geometric mean and geometric coefficient of variation",
@@ -987,7 +987,7 @@ add.interval.col("ctrough",
                  FUN="pk.calc.ctrough",
                  values=c(FALSE, TRUE),
                  desc="The trough (predose) concentration",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="ctrough",
   description="geometric mean and geometric coefficient of variation",
@@ -1041,7 +1041,7 @@ add.interval.col("tlag",
                  FUN="pk.calc.tlag",
                  values=c(FALSE, TRUE),
                  desc="Lag time",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="tlag",
   description="median and range",
@@ -1128,7 +1128,7 @@ pk.calc.ceoi <- function(conc, time, duration.dose=NA, check=TRUE) {
 add.interval.col("ceoi",
                  FUN="pk.calc.ceoi",
                  desc="Concentration at the end of infusion",
-                 depends=c())
+                 depends=NULL)
 PKNCA.set.summary(
   name="ceoi",
   description="geometric mean and geometric coefficient of variation",

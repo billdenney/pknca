@@ -73,7 +73,7 @@ test_that("superposition inputs", {
 
   ## >= 1 dose time
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=c()),
+                             dose.times=numeric()),
                regexp="There must be at least one dose time")
   ## Dose times must be a number
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
@@ -338,10 +338,10 @@ test_that("superposition math", {
   ## additional.times with time included and shifted for all the
   ## dose.times.
   expect_equal(superposition(conc=rep(0, 6), time=0:5, tau=24,
-                             additional.times=c(2.5)),
+                             additional.times=2.5),
                data.frame(conc=0, time=c(0, 1, 2, 2.5, 3, 4, 5, 24)))
   expect_equal(superposition(conc=rep(0, 6), time=0:5, tau=25,
-                             additional.times=c(2.5)),
+                             additional.times=2.5),
                data.frame(conc=0, time=c(0, 1, 2, 2.5, 3, 4, 5, 25)))
   expect_equal(superposition(conc=rep(0, 6), time=0:5, tau=24,
                              additional.times=c(2.5, 3.5)),
