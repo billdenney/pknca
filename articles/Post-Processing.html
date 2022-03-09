@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -122,14 +122,14 @@
 
     
     
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h1>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>Once a calculation is complete, the steps to extract the desired results from the results object are described below.</p>
 </div>
-<div class="section level1">
-<h1 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h1>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
 <p>To extract results, first results must be available. The example below comes from the Introduction and Usage vignette and is reproduced here simply to have results available. See that vignette for more details about running PKNCA.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span>
@@ -155,16 +155,16 @@
 <span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span><span class="op">)</span>
 <span class="va">results_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="modifying-results">Modifying Results<a class="anchor" aria-label="anchor" href="#modifying-results"></a>
-</h1>
 <div class="section level2">
-<h2 id="exclusion-of-select-results">Exclusion of Select Results<a class="anchor" aria-label="anchor" href="#exclusion-of-select-results"></a>
+<h2 id="modifying-results">Modifying Results<a class="anchor" aria-label="anchor" href="#modifying-results"></a>
 </h2>
-<p>In many scenarios, individual results may need to be excluded from summaries. To exclude results, use the <code><a href="../reference/exclude.html">exclude()</a></code> function.</p>
 <div class="section level3">
-<h3 id="exclusion-functions">Exclusion Functions<a class="anchor" aria-label="anchor" href="#exclusion-functions"></a>
+<h3 id="exclusion-of-select-results">Exclusion of Select Results<a class="anchor" aria-label="anchor" href="#exclusion-of-select-results"></a>
 </h3>
+<p>In many scenarios, individual results may need to be excluded from summaries. To exclude results, use the <code><a href="../reference/exclude.html">exclude()</a></code> function.</p>
+<div class="section level4">
+<h4 id="exclusion-functions">Exclusion Functions<a class="anchor" aria-label="anchor" href="#exclusion-functions"></a>
+</h4>
 <p>Several exclusion functions are built into PKNCA. The built-in functions will exclude all results that either apply to the current value or are dependencies of the current value. For example, <span class="math inline">\(AUC_\infty\)</span> depends on <span class="math inline">\(\lambda_z\)</span>, and excluding based on span ratio will exclude all parameters that depend on <span class="math inline">\(\lambda_z\)</span>, including <span class="math inline">\(AUC_\infty\)</span>.</p>
 <p>To see the built-in functions, type <code><a href="../reference/exclude_nca.html">?exclude_nca</a></code> at the R command line and review that help page. To use them, provide the function to the <code>FUN</code> argument of <code><a href="../reference/exclude.html">exclude()</a></code> as illustrated below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -213,9 +213,9 @@
 <span class="co">## <span style="color: #BCBCBC;">14</span>       1     0   <span style="color: #BB0000;">Inf</span> aucinf.obs          215.     Span ratio &lt; 2</span></code></pre>
 <p>You may also write your own exclusion function. The exclusion functions built-into PKNCA are a bit more complex than required because they handle options and manage general functionality that may not apply to a user-specific need. To write your own exclusion function, it should follow the description of how to write your own exclusion function as described in the details section of <code><a href="../reference/exclude.html">?exclude</a></code>.</p>
 </div>
-<div class="section level3">
-<h3 id="excluding-specific-results">Excluding Specific Results<a class="anchor" aria-label="anchor" href="#excluding-specific-results"></a>
-</h3>
+<div class="section level4">
+<h4 id="excluding-specific-results">Excluding Specific Results<a class="anchor" aria-label="anchor" href="#excluding-specific-results"></a>
+</h4>
 <p>Excluding specific results has the benefit that full control is provided. But, excluding specific points allows for errors to also enter the analysis because parameters that depend on the excluded parameter will not be excluded.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mask_exclude_cmax</span> <span class="op">&lt;-</span>
@@ -276,9 +276,9 @@
 <span class="co">## <span style="color: #BCBCBC;">13</span>       1     0   <span style="color: #BB0000;">Inf</span> span.ratio            1.07   <span style="color: #BB0000;">NA</span>                          </span>
 <span class="co">## <span style="color: #BCBCBC;">14</span>       1     0   <span style="color: #BB0000;">Inf</span> aucinf.obs          215.     <span style="color: #BB0000;">NA</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="multiple-exclusions">Multiple Exclusions<a class="anchor" aria-label="anchor" href="#multiple-exclusions"></a>
-</h3>
+<div class="section level4">
+<h4 id="multiple-exclusions">Multiple Exclusions<a class="anchor" aria-label="anchor" href="#multiple-exclusions"></a>
+</h4>
 <p>More than one exclusion can be applied sequentially to results as in the example below.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mask_exclude_lz</span> <span class="op">&lt;-</span>
@@ -329,12 +329,12 @@
 </div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="extracting-results">Extracting Results<a class="anchor" aria-label="anchor" href="#extracting-results"></a>
-</h1>
 <div class="section level2">
-<h2 id="summary-results">Summary Results<a class="anchor" aria-label="anchor" href="#summary-results"></a>
+<h2 id="extracting-results">Extracting Results<a class="anchor" aria-label="anchor" href="#extracting-results"></a>
 </h2>
+<div class="section level3">
+<h3 id="summary-results">Summary Results<a class="anchor" aria-label="anchor" href="#summary-results"></a>
+</h3>
 <p>Summary results are obtained using the aptly named <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. It will output a <code>summary_PKNCAresults</code> object that is simply a data.frame with an attribute of <code>caption</code>. The summary is generated by evaluating summary statistics on each requested parameter. Which summary statistics are calculated for each parameter are set with <code><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary()</a></code>, and they are described in the caption. When a parameter is not requested for a given interval, it is illustrated with a period (<code>.</code>), by default (customizable with the <code>not.requested.string</code> argument to <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>). When a parameter is required to calculate another parameter, but it is not specifically requested, it will not be shown in the summary.</p>
 <p>The summary will have one column for each grouping variable other than the subject grouping variable; one column each for the start and end time; and one column per parameter calculated.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -356,9 +356,9 @@
 <span class="co">## </span>
 <span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation</span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="listing-of-results">Listing of Results<a class="anchor" aria-label="anchor" href="#listing-of-results"></a>
-</h2>
+<div class="section level3">
+<h3 id="listing-of-results">Listing of Results<a class="anchor" aria-label="anchor" href="#listing-of-results"></a>
+</h3>
 <p>A listing of all calculated values is available using <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -434,7 +434,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -122,17 +122,17 @@
 
     
     
-<div class="section level1">
-<h1 id="writing-pknca-parameter-functions">Writing PKNCA Parameter Functions<a class="anchor" aria-label="anchor" href="#writing-pknca-parameter-functions"></a>
-</h1>
+<div class="section level2">
+<h2 id="writing-pknca-parameter-functions">Writing PKNCA Parameter Functions<a class="anchor" aria-label="anchor" href="#writing-pknca-parameter-functions"></a>
+</h2>
 <p>The PKNCA package is designed to be comprehensive in its coverage of the needs of an noncompartmental analysis (NCA) specialist. While it has many NCA parameters specified, it may not have all parameters defined, and its design is modular to accept new parameter definitions. From its inception, PKNCA is built in modules to allow addition of new components (or removal of unnecessary ones). Defining new NCA parameters is straight-forward, and this guide will describe how it is done. The three parts to writing a new NCA parameter in PKNCA are described below.</p>
 </div>
-<div class="section level1">
-<h1 id="writing-the-parameter-function">Writing the Parameter Function<a class="anchor" aria-label="anchor" href="#writing-the-parameter-function"></a>
-</h1>
 <div class="section level2">
-<h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
+<h2 id="writing-the-parameter-function">Writing the Parameter Function<a class="anchor" aria-label="anchor" href="#writing-the-parameter-function"></a>
 </h2>
+<div class="section level3">
+<h3 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
+</h3>
 <p>The starting point to writing a new NCA parameter is writing the function that calculates the parameter value. The function can be passed any of the following arguments. The arguments must be named as described below:</p>
 <ul>
 <li>
@@ -156,9 +156,9 @@
 <p>The function should return either a scalar which is the value for the parameter (usually the case) or a data.frame with parameters named for each parameter calculated. For an example of returning a data.frame, see the <code>half.life</code> function.</p>
 <p>The return value may have an attribute of <code>exclude</code> (set by <code>attr(return_value, "exclude") &lt;- "reason"</code>). If the <code>exclude</code> attribute is set to a character string, then that string will be included in the <code>exclude</code> column for results. If any of the input parameters have an exclude attribute set, then those are also added to the <code>exclude</code> column. The exception to the setting of the <code>exclude</code> column is if the <code>exclude</code> attribute is <code>"DO NOT EXCLUDE"</code>, then the <code>exclude</code> column is set to <code>NA_character_</code>.</p>
 </div>
-<div class="section level2">
-<h2 id="best-practices">Best Practices<a class="anchor" aria-label="anchor" href="#best-practices"></a>
-</h2>
+<div class="section level3">
+<h3 id="best-practices">Best Practices<a class="anchor" aria-label="anchor" href="#best-practices"></a>
+</h3>
 <ul>
 <li>Use the function <code>check.conc.time</code> if the function takes either <code>conc</code> or <code>time</code> as an input.</li>
 <li>Make sure that you check for missing values (<code>NA</code>) in your inputs.</li>
@@ -167,9 +167,9 @@
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1 id="tell-pknca-about-the-parameter">Tell PKNCA about the Parameter<a class="anchor" aria-label="anchor" href="#tell-pknca-about-the-parameter"></a>
-</h1>
+<div class="section level2">
+<h2 id="tell-pknca-about-the-parameter">Tell PKNCA about the Parameter<a class="anchor" aria-label="anchor" href="#tell-pknca-about-the-parameter"></a>
+</h2>
 <p>Just writing a function doesn’t connect it to the rest of PKNCA. You have to tell PKNCA that the function exists and a few more details about it. To do this, you need to use the <code>add.interval.col</code> function. The function takes up to seven arguments:</p>
 <ul>
 <li>
@@ -186,9 +186,9 @@
 <code>desc</code> is a text description of the parameter.</li>
 </ul>
 </div>
-<div class="section level1">
-<h1 id="tell-pknca-how-to-summarize-the-parameter">Tell PKNCA How to Summarize the Parameter<a class="anchor" aria-label="anchor" href="#tell-pknca-how-to-summarize-the-parameter"></a>
-</h1>
+<div class="section level2">
+<h2 id="tell-pknca-how-to-summarize-the-parameter">Tell PKNCA How to Summarize the Parameter<a class="anchor" aria-label="anchor" href="#tell-pknca-how-to-summarize-the-parameter"></a>
+</h2>
 <p>For any parameter, PKNCA needs to know how to summarize it for the <code>summary</code> function of the <code>PKNCAresults</code> class. To tell PKNCA how to summarize a parameter, use the <code>PKNCA.set.summary</code> function. It takes at least these four arguments:</p>
 <ul>
 <li>
@@ -201,9 +201,9 @@
 <code>spread</code> is the function to calculate the spread (or variability). The function will be called as <code>spread(x)</code> and must return a scalar or a two-long vector.</li>
 </ul>
 </div>
-<div class="section level1">
-<h1 id="putting-it-together">Putting It Together<a class="anchor" aria-label="anchor" href="#putting-it-together"></a>
-</h1>
+<div class="section level2">
+<h2 id="putting-it-together">Putting It Together<a class="anchor" aria-label="anchor" href="#putting-it-together"></a>
+</h2>
 <p>One of the most common examples is the function to calculate C<sub>max</sub>:</p>
 <pre><code><span class="co">#' Determine maximum observed PK concentration</span>
 <span class="co">#'</span>
@@ -248,7 +248,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

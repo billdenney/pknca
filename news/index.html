@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -91,7 +91,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.9.5" id="pknca-095-in-development">PKNCA 0.9.5 (in development)<small>2021-10-29</small><a class="anchor" aria-label="anchor" href="#pknca-095-in-development"></a></h2>
+<h2 class="page-header" data-toc-text="0.9.6" id="pknca-096-in-development">PKNCA 0.9.6 (in development)<a class="anchor" aria-label="anchor" href="#pknca-096-in-development"></a></h2>
+<ul><li>
+<code><a href="../reference/pk.calc.time_above.html">pk.calc.time_above()</a></code> now uses the default AUC calculation method for interpolation of time above.</li>
+<li>PKNCA can now calculate parameters that require extra information by adding the extra information to the intervals data.frame. For example, add <code>conc_above</code> as a column to the intervals to allow calculation of <code>time_above</code>. With this change, the “conc_above” <code><a href="../reference/PKNCA.options.html">PKNCA.options()</a></code> value has been removed.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.9.5" id="pknca-095">PKNCA 0.9.5<small>2021-10-29</small><a class="anchor" aria-label="anchor" href="#pknca-095"></a></h2>
 <ul><li>The internals of how PKNCA performs calculations had a significant update. The only user-visible change should be that PKNCA does not perform parallel computations as of this version. Parallel computation is planned to return in the near future.
 <ul><li>Breaking change: As part of this change, the split methods for PKNCAconc and PKNCAdose objects were removed along with the merge.splitList function.</li>
 </ul></li>
@@ -239,7 +245,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>
