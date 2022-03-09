@@ -4,7 +4,17 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
-# PKNCA 0.9.5 (in development)
+# PKNCA 0.9.6 (in development)
+
+* `pk.calc.time_above()` now uses the default AUC calculation method for
+  interpolation of time above.
+* PKNCA can now calculate parameters that require extra information by adding
+  the extra information to the intervals data.frame.  For example, add
+  `conc_above` as a column to the intervals to allow calculation of
+  `time_above`.  With this change, the "conc_above" `PKNCA.options()` value has
+  been removed.
+
+# PKNCA 0.9.5
 
 * The internals of how PKNCA performs calculations had a significant update. The
   only user-visible change should be that PKNCA does not perform parallel

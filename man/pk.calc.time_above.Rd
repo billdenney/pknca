@@ -4,14 +4,7 @@
 \alias{pk.calc.time_above}
 \title{Determine time at or above a set value}
 \usage{
-pk.calc.time_above(
-  conc,
-  time,
-  conc_above,
-  method,
-  options = list(),
-  check = TRUE
-)
+pk.calc.time_above(conc, time, conc_above, ..., options = list(), check = TRUE)
 }
 \arguments{
 \item{conc}{Concentration measured}
@@ -19,11 +12,10 @@ pk.calc.time_above(
 \item{time}{Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)}
 
-\item{conc_above}{The concentration to be above (if missing will use
-\code{PKNCA.choose.option(name="conc_above", value=conc_above, options=options)})}
+\item{conc_above}{The concentration to be above}
 
-\item{method}{The method for integration (either 'lin up/log down' or
-'linear')}
+\item{...}{Extra arguments.  Currently, the only extra argument that is used
+is \code{method} as described in the details section.}
 
 \item{options}{List of changes to the default \code{\link{PKNCA.options}} for
 calculations.}
@@ -36,5 +28,7 @@ the time above the given concentration
 }
 \description{
 Interpolation is performed aligning with \code{PKNCA.options("auc.method")}.
-Extrapolation outside of the measured times is not yet implemented.
+Extrapolation outside of the measured times is not yet implemented.  The
+\code{method} may be changed by giving a named \code{method} argument, as
+well.
 }

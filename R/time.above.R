@@ -6,8 +6,9 @@
 #' well.
 #'
 #' @inheritParams pk.calc.auxc
-#' @param conc_above The concentration to be above (if missing will use
-#'   \code{PKNCA.choose.option(name="conc_above", value=conc_above, options=options)})
+#' @param conc_above The concentration to be above
+#' @param ... Extra arguments.  Currently, the only extra argument that is used
+#'   is \code{method} as described in the details section.
 #' @return the time above the given concentration
 #' @export
 pk.calc.time_above <- function(conc, time,
@@ -18,13 +19,15 @@ pk.calc.time_above <- function(conc, time,
                                check=TRUE) {
   arglist <- list(...)
   method <- PKNCA.choose.option(name="auc.method", value=arglist$method, options=options)
-  #conc_above <- PKNCA.choose.option(name="conc_above", value=conc_above, options=options)
   if (missing(conc)) {
     stop("conc must be given")
   }
   if (missing(time)) {
     stop("time must be given")
   }
+  stopifnot("conc_above must be a scalar"=length(conc_above) == 1)
+  stopifnot("conc_above must not be NA"=!is.na(conc_above))
+  stopifnot("conc_above must be numeric"=is.numeric(conc_above))
   if (check) {
     check.conc.time(conc, time)
   }
