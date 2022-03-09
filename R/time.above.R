@@ -1,7 +1,9 @@
 #' Determine time at or above a set value
 #' 
 #' Interpolation is performed aligning with \code{PKNCA.options("auc.method")}.
-#' Extrapolation outside of the measured times is not yet implemented.
+#' Extrapolation outside of the measured times is not yet implemented.  The
+#' \code{method} may be changed by giving a named \code{method} argument, as
+#' well.
 #'
 #' @inheritParams pk.calc.auxc
 #' @param conc_above The concentration to be above (if missing will use
@@ -10,11 +12,13 @@
 #' @export
 pk.calc.time_above <- function(conc, time,
                                conc_above,
-                               method,
+                               #method=NULL,
+                               ...,
                                options=list(),
                                check=TRUE) {
-  method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
-  conc_above <- PKNCA.choose.option(name="conc_above", value=conc_above, options=options)
+  arglist <- list(...)
+  method <- PKNCA.choose.option(name="auc.method", value=arglist$method, options=options)
+  #conc_above <- PKNCA.choose.option(name="conc_above", value=conc_above, options=options)
   if (missing(conc)) {
     stop("conc must be given")
   }
