@@ -426,3 +426,11 @@ test_that("Ensure that options are respected during pk.nca call", {
     info="linear and loglinear effects are calculated differently."
   )
 })
+
+test_that("Can calculate parameters requiring extra arguments", {
+  o_conc <- PKNCAconc(conc~time, data=data.frame(conc=c(1:3, 2:1), time=0:4))
+  d_intervals <- data.frame(start=0, end=4, time_above=TRUE, conc_above=2)
+  o_data <- PKNCAdata(o_conc, intervals=d_intervals, options=list(auc.method="linear"))
+  o_nca <- suppressMessages(pk.nca(o_data))
+  expect_equal(as.data.frame(o_nca)$PPORRES, 2)
+})

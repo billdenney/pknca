@@ -302,8 +302,9 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
     if (interval[[1,n]] & !is.na(all_intervals[[n]]$FUN)) {
       call_args <- list()
       exclude_from_argument <- character(0)
-      ## Prepare to call the function by setting up its arguments.
-      ## Ignore the "..." argument if it exists.
+      # Prepare to call the function by setting up its arguments.
+      # Define the required arguments (arglist), and ignore the "..." argument
+      # if it exists.
       arglist <- setdiff(names(formals(get(all_intervals[[n]]$FUN))),
                          "...")
       arglist <- stats::setNames(object=as.list(arglist), arglist)
@@ -335,7 +336,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         } else if (arg_mapped == "conc.group") {
           call_args[[arg_formal]] <- conc.group
         } else if (arg_mapped == "time.group") {
-          ## Realign the time to be relative to the start of the
+          ## Don't realign the time to be relative to the start of the
           ## interval
           call_args[[arg_formal]] <- time.group
         } else if (arg_mapped == "volume.group") {
@@ -361,9 +362,11 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
           call_args[[arg_formal]] <- ret$PPORRES[mask_arg]
           exclude_from_argument <-
             c(exclude_from_argument, ret$exclude[mask_arg])
+        } else if (!is.null(interval[[arg_mapped]])) {
+          call_args[[arg_formal]] <- interval[[arg_mapped]]
         } else {
           ## Give an error if there is not a default argument.
-          ## FIXME: checking if the class is a name isn't perfect.  
+          ## FIXME: checking if the class is a name isn't perfect.
           if (class(formals(get(all_intervals[[n]]$FUN))[[arg_formal]]) == "name") {
             arg_text <-
               if (arg_formal == arg_mapped) {
