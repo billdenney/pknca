@@ -50,7 +50,8 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
       stop("Concentration data must be numeric and not a factor")
     } else if (all(is.na(conc))) {
       warning("All concentration data is missing")
-    } else if (any(!is.na(conc) & conc < 0)) {
+    } else if (any(!is.na(conc) & as.numeric(conc) < 0)) {
+      # as.numeric(conc) is required for compatibility with units
       warning("Negative concentrations found")
     }
   }
@@ -63,10 +64,11 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
       stop("Time data must be numeric and not a factor")
     }
     if (monotonic.time) {
-      if (!all(time[-1] > time[-length(time)]))
+      if (!all(time[-1] > time[-length(time)])) {
         stop("Time must be monotonically increasing")
-      if (!(length(time) == length(unique(time))))
+      } else if (!(length(time) == length(unique(time)))) {
         stop("All time values must be unique") # nocov
+      }
     }
   }
   if (!missing(conc) & !missing(time)) {

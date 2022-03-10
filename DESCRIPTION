@@ -28,6 +28,7 @@ Suggests:
     rmarkdown,
     testthat,
     tidyverse,
+    units,
     withr
 Description: Compute standard Non-Compartmental Analysis (NCA) parameters for
     typical pharmacokinetic analyses and summarize them.

@@ -91,12 +91,12 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     }
   }
   ret$options <- options
-  ## Check the AUC intervals
+  # Check the intervals
   if (missing(intervals) & identical(ret$dose, NA)) {
     stop("If data.dose is not given, intervals must be given")
   } else if (missing(intervals)) {
-    ## Generate the intervals for each grouping of concentration and
-    ## dosing.
+    # Generate the intervals for each grouping of concentration and
+    # dosing.
     if (identical(all.vars(parseFormula(ret$dose)$rhs), ".")) {
       stop("Dose times were not given, so intervals must be manually specified.")
     }
@@ -147,7 +147,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
       )
   }
   ret$intervals <- check.interval.specification(intervals)
-  ## Assign the class and give it all back to the user.
+  # Verify that either everything or nothing is using units
+  units_interval_start <- inherits(ret$intervals$start, "units")
+  units_interval_end <- inherits(ret$intervals$end, "units")
+  # Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret
 }
