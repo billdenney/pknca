@@ -34,7 +34,7 @@
 PKNCAdata <- function(data.conc, data.dose, ...)
   UseMethod("PKNCAdata", data.conc)
 
-## Ensure that arguments are reversible
+# Ensure that arguments are reversible
 #' @rdname PKNCAdata
 #' @export
 PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...)
@@ -43,7 +43,7 @@ PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...)
 #' @rdname PKNCAdata
 #' @export
 PKNCAdata.PKNCAdose <- function(data.conc, data.dose, ...) {
-  ## Swap the arguments
+  # Swap the arguments
   PKNCAdata.default(data.dose=data.conc, data.conc=data.dose, ...)
 }
 
@@ -56,7 +56,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     stop("Unknown argument provided to PKNCAdata.  All arguments other than `data.conc` and `data.dose` must be named.")
   }
   ret <- list()
-  ## Generate the conc element
+  # Generate the conc element
   if (inherits(data.conc, "PKNCAconc")) {
     if (!missing(formula.conc)) {
       warning("data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
@@ -65,7 +65,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   } else {
     ret$conc <- PKNCAconc(data.conc, formula=formula.conc)
   }
-  ## Generate the dose element
+  # Generate the dose element
   if (missing(data.dose)) {
     ret$dose <- NA
   } else if (identical(data.dose, NA)) {
@@ -77,7 +77,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   } else {
     ret$dose <- PKNCAdose(data.dose, formula.dose)
   }
-  ## Check the options
+  # Check the options
   if (!is.list(options)) {
     stop("options must be a list.")
   }
@@ -91,12 +91,12 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     }
   }
   ret$options <- options
-  ## Check the AUC intervals
+  # Check the intervals
   if (missing(intervals) & identical(ret$dose, NA)) {
     stop("If data.dose is not given, intervals must be given")
   } else if (missing(intervals)) {
-    ## Generate the intervals for each grouping of concentration and
-    ## dosing.
+    # Generate the intervals for each grouping of concentration and
+    # dosing.
     if (identical(all.vars(parseFormula(ret$dose)$rhs), ".")) {
       stop("Dose times were not given, so intervals must be manually specified.")
     }
@@ -147,7 +147,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
       )
   }
   ret$intervals <- check.interval.specification(intervals)
-  ## Assign the class and give it all back to the user.
+  # Verify that either everything or nothing is using units
+  units_interval_start <- inherits(ret$intervals$start, "units")
+  units_interval_end <- inherits(ret$intervals$end, "units")
+  # Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret
 }

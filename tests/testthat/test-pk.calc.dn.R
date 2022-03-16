@@ -1,7 +1,7 @@
 context("Dose-normalized NCA functions")
 
 test_that("pk.calc.dn", {
-  ## Ensure correct calculation
+  # Ensure correct calculation
   expect_equal(pk.calc.dn(1, 5), 0.2)
   expect_equal(pk.calc.dn(NA, 5), NA_real_)
   expect_equal(pk.calc.dn(1, NA), NA_real_)

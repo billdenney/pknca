@@ -10,8 +10,8 @@ check.conversion <- function(x, FUN, ...) {
   ret <- FUN(x, ...)
   new.na <- sum(is.na(x) != is.na(ret))
   if (new.na != 0)
-    ## FIXME: It would be nice to have it give the function name as
-    ## part of the error
+    # FIXME: It would be nice to have it give the function name as
+    # part of the error
     stop(sprintf("%g new NA value(s) created during conversion",
                  new.na))
   ret
@@ -50,7 +50,8 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
       stop("Concentration data must be numeric and not a factor")
     } else if (all(is.na(conc))) {
       warning("All concentration data is missing")
-    } else if (any(!is.na(conc) & conc < 0)) {
+    } else if (any(!is.na(conc) & as.numeric(conc) < 0)) {
+      # as.numeric(conc) is required for compatibility with units
       warning("Negative concentrations found")
     }
   }
@@ -63,10 +64,11 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
       stop("Time data must be numeric and not a factor")
     }
     if (monotonic.time) {
-      if (!all(time[-1] > time[-length(time)]))
+      if (!all(time[-1] > time[-length(time)])) {
         stop("Time must be monotonically increasing")
-      if (!(length(time) == length(unique(time))))
+      } else if (!(length(time) == length(unique(time)))) {
         stop("All time values must be unique") # nocov
+      }
     }
   }
   if (!missing(conc) & !missing(time)) {
@@ -102,7 +104,7 @@ roundString <- function(x, digits=0, sci_range=Inf, sci_sep="e", si_range) {
     mask_aschar <- is.nan(x) | is.infinite(x)
     mask_manip <- !(mask_na | mask_aschar)
     ret <- rep(NA, length(x))
-    ## Put in the special values
+    # Put in the special values
     if (any(mask_na)) {
       ret[mask_na] <- "NA"
     }
@@ -196,7 +198,7 @@ signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range
   mask_aschar <- is.nan(x) | is.infinite(x)
   mask_manip <- !(mask_na | mask_aschar)
   ret <- rep(NA, length(x))
-  ## Put in the special values
+  # Put in the special values
   if (any(mask_na)) {
     ret[mask_na] <- "NA"
   }
@@ -206,27 +208,27 @@ signifString.default <- function(x, digits=6, sci_range=6, sci_sep="e", si_range
   if (any(mask_manip)) {
     xtmp <- x[mask_manip]
     toplog <- bottomlog <- rep(NA, length(xtmp))
-    ## When 0 give the digits as the output
+    # When 0 give the digits as the output
     bottomlog[xtmp %in% 0] <- digits
-    ## Otherwise set it to digits orders of magnitude lower than the
-    ## current value
+    # Otherwise set it to digits orders of magnitude lower than the
+    # current value
     toplog <- log10(abs(xtmp))
-    ## When the order of magnitude is an exact log 10, move up one so
-    ## that the math works for determing the lower log.
+    # When the order of magnitude is an exact log 10, move up one so
+    # that the math works for determing the lower log.
     mask.exact.log <- (toplog %% 1) %in% 0
     toplog[mask.exact.log] <- toplog[mask.exact.log] + 1
     toplog <- ceiling(toplog)
     bottomlog[is.na(bottomlog)] <- digits-toplog[is.na(bottomlog)]
-    ## Find times when rounding increases the toplog and shift up the
-    ## bottomlog to a corresponding degree. e.g. x=0.9999 and digits=2
-    ## should be 1.0 not 1.00.
+    # Find times when rounding increases the toplog and shift up the
+    # bottomlog to a corresponding degree. e.g. x=0.9999 and digits=2
+    # should be 1.0 not 1.00.
     newtoplog <- log10(abs(round(xtmp, digits=bottomlog)))
     mask.exact.log <- (newtoplog %% 1) %in% 0
     newtoplog[mask.exact.log] <- newtoplog[mask.exact.log] + 1
     newtoplog <- ceiling(newtoplog)
     mask.move.up <- toplog < newtoplog
     bottomlog[mask.move.up] <- bottomlog[mask.move.up] - 1
-    ## Do the rounding
+    # Do the rounding
     ret[mask_manip] <- roundString(xtmp, digits=bottomlog,
                                    sci_range=sci_range, sci_sep=sci_sep)
   }

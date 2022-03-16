@@ -105,8 +105,13 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   if (auc.type %in% "AUCinf" &
         is.finite(interval[2]))
     warning("Requesting AUCinf when the end of the interval is not Inf")
-  ##############################
-  # Subset the data to the range of interest
+  if (requireNamespace("units", quietly=TRUE)) {
+    if (inherits(time, "units") & !inherits(interval, "units")) {
+      interval <- units::set_units(interval, units(time), mode="standard")
+    }
+  }
+
+  # Subset the data to the range of interest ####
   interval_start <- interval[1]
   interval_end <- interval[2]
   # Find the first time point
@@ -161,8 +166,8 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     # still true)
     stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
   } else {
-    # ############################
-    # Compute the AUxC
+    
+    # Compute the AUxC ####
     # Compute it in linear space from the start to Tlast
     if (auc.type %in% "AUCall" &
         tlast != max(data$time)) {
@@ -222,10 +227,9 @@ pk.calc.auc <- function(conc, time, ..., options=list())
                fun.log=fun.auc.log,
                fun.inf=fun.auc.inf)
 
-## Note that lambda.z is set to NA for both auc.last and auc.all
-## because all interpolation should happen within given points.
-## lambda.z should not be used, and if it is used, that should be
-## caught as an error.
+# Note that lambda.z is set to NA for both auc.last and auc.all because all
+# interpolation should happen within given points. lambda.z should not be used,
+# and if it is used, that should be caught as an error.
 #' @describeIn pk.calc.auxc Compute the AUClast.
 #' @export
 pk.calc.auc.last <- function(conc, time, ..., options=list()) {
@@ -340,7 +344,7 @@ pk.calc.aumc.all <- function(conc, time, ..., options=list()) {
                lambda.z=NA)
 }
 
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("aucinf.obs",
                  FUN="pk.calc.auc.inf.obs",
                  values=c(FALSE, TRUE),

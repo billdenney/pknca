@@ -26,8 +26,8 @@ pk.business <- function(FUN,
                         zero.missing=FALSE,
                         max.missing)
   function(x, ...) {
-    ## Allow max.missing to be specified at either function initiation
-    ## or for it to use PKNCA.Options("max.missing")
+    # Allow max.missing to be specified at either function initiation or for it
+    # to use PKNCA.Options("max.missing")
     max.missing <- PKNCA.options("max.missing")
     mask.missing <- is.na(x) | (zero.missing & (x %in% 0))
     if (sum(mask.missing)/length(x) > max.missing)
@@ -55,7 +55,7 @@ geomean <- function(x, na.rm=FALSE) {
   } else if (any(x == 0)) {
     0
   } else if (any(x < 0)) {
-    ## Protect from overflows by using the logarithm
+    # Protect from overflows by using the logarithm
     prod(sign(x))*exp(sum(log(abs(x)))/length(x))
   } else {
     exp(sum(log(x))/length(x))

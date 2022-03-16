@@ -1,7 +1,7 @@
 context("C0 Calculations")
 
 test_that("pk.calc.c0", {
-  ## Input checks
+  # Input checks
   expect_error(pk.calc.c0(5:1, 4:0),
                regexp="Time must be monotonically increasing",
                info="conc, time inputs are checked")
@@ -15,12 +15,12 @@ test_that("pk.calc.c0", {
   expect_warning(pk.calc.c0(5:1, 0:4, time.dose=30),
                  regexp="time.dose is after all available data")
 
-  ## Simple calculations
+  # Simple calculations
   expect_equal(pk.calc.c0(1:5, 0:4), 1,
                info="When there is a nonzero concentration at the default time of dosing")
   expect_equal(pk.calc.c0(1:5, 0:4, time.dose=1), 2,
                info="When there is a nonzero concentration at the nondefault time of dosing")
-  ## It will fall through to subsequent methods if applicable
+  # It will fall through to subsequent methods if applicable
   expect_equal(pk.calc.c0(c(0, 2, 1, 0.5), 0:3),
                pk.calc.c0.method.logslope(c(0, 2, 1, 0.5), 0:3),
                info="Falls through to second method")

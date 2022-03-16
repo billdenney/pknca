@@ -6,7 +6,7 @@ test_that("pk.tss.data.prep", {
   subject.test <- letters[1:5]
   treatment.test <- LETTERS[1:5]
   time.dosing.test <- 0
-  ## Confirm that any NAs in time.dosing are an error
+  # Confirm that any NAs in time.dosing are an error
   expect_error(
     pk.tss.data.prep(
       conc=conc.test,
@@ -25,7 +25,7 @@ test_that("pk.tss.data.prep", {
                                 time.dosing=c(0, NA)),
                regexp="time.dosing may not contain any NA values")
 
-  ## Confirm that conc and subject must be the same length
+  # Confirm that conc and subject must be the same length
   expect_error(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test[-1],
@@ -33,7 +33,7 @@ test_that("pk.tss.data.prep", {
                                 time.dosing=time.dosing.test),
                regexp="arguments imply differing number of rows: 5, 4")
 
-  ## Confirm that conc and treatment must be the same length
+  # Confirm that conc and treatment must be the same length
   expect_error(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
@@ -41,8 +41,8 @@ test_that("pk.tss.data.prep", {
                                 time.dosing=time.dosing.test),
                regexp="arguments imply differing number of rows: 5, 4")
 
-  ## If removed down to one treatment, treatment is not a column of
-  ## the output.
+  # If removed down to one treatment, treatment is not a column of
+  # the output.
   expect_equal(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
@@ -50,22 +50,22 @@ test_that("pk.tss.data.prep", {
                                 time.dosing=time.dosing.test),
                data.frame(conc=1, time=0))
 
-  ## If no treatment is given, it still works.
+  # If no treatment is given, it still works.
   expect_equal(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
                                 time.dosing=time.dosing.test),
                data.frame(conc=1, time=0))
 
-  ## If no subject is given, it still works
+  # If no subject is given, it still works
   expect_equal(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 treatment=treatment.test,
                                 time.dosing=time.dosing.test),
                data.frame(conc=1, time=0))
   
-  ## What do we actually expect to get out?
-  ## Check a single row output dropping treatment
+  # What do we actually expect to get out?
+  # Check a single row output dropping treatment
   expect_equal(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
@@ -74,14 +74,14 @@ test_that("pk.tss.data.prep", {
                                 subject.dosing=subject.test),
                data.frame(time=0, conc=1))
 
-  ## Check a single row output with no treatment given
+  # Check a single row output with no treatment given
   expect_equal(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
                                 time.dosing=time.dosing.test),
                data.frame(conc=1, time=0))
 
-  ## Check a multi-row output with treatments kept
+  # Check a multi-row output with treatments kept
   conc.test <- 1:10
   time.test <- rep(0:4, 2)
   subject.test <- letters[1:10]
@@ -104,7 +104,7 @@ test_that("pk.tss.data.prep", {
     check.attributes=FALSE
   )
 
-  ## Check a multi-row output with treatments dropped
+  # Check a multi-row output with treatments dropped
   conc.test <- 1:10
   time.test <- rep(0:4, 2)
   subject.test <- letters[1:10]
@@ -128,8 +128,8 @@ test_that("pk.tss.data.prep", {
   )
 })
 
-## This data will be used multiple times in testing, and it is
-## nontrivial to create.
+# This data will be used multiple times in testing, and it is
+# nontrivial to create.
 generate.data <- function() {
   set.seed(5)
   tmpdata <-
@@ -155,14 +155,14 @@ generate.data <- function() {
                        (1-exp(log(1-0.9)*time/(tss.mean*exp(tss.re)))))
   tmpdata
 }
-## Note that this graphically represents the test
-## library(latticeExtra)
-## (xyplot(conc~time|treatment,
-##         groups=subject,
-##         data=generate.data(),
-##         type="l") +
-##  layer(panel.abline(h=5, col="gray", lty=2), packets=1) +
-##  layer(panel.abline(h=10, col="gray", lty=2), packets=2))
+# Note that this graphically represents the test
+# library(latticeExtra)
+# (xyplot(conc~time|treatment,
+#         groups=subject,
+#         data=generate.data(),
+#         type="l") +
+#  layer(panel.abline(h=5, col="gray", lty=2), packets=1) +
+#  layer(panel.abline(h=10, col="gray", lty=2), packets=2))
 
 test_that("pk.tss.stepwise.linear", {
   tmpdata <- generate.data()
@@ -187,7 +187,7 @@ test_that("pk.tss.stepwise.linear", {
     regexp="Only first value of min.points is used",
     info="pk.tss.stepwise.linear 2")
 
-  ## Check the level input
+  # Check the level input
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -252,7 +252,7 @@ test_that("pk.tss.stepwise.linear", {
     regexp="Only first value of level is being used",
     info="pk.tss.stepwise.linear 8")
 
-  ## This is mainly to test verbosity
+  # This is mainly to test verbosity
   expect_warning(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -264,7 +264,7 @@ test_that("pk.tss.stepwise.linear", {
     regexp="Only first value of level is being used",
     info="pk.tss.stepwise.linear 9")
 
-  ## Ensure that the first value really is used
+  # Ensure that the first value really is used
   expect_warning(v1 <-
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -284,7 +284,7 @@ test_that("pk.tss.stepwise.linear", {
                            verbose=FALSE),
     info="pk.tss.stepwise.linear 10")
 
-  ## Confirm testing for minimum number of data points
+  # Confirm testing for minimum number of data points
   expect_warning(
     v1 <- pk.tss.stepwise.linear(conc=tmpdata$conc,
                                  time=tmpdata$time,
@@ -307,7 +307,7 @@ test_that("pk.tss.stepwise.linear", {
                            verbose=FALSE),
     regexp="After removing non-dosing time points, insufficient data remains for tss calculation")
 
-  ## Confirm the glm model works when subject-level data is not given.
+  # Confirm the glm model works when subject-level data is not given.
   expect_equal(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -354,7 +354,7 @@ test_that("pk.tss.monoexponential", {
     info="pk.tss.monoexponential 1"
   )
 
-  ## Warnings and errors
+  # Warnings and errors
   expect_warning(
     pk.tss.monoexponential(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -420,7 +420,7 @@ test_that("pk.tss.monoexponential", {
 })
 
 test_that("pk.tss", {
-  ## Ensure that pk.tss will go to the correct type of model
+  # Ensure that pk.tss will go to the correct type of model
   tmpdata <- generate.data()
   expect_equal(
     expect_warning(
@@ -457,7 +457,7 @@ test_that("pk.tss", {
                            time.dosing=0:14,
                            verbose=FALSE))
 
-  ## pk.tss will calculate both if requested
+  # pk.tss will calculate both if requested
   expect_equal(
     expect_warning(
       pk.tss(conc=tmpdata$conc,

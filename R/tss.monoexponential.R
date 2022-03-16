@@ -39,7 +39,7 @@ pk.tss.monoexponential <- function(...,
                                      "single"),
                                    check=TRUE,
                                    verbose=FALSE) {
-  ## Check inputs
+  # Check inputs
   modeldata <- pk.tss.data.prep(..., check=check)
   if (is.factor(tss.fraction) |
       !is.numeric(tss.fraction))
@@ -53,8 +53,8 @@ pk.tss.monoexponential <- function(...,
   } else if (tss.fraction < 0.8) {
     warning("tss.fraction is usually >= 0.8")
   }
-  ## Note that this will by default choose "population" if nothing is
-  ## requested.
+  # Note that this will by default choose "population" if nothing is
+  # requested.
   output <- match.arg(output, several.ok=TRUE)
   if (!("subject" %in% names(modeldata))) {
     if (any(c("population", "popind", "individual") %in% output)) {
@@ -63,8 +63,8 @@ pk.tss.monoexponential <- function(...,
       output <- setdiff(output, c("population", "popind", "individual"))
     }
   }
-  ## Set the tss.constant so that exp(tss.constant) == tss.fraction so
-  ## that the model below solves for the requested tss.
+  # Set the tss.constant so that exp(tss.constant) == tss.fraction so
+  # that the model below solves for the requested tss.
   modeldata$tss.constant <- log(1-tss.fraction)
   ret_population <-
     if (any(c("population", "popind") %in% output)) {
@@ -104,13 +104,13 @@ pk.tss.monoexponential <- function(...,
 #' @return a list with elements for each of the variables
 #' @importFrom stats median
 tss.monoexponential.generate.formula <- function(data) {
-  ## Setup the correct ctrough.ss by treatment or not.
+  # Setup the correct ctrough.ss by treatment or not.
   if ("treatment" %in% names(data)) {
     ctrough.by <-
       list("Ctrough.ss by treatment"=list(
         formula=ctrough.ss~treatment-1,
-        ## Set the starting values for the ctrough.ss as the mean
-        ## concentration by treatment
+        # Set the starting values for the ctrough.ss as the mean
+        # concentration by treatment
         start=dplyr::summarize_(
           dplyr::group_by_(data, "treatment"),
           .dots=list(conc.mean=~mean(conc)))$conc.mean))
@@ -118,11 +118,11 @@ tss.monoexponential.generate.formula <- function(data) {
     ctrough.by <-
       list("Single Ctrough.ss"=list(
         formula=ctrough.ss~1,
-        ## Set the starting values for the ctrough.ss as the mean
-        ## concentration.
+        # Set the starting values for the ctrough.ss as the mean
+        # concentration.
         start=mean(data$conc)))
   }
-  ## Try all combinations of Tss by treatment and single value
+  # Try all combinations of Tss by treatment and single value
   tss.by <- list(
     "Single value for Tss"=list(
       formula=tss~1,
@@ -132,13 +132,13 @@ tss.monoexponential.generate.formula <- function(data) {
       formula=tss~treatment,
       start=rep(stats::median(unique(data$time)),
         length(unique(data$treatment))))
-  ## Try combinations of random effects with Ctrough.ss and
-  ## Tss. (These are returned even if they aren't always used)
+  # Try combinations of random effects with Ctrough.ss and
+  # Tss. (These are returned even if they aren't always used)
   ranef.by <-
     list("Ctrough.ss and Tss"=list(formula=ctrough.ss+tss~1|subject),
          "Tss"=list(formula=tss~1|subject),
          "Ctrough.ss"=list(formula=ctrough.ss~1|subject))
-  ## Return the list of parameters to test
+  # Return the list of parameters to test
   list(
     ctrough.by=ctrough.by,
     tss.by=tss.by,
@@ -178,23 +178,23 @@ pk.tss.monoexponential.population <- function(data,
                                               verbose=FALSE) {
   output <- match.arg(output, several.ok=TRUE)
   test.formula <- tss.monoexponential.generate.formula(data)
-  ## Loop over creating all models
+  # Loop over creating all models
   models <- list()
   for (myctrough.ss in names(test.formula$ctrough.by)) {
     for (mytss in names(test.formula$tss.by)) {
       for (myranef in names(test.formula$ranef.by)) {
-        ## Describe the current model
+        # Describe the current model
         current.desc <-
           sprintf("Fixed effects of %s and %s; random effects of %s",
                   myctrough.ss, mytss, myranef)
         if (verbose)
           print(current.desc)
-        ## Be prepared for failure
+        # Be prepared for failure
         current.model <- NA
         current.aic <- NA
         current.model.summary <- "Did not converge"
         try({
-          ## Test the current model
+          # Test the current model
           current.model <-
             nlme::nlme(conc~ctrough.ss*(1-exp(tss.constant*time/tss)),
                        fixed=list(
@@ -206,14 +206,14 @@ pk.tss.monoexponential.population <- function(data,
                          test.formula$tss.by[[mytss]]$start),
                        data=data,
                        verbose=verbose)
-          ## If the model converges, get the summary and AIC out.
+          # If the model converges, get the summary and AIC out.
           if (!is.null(current.model)) {
             current.model.summary <- summary(current.model)
             current.aic <- stats::AIC(current.model)
           }
         }, silent=!verbose)
-        ## Put the current model (or model attempt) into the list of
-        ## models.
+        # Put the current model (or model attempt) into the list of
+        # models.
         models <-
           append(
             models,
@@ -229,7 +229,7 @@ pk.tss.monoexponential.population <- function(data,
       }
     }
   }
-  ## Find the best model of the set and return the output from that one.
+  # Find the best model of the set and return the output from that one.
   all.model.summary <- AIC.list(lapply(models, function(x) x$model))
   rownames(all.model.summary) <- sapply(models, function(x) x$desc)
   if (verbose)
@@ -280,7 +280,7 @@ pk.tss.monoexponential.population <- function(data,
         )
     }
   }
-  ## Return the requested columns
+  # Return the requested columns
   ret[,intersect(c("subject", "treatment",
                    paste("tss.monoexponential", output, sep=".")),
                  names(ret)),
@@ -342,7 +342,7 @@ pk.tss.monoexponential.individual <- function(data,
     tss
   }
   output <- match.arg(output, several.ok=TRUE)
-  ## Run by treatment or a single value for the full data frame
+  # Run by treatment or a single value for the full data frame
   data_maybe_grouped <-
     if ("treatment" %in% names(data)) {
       data %>%
@@ -392,7 +392,7 @@ pk.tss.monoexponential.individual <- function(data,
       )
     ret <- merge(ret, ret.sub, all=TRUE)
   }
-  ## Return the requested columns
+  # Return the requested columns
   as.data.frame(
     ret[,c(intersect(names(ret), c("subject", "treatment")),
            paste("tss.monoexponential", output, sep=".")),

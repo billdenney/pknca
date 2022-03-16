@@ -203,7 +203,6 @@ test_that("aucint respects doses", {
                pk.calc.aucint(conc=tmpdata_blq$conc, time=tmpdata_blq$time,
                               interval=c(0, 4), auc.type="AUCall"),
                info="Calculation with dosing at a time after all observations causes no change.")
-  ## FINDME
   # expect_warning(no_lambda.z_dose <-
   #                  pk.calc.aucint(conc=tmpdata_blq$conc, time=tmpdata_blq$time,
   #                                 interval=c(0, 4), auc.type="AUCall", time.dose=time.dose_between),

@@ -21,7 +21,7 @@
 pk.calc.c0 <- function(conc, time, time.dose=0,
                        method=c("c0", "logslope", "c1", "cmin", "set0"),
                        check=TRUE) {
-  ## Check the inputs
+  # Check the inputs
   if (check)
     check.conc.time(conc, time)
   if (length(time.dose) != 1)
@@ -33,7 +33,7 @@ pk.calc.c0 <- function(conc, time, time.dose=0,
     return(NA)
   }
   method <- match.arg(method, several.ok=TRUE)
-  ## Find the value
+  # Find the value
   ret <- NA
   while (is.na(ret) &
          length(method) > 0) {
@@ -64,7 +64,7 @@ pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
   positive.time <- time[mask.positive.time]
   if (length(positive.time) < 2)
     return(NA)
-  ## If there is enough data, proceed to calculate
+  # If there is enough data, proceed to calculate
   mask.1 <- time %in% positive.time[1]
   mask.2 <- time %in% positive.time[2]
   c1 <- conc[mask.1]
@@ -84,8 +84,8 @@ pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
 pk.calc.c0.method.c0 <- function(conc, time, time.dose=0, check=TRUE) {
   if (check)
     check.conc.time(conc, time)
-  ## If there is a non-missing and nonzero concentration measurement
-  ## at time.dose, that's our answer.
+  # If there is a non-missing and nonzero concentration measurement
+  # at time.dose, that's our answer.
   mask.dose <- (time %in% time.dose &
                 !(conc %in% c(NA, 0)))
   if (any(mask.dose)) {

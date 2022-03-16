@@ -25,7 +25,7 @@
 #' }
 #' @examples
 #' parseFormula("a~b", require.groups=FALSE)
-#' ## parseFormula("a~b", require.groups=TRUE) # This is an error
+#' # parseFormula("a~b", require.groups=TRUE) # This is an error
 #' parseFormula("a~b|c")
 #' parseFormula("a~b|c")$groups
 #' @family Formula parsing
@@ -34,7 +34,7 @@
 parseFormula <- function (form,
                           require.groups=FALSE,
                           require.two.sided=FALSE) {
-  ## If it is not a formula, make it a formula if possible
+  # If it is not a formula, make it a formula if possible
   if (!inherits(form, "formula")) {
     made.formula <- FALSE
     try({
@@ -44,8 +44,8 @@ parseFormula <- function (form,
     if (!made.formula)
       stop("form must be a formula object or coercable into one")
   }
-  ## Check how many sides the formula has and extract the left and
-  ## right sides
+  # Check how many sides the formula has and extract the left and
+  # right sides
   lhs <- findOperator(form, "~", "left")
   rhs <- findOperator(form, "~", "right")
   groups <- findOperator(rhs, "|", "right")
@@ -138,22 +138,22 @@ findOperator <- function(x, op, side) {
   side <- match.arg(tolower(side),
                     choices=c("left", "right", "both"))
   if (inherits(x, "name")) {
-    ## This is a specific variable, we never found the operator going
-    ## down this branch of the tree.
+    # This is a specific variable, we never found the operator going
+    # down this branch of the tree.
     return(NULL)
   } else if (is.null(x)) {
     return(NULL)
   } else if (inherits(x, "call") |
              inherits(x, "formula") |
              inherits(x, "(")) {
-    ## This is all or part of a formula
+    # This is all or part of a formula
     op <- as.name(op)
     if (identical(x[[1]], op)) {
-      ## We found the operator
+      # We found the operator
       if (length(x) == 1) {
         stop("call or formula with length 1 found after finding the operator, unknown how to proceed") # nocov
       } else if (length(x) == 2) {
-        ## Unary operators have a right hand side only
+        # Unary operators have a right hand side only
         if (side == "left") {
           return(NA)
         } else if (side == "right") {
@@ -163,7 +163,7 @@ findOperator <- function(x, op, side) {
         }
         stop("Unknown side with a found unary operator") # nocov
       } else if (length(x) == 3) {
-        ## Binary operator
+        # Binary operator
         if (side == "left") {
           return(x[[2]])
         } else if (side == "right") {
@@ -174,10 +174,10 @@ findOperator <- function(x, op, side) {
         stop("Unknown side with a found binary operator") # nocov
       }
     } else {
-      ## Go down the left then right side of the tree
+      # Go down the left then right side of the tree
       if (length(x) == 1)
         stop("call or formula with length 1 found without finding the operator, unknown how to proceed")
-      ## First search the left side
+      # First search the left side
       ret <- findOperator(x[[2]], op, side)
       if ((identical(ret, NA) |
            is.null(ret)) &
@@ -185,7 +185,7 @@ findOperator <- function(x, op, side) {
         ret <- findOperator(x[[3]], op, side)
     }
   } else {
-    ## This should not happen-- find the class that the object is
+    # This should not happen-- find the class that the object is
     stop(sprintf("Cannot handle class %s",
          paste(class(x), sep=", ")))
   }

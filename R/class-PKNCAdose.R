@@ -61,20 +61,19 @@ PKNCAdose.tbl_df <- function(data, ...)
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
                                  time.nominal, exclude, ...) {
-  ## The data must have... data
+  # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
   }
-  ## Check inputs
+  # Check inputs
   if (!missing(time.nominal)) {
     if (!(time.nominal %in% names(data))) {
       stop("time.nominal, if given, must be a column name in the input data.")
     }
   }
-  ## Verify that all the variables in the formula are columns in the
-  ## data.
+  # Verify that all the variables in the formula are columns in the data.
   parsedForm <- parseFormula(formula, require.two.sided=FALSE)
-  ## Check for variable existence and length
+  # Check for variable existence and length
   if (!(length(all.vars(parsedForm$lhs)) %in% c(0, 1)))
     stop("The left side of the formula must have zero or one variable")
   if (!(identical(parsedForm$lhs, NA) ||
@@ -89,7 +88,7 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   if (!all(all.vars(parsedForm$groups) %in% names(data))) {
     stop("All of the variables in the groups must be in the data")
   }
-  ## Values must be unique (one value per measurement)
+  # Values must be unique (one value per measurement)
   key.cols <- c(setdiff(all.vars(parsedForm$rhs), "."),
                 all.vars(parsedForm$groupFormula))
   if (any(mask.dup <- duplicated(data[,key.cols])))

@@ -11,12 +11,12 @@ test_that("PKNCAconc", {
                                   nstudies=2)
   tmp.conc.analyte.study <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
                                           nanalytes=2, nstudies=2)
-  ## Data exists
+  # Data exists
   expect_error(PKNCAconc(data.frame()),
                regexp="data must have at least one row.",
                info="PKNCAconc requires data")
   
-  ## Variables present
+  # Variables present
   expect_error(PKNCAconc(tmp.conc, formula=XXX~time|treatment+ID),
                regexp="All of the variables in the formula must be in the data",
                info="All formula parameters must be in the data (LHS)")
@@ -27,7 +27,7 @@ test_that("PKNCAconc", {
                regexp="All of the variables in the formula must be in the data",
                info="All formula parameters must be in the data (groups)")
 
-  ## Number of variables
+  # Number of variables
   expect_error(PKNCAconc(tmp.conc, formula=conc+ID~time|treatment+ID),
                regexp="The left hand side of the formula must have exactly one variable",
                info="The right number of parameters in the formula (LHS)")
@@ -35,7 +35,7 @@ test_that("PKNCAconc", {
                regexp="The right hand side of the formula \\(excluding groups\\) must have exactly one variable",
                info="The right number of parameters in the formula (RHS)")
 
-  ## Subject assignment
+  # Subject assignment
   expect_equal(PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID/analyte),
                PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID/analyte, subject="ID"))
   expect_error(PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID/analyte, subject=5),
@@ -45,7 +45,7 @@ test_that("PKNCAconc", {
   expect_error(PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID/analyte, subject="foo"),
                regexp="The subject parameter must map to a name in the data")
   
-  ## Keys must be unique
+  # Keys must be unique
   expect_error(PKNCAconc(tmp.conc.analyte, formula=conc~time|treatment+ID),
                regexp="Rows that are not unique per group and time",
                info="Duplicated key rows")

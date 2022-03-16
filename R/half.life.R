@@ -84,7 +84,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
                               first.tmax=NULL,
                               allow.tmax.in.half.life=NULL,
                               check=TRUE) {
-  ## Check inputs
+  # Check inputs
   min.hl.points <-
     PKNCA.choose.option(
       name="min.hl.points", value=min.hl.points, options=options
@@ -115,8 +115,14 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   } else {
     data <- data.frame(conc, time)
   }
+  if (inherits(data$conc, "units")) {
+    conc_units <- units(data$conc)
+  } else {
+    conc_units <- NULL
+  }
   data$log_conc <- log(data$conc)
-  data <- data[data$conc > 0,]
+  # as.numeric() to handle units objects
+  data <- data[as.numeric(data$conc) > 0,]
   # Prepare the return values
   ret <- data.frame(
     # Terminal elimination slope
@@ -151,15 +157,17 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   } else {
     ret$tlast <- tlast
   }
-  ## Data frame to use for computation of half-life
+  # Data frame to use for computation of half-life
   if (allow.tmax.in.half.life) {
-    dfK <- data[data$time >= ret$tmax, ]
+    # as.numeric is for units handling
+    dfK <- data[as.numeric(data$time) >= as.numeric(ret$tmax), ]
   } else {
-    dfK <- data[data$time > ret$tmax, ]
+    # as.numeric is for units handling
+    dfK <- data[as.numeric(data$time) > as.numeric(ret$tmax), ]
   }
   if (manually.selected.points) {
     if (nrow(data) > 0) {
-      fit <- fit_half_life(data=data, tlast=ret$tlast)
+      fit <- fit_half_life(data=data, tlast=ret$tlast, conc_units=conc_units)
       ret[,ret_replacements] <- fit[,ret_replacements]
     } else {
       warning("No data to manually fit for half-life (all concentrations may be 0 or excluded)")
@@ -170,7 +178,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         )
     }
   } else if (nrow(dfK) >= min.hl.points) {
-    ## If we have enough data to estimate a slope, then
+    # If we have enough data to estimate a slope, then
     half_lives_for_selection <-
       data.frame(
         r.squared=-Inf,
@@ -186,20 +194,22 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     half_lives_for_selection <-
       half_lives_for_selection[order(-half_lives_for_selection$lambda.z.time.first), ]
     for(i in min.hl.points:nrow(half_lives_for_selection)) {
-      ## Fit the terminal slopes until the adjusted r-squared value
-      ## is not improving (or it only gets worse by a small factor).
+      # Fit the terminal slopes until the adjusted r-squared value
+      # is not improving (or it only gets worse by a small factor).
       fit <-
         fit_half_life(
           data=
             data.frame(
+              # pass in the conc so that we can use its units, if applicable
               log_conc=half_lives_for_selection$log_conc[1:i],
               time=half_lives_for_selection$lambda.z.time.first[1:i]
             ),
-          tlast=ret$tlast
+          tlast=ret$tlast,
+          conc_units=conc_units
         )
       half_lives_for_selection[i,names(fit)] <- fit
     }
-    ## Find the best model
+    # Find the best model
     mask_best <-
       half_lives_for_selection$lambda.z > 0 &
       if (min.hl.points == 2 & nrow(half_lives_for_selection) == 2) {
@@ -209,18 +219,18 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         half_lives_for_selection$adj.r.squared >
           (max(half_lives_for_selection$adj.r.squared, na.rm=TRUE) - adj.r.squared.factor)
       }
-    ## Missing values are not the best
+    # Missing values are not the best
     mask_best[is.na(mask_best)] <- FALSE
     if (sum(mask_best) > 1) {
-      ## If more than one models qualify, choose the one with the
-      ## most points used.
+      # If more than one models qualify, choose the one with the
+      # most points used.
       mask_best <-
         (mask_best &
            half_lives_for_selection$lambda.z.n.points == max(half_lives_for_selection$lambda.z.n.points[mask_best]))
     }
-    ## If the half-life fit, set all associated parameters
+    # If the half-life fit, set all associated parameters
     if (any(mask_best)) {
-      ## Put in all the computed values
+      # Put in all the computed values
       ret[,ret_replacements] <- half_lives_for_selection[mask_best, ret_replacements]
     }
   } else {
@@ -231,7 +241,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       )
     warning(attr(ret, "exclude"))
   }
-  ## Drop the inputs of tmax and tlast, if given.
+  # Drop the inputs of tmax and tlast, if given.
   if (!missing(tmax))
     ret$tmax <- NULL
   if (!missing(tlast))
@@ -247,20 +257,46 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
 #'   and "time"
 #' @param tlast The time of last observed concentration above the limit
 #'   of quantification.
+#' @param conc_units NULL or the units to set for concentration measures
 #' @return A data.frame with one row and columns named "r.squared", 
 #'   "adj.r.squared", "PROB", "lambda.z", "clast.pred", 
 #'   "lambda.z.n.points", "half.life", "span.ratio"
 #' @seealso \code{\link{pk.calc.half.life}}
 #' @importFrom stats .lm.fit
-fit_half_life <- function(data, tlast) {
+fit_half_life <- function(data, tlast, conc_units) {
   fit <- stats::.lm.fit(x=cbind(1, data$time), y=data$log_conc)
-  r_squared <- 1 - sum(fit$residuals^2)/sum((data$log_conc - mean(data$log_conc))^2)
+  # unit handling
+  if (inherits(tlast, "units")) {
+    time_units <- units(tlast)
+  } else if (inherits(tlast, "mixed_units")) {
+    time_units <- units(units::as_units(tlast))
+  } else {
+    time_units <- NULL
+  }
+  if (!is.null(time_units)) {
+    inverse_time_units <- time_units
+    inverse_time_units$numerator <- time_units$denominator
+    inverse_time_units$denominator <- time_units$numerator
+  } else {
+    inverse_time_units <- NULL
+  }
+
+  # as.numeric is so that it works for units objects
+  r_squared <- 1 - as.numeric(sum(fit$residuals^2))/as.numeric(sum((data$log_conc - mean(data$log_conc))^2))
+  clast_pred <- exp(sum(fit$coefficients*c(1, as.numeric(tlast))))
+  if (!is.null(conc_units)) {
+    clast_pred <- units::set_units(clast_pred, conc_units, mode="standard")
+  }
+  lambda_z <- -fit$coefficients[2]
+  if (!is.null(inverse_time_units)) {
+    lambda_z <- units::set_units(lambda_z, inverse_time_units, mode="standard")
+  }
   ret <-
     data.frame(
       r.squared=r_squared,
       adj.r.squared=adj.r.squared(r_squared, nrow(data)),
-      lambda.z=-fit$coefficients[2],
-      clast.pred=exp(sum(fit$coefficients*c(1, tlast))),
+      lambda.z=lambda_z,
+      clast.pred=clast_pred,
       lambda.z.time.first=min(data$time, na.rm=TRUE),
       lambda.z.n.points=nrow(data)
     )
@@ -269,7 +305,7 @@ fit_half_life <- function(data, tlast) {
   ret
 }
 
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("half.life",
                  FUN="pk.calc.half.life",
                  values=c(FALSE, TRUE),

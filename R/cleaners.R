@@ -23,10 +23,10 @@ clean.conc.na <- function(conc, time, ...,
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check)
     check.conc.time(conc, time)
-  ## Prep it as a data frame
+  # Prep it as a data frame
   ret <- data.frame(conc, time, ..., stringsAsFactors=FALSE)
   if (conc.na %in% "drop") {
-    ## If it is set to "drop" then omit the NA concentrations
+    # If it is set to "drop" then omit the NA concentrations
     ret <- ret[!is.na(conc),]
   } else if (is.numeric(conc.na)) {
     ret$conc[is.na(conc)] <- conc.na
@@ -92,24 +92,24 @@ clean.conc.blq <- function(conc, time,
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check)
     check.conc.time(conc, time)
-  ## Handle NA concentrations and make the data frame
+  # Handle NA concentrations and make the data frame
   ret <- clean.conc.na(conc, time, ..., conc.na=conc.na, check=FALSE)
-  ## If all data has been excluded, then don't do anything
+  # If all data has been excluded, then don't do anything
   if (nrow(ret) > 0) {
     tfirst <- pk.calc.tfirst(ret$conc, ret$time, check=FALSE)
     if (is.na(tfirst)) {
-      ## All measurements are BLQ; so apply the "first" BLQ rule to
-      ## everyting.
+      # All measurements are BLQ; so apply the "first" BLQ rule to
+      # everyting.
       tfirst <- max(ret$time)
       tlast <- tfirst + 1
     } else {
-      ## There is at least one above LOQ concentration
+      # There is at least one above LOQ concentration
       tlast <- pk.calc.tlast(ret$conc, ret$time, check=FALSE)
     }
-    ## For each of the first, middle, and last, do the right thing to
-    ## the values in that set.
+    # For each of the first, middle, and last, do the right thing to
+    # the values in that set.
     for (n in c("first", "middle", "last")) {
-      ## Set the mask to apply the rule to
+      # Set the mask to apply the rule to
       if (n == "first") {
         mask <- (ret$time <= tfirst &
                    ret$conc %in% 0)
@@ -123,7 +123,7 @@ clean.conc.blq <- function(conc, time,
       } else {
         stop("There is a bug in cleaning the conc.blq with position names") # nocov
       }
-      ## Choose the rule to apply
+      # Choose the rule to apply
       this_rule <-
         if (is.list(conc.blq)) {
           conc.blq[[n]]
@@ -131,7 +131,7 @@ clean.conc.blq <- function(conc, time,
           conc.blq
         }
       if (this_rule %in% "keep") {
-        ## Do nothing
+        # Do nothing
       } else if (this_rule %in% "drop") {
         ret <- ret[!mask,]
       } else if (is.numeric(this_rule)) {

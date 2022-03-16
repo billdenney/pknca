@@ -146,7 +146,7 @@ interpolate.conc <- function(conc, time, time.out,
                              conc.origin=0,
                              ...,
                              check=TRUE) {
-  ## Check the inputs
+  # Check the inputs
   interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
@@ -168,8 +168,8 @@ interpolate.conc <- function(conc, time, time.out,
   if (!(is.na(conc.origin) | (is.numeric(conc.origin) & !is.factor(conc.origin)))) {
     stop("conc.origin must be NA or a number (and not a factor)")
   }
-  ## Verify that we are interpolating between the first concentration
-  ## and the last above LOQ concentration
+  # Verify that we are interpolating between the first concentration
+  # and the last above LOQ concentration
   if (length(time.out) != 1) {
     stop("Can only interpolate for one time point per function call")
   }
@@ -179,12 +179,12 @@ interpolate.conc <- function(conc, time, time.out,
   } else if (time.out > tlast) {
     stop("`interpolate.conc()` can only works through Tlast, please use `interp.extrap.conc()` to combine both interpolation and extrapolation.")
   } else if (time.out %in% data$time) {
-    ## See if there is an exact time match and return that if it
-    ## exists.
+    # See if there is an exact time match and return that if it
+    # exists.
     ret <- conc[time.out == data$time]
   } else {
-    ## Find the last time before and the first time after the output
-    ## time.
+    # Find the last time before and the first time after the output
+    # time.
     time_1 <- max(data$time[data$time <= time.out])
     time_2 <- min(data$time[time.out <= data$time])
     conc_1 <- data$conc[data$time == time_1]
@@ -196,11 +196,11 @@ interpolate.conc <- function(conc, time, time.out,
         (interp.method == "lin up/log down" &
          ((conc_1 <= 0 | conc_2 <= 0) |
           (conc_1 <= conc_2)))) {
-      ## Do linear interpolation if:
-      ##   linear interpolation is selected or
-      ##   lin up/log down interpolation is selected and
-      ##     one concentration is 0 or
-      ##     the concentrations are equal
+      # Do linear interpolation if:
+      #   linear interpolation is selected or
+      #   lin up/log down interpolation is selected and
+      #     one concentration is 0 or
+      #     the concentrations are equal
       ret <- conc_1+(time.out-time_1)/(time_2-time_1)*(conc_2-conc_1)
     } else if (interp.method == "lin up/log down") {
       ret <-
@@ -245,40 +245,40 @@ extrapolate.conc <- function(conc, time, time.out,
     stop("Only one time.out value may be estimated at once.")
   tlast <- pk.calc.tlast(conc=data$conc, time=data$time, check=FALSE)
   if (is.na(tlast)) {
-    ## If there are no observed concentrations, return NA
+    # If there are no observed concentrations, return NA
     ret <- NA
   } else if (time.out <= tlast) {
     stop("extrapolate.conc can only work beyond Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation.")
   } else {
-    ## Start the interpolation
+    # Start the interpolation
     if (extrap.method %in% "aucinf") {
-      ## If AUCinf is requested, extrapolate using the half-life
+      # If AUCinf is requested, extrapolate using the half-life
       ret <- clast*exp(-lambda.z*(time.out - tlast))
     } else if (extrap.method %in% "auclast" |
                  (extrap.method %in% "aucall" &
                     tlast == max(data$time))) {
-      ## If AUClast is requested or AUCall is requested and there are
-      ## no BLQ at the end, we are already certain that we are after
-      ## Tlast, so the answer is 0.
+      # If AUClast is requested or AUCall is requested and there are
+      # no BLQ at the end, we are already certain that we are after
+      # Tlast, so the answer is 0.
       ret <- 0
     } else if (extrap.method %in% "aucall") {
-      ## If the last non-missing concentration is below the limit of
-      ## quantification, extrapolate with the triangle method of
-      ## AUCall.
+      # If the last non-missing concentration is below the limit of
+      # quantification, extrapolate with the triangle method of
+      # AUCall.
       time_prev <- max(data$time[data$time <= time.out])
       conc_prev <- data$conc[data$time %in% time_prev]
       if (conc_prev %in% 0) {
-        ## If we are already BLQ, then we have confirmed that there
-        ## are no more ALQ measurements (because we are beyond
-        ## Tlast) and therefore we can extrapolate as 0.
+        # If we are already BLQ, then we have confirmed that there
+        # are no more ALQ measurements (because we are beyond
+        # Tlast) and therefore we can extrapolate as 0.
         ret <- 0
       } else {
         if (time_prev != max(data$time)) {
           time_next <- min(data$time[data$time >= time.out])
         }
-        ## If we are not already BLQ, then we have confirmed that we
-        ## are in the triangle extrapolation region and need to draw
-        ## a line.
+        # If we are not already BLQ, then we have confirmed that we
+        # are in the triangle extrapolation region and need to draw
+        # a line.
         ret <- (time.out - time_prev)/(time_next - time_prev)*conc_prev
       }
     } else {

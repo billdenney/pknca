@@ -14,7 +14,7 @@ local({
   for (n in c("auclast", "aucall", "aucinf.obs", "aucinf.pred",
               "aumclast", "aumcall", "aumcinf.obs", "aumcinf.pred",
               "cmax", "cmin", "clast.obs", "clast.pred", "cav", "ctrough")) {
-    ## Add the column to the interval specification
+    # Add the column to the interval specification
     add.interval.col(
       name=paste(n, "dn", sep="."),
       FUN="pk.calc.dn",

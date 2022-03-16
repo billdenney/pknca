@@ -3,7 +3,7 @@ context("Formula parsing")
 test_that("parseFormula", {
   tmp.env <- new.env()
   
-  ## Parse a rhs-only formula
+  # Parse a rhs-only formula
   f1 <- as.formula("~a", env=tmp.env)
   r1 <- list(model=~a,
              lhs=NA,
@@ -15,7 +15,7 @@ test_that("parseFormula", {
                r1,
                check.attributes=FALSE)
 
-  ## Parse a lhs and rhs formula
+  # Parse a lhs and rhs formula
   f2 <- as.formula("a~b", env=tmp.env)
   r2 <- list(model=a~b,
              lhs=as.name("a"),
@@ -27,7 +27,7 @@ test_that("parseFormula", {
                r2,
                check.attributes=FALSE)
 
-  ## Parse a rhs formula with groups
+  # Parse a rhs formula with groups
   f3 <- as.formula("~a|b", env=tmp.env)
   r3 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
@@ -39,7 +39,7 @@ test_that("parseFormula", {
                r3,
                check.attributes=FALSE)
 
-  ## Parse a rhs formula with nested groups
+  # Parse a rhs formula with nested groups
   f4 <- as.formula("~a|b/c", env=tmp.env)
   r4 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
@@ -51,7 +51,7 @@ test_that("parseFormula", {
                r4,
                check.attributes=FALSE)
   
-  ## Parse a rhs formula with crossed groups
+  # Parse a rhs formula with crossed groups
   f5 <- as.formula("~a|b+c", env=tmp.env)
   r5 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
@@ -63,7 +63,7 @@ test_that("parseFormula", {
                r5,
                check.attributes=FALSE)
 
-  ## Parse a rhs formula with crossed and nested groups
+  # Parse a rhs formula with crossed and nested groups
   f6 <- as.formula("~a|b/c+d/e", env=tmp.env)
   r6 <- list(model=as.formula(~a, env=tmp.env),
              lhs=NA,
@@ -77,7 +77,7 @@ test_that("parseFormula", {
                r6,
                check.attributes=FALSE)
 
-  ## Parse a lhs and rhs formula with crossed and nested groups
+  # Parse a lhs and rhs formula with crossed and nested groups
   f7 <- as.formula("a~b+c|d/e+f/g", env=tmp.env)
   r7 <- list(model=as.formula(a~b+c, env=tmp.env),
              lhs=as.name("a"),
@@ -91,8 +91,8 @@ test_that("parseFormula", {
                r7,
                check.attributes=FALSE)
 
-  ## Ensure that things can be coerced into formulas (ignoring the
-  ## environment of the response)
+  # Ensure that things can be coerced into formulas (ignoring the
+  # environment of the response)
   f8 <- "a~b|c"
   r8 <- list(model=as.formula(a~b),
              lhs=as.name("a"),
@@ -105,11 +105,11 @@ test_that("parseFormula", {
                r8,
                check.attributes=FALSE)
 
-  ## If it can't be made into a formula, get an error.
+  # If it can't be made into a formula, get an error.
   expect_error(parseFormula(5),
                regexp="form must be a formula object or coercable into one")
 
-  ## Test the requirements of the formula
+  # Test the requirements of the formula
   expect_equal(parseFormula(f7, require.groups=TRUE),
                r7,
                check.attributes=FALSE)
@@ -144,7 +144,7 @@ test_that("formula.parseFormula", {
   f7 <- as.formula("a+b~c+d|e+f/g", env=tmp.env)
   expect_equal(formula(parseFormula(f7)), f7)
 
-  ## Test dropping parts
+  # Test dropping parts
   r7rhs <- as.formula("~c+d|e+f/g", env=tmp.env)
   expect_equal(formula(parseFormula(f7), drop.lhs=TRUE),
                r7rhs)
@@ -157,7 +157,7 @@ test_that("formula.parseFormula", {
                        drop.groups=TRUE),
                r7rhsg)
 
-  ## Confirm that the environment is preserved
+  # Confirm that the environment is preserved
   expect_false(identical(formula(parseFormula("~a")), f1))
 })
 
@@ -173,7 +173,7 @@ test_that("print.parseFormula", {
 })
 
 test_that("findOperator", {
-  ## Check the left, right, and both sides of various operators
+  # Check the left, right, and both sides of various operators
   f1 <- a~b
   expect_equal(findOperator(f1, "~", "both"), f1)
   expect_equal(findOperator(f1, "~", "left"), as.name("a"))
@@ -200,7 +200,7 @@ test_that("findOperator", {
   expect_equal(findOperator(f4, "~", "left"), NA)
   expect_equal(findOperator(f4, "~", "right"), as.name("b"))
 
-  ## Parentheses are handled unusually-- check that they work
+  # Parentheses are handled unusually-- check that they work
   f5 <- a+b~(c+d)
   expect_equal(findOperator(f5, "+", "left"), as.name("a"))
   expect_equal(findOperator(f5, "+", "right"), as.name("b"))
@@ -213,7 +213,7 @@ test_that("findOperator", {
   expect_equal(findOperator(f6, "(", "right"),
                call("+", as.name("c"), as.name("d")))
 
-  ## Grouping is handled correctly
+  # Grouping is handled correctly
   f7 <- a+b~c+d|e
   expect_equal(findOperator(f7, "~", "both"), f7)
   expect_equal(findOperator(f7, "|", "both"),
@@ -222,16 +222,16 @@ test_that("findOperator", {
                          as.name("d")),
                     as.name("e")))
 
-  ## Grouping with parentheses is handled correctly (as used in
-  ## lme4-type formulas)
+  # Grouping with parentheses is handled correctly (as used in
+  # lme4-type formulas)
   f8 <- a+b~c+(d|e)+(f|g/h)
   expect_equal(findOperator(f8, "~", "both"), f8)
   expect_equal(findOperator(f8, "|", "both"),
                call("|",
                     as.name("d"),
                     as.name("e")))
-  ## Sub-searching.  Note: that order of operations for formula group
-  ## from right to left first.
+  # Sub-searching.  Note: that order of operations for formula group
+  # from right to left first.
   expect_equal(
     findOperator(
       findOperator(
@@ -242,10 +242,10 @@ test_that("findOperator", {
          as.name("f"),
          call("/", as.name("g"), as.name("h"))))
 
-  ## When things aren't found, we get a NULL back
+  # When things aren't found, we get a NULL back
   f9 <- a~b
   expect_equal(findOperator(f9, "+", "left"), NULL)
-  ## When getting the left side of a unary operator, we get an NA back
+  # When getting the left side of a unary operator, we get an NA back
   f10 <- a~-b
   expect_equal(findOperator(f10, "-", "left"), NA)
   f11 <- a~!b
@@ -255,10 +255,10 @@ test_that("findOperator", {
   f13 <- a~(b)
   expect_equal(findOperator(f13, "(", "left"), NA)
 
-  ## The side can only be "left", "right", or "both"
+  # The side can only be "left", "right", or "both"
   expect_error(findOperator(f1, "~", "neither"))
 
-  ## When given an invalid class, return an error
+  # When given an invalid class, return an error
   expect_error(findOperator(list(), side="both"),
                regexp="Cannot handle class list")
 })

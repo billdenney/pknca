@@ -3,7 +3,7 @@ context("AUC interval checking")
 test_that(
   "check.interval.specification", {
 
-    ## Get the current name order of the expected results
+    # Get the current name order of the expected results
     nameorder <- names(check.interval.deps(data.frame(start=0, end=1, cmax=TRUE)))
 
     d1 <- data.frame(start=0, end=1)
@@ -20,7 +20,7 @@ test_that(
     expect_equal(d1.check, r1[,nameorder],
                  info="Expand a minimal data frame for interval specification")
 
-    ## Giving one parameter will fill in everything else as false
+    # Giving one parameter will fill in everything else as false
     d2 <- data.frame(start=0, end=1, auclast=TRUE)
     r2 <- data.frame(start=0,
                      end=1,
@@ -31,7 +31,7 @@ test_that(
                  r2[,nameorder],
                  info="Expand a data frame interval specification with only one request given")
 
-    ## start and end must both be specified
+    # start and end must both be specified
     d3 <- data.frame(start=0)
     expect_error(check.interval.specification(d3),
                  regexp="Column\\(s\\) 'end' missing from interval specification",
@@ -45,13 +45,13 @@ test_that(
                  regexp="Column\\(s\\) 'start', 'end' missing from interval specification",
                  info="Confirm start and end columns are in interval specification")
 
-    ## Ensure that there are data
+    # Ensure that there are data
     d6 <- data.frame()
     expect_error(check.interval.specification(d6),
                  regexp="interval specification has no rows",
                  info="It is an error to have an interval specification with no rows")
 
-    ## Confirm specific column values required
+    # Confirm specific column values required
     d7 <- data.frame(start=as.numeric(NA), end=1)
     expect_error(
       check.interval.specification(d7),
@@ -79,7 +79,7 @@ test_that(
                  regexp="start may not be infinite",
                  info="In interval specification, start may not be infinite (negative infinity).")
 
-    ## But it is OK to have an infinite end
+    # But it is OK to have an infinite end
     d13 <- data.frame(start=0, end=Inf)
     r13 <- data.frame(start=0,
                       end=Inf,
@@ -93,8 +93,8 @@ test_that(
     expect_error(check.interval.specification(data.frame(start=-Inf, end=-Inf)),
                  info="In interval specification, end may not be negative infinity (start is -Inf).")
     
-    ## When the no-calculation interval specification is not the first,
-    ## ensure that is warned correctly
+    # When the no-calculation interval specification is not the first,
+    # ensure that is warned correctly
     d14 <- data.frame(start=0, end=24, auclast=c(rep(FALSE, 3), TRUE))
     expect_warning(check.interval.specification(d14),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 1, 2, 3",
@@ -105,8 +105,8 @@ test_that(
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 4",
                    info="Warn when nothing is to be calculated in one but not all rows of the specification.")
 
-    ## Other information is passed through untouched after all the
-    ## calculation columns
+    # Other information is passed through untouched after all the
+    # calculation columns
     d15 <- data.frame(start=0, end=Inf, treatment="foo",
                       stringsAsFactors=FALSE)
     r15 <- data.frame(start=0,
@@ -129,7 +129,7 @@ test_that(
 })
 
 test_that("check.interval.deps", {
-  ## Get the current name order of the expected results
+  # Get the current name order of the expected results
   nameorder <- names(check.interval.deps(data.frame(start=0, end=1, cmax=TRUE)))
 
   r1 <- data.frame(start=0,
