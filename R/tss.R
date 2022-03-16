@@ -24,12 +24,12 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
                              conc.blq=NULL,
                              conc.na=NULL,
                              check=TRUE, ...) {
-  ## Check inputs
+  # Check inputs
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    ## When subject and time are given, then monotonicity tests for
-    ## time are not required.
+    # When subject and time are given, then monotonicity tests for
+    # time are not required.
     monotonic.time <- missing(subject) & missing(treatment)
     check.conc.time(conc, time, monotonic.time=monotonic.time)
   }
@@ -57,7 +57,7 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
                           check=FALSE)
   }
   if (missing(subject.dosing)) {
-    ## Shrink the data to just the predose data
+    # Shrink the data to just the predose data
     ret <- subset(ret, time %in% time.dosing)
   } else {
     dosing <-
@@ -66,27 +66,27 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
         time=time.dosing,
         stringsAsFactors=FALSE
       )
-    ## Shrink the data to just the predose data (by subject)
+    # Shrink the data to just the predose data (by subject)
     ret <- merge(ret, dosing)
   }
-  ## Clean out unnecessary parts of the output data frame
+  # Clean out unnecessary parts of the output data frame
   if ("subject" %in% names(ret)) {
     if (length(unique(ret$subject)) == 1) {
-      ## Drop the "subject" column from single-subject data
+      # Drop the "subject" column from single-subject data
       ret$subject <- NULL
     } else if (!is.factor(ret$subject)) {
-      ## Make sure that it is a factor made from a character vector because the
-      ## output subject numbering will come from row.names of the random
-      ## effects.
+      # Make sure that it is a factor made from a character vector because the
+      # output subject numbering will come from row.names of the random
+      # effects.
       ret$subject <- factor(as.character(ret$subject))
     }
   }
   if ("treatment" %in% names(ret)) {
     if (length(unique(ret$treatment)) == 1) {
-      ## Drop the "treatment" column from single-treatment data
+      # Drop the "treatment" column from single-treatment data
       ret$treatment <- NULL
     } else if (!is.factor(ret$treatment)) {
-      ## Make sure that it is a factor otherwise
+      # Make sure that it is a factor otherwise
       ret$treatment <- factor(ret$treatment)
     }
   }
@@ -116,8 +116,8 @@ pk.tss <- function(...,
     } else {
       stop("Bug in pk.tss where ret is set to non-NA too early.  Please report the bug with a reproducible example.") # nocov
     }
-    ## Set check to FALSE if it has already been checked (so that it
-    ## doesn't happen again in stepwise.linear)
+    # Set check to FALSE if it has already been checked (so that it
+    # doesn't happen again in stepwise.linear)
     check <- FALSE
   }
   if ("stepwise.linear" %in% type) {

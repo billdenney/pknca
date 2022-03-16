@@ -55,8 +55,8 @@ superposition <- function(conc, ...)
 #' @export
 #' @importFrom parallel mclapply
 superposition.PKNCAconc <- function(conc, ...) {
-  ## Split the data by grouping and extract just the concentration and
-  ## time columns
+  # Split the data by grouping and extract just the concentration and
+  # time columns
   nested_data <- prepare_PKNCAconc(conc)
   tmp_results <-
     parallel::mclapply(
@@ -85,14 +85,14 @@ superposition.numeric <- function(conc, time, dose.input,
                                   interp.method=NULL,
                                   extrap.method="AUCinf",
                                   steady.state.tol=1e-3, ...) {
-  ## Check the inputs
+  # Check the inputs
   interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
-  ## Concentration and time
+  # Concentration and time
   check.conc.time(conc, time)
   if (check.blq)
     if (!(conc[1] %in% 0))
       stop("The first concentration must be 0 (and not NA).  To change this set check.blq=FALSE.")
-  ## dose.input
+  # dose.input
   if (!missing(dose.input)) {
     if (length(dose.input) != 1)
       stop("dose.input must be a scalar")
@@ -101,14 +101,14 @@ superposition.numeric <- function(conc, time, dose.input,
     if (dose.input <= 0)
       stop("dose.input must be > 0")
   }
-  ## tau
+  # tau
   if (length(tau) != 1)
     stop("tau must be a scalar")
   if (!is.numeric(tau) | is.factor(tau) | is.na(tau))
     stop("tau must be a number")
   if (tau <= 0)
     stop("tau must be > 0")
-  ## dose.times
+  # dose.times
   if (length(dose.times) < 1)
     stop("There must be at least one dose time")
   if (!is.numeric(dose.times) | is.factor(dose.times) | any(is.na(dose.times)))
@@ -117,7 +117,7 @@ superposition.numeric <- function(conc, time, dose.input,
     stop("All dose.times must be non-negative")
   if (any(dose.times >= tau))
     stop("dose.times must be < tau")
-  ## dose.amount
+  # dose.amount
   if (!missing(dose.amount)) {
     if (missing(dose.input))
       stop("must give dose.input to give dose.amount")
@@ -130,7 +130,7 @@ superposition.numeric <- function(conc, time, dose.input,
     if (any(dose.amount <= 0))
       stop("All dose.amount must be positive")
   }
-  ## n.tau
+  # n.tau
   if (length(n.tau) != 1)
     stop("n.tau must be a scalar")
   if (!is.numeric(n.tau) | is.factor(n.tau) | is.na(n.tau))
@@ -140,14 +140,14 @@ superposition.numeric <- function(conc, time, dose.input,
   if (!is.infinite(n.tau) &
       ((n.tau %% 1) > 10*.Machine$double.eps))
     stop("n.tau must be an integer or Inf")
-  ## lambda.z
+  # lambda.z
   if (!missing(lambda.z)) {
     if (length(lambda.z) != 1)
       stop("lambda.z must be a scalar")
     if (!is.numeric(lambda.z) | is.factor(lambda.z))
       stop("lambda.z must be a number")
   }
-  ## clast.pred
+  # clast.pred
   if (length(clast.pred) != 1)
     stop("clast.pred must be a scalar")
   if (is.na(clast.pred))
@@ -158,14 +158,14 @@ superposition.numeric <- function(conc, time, dose.input,
     stop("clast.pred must either be a logical (TRUE/FALSE) or numeric value")
   if (is.numeric(clast.pred) & clast.pred <= 0)
     stop("clast.pred must be positive (if it is a number)")
-  ## tlast
+  # tlast
   if (!missing(tlast)) {
     if (length(tlast) != 1)
       stop("tlast must be a scalar")
     if (!is.numeric(tlast) | is.factor(tlast) | is.na(tlast))
       stop("tlast must be a number")
   }
-  ## additional.times
+  # additional.times
   if (length(additional.times) > 0) {
     if (any(is.na(additional.times)))
       stop("No additional.times may be NA (to not include any additional.times, enter c() as the function argument)")
@@ -176,7 +176,7 @@ superposition.numeric <- function(conc, time, dose.input,
     if (any(additional.times > tau))
       stop("All additional.times must be <= tau")
   }
-  ## steady.state.tol
+  # steady.state.tol
   if (length(steady.state.tol) != 1)
     stop("steady.state.tol must be a scalar")
   if (!is.numeric(steady.state.tol) | is.factor(steady.state.tol) | is.na(steady.state.tol))
@@ -186,39 +186,39 @@ superposition.numeric <- function(conc, time, dose.input,
     stop("steady.state.tol must be between 0 and 1, exclusive.")
   if (steady.state.tol > 0.01)
     warning("steady.state.tol is usually <= 0.01")
-  ## We get all or none of lambda.z, clast, and tlast
+  # We get all or none of lambda.z, clast, and tlast
   has.lambda.z <- !missing(lambda.z)
   has.clast.pred <- !is.logical(clast.pred)
   has.tlast <- !missing(tlast)
   if (any(c(has.lambda.z, has.clast.pred, has.tlast)) &
       !all(c(has.lambda.z, has.clast.pred, has.tlast)))
     stop("Either give all or none of the values for these arguments: lambda.z, clast.pred, and tlast")
-  ## combine dose.input and dose.amount as applicable to scale the
-  ## outputs.
+  # combine dose.input and dose.amount as applicable to scale the
+  # outputs.
   if (!missing(dose.amount)) {
     dose.scaling <- dose.amount / dose.input
     if (length(dose.scaling) != length(dose.times)) {
       if (length(dose.scaling) != 1)
         stop("bug in dose.amount, dose.times, and dose.input handling")
-      ## it is a scalar and there is more than one dose
+      # it is a scalar and there is more than one dose
       dose.scaling <- rep(dose.scaling, length(dose.times))
     }
   } else {
     dose.scaling <- rep(1, length(dose.times))
   }
-  ## Determine the output times
+  # Determine the output times
   tmp.times <- c(0, tau, dose.times, additional.times)
-  ## For the output, ensure that we have each of the input times
-  ## shifted for the dosing times.
+  # For the output, ensure that we have each of the input times
+  # shifted for the dosing times.
   for (d in dose.times)
     tmp.times <- c(tmp.times, (d + time) %% tau)
   ret <- data.frame(conc=0, time=sort(unique(tmp.times)))
-  ## Check if all the input concentrations are 0, and if so, give that
-  ## simple answer.
+  # Check if all the input concentrations are 0, and if so, give that
+  # simple answer.
   if (all(conc == 0)) {
     return(ret)
   } else {
-    ## Check if we will need to extrapolate
+    # Check if we will need to extrapolate
     tlast <- pk.calc.tlast(conc, time, check=FALSE)
     if ((tau*n.tau) > tlast) {
       if (missing(lambda.z)) {
@@ -231,36 +231,36 @@ superposition.numeric <- function(conc, time, dose.input,
       } else if (identical(clast.pred, TRUE)) {
         clast <- tmp$clast.pred
       } else {
-        ## Use the provided clast.pred
+        # Use the provided clast.pred
         clast <- clast.pred
       }
     } else {
-      ## We don't need lambda.z for calculations, but it is simpler to
-      ## define it.
+      # We don't need lambda.z for calculations, but it is simpler to
+      # define it.
       lambda.z <- NA
     }
   }
-  ## cannot continue extrapolating due to missing data (likely due to
-  ## half-life not calculable)
+  # cannot continue extrapolating due to missing data (likely due to
+  # half-life not calculable)
   if ((n.tau * tau) > tlast & is.na(lambda.z)) {
     ret$conc <- NA
   } else {
-    ## Do the math! (Finally)
+    # Do the math! (Finally)
     current.tol <- steady.state.tol + 1
     tau.count <- 0
-    ## Stop either for reaching steady-state or for reaching the requested number of doses
+    # Stop either for reaching steady-state or for reaching the requested number of doses
     while (tau.count < n.tau &
            !is.na(current.tol) & 
            current.tol >= steady.state.tol) {
       prev.conc <- ret$conc
-      ## Perform the dosing for a single dosing interval.
+      # Perform the dosing for a single dosing interval.
       for (i in seq_along(dose.times)) {
         tmp.time <- ret$time - dose.times[i] + (tau * tau.count)
-        ## For the first dosing interval, make sure that we do not
-        ## assign concentrations before the dose is given.
+        # For the first dosing interval, make sure that we do not
+        # assign concentrations before the dose is given.
         mask.time <- tmp.time >= 0
-        ## Update the current concentration (previous concentration +
-        ## new concentration scaled by the relative dose)
+        # Update the current concentration (previous concentration +
+        # new concentration scaled by the relative dose)
         ret$conc[mask.time] <-
           (ret$conc[mask.time] +
            dose.scaling[i]*
@@ -270,8 +270,8 @@ superposition.numeric <- function(conc, time, dose.input,
       }
       tau.count <- tau.count + 1
       if (any(ret$conc %in% 0)) {
-        ## prevent division by 0.  Since not all concentrations are 0,
-        ## all values will eventually be nonzero.
+        # prevent division by 0.  Since not all concentrations are 0,
+        # all values will eventually be nonzero.
         current.tol <- steady.state.tol + 1
       } else {
         current.tol <- max(1-(prev.conc/ret$conc))

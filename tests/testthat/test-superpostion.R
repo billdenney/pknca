@@ -1,7 +1,7 @@
 context("Superposition")
 
-## The requirements for superposition are defined below to enable
-## test-driven development.
+# The requirements for superposition are defined below to enable
+# test-driven development.
 
 #' Dosing must be single dose
 #' * A single dose within the time period
@@ -31,51 +31,51 @@ context("Superposition")
 #' * The functions work with either individual or grouped data.
 
 test_that("superposition inputs", {
-  ## FIXME: Enforce single dose
+  # FIXME: Enforce single dose
 
-  ## Enforce BLQ checking for the first data point
+  # Enforce BLQ checking for the first data point
   expect_error(superposition(conc=c(1, 2), time=c(0, 1), tau=24),
                regexp="The first concentration must be 0")
   expect_error(superposition(conc=c(NA, 2), time=c(0, 1), tau=24),
                regexp="The first concentration must be 0")
 
-  ## dose.input must be scalar
+  # dose.input must be scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=c(0, 1)),
                regexp="dose.input must be a scalar")
-  ## Ensure that dose.input must be a number
+  # Ensure that dose.input must be a number
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=NA),
                regexp="dose.input must be a number")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=factor("1")),
                regexp="dose.input must be a number")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input="1"),
                regexp="dose.input must be a number")
-  ## dose.input must be > 0
+  # dose.input must be > 0
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=-1),
                regexp="dose.input must be > 0")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=0),
                regexp="dose.input must be > 0")
   
-  ## tau must be scalar
+  # tau must be scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=c(0, 1)),
                regexp="tau must be a scalar")
-  ## Ensure that tau must be a number
+  # Ensure that tau must be a number
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=NA),
                regexp="tau must be a number")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=factor("1")),
                regexp="tau must be a number")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau="1"),
                regexp="tau must be a number")
-  ## tau must be > 0
+  # tau must be > 0
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=-1),
                regexp="tau must be > 0")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=0),
                regexp="tau must be > 0")
 
-  ## >= 1 dose time
+  # >= 1 dose time
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              dose.times=numeric()),
                regexp="There must be at least one dose time")
-  ## Dose times must be a number
+  # Dose times must be a number
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              dose.times="1"),
                regexp="dose.times must be a number")
@@ -85,11 +85,11 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              dose.times=NA),
                regexp="dose.times must be a number")
-  ## Dose times nonnegative
+  # Dose times nonnegative
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              dose.times=c(-1, 0)),
                regexp="dose.times must be non-negative")
-  ## Dose times <= tau
+  # Dose times <= tau
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              dose.times=c(0, 25)),
                regexp="dose.times must be < tau")
@@ -97,25 +97,25 @@ test_that("superposition inputs", {
                              dose.times=25),
                regexp="dose.times must be < tau")
 
-  ## dose.amount without dose.input
+  # dose.amount without dose.input
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              dose.times=0, dose.amount=1),
                regexp="must give dose.input to give dose.amount")
-  ## dose.amount same length as dose.times
+  # dose.amount same length as dose.times
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount=c(1, 2)),
                regexp="dose.amount must either be a scalar or match the length of dose.times")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=c(0, 1), dose.amount=c(1, 2, 3)),
                regexp="dose.amount must either be a scalar or match the length of dose.times")
-  ## dose.amount numeric
+  # dose.amount numeric
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount="1"),
                regexp="dose.amount must be a number")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount=factor("1")),
                regexp="dose.amount must be a number")
-  ## dose.amount finite/NA
+  # dose.amount finite/NA
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount=as.numeric(NA)),
                regexp="dose.amount must be finite and not NA")
@@ -125,7 +125,7 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount=-Inf),
                regexp="dose.amount must be finite and not NA")
-  ## dose.amount non-negative
+  # dose.amount non-negative
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount=-1),
                regexp="dose.amount must be positive")
@@ -133,11 +133,11 @@ test_that("superposition inputs", {
                              tau=24, dose.times=0, dose.amount=0),
                regexp="dose.amount must be positive")
 
-  ## n.tau scalar
+  # n.tau scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau=c(1, 2)),
                regexp="n.tau must be a scalar")
-  ## n.tau number
+  # n.tau number
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau="1"),
                regexp="n.tau must be a number")
@@ -147,14 +147,14 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau=NA),
                regexp="n.tau must be a number")
-  ## n.tau >= 1
+  # n.tau >= 1
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau=0),
                regexp="n.tau must be >= 1")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau=-Inf),
                regexp="n.tau must be >= 1")
-  ## n.tau integer
+  # n.tau integer
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              n.tau=1.1),
                regexp="n.tau must be an integer or Inf")
@@ -209,11 +209,11 @@ test_that("superposition inputs", {
                regexp="clast.pred must either be a logical .* or numeric value",
                info="clast.pred must be a number or logical or NA (factor)")
 
-  ## tlast given and not a scalar
+  # tlast given and not a scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              tlast=c(1, 2)),
                regexp="tlast must be a scalar")
-  ## tlast given and not a number
+  # tlast given and not a number
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              tlast="1"),
                regexp="tlast must be a number")
@@ -223,30 +223,30 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              tlast=NA),
                regexp="tlast must be a number")
-  ## TODO: test mixing clast.pred and lambda.z
+  # TODO: test mixing clast.pred and lambda.z
 
-  ## additional.times NA
+  # additional.times NA
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times=NA),
                regexp="No additional.times may be NA \\(to not include any additional.times, enter c\\(\\) as the function argument\\)")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times=c(2, NA)),
                regexp="No additional.times may be NA \\(to not include any additional.times, enter c\\(\\) as the function argument\\)")
-  ## additional.times nonnumeric
+  # additional.times nonnumeric
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times="1"),
                regexp="additional.times must be a number")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times=factor("1")),
                regexp="additional.times must be a number")
-  ## additional times < 0
+  # additional times < 0
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times=-1),
                regexp="All additional.times must be nonnegative")
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times=c(-1, 0)),
                regexp="All additional.times must be nonnegative")
-  ## Additional times > tau
+  # Additional times > tau
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              additional.times=25),
                regexp="All additional.times must be <= tau")
@@ -254,11 +254,11 @@ test_that("superposition inputs", {
                              additional.times=c(0, 25)),
                regexp="All additional.times must be <= tau")
 
-  ## steady.state.tol scalar
+  # steady.state.tol scalar
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              steady.state.tol=c(1, 2)),
                regexp="steady.state.tol must be a scalar")
-  ## steady.state.tol numeric
+  # steady.state.tol numeric
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              steady.state.tol="1"),
                regexp="steady.state.tol must be a number")
@@ -271,7 +271,7 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              steady.state.tol=NA),
                regexp="steady.state.tol must be a number")
-  ## steady.state.tol range
+  # steady.state.tol range
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              steady.state.tol=0),
                regexp="steady.state.tol must be between 0 and 1, exclusive.")
@@ -285,7 +285,7 @@ test_that("superposition inputs", {
                              steady.state.tol=2),
                regexp="steady.state.tol must be between 0 and 1, exclusive.")
 
-  ## Combinations of lambda.z, clast.pred, tlast
+  # Combinations of lambda.z, clast.pred, tlast
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred=1),
                regexp="Either give all or none of the values for these arguments: lambda.z, clast.pred, and tlast")
@@ -311,32 +311,32 @@ test_that("superposition inputs", {
 })
 
 test_that("superposition math", {
-  ## Superposition without half-life needed and no
-  ## interpolation/extrapolation
+  # Superposition without half-life needed and no
+  # interpolation/extrapolation
   c1 <- c(0, 1, 2, 3, 2, 1, 0.5)
   t1 <- 0:6
   expect_equal(superposition(conc=c1, time=t1, tau=3, n.tau=2),
                data.frame(conc=c(3, 3, 3, 3.5),
                           time=0:3))
-  ## With half-life extrapolation
+  # With half-life extrapolation
   v1 <- superposition(conc=c1, time=t1, tau=3, n.tau=3)
   expect_equal(v1,
                data.frame(conc=c(3.5, 3.25, 3.125, 3.5625),
                           time=0:3))
-  ## To steady-state
+  # To steady-state
   v2 <- superposition(conc=c1, time=t1, tau=3, n.tau=Inf)
   expect_equal(v2,
                data.frame(conc=c(3.571, 3.286, 3.143, 3.571),
                           time=0:3),
                tolerance=0.001)
 
-  ## all zeros input gives all zeros output
+  # all zeros input gives all zeros output
   expect_equal(superposition(conc=rep(0, 6), time=0:5, tau=24),
                data.frame(conc=0, time=c(0:5, 24)))
 
-  ## Times for output are a collation of 0, tau, dose.times, and
-  ## additional.times with time included and shifted for all the
-  ## dose.times.
+  # Times for output are a collation of 0, tau, dose.times, and
+  # additional.times with time included and shifted for all the
+  # dose.times.
   expect_equal(superposition(conc=rep(0, 6), time=0:5, tau=24,
                              additional.times=2.5),
                data.frame(conc=0, time=c(0, 1, 2, 2.5, 3, 4, 5, 24)))
@@ -356,7 +356,7 @@ test_that("superposition math", {
                           time=c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
                             5, 5.5, 24)))
 
-  ## Dose scaling
+  # Dose scaling
   v1 <-
     superposition(
       conc=c1, time=t1, dose.input=1, tau=24,

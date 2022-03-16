@@ -1,4 +1,4 @@
-## Calculate the simple parameters for PK.
+# Calculate the simple parameters for PK.
 
 #' Calculate the adjusted r-squared value
 #'
@@ -31,7 +31,7 @@ pk.calc.cmax <- function(conc, check=TRUE) {
     max(conc, na.rm=TRUE)
   }
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("cmax",
                  FUN="pk.calc.cmax",
                  values=c(FALSE, TRUE),
@@ -56,7 +56,7 @@ pk.calc.cmin <- function(conc, check=TRUE) {
     min(conc, na.rm=TRUE)
   }
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("cmin",
                  FUN="pk.calc.cmin",
                  values=c(FALSE, TRUE),
@@ -114,7 +114,7 @@ pk.calc.tmax <- function(conc, time,
     }
   }
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("tmax",
                  FUN="pk.calc.tmax",
                  values=c(FALSE, TRUE),
@@ -150,7 +150,7 @@ pk.calc.tlast <- function(conc, time, check=TRUE) {
     max(time[!(conc %in% c(NA, 0))])
   }
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("tlast",
                  FUN="pk.calc.tlast",
                  values=c(FALSE, TRUE),
@@ -179,7 +179,7 @@ pk.calc.tfirst <- function(conc, time, check=TRUE) {
     min(time[!(conc %in% c(NA, 0))])
   }
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("tfirst",
                  FUN="pk.calc.tfirst",
                  values=c(FALSE, TRUE),
@@ -212,7 +212,7 @@ pk.calc.clast.obs <- function(conc, time, check=TRUE) {
     NA
   }
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("clast.obs",
                  FUN="pk.calc.clast.obs",
                  values=c(FALSE, TRUE),
@@ -234,7 +234,7 @@ PKNCA.set.summary(
 #' @export
 pk.calc.thalf.eff <- function(mrt)
   log(2)*mrt
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("thalf.eff.obs",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
@@ -350,7 +350,7 @@ pk.calc.aucpext <- function(auclast, aucinf) {
   ret
 }
 
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("aucpext.obs",
                  FUN="pk.calc.aucpext",
                  values=c(FALSE, TRUE),
@@ -385,7 +385,7 @@ PKNCA.set.summary(
 #' @export
 pk.calc.kel <- function(mrt)
   1/mrt
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("kel.obs",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
@@ -488,7 +488,7 @@ pk.calc.cl <- function(dose, auc) {
   ret
 }
 
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("cl.last",
                  FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
@@ -588,7 +588,7 @@ PKNCA.set.summary(
 pk.calc.mrt <- function(auc, aumc) {
   pk.calc.mrt.iv(auc, aumc, duration.dose=0)
 }
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("mrt.obs",
                  FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
@@ -636,7 +636,7 @@ pk.calc.mrt.iv <- function(auc, aumc, duration.dose) {
   }
   ret
 }
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("mrt.iv.obs",
                  FUN="pk.calc.mrt.iv",
                  values=c(FALSE, TRUE),
@@ -733,15 +733,15 @@ PKNCA.set.summary(
 #' @param lambda.z the elimination rate
 #' @export
 pk.calc.vz <- function(cl, lambda.z) {
-  ## Ensure that cl is either a scalar or the same length as AUC
-  ## (more complex repeating patterns while valid for general R are
-  ## likely errors here).
+  # Ensure that cl is either a scalar or the same length as AUC
+  # (more complex repeating patterns while valid for general R are
+  # likely errors here).
   if (!(length(cl) %in% c(1, length(lambda.z))) |
       !(length(lambda.z) %in% c(1, length(cl))))
     stop("'cl' and 'lambda.z' must be the same length")
   cl/lambda.z
 }
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("vz.obs",
                  FUN="pk.calc.vz",
                  values=c(FALSE, TRUE),
@@ -907,7 +907,7 @@ pk.calc.vd <- function(dose, aucinf, lambda.z) {
   }
   ret
 }
-## Add the columns to the interval specification
+# Add the columns to the interval specification
 add.interval.col("vd.obs",
                  FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),

@@ -63,7 +63,7 @@ pk.calc.time_above <- function(conc, time,
   }
   ret
 }
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("time_above",
                  FUN="pk.calc.time_above",
                  values=c(FALSE, TRUE),

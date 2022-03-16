@@ -41,7 +41,7 @@ getIndepVar <- function(x, ...)
 getColumnValueOrNot <- function(data, value, prefix="X") {
   col.name <- setdiff(c(prefix, paste(prefix, max(names(data)), sep=".")), names(data))[1]
   if (is.character(value) && length(value) == 1 && (value %in% names(data))) {
-    ## It was a column from the data.frame
+    # It was a column from the data.frame
     ret <- list(data=data, name=value)
   } else if (length(value) %in% c(1, nrow(data))) {
     data[[col.name]] <- value

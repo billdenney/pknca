@@ -84,7 +84,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
                               first.tmax=NULL,
                               allow.tmax.in.half.life=NULL,
                               check=TRUE) {
-  ## Check inputs
+  # Check inputs
   min.hl.points <-
     PKNCA.choose.option(
       name="min.hl.points", value=min.hl.points, options=options
@@ -157,7 +157,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   } else {
     ret$tlast <- tlast
   }
-  ## Data frame to use for computation of half-life
+  # Data frame to use for computation of half-life
   if (allow.tmax.in.half.life) {
     # as.numeric is for units handling
     dfK <- data[as.numeric(data$time) >= as.numeric(ret$tmax), ]
@@ -178,7 +178,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         )
     }
   } else if (nrow(dfK) >= min.hl.points) {
-    ## If we have enough data to estimate a slope, then
+    # If we have enough data to estimate a slope, then
     half_lives_for_selection <-
       data.frame(
         r.squared=-Inf,
@@ -194,8 +194,8 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     half_lives_for_selection <-
       half_lives_for_selection[order(-half_lives_for_selection$lambda.z.time.first), ]
     for(i in min.hl.points:nrow(half_lives_for_selection)) {
-      ## Fit the terminal slopes until the adjusted r-squared value
-      ## is not improving (or it only gets worse by a small factor).
+      # Fit the terminal slopes until the adjusted r-squared value
+      # is not improving (or it only gets worse by a small factor).
       fit <-
         fit_half_life(
           data=
@@ -209,7 +209,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         )
       half_lives_for_selection[i,names(fit)] <- fit
     }
-    ## Find the best model
+    # Find the best model
     mask_best <-
       half_lives_for_selection$lambda.z > 0 &
       if (min.hl.points == 2 & nrow(half_lives_for_selection) == 2) {
@@ -219,18 +219,18 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         half_lives_for_selection$adj.r.squared >
           (max(half_lives_for_selection$adj.r.squared, na.rm=TRUE) - adj.r.squared.factor)
       }
-    ## Missing values are not the best
+    # Missing values are not the best
     mask_best[is.na(mask_best)] <- FALSE
     if (sum(mask_best) > 1) {
-      ## If more than one models qualify, choose the one with the
-      ## most points used.
+      # If more than one models qualify, choose the one with the
+      # most points used.
       mask_best <-
         (mask_best &
            half_lives_for_selection$lambda.z.n.points == max(half_lives_for_selection$lambda.z.n.points[mask_best]))
     }
-    ## If the half-life fit, set all associated parameters
+    # If the half-life fit, set all associated parameters
     if (any(mask_best)) {
-      ## Put in all the computed values
+      # Put in all the computed values
       ret[,ret_replacements] <- half_lives_for_selection[mask_best, ret_replacements]
     }
   } else {
@@ -241,7 +241,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       )
     warning(attr(ret, "exclude"))
   }
-  ## Drop the inputs of tmax and tlast, if given.
+  # Drop the inputs of tmax and tlast, if given.
   if (!missing(tmax))
     ret$tmax <- NULL
   if (!missing(tlast))
@@ -305,7 +305,7 @@ fit_half_life <- function(data, tlast, conc_units) {
   ret
 }
 
-## Add the column to the interval specification
+# Add the column to the interval specification
 add.interval.col("half.life",
                  FUN="pk.calc.half.life",
                  values=c(FALSE, TRUE),

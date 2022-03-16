@@ -3,7 +3,7 @@ context("exclude")
 source("generate.data.R")
 
 test_that("setExcludeColumn", {
-  ## exclude argument not given
+  # exclude argument not given
   expect_equal(
     setExcludeColumn(list(data=data.frame(a=1),
                           exclude="fake")),
@@ -24,7 +24,7 @@ test_that("setExcludeColumn", {
                     exclude="exclude"),
                info="setExcludeColumn works with an alternate dataname")
   
-  ## exclude argument given
+  # exclude argument given
   expect_equal(setExcludeColumn(list(data=data.frame(a=1, exclude=2),
                                      exclude="exclude"),
                                 exclude="exclude"),
@@ -75,7 +75,7 @@ test_that("setExcludeColumn", {
 })
 
 test_that("exclude.default", {
-  ## Check inputs
+  # Check inputs
   my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   obj1 <- PKNCAconc(my_conc, formula=conc~time|treatment+ID)
 
@@ -124,7 +124,7 @@ test_that("exclude.default", {
                regexp="reason must be a character string.",
                info="Interpretation of a non-character reason is unclear")
   
-  ## Check operation
+  # Check operation
   obj4 <- obj1
   obj4$data$exclude <- c(NA_character_, rep("Just because", nrow(obj4$data)-1))
 

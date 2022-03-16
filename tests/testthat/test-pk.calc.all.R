@@ -4,8 +4,8 @@ library(dplyr)
 source("generate.data.R")
 
 test_that("pk.nca", {
-  ## Note that generate.conc sets the random seed, so it doesn't have
-  ## to happen here.
+  # Note that generate.conc sets the random seed, so it doesn't have to happen
+  # here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
@@ -20,9 +20,9 @@ test_that("pk.nca", {
               info="Provenance works on results")
 
   mydata.failure <- mydata
-  ## There's no way to automatically make a PKNCAdata object with no
-  ## intervals, but we want to ensure that users cannot cause this error
-  ## by playing in the internals.
+  # There's no way to automatically make a PKNCAdata object with no intervals,
+  # but we want to ensure that users cannot cause this error by playing in the
+  # internals.
   mydata.failure$intervals <- data.frame()
   expect_warning(myresult.failure <- pk.nca(mydata.failure),
                  regexp="No intervals given; no calculations done.",
@@ -39,12 +39,11 @@ test_that("pk.nca", {
     info="missing dose information is handled without an issue"
   )
 
-  ## Test each of the pieces for myresult for accuracy
+  # Test each of the pieces for myresult for accuracy
 
   expect_equal(myresult$data, {
     tmp <- mydata
-    ## The options should be the default options after the
-    ## calculations are done.
+    # The options should be the default options after the calculations are done.
     tmp$options <- PKNCA.options()
     tmp
   }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options")
@@ -80,7 +79,7 @@ test_that("pk.nca", {
                "doesn't change is important.")
   )
 
-  ## Specifying new intervals
+  # Specifying new intervals
   mydata.newinterval <-
       PKNCAdata(myconc, mydose,
                 intervals=data.frame(start=0, end=c(24, Inf),
@@ -95,7 +94,7 @@ test_that("pk.nca", {
                info="Intervals can be specified manually, and will apply across appropriate parts of the grouping variables.")
   
   
-  ## Dosing not at time 0
+  # Dosing not at time 0
   tmpconc.multi <- generate.conc(2, 1, 0:24)
   tmpdose.multi <- generate.dose(tmpconc.multi)
   tmpconc.multi$time <- tmpconc.multi$time + 2
@@ -141,7 +140,7 @@ test_that("pk.nca", {
                c(0.5642, 0.5846), tolerance=0.0001,
                info="PK intervals work with passing in start and end as parameters")
   
-  ## Ensure that the correct number of doses are included in parameters that use dosing.
+  # Ensure that the correct number of doses are included in parameters that use dosing.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   tmpdose$time <- NULL
@@ -175,7 +174,7 @@ test_that("pk.nca", {
 })
 
 test_that("Calculations when dose time is missing", {
-  ## Ensure that the correct number of doses are included in parameters that use dosing.
+  # Ensure that the correct number of doses are included in parameters that use dosing.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
@@ -216,8 +215,8 @@ test_that("Calculations when no dose info is given", {
 })
 
 test_that("pk.nca with exclusions", {
-  ## Note that generate.conc sets the random seed, so it doesn't have
-  ## to happen here.
+  # Note that generate.conc sets the random seed, so it doesn't have to happen
+  # here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)

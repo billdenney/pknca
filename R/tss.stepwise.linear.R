@@ -32,7 +32,7 @@
 pk.tss.stepwise.linear <- function(...,
                                    min.points=3, level=0.95, verbose=FALSE,
                                    check=TRUE) {
-  ## Check inputs
+  # Check inputs
   modeldata <- pk.tss.data.prep(..., check=check)
   if (is.factor(min.points) |
       !is.numeric(min.points))
@@ -54,20 +54,20 @@ pk.tss.stepwise.linear <- function(...,
   if (level <= 0 | level >= 1) {
     stop("level must be between 0 and 1, exclusive")
   }
-  ## Confirm that we may have sufficient data to complete the
-  ## modeling.  Because of the variety of methods used for estimating
-  ## time to steady-state, assurance that we have enough data is more
-  ## simply determined by model convergence.
+  # Confirm that we may have sufficient data to complete the
+  # modeling.  Because of the variety of methods used for estimating
+  # time to steady-state, assurance that we have enough data is more
+  # simply determined by model convergence.
   if (length(unique(modeldata$time)) < min.points) {
     warning("After removing non-dosing time points, insufficient data remains for tss calculation")
     return(NA)
   }
-  ## Assign treatment if given and with multiple levels
+  # Assign treatment if given and with multiple levels
   formula.to.fit <- stats::as.formula("conc~time")
   if ("treatment" %in% names(modeldata))
     formula.to.fit <- stats::as.formula("conc~time+treatment")
-  ## Ensure that the dosing times are in order to allow us to kick
-  ## them out in order.
+  # Ensure that the dosing times are in order to allow us to kick
+  # them out in order.
   remaining.time <- sort(unique(modeldata$time))
   ret <- NA
   while (is.na(ret) &
@@ -75,11 +75,11 @@ pk.tss.stepwise.linear <- function(...,
     if (verbose)
       cat("Trying ", min(remaining.time, na.rm=TRUE), "\n")
     try({
-      ## Try to make the model
+      # Try to make the model
       current.interval <- 
         if ("subject" %in% names(modeldata)) {
-          ## If we have a subject column, try to fit a linear
-          ## mixed-effects model.
+          # If we have a subject column, try to fit a linear
+          # mixed-effects model.
           current.model <-
             nlme::lme(
               formula.to.fit,
@@ -87,12 +87,12 @@ pk.tss.stepwise.linear <- function(...,
               data=modeldata[modeldata$time >= min(remaining.time),,drop=FALSE])
           nlme::intervals(current.model, level=level, which="fixed")$fixed["time",]
         } else {
-          ## If we do not have a subject column, fit a linear model.
+          # If we do not have a subject column, fit a linear model.
           current.model <-
             stats::glm(
               formula.to.fit,
               data=modeldata[modeldata$time >= min(remaining.time),,drop=FALSE])
-          ## There is no intervals function for glm, so build one
+          # There is no intervals function for glm, so build one
           ci <- as.vector(stats::confint(current.model, "time", level=level))
           c(ci[1], stats::coef(current.model)[["time"]], ci[2])
         }
@@ -101,9 +101,9 @@ pk.tss.stepwise.linear <- function(...,
                     current.interval[2],
                     current.interval[1],
                     current.interval[3]))
-      ## If the signs of the upper and lower bounds of the slope of
-      ## the confidence interval for time are different, then we have
-      ## a non-significant slope.  A non-significant slope indicates steady-state.
+      # If the signs of the upper and lower bounds of the slope of
+      # the confidence interval for time are different, then we have
+      # a non-significant slope.  A non-significant slope indicates steady-state.
       if (sign(current.interval[1]) != sign(current.interval[3]))
         ret <- min(remaining.time, na.rm=TRUE)
     }, silent=!verbose)

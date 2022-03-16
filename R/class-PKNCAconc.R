@@ -56,12 +56,11 @@ PKNCAconc.tbl_df <- function(data, ...)
 PKNCAconc.data.frame <- function(data, formula, subject,
                                  time.nominal, exclude, duration, volume,
                                  exclude_half.life, include_half.life, ...) {
-  ## The data must have... data
+  # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
   }
-  ## Verify that all the variables in the formula are columns in the
-  ## data.
+  # Verify that all the variables in the formula are columns in the data.
   if (!all(all.vars(formula) %in% names(data))) {
     stop("All of the variables in the formula must be in the data")
   }
@@ -78,7 +77,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     time=data[[as.character(parsedForm$rhs)]],
     monotonic.time=FALSE
   )
-  ## Values must be unique (one value per measurement)
+  # Values must be unique (one value per measurement)
   key.cols <- c(all.vars(parsedForm$rhs),
                 all.vars(parsedForm$groupFormula))
   if (any(mask.dup <- duplicated(data[,key.cols])))
@@ -86,7 +85,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
          paste(key.cols, collapse=", "),
          ") found within concentration data.  Row numbers: ",
          paste(seq_along(mask.dup)[mask.dup], collapse=", "))
-  ## Assign the subject
+  # Assign the subject
   if (missing(subject)) {
     tmp.groups <- all.vars(parsedForm$groupFormula)
     if (length(tmp.groups) == 1) {
@@ -96,17 +95,17 @@ PKNCAconc.data.frame <- function(data, formula, subject,
                                        "/",
                                        side="left"))
       if (length(subject) == 0) {
-        ## There is no / in the group formula, use the last element
+        # There is no / in the group formula, use the last element
         subject <- tmp.groups[length(tmp.groups)]
       } else if (length(subject) == 1) {
-        ## There is a subject given; use it as is.
+        # There is a subject given; use it as is.
       } else {
         stop("Unknown how to handle subject definition from the formula") # nocov
       }
     }
   } else {
-    ## Ensure that the subject is part of the data definition and a
-    ## scalar character string.
+    # Ensure that the subject is part of the data definition and a scalar
+    # character string.
     if (!is.character(subject))
       stop("subject must be a character string")
     if (!(length(subject) == 1))

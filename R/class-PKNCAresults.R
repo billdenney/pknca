@@ -15,7 +15,7 @@
 #' @family PKNCA objects
 #' @export
 PKNCAresults <- function(result, data, exclude) {
-  ## Add all the parts into the object
+  # Add all the parts into the object
   ret <- list(result=result,
               data=data)
   if (missing(exclude)) {
@@ -62,7 +62,7 @@ getDataName.PKNCAresults <- function(object)
 getGroups.PKNCAresults <- function(object,
                                    form=formula(object$data$conc), level,
                                    data=object$result, sep) {
-  ## Include the start time as a group; this may be dropped later
+  # Include the start time as a group; this may be dropped later
   grpnames <- c(all.vars(parseFormula(form)$groups), "start")
   if (!missing(level))
     if (is.factor(level) | is.character(level)) {
@@ -169,7 +169,7 @@ summary.PKNCAresults <- function(object, ...,
   raw_results <- object$result
   raw_results[[exclude_col]] <- normalize_exclude(raw_results[[exclude_col]])
   summary_instructions <- PKNCA.set.summary()
-  ## Find any parameters that request any summaries
+  # Find any parameters that request any summaries
   parameter_cols <-
     setdiff(
       intersect(
@@ -198,10 +198,10 @@ summary.PKNCAresults <- function(object, ...,
   ret <- cbind(ret, result_data_cols)
   # Loop over every group that needs summarization
   for (row_idx in seq_len(nrow(ret)))
-    ## Loop over every column that needs summarziation
+    # Loop over every column that needs summarziation
     for (current_parameter in names(result_data_cols)) {
-      ## Select the rows of the intervals that match the current row
-      ## from the return value.
+      # Select the rows of the intervals that match the current row
+      # from the return value.
       current_interval <-
         merge(
           ret[row_idx, group_cols, drop=FALSE],
@@ -222,14 +222,14 @@ summary.PKNCAresults <- function(object, ...,
           if (summarize.n.per.group) {
             ret$N[row_idx] <- max(ret$N[row_idx], nrow(current_data), na.rm=TRUE)
           }
-          ## Calculation is required
+          # Calculation is required
           if (is.null(summary_instructions[[current_parameter]])) {
             stop("No summary function is set for parameter ", current_parameter, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
           }
           point <- summary_instructions[[current_parameter]]$point(current_data$PPORRES)
           na_point <- is.na(point)
           na_spread <- NA
-          ## Round the point estimate
+          # Round the point estimate
           point <- roundingSummarize(point, current_parameter)
           current <- point
           if ("spread" %in% names(summary_instructions[[current_parameter]])) {
@@ -237,20 +237,20 @@ summary.PKNCAresults <- function(object, ...,
               current_data$PPORRES)
             na_spread <- all(is.na(spread))
             if (na_spread) {
-              ## The spread couldn't be calculated, so show that
+              # The spread couldn't be calculated, so show that
               spread <- not.calculated.string
             } else {
-              ## Round the spread
+              # Round the spread
               spread <- roundingSummarize(spread, current_parameter)
             }
-            ## Collapse the spread into a usable form if it is
-            ## longer than one (e.g. a range or a confidence
-            ## interval) and put brackets around it.
+            # Collapse the spread into a usable form if it is longer than one
+            # (e.g. a range or a confidence interval) and put brackets around
+            # it.
             spread <- paste0(" [", paste(spread, collapse=", "), "]")
             current <- paste0(current, spread)
           }
-          ## Determine if the results were all missing, and if so, give
-          ## the not.calculated.string
+          # Determine if the results were all missing, and if so, give
+          # the not.calculated.string
           if (na_point & (na_spread %in% c(NA, TRUE))) {
             ret[row_idx, current_parameter] <- not.calculated.string
           } else {
@@ -259,8 +259,8 @@ summary.PKNCAresults <- function(object, ...,
         }
       }
     }
-  ## If N is requested, but it is not provided, then it should be set to not
-  ## calculated.
+  # If N is requested, but it is not provided, then it should be set to not
+  # calculated.
   if (summarize.n.per.group) {
     if (any(mask.na.N <- is.na(ret$N))) {
       ret$N[mask.na.N] <- not.calculated.string

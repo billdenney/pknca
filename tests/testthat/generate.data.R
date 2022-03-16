@@ -14,8 +14,8 @@
 generate.conc <- function(nsub, ntreat, time.points, nstudies=NA, nanalytes=NA, resid=0.1) {
   one.cmt.oral <- function(time, dose, v, ka, kel, f=1)
     f*dose*ka/(v*(ka-kel))*(exp(-kel*time) - exp(-ka*time))
-  ## one.cmt.iv <- function(time, dose, v, kel)
-  ##   dose/v*exp(-kel*time)
+  # one.cmt.iv <- function(time, dose, v, kel)
+  #   dose/v*exp(-kel*time)
   set.seed(5)
   ret <- data.frame()
   nanalytes.include <- !is.na(nanalytes)

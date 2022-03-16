@@ -38,7 +38,7 @@ check.interval.specification <- function(x) {
   for (n in names(interval_cols)) {
     if (!(n %in% names(x))) {
       if (is.vector(interval_cols[[n]]$values)) {
-        ## Set missing columns to the default value
+        # Set missing columns to the default value
         x[[n]] <- interval_cols[[n]]$values[1]
       } else {
         # It would probably take malicious code to get here (altering
@@ -46,7 +46,7 @@ check.interval.specification <- function(x) {
         stop("Cannot assign default value for interval column", n) # nocov
       }
     } else {
-      ## Confirm the edits of the given columns
+      # Confirm the edits of the given columns
       if (is.vector(interval_cols[[n]]$values)) {
         if (!all(x[[n]] %in% interval_cols[[n]]$values))
           stop(sprintf("Invalid value(s) in column %s:", n),
@@ -62,29 +62,33 @@ check.interval.specification <- function(x) {
       }
     }
   }
-  ## Now check specific columns
-  ## ##############################
-  ## start and end
-  if (any(x$start %in% NA))
+  # Now check specific columns
+  # start and end
+  if (any(x$start %in% NA)) {
     stop("Interval specification may not have NA for the starting time")
-  if (any(x$end %in% NA))
+  }
+  if (any(x$end %in% NA)) {
     stop("Interval specification may not have NA for the end time")
-  if (any(is.infinite(x$start)))
+  }
+  if (any(is.infinite(x$start))) {
     stop("start may not be infinite")
-  if (any(x$start >= x$end))
+  }
+  if (any(x$start >= x$end)) {
     stop("start must be < end")
-  ## Confirm that something is being calculated for each interval (and
-  ## warn if not)
+  }
+  # Confirm that something is being calculated for each interval (and warn if
+  # not)
   mask_calculated <- rep(FALSE, nrow(x))
-  for (n in setdiff(names(interval_cols), c("start", "end")))
+  for (n in setdiff(names(interval_cols), c("start", "end"))) {
     mask_calculated <-
       (mask_calculated |
        !(x[[n]] %in% c(NA, FALSE)))
-  if (any(!mask_calculated))
+  }
+  if (any(!mask_calculated)) {
     warning("Nothing to be calculated in interval specification number(s): ",
             paste(seq_len(nrow(x))[!mask_calculated], collapse=", "))
-  ## Put the columns in the right order and return the checked data
-  ## frame
+  }
+  # Put the columns in the right order and return the checked data frame
   x[,
     c(names(interval_cols), setdiff(names(x), names(interval_cols))),
     drop=FALSE

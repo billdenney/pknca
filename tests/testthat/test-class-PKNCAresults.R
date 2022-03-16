@@ -4,8 +4,8 @@ library(dplyr)
 source("generate.data.R")
 
 test_that("PKNCAresults generation", {
-  ## Note that generate.conc sets the random seed, so it doesn't have
-  ## to happen here.
+  # Note that generate.conc sets the random seed, so it doesn't have
+  # to happen here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
@@ -23,13 +23,12 @@ test_that("PKNCAresults generation", {
     info="Provenance exists and can be confirmed on results"
   )
   
-  ## Test each of the pieces for myresult for accuracy
-  
+  # Test each of the pieces for myresult for accuracy
   expect_equal(
     myresult$data, {
       tmp <- mydata
-      ## The options should be the default options after the
-      ## calculations are done.
+      # The options should be the default options after the
+      # calculations are done.
       tmp$options <- PKNCA.options()
       tmp
     }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options"
@@ -64,7 +63,7 @@ test_that("PKNCAresults generation", {
     info="The specific order of the levels isn't important-- the fact that they are factors and that the set doesn't change is important."
   )
   
-  ## Test conversion to a data.frame
+  # Test conversion to a data.frame
   expect_equal(
     as.data.frame(myresult),
     verify.result,
@@ -158,8 +157,8 @@ test_that("PKNCAresults has exclude, when applicable", {
 })
 
 test_that("PKNCAresults summary", {
-  ## Note that generate.conc sets the random seed, so it doesn't have
-  ## to happen here.
+  # Note that generate.conc sets the random seed, so it doesn't have
+  # to happen here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
@@ -167,7 +166,7 @@ test_that("PKNCAresults summary", {
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
   
-  ## Testing the summarization
+  # Testing the summarization
   mysummary <- summary(myresult)
   expect_true(is.data.frame(mysummary))
   expect_equal(
@@ -315,8 +314,8 @@ test_that("dropping `start` and `end` from groups is allowed with a warning.", {
 })
 
 test_that("summary.PKNCAresults manages exclusions as missing not as non-existent.", {
-  ## Note that generate.conc sets the random seed, so it doesn't have
-  ## to happen here.
+  # Note that generate.conc sets the random seed, so it doesn't have
+  # to happen here.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
@@ -337,7 +336,7 @@ test_that("summary.PKNCAresults manages exclusions as missing not as non-existen
       mask=with(as.data.frame(myresult),
                 PPTESTCD %in% "auclast")
     )
-  ## Testing the summarization
+  # Testing the summarization
   mysummary <- summary(myresult)
   mysummary_excluded <- summary(myresult_excluded)
   mysummary_excluded2 <- summary(myresult_excluded2)

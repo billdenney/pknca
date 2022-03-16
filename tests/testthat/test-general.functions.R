@@ -17,7 +17,7 @@ test_that("check.conversion", {
 context("Check concentration and time inputs")
 
 test_that("check.conc.time", {
-  ## Check all the invalid cases
+  # Check all the invalid cases
   expect_warning(check.conc.time(conc=-1),
                  regexp="Negative concentrations found")
   expect_warning(check.conc.time(conc=c(NA, -1)),
@@ -58,7 +58,7 @@ test_that("Rounding", {
   expect_equal(roundString(NaN), "NaN")
   expect_equal(roundString(Inf), "Inf")
   expect_equal(roundString(-Inf), "-Inf")
-  ## Respecting the digits
+  # Respecting the digits
   expect_equal(roundString(0.05, 3), "0.050")
   expect_equal(roundString(123.05, 3), "123.050")
   expect_equal(roundString(c(100, 0.1), 3), c("100.000", "0.100"),
@@ -70,7 +70,7 @@ test_that("Rounding", {
   expect_equal(roundString(c(0.1, NA, NaN, Inf, -Inf), digits=3),
                c("0.100", "NA", "NaN", "Inf", "-Inf"),
                info="Mixed inputs (NA, NaN, Inf or numeric)")
-  ## All zeros
+  # All zeros
   expect_equal(roundString(0, digits=3), "0.000")
   expect_equal(roundString(c(0, NA), digits=3), c("0.000", "NA"))
   # scientific notation
@@ -97,7 +97,7 @@ test_that("Significance", {
   expect_equal(signifString(NaN), "NaN")
   expect_equal(signifString(Inf), "Inf")
   expect_equal(signifString(-Inf), "-Inf")
-  ## Respecting the digits
+  # Respecting the digits
   expect_equal(signifString(0.05, 3), "0.0500")
   expect_equal(signifString(123.05, 3), "123")
   expect_equal(signifString(123456.05, 3), "123000")
@@ -114,20 +114,20 @@ test_that("Significance", {
   expect_equal(signifString(999999, 7, sci_range=6), "999999.0",
                info="Rounding around the edge of the sci_range works correctly (going staying the same)")
   expect_equal(signifString(-.05, 3), "-0.0500")
-  ## Exact orders of magnitude work on both sides of 0
+  # Exact orders of magnitude work on both sides of 0
   expect_equal(signifString(0.01, 3), "0.0100")
   expect_equal(signifString(1, 3), "1.00")
   expect_equal(signifString(100, 3), "100")
-  ## Vectors work with different orders of magnitude work
+  # Vectors work with different orders of magnitude work
   expect_equal(signifString(c(100, 0.1), 3), c("100", "0.100"))
-  ## Rounding to a higher number of significant digits works correctly
+  # Rounding to a higher number of significant digits works correctly
   expect_equal(signifString(0.9999999, 3), "1.00")
-  ## Mixed inputs (NA, NaN, Inf or numeric)
+  # Mixed inputs (NA, NaN, Inf or numeric)
   expect_equal(signifString(NA), "NA")
   expect_equal(signifString(c(0.1, NA), digits=3), c("0.100", "NA"))
   expect_equal(signifString(c(0.1, NA, NaN, Inf, -Inf), digits=3),
                c("0.100", "NA", "NaN", "Inf", "-Inf"))
-  ## All zeros
+  # All zeros
   expect_equal(signifString(0, digits=3), "0.000")
   expect_equal(signifString(c(0, NA), digits=3), c("0.000", "NA"))
 

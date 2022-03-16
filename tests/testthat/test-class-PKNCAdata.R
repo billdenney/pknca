@@ -43,7 +43,7 @@ test_that("PKNCAdata", {
                PKNCAdata(obj.conc, obj.dose),
                info="Concentration and dose data can be created on the fly")
   
-  ## Input checking
+  # Input checking
   expect_error(PKNCAdata(obj.conc, obj.dose, options="a"),
                regexp="options must be a list.",
                info="Option class")
@@ -54,7 +54,7 @@ test_that("PKNCAdata", {
                regexp="Invalid setting for PKNCA.*foo",
                info="Option names")
   
-  ## Single dose AUCs are appropriately selected
+  # Single dose AUCs are appropriately selected
   expect_equal(PKNCAdata(obj.conc, obj.dose),
                {
                  tmp.intervals <- merge(PKNCA.options("single.dose.aucs"), tmp.dose)

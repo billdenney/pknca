@@ -17,12 +17,12 @@ test_that("PKNCAdose", {
   tmp.dose.study <- generate.dose(tmp.conc.study)
   tmp.dose.analyte.study <- generate.dose(tmp.conc.analyte.study)
   
-  ## Data exists
+  # Data exists
   expect_error(PKNCAdose(data.frame()),
                regexp="data must have at least one row.",
                info="PKNCAconc requires data")
 
-  ## Variables present
+  # Variables present
   expect_error(PKNCAdose(tmp.dose, formula=dosea~time|treatment+ID),
                regexp="The left side formula must be a variable in the data, empty, or '.'.",
                info="All formula parameters must be in the data (LHS)")
@@ -33,7 +33,7 @@ test_that("PKNCAdose", {
                regexp="All of the variables in the groups must be in the data",
                info="All formula parameters must be in the data (groups)")
   
-  ## Number of variables
+  # Number of variables
   expect_error(PKNCAdose(tmp.dose, formula=dose+ID~time|treatment+ID),
                regexp="The left side of the formula must have zero or one variable",
                info="The right number of parameters in the formula (LHS)")
@@ -44,7 +44,7 @@ test_that("PKNCAdose", {
                regexp="The right side of the formula \\(excluding groups\\) must have exactly one variable",
                info="The right number of parameters in the formula (RHS)")
   
-  ## Accept "." on either side of the ~
+  # Accept "." on either side of the ~
   expect_equal(PKNCAdose(tmp.dose, formula=.~time|treatment+ID),
                structure(list(
                  data=cbind(tmp.dose,
@@ -77,7 +77,7 @@ test_that("PKNCAdose", {
   expect_error(PKNCAdose(tmp.dose.na, formula=dose~time|treatment+ID),
                regexp="Some but not all values are missing for the independent variable",
                info="Dose time must either all or none be NA.")
-  ## Keys must be unique
+  # Keys must be unique
   bad.dose.analyte <- unique(tmp.conc.analyte[,c("treatment", "ID", "analyte")])
   bad.dose.analyte$dose <- 1
   bad.dose.analyte$time <- 0
@@ -183,7 +183,7 @@ test_that("PKNCAdose model.frame", {
                check.attributes=FALSE,
                info="model.frame.PKNCAdose works with one-sided formula ('.' on RHS)")
   
-  ## You can't give multiple rows per group if you don't give time.
+  # You can't give multiple rows per group if you don't give time.
   expect_error(PKNCAdose(formula=dose~.|treatment+ID, data=rbind(tmp.dose, tmp.dose)),
                regexp="Rows that are not unique per group and time.*found within dosing data",
                info="Dosing must have unique values with time and group")

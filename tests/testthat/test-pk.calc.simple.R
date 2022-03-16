@@ -1,11 +1,11 @@
 context("Simple NCA functions")
 
 test_that("adj.r.squared", {
-  ## Ensure correct calculation
+  # Ensure correct calculation
   expect_equal(adj.r.squared(1, 5), 1)
   expect_equal(adj.r.squared(0.5, 5), 1-0.5*4/3)
 
-  ## Ensure that N must be an integer > 2
+  # Ensure that N must be an integer > 2
   expect_equal(
     expect_warning(
       adj.r.squared(1, 2),
@@ -16,55 +16,55 @@ test_that("adj.r.squared", {
 })
 
 test_that("pk.calc.cmax", {
-  ## Confirm that all NAs give NA as an output
+  # Confirm that all NAs give NA as an output
   expect_warning(v1 <- pk.calc.cmax(NA))
   expect_equal(v1, NA)
   expect_warning(v2 <- pk.calc.cmax(c(NA, NA)))
   expect_equal(v2, NA)
 
-  ## Confirm that no NAs give the max value
+  # Confirm that no NAs give the max value
   expect_equal(pk.calc.cmax(c(1, 2)), 2)
   expect_equal(pk.calc.cmax(c(1, 2, 3)), 3)
 
-  ## Confirm that some NAs give the NA-removed maximum value
+  # Confirm that some NAs give the NA-removed maximum value
   expect_equal(pk.calc.cmax(c(1, NA, 3)), 3)
   expect_equal(pk.calc.cmax(c(NA, NA, 3)), 3)
   expect_equal(pk.calc.cmax(c(1, NA, NA)), 1)
   expect_equal(pk.calc.cmax(c(1, NA, 3, NA)), 3)
 
-  ## Confirm that no data gives NA with a warning
+  # Confirm that no data gives NA with a warning
   expect_warning(v3 <- pk.calc.cmax(numeric()))
   expect_equal(v3, NA)
 })
 
 test_that("pk.calc.cmin", {
-  ## Confirm that all NAs give NA as an output
+  # Confirm that all NAs give NA as an output
   expect_warning(v1 <- pk.calc.cmin(NA))
   expect_equal(v1, NA)
   expect_warning(v2 <- pk.calc.cmin(c(NA, NA)))
   expect_equal(v2, NA)
 
-  ## Confirm that no NAs give the min value
+  # Confirm that no NAs give the min value
   expect_equal(pk.calc.cmin(c(1, 2)), 1)
   expect_equal(pk.calc.cmin(c(1, 2, 3)), 1)
 
-  ## Confirm that some NAs give the NA-removed minimum value
+  # Confirm that some NAs give the NA-removed minimum value
   expect_equal(pk.calc.cmin(c(1, NA, 3)), 1)
   expect_equal(pk.calc.cmin(c(NA, NA, 3)), 3)
   expect_equal(pk.calc.cmin(c(1, NA, NA)), 1)
   expect_equal(pk.calc.cmin(c(1, NA, 3, NA)), 1)
 
-  ## Confirm that no data gives NA with a warning
+  # Confirm that no data gives NA with a warning
   expect_warning(v3 <- pk.calc.cmin(numeric()))
   expect_equal(v3, NA)
 })
 
 test_that("pk.calc.tmax", {
-  ## No data give a warning and NA
+  # No data give a warning and NA
   expect_warning(v1 <- pk.calc.tmax(numeric(), numeric()))
   expect_equal(v1, NA)
 
-  ## Either concentration or time is missing, give an error
+  # Either concentration or time is missing, give an error
   expect_error(
     pk.calc.tmax(conc=numeric()),
     regexp="time must be given"
@@ -74,7 +74,7 @@ test_that("pk.calc.tmax", {
     regexp="conc must be given"
   )
 
-  ## It calculates tmax correctly based on the use.first option
+  # It calculates tmax correctly based on the use.first option
   expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), first.tmax=TRUE),
                1)
   expect_equal(pk.calc.tmax(c(1, 2), c(0, 1), first.tmax=FALSE),
@@ -86,7 +86,7 @@ test_that("pk.calc.tmax", {
 })
 
 test_that("pk.calc.tlast", {
-  ## Either concentration or time is missing, give an error
+  # Either concentration or time is missing, give an error
   expect_error(
     pk.calc.tlast(conc=numeric()),
     regexp="time must be given"
@@ -96,7 +96,7 @@ test_that("pk.calc.tlast", {
     regexp="conc must be given"
   )
 
-  ## It calculates tlast correctly
+  # It calculates tlast correctly
   expect_equal(pk.calc.tlast(c(1, 2), c(0, 1)),
                1)
   expect_equal(pk.calc.tlast(c(0, 0), c(0, 1)),
@@ -110,17 +110,17 @@ test_that("pk.calc.tlast", {
 })
 
 test_that("pk.calc.clast.obs", {
-  ## Ensure that it handles BLQ (0) values correctly
+  # Ensure that it handles BLQ (0) values correctly
   c1 <- c(0, 1, 2, 0)
   t1 <- c(0, 1, 2, 3)
   expect_equal(pk.calc.clast.obs(c1, t1), 2)
 
-  ## Ensure that it handles all ALQ values correctly
+  # Ensure that it handles all ALQ values correctly
   c1 <- c(0, 1, 2, 3)
   t1 <- c(0, 1, 2, 3)
   expect_equal(pk.calc.clast.obs(c1, t1), 3)
 
-  ## Ensure that it handles NA values correctly
+  # Ensure that it handles NA values correctly
   c1 <- c(0, 1, 2, NA)
   t1 <- c(0, 1, 2, 3)
   expect_equal(pk.calc.clast.obs(c1, t1), 2)
@@ -140,17 +140,17 @@ test_that("pk.calc.clast.obs", {
 })
 
 test_that("pk.calc.thalf.eff", {
-  ## No input gives equivalent no output
+  # No input gives equivalent no output
   expect_equal(
     pk.calc.thalf.eff(numeric()),
     numeric()
   )
   
-  ## NA input gives equivalent NA output
+  # NA input gives equivalent NA output
   expect_equal(pk.calc.thalf.eff(NA),
                as.numeric(NA))
 
-  ## Numbers mixed with NA give appropriate output
+  # Numbers mixed with NA give appropriate output
   d1 <- c(0, 1, NA, 3)
   r1 <- log(2)*d1
   expect_equal(pk.calc.thalf.eff(d1),
@@ -158,26 +158,26 @@ test_that("pk.calc.thalf.eff", {
 })
 
 test_that("pk.calc.kel", {
-  ## No input gives equivalent no output
+  # No input gives equivalent no output
   expect_equal(
     pk.calc.kel(numeric()),
     numeric()
   )
   
-  ## NA input gives equivalent NA output
+  # NA input gives equivalent NA output
   expect_equal(
     pk.calc.kel(NA),
     as.numeric(NA)
   )
 
-  ## Numbers mixed with NA give appropriate output
+  # Numbers mixed with NA give appropriate output
   d1 <- c(0, 1, NA, 3)
   r1 <- 1/d1
   expect_equal(pk.calc.kel(d1), r1)
 })
 
 test_that("pk.calc.cl", {
-  ## Ensure that dose and auc are required
+  # Ensure that dose and auc are required
   expect_error(pk.calc.cl(auc=NA),
                info="dose is required for clearance calculation")
   expect_error(pk.calc.cl(dose=NA),
@@ -281,14 +281,14 @@ test_that("pk.calc.mrt.md", {
 })
 
 test_that("pk.calc.vz", {
-  ## Ensure that cl and lambda.z are required
+  # Ensure that cl and lambda.z are required
   expect_equal(pk.calc.vz(cl=NA, lambda.z=NA), NA_integer_)
   expect_error(pk.calc.vz(cl=NA),
                info="lambda.z required for Vz calculation")
   expect_error(pk.calc.vz(lambda.z=NA),
                info="CL required for Vz calculation")
 
-  ## Ensure that length of cl and lambda.z are either 1 or the same length
+  # Ensure that length of cl and lambda.z are either 1 or the same length
   expect_error(pk.calc.vz(cl=1:2, lambda.z=1:3),
                regexp="'cl' and 'lambda.z' must be the same length",
                info="CL and lambda.z must be the same length (CL shorter)")
@@ -296,8 +296,8 @@ test_that("pk.calc.vz", {
                regexp="'cl' and 'lambda.z' must be the same length",
                info="CL and lambda.z must be the same length (lambda.z shorter)")
   
-  ## Estimate a single Vz (with permutations to ensure the right math
-  ## is happening)
+  # Estimate a single Vz (with permutations to ensure the right math
+  # is happening)
   expect_equal(pk.calc.vz(cl=1, lambda.z=1), 1,
                info="vz math test 1")
   expect_equal(pk.calc.vz(cl=1, lambda.z=2), 0.5,
@@ -307,7 +307,7 @@ test_that("pk.calc.vz", {
   expect_equal(pk.calc.vz(cl=2, lambda.z=2), 1,
                info="vz math test 4")
 
-  ## Ensure that NA can go into either position or both
+  # Ensure that NA can go into either position or both
   expect_equal(pk.calc.vz(cl=NA, lambda.z=1), NA_integer_,
                info="Vz with missing (NA) cl")
   expect_equal(pk.calc.vz(cl=1, lambda.z=NA), NA_integer_,
@@ -315,7 +315,7 @@ test_that("pk.calc.vz", {
   expect_equal(pk.calc.vz(cl=NA, lambda.z=NA), NA_integer_,
                info="Vz with missing (NA) lambda.z and cl")
 
-  ## vectorized vz calculation works
+  # vectorized vz calculation works
   expect_equal(pk.calc.vz(cl=
                             c(1, 1, 1, 2, 2, 2, NA, NA, NA),
                           lambda.z=

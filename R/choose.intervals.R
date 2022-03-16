@@ -38,34 +38,31 @@ choose.auc.intervals <- function(time.conc, time.dosing,
   if (any(is.na(time.dosing)))
     stop("time.dosing may not have any NA values")
   if (length(unique(time.dosing)) == 1) {
-    ## If it is single-dose data, use the time of dosing and then
-    ## offset it by the dosing time (allowing the case where dosing
-    ## time is not 0).
+    # If it is single-dose data, use the time of dosing and then offset it by
+    # the dosing time (allowing the case where dosing time is not 0).
     ret <- check.interval.specification(single.dose.aucs)
-    ## If there is an offset from 0, use that offset
+    # If there is an offset from 0, use that offset
     ret$start <- ret$start + unique(time.dosing)
     ret$end <- ret$end + unique(time.dosing)
   } else {
-    ## Sort the times so sorting can be assumed farther down in the
-    ## algorithm
+    # Sort the times so sorting can be assumed farther down in the algorithm
     time.dosing <- sort(time.dosing)
     time.conc <- sort(time.conc)
-    ## Find the doses that have concentration measurements
+    # Find the doses that have concentration measurements
     mask_dose_conc <- time.dosing %in% time.conc
-    ## Find indexes of pairs of doses that both have predose PK associated
+    # Find indexes of pairs of doses that both have predose PK associated
     idx.paired.dose <-
       seq_len(length(time.dosing)-1)[
         mask_dose_conc[-1] &
           mask_dose_conc[-length(mask_dose_conc)]
         ]
-    ## A data frame with all the right columns and classes but no data
+    # A data frame with all the right columns and classes but no data
     ret <- check.interval.specification(data.frame(start=0, end=1, auclast=TRUE))[-1,]
-    ## Find the pairs that have at least one measurement between them
+    # Find the pairs that have at least one measurement between them
     for (n in idx.paired.dose) {
       if (any(time.dosing[n] < time.conc &
               time.conc < time.dosing[n+1])) {
-        ## If there are measurements between the doses, add it to the
-        ## output.
+        # If there are measurements between the doses, add it to the output.
         ret <-
           rbind(
             ret,
@@ -81,8 +78,8 @@ choose.auc.intervals <- function(time.conc, time.dosing,
           )
       }
     }
-    ## Find the repeating dosing interval if possible and add it to
-    ## the last dose if there is PK beyond the last dose to that time.
+    # Find the repeating dosing interval if possible and add it to
+    # the last dose if there is PK beyond the last dose to that time.
     tau <- find.tau(time.dosing)
     if (!is.na(tau)) {
       if ((max(time.dosing) + tau) %in% time.conc) {
@@ -101,8 +98,8 @@ choose.auc.intervals <- function(time.conc, time.dosing,
             )
           )
       }
-      ## If the maximum concentration measurement time is beyond the
-      ## max dosing time + tau, calculate a half-life.
+      # If the maximum concentration measurement time is beyond the
+      # max dosing time + tau, calculate a half-life.
       if ((max(time.dosing) + tau) < max(time.conc)) {
         ret <-
           rbind(
@@ -155,7 +152,7 @@ find.tau <- function(x, na.action=stats::na.omit,
   ret <- NA
   x <- na.action(x)
   if (length(unique(x)) == 1) {
-    ## Single dose, no more effort needed
+    # Single dose, no more effort needed
     ret <- 0
   } else if (identical(tau.choices, NA)) {
     all_deltas <-
@@ -168,30 +165,28 @@ find.tau <- function(x, na.action=stats::na.omit,
       length(x) > 1) {
     delta_1 <- x[2] - x[1]
     if (all((x[-1] - x[-length(x)]) == delta_1)) {
-      ## Only one interval through the full data set
+      # Only one interval through the full data set
       ret <- delta_1
     } else {
-      ## Drop any tau.choices that are >= the difference in the range
-      ## of x because those are uninformative (i.e. if the maximum
-      ## time is 12 hours, don't test an interval of 12, 24, or
-      ## ... hours because they will match the x - tau < 0 test in a
-      ## meaningless way.
+      # Drop any tau.choices that are >= the difference in the range of x
+      # because those are uninformative (i.e. if the maximum time is 12 hours,
+      # don't test an interval of 12, 24, or ... hours because they will match
+      # the x - tau < 0 test in a meaningless way.
       tau.choices <- tau.choices[tau.choices < (max(x) - min(x))]
-      ## Ensure that the choices are in order so that we find the
-      ## minimum interval.
+      # Ensure that the choices are in order so that we find the minimum
+      # interval.
       tau.choices <- sort(tau.choices)
-      ## Test all the tau.choices until we find the first (and thereby
-      ## smallest) usable one
+      # Test all the tau.choices until we find the first (and thereby
+      # smallest) usable one
       i <- 0
       while (is.na(ret) & i < length(tau.choices)) {
         i <- i+1
         tau <- tau.choices[i]
-        ## Is the dose either within the first tau or there is a dose
-        ## that far before it?
+        # Is the dose either within the first tau or there is a dose
+        # that far before it?
         dose_before <- ((x - tau < 0) | ((x - tau) %in% x))
-        ## And
-        ## Is the dose either within the last tau or there is a dose
-        ## that far after it? 
+        # And, is the dose either within the last tau or there is a dose that
+        # far after it?
         dose_after <- ((x + tau > max(x)) | ((x + tau) %in% x))
         if (all(dose_before & dose_after)) {
           ret <- tau

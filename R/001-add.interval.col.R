@@ -1,4 +1,4 @@
-## Setup the default options
+# Setup the default options
 .PKNCAEnv <- new.env(parent=emptyenv())
 assign("options", NULL, envir=.PKNCAEnv)
 assign("summary", list(), envir=.PKNCAEnv)
@@ -81,7 +81,7 @@ add.interval.col <- function(name,
                              datatype=c("interval",
                                "individual",
                                "population")) {
-  ## Check inputs
+  # Check inputs
   if (!is.character(name)) {
     stop("name must be a character string")
   } else if (length(name) != 1) {
@@ -112,7 +112,7 @@ add.interval.col <- function(name,
   } else if (!all(nchar(names(formalsmap)) > 0)) {
     stop("All formalsmap elements must be named")
   }
-  ## Ensure that the function exists
+  # Ensure that the function exists
   if (!is.na(FUN) &&
       length(utils::getAnywhere(FUN)$objs) == 0) {
     stop("The function named '", FUN, "' is not defined.  Please define the function before calling add.interval.col.")
@@ -138,7 +138,7 @@ add.interval.col <- function(name,
   assign("interval.cols", current, envir=.PKNCAEnv)
 }
 
-## Add the start and end interval columns
+# Add the start and end interval columns
 add.interval.col("start",
   FUN = NA,
   values = as.numeric,
@@ -155,20 +155,18 @@ add.interval.col("end",
 #' Columns are always to the right of columns that they depend on.
 sort.interval.cols <- function() {
   current <- get("interval.cols", envir=.PKNCAEnv)
-  ## Build a dependency tree
+  # Build a dependency tree
   myorder <- rep(NA, length(current))
   names(myorder) <- names(current)
   nextnum <- 1
   while (any(is.na(myorder))) {
     for (nextorder in seq_along(myorder)[is.na(myorder)]) {
       if (length(current[[nextorder]]$depends) == 0) {
-        ## If it doesn't depend on anything then it can go next in
-        ## order.
+        # If it doesn't depend on anything then it can go next in order.
         myorder[nextorder] <- nextnum
         nextnum <- nextnum + 1
       } else {
-        ## If all of its dependencies already have values, then it can
-        ## be next.
+        # If all of its dependencies already have values, then it can be next.
         deps <- unique(unlist(current[[nextorder]]$depends))
         missing_deps <- deps[!(deps %in% names(myorder))]
         if (length(missing_deps) > 0) {

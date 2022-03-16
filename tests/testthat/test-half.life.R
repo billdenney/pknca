@@ -1,8 +1,8 @@
 context("Half-life")
 
 test_that("pk.calc.half.life", {
-  ## Confirm that half-life is correctly calculated with a simple
-  ## exponential decay
+  # Confirm that half-life is correctly calculated with a simple
+  # exponential decay
   v1 <-
     pk.calc.half.life(conc=c(1, 0.5, 0.25),
                       time=c(0, 1, 2),
@@ -11,8 +11,8 @@ test_that("pk.calc.half.life", {
                       adj.r.squared.factor=0.0001)$half.life
   expect_equal(v1, 1)
 
-  ## Ensure that when input data is not checked, the code works
-  ## correctly.
+  # Ensure that when input data is not checked, the code works
+  # correctly.
   v2 <-
     pk.calc.half.life(conc=c(1, 0.5, 0.25),
                       time=c(0, 1, 2),
@@ -23,14 +23,14 @@ test_that("pk.calc.half.life", {
                  
   expect_equal(v2, 1)
 
-  ## Ensure that min.hl.points is respected
+  # Ensure that min.hl.points is respected
   expect_warning(pk.calc.half.life(conc=c(1, 0.5, 0.25),
                                    time=c(0, 1, 2),
                                    min.hl.points=4),
                  regexp="Too few points for half-life calculation")
 
-  ## Ensure that when there are more than one best models by adjusted
-  ## r-squared, the one with the most points is used.
+  # Ensure that when there are more than one best models by adjusted
+  # r-squared, the one with the most points is used.
   expect_warning(
     expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
                                    time=c(0, 1, 2, 3),
@@ -41,7 +41,7 @@ test_that("pk.calc.half.life", {
                  1.000346,
                  tolerance=0.0001))
 
-  ## Ensure that the allow.tmax.in.half.life parameter is followed
+  # Ensure that the allow.tmax.in.half.life parameter is followed
   expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
                                  time=c(0, 1, 2, 3),
                                  min.hl.points=3,
@@ -60,8 +60,8 @@ test_that("pk.calc.half.life", {
                  tolerance=0.00001))
   
 
-  ## Make sure that when tmax and tlast are given that they are
-  ## automatically included and not recalculated
+  # Make sure that when tmax and tlast are given that they are
+  # automatically included and not recalculated
   expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
                                  time=c(0, 1, 2, 3),
                                  min.hl.points=3,
@@ -79,7 +79,7 @@ test_that("pk.calc.half.life", {
                           half.life=1.000346,
                           span.ratio=2.998962),
                tolerance=0.0001)
-  ## It only gives tlast or tmax if you don't give them as inputs.
+  # It only gives tlast or tmax if you don't give them as inputs.
   expect_equal(pk.calc.half.life(conc=c(1, 0.5, 0.25, 0.1251),
                                  time=c(0, 1, 2, 3),
                                  min.hl.points=3,
