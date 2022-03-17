@@ -6,7 +6,7 @@
 the data without any validation.  No selection of points or any other
 components are done.}
 \usage{
-fit_half_life(data, tlast)
+fit_half_life(data, tlast, conc_units)
 }
 \arguments{
 \item{data}{The data to fit.  Must have two columns named "log_conc" 
@@ -14,6 +14,8 @@ and "time"}
 
 \item{tlast}{The time of last observed concentration above the limit
 of quantification.}
+
+\item{conc_units}{NULL or the units to set for concentration measures}
 }
 \value{
 A data.frame with one row and columns named "r.squared", 
