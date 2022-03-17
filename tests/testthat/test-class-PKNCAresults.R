@@ -78,7 +78,7 @@ test_that("PKNCAresults generation", {
   )
   expect_equal(
     as.data.frame(myresult, out.format="wide"),
-    tidyr::spread_(verify.result, "PPTESTCD", "PPORRES"),
+    tidyr::spread(verify.result, key="PPTESTCD", value="PPORRES"),
     tolerance=0.001,
     info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)"
   )
