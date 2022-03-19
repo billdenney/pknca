@@ -63,7 +63,7 @@ pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.fra
           )
         )
     }
-    ret <- left_join(ret, conversions)
+    ret <- dplyr::left_join(ret, conversions)
     # anything that does not have a specific conversion factor is assumed to be
     # in the correct units, and a unit conversion factor is used to keep the
     # units the same.
