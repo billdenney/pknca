@@ -7,3 +7,5 @@ Meta
 docs
 /doc/
 /Meta/
+/vignettes/*.R
+/vignettes/*.html
