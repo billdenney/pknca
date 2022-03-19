@@ -20,6 +20,7 @@ PKNCAdata(data.conc, data.dose, ...)
   formula.conc,
   formula.dose,
   intervals,
+  units,
   options = list()
 )
 }
@@ -47,6 +48,9 @@ defined in \code{\link{check.interval.specification}}.  If missing,
 this will be automatically chosen by 
 \code{\link{choose.auc.intervals}}. (see details)}
 
+\item{units}{A data.frame of unit assignments and conversions as created by
+\code{\link{pknca_units_table}()}}
+
 \item{options}{List of changes to the default 
 \code{\link{PKNCA.options}} for calculations.}
 }
@@ -65,7 +69,8 @@ If \code{data.dose} is not given or is \code{NA}, then the
   and \code{intervals} must be given.
 }
 \seealso{
-\code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
+\code{\link{choose.auc.intervals}}, \code{\link{pk.nca}},
+  \code{\link{pknca_units_table}()}
 
 Other PKNCA objects: 
 \code{\link{PKNCAconc}()},

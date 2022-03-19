@@ -19,6 +19,8 @@
 #'   defined in \code{\link{check.interval.specification}}.  If missing,
 #'   this will be automatically chosen by 
 #'   \code{\link{choose.auc.intervals}}. (see details)
+#' @param units A data.frame of unit assignments and conversions as created by
+#'   \code{\link{pknca_units_table}()}
 #' @param options List of changes to the default 
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @param ... arguments passed to \code{PKNCAdata.default}
@@ -29,7 +31,8 @@
 #'   \code{intervals} must be given.  At least one of \code{data.dose}
 #'   and \code{intervals} must be given.
 #' @family PKNCA objects
-#' @seealso \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}}
+#' @seealso \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}},
+#'   \code{\link{pknca_units_table}()}
 #' @export
 PKNCAdata <- function(data.conc, data.dose, ...)
   UseMethod("PKNCAdata", data.conc)
@@ -51,7 +54,7 @@ PKNCAdata.PKNCAdose <- function(data.conc, data.dose, ...) {
 #' @export
 PKNCAdata.default <- function(data.conc, data.dose, ...,
                               formula.conc, formula.dose,
-                              intervals, options=list()) {
+                              intervals, units, options=list()) {
   if (length(list(...))) {
     stop("Unknown argument provided to PKNCAdata.  All arguments other than `data.conc` and `data.dose` must be named.")
   }
@@ -150,6 +153,18 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   # Verify that either everything or nothing is using units
   units_interval_start <- inherits(ret$intervals$start, "units")
   units_interval_end <- inherits(ret$intervals$end, "units")
+  
+  # Insert the unit conversion table
+  if (!missing(units)) {
+    stopifnot("`units` must be a data.frame"=is.data.frame(units))
+    stopifnot(
+      "`units` data.frame must have at least names 'PPTESTCD' and 'PPORRESU'"=
+        all(c("PPTESTCD", "PPORRESU") %in% names(units))
+    )
+    stopifnot("`units` must have at least one row"=nrow(units) > 0)
+    ret$units <- units
+  }
+  
   # Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret

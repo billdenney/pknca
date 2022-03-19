@@ -35,6 +35,7 @@ pk.calc.cmax <- function(conc, check=TRUE) {
 add.interval.col("cmax",
                  FUN="pk.calc.cmax",
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="Maximum observed concentration",
                  depends=NULL)
 PKNCA.set.summary(
@@ -60,6 +61,7 @@ pk.calc.cmin <- function(conc, check=TRUE) {
 add.interval.col("cmin",
                  FUN="pk.calc.cmin",
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="Minimum observed concentration",
                  depends=NULL)
 PKNCA.set.summary(
@@ -118,6 +120,7 @@ pk.calc.tmax <- function(conc, time,
 add.interval.col("tmax",
                  FUN="pk.calc.tmax",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="Time of the maximum observed concentration",
                  depends=NULL)
 PKNCA.set.summary(
@@ -154,6 +157,7 @@ pk.calc.tlast <- function(conc, time, check=TRUE) {
 add.interval.col("tlast",
                  FUN="pk.calc.tlast",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="Time of the last concentration observed above the limit of quantification",
                  depends=NULL)
 PKNCA.set.summary(
@@ -183,6 +187,7 @@ pk.calc.tfirst <- function(conc, time, check=TRUE) {
 add.interval.col("tfirst",
                  FUN="pk.calc.tfirst",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="Time of the first concentration above the limit of quantification",
                  depends=NULL)
 PKNCA.set.summary(
@@ -216,6 +221,7 @@ pk.calc.clast.obs <- function(conc, time, check=TRUE) {
 add.interval.col("clast.obs",
                  FUN="pk.calc.clast.obs",
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="The last concentration observed above the limit of quantification",
                  depends=NULL)
 PKNCA.set.summary(
@@ -239,6 +245,7 @@ add.interval.col("thalf.eff.obs",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
                  desc="The effective half-life (as determined from the MRTobs)",
+                 unit_type="time",
                  formalsmap=list(mrt="mrt.obs"),
                  depends="mrt.obs")
 PKNCA.set.summary(
@@ -250,6 +257,7 @@ PKNCA.set.summary(
 add.interval.col("thalf.eff.pred",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The effective half-life (as determined from the MRTpred)",
                  formalsmap=list(mrt="mrt.pred"),
                  depends="mrt.pred")
@@ -262,6 +270,7 @@ PKNCA.set.summary(
 add.interval.col("thalf.eff.last",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The effective half-life (as determined from the MRTlast)",
                  formalsmap=list(mrt="mrt.last"),
                  depends="mrt.last")
@@ -274,6 +283,7 @@ PKNCA.set.summary(
 add.interval.col("thalf.eff.iv.obs",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The effective half-life (as determined from the intravenous MRTobs)",
                  formalsmap=list(mrt="mrt.iv.obs"),
                  depends="mrt.iv.obs")
@@ -286,6 +296,7 @@ PKNCA.set.summary(
 add.interval.col("thalf.eff.iv.pred",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The effective half-life (as determined from the intravenous MRTpred)",
                  formalsmap=list(mrt="mrt.iv.pred"),
                  depends="mrt.iv.pred")
@@ -298,6 +309,7 @@ PKNCA.set.summary(
 add.interval.col("thalf.eff.iv.last",
                  FUN="pk.calc.thalf.eff",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The effective half-life (as determined from the intravenous MRTlast)",
                  formalsmap=list(mrt="mrt.iv.last"),
                  depends="mrt.iv.last")
@@ -354,6 +366,7 @@ pk.calc.aucpext <- function(auclast, aucinf) {
 add.interval.col("aucpext.obs",
                  FUN="pk.calc.aucpext",
                  values=c(FALSE, TRUE),
+                 unit_type="%",
                  desc="Percent of the AUCinf that is extrapolated after Tlast calculated from the observed Clast",
                  formalsmap=list(aucinf="aucinf.obs"),
                  depends=c("auclast", "aucinf.obs"))
@@ -366,6 +379,7 @@ PKNCA.set.summary(
 add.interval.col("aucpext.pred",
                  FUN="pk.calc.aucpext",
                  values=c(FALSE, TRUE),
+                 unit_type="%",
                  desc="Percent of the AUCinf that is extrapolated after Tlast calculated from the predicted Clast",
                  formalsmap=list(aucinf="aucinf.pred"),
                  depends=c("auclast", "aucinf.pred"))
@@ -389,6 +403,7 @@ pk.calc.kel <- function(mrt)
 add.interval.col("kel.obs",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="Elimination rate (as calculated from the MRT with observed Clast)",
                  formalsmap=list(mrt="mrt.obs"),
                  depends="mrt.obs")
@@ -401,6 +416,7 @@ PKNCA.set.summary(
 add.interval.col("kel.pred",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="Elimination rate (as calculated from the MRT with predicted Clast)",
                  formalsmap=list(mrt="mrt.pred"),
                  depends="mrt.pred")
@@ -413,6 +429,7 @@ PKNCA.set.summary(
 add.interval.col("kel.last",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="Elimination rate (as calculated from the MRT using AUClast)",
                  formalsmap=list(mrt="mrt.last"),
                  depends="mrt.last")
@@ -425,6 +442,7 @@ PKNCA.set.summary(
 add.interval.col("kel.iv.obs",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="Elimination rate (as calculated from the intravenous MRTobs)",
                  formalsmap=list(mrt="mrt.iv.obs"),
                  depends="mrt.iv.obs")
@@ -437,6 +455,7 @@ PKNCA.set.summary(
 add.interval.col("kel.iv.pred",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="Elimination rate (as calculated from the intravenous MRTpred)",
                  formalsmap=list(mrt="mrt.iv.pred"),
                  depends="mrt.iv.pred")
@@ -449,6 +468,7 @@ PKNCA.set.summary(
 add.interval.col("kel.iv.last",
                  FUN="pk.calc.kel",
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="Elimination rate (as calculated from the intravenous MRTlast)",
                  formalsmap=list(mrt="mrt.iv.last"),
                  depends="mrt.iv.last")
@@ -492,6 +512,7 @@ pk.calc.cl <- function(dose, auc) {
 add.interval.col("cl.last",
                  FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
+                 unit_type="clearance",
                  desc="Clearance or observed oral clearance calculated to Clast",
                  formalsmap=list(auc="auclast"),
                  depends="auclast")
@@ -504,6 +525,7 @@ PKNCA.set.summary(
 add.interval.col("cl.all",
                  FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
+                 unit_type="clearance",
                  desc="Clearance or observed oral clearance calculated with AUCall",
                  formalsmap=list(auc="aucall"),
                  depends="aucall")
@@ -516,6 +538,7 @@ PKNCA.set.summary(
 add.interval.col("cl.obs",
                  FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
+                 unit_type="clearance",
                  desc="Clearance or observed oral clearance calculated with observed Clast",
                  formalsmap=list(auc="aucinf.obs"),
                  depends="aucinf.obs")
@@ -528,6 +551,7 @@ PKNCA.set.summary(
 add.interval.col("cl.pred",
                  FUN="pk.calc.cl",
                  values=c(FALSE, TRUE),
+                 unit_type="clearance",
                  desc="Clearance or observed oral clearance calculated with predicted Clast",
                  formalsmap=list(auc="aucinf.pred"),
                  depends="aucinf.pred")
@@ -563,6 +587,7 @@ pk.calc.f <- function(dose1, auc1, dose2, auc2) {
 add.interval.col("f",
                  FUN="pk.calc.f",
                  values=c(FALSE, TRUE),
+                 unit_type="fraction",
                  desc="Bioavailability or relative bioavailability",
                  depends=NULL)
 PKNCA.set.summary(
@@ -592,6 +617,7 @@ pk.calc.mrt <- function(auc, aumc) {
 add.interval.col("mrt.obs",
                  FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time to infinity using observed Clast",
                  formalsmap=list(auc="aucinf.obs", aumc="aumcinf.obs"),
                  depends=c("aucinf.obs", "aumcinf.obs"))
@@ -604,6 +630,7 @@ PKNCA.set.summary(
 add.interval.col("mrt.pred",
                  FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time to infinity using predicted Clast",
                  formalsmap=list(auc="aucinf.pred", aumc="aumcinf.pred"),
                  depends=c("aucinf.pred", "aumcinf.pred"))
@@ -616,6 +643,7 @@ PKNCA.set.summary(
 add.interval.col("mrt.last",
                  FUN="pk.calc.mrt",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time to the last observed concentration above the LOQ",
                  formalsmap=list(auc="auclast", aumc="aumclast"),
                  depends=list("auclast", "aumclast"))
@@ -640,6 +668,7 @@ pk.calc.mrt.iv <- function(auc, aumc, duration.dose) {
 add.interval.col("mrt.iv.obs",
                  FUN="pk.calc.mrt.iv",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time to infinity using observed Clast correcting for dosing duration",
                  formalsmap=list(auc="aucinf.obs", aumc="aumcinf.obs"),
                  depends=c("aucinf.obs", "aumcinf.obs"))
@@ -652,6 +681,7 @@ PKNCA.set.summary(
 add.interval.col("mrt.iv.pred",
                  FUN="pk.calc.mrt.iv",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time to infinity using predicted Clast correcting for dosing duration",
                  formalsmap=list(auc="aucinf.pred", aumc="aumcinf.pred"),
                  depends=c("aucinf.pred", "aumcinf.pred"))
@@ -664,6 +694,7 @@ PKNCA.set.summary(
 add.interval.col("mrt.iv.last",
                  FUN="pk.calc.mrt.iv",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time to the last observed concentration above the LOQ correcting for dosing duration",
                  formalsmap=list(auc="auclast", aumc="aumclast"),
                  depends=list("auclast", "aumclast"))
@@ -703,6 +734,7 @@ pk.calc.mrt.md <- function(auctau, aumctau, aucinf, tau) {
 add.interval.col("mrt.md.obs",
                  FUN="pk.calc.mrt.md",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time with multiple dosing and nonlinear kinetics using observed Clast",
                  formalsmap=list(auctau="auclast", aumctau="aumclast", aucinf="aucinf.obs"),
                  depends=c("auclast", "aumclast", "aucinf.obs"))
@@ -715,6 +747,7 @@ PKNCA.set.summary(
 add.interval.col("mrt.md.pred",
                  FUN="pk.calc.mrt.md",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The mean residence time with multiple dosing and nonlinear kinetics using predicted Clast",
                  formalsmap=list(auctau="auclast", aumctau="aumclast", aucinf="aucinf.pred"),
                  depends=c("auclast", "aumclast", "aucinf.pred"))
@@ -745,6 +778,7 @@ pk.calc.vz <- function(cl, lambda.z) {
 add.interval.col("vz.obs",
                  FUN="pk.calc.vz",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The terminal volume of distribution using observed Clast",
                  formalsmap=list(cl="cl.obs"),
                  depends=c("cl.obs", "lambda.z"))
@@ -757,6 +791,7 @@ PKNCA.set.summary(
 add.interval.col("vz.pred",
                  FUN="pk.calc.vz",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The terminal volume of distribution using predicted Clast",
                  formalsmap=list(cl="cl.pred"),
                  depends=c("cl.pred", "lambda.z"))
@@ -780,6 +815,7 @@ pk.calc.vss <- function(cl, mrt)
 add.interval.col("vss.obs",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution using observed Clast",
                  formalsmap=list(cl="cl.obs", mrt="mrt.obs"),
                  depends=c("cl.obs", "mrt.obs"))
@@ -792,6 +828,7 @@ PKNCA.set.summary(
 add.interval.col("vss.pred",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution using predicted Clast",
                  formalsmap=list(cl="cl.pred", mrt="mrt.pred"),
                  depends=c("cl.pred", "mrt.pred"))
@@ -804,6 +841,7 @@ PKNCA.set.summary(
 add.interval.col("vss.last",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution calculating through Tlast",
                  formalsmap=list(cl="cl.last", mrt="mrt.last"),
                  depends=c("cl.last", "mrt.last"))
@@ -816,6 +854,7 @@ PKNCA.set.summary(
 add.interval.col("vss.iv.obs",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution with intravenous infusion using observed Clast",
                  formalsmap=list(cl="cl.obs", mrt="mrt.iv.obs"),
                  depends=c("cl.obs", "mrt.iv.obs"))
@@ -828,6 +867,7 @@ PKNCA.set.summary(
 add.interval.col("vss.iv.pred",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution with intravenous infusion using predicted Clast",
                  formalsmap=list(cl="cl.pred", mrt="mrt.iv.pred"),
                  depends=c("cl.pred", "mrt.iv.pred"))
@@ -840,6 +880,7 @@ PKNCA.set.summary(
 add.interval.col("vss.iv.last",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution with intravenous infusion calculating through Tlast",
                  formalsmap=list(cl="cl.last", mrt="mrt.iv.last"),
                  depends=c("cl.last", "mrt.iv.last"))
@@ -853,6 +894,7 @@ PKNCA.set.summary(
 add.interval.col("vss.md.obs",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution for nonlinear multiple-dose data using observed Clast",
                  formalsmap=list(cl="cl.last", mrt="mrt.md.obs"),
                  depends=c("cl.last", "mrt.md.obs"))
@@ -865,6 +907,7 @@ PKNCA.set.summary(
 add.interval.col("vss.md.pred",
                  FUN="pk.calc.vss",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="The steady-state volume of distribution for nonlinear multiple-dose data using predicted Clast",
                  formalsmap=list(cl="cl.last", mrt="mrt.md.pred"),
                  depends=c("cl.last", "mrt.md.pred"))
@@ -911,6 +954,7 @@ pk.calc.vd <- function(dose, aucinf, lambda.z) {
 add.interval.col("vd.obs",
                  FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="Apparent observed volume of distribution calculated with observed Clast",
                  formalsmap=list(aucinf="aucinf.obs"),
                  depends=c("aucinf.obs", "lambda.z"))
@@ -923,6 +967,7 @@ PKNCA.set.summary(
 add.interval.col("vd.pred",
                  FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),
+                 unit_type="volume",
                  desc="Apparent observed volume of distribution calculated with predicted Clast",
                  formalsmap=list(aucinf="aucinf.pred"),
                  depends=c("aucinf.pred", "lambda.z"))
@@ -953,6 +998,7 @@ pk.calc.cav <- function(auclast, start, end) {
 add.interval.col("cav",
                  FUN="pk.calc.cav",
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="The average concentration during an interval",
                  depends="auclast")
 PKNCA.set.summary(
@@ -986,6 +1032,7 @@ pk.calc.ctrough <- function(conc, time, end) {
 add.interval.col("ctrough",
                  FUN="pk.calc.ctrough",
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="The trough (predose) concentration",
                  depends=NULL)
 PKNCA.set.summary(
@@ -1011,6 +1058,7 @@ pk.calc.ptr <- function(cmax, ctrough) {
 add.interval.col("ptr",
                  FUN="pk.calc.ptr",
                  values=c(FALSE, TRUE),
+                 unit_type="fraction",
                  desc="Peak-to-Trough ratio (fraction)",
                  depends=c("cmax", "ctrough"))
 PKNCA.set.summary(
@@ -1040,6 +1088,7 @@ pk.calc.tlag <- function(conc, time) {
 add.interval.col("tlag",
                  FUN="pk.calc.tlag",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="Lag time",
                  depends=NULL)
 PKNCA.set.summary(
@@ -1068,6 +1117,7 @@ pk.calc.deg.fluc <- function(cmax, cmin, cav) {
 }
 add.interval.col("deg.fluc",
                  FUN="pk.calc.deg.fluc",
+                 unit_type="%",
                  desc="Degree of fluctuation",
                  depends=c("cmax", "cmin", "cav"))
 PKNCA.set.summary(
@@ -1095,6 +1145,7 @@ pk.calc.swing <- function(cmax, cmin) {
 }
 add.interval.col("swing",
                  FUN="pk.calc.swing",
+                 unit_type="%",
                  desc="Swing relative to Cmin",
                  depends=c("cmax", "cmin"))
 PKNCA.set.summary(
@@ -1127,6 +1178,7 @@ pk.calc.ceoi <- function(conc, time, duration.dose=NA, check=TRUE) {
 }
 add.interval.col("ceoi",
                  FUN="pk.calc.ceoi",
+                 unit_type="conc",
                  desc="Concentration at the end of infusion",
                  depends=NULL)
 PKNCA.set.summary(

@@ -323,6 +323,7 @@ get_function_for_calc <- function(x) {
 kable(
   data.frame(
     `Parameter Name`=names(interval_spec),
+    `Unit Type`=sapply(interval_spec, `[[`, "unit_type"),
     `Parameter Description`=sapply(interval_spec, `[[`, "desc"),
     `Function for Calculation`=sapply(interval_spec, get_function_for_calc),
     check.names=FALSE,

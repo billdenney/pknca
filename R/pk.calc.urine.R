@@ -16,6 +16,7 @@ pk.calc.ae <- function(conc, volume, check=TRUE) {
 add.interval.col("ae",
                  FUN="pk.calc.ae",
                  values=c(FALSE, TRUE),
+                 unit_type="amount",
                  desc="The amount excreted (typically into urine or feces)")
 PKNCA.set.summary(
   name="ae",
@@ -42,6 +43,7 @@ pk.calc.clr <- function(ae, auc) {
 add.interval.col("clr.last",
                  FUN="pk.calc.clr",
                  values=c(FALSE, TRUE),
+                 unit_type="renal_clearance",
                  formalsmap=list(auc="auclast"),
                  desc="The renal clearance calculated using AUClast")
 PKNCA.set.summary(
@@ -53,6 +55,7 @@ PKNCA.set.summary(
 add.interval.col("clr.obs",
                  FUN="pk.calc.clr",
                  values=c(FALSE, TRUE),
+                 unit_type="renal_clearance",
                  formalsmap=list(auc="aucinf.obs"),
                  desc="The renal clearance calculated using AUCinf,obs")
 PKNCA.set.summary(
@@ -64,6 +67,7 @@ PKNCA.set.summary(
 add.interval.col("clr.pred",
                  FUN="pk.calc.clr",
                  values=c(FALSE, TRUE),
+                 unit_type="renal_clearance",
                  formalsmap=list(auc="aucinf.pred"),
                  desc="The renal clearance calculated using AUCinf,pred")
 PKNCA.set.summary(
@@ -89,6 +93,7 @@ pk.calc.fe <- function(ae, dose) {
 }
 add.interval.col("fe",
                  FUN="pk.calc.fe",
+                 unit_type="fraction",
                  values=c(FALSE, TRUE),
                  desc="The fraction of the dose excreted")
 PKNCA.set.summary(

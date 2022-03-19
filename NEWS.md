@@ -6,6 +6,9 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.6 (in development)
 
+* Initial support for unit assignment and conversion has been added.  See the
+  `units` argument to the `PKNCAdata()` function and the function
+  `pknca_units_table()`.
 * `pk.calc.time_above()` now uses the default AUC calculation method for
   interpolation of time above.
 * PKNCA can now calculate parameters that require extra information by adding

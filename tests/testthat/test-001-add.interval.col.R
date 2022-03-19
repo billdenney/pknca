@@ -28,59 +28,67 @@ test_that("add.interval.col", {
   )
   
   expect_error(
-    add.interval.col(name="a", FUN=NA, datatype="individual"),
+    add.interval.col(name="a", FUN=NA, datatype="interval", desc="test addition")
+  )
+  expect_error(
+    add.interval.col(name="a", FUN=NA, unit_type="foo", datatype="interval", desc="test addition")
+  )
+  
+  expect_error(
+    add.interval.col(name="a", FUN=NA, unit_type="conc", datatype="individual"),
     regexp="Only the 'interval' datatype is currently supported.",
     info="interval column datatype must be 'interval'"
   )
   
   expect_error(
-    add.interval.col(name="a", FUN=NA, datatype="interval", desc=1:2),
+    add.interval.col(name="a", FUN=NA, unit_type="conc", datatype="interval", desc=1:2),
     regexp="desc must have length == 1",
     info="interval column description must be a scalar"
   )
   expect_error(
-    add.interval.col(name="a", FUN=NA, datatype="interval", desc=1),
+    add.interval.col(name="a", FUN=NA, unit_type="conc", datatype="interval", desc=1),
     regexp="desc must be a character string",
     info="interval column description must be a character scalar"
   )
   expect_error(
-    add.interval.col(name="a", FUN="this function does not exist", datatype="interval", desc="test addition"),
+    add.interval.col(name="a", FUN="this function does not exist", unit_type="conc", datatype="interval", desc="test addition"),
     regexp="The function named '.*' is not defined.  Please define the function before calling add.interval.col.",
     info="interval column function must exist (or be NA)"
   )
 
   # formalsmap
   expect_error(
-    add.interval.col(name="a", FUN="mean", formalsmap=NA),
+    add.interval.col(name="a", FUN="mean", unit_type="conc", formalsmap=NA),
     regexp="formalsmap must be a list"
   )
   expect_error(
-    add.interval.col(name="a", FUN="mean", formalsmap=list(1)),
+    add.interval.col(name="a", FUN="mean", unit_type="conc", formalsmap=list(1)),
     regexp="formalsmap must be a named list"
   )
   expect_error(
-    add.interval.col(name="a", FUN=NA, formalsmap=list(A="b")),
+    add.interval.col(name="a", FUN=NA, unit_type="conc", formalsmap=list(A="b")),
     regexp="formalsmap may not be given when FUN is NA",
     info="formalsmap cannot be used with FUN=NA"
   )
   expect_error(
-    add.interval.col(name="a", FUN="mean", formalsmap=list(A="a", "b")),
+    add.interval.col(name="a", FUN="mean", unit_type="conc", formalsmap=list(A="a", "b")),
     regexp="All formalsmap elements must be named"
   )
   expect_error(
-    add.interval.col(name="a", FUN="mean", formalsmap=list(y="a")),
+    add.interval.col(name="a", FUN="mean", unit_type="conc", formalsmap=list(y="a")),
     regexp="All names for the formalsmap list must be arguments to the function",
     info="formalsmap arguments must map to function arguments"
   )
   
   expect_equal(
     {
-      add.interval.col(name="a", FUN=NA, datatype="interval", desc="test addition")
+      add.interval.col(name="a", FUN=NA, unit_type="conc", datatype="interval", desc="test addition")
       get("interval.cols", PKNCA:::.PKNCAEnv)[["a"]]
     },
     list(
       FUN=NA,
       values=c(FALSE, TRUE),
+      unit_type="conc",
       desc="test addition",
       formalsmap=list(),
       depends=NULL,
@@ -89,12 +97,13 @@ test_that("add.interval.col", {
     info="interval column assignment works with FUN=NA")
   expect_equal(
     {
-      add.interval.col(name="a", FUN="mean", datatype="interval", desc="test addition")
+      add.interval.col(name="a", FUN="mean", unit_type="conc", datatype="interval", desc="test addition")
       get("interval.cols", PKNCA:::.PKNCAEnv)[["a"]]
     },
     list(
       FUN="mean",
       values=c(FALSE, TRUE),
+      unit_type="conc",
       desc="test addition",
       formalsmap=list(),
       depends=NULL,
@@ -104,12 +113,13 @@ test_that("add.interval.col", {
   )
   expect_equal(
     {
-      add.interval.col(name="a", FUN="mean", formalsmap=list(x="values"), desc="test addition")
+      add.interval.col(name="a", FUN="mean", unit_type="conc", formalsmap=list(x="values"), desc="test addition")
       get("interval.cols", PKNCA:::.PKNCAEnv)[["a"]]
     },
     list(
       FUN="mean",
       values=c(FALSE, TRUE),
+      unit_type="conc",
       desc="test addition",
       formalsmap=list(x="values"),
       depends=NULL,
@@ -122,9 +132,11 @@ test_that("add.interval.col", {
 # Reset the original state
 assign("interval.cols", original_state, envir=PKNCA:::.PKNCAEnv)
 
-test_that("", {
+test_that("fake parameters", {
   add.interval.col(
-    name="fake_parameter", FUN="mean",
+    name="fake_parameter",
+    FUN="mean",
+    unit_type="conc",
     formalsmap=list(x="values"),
     desc="test addition",
     depends="does_not_exist"

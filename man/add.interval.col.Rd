@@ -8,6 +8,7 @@ add.interval.col(
   name,
   FUN,
   values = c(FALSE, TRUE),
+  unit_type,
   depends = NULL,
   desc = "",
   formalsmap = list(),
@@ -17,36 +18,38 @@ add.interval.col(
 \arguments{
 \item{name}{The column name as a character string}
 
-\item{FUN}{The function to run (as a character string) or \code{NA}
-if the parameter is automatically calculated when calculating
-another parameter.}
+\item{FUN}{The function to run (as a character string) or \code{NA} if the
+parameter is automatically calculated when calculating another parameter.}
 
 \item{values}{Valid values for the column}
 
-\item{depends}{Character vector of columns that must be run before
-this column.}
+\item{unit_type}{The type of units to use for assigning and converting units.}
 
-\item{desc}{A human-readable description of the parameter (<=40
-characters to comply with SDTM)}
+\item{depends}{Character vector of columns that must be run before this
+column.}
 
-\item{formalsmap}{A named list mapping parameter names in the
-function call to NCA parameter names.  See the details for information on use of \code{formalsmap}.}
+\item{desc}{A human-readable description of the parameter (<=40 characters to
+comply with SDTM)}
+
+\item{formalsmap}{A named list mapping parameter names in the function call
+to NCA parameter names.  See the details for information on use of
+\code{formalsmap}.}
 
 \item{datatype}{The type of data used for the calculation}
 }
 \value{
-NULL (Calling this function has a side effect of
-  changing the available intervals for calculations)
+NULL (Calling this function has a side effect of changing the
+  available intervals for calculations)
 }
 \description{
 Add columns for calculations within PKNCA intervals
 }
 \details{
-The \code{formalsmap} argument enables mapping some alternate formal
-argument names to parameters.  It is used to generalize functions
-that may use multiple similar arguments (such as the variants of mean
-residence time). The names of the list should correspond to function
-formal parameter names and the values should be one of the following:
+The \code{formalsmap} argument enables mapping some alternate formal argument
+names to parameters.  It is used to generalize functions that may use
+multiple similar arguments (such as the variants of mean residence time). The
+names of the list should correspond to function formal parameter names and
+the values should be one of the following:
 
 \itemize{
   \item{For the current interval:}
@@ -82,10 +85,12 @@ formal parameter names and the values should be one of the following:
 add.interval.col("cmax",
                  FUN="pk.calc.cmax",
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="Maximum observed concentration")
 add.interval.col("cmax.dn",
                  FUN="pk.calc.dn",
                  values=c(FALSE, TRUE),
+                 unit_type="conc_dosenorm",
                  desc="Maximum observed concentration, dose normalized",
                  formalsmap=list(parameter="cmax"),
                  depends="cmax")

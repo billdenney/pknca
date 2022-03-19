@@ -7,26 +7,27 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' Add columns for calculations within PKNCA intervals
 #'
 #' @param name The column name as a character string
-#' @param FUN The function to run (as a character string) or \code{NA}
-#'   if the parameter is automatically calculated when calculating
-#'   another parameter.
+#' @param FUN The function to run (as a character string) or \code{NA} if the
+#'   parameter is automatically calculated when calculating another parameter.
 #' @param values Valid values for the column
-#' @param depends Character vector of columns that must be run before
-#'   this column.
-#' @param desc A human-readable description of the parameter (<=40
-#'   characters to comply with SDTM)
-#' @param formalsmap A named list mapping parameter names in the
-#'   function call to NCA parameter names.  See the details for information on use of \code{formalsmap}.
+#' @param depends Character vector of columns that must be run before this
+#'   column.
+#' @param desc A human-readable description of the parameter (<=40 characters to
+#'   comply with SDTM)
+#' @param unit_type The type of units to use for assigning and converting units.
+#' @param formalsmap A named list mapping parameter names in the function call
+#'   to NCA parameter names.  See the details for information on use of
+#'   \code{formalsmap}.
 #' @param datatype The type of data used for the calculation
-#' @return NULL (Calling this function has a side effect of
-#'   changing the available intervals for calculations)
+#' @return NULL (Calling this function has a side effect of changing the
+#'   available intervals for calculations)
 #'
 #' @details
-#' The \code{formalsmap} argument enables mapping some alternate formal
-#' argument names to parameters.  It is used to generalize functions
-#' that may use multiple similar arguments (such as the variants of mean
-#' residence time). The names of the list should correspond to function
-#' formal parameter names and the values should be one of the following:
+#' The \code{formalsmap} argument enables mapping some alternate formal argument
+#' names to parameters.  It is used to generalize functions that may use
+#' multiple similar arguments (such as the variants of mean residence time). The
+#' names of the list should correspond to function formal parameter names and
+#' the values should be one of the following:
 #' 
 #' \itemize{
 #'   \item{For the current interval:}
@@ -61,10 +62,12 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' add.interval.col("cmax",
 #'                  FUN="pk.calc.cmax",
 #'                  values=c(FALSE, TRUE),
+#'                  unit_type="conc",
 #'                  desc="Maximum observed concentration")
 #' add.interval.col("cmax.dn",
 #'                  FUN="pk.calc.dn",
 #'                  values=c(FALSE, TRUE),
+#'                  unit_type="conc_dosenorm",
 #'                  desc="Maximum observed concentration, dose normalized",
 #'                  formalsmap=list(parameter="cmax"),
 #'                  depends="cmax")
@@ -75,6 +78,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 add.interval.col <- function(name,
                              FUN,
                              values=c(FALSE, TRUE),
+                             unit_type,
                              depends=NULL,
                              desc="",
                              formalsmap=list(),
@@ -92,6 +96,20 @@ add.interval.col <- function(name,
   } else if (!(is.character(FUN) | is.na(FUN))) {
     stop("FUN must be a character string or NA")
   }
+  unit_type <-
+    match.arg(
+      unit_type,
+      choices=c(
+        "unitless", "fraction", "%", "count",
+        "time", "inverse_time",
+        "amount",
+        "conc", "conc_dosenorm",
+        "volume",
+        "auc", "aumc",
+        "auc_dosenorm", "aumc_dosenorm",
+        "clearance", "renal_clearance"
+      )
+    )
   datatype <- match.arg(datatype)
   if (!(datatype %in% "interval")) {
     stop("Only the 'interval' datatype is currently supported.")
@@ -130,6 +148,7 @@ add.interval.col <- function(name,
     list(
       FUN=FUN,
       values=values,
+      unit_type=unit_type,
       desc=desc,
       formalsmap=formalsmap,
       depends=depends,
@@ -142,11 +161,13 @@ add.interval.col <- function(name,
 add.interval.col("start",
   FUN = NA,
   values = as.numeric,
+  unit_type="time",
   desc = "Starting time of the interval"
 )
 add.interval.col("end",
   FUN = NA,
   values = as.numeric,
+  unit_type="time",
   desc = "Ending time of the interval (potentially infinity)"
 )
 

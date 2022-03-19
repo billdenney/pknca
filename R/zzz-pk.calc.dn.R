@@ -14,11 +14,13 @@ local({
   for (n in c("auclast", "aucall", "aucinf.obs", "aucinf.pred",
               "aumclast", "aumcall", "aumcinf.obs", "aumcinf.pred",
               "cmax", "cmin", "clast.obs", "clast.pred", "cav", "ctrough")) {
+    current_unit_type <- get.interval.cols()[[n]]$unit_type
     # Add the column to the interval specification
     add.interval.col(
       name=paste(n, "dn", sep="."),
       FUN="pk.calc.dn",
       values=c(FALSE, TRUE),
+      unit_type=paste0(current_unit_type, "_dose"),
       desc=paste("Dose normalized", n),
       formalsmap=list(parameter=n),
       depends=c(n)

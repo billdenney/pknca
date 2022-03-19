@@ -309,6 +309,7 @@ fit_half_life <- function(data, tlast, conc_units) {
 add.interval.col("half.life",
                  FUN="pk.calc.half.life",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The (terminal) half-life",
                  depends=c("tmax", "tlast"))
 PKNCA.set.summary(
@@ -320,6 +321,7 @@ PKNCA.set.summary(
 add.interval.col("r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="unitless",
                  desc="The r^2 value of the half-life calculation",
                  depends="half.life")
 PKNCA.set.summary(
@@ -331,6 +333,7 @@ PKNCA.set.summary(
 add.interval.col("adj.r.squared",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="unitless",
                  desc="The adjusted r^2 value of the half-life calculation",
                  depends="half.life")
 PKNCA.set.summary(
@@ -342,6 +345,7 @@ PKNCA.set.summary(
 add.interval.col("lambda.z",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="inverse_time",
                  desc="The elimination rate of the terminal half-life",
                  depends="half.life")
 PKNCA.set.summary(
@@ -353,6 +357,7 @@ PKNCA.set.summary(
 add.interval.col("lambda.z.time.first",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="The first time point used for the calculation of half-life",
                  depends="half.life")
 PKNCA.set.summary(
@@ -364,6 +369,7 @@ PKNCA.set.summary(
 add.interval.col("lambda.z.n.points",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="count",
                  desc="The number of points used for the calculation of half-life",
                  depends="half.life")
 PKNCA.set.summary(
@@ -375,6 +381,7 @@ PKNCA.set.summary(
 add.interval.col("clast.pred",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="conc",
                  desc="The concentration at Tlast as predicted by the half-life",
                  depends="half.life")
 PKNCA.set.summary(
@@ -386,6 +393,7 @@ PKNCA.set.summary(
 add.interval.col("span.ratio",
                  FUN=NA,
                  values=c(FALSE, TRUE),
+                 unit_type="fraction",
                  desc="The ratio of the half-life to the duration used for half-life calculation",
                  depends="half.life")
 PKNCA.set.summary(

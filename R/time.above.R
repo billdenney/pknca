@@ -67,6 +67,7 @@ pk.calc.time_above <- function(conc, time,
 add.interval.col("time_above",
                  FUN="pk.calc.time_above",
                  values=c(FALSE, TRUE),
+                 unit_type="time",
                  desc="Time above a given concentration")
 PKNCA.set.summary(
   name="time_above",
