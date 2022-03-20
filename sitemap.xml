@@ -55,6 +55,9 @@
     <loc>http://billdenney.github.io/pknca/articles/index.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/articles/unit-conversion.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/authors.html</loc>
   </url>
   <url>
@@ -332,6 +335,18 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/pk.tss.stepwise.linear.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/pknca_find_units_param.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/pknca_unit_conversion.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/pknca_units_add_paren.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/pknca_units_table.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/print.PKNCAconc.html</loc>

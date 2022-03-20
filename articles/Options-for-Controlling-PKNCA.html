@@ -85,6 +85,9 @@
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
     </li>
+    <li>
+      <a href="../articles/unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -220,10 +223,6 @@
 <col width="1%">
 <col width="1%">
 <col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="1%">
-<col width="1%">
 <col width="0%">
 <col width="0%">
 <col width="0%">
@@ -257,12 +256,6 @@
 <col width="1%">
 <col width="1%">
 <col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="0%">
-<col width="1%">
-<col width="1%">
-<col width="0%">
 <col width="1%">
 <col width="1%">
 <col width="1%">
@@ -278,10 +271,6 @@
 <col width="2%">
 <col width="1%">
 <col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="1%">
 <col width="0%">
 <col width="0%">
 <col width="0%">
@@ -307,6 +296,20 @@
 <col width="0%">
 <col width="0%">
 <col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
 <col width="1%">
 </colgroup>
 <thead><tr class="header">
@@ -320,10 +323,6 @@
 <th align="left">aucint.last.dose</th>
 <th align="left">aucint.all</th>
 <th align="left">aucint.all.dose</th>
-<th align="left">auclast.dn</th>
-<th align="left">aucall.dn</th>
-<th align="left">aumclast.dn</th>
-<th align="left">aumcall.dn</th>
 <th align="left">cmax</th>
 <th align="left">cmin</th>
 <th align="left">tmax</th>
@@ -358,12 +357,6 @@
 <th align="left">lambda.z.n.points</th>
 <th align="left">clast.pred</th>
 <th align="left">span.ratio</th>
-<th align="left">cmax.dn</th>
-<th align="left">cmin.dn</th>
-<th align="left">clast.obs.dn</th>
-<th align="left">clast.pred.dn</th>
-<th align="left">cav.dn</th>
-<th align="left">ctrough.dn</th>
 <th align="left">thalf.eff.last</th>
 <th align="left">thalf.eff.iv.last</th>
 <th align="left">kel.last</th>
@@ -376,10 +369,6 @@
 <th align="left">aucint.inf.obs.dose</th>
 <th align="left">aucint.inf.pred</th>
 <th align="left">aucint.inf.pred.dose</th>
-<th align="left">aucinf.obs.dn</th>
-<th align="left">aucinf.pred.dn</th>
-<th align="left">aumcinf.obs.dn</th>
-<th align="left">aumcinf.pred.dn</th>
 <th align="left">aucpext.obs</th>
 <th align="left">aucpext.pred</th>
 <th align="left">cl.obs</th>
@@ -408,6 +397,20 @@
 <th align="left">kel.pred</th>
 <th align="left">kel.iv.obs</th>
 <th align="left">kel.iv.pred</th>
+<th align="left">auclast.dn</th>
+<th align="left">aucall.dn</th>
+<th align="left">aucinf.obs.dn</th>
+<th align="left">aucinf.pred.dn</th>
+<th align="left">aumclast.dn</th>
+<th align="left">aumcall.dn</th>
+<th align="left">aumcinf.obs.dn</th>
+<th align="left">aumcinf.pred.dn</th>
+<th align="left">cmax.dn</th>
+<th align="left">cmin.dn</th>
+<th align="left">clast.obs.dn</th>
+<th align="left">clast.pred.dn</th>
+<th align="left">cav.dn</th>
+<th align="left">ctrough.dn</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -521,10 +524,6 @@
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
@@ -563,13 +562,17 @@
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>

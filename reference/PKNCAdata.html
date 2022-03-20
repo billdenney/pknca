@@ -68,6 +68,9 @@ adds in the intervals for PK calculations."><!-- mathjax --><script src="https:/
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
     </li>
+    <li>
+      <a href="../articles/unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
+    </li>
   </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -114,6 +117,7 @@ adds in the intervals for PK calculations.</p>
   <span class="va">formula.conc</span>,
   <span class="va">formula.dose</span>,
   <span class="va">intervals</span>,
+  <span class="va">units</span>,
   options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -143,6 +147,9 @@ data.frame, and it must not be given if <code>data.dose</code> is a
 defined in <code><a href="check.interval.specification.html">check.interval.specification</a></code>.  If missing,
 this will be automatically chosen by 
 <code><a href="choose.auc.intervals.html">choose.auc.intervals</a></code>. (see details)</p></dd>
+<dt>units</dt>
+<dd><p>A data.frame of unit assignments and conversions as created by
+<code><a href="pknca_units_table.html">pknca_units_table</a>()</code></p></dd>
 <dt>options</dt>
 <dd><p>List of changes to the default 
 <code><a href="PKNCA.options.html">PKNCA.options</a></code> for calculations.</p></dd>
@@ -161,7 +168,8 @@ this will be automatically chosen by
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="choose.auc.intervals.html">choose.auc.intervals</a></code>, <code><a href="pk.nca.html">pk.nca</a></code></p>
+    <div class="dont-index"><p><code><a href="choose.auc.intervals.html">choose.auc.intervals</a></code>, <code><a href="pk.nca.html">pk.nca</a></code>,
+  <code><a href="pknca_units_table.html">pknca_units_table</a>()</code></p>
 <p>Other PKNCA objects: 
 <code><a href="PKNCAconc.html">PKNCAconc</a>()</code>,
 <code><a href="PKNCAdose.html">PKNCAdose</a>()</code>,

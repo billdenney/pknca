@@ -67,6 +67,9 @@
     <li>
       <a href="../articles/Writing-Parameter-Functions.html">Writing PKNCA Parameter Functions</a>
     </li>
+    <li>
+      <a href="../articles/unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
+    </li>
   </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -100,6 +103,7 @@
   <span class="va">name</span>,
   <span class="va">FUN</span>,
   values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,
+  <span class="va">unit_type</span>,
   depends <span class="op">=</span> <span class="cn">NULL</span>,
   desc <span class="op">=</span> <span class="st">""</span>,
   formalsmap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
@@ -112,35 +116,37 @@
     <dl><dt>name</dt>
 <dd><p>The column name as a character string</p></dd>
 <dt>FUN</dt>
-<dd><p>The function to run (as a character string) or <code>NA</code>
-if the parameter is automatically calculated when calculating
-another parameter.</p></dd>
+<dd><p>The function to run (as a character string) or <code>NA</code> if the
+parameter is automatically calculated when calculating another parameter.</p></dd>
 <dt>values</dt>
 <dd><p>Valid values for the column</p></dd>
+<dt>unit_type</dt>
+<dd><p>The type of units to use for assigning and converting units.</p></dd>
 <dt>depends</dt>
-<dd><p>Character vector of columns that must be run before
-this column.</p></dd>
+<dd><p>Character vector of columns that must be run before this
+column.</p></dd>
 <dt>desc</dt>
-<dd><p>A human-readable description of the parameter (&lt;=40
-characters to comply with SDTM)</p></dd>
+<dd><p>A human-readable description of the parameter (&lt;=40 characters to
+comply with SDTM)</p></dd>
 <dt>formalsmap</dt>
-<dd><p>A named list mapping parameter names in the
-function call to NCA parameter names.  See the details for information on use of <code>formalsmap</code>.</p></dd>
+<dd><p>A named list mapping parameter names in the function call
+to NCA parameter names.  See the details for information on use of
+<code>formalsmap</code>.</p></dd>
 <dt>datatype</dt>
 <dd><p>The type of data used for the calculation</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>NULL (Calling this function has a side effect of
-  changing the available intervals for calculations)</p>
+    <p>NULL (Calling this function has a side effect of changing the
+  available intervals for calculations)</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The <code>formalsmap</code> argument enables mapping some alternate formal
-argument names to parameters.  It is used to generalize functions
-that may use multiple similar arguments (such as the variants of mean
-residence time). The names of the list should correspond to function
-formal parameter names and the values should be one of the following:</p>
+    <p>The <code>formalsmap</code> argument enables mapping some alternate formal argument
+names to parameters.  It is used to generalize functions that may use
+multiple similar arguments (such as the variants of mean residence time). The
+names of the list should correspond to function formal parameter names and
+the values should be one of the following:</p>
 <ul><li><p>For the current interval:</p><dl><dt>character strings of NCA parameter name</dt>
 <dd><p>The value of the parameter calculated for the current interval.</p></dd>
 
@@ -222,10 +228,12 @@ formal parameter names and the values should be one of the following:</p>
 <span class="r-in"><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax"</span>,</span>
 <span class="r-in">                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,</span>
 <span class="r-in">                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span class="r-in">                 unit_type<span class="op">=</span><span class="st">"conc"</span>,</span>
 <span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax.dn"</span>,</span>
 <span class="r-in">                 FUN<span class="op">=</span><span class="st">"pk.calc.dn"</span>,</span>
 <span class="r-in">                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span class="r-in">                 unit_type<span class="op">=</span><span class="st">"conc_dosenorm"</span>,</span>
 <span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration, dose normalized"</span>,</span>
 <span class="r-in">                 formalsmap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parameter<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span>,</span>
 <span class="r-in">                 depends<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span></span>
