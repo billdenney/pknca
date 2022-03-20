@@ -256,12 +256,6 @@ group_vars.PKNCAdose <- function(x) {
   group_vars.PKNCAconc(x)
 }
 
-#' @rdname getData.PKNCAconc
-#' @export
-#' @importFrom nlme getData
-getData.PKNCAdose <-  function(object)
-  object$data
-
 #' @rdname getDataName
 getDataName.PKNCAdose <- function(object)
   "data"
@@ -307,3 +301,8 @@ print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
 #' @rdname print.PKNCAconc
 #' @export
 summary.PKNCAdose <- summary.PKNCAconc
+
+#' @export
+as.data.frame.PKNCAdose <- function(x, ...) {
+  x$data
+}

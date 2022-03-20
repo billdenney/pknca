@@ -207,7 +207,7 @@ getIndepVar.PKNCAconc <- function(x, ...) {
 #' @return A data frame with the (selected) group columns.
 #' @export
 getGroups.PKNCAconc <- function(object, form=formula(object), level,
-                                data=getData(object), sep) {
+                                data=as.data.frame(object), sep) {
   grpnames <- all.vars(parseFormula(form)$groups)
   if (!missing(level))
     if (is.factor(level) | is.character(level)) {
@@ -235,13 +235,6 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
 group_vars.PKNCAconc <- function(x) {
   all.vars(parseFormula(as.formula(x))$groups)
 }
-
-#' Extract all the original data from a PKNCAconc or PKNCAdose object
-#' @param object R object to extract the data from.
-#' @export
-#' @importFrom nlme getData
-getData.PKNCAconc <- function(object)
-  object$data
 
 #' @rdname getDataName
 getDataName.PKNCAconc <- function(object)

@@ -8,7 +8,13 @@
 \title{Get the groups (right hand side after the \code{|} from a PKNCA 
 object).}
 \usage{
-\method{getGroups}{PKNCAconc}(object, form = formula(object), level, data = getData(object), sep)
+\method{getGroups}{PKNCAconc}(
+  object,
+  form = formula(object),
+  level,
+  data = as.data.frame(object),
+  sep
+)
 
 \method{getGroups}{PKNCAdose}(...)
 

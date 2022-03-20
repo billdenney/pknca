@@ -35,8 +35,9 @@ the dosing including dose amount and route.
 
 ## Breaking Changes
 
-* The `getData()` and `getDataName()` functions for PKNCAdata objects were
-  removed.  They were previously intended to be internal functions.
+* Some functions that were intended to be internal were removed:
+    * All `getData()` functions were removed.
+    * The `getDataName()` function for PKNCAdata objects was removed.
 
 # PKNCA 0.9.5
 
