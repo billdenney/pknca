@@ -261,4 +261,9 @@ test_that("findOperator", {
   # When given an invalid class, return an error
   expect_error(findOperator(list(), side="both"),
                regexp="Cannot handle class list")
+  
+  expect_error(
+    findOperator(x=a~b(), op="+", side="left"),
+    regexp="call or formula with length 1 found without finding the operator, unknown how to proceed"
+  )
 })

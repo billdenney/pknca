@@ -207,7 +207,6 @@ test_that("print.PKNCAdose", {
   tmp.dose.nogroup <- generate.dose(tmp.conc.nogroup)
   mydose.nogroup <- PKNCAdose(tmp.dose.nogroup, formula=dose~time)
   
-
   expect_output(print(mydose),
                 regexp="Formula for dosing:
  dose ~ time | treatment + ID
@@ -259,6 +258,11 @@ Number unique entries in each group:
          2  5",
                 fixed=TRUE,
                 info="Summary print.PKNCAdose works")
+  
+  expect_output(
+    print(mydose.nogroup, summarize=TRUE),
+    regexp="No groups"
+  )
 })
 
 test_that("PKNCAdose with exclusions", {
@@ -382,4 +386,12 @@ test_that("setDuration", {
                regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
                fixed=TRUE,
                info="Cannot give both duration as non-numeric")
+  
+  duration_example <- suppressMessages(setDuration(mydose, rate=2))
+  expect_true(all(mydose$data$duration == 0))
+  expect_equal(
+    duration_example$data$duration,
+    duration_example$data$dose/2
+  )
+  expect_equal(duration_example$columns$duration, "duration")
 })

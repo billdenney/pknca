@@ -105,19 +105,19 @@ getGroups.PKNCAresults <- function(object,
 roundingSummarize <- function(x, name) {
   summary_instructions <- PKNCA.set.summary()
   if (!(name %in% names(summary_instructions)))
-    stop(name, "is not in the summarization instructions from PKNCA.set.summary")
+    stop(name, " is not in the summarization instructions from PKNCA.set.summary")
   roundingInstructions <- summary_instructions[[name]]$rounding
   if (is.function(roundingInstructions)) {
     ret <- roundingInstructions(x)
   } else if (is.list(roundingInstructions)) {
     if (length(roundingInstructions) != 1)
-      stop("Cannot interpret rounding instructions for ", name)
+      stop("Cannot interpret rounding instructions for ", name, " (please report this as a bug)") # nocov
     if ("signif" == names(roundingInstructions)) {
       ret <- signifString(x, roundingInstructions$signif)
     } else if ("round" == names(roundingInstructions)) {
       ret <- roundString(x, roundingInstructions$round)
     } else {
-      stop("Invalid rounding instruction list name for ", name)
+      stop("Invalid rounding instruction list name for ", name, " (please report this as a bug)") # nocov
     }
   }
   if (!is.character(ret))
@@ -253,7 +253,8 @@ summary.PKNCAresults <- function(object, ...,
         # Exclude value, when required
         current_data[[result_number_col]][!is.na(current_data[[exclude_col]])] <- NA
         if (nrow(current_data) == 0) {
-          warning("No results to summarize for ", current_parameter, " in result row ", row_idx)
+          # I don't think that a user can get here
+          warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
         } else {
           if (summarize.n.per.group) {
             ret$N[row_idx] <- max(ret$N[row_idx], nrow(current_data), na.rm=TRUE)
@@ -314,7 +315,8 @@ summary.PKNCAresults <- function(object, ...,
   # calculated.
   if (summarize.n.per.group) {
     if (any(mask.na.N <- is.na(ret$N))) {
-      ret$N[mask.na.N] <- not.calculated.string
+      #ret$N[mask.na.N] <- not.calculated.string
+      stop("Invalid subject count (please report this as a bug)") # nocov
     }
     ret$N <- as.character(ret$N)
   }

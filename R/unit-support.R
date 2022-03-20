@@ -62,7 +62,7 @@ pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.fra
   # }
   extra_cols <- setdiff(ret$PPTESTCD, names(PKNCA::get.interval.cols()))
   if (length(extra_cols) > 0) {
-    stop("The unknown NCA parameters have units defined: ", paste(extra_cols, collapse=", "))
+    stop("Please report a bug.  Unknown NCA parameters have units defined: ", paste(extra_cols, collapse=", ")) # nocov
   }
   if (nrow(conversions) > 0) {
     stopifnot(!duplicated(conversions$PPORRESU))
@@ -70,7 +70,7 @@ pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.fra
     stopifnot(length(setdiff(names(conversions), c("PPORRESU", "PPSTRESU", "conversion_factor"))) == 0)
     if (!("conversion_factor" %in% names(conversions))) {
       if (!requireNamespace("units", quietly=TRUE)) {
-        stop("The units package is required for automatic unit conversion")
+        stop("The units package is required for automatic unit conversion") # nocov
       }
       conversions$conversion_factor <- NA_real_
     }

@@ -240,3 +240,17 @@ test_that("aucint works with infinite intervals", {
                                     clast.pred=2, lambda.z=log(2)),
                info="Simple AUCinf.pred = aucint.inf.pred")
 })
+
+test_that("aucint respects the check argument", {
+  tmpdata <- data.frame(conc=c(8, 4, 2, 1),
+                        time=0:3)
+  expect_equal(
+    pk.calc.aucint.last(conc=tmpdata$conc, time=tmpdata$time, start=0, end=Inf),
+    pk.calc.aucint.last(conc=tmpdata$conc, time=tmpdata$time, start=0, end=Inf, check=FALSE)
+  )
+  baddata <- data.frame(conc=c(8, 4, 2, NA),
+                        time=c(0:2, NA))
+  expect_error(
+    pk.calc.aucint.last(conc=baddata$conc, time=baddata$time, start=0, end=Inf, check=FALSE)
+  )
+})

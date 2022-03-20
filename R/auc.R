@@ -105,11 +105,11 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   if (auc.type %in% "AUCinf" &
         is.finite(interval[2]))
     warning("Requesting AUCinf when the end of the interval is not Inf")
-  if (requireNamespace("units", quietly=TRUE)) {
-    if (inherits(time, "units") & !inherits(interval, "units")) {
-      interval <- units::set_units(interval, units(time), mode="standard")
-    }
-  }
+  # if (requireNamespace("units", quietly=TRUE)) {
+  #   if (inherits(time, "units") & !inherits(interval, "units")) {
+  #     interval <- units::set_units(interval, units(time), mode="standard")
+  #   }
+  # }
 
   # Subset the data to the range of interest ####
   interval_start <- interval[1]
@@ -197,9 +197,9 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
       ret[mask_down] <-
         fun.log(data$conc[idx_1_down], data$conc[idx_2_down],
                 data$time[idx_1_down], data$time[idx_2_down])
-    } else if (!(method %in% "linear")) {
+    } else if (!(method %in% "linear")) { # nocov
       # This should have already been caught, but the test exists to double-check
-      stop("Invalid AUC integration method") # nocov
+      stop("Invalid AUC integration method (please report a bug)") # nocov
     }
     if (auc.type %in% "AUCinf") {
       # Whether AUCinf,obs or AUCinf,pred is calculated depends on if clast,obs

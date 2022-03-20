@@ -199,7 +199,7 @@ superposition.numeric <- function(conc, time, dose.input,
     dose.scaling <- dose.amount / dose.input
     if (length(dose.scaling) != length(dose.times)) {
       if (length(dose.scaling) != 1)
-        stop("bug in dose.amount, dose.times, and dose.input handling")
+        stop("bug in dose.amount, dose.times, and dose.input handling") # nocov
       # it is a scalar and there is more than one dose
       dose.scaling <- rep(dose.scaling, length(dose.times))
     }

@@ -3,6 +3,20 @@ context("Class generation-PKNCAconc")
 library(dplyr)
 source("generate.data.R")
 
+test_that("PKNCAconc expected errors", {
+  tmp.conc <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
+  tmp.conc$foo <- "A"
+  expect_error(
+    PKNCAconc(conc~time, volume="foo", data=tmp.conc),
+    regexp="Volume must be numeric"
+  )
+  expect_error(
+    PKNCAconc(conc~time, duration="foo", data=tmp.conc),
+    regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
+    fixed=TRUE
+  )
+})
+
 test_that("PKNCAconc", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   tmp.conc.analyte <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
@@ -164,6 +178,21 @@ Nominal time column is not specified.",
                 Trt 1  1    0 0.0000000
                 Trt 1  1    1 0.7052248",
                 info="print.PKNCAconc accurately uses negative n argument.")
+  
+  tmp.conc <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time)
+  expect_output(
+    print(myconc),
+    regexp="As a single-subject dataset"
+  )
+  expect_output(
+    print(myconc, summarize=TRUE),
+    regexp="No groups\\."
+  )
+  expect_output(
+    print(myconc, n=1e6),
+    regexp="Data for concentration"
+  )
 })
 
 test_that("summary.PKNCAconc", {
@@ -299,4 +328,16 @@ test_that("PKNCAconc with volume added", {
                       columns=list(volume="volume",
                                    duration="duration")),
                  class=c("PKNCAconc", "list")))
+})
+
+test_that("as.data.frame.PKNCAconc", {
+  tmp_conc <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
+  result_conc <- tmp_conc
+  result_conc$exclude <- NA_character_
+  result_conc$volume <- NA_real_
+  result_conc$duration <- 0
+  expect_equal(
+    as.data.frame(PKNCAconc(conc~time, data=tmp_conc)),
+    result_conc
+  )
 })

@@ -194,12 +194,39 @@ test_that("superposition inputs", {
     ),
     info="clast.pred may be provided as 'TRUE'"
   )
-  
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             clast.pred=c(1, 2)),
-               regexp="clast.pred must be a scalar",
-               info="clast.pred must be a scalar")
 
+  expect_equal(
+    superposition(
+      conc=c(4, 2, 1, 0.5),
+      time=0:3,
+      tau=24,
+      clast.pred=NA,
+      n.tau=Inf,
+      check.blq=FALSE
+    ),
+    superposition(
+      conc=c(4, 2, 1, 0.5),
+      time=0:3,
+      tau=24,
+      clast.pred=FALSE,
+      n.tau=Inf,
+      check.blq=FALSE
+    ),
+    info="clast.pred NA is the same as FALSE"
+  )
+  
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24,
+                  clast.pred=c(1, 2)),
+    regexp="clast.pred must be a scalar"
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24,
+                  clast.pred=-1),
+    regexp="clast.pred must be positive (if it is a number)",
+    fixed=TRUE
+  )
+  
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred="1"),
                regexp="clast.pred must either be a logical .* or numeric value",
@@ -284,7 +311,12 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              steady.state.tol=2),
                regexp="steady.state.tol must be between 0 and 1, exclusive.")
-
+  expect_warning(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, steady.state.tol=0.1),
+    regexp="steady.state.tol is usually <= 0.01",
+    fixed=TRUE
+  )
+  
   # Combinations of lambda.z, clast.pred, tlast
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred=1),

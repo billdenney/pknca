@@ -17,7 +17,25 @@ test_that("pk.tss.data.prep", {
     ),
     regexp="time.dosing may not contain any NA values"
   )
-
+  expect_error(
+    pk.tss.data.prep(
+      conc=conc.test,
+      time=time.test,
+      subject.dosing=subject.test,
+      treatment=treatment.test,
+      time.dosing=NA
+    ),
+    regexp="Cannot give subject.dosing without subject"
+  )
+  expect_equal(
+    pk.tss.data.prep(
+      conc=conc.test,
+      time=time.test,
+      time.dosing=0
+    ),
+    data.frame(conc=1, time=0)
+  )
+  
   expect_error(pk.tss.data.prep(conc=conc.test,
                                 time=time.test,
                                 subject=subject.test,
@@ -187,7 +205,33 @@ test_that("pk.tss.stepwise.linear", {
     regexp="Only first value of min.points is used",
     info="pk.tss.stepwise.linear 2")
 
-  # Check the level input
+  expect_error(
+    pk.tss.stepwise.linear(
+      conc=tmpdata$conc,
+      time=tmpdata$time,
+      subject=tmpdata$subject,
+      treatment=tmpdata$treatment,
+      time.dosing=0:14,
+      min.points="A",
+      level="A",
+      verbose=FALSE
+    ),
+    regexp="min.points must be a number"
+  )
+  expect_error(
+    pk.tss.stepwise.linear(
+      conc=tmpdata$conc,
+      time=tmpdata$time,
+      subject=tmpdata$subject,
+      treatment=tmpdata$treatment,
+      time.dosing=0:14,
+      min.points=1,
+      level="A",
+      verbose=FALSE
+    ),
+    regexp="min.points must be at least 3"
+  )
+
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -264,6 +308,38 @@ test_that("pk.tss.stepwise.linear", {
     regexp="Only first value of level is being used",
     info="pk.tss.stepwise.linear 9")
 
+  # Check outputs
+  withr::with_options(
+    list(try.outFile=nullfile()),
+    expect_message(
+      pk.tss.stepwise.linear(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        level=0.8,
+        verbose=TRUE
+      ),
+      regexp="Trying 0"
+    )
+  )
+  withr::with_options(
+    list(try.outFile=nullfile()),
+    expect_message(
+      pk.tss.stepwise.linear(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        level=0.8,
+        verbose=TRUE
+      ),
+      regexp="Current interval"
+    )
+  )
+  
   # Ensure that the first value really is used
   expect_warning(v1 <-
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -353,8 +429,32 @@ test_that("pk.tss.monoexponential", {
     check.attributes=FALSE,
     info="pk.tss.monoexponential 1"
   )
+  expect_equal(
+    pk.tss.monoexponential(
+      conc=c(0, 1000),
+      time=0:1,
+      subject=c(1, 1),
+      treatment=c("A", "A"),
+      time.dosing=0:1,
+      tss.fraction=0.9,
+      output="single"
+    ),
+    data.frame(tss.monoexponential.single=NA_real_),
+    info="Single-subject data fitting works when it does not converge."
+  )
+})
 
-  # Warnings and errors
+test_that("pk.tss.monoexponential expected warnings and errors", {
+  tmpdata <- generate.data()
+  expect_error(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=factor(1)),
+    regexp="tss.fraction must be a number"
+  )
   expect_warning(
     pk.tss.monoexponential(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -362,7 +462,8 @@ test_that("pk.tss.monoexponential", {
                            treatment=tmpdata$treatment,
                            time.dosing=0:14,
                            tss.fraction=c(0.5, 0.8)),
-    regexp="Only first value of tss.fraction is being used")
+    regexp="Only first value of tss.fraction is being used"
+  )
   expect_error(
     pk.tss.monoexponential(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -403,19 +504,33 @@ test_that("pk.tss.monoexponential", {
                            time.dosing=0:14,
                            tss.fraction=0.5),
     regexp="tss.fraction is usually >= 0.8")
-  
+  expect_warning(
+    pk.tss.monoexponential(conc=tmpdata$conc,
+                           time=tmpdata$time,
+                           subject=tmpdata$subject,
+                           treatment=tmpdata$treatment,
+                           time.dosing=0:14,
+                           tss.fraction=c(0.5, 0.8)),
+    regexp="Only first value of tss.fraction is being used"
+  )
+  tmpdata_single_subject <- tmpdata[tmpdata$subject == 1 & tmpdata$treatment == "A", ]
+  expect_warning(
+    tss_single_subject <-
+      pk.tss.monoexponential(
+        conc=tmpdata_single_subject$conc,
+        time=tmpdata_single_subject$time,
+        subject=tmpdata_single_subject$subject,
+        treatment=tmpdata_single_subject$treatment,
+        time.dosing=0:14,
+        tss.fraction=0.8
+      ),
+    regexp="Cannot give 'population', 'popind', or 'individual' output without multiple subjects of data",
+    fixed=TRUE
+  )
   expect_equal(
-    pk.tss.monoexponential(
-      conc=c(0, 1000),
-      time=0:1,
-      subject=c(1, 1),
-      treatment=c("A", "A"),
-      time.dosing=0:1,
-      tss.fraction=0.9,
-      output="single"
-    ),
-    data.frame(tss.monoexponential.single=NA_real_),
-    info="Single-subject data fitting works when it does not converge."
+    tss_single_subject,
+    data.frame(tss.monoexponential.single=4.108541),
+    tolerance=1e-5
   )
 })
 

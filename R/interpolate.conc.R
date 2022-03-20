@@ -382,9 +382,12 @@ interp.extrap.conc.dose <- function(conc, time,
     data_all$out~event_choices_interp.extrap.conc.dose$output_only, # interpolation/extrapolation-only row
     TRUE~"unknown") # should never happen
   if (any(mask_unknown <- data_all$event %in% "unknown")) {
-    # All events should be accounted for
-    stop("Unknown event in interp.extrap.conc.dose at time(s): ",
-         paste(unique(data_all$time[mask_unknown]), collapse=", ")) # nocov
+    # All events should be accounted for already
+    stop( # nocov
+      "Unknown event in interp.extrap.conc.dose at time(s): ", # nocov
+      paste(unique(data_all$time[mask_unknown]), collapse=", "), # nocov
+      " (Please report this as a bug)" # nocov
+    ) # nocov
   }
   # Remove "output_only" from event_before and event_after
   simple_locf <- function(x, missing_val) {
@@ -424,7 +427,7 @@ interp.extrap.conc.dose <- function(conc, time,
   }
   if (any(mask_no_method <- is.na(data_all$method))) {
     # This should never happen, all eventualities should be covered
-    stop("No method for imputing concentration at time(s): ",
+    stop("No method for imputing concentration at time(s): ", # nocov
          paste(unique(data_all$time[mask_no_method]), collapse=", ")) # nocov
   }
   # Filter to the requested time points and output
@@ -453,14 +456,13 @@ iecd_impossible_select <- function(x) {
        x$event_after %in% c("conc_dose_iv_bolus_after", "dose_iv_bolus_after"))
 }
 iecd_impossible_value <- function(data_all, current_idx, ...) {
-  stop(
-    sprintf(
-      "Impossible combination requested for interp.extrap.conc.dose.  event_before: %s, event: %s, event_after: %s",
-      data_all$event_before[current_idx],
-      data_all$event[current_idx],
-      data_all$event_after[current_idx])) # nocov
+  stop(sprintf( # nocov
+    "Impossible combination requested for interp.extrap.conc.dose (please report this as a bug).  event_before: %s, event: %s, event_after: %s", # nocov
+    data_all$event_before[current_idx], # nocov
+    data_all$event[current_idx], # nocov
+    data_all$event_after[current_idx] # nocov
+  )) # nocov
 }
-
 
 # Observed concentration ####
 iecd_observed_select <- function(x) {

@@ -72,8 +72,9 @@ pk.tss.stepwise.linear <- function(...,
   ret <- NA
   while (is.na(ret) &
          (length(remaining.time) >= min.points)) {
-    if (verbose)
-      cat("Trying ", min(remaining.time, na.rm=TRUE), "\n")
+    if (verbose) {
+      message("Trying ", min(remaining.time, na.rm=TRUE))
+    }
     try({
       # Try to make the model
       current.interval <- 
@@ -96,11 +97,14 @@ pk.tss.stepwise.linear <- function(...,
           ci <- as.vector(stats::confint(current.model, "time", level=level))
           c(ci[1], stats::coef(current.model)[["time"]], ci[2])
         }
-      if (verbose)
-        cat(sprintf("Current interval %g [%g, %g]",
-                    current.interval[2],
-                    current.interval[1],
-                    current.interval[3]))
+      if (verbose) {
+        message(
+          sprintf("Current interval %g [%g, %g]",
+                  current.interval[2],
+                  current.interval[1],
+                  current.interval[3])
+        )
+      }
       # If the signs of the upper and lower bounds of the slope of
       # the confidence interval for time are different, then we have
       # a non-significant slope.  A non-significant slope indicates steady-state.

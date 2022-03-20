@@ -33,26 +33,28 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
     monotonic.time <- missing(subject) & missing(treatment)
     check.conc.time(conc, time, monotonic.time=monotonic.time)
   }
-  if (!missing(subject.dosing) & missing(subject))
+  if (!missing(subject.dosing) & missing(subject)) {
     stop("Cannot give subject.dosing without subject")
-  if (any(is.na(time.dosing)))
+  }
+  if (any(is.na(time.dosing))) {
     stop("time.dosing may not contain any NA values")
+  }
   if (!missing(subject)) {
     if (!missing(treatment)) {
-      ret <- clean.conc.blq(conc, time, subject, treatment,
+      ret <- clean.conc.blq(conc=conc, time=time, subject, treatment,
                             conc.blq=conc.blq, conc.na=conc.na,
                             check=FALSE)
     } else {
-      ret <- clean.conc.blq(conc, time, subject,
+      ret <- clean.conc.blq(conc=conc, time=time, subject,
                             conc.blq=conc.blq, conc.na=conc.na,
                             check=FALSE)
     }
-  } else if (!missing(treatment)) {
-    ret <- clean.conc.blq(conc, time, treatment,
+  } else if (missing(treatment)) {
+    ret <- clean.conc.blq(conc=conc, time=time,
                           conc.blq=conc.blq, conc.na=conc.na,
                           check=FALSE)
   } else {
-    ret <- clean.conc.blq(conc, time, treatment,
+    ret <- clean.conc.blq(conc=conc, time=time, treatment,
                           conc.blq=conc.blq, conc.na=conc.na,
                           check=FALSE)
   }

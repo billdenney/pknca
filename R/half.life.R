@@ -266,31 +266,31 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
 fit_half_life <- function(data, tlast, conc_units) {
   fit <- stats::.lm.fit(x=cbind(1, data$time), y=data$log_conc)
   # unit handling
-  if (inherits(tlast, "units")) {
-    time_units <- units(tlast)
-  } else if (inherits(tlast, "mixed_units")) {
-    time_units <- units(units::as_units(tlast))
-  } else {
+  # if (inherits(tlast, "units")) {
+  #   time_units <- units(tlast)
+  # } else if (inherits(tlast, "mixed_units")) {
+  #   time_units <- units(units::as_units(tlast))
+  # } else {
     time_units <- NULL
-  }
-  if (!is.null(time_units)) {
-    inverse_time_units <- time_units
-    inverse_time_units$numerator <- time_units$denominator
-    inverse_time_units$denominator <- time_units$numerator
-  } else {
+  # }
+  # if (!is.null(time_units)) {
+  #   inverse_time_units <- time_units
+  #   inverse_time_units$numerator <- time_units$denominator
+  #   inverse_time_units$denominator <- time_units$numerator
+  # } else {
     inverse_time_units <- NULL
-  }
+  # }
 
   # as.numeric is so that it works for units objects
   r_squared <- 1 - as.numeric(sum(fit$residuals^2))/as.numeric(sum((data$log_conc - mean(data$log_conc))^2))
   clast_pred <- exp(sum(fit$coefficients*c(1, as.numeric(tlast))))
-  if (!is.null(conc_units)) {
-    clast_pred <- units::set_units(clast_pred, conc_units, mode="standard")
-  }
+  # if (!is.null(conc_units)) {
+  #   clast_pred <- units::set_units(clast_pred, conc_units, mode="standard")
+  # }
   lambda_z <- -fit$coefficients[2]
-  if (!is.null(inverse_time_units)) {
-    lambda_z <- units::set_units(lambda_z, inverse_time_units, mode="standard")
-  }
+  # if (!is.null(inverse_time_units)) {
+  #   lambda_z <- units::set_units(lambda_z, inverse_time_units, mode="standard")
+  # }
   ret <-
     data.frame(
       r.squared=r_squared,

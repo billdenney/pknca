@@ -201,8 +201,8 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals,
         tryCatch(
           do.call(pk.nca.interval, args),
           error=function(e) {
-            e$message <- paste(error.preamble, e$message, sep=": ")
-            stop(e)
+            e$message <- paste("Please report a bug.\n", error.preamble, e$message, sep=": ") # nocov
+            stop(e) # nocov
           }
         )
       # Add all the new data into the output
@@ -272,10 +272,11 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                             include_half.life=NULL, exclude_half.life=NULL,
                             interval, options=list()) {
   if (!is.data.frame(interval)) {
-    stop("interval must be a data.frame")
+    stop("Please report a bug.  Interval must be a data.frame")
   }
-  if (nrow(interval) != 1)
-    stop("interval must be a one-row data.frame")
+  if (nrow(interval) != 1) {
+    stop("Please report a bug.  Interval must be a one-row data.frame")
+  }
   # Prepare the return value using SDTM names
   ret <- data.frame(PPTESTCD=NA, PPORRES=NA)[-1,]
   # Determine exactly what needs to be calculated in what order. Start with the
@@ -414,31 +415,31 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       # If the function returns a data frame, save all the returned values,
       # otherwise, save the value returned.
       if (is.data.frame(tmp_result)) {
-        if (uses_units) {
-          # Convert to mixed_units so that rbind will work
-          for (nm in names(tmp_result)) {
-            if (inherits(tmp_result[[nm]], "units")) {
-              tmp_result[[nm]] <- units::mixed_units(tmp_result[[nm]])
-            } else {
-              # unitless
-              tmp_result[[nm]] <- units::mixed_units(tmp_result[[nm]], "")
-            }
-          }
-        }
+        # if (uses_units) {
+        #   # Convert to mixed_units so that rbind will work
+        #   for (nm in names(tmp_result)) {
+        #     if (inherits(tmp_result[[nm]], "units")) {
+        #       tmp_result[[nm]] <- units::mixed_units(tmp_result[[nm]])
+        #     } else {
+        #       # unitless
+        #       tmp_result[[nm]] <- units::mixed_units(tmp_result[[nm]], "")
+        #     }
+        #   }
+        # }
         tmp_testcd <- names(tmp_result)
         # I() due to https://github.com/r-quantities/units/issues/309
         tmp_result <- I(unlist(tmp_result, use.names=FALSE, recursive=FALSE))
       } else {
-        if (uses_units) {
-          if (inherits(tmp_result, "units")) {
-            # I() due to https://github.com/r-quantities/units/issues/309
-            tmp_result <- I(units::mixed_units(tmp_result))
-          } else {
-            # unitless
-            # I() due to https://github.com/r-quantities/units/issues/309
-            tmp_result <- I(units::mixed_units(tmp_result, ""))
-          }
-        }
+        # if (uses_units) {
+        #   if (inherits(tmp_result, "units")) {
+        #     # I() due to https://github.com/r-quantities/units/issues/309
+        #     tmp_result <- I(units::mixed_units(tmp_result))
+        #   } else {
+        #     # unitless
+        #     # I() due to https://github.com/r-quantities/units/issues/309
+        #     tmp_result <- I(units::mixed_units(tmp_result, ""))
+        #   }
+        # }
         tmp_testcd <- n
       }
       single_result <-

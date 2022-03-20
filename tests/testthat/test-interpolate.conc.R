@@ -650,6 +650,19 @@ test_that("interp.extrap.conc.dose", {
       conc=c(0, 1, 2, 1, 0.5, 0.25),
       time=c(-1, 1:5),
       time.dose=0,
+      route.dose=factor("foo"),
+      duration.dose=NA,
+      time.out=c(-1, -0.1, 0, 0.1, 7),
+      out.after=FALSE
+    ),
+    regexp="route.dose must be either 'extravascular' or 'intravascular'",
+    info="Route must be valid (as a factor)"
+  )
+  expect_error(
+    interp.extrap.conc.dose(
+      conc=c(0, 1, 2, 1, 0.5, 0.25),
+      time=c(-1, 1:5),
+      time.dose=0,
       route.dose=c("extravascular", "extravascular"),
       duration.dose=NA,
       time.out=c(-1, -0.1, 0, 0.1, 7),

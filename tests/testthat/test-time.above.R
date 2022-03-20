@@ -16,6 +16,10 @@ test_that("time_above expected errors", {
     regexp='conc must be given'
   )
   expect_error(
+    pk.calc.time_above(conc="X", conc_above=5, method="linear"),
+    regexp='time must be given'
+  )
+  expect_error(
     pk.calc.time_above(conc="X", time="X", conc_above=5, method="linear"),
     regexp='Concentration data must be numeric and not a factor'
   )

@@ -3,6 +3,13 @@ context("Class generation-PKNCAresults")
 library(dplyr)
 source("generate.data.R")
 
+test_that("PKNCAresults object creation", {
+  minimal_result <- PKNCAresults(data.frame(a=1), data=list())
+  expect_equal(minimal_result$exclude, "exclude")
+  result_with_exclude_col <- PKNCAresults(data.frame(exclude=1), data=list())
+  expect_equal(result_with_exclude_col$exclude, "exclude.exclude")
+})
+
 test_that("PKNCAresults generation", {
   # Note that generate.conc sets the random seed, so it doesn't have
   # to happen here.
@@ -689,5 +696,55 @@ test_that("summary pretty_name control", {
   expect_equal(
     names(s_pretty_units),
     names(summary(myresult_units_orig, pretty_names=TRUE))
+  )
+})
+
+test_that("getGroups.PKNCAresults", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  
+  expect_equal(
+    getGroups(myresult, level="treatment"),
+    myresult$result[, "treatment", drop=FALSE]
+  )
+  expect_equal(
+    getGroups(myresult, level=factor("treatment")),
+    myresult$result[, "treatment", drop=FALSE]
+  )
+  expect_error(
+    getGroups(myresult, level="foo"),
+    regexp="Not all levels are listed in the group names.  Missing levels are: foo"
+  )
+  expect_equal(
+    getGroups(myresult, level=2),
+    myresult$result[, c("treatment", "ID")]
+  )
+  expect_equal(
+    getGroups(myresult, level=2:3),
+    myresult$result[, c("ID", "start")]
+  )
+})
+
+test_that("roundingSummarize", {
+  expect_error(
+    roundingSummarize(1, "foo"),
+    regexp="foo is not in the summarization instructions from PKNCA.set.summary"
+  )
+  
+  PKNCA.set.summary(name="lambda.z.n.points", description="not a real parameter", point=mean, spread=sd, rounding=function(x) round(x, 1))
+  expect_equal(roundingSummarize(1.2345, "lambda.z.n.points"), "1.2")
+  PKNCA.set.summary(name="lambda.z.n.points", description="not a real parameter", point=mean, spread=sd, rounding=list(round=1))
+  expect_equal(roundingSummarize(1.2345, "lambda.z.n.points"), "1.2")
+  
+  # reset it
+  PKNCA.set.summary(
+    name="lambda.z.n.points",
+    description="median and range",
+    point=business.median,
+    spread=business.range
   )
 })

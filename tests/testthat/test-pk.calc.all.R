@@ -173,6 +173,49 @@ test_that("pk.nca", {
   
 })
 
+test_that("verbose pk.nca", {
+  tmpconc <- generate.conc(nsub=1, ntreat=1, 0:4)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time)
+  mydata <- PKNCAdata(myconc, mydose)
+  expect_message(
+    suppressWarnings(pk.nca(mydata, verbose=TRUE)),
+    regexp="Setting up options"
+  )
+  expect_message(
+    suppressWarnings(pk.nca(mydata, verbose=TRUE)),
+    regexp="Starting NCA calculations."
+  )
+  expect_message(
+    suppressWarnings(pk.nca(mydata, verbose=TRUE)),
+    regexp="Combining completed results."
+  )
+})
+
+test_that("pk.nca warnings", {
+  tmpconc <- generate.conc(nsub=1, ntreat=1, 0:4)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time)
+  mydata <- PKNCAdata(myconc, mydose, intervals=data.frame(start=24, end=48, cmax=TRUE))
+  expect_warning(
+    pk.nca(mydata),
+    regexp="No data for interval"
+  )
+})
+
+test_that("pk.nca.interval errors", {
+  expect_error(
+    pk.nca.interval(interval="A"),
+    regexp="Interval must be a data.frame"
+  )
+  expect_error(
+    pk.nca.interval(interval=data.frame()),
+    regexp="Interval must be a one-row data.frame"
+  )
+})
+
 test_that("Calculations when dose time is missing", {
   # Ensure that the correct number of doses are included in parameters that use dosing.
   tmpconc <- generate.conc(2, 1, 0:24)

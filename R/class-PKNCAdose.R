@@ -109,9 +109,9 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
     stop("Some but not all values are missing for the independent variable, please see the help for PKNCAdose for how to specify the formula and confirm that your data has dose times for all doses.")
   }
   if (missing(route)) {
-    ret <- setRoute.PKNCAdose(ret)
+    ret <- setRoute(ret)
   } else {
-    ret <- setRoute.PKNCAdose(ret, route)
+    ret <- setRoute(ret, route)
   }
   ret <- setDuration.PKNCAdose(ret, duration=duration,
                                rate=rate, dose=getDepVar.PKNCAdose(ret))
@@ -175,6 +175,9 @@ setDuration <- function(object, ...)
 #' @rdname setDuration
 #' @export
 setDuration.PKNCAdose <- function(object, duration, rate, dose, ...) {
+  if (missing(dose)) {
+    dose <- as.character(parseFormula(object$formula)$lhs)
+  }
   if (missing(duration) & missing(rate)) {
     object <- setAttributeColumn(object=object, attr_name="duration", default_value=0,
                                  message_if_default="Assuming instant dosing (duration=0)")
@@ -185,7 +188,7 @@ setDuration.PKNCAdose <- function(object, duration, rate, dose, ...) {
     # requiring near-equal checks for floating point error.
   } else if (!missing(duration)) {
     object <- setAttributeColumn(object=object, attr_name="duration", col_or_value=duration)
-  } else if (!missing(rate) & !missing(dose)) {
+  } else if (!missing(rate) & !missing(dose) && !is.na(dose)) {
     tmprate <- getColumnValueOrNot(object$data, rate, "rate")
     tmpdose <- getColumnValueOrNot(object$data, dose, "dose")
     duration <- tmpdose$data[[tmpdose$name]]/tmprate$data[[tmprate$name]]

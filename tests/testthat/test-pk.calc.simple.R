@@ -109,6 +109,21 @@ test_that("pk.calc.tlast", {
                1)
 })
 
+test_that("pk.calc.tfirst", {
+  expect_error(
+    pk.calc.tfirst(),
+    regexp="conc must be given"
+  )
+  expect_error(
+    pk.calc.tfirst(conc="A"),
+    regexp="time must be given"
+  )
+  expect_equal(
+    pk.calc.tfirst(conc=1, time=2, check=TRUE),
+    2
+  )
+})
+
 test_that("pk.calc.clast.obs", {
   # Ensure that it handles BLQ (0) values correctly
   c1 <- c(0, 1, 2, 0)

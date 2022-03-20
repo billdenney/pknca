@@ -92,7 +92,7 @@ pk.tss.monoexponential <- function(...,
     } else if (!identical(NA, ret_individual)) {
       ret_individual
     } else {
-      stop("Error in selection of return values for pk.tss.monoexponential.  This is likely a bug.")
+      stop("Error in selection of return values for pk.tss.monoexponential.  This is likely a bug.") # nocov
     }
   ret
 }

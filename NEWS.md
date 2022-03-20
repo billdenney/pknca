@@ -33,6 +33,11 @@ the dosing including dose amount and route.
   `time_above`.  With this change, the "conc_above" `PKNCA.options()` value has
   been removed.
 
+## Breaking Changes
+
+* The `getData()` and `getDataName()` functions for PKNCAdata objects were
+  removed.  They were previously intended to be internal functions.
+
 # PKNCA 0.9.5
 
 * The internals of how PKNCA performs calculations had a significant update. The
