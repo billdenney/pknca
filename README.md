@@ -50,13 +50,10 @@ install it and its dependencies using the following command:
 
 ## From GitHub
 
-To install the development version from GitHub, install the devtools
-package and then type the following commands:
+To install the development version from GitHub, type the following commands:
 
-    install.packages("devtools")
-    install.packages("Rcpp")
-    library(devtools)
-    install_github("billdenney/pknca")
+    install.packages("remotes")
+    remotes::install_github("billdenney/pknca")
 
 # Calculating parameters
 
@@ -64,22 +61,22 @@ package and then type the following commands:
     library(PKNCA)
     # Set the business rule options with the PKNCA.options() function
     # Load your concentration-time data
-    myrawconcdata <- read.csv("myconc.csv", stringsAsFactors=FALSE)
+    conc_raw <- read.csv("myconc.csv", stringsAsFactors=FALSE)
     # Load your dose data
-    myrawdosedata <- read.csv("mydose.csv", stringsAsFactors=FALSE)
+    dose_raw <- read.csv("mydose.csv", stringsAsFactors=FALSE)
     # Put your concentration data into a PKNCAconc object
-    myconc <- PKNCAconc(data=myrawconcdata,
+    o_conc <- PKNCAconc(data=conc_raw,
                         formula=conc~time|treatment+subject/analyte)
     # Put your dose data into a PKNCAdose object
-    mydose <- PKNCAdose(data=myrawdosedata,
+    o_dose <- PKNCAdose(data=dose_raw,
                         formula=dose~time|treatment+subject)
     # Combine the two (and automatically determine the intervals of
     # interest
-    mydata <- PKNCAdata(myconc, mydose)
+    o_data <- PKNCAdata(o_conc, o_dose)
     # Compute the NCA parameters
-    myresults <- pk.nca(mydata)
+    o_results <- pk.nca(o_data)
     # Summarize the results
-    summary(myresults)
+    summary(o_results)
 
 More help is available in the function help files, and be sure to look
 at the PKNCA.options function for many choices to make PKNCA conform
