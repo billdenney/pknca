@@ -14,7 +14,30 @@
 #'   "conversion_factor" if \code{conversions} is given.
 #' @seealso The \code{units} argument for \code{\link{PKNCAdata}()}
 #' @examples
-#' pknca_units_table()
+#' pknca_units_table() # only parameters that are unitless
+#' pknca_units_table(
+#'   concu="ng/mL", doseu="mg/kg", amountu="mg", timeu="hr"
+#' )
+#' pknca_units_table(
+#'   concu="ng/mL", doseu="mg/kg", amountu="mg", timeu="hr",
+#'   # Convert clearance and volume units to more understandable units with
+#'   # automatic unit conversion
+#'   conversions=data.frame(
+#'     PPORRESU=c("(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
+#'     PPSTRESU=c("mL/hr/kg", "mL/kg")
+#'   )
+#' )
+#' pknca_units_table(
+#'   concu="mg/L", doseu="mg/kg", amountu="mg", timeu="hr",
+#'   # Convert clearance and volume units to molar units (assuming 
+#'   conversions=data.frame(
+#'     PPORRESU=c("mg/L", "(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
+#'     PPSTRESU=c("mmol/L", "mL/hr/kg", "mL/kg"),
+#'     # Manual conversion of concentration units from ng/mL to mmol/L (assuming
+#'     # a molecular weight of 138.121 g/mol)
+#'     conversion_factor=c(1/138.121, NA, NA)
+#'   )
+#' )
 #' @export
 pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.frame()) {
   # The unit conversions are grouped by the type of inputs required
@@ -63,7 +86,18 @@ pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.fra
           )
         )
     }
-    ret <- dplyr::left_join(ret, conversions)
+    unexpected_conversions <- setdiff(conversions$PPORRESU, ret$PPORRESU)
+    if (length(unexpected_conversions) > 0) {
+      warning(
+        "The following unit conversions were supplied but do not match any units to convert: ",
+        paste0("'", unexpected_conversions, "'", collapse=", ")
+      )
+    }
+    ret <-
+      dplyr::left_join(
+        ret, conversions,
+        by=intersect(names(ret), names(conversions))
+      )
     # anything that does not have a specific conversion factor is assumed to be
     # in the correct units, and a unit conversion factor is used to keep the
     # units the same.
@@ -77,22 +111,22 @@ pknca_units_table_unitless <- function() {
   rbind(
     data.frame(
       PPORRESU="unitless",
-      PPTESTCD=c("adj.r.squared", "r.squared"),
+      PPTESTCD=pknca_find_units_param(unit_type="unitless"),
       stringsAsFactors=FALSE
     ),
     data.frame(
       PPORRESU="fraction",
-      PPTESTCD=c("f", "fe", "ptr", "span.ratio"),
+      PPTESTCD=pknca_find_units_param(unit_type="fraction"),
       stringsAsFactors=FALSE
     ),
     data.frame(
       PPORRESU="%",
-      PPTESTCD=c("aucpext.obs", "aucpext.pred", "deg.fluc", "swing"),
+      PPTESTCD=pknca_find_units_param(unit_type="%"),
       stringsAsFactors=FALSE
     ),
     data.frame(
       PPORRESU="count",
-      PPTESTCD="lambda.z.n.points",
+      PPTESTCD=pknca_find_units_param(unit_type="count"),
       stringsAsFactors=FALSE
     )
   )
@@ -103,19 +137,12 @@ pknca_units_table_time <- function(timeu) {
     rbind(
       data.frame(
         PPORRESU=timeu,
-        PPTESTCD=
-          c(
-            "half.life", "lambda.z.time.first",
-            "mrt.iv.last", "mrt.iv.obs", "mrt.iv.pred", "mrt.last", "mrt.md.obs", "mrt.md.pred", "mrt.obs", "mrt.pred",
-            "tfirst", "thalf.eff.iv.last", "thalf.eff.iv.obs", "thalf.eff.iv.pred", 
-            "thalf.eff.last", "thalf.eff.obs", "thalf.eff.pred", "time_above", 
-            "tlag", "tlast", "tmax"
-          ),
+        PPTESTCD=pknca_find_units_param(unit_type="time"),
         stringsAsFactors=FALSE
       ),
       data.frame(
-        PPORRESU=sprintf("1/%s", timeu),
-        PPTESTCD=c("kel.iv.last", "kel.iv.obs", "kel.iv.pred", "kel.last", "kel.obs", "kel.pred", "lambda.z"),
+        PPORRESU=sprintf("1/%s", pknca_units_add_paren(timeu)),
+        PPTESTCD=pknca_find_units_param(unit_type="inverse_time"),
         stringsAsFactors=FALSE
       )
     )
@@ -126,7 +153,7 @@ pknca_units_table_conc <- function(concu) {
   if (!missing(concu)) {
     data.frame(
       PPORRESU=concu,
-      PPTESTCD=c("cav", "ceoi", "clast.obs", "clast.pred", "cmax", "cmin", "ctrough"),
+      PPTESTCD=pknca_find_units_param(unit_type="conc"),
       stringsAsFactors=FALSE
     )
   }
@@ -136,7 +163,7 @@ pknca_units_table_amount <- function(amountu) {
   if (!missing(amountu)) {
     data.frame(
       PPORRESU=amountu,
-      PPTESTCD="ae",
+      PPTESTCD=pknca_find_units_param(unit_type="amount"),
       stringsAsFactors=FALSE
     )
   }
@@ -146,21 +173,14 @@ pknca_units_table_conc_dose <- function(concu, doseu) {
   if (!missing(concu) & !missing(doseu)) {
     rbind(
       data.frame(
-        PPORRESU=sprintf("(%s)/(%s)", concu, doseu),
-        PPTESTCD=c("cav.dn", "clast.obs.dn", "clast.pred.dn", "cmax.dn", "cmin.dn", "ctrough.dn"),
+        PPORRESU=sprintf("%s/%s", pknca_units_add_paren(concu), pknca_units_add_paren(doseu)),
+        PPTESTCD=pknca_find_units_param(unit_type="conc_dosenorm"),
         stringsAsFactors=FALSE
       ),
       data.frame(
         # Volume units
-        PPORRESU=sprintf("(%s)/(%s)", doseu, concu),
-        PPTESTCD=
-          c(
-            "vd.obs", "vd.pred",
-            "vss.iv.last", "vss.iv.obs", "vss.iv.pred", "vss.last",
-            "vss.md.obs", "vss.md.pred", 
-            "vss.obs", "vss.pred",
-            "vz.obs", "vz.pred"
-          ),
+        PPORRESU=sprintf("%s/%s", pknca_units_add_paren(doseu), pknca_units_add_paren(concu)),
+        PPTESTCD=pknca_find_units_param(unit_type="volume"),
         stringsAsFactors=FALSE
       )
     )
@@ -173,21 +193,13 @@ pknca_units_table_conc_time <- function(concu, timeu) {
       data.frame(
         # AUC units
         PPORRESU=sprintf("%s*%s", timeu, concu),
-        PPTESTCD=
-          c(
-            "aucall", "aucinf.obs", "aucinf.pred",
-            "aucint.all", "aucint.inf.obs", "aucint.inf.pred", "aucint.last",
-            "auclast",
-            # These are dose-aware, not dose-normalized
-            "aucint.all.dose",  "aucint.inf.obs.dose",
-            "aucint.inf.pred.dose", "aucint.last.dose"
-          ),
+        PPTESTCD=pknca_find_units_param(unit_type="auc"),
         stringsAsFactors=FALSE
       ),
       data.frame(
         # AUMC units
-        PPORRESU=sprintf("%s^2*%s", timeu, concu),
-        PPTESTCD=c("aumcall", "aumcinf.obs", "aumcinf.pred", "aumclast"),
+        PPORRESU=sprintf("%s^2*%s", pknca_units_add_paren(timeu), concu),
+        PPTESTCD=pknca_find_units_param(unit_type="aumc"),
         stringsAsFactors=FALSE
       )
     )
@@ -199,24 +211,20 @@ pknca_units_table_conc_time_dose <- function(concu, timeu, doseu) {
     rbind(
       data.frame(
         # AUC units, dose-normalized
-        PPORRESU=sprintf("(%s*%s)/(%s)", timeu, concu, doseu),
-        PPTESTCD=
-          c(
-            "aucall.dn", "aucinf.obs.dn", "aucinf.pred.dn",
-            "auclast.dn"
-          ),
+        PPORRESU=sprintf("(%s*%s)/%s", timeu, concu, pknca_units_add_paren(doseu)),
+        PPTESTCD=pknca_find_units_param(unit_type="auc_dosenorm"),
         stringsAsFactors=FALSE
       ),
       data.frame(
         # AUMC units, dose-normalized
-        PPORRESU=sprintf("(%s^2*%s)/(%s)", timeu, concu, doseu),
-        PPTESTCD=c("aumcall.dn", "aumcinf.obs.dn", "aumcinf.pred.dn", "aumclast.dn"),
+        PPORRESU=sprintf("(%s^2*%s)/%s", pknca_units_add_paren(timeu), concu, pknca_units_add_paren(doseu)),
+        PPTESTCD=pknca_find_units_param(unit_type="aumc_dosenorm"),
         stringsAsFactors=FALSE
       ),
       data.frame(
         # Clearance units
-        PPORRESU=sprintf("(%s)/(%s*%s)", doseu, timeu, concu),
-        PPTESTCD=c("cl.all", "cl.last", "cl.obs", "cl.pred"),
+        PPORRESU=sprintf("%s/(%s*%s)", pknca_units_add_paren(doseu), timeu, concu),
+        PPTESTCD=pknca_find_units_param(unit_type="clearance"),
         stringsAsFactors=FALSE
       )
     )
@@ -227,8 +235,8 @@ pknca_units_table_conc_time_amount <- function(concu, timeu, amountu) {
   if (!missing(concu) & !missing(timeu) & !missing(amountu)) {
     data.frame(
       # Renal clearance units
-      PPORRESU=sprintf("(%s)/(%s*%s)", amountu, timeu, concu),
-      PPTESTCD=c("clr.last", "clr.obs", "clr.pred"),
+      PPORRESU=sprintf("%s/(%s*%s)", pknca_units_add_paren(amountu), timeu, concu),
+      PPTESTCD=pknca_find_units_param(unit_type="renal_clearance"),
       stringsAsFactors=FALSE
     )
   }
@@ -251,6 +259,39 @@ pknca_find_units_param <- function(unit_type) {
   }
   if (length(ret) == 0) {
     stop("No parameters found for unit_type=", unit_type)
+  }
+  ret
+}
+
+#' Add parentheses to a unit value, if needed
+#' 
+#' @param unit The text of the unit
+#' @return The unit with parentheses around it, if needed
+#' @keywords Internal
+pknca_units_add_paren <- function(unit) {
+  mask_paren <- grepl(x=unit, pattern="[*/]")
+  ifelse(mask_paren, yes=paste0("(", unit, ")"), no=unit)
+}
+
+#' Perform unit conversion (if possible) on PKNCA results
+#' 
+#' @param result The results data.frame
+#' @param units The unit conversion table
+#' @return The result table with units converted
+#' @keywords Internal
+pknca_unit_conversion <- function(result, units) {
+  ret <- result
+  if (!is.null(units)) {
+    ret <-
+      dplyr::left_join(
+        ret, units,
+        by=intersect(names(ret), names(units))
+      )
+    if ("conversion_factor" %in% names(units)) {
+      ret$PPSTRES <- ret$PPORRES * ret$conversion_factor
+      # Drop the conversion factor column, since it shouldn't be in the output.
+      ret <- ret[, setdiff(names(ret), "conversion_factor")]
+    }
   }
   ret
 }

@@ -1,4 +1,4 @@
-skip("units are not yet supported")
+skip("calculation with the `units` library objects for inputs is not yet supported")
 
 test_that("units are preserved from input to output", {
   d_conc <-

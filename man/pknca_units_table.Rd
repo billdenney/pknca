@@ -25,7 +25,30 @@ This data.frame is typically used for the \code{units} argument for
 \code{\link{PKNCAdata}()}.
 }
 \examples{
-pknca_units_table()
+pknca_units_table() # only parameters that are unitless
+pknca_units_table(
+  concu="ng/mL", doseu="mg/kg", amountu="mg", timeu="hr"
+)
+pknca_units_table(
+  concu="ng/mL", doseu="mg/kg", amountu="mg", timeu="hr",
+  # Convert clearance and volume units to more understandable units with
+  # automatic unit conversion
+  conversions=data.frame(
+    PPORRESU=c("(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
+    PPSTRESU=c("mL/hr/kg", "mL/kg")
+  )
+)
+pknca_units_table(
+  concu="mg/L", doseu="mg/kg", amountu="mg", timeu="hr",
+  # Convert clearance and volume units to molar units (assuming 
+  conversions=data.frame(
+    PPORRESU=c("mg/L", "(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
+    PPSTRESU=c("mmol/L", "mL/hr/kg", "mL/kg"),
+    # Manual conversion of concentration units from ng/mL to mmol/L (assuming
+    # a molecular weight of 138.121 g/mol)
+    conversion_factor=c(1/138.121, NA, NA)
+  )
+)
 }
 \seealso{
 The \code{units} argument for \code{\link{PKNCAdata}()}

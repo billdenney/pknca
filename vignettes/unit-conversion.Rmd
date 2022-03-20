@@ -1,0 +1,168 @@
+---
+title: "Unit Assignment and Conversion with PKNCA"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Unit Assignment and Conversion with PKNCA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PKNCA)
+```
+
+# Introduction
+
+PKNCA can assign and convert units for reporting.
+
+# Prepare a Unit Assignment and Conversion Table
+
+A unit assignment and conversion table can be generated as a data.frame to use with the `pknca_units_table()` function or manually.
+
+The simplest method each of the types of units for inputs and automatically generates the units for each NCA parameter.
+
+```{r create-units-auto}
+d_units_auto <- pknca_units_table(concu="ng/mL", doseu="mg", amountu="mg", timeu="hr")
+# Show a selection of the units generated
+d_units_auto[d_units_auto$PPTESTCD %in% c("cmax", "tmax", "auclast", "cl.obs", "vd.obs"), ]
+```
+
+As you see above, the default units table has a column for the `PPTESTCD` indicating the parameter.  And, the column `PPORRESU` indicates what the default units are.
+
+Without unit conversion, the units for some parameters (notably clearances and volumes) are not so useful.  You can add a conversion table to make any units into the desired units.  For automatic conversion to work, the units must always be convertible (by the `units` library).  Notably for automatic conversion, you cannot go from mass to molar units since there is not a unique conversion from mass to moles.
+
+```{r create-units-semi-manual}
+d_units_clean <-
+  pknca_units_table(
+    concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
+    conversions=
+      data.frame(
+        PPORRESU=c("mg/(hr*ng/mL)", "mg/(ng/mL)", "hr"),
+        PPSTRESU=c("L/hr", "L", "day")
+      )
+  )
+# Show a selection of the units generated
+d_units_clean[d_units_clean$PPTESTCD %in% c("cmax", "tmax", "auclast", "cl.obs", "vd.obs"), ]
+```
+
+Now, the units are much cleaner to look at.
+
+To do a conversion that is not possible directly with the `units` library, you can add the conversion factor manually by adding the `conversion_factor` column.  You can mix-and-match manual and automatic modification by setting the `conversion_factor` column to `NA` when you want automatic conversion.  In the example below, we convert concentration units to molar.  Note that AUC units are not set to molar because we did not specify that conversion; all conversions must be specified.
+
+```{r create-units-manual}
+d_units_clean_manual <-
+  pknca_units_table(
+    concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
+    conversions=
+      data.frame(
+        PPORRESU=c("mg/(hr*ng/mL)", "mg/(ng/mL)", "hr", "ng/mL"),
+        PPSTRESU=c("L/hr", "L", "day", "nmol/L"),
+        conversion_factor=c(NA, NA, NA, 1000/123)
+      )
+  )
+# Show a selection of the units generated
+d_units_clean_manual[d_units_clean_manual$PPTESTCD %in% c("cmax", "tmax", "auclast", "cl.obs", "vd.obs"), ]
+```
+
+# The Basic Steps to Add Units to an NCA Analysis
+
+For more details on parts of this NCA calculation example unrelated to units, see the [theophylline example vignette](Example-theophylline.html).
+
+```{r create-conc-dose-obj}
+conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+d_dose <- unique(datasets::Theoph[datasets::Theoph$Time == 0,
+                                  c("Dose", "Time", "Subject")])
+dose_obj <- PKNCAdose(d_dose, Dose~Time|Subject)
+```
+
+The difference from a calculation without units comes when setting up the `PKNCAdata` object.  You will add the units with the `units` argument.  
+
+Since no urine or other similar collection is performed, the `amountu` argument is omitted for `pknca_units_table()`.
+
+```{r create-data-obj}
+d_units <-
+  pknca_units_table(
+    concu="mg/L", doseu="mg/kg", timeu="hr",
+    # use molar units for concentrations and AUCs
+    conversions=
+      data.frame(
+        PPORRESU=c("(mg/kg)/(hr*mg/L)", "(mg/kg)/(mg/L)", "mg/L", "hr*mg/L"),
+        PPSTRESU=c("L/hr/kg", "L/kg", "mmol/L", "hr*mmol/L"),
+        conversion_factor=c(NA, NA, 1/180.164, 1/180.164)
+      )
+  )
+
+data_obj <- PKNCAdata(conc_obj, dose_obj, units=d_units)
+result_obj <- pk.nca(data_obj)
+summary(result_obj)
+```
+
+# How do I add different unit conversions for different analytes?
+
+Sometimes, when multiple analytes are used and, for example, molar outputs are desired while inputs are in mass units.  Different unit conversions may be required for different inputs.
+
+Different unit conversions can be used by adding the grouping column to the units specification.
+
+Start by setting up a concentration dataset with two analytes.  Since the dosing doesn't have an "Analyte" column, it will be matched to all concentration measures for the subject.
+
+```{r different-units-conc-dose-setup}
+d_conc_theoph <- as.data.frame(datasets::Theoph)
+d_conc_theoph$Analyte <- "Theophylline"
+# Approximately 6% of theophylline is metabolized to caffeine
+# (https://www.pharmgkb.org/pathway/PA165958541).  Let's pretend that means it
+# has 6% of the theophylline concentration at all times.
+d_conc_caffeine <- as.data.frame(datasets::Theoph)
+d_conc_caffeine$conc <- 0.06*d_conc_caffeine$conc
+d_conc_caffeine$Analyte <- "Caffeine"
+d_conc <- rbind(d_conc_theoph, d_conc_caffeine)
+
+d_dose <- unique(datasets::Theoph[datasets::Theoph$Time == 0,
+                                  c("Dose", "Time", "Subject")])
+```
+
+Setup the units with an "Analyte" column to separate the units used.
+
+```{r different-units-units-setup}
+d_units_theoph <-
+  pknca_units_table(
+    concu="mg/L", doseu="mg/kg", timeu="hr",
+    # use molar units for concentrations and AUCs
+    conversions=
+      data.frame(
+        PPORRESU=c("(mg/kg)/(hr*mg/L)", "(mg/kg)/(mg/L)", "mg/L", "hr*mg/L"),
+        PPSTRESU=c("L/hr/kg", "L/kg", "mmol/L", "hr*mmol/L"),
+        conversion_factor=c(NA, NA, 1/180.164, 1/180.164)
+      )
+  )
+d_units_theoph$Analyte <- "Theophylline"
+d_units_caffeine <-
+  pknca_units_table(
+    concu="mg/L", doseu="mg/kg", timeu="hr",
+    # use molar units for concentrations and AUCs
+    conversions=
+      data.frame(
+        PPORRESU=c("(mg/kg)/(hr*mg/L)", "(mg/kg)/(mg/L)", "mg/L", "hr*mg/L"),
+        PPSTRESU=c("L/hr/kg", "L/kg", "mmol/L", "hr*mmol/L"),
+        conversion_factor=c(NA, NA, 1/194.19, 1/194.19)
+      )
+  )
+d_units_caffeine$Analyte <- "Caffeine"
+d_units <- rbind(d_units_theoph, d_units_caffeine)
+```
+
+Now, calculate adding the different units per analyte to the data object.
+
+```{r different-units-calc}
+conc_obj <- PKNCAconc(d_conc, conc~Time|Subject/Analyte)
+dose_obj <- PKNCAdose(d_dose, Dose~Time|Subject)
+data_obj <- PKNCAdata(conc_obj, dose_obj, units=d_units)
+result_obj <- pk.nca(data_obj)
+summary(result_obj)
+```

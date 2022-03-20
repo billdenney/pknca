@@ -12,7 +12,7 @@ test_that("PKNCAresults generation", {
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
-  
+
   expect_equal(
     names(myresult),
     c("result", "data", "exclude"),
@@ -509,5 +509,122 @@ test_that("single subject, ungrouped data works (#74)", {
       regexp="No dose information provided",
     ),
     1
+  )
+})
+
+test_that("units work for calculations and summaries with one set of units across all analytes", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+
+  d_units_orig <- pknca_units_table(concu="ng/mL", doseu="mg", amountu="mg", timeu="hr")
+  d_units_std <-
+    pknca_units_table(
+      concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
+      conversions=data.frame(PPORRESU="ng/mL", PPSTRESU="mg/mL")
+    )
+  mydata_orig <- PKNCAdata(myconc, mydose, units=d_units_orig)
+  myresult_units_orig <- pk.nca(mydata_orig)
+  mydata_std <- PKNCAdata(myconc, mydose, units=d_units_std)
+  myresult_units_std <- pk.nca(mydata_std)
+  
+  # Summaries are the same except for the units in the column name
+  expect_equal(
+    summary(myresult),
+    summary(myresult_units_orig) %>%
+      rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
+  )
+  expect_equal(
+    summary(myresult_units_orig) %>% dplyr::select(-`cmax (ng/mL)`),
+    summary(myresult_units_std) %>% dplyr::select(-`cmax (mg/mL)`)
+  )
+  # The units are converted to standard units, if requested
+  expect_equal(
+    summary(myresult_units_orig)$`cmax (ng/mL)`,
+    c(".", "0.970 [4.29]")
+  )
+  expect_equal(
+    summary(myresult_units_std)$`cmax (mg/mL)`,
+    c(".", "9.70e-7 [4.29]")
+  )
+  # Wide conversion works for original and standardized units
+  df_wide_orig <- as.data.frame(myresult_units_orig, out.format="wide")
+  df_wide_std <- as.data.frame(myresult_units_std, out.format="wide")
+  expect_equal(
+    as.data.frame(myresult, out.format="wide"),
+    # The difference is the addition of units to the column names
+    df_wide_orig %>%
+      rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
+  )
+  expect_true(
+    all(
+      names(df_wide_orig) %in% c("treatment", "ID", "start", "end", "exclude") |
+        grepl(x=names(df_wide_orig), pattern=" (", fixed=TRUE)
+    )
+  )
+  # Everything is the same unless it is a concentration which has been converted
+  expect_equal(
+    df_wide_orig %>% dplyr::select(-`cmax (ng/mL)`, -`clast.obs (ng/mL)`, -`clast.pred (ng/mL)`),
+    df_wide_std %>% dplyr::select(-`cmax (mg/mL)`, -`clast.obs (mg/mL)`, -`clast.pred (mg/mL)`)
+  )
+  # Concentration conversion works correctly
+  expect_equal(
+    df_wide_orig$`cmax (ng/mL)`,
+    df_wide_std$`cmax (mg/mL)`*1e6
+  )
+})
+
+test_that("units work for calculations and summaries with one set of units across all analytes", {
+  tmpconc1 <- generate.conc(2, 1, 0:24)
+  tmpconc1$analyte <- "drug1"
+  tmpconc2 <- tmpconc1
+  tmpconc2$analyte <- "drug2"
+  tmpconc <- rbind(tmpconc1, tmpconc2)
+  
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID/analyte)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  
+  d_units_std1 <-
+    pknca_units_table(
+      concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
+      conversions=data.frame(PPORRESU="ng/mL", PPSTRESU="mg/mL")
+    )
+  d_units_std1$analyte <- "drug1"
+  d_units_std2 <-
+    pknca_units_table(
+      concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
+      conversions=data.frame(PPORRESU="ng/mL", PPSTRESU="mmol/L", conversion_factor=2)
+    )
+  d_units_std2$analyte <- "drug2"
+  d_units_std <- rbind(d_units_std1, d_units_std2)
+  mydata_std <- PKNCAdata(myconc, mydose, units=d_units_std)
+  myresult_units_std <- pk.nca(mydata_std)
+  summary_myresult_units_std <- summary(myresult_units_std)
+  # Everything is the same between analytes except for "cmax"
+  for (nm in setdiff(names(summary_myresult_units_std), c("analyte", "cmax"))) {
+    expect_equal(
+      summary_myresult_units_std[[nm]][1:2],
+      summary_myresult_units_std[[nm]][3:4]
+    )
+  }
+  # Different units in the same column are shown in the cell
+  expect_equal(
+    summary_myresult_units_std$cmax,
+    c(".", "9.70e-7 [4.29] mg/mL", ".", "1.94 [4.29] mmol/L")
+  )
+  
+  # I can't think of a way to trigger this error without explicit manipulation.
+  myresult_units_manipulated <- myresult_units_std
+  myresult_units_manipulated$result$PPSTRESU[myresult_units_manipulated$result$PPTESTCD %in% "auclast"][1] <- "foo"
+  expect_error(
+    summary(myresult_units_manipulated),
+    regexp="Multiple units cannot be summarized together.  For auclast, trying to combine: foo, hr*ng/mL",
+    fixed=TRUE
   )
 })

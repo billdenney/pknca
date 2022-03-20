@@ -15,6 +15,7 @@
 #' @family PKNCA objects
 #' @export
 PKNCAresults <- function(result, data, exclude) {
+  result <- pknca_unit_conversion(result=result, units=data$units)
   # Add all the parts into the object
   ret <- list(result=result,
               data=data)
@@ -41,6 +42,18 @@ as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
   ret <- x$result
   out.format <- match.arg(out.format)
   if (out.format %in% 'wide') {
+    if ("PPSTRESU" %in% names(ret)) {
+      # Use standardized results
+      ret$PPTESTCD <- sprintf("%s (%s)", ret$PPTESTCD, ret$PPSTRESU)
+      ret$PPORRES <- ret$PPSTRES
+    } else if ("PPORRESU" %in% names(ret)) {
+      # Use original results
+      ret$PPTESTCD <- sprintf("%s (%s)", ret$PPTESTCD, ret$PPORRESU)
+    }
+    # Since we moved the results into PPTESTCD and PPORRES regardless of what
+    # they really are in the source data, remove the extra units and unit
+    # conversion columns to allow spread to work.
+    ret <- ret[, setdiff(names(ret), c("PPSTRES", "PPSTRESU", "PPORRESU"))]
     ret <- tidyr::spread(ret, key="PPTESTCD", value="PPORRES")
   }
   ret
@@ -178,12 +191,27 @@ summary.PKNCAresults <- function(object, ...,
       c("start", "end")
     )
   # Columns that will have reported results
-  result_data_cols <-
+  result_data_cols_list <-
     lapply(
       X=object$data$intervals[, parameter_cols, drop=FALSE],
       FUN=any
     )
-  result_data_cols <- as.data.frame(result_data_cols[unlist(result_data_cols)])
+  result_data_cols_list <- result_data_cols_list[unlist(result_data_cols_list)]
+
+  # Prepare for unit management
+  use_units <- "PPORRESU" %in% names(object$result)
+  result_number_col <- intersect(c("PPSTRES", "PPORRES"), names(object$result))[1]
+  if (use_units) {
+    # Choose the preferred units column
+    unit_col <- intersect(c("PPSTRESU", "PPORRESU"), names(object$result))[1]
+    unit_list <- result_data_cols_list
+    for (nm in names(unit_list)) {
+      # Get all of the units for a given parameter that will be summarized
+      unit_list[[nm]] <- unique(object$result[[unit_col]][object$result$PPTESTCD %in% nm])
+    }
+  }
+
+  result_data_cols <- as.data.frame(result_data_cols_list)
   # If no other value is filled in, then the default is that it was not
   # requested.
   result_data_cols[, names(result_data_cols)] <- not.requested.string
@@ -198,7 +226,7 @@ summary.PKNCAresults <- function(object, ...,
   ret <- cbind(ret, result_data_cols)
   # Loop over every group that needs summarization
   for (row_idx in seq_len(nrow(ret)))
-    # Loop over every column that needs summarziation
+    # Loop over every column that needs summarization
     for (current_parameter in names(result_data_cols)) {
       # Select the rows of the intervals that match the current row
       # from the return value.
@@ -215,7 +243,7 @@ summary.PKNCAresults <- function(object, ...,
           ret[row_idx, group_cols, drop=FALSE],
           simplified_results[simplified_results$PPTESTCD %in% current_parameter,,drop=FALSE])
         # Exclude value, when required
-        current_data$PPORRES[!is.na(current_data[[exclude_col]])] <- NA
+        current_data[[result_number_col]][!is.na(current_data[[exclude_col]])] <- NA
         if (nrow(current_data) == 0) {
           warning("No results to summarize for ", current_parameter, " in result row ", row_idx)
         } else {
@@ -226,7 +254,7 @@ summary.PKNCAresults <- function(object, ...,
           if (is.null(summary_instructions[[current_parameter]])) {
             stop("No summary function is set for parameter ", current_parameter, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
           }
-          point <- summary_instructions[[current_parameter]]$point(current_data$PPORRES)
+          point <- summary_instructions[[current_parameter]]$point(current_data[[result_number_col]])
           na_point <- is.na(point)
           na_spread <- NA
           # Round the point estimate
@@ -234,7 +262,7 @@ summary.PKNCAresults <- function(object, ...,
           current <- point
           if ("spread" %in% names(summary_instructions[[current_parameter]])) {
             spread <- summary_instructions[[current_parameter]]$spread(
-              current_data$PPORRES)
+              current_data[[result_number_col]])
             na_spread <- all(is.na(spread))
             if (na_spread) {
               # The spread couldn't be calculated, so show that
@@ -254,6 +282,21 @@ summary.PKNCAresults <- function(object, ...,
           if (na_point & (na_spread %in% c(NA, TRUE))) {
             ret[row_idx, current_parameter] <- not.calculated.string
           } else {
+            if (use_units) {
+              if (length(unit_list[[current_parameter]]) > 1) {
+                # Need to choose the correct, current unit, and if more than one
+                # is present, do not summarize.
+                units_to_add <- unique(current_data[[unit_col]])
+                if (length(units_to_add) > 1) {
+                  stop(
+                    "Multiple units cannot be summarized together.  For ",
+                    current_parameter, ", trying to combine: ",
+                    paste(units_to_add, collapse=", ")
+                  )
+                }
+                current <- paste(current, units_to_add)
+              }
+            }
             ret[row_idx, current_parameter] <- current
           }
         }
@@ -281,6 +324,15 @@ summary.PKNCAresults <- function(object, ...,
     names(simplified_summary_descriptions)[idx] <-
       paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
             collapse=", ")
+  }
+  if (use_units) {
+    # add the units to the column header, if applicable
+    for (nm in names(unit_list)) {
+      if (length(unit_list[[nm]]) == 1) {
+        idx_nm_col <- names(ret) %in% nm
+        names(ret)[idx_nm_col] <- sprintf("%s (%s)", names(ret)[idx_nm_col], unit_list[[nm]])
+      }
+    }
   }
   as_summary_PKNCAresults(
     ret,

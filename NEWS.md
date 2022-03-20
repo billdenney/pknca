@@ -6,9 +6,18 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.6 (in development)
 
+## New Features
+
 * Initial support for unit assignment and conversion has been added.  See the
   `units` argument to the `PKNCAdata()` function and the function
   `pknca_units_table()`.
+* With the addition of units, several outputs now will differ, if units are
+  used:
+    * `summary()` on a PKNCAresults object shows the units in the column
+      heading.
+    * When running `as.data.frame()` on a PKNCAresults object with the argument
+      `out.format="wide"`, if standardized units values are available, they will
+      be used.  And if any unit are available, they will be in the column names.
 * `pk.calc.time_above()` now uses the default AUC calculation method for
   interpolation of time above.
 * PKNCA can now calculate parameters that require extra information by adding
