@@ -115,11 +115,11 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
   } else {
     data <- data.frame(conc, time)
   }
-  if (inherits(data$conc, "units")) {
-    conc_units <- units(data$conc)
-  } else {
+  # if (inherits(data$conc, "units")) {
+  #   conc_units <- units(data$conc)
+  # } else {
     conc_units <- NULL
-  }
+  #}
   data$log_conc <- log(data$conc)
   # as.numeric() to handle units objects
   data <- data[as.numeric(data$conc) > 0,]
