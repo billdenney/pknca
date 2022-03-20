@@ -935,7 +935,7 @@ o_conc <- PKNCAconc(data=d_before_exclude, conc~time, exclude="not_this")
 * Require &lambda;z` > 0`.
 * If more than one fit is available at this point, select the one with the most points included.
 
-Note: WinNonlin first requires &lambda;z` > 0` then selects for adjusted r^2^.  Therefore, WinNonlin will occasionally provide a half-life when PKNCA will not, but the fit line is not as good (as measured by r^2^).  The selection of filtering order is an intentional feature with PKNCA, and it generally has minimal impact on summary statistics becuase the quality of the half-life fit is usually low in this scenario.
+Note: WinNonlin first requires &lambda;z` > 0` then selects for adjusted r^2^.  Therefore, WinNonlin will occasionally provide a half-life when PKNCA will not, but the fit line is not as good (as measured by r^2^).  The selection of filtering order is an intentional feature with PKNCA, and it generally has minimal impact on summary statistics because the quality of the half-life fit is usually low in this scenario.
 
 ## &lambda;z control (manual exclusions and inclusions of data points)
 
