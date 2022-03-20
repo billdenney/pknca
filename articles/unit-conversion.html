@@ -215,12 +215,12 @@
 <span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span>, units<span class="op">=</span><span class="va">d_units</span><span class="op">)</span>
 <span class="va">result_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_obj</span><span class="op">)</span>
-<span class="co">#&gt;  start end  N auclast (hr*mmol/L) cmax (mmol/L)          tmax (hr)</span>
-<span class="co">#&gt;      0  24 12        0.414 [24.3]             .                  .</span>
-<span class="co">#&gt;      0 Inf 12                   . 0.0480 [17.0] 1.14 [0.630, 3.55]</span>
-<span class="co">#&gt;  half.life (hr) aucinf.obs (hr*mmol/L)</span>
-<span class="co">#&gt;               .                      .</span>
-<span class="co">#&gt;     8.18 [2.12]           0.637 [28.4]</span>
+<span class="co">#&gt;  Interval Start Interval End  N AUClast (hr*mmol/L) Cmax (mmol/L)</span>
+<span class="co">#&gt;               0           24 12        0.414 [24.3]             .</span>
+<span class="co">#&gt;               0          Inf 12                   . 0.0480 [17.0]</span>
+<span class="co">#&gt;           Tmax (hr) Half-life (hr) AUCinf,obs (hr*mmol/L)</span>
+<span class="co">#&gt;                   .              .                      .</span>
+<span class="co">#&gt;  1.14 [0.630, 3.55]    8.18 [2.12]           0.637 [28.4]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation</span></code></pre></div>
 </div>
@@ -277,12 +277,12 @@
 <span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span>, units<span class="op">=</span><span class="va">d_units</span><span class="op">)</span>
 <span class="va">result_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_obj</span><span class="op">)</span>
-<span class="co">#&gt;  start end      Analyte  N auclast (hr*mmol/L)  cmax (mmol/L)</span>
-<span class="co">#&gt;      0  24 Theophylline 12        0.414 [24.3]              .</span>
-<span class="co">#&gt;      0 Inf Theophylline 12                   .  0.0480 [17.0]</span>
-<span class="co">#&gt;      0  24     Caffeine 12       0.0231 [24.3]              .</span>
-<span class="co">#&gt;      0 Inf     Caffeine 12                   . 0.00267 [17.0]</span>
-<span class="co">#&gt;           tmax (hr) half.life (hr) aucinf.obs (hr*mmol/L)</span>
+<span class="co">#&gt;  Interval Start Interval End      Analyte  N AUClast (hr*mmol/L)  Cmax (mmol/L)</span>
+<span class="co">#&gt;               0           24 Theophylline 12        0.414 [24.3]              .</span>
+<span class="co">#&gt;               0          Inf Theophylline 12                   .  0.0480 [17.0]</span>
+<span class="co">#&gt;               0           24     Caffeine 12       0.0231 [24.3]              .</span>
+<span class="co">#&gt;               0          Inf     Caffeine 12                   . 0.00267 [17.0]</span>
+<span class="co">#&gt;           Tmax (hr) Half-life (hr) AUCinf,obs (hr*mmol/L)</span>
 <span class="co">#&gt;                   .              .                      .</span>
 <span class="co">#&gt;  1.14 [0.630, 3.55]    8.18 [2.12]           0.637 [28.4]</span>
 <span class="co">#&gt;                   .              .                      .</span>

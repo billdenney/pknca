@@ -106,7 +106,8 @@
   drop.group <span class="op">=</span> <span class="va">object</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">conc</span><span class="op">$</span><span class="va">subject</span>,
   summarize.n.per.group <span class="op">=</span> <span class="cn">TRUE</span>,
   not.requested.string <span class="op">=</span> <span class="st">"."</span>,
-  not.calculated.string <span class="op">=</span> <span class="st">"NC"</span>
+  not.calculated.string <span class="op">=</span> <span class="st">"NC"</span>,
+  pretty_names <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -130,6 +131,10 @@ summary was not requested for a parameter within an interval.</p></dd>
 <dd><p>A character string to use when a parameter 
 summary was requested, but the point estimate AND spread calculations (if 
 applicable) returned <code>NA</code>.</p></dd>
+<dt>pretty_names</dt>
+<dd><p>Should pretty names (easier to understand in a report) be
+used?  <code>TRUE</code> is yes, <code>FALSE</code> is no, and <code>NULL</code> is yes if
+units are used an no if units are not used.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
