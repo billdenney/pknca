@@ -9,6 +9,7 @@ add.interval.col(
   FUN,
   values = c(FALSE, TRUE),
   unit_type,
+  pretty_name,
   depends = NULL,
   desc = "",
   formalsmap = list(),
@@ -24,6 +25,10 @@ parameter is automatically calculated when calculating another parameter.}
 \item{values}{Valid values for the column}
 
 \item{unit_type}{The type of units to use for assigning and converting units.}
+
+\item{pretty_name}{The name of the parameter to use for printing in summary
+tables with units.  (If an analysis does not include units, then the normal
+name is used.)}
 
 \item{depends}{Character vector of columns that must be run before this
 column.}
@@ -86,11 +91,13 @@ add.interval.col("cmax",
                  FUN="pk.calc.cmax",
                  values=c(FALSE, TRUE),
                  unit_type="conc",
+                 pretty_name="Cmax",
                  desc="Maximum observed concentration")
 add.interval.col("cmax.dn",
                  FUN="pk.calc.dn",
                  values=c(FALSE, TRUE),
                  unit_type="conc_dosenorm",
+                 pretty_name="Cmax (dose-normalized)",
                  desc="Maximum observed concentration, dose normalized",
                  formalsmap=list(parameter="cmax"),
                  depends="cmax")

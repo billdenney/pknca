@@ -10,7 +10,8 @@
   drop.group = object$data$conc$subject,
   summarize.n.per.group = TRUE,
   not.requested.string = ".",
-  not.calculated.string = "NC"
+  not.calculated.string = "NC",
+  pretty_names = NULL
 )
 }
 \arguments{
@@ -31,6 +32,10 @@ summary was not requested for a parameter within an interval.}
 \item{not.calculated.string}{A character string to use when a parameter 
 summary was requested, but the point estimate AND spread calculations (if 
 applicable) returned \code{NA}.}
+
+\item{pretty_names}{Should pretty names (easier to understand in a report) be
+used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
+units are used an no if units are not used.}
 }
 \value{
 A data frame of NCA parameter results summarized according to the 

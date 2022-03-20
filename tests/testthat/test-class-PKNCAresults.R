@@ -531,23 +531,22 @@ test_that("units work for calculations and summaries with one set of units acros
   mydata_std <- PKNCAdata(myconc, mydose, units=d_units_std)
   myresult_units_std <- pk.nca(mydata_std)
   
-  # Summaries are the same except for the units in the column name
+  # Summaries are the same except for the column names
   expect_equal(
-    summary(myresult),
-    summary(myresult_units_orig) %>%
-      rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
+    unname(summary(myresult)),
+    unname(summary(myresult_units_orig))
   )
   expect_equal(
-    summary(myresult_units_orig) %>% dplyr::select(-`cmax (ng/mL)`),
-    summary(myresult_units_std) %>% dplyr::select(-`cmax (mg/mL)`)
+    summary(myresult_units_orig) %>% dplyr::select(-`Cmax (ng/mL)`),
+    summary(myresult_units_std) %>% dplyr::select(-`Cmax (mg/mL)`)
   )
   # The units are converted to standard units, if requested
   expect_equal(
-    summary(myresult_units_orig)$`cmax (ng/mL)`,
+    summary(myresult_units_orig)$`Cmax (ng/mL)`,
     c(".", "0.970 [4.29]")
   )
   expect_equal(
-    summary(myresult_units_std)$`cmax (mg/mL)`,
+    summary(myresult_units_std)$`Cmax (mg/mL)`,
     c(".", "9.70e-7 [4.29]")
   )
   # Wide conversion works for original and standardized units
@@ -607,7 +606,7 @@ test_that("units work for calculations and summaries with one set of units acros
   myresult_units_std <- pk.nca(mydata_std)
   summary_myresult_units_std <- summary(myresult_units_std)
   # Everything is the same between analytes except for "cmax"
-  for (nm in setdiff(names(summary_myresult_units_std), c("analyte", "cmax"))) {
+  for (nm in setdiff(names(summary_myresult_units_std), c("analyte", "Cmax"))) {
     expect_equal(
       summary_myresult_units_std[[nm]][1:2],
       summary_myresult_units_std[[nm]][3:4]
@@ -615,7 +614,7 @@ test_that("units work for calculations and summaries with one set of units acros
   }
   # Different units in the same column are shown in the cell
   expect_equal(
-    summary_myresult_units_std$cmax,
+    summary_myresult_units_std$Cmax,
     c(".", "9.70e-7 [4.29] mg/mL", ".", "1.94 [4.29] mmol/L")
   )
   
@@ -626,5 +625,58 @@ test_that("units work for calculations and summaries with one set of units acros
     summary(myresult_units_manipulated),
     regexp="Multiple units cannot be summarized together.  For auclast, trying to combine: foo, hr*ng/mL",
     fixed=TRUE
+  )
+})
+
+test_that("summary pretty_name control", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  
+  d_units_orig <- pknca_units_table(concu="ng/mL", doseu="mg", amountu="mg", timeu="hr")
+  d_units_std <-
+    pknca_units_table(
+      concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
+      conversions=data.frame(PPORRESU="ng/mL", PPSTRESU="mg/mL")
+    )
+  mydata_orig <- PKNCAdata(myconc, mydose, units=d_units_orig)
+  myresult_units_orig <- pk.nca(mydata_orig)
+
+  s_plain <- summary(myresult)
+  s_pretty <- summary(myresult, pretty_names=TRUE)
+  s_plain_units <- summary(myresult_units_orig, pretty_names=FALSE)
+  s_pretty_units <- summary(myresult_units_orig)
+  expect_equal(
+    names(s_plain),
+    c("start", "end", "treatment", "N", "auclast", "cmax", "tmax", "half.life", "aucinf.obs")
+  )
+  expect_equal(
+    names(s_pretty),
+    c("Interval Start", "Interval End", "treatment", "N", "AUClast", 
+      "Cmax", "Tmax", "Half-life", "AUCinf,obs")
+  )
+  expect_equal(
+    names(s_plain_units),
+    c("start", "end", "treatment", "N", "auclast (hr*ng/mL)", "cmax (ng/mL)", 
+      "tmax (hr)", "half.life (hr)", "aucinf.obs (hr*ng/mL)")
+  )
+  expect_equal(
+    names(s_pretty_units),
+    c(
+      "Interval Start", "Interval End", "treatment", "N", "AUClast (hr*ng/mL)", 
+      "Cmax (ng/mL)", "Tmax (hr)", "Half-life (hr)", "AUCinf,obs (hr*ng/mL)"
+    )
+  )
+  # Defaults
+  expect_equal(
+    names(s_plain),
+    names(summary(myresult, pretty_names=FALSE))
+  )
+  expect_equal(
+    names(s_pretty_units),
+    names(summary(myresult_units_orig, pretty_names=TRUE))
   )
 })

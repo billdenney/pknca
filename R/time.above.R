@@ -68,6 +68,7 @@ add.interval.col("time_above",
                  FUN="pk.calc.time_above",
                  values=c(FALSE, TRUE),
                  unit_type="time",
+                 pretty_name="Time above Concentration",
                  desc="Time above a given concentration")
 PKNCA.set.summary(
   name="time_above",

@@ -15,6 +15,9 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' @param desc A human-readable description of the parameter (<=40 characters to
 #'   comply with SDTM)
 #' @param unit_type The type of units to use for assigning and converting units.
+#' @param pretty_name The name of the parameter to use for printing in summary
+#'   tables with units.  (If an analysis does not include units, then the normal
+#'   name is used.)
 #' @param formalsmap A named list mapping parameter names in the function call
 #'   to NCA parameter names.  See the details for information on use of
 #'   \code{formalsmap}.
@@ -63,11 +66,13 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #'                  FUN="pk.calc.cmax",
 #'                  values=c(FALSE, TRUE),
 #'                  unit_type="conc",
+#'                  pretty_name="Cmax",
 #'                  desc="Maximum observed concentration")
 #' add.interval.col("cmax.dn",
 #'                  FUN="pk.calc.dn",
 #'                  values=c(FALSE, TRUE),
 #'                  unit_type="conc_dosenorm",
+#'                  pretty_name="Cmax (dose-normalized)",
 #'                  desc="Maximum observed concentration, dose normalized",
 #'                  formalsmap=list(parameter="cmax"),
 #'                  depends="cmax")
@@ -79,6 +84,7 @@ add.interval.col <- function(name,
                              FUN,
                              values=c(FALSE, TRUE),
                              unit_type,
+                             pretty_name,
                              depends=NULL,
                              desc="",
                              formalsmap=list(),
@@ -110,6 +116,9 @@ add.interval.col <- function(name,
         "clearance", "renal_clearance"
       )
     )
+  stopifnot("pretty_name must be a scalar"=length(pretty_name) == 1)
+  stopifnot("pretty_name must be a character"=is.character(pretty_name))
+  stopifnot("pretty_name must not be an empty string"=nchar(pretty_name) > 0)
   datatype <- match.arg(datatype)
   if (!(datatype %in% "interval")) {
     stop("Only the 'interval' datatype is currently supported.")
@@ -149,6 +158,7 @@ add.interval.col <- function(name,
       FUN=FUN,
       values=values,
       unit_type=unit_type,
+      pretty_name=pretty_name,
       desc=desc,
       formalsmap=formalsmap,
       depends=depends,
@@ -162,12 +172,14 @@ add.interval.col("start",
   FUN = NA,
   values = as.numeric,
   unit_type="time",
+  pretty_name="Interval Start",
   desc = "Starting time of the interval"
 )
 add.interval.col("end",
   FUN = NA,
   values = as.numeric,
   unit_type="time",
+  pretty_name="Interval End",
   desc = "Ending time of the interval (potentially infinity)"
 )
 

@@ -91,6 +91,8 @@ One of the most common examples is the function to calculate C~max~:
     add.interval.col("cmax",
                      FUN="pk.calc.cmax",
                      values=c(FALSE, TRUE),
+                     unit_type="conc",
+                     pretty_name="Cmax",
                      desc="Maximum observed concentration",
                      depends=c())
     PKNCA.set.summary("cmax", "geometric mean and geometric coefficient of variation", business.geomean, business.geocv)

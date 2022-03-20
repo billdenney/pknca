@@ -140,6 +140,9 @@ roundingSummarize <- function(x, name) {
 #'   (\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of 
 #'   parameter results for any parameter; if no parameters are requested for a
 #'   group, then \code{N} will be \code{NA}.
+#' @param pretty_names Should pretty names (easier to understand in a report) be
+#'   used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
+#'   units are used an no if units are not used.
 #' @param ... Ignored.
 #' @return A data frame of NCA parameter results summarized according to the 
 #'   summarization settings.
@@ -171,7 +174,8 @@ summary.PKNCAresults <- function(object, ...,
                                  drop.group=object$data$conc$subject,
                                  summarize.n.per.group=TRUE,
                                  not.requested.string=".",
-                                 not.calculated.string="NC") {
+                                 not.calculated.string="NC",
+                                 pretty_names=NULL) {
   all_group_cols <- getGroups(object)
   if (any(c("start", "end") %in% drop.group)) {
     warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
@@ -200,6 +204,7 @@ summary.PKNCAresults <- function(object, ...,
 
   # Prepare for unit management
   use_units <- "PPORRESU" %in% names(object$result)
+  unit_list <- NULL
   result_number_col <- intersect(c("PPSTRES", "PPORRES"), names(object$result))[1]
   if (use_units) {
     # Choose the preferred units column
@@ -325,17 +330,9 @@ summary.PKNCAresults <- function(object, ...,
       paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
             collapse=", ")
   }
-  if (use_units) {
-    # add the units to the column header, if applicable
-    for (nm in names(unit_list)) {
-      if (length(unit_list[[nm]]) == 1) {
-        idx_nm_col <- names(ret) %in% nm
-        names(ret)[idx_nm_col] <- sprintf("%s (%s)", names(ret)[idx_nm_col], unit_list[[nm]])
-      }
-    }
-  }
+  ret_pretty <- rename_summary_PKNCAresults(data=ret, unit_list=unit_list, pretty_name=pretty_names)
   as_summary_PKNCAresults(
-    ret,
+    ret_pretty,
     caption=paste(
       names(simplified_summary_descriptions),
       simplified_summary_descriptions,
@@ -343,6 +340,44 @@ summary.PKNCAresults <- function(object, ...,
       collapse="; "
     )
   )
+}
+
+rename_summary_PKNCAresults <- function(data, unit_list, pretty_name) {
+  if (is.null(pretty_name)) {
+    pretty_name <- !is.null(unit_list)
+  }
+  units_to_use <-
+    setNames(rep(NA_character_, ncol(data)), names(data))
+  if (!is.null(unit_list)) {
+    # add the units to the column header, if applicable
+    for (nm in names(unit_list)) {
+      if (length(unit_list[[nm]]) == 1) {
+        units_to_use[nm] <- unit_list[[nm]]
+      }
+    }
+  }
+  pretty_names_to_use <-
+    setNames(rep(NA_character_, ncol(data)), names(data))
+  if (pretty_name) {
+    all_intervals <- get.interval.cols()
+    for (nm in names(pretty_names_to_use)) {
+      if (!is.null(all_intervals[[nm]]$pretty_name)) {
+        pretty_names_to_use[nm] <- all_intervals[[nm]]$pretty_name
+      }
+    }
+  }
+  for (idx in seq_len(ncol(data))) {
+    current_col <- names(data)[idx]
+    first_part <- na.omit(c(pretty_names_to_use[current_col], current_col))[1]
+    unit_part <- units_to_use[current_col]
+    names(data)[idx] <-
+      if (is.na(unit_part)) {
+        first_part
+      } else {
+        sprintf("%s (%s)", first_part, unit_part)
+      }
+  }
+  data
 }
 
 as_summary_PKNCAresults <- function(data, caption) {

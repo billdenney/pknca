@@ -18,6 +18,13 @@ the dosing including dose amount and route.
     * When running `as.data.frame()` on a PKNCAresults object with the argument
       `out.format="wide"`, if standardized units values are available, they will
       be used.  And if any unit are available, they will be in the column names.
+* Summary tables with units use the "pretty_name" for a parameter which is
+  intended for clearer representation in reports.  "pretty_name" use can be
+  controlled with the "pretty_names" argument to `summary()`.
+    * Note that the pretty names themselves may be modified to help clarify and/or
+      shorten the names to make the table heading more useful.  If you intend to
+      modify column headers programmatically, set `pretty_names=FALSE` when
+      calling the `summary()` function.
 * `pk.calc.time_above()` now uses the default AUC calculation method for
   interpolation of time above.
 * PKNCA can now calculate parameters that require extra information by adding
