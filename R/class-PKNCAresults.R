@@ -215,7 +215,10 @@ summary.PKNCAresults <- function(object, ...,
       unit_list[[nm]] <- unique(object$result[[unit_col]][object$result$PPTESTCD %in% nm])
     }
   }
-
+  if (is.null(pretty_names)) {
+    pretty_names <- !is.null(unit_list)
+  }
+  
   result_data_cols <- as.data.frame(result_data_cols_list)
   # If no other value is filled in, then the default is that it was not
   # requested.
@@ -324,13 +327,20 @@ summary.PKNCAresults <- function(object, ...,
         i="description"
       )
     )
+  if (pretty_names) {
+    # Make the caption use pretty names if they're used in the header
+    all_intervals <- get.interval.cols()
+    for (idx in seq_along(summary_descriptions)) {
+      names(summary_descriptions)[idx] <- all_intervals[[names(summary_descriptions)[idx]]]$pretty_name
+    }
+  }
   simplified_summary_descriptions <- summary_descriptions[!duplicated(summary_descriptions)]
   for (idx in seq_along(simplified_summary_descriptions)) {
     names(simplified_summary_descriptions)[idx] <-
       paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
             collapse=", ")
   }
-  ret_pretty <- rename_summary_PKNCAresults(data=ret, unit_list=unit_list, pretty_name=pretty_names)
+  ret_pretty <- rename_summary_PKNCAresults(data=ret, unit_list=unit_list, pretty_names=pretty_names)
   as_summary_PKNCAresults(
     ret_pretty,
     caption=paste(
@@ -342,10 +352,7 @@ summary.PKNCAresults <- function(object, ...,
   )
 }
 
-rename_summary_PKNCAresults <- function(data, unit_list, pretty_name) {
-  if (is.null(pretty_name)) {
-    pretty_name <- !is.null(unit_list)
-  }
+rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
   units_to_use <-
     setNames(rep(NA_character_, ncol(data)), names(data))
   if (!is.null(unit_list)) {
@@ -358,7 +365,7 @@ rename_summary_PKNCAresults <- function(data, unit_list, pretty_name) {
   }
   pretty_names_to_use <-
     setNames(rep(NA_character_, ncol(data)), names(data))
-  if (pretty_name) {
+  if (pretty_names) {
     all_intervals <- get.interval.cols()
     for (nm in names(pretty_names_to_use)) {
       if (!is.null(all_intervals[[nm]]$pretty_name)) {

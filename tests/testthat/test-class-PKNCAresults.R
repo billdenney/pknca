@@ -534,7 +534,9 @@ test_that("units work for calculations and summaries with one set of units acros
   # Summaries are the same except for the column names
   expect_equal(
     unname(summary(myresult)),
-    unname(summary(myresult_units_orig))
+    unname(summary(myresult_units_orig)),
+    # The caption attribute will differ
+    check.attributes = FALSE
   )
   expect_equal(
     summary(myresult_units_orig) %>% dplyr::select(-`Cmax (ng/mL)`),
@@ -670,7 +672,16 @@ test_that("summary pretty_name control", {
       "Cmax (ng/mL)", "Tmax (hr)", "Half-life (hr)", "AUCinf,obs (hr*ng/mL)"
     )
   )
-  # Defaults
+  # Captions use the pretty_names, if requested
+  expect_equal(
+    attr(s_plain, "caption"),
+    "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+  )
+  expect_equal(
+    attr(s_pretty, "caption"),
+    "AUClast, Cmax, AUCinf,obs: geometric mean and geometric coefficient of variation; Tmax: median and range; Half-life: arithmetic mean and standard deviation"
+  )
+  # Default for pretty_names are kept
   expect_equal(
     names(s_plain),
     names(summary(myresult, pretty_names=FALSE))
