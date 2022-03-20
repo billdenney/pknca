@@ -110,6 +110,10 @@
 <code><a href="../reference/pk.calc.time_above.html">pk.calc.time_above()</a></code> now uses the default AUC calculation method for interpolation of time above.</li>
 <li>PKNCA can now calculate parameters that require extra information by adding the extra information to the intervals data.frame. For example, add <code>conc_above</code> as a column to the intervals to allow calculation of <code>time_above</code>. With this change, the “conc_above” <code><a href="../reference/PKNCA.options.html">PKNCA.options()</a></code> value has been removed.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-0-9-6">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-9-6"></a></h3>
+<ul><li>The <code>getData()</code> and <code><a href="../reference/getDataName.html">getDataName()</a></code> functions for PKNCAdata objects were removed. They were previously intended to be internal functions.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.5" id="pknca-095">PKNCA 0.9.5<small>2021-10-29</small><a class="anchor" aria-label="anchor" href="#pknca-095"></a></h2>
