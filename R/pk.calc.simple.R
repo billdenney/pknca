@@ -998,7 +998,7 @@ add.interval.col("vd.obs",
                  FUN="pk.calc.vd",
                  values=c(FALSE, TRUE),
                  unit_type="volume",
-                 pretty_name="Vd (baed on Clast,obs)",
+                 pretty_name="Vd (based on Clast,obs)",
                  desc="Apparent observed volume of distribution calculated with observed Clast",
                  formalsmap=list(aucinf="aucinf.obs"),
                  depends=c("aucinf.obs", "lambda.z"))
