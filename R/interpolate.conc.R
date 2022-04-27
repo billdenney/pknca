@@ -99,40 +99,50 @@ interp.extrap.conc <- function(conc, time, time.out,
     data <-
       clean.conc.blq(
         conc, time,
-        conc.blq=conc.blq, conc.na=conc.na,
+        conc.blq=conc.blq,
+        conc.na=conc.na,
         check=FALSE
       )
   } else {
     data <- data.frame(conc, time)
   }
-  tlast <- pk.calc.tlast(data$conc, data$time, check=FALSE)
-  if (length(time.out) < 1)
+  if (length(time.out) < 1) {
     stop("time.out must be a vector with at least one element")
-  ret <- rep(NA, length(time.out))
-  for (i in seq_len(length(time.out)))
-    if (is.na(time.out[i])) {
-      warning("An interpolation/extrapolation time is NA")
-    } else if (time.out[i] <= tlast) {
-      ret[i] <-
-        interpolate.conc(
-          conc=data$conc, time=data$time,
-          time.out=time.out[i],
-          interp.method=interp.method,
-          conc.blq=conc.blq,
-          conc.na=conc.na,
-          check=FALSE
-        )
-    } else {
-      ret[i] <-
-        extrapolate.conc(
-          conc=data$conc, time=data$time,
-          time.out=time.out[i],
-          lambda.z=lambda.z,
-          clast=clast,
-          extrap.method=extrap.method,
-          check=FALSE
-        )
-    }
+  }
+  if (all(data$conc %in% 0)) {
+    # tlast would be NA in this case, but if everything input is zero, then all
+    # interpolated and extrapolated times will be zero, too.
+    ret <- rep(0, length(time.out))
+  } else {
+    tlast <- pk.calc.tlast(data$conc, data$time, check=FALSE)
+    ret <- rep(NA, length(time.out))
+    for (i in seq_len(length(time.out)))
+      if (is.na(tlast)) {
+        stop("Please report a bug:  tlast is NA; cannot interpolate/extrapolate") # nocov
+      } else if (is.na(time.out[i])) {
+        warning("An interpolation/extrapolation time is NA")
+      } else if (time.out[i] <= tlast) {
+        ret[i] <-
+          interpolate.conc(
+            conc=data$conc, time=data$time,
+            time.out=time.out[i],
+            interp.method=interp.method,
+            conc.blq=conc.blq,
+            conc.na=conc.na,
+            check=FALSE
+          )
+      } else {
+        ret[i] <-
+          extrapolate.conc(
+            conc=data$conc, time=data$time,
+            time.out=time.out[i],
+            lambda.z=lambda.z,
+            clast=clast,
+            extrap.method=extrap.method,
+            check=FALSE
+          )
+      }
+  }
   ret
 }
 
@@ -147,7 +157,10 @@ interpolate.conc <- function(conc, time, time.out,
                              ...,
                              check=TRUE) {
   # Check the inputs
-  interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
+  interp.method <-
+    tolower(PKNCA.choose.option(
+      name="auc.method", value=interp.method, options=options
+    ))
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
@@ -155,62 +168,59 @@ interpolate.conc <- function(conc, time, time.out,
     data <-
       clean.conc.blq(
         conc=conc, time=time,
-        conc.blq=conc.blq, conc.na=conc.na,
+        conc.blq=conc.blq,
+        conc.na=conc.na,
         check=FALSE
       )
   } else {
     data <- data.frame(conc, time)
   }
-  # Ensure that conc.origin is valid
-  if (length(conc.origin) != 1) {
-    stop("conc.origin must be a scalar")
-  }
-  if (!(is.na(conc.origin) | (is.numeric(conc.origin) & !is.factor(conc.origin)))) {
-    stop("conc.origin must be NA or a number (and not a factor)")
+  checkmate::assert_number(x=conc.origin, na.ok=TRUE)
+  checkmate::assert_number(x=time.out, na.ok=FALSE)
+  if (time.out > max(data$time)) {
+    stop("`interpolate.conc()` does not extrapolate, use `interp.extrap.conc()`")
   }
   # Verify that we are interpolating between the first concentration
   # and the last above LOQ concentration
-  if (length(time.out) != 1) {
-    stop("Can only interpolate for one time point per function call")
-  }
   tlast <- pk.calc.tlast(conc=data$conc, time=data$time, check=FALSE)
   if (time.out < min(data$time)) {
     ret <- conc.origin
+  } else if (all(data$conc == 0)) {
+    ret <- 0
   } else if (time.out > tlast) {
     stop("`interpolate.conc()` can only works through Tlast, please use `interp.extrap.conc()` to combine both interpolation and extrapolation.")
   } else if (time.out %in% data$time) {
     # See if there is an exact time match and return that if it
     # exists.
-    ret <- conc[time.out == data$time]
+    ret <- data$conc[time.out == data$time]
   } else {
+    interp_methods_all <-
+      choose_interp_extrap_method(
+        conc=data$conc,
+        time=data$time,
+        interp_method=interp.method,
+        # auclast because it doesn't affect the output for interpolation
+        extrap_method="auclast"
+      )
     # Find the last time before and the first time after the output
-    # time.
-    time_1 <- max(data$time[data$time <= time.out])
-    time_2 <- min(data$time[time.out <= data$time])
-    conc_1 <- data$conc[data$time == time_1]
-    conc_2 <- data$conc[data$time == time_2]
-    interp.method <- tolower(interp.method)
-    if (is.na(conc_1) | is.na(conc_2)) {
-      ret <- NA_real_
-    } else if ((interp.method == "linear") |
-        (interp.method == "lin up/log down" &
-         ((conc_1 <= 0 | conc_2 <= 0) |
-          (conc_1 <= conc_2)))) {
-      # Do linear interpolation if:
-      #   linear interpolation is selected or
-      #   lin up/log down interpolation is selected and
-      #     one concentration is 0 or
-      #     the concentrations are equal
-      ret <- conc_1+(time.out-time_1)/(time_2-time_1)*(conc_2-conc_1)
-    } else if (interp.method == "lin up/log down") {
-      ret <-
-        exp(
-          log(conc_1)+
-            (time.out-time_1)/(time_2-time_1)*(log(conc_2)-log(conc_1))
-        )
-    } else {
-      stop("You should never see this error.  Please report this as a bug with a reproducible example.") # nocov
-    }
+    # time, then interpolate.
+    idx_before <- rev(which(data$time <= time.out))[1]
+    idx_after <- which(time.out <= data$time)[1]
+    time_1 <- data$time[idx_before]
+    time_2 <- data$time[idx_after]
+    conc_1 <- data$conc[idx_before]
+    conc_2 <- data$conc[idx_after]
+    interp_method <- interp_methods_all[idx_before]
+    ret <-
+      if (interp_method == "linear") {
+        interpolate_conc_linear(conc_1=conc_1, conc_2=conc_2, time_1=time_1, time_2=time_2, time_out=time.out)
+      } else if (interp_method == "log") {
+        interpolate_conc_log(conc_1=conc_1, conc_2=conc_2, time_1=time_1, time_2=time_2, time_out=time.out)
+      } else if (interp_method == "zero") {
+        0
+      } else {
+        stop("Please report a bug: invalid interp_method") # nocov
+      }
   }
   ret
 }

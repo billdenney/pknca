@@ -139,7 +139,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   # original version if it was there.
   data <- rbind(data.frame(conc=conc_start,
                            time=interval_start),
-                data[!(data$time %in% interval_start),])
+                data[!(data$time %in% interval_start), ])
   # * either have our ending point or the ending point is Inf
   if (is.finite(interval_end)) {
     conc_end <-
@@ -149,9 +149,11 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                          extrap.method=auc.type,
                          check=FALSE)
     # !mask.end because we may be replacing an entry that is a 0.
-    data <- rbind(data[!(data$time %in% interval_end),],
-                  data.frame(conc=conc_end,
-                             time=interval_end))
+    data <-
+      rbind(
+        data[!(data$time %in% interval_end), ],
+        data.frame(conc=conc_end, time=interval_end)
+      )
   }
   # Subset the conc and time data to the interval of interest
   data <- data[interval_start <= data$time & data$time <= interval_end, , drop=FALSE]
@@ -166,7 +168,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     # still true)
     stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
   } else {
-    
+
     # Compute the AUxC ####
     # Compute it in linear space from the start to Tlast
     if (auc.type %in% "AUCall" &
@@ -212,9 +214,9 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
 }
 
 fun.auc.linear <- function(conc.1, conc.2, time.1, time.2)
-  (time.2-time.1)*(conc.2+conc.1)/2
+  (time.2-time.1) * (conc.2+conc.1)/2
 fun.auc.log <- function(conc.1, conc.2, time.1, time.2)
-  (time.2-time.1)*(conc.2-conc.1)/log(conc.2/conc.1)
+  (time.2-time.1) * (conc.2-conc.1)/log(conc.2/conc.1)
 fun.auc.inf <- function(clast, tlast, lambda.z)
   clast/lambda.z
 
@@ -287,11 +289,11 @@ pk.calc.auc.all <- function(conc, time, ..., options=list()) {
 pk.calc.aumc <- function(conc, time, ..., options=list())
   pk.calc.auxc(conc=conc, time=time, ..., options=options,
     fun.linear=function(conc.1, conc.2, time.1, time.2) {
-      (time.2-time.1)*(conc.2*time.2+conc.1*time.1)/2
+      (time.2-time.1) * (conc.2*time.2+conc.1*time.1)/2
     },
     fun.log=function(conc.1, conc.2, time.1, time.2) {
-      ((time.2-time.1)*(conc.2*time.2-conc.1*time.1)/log(conc.2/conc.1)-
-       (time.2-time.1)^2*(conc.2-conc.1)/(log(conc.2/conc.1)^2))
+      ((time.2-time.1) * (conc.2*time.2-conc.1*time.1) / log(conc.2/conc.1)-
+       (time.2-time.1)^2 * (conc.2-conc.1) / (log(conc.2/conc.1)^2))
     },
     fun.inf=function(conc.last, time.last, lambda.z) {
       (conc.last*time.last/lambda.z) + conc.last/(lambda.z^2)

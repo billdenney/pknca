@@ -38,6 +38,9 @@ the dosing including dose amount and route.
 * Some functions that were intended to be internal were removed:
     * All `getData()` functions were removed.
     * The `getDataName()` function for PKNCAdata objects was removed.
+* `interpolate.conc()` and `interp.extrap.conc()` now give more errors with
+  missing (NA) input.  This should not affect typical NCA (where NA values are
+  dropped), but it may affect direct calls to the functions themselves.
 
 # PKNCA 0.9.5
 

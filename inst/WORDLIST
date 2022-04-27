@@ -26,6 +26,7 @@ Hadley
 ISSN
 Kel
 Kirkwood
+LLOQ
 LOQ
 MRT
 Maes
@@ -72,6 +73,8 @@ bioequivalence
 calc
 cav
 clast
+clastobs
+clastpred
 clr
 cmax
 cmin

@@ -31,7 +31,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' multiple similar arguments (such as the variants of mean residence time). The
 #' names of the list should correspond to function formal parameter names and
 #' the values should be one of the following:
-#' 
+#'
 #' \itemize{
 #'   \item{For the current interval:}
 #'   \describe{
