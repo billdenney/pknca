@@ -83,6 +83,35 @@ test_that("choose_interp_extrap_method chooses correctly", {
       }
     }
   }
+
+  linlog_concs <-
+    list(
+      "all increasing"=1:5,
+      "all decreasing"=5:1,
+      "up down"=c(1:3, 2:1),
+      "flat top"=c(1:2, 2, 2:1),
+      "up down up down"=c(1:2, 1:2, 1)
+    )
+  linlog_results <-
+    list(
+      "all increasing"=c(rep("linear", 4), "zero"),
+      "all decreasing"=c(rep("log", 4), "zero"),
+      "up down"=c(rep("linear", 2), rep("log", 2), "zero"),
+      "flat top"=c("linear", rep("log", 3), "zero"),
+      "up down up down"=c("linear", rep("log", 3), "zero")
+    )
+  for (nm in names(linlog_concs)) {
+    expect_equal(
+      choose_interp_extrap_method(
+        conc=linlog_concs[[nm]],
+        time=1:5,
+        tmax=pk.calc.tmax(conc=linlog_concs[[nm]], time=1:5),
+        interp_method="lin/log",
+        extrap_method="auclast"
+      ),
+      linlog_results[[nm]]
+    )
+  }
 })
 
 test_that("choose_interp_extrap_method expected errors", {

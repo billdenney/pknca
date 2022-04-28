@@ -217,7 +217,11 @@ interpolate.conc <- function(conc, time, time.out,
       } else if (interp_method == "log") {
         interpolate_conc_log(conc_1=conc_1, conc_2=conc_2, time_1=time_1, time_2=time_2, time_out=time.out)
       } else if (interp_method == "zero") {
-        0
+        # interp_method == "zero" would not happen in practice because
+        # interpolation does not occur after tlast and linear interpolation
+        # would be used.  But, the rationale is sound in case that changes.
+        stop("The zero method of interpolation should not be used, please report a bug") # nocov
+        0 # nocov
       } else {
         stop("Please report a bug: invalid interp_method") # nocov
       }
@@ -263,7 +267,7 @@ extrapolate.conc <- function(conc, time, time.out,
     # Start the interpolation
     if (extrap.method %in% "aucinf") {
       # If AUCinf is requested, extrapolate using the half-life
-      ret <- clast*exp(-lambda.z*(time.out - tlast))
+      ret <- extrapolate_conc_lambdaz(clast=clast, lambda.z=lambda.z, tlast=tlast, time_out=time.out)
     } else if (extrap.method %in% "auclast" |
                  (extrap.method %in% "aucall" &
                     tlast == max(data$time))) {

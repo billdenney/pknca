@@ -76,6 +76,17 @@ test_that("interpolate.conc expected errors", {
     ),
     regexp="Contains missing values"
   )
+
+  # When tlast is before the end of the data, do not extrapolate  
+  expect_error(
+    interpolate.conc(
+      conc=c(1, 2, 0),
+      time=0:2,
+      time.out=1.5
+    ),
+    regexp="`interpolate.conc()` can only works through Tlast, please use `interp.extrap.conc()` to combine both interpolation and extrapolation.",
+    fixed=TRUE
+  )
 })
 
 ## extrapolate.conc expected errors ####
@@ -481,6 +492,27 @@ test_that("interpolate.conc", {
   #   1.5,
   #   info="Skipping the checks with an NA, but not bounding the interpolation gives the expected value."
   # )
+  
+  # by default, zeros in the middle are omitted
+  expect_equal(
+    interpolate.conc(
+      conc=c(0, 1, 2, 0, 1, 0),
+      time=0:5,
+      time.out=3,
+      conc.blq=NULL
+    ),
+    exp(mean(log(c(2, 1))))
+  )
+  # Zeros in the middle are accurately interpolated
+  expect_equal(
+    interpolate.conc(
+      conc=c(0, 1, 2, 0, 1, 0),
+      time=0:5,
+      time.out=2.5,
+      conc.blq=0
+    ),
+    1
+  )
 })
 
 # extrapolate.conc ####
@@ -669,6 +701,17 @@ test_that("extrapolate.conc", {
 # interp.extrap.conc ####
 
 test_that("interp.extrap.conc", {
+  # All zeros always interpolates to all zeros
+  expect_equal(
+    interp.extrap.conc(
+      conc=c(0, 0, 0),
+      time=0:2,
+      time.out=c(0, 0.5, 2.5),
+      interp.method="lin up/log down"
+    ),
+    rep(0, 3)
+  )
+  
   # Ensure that data checking works correctly
   expect_equal(
     interp.extrap.conc(
