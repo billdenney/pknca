@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
       </span>
     </div>
 
@@ -188,6 +188,10 @@ fulfill all dependencies.</p></td>
         </td>
         <td><p>Choose intervals to compute AUCs from time and dosing information</p></td>
       </tr><tr><td>
+          <p><code><a href="choose_interp_extrap_method.html">choose_interp_extrap_method()</a></code> </p>
+        </td>
+        <td><p>Choose a method for calculation in the interval between concentrations</p></td>
+      </tr><tr><td>
           <p><code><a href="clean.conc.blq.html">clean.conc.blq()</a></code> </p>
         </td>
         <td><p>Handle BLQ values in the concentration measurements as requested by 
@@ -279,7 +283,7 @@ object).</p></td>
         <td><p>Get the independent variable (right hand side of the formula) from
 a PKNCA object.</p></td>
       </tr><tr><td>
-          <p><code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAdose&gt;</i>)</a></code> </p>
+          <p><code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAconc()</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAdose()</a></code> </p>
         </td>
         <td><p>Get grouping variables for a PKNCA object</p></td>
       </tr><tr><td>
@@ -287,6 +291,10 @@ a PKNCA object.</p></td>
         </td>
         <td><p>Interpolate concentrations between measurements or extrapolate concentrations
 after the last measurement.</p></td>
+      </tr><tr><td>
+          <p><code><a href="interp_extrap_conc_method.html">interpolate_conc_linear()</a></code> <code><a href="interp_extrap_conc_method.html">interpolate_conc_log()</a></code> <code><a href="interp_extrap_conc_method.html">extrapolate_conc_lambdaz()</a></code> </p>
+        </td>
+        <td><p>Interpolate or extrapolate concentrations using the provided method</p></td>
       </tr><tr><td>
           <p><code><a href="model.frame.PKNCAconc.html">model.frame(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="model.frame.PKNCAconc.html">model.frame(<i>&lt;PKNCAdose&gt;</i>)</a></code> </p>
         </td>

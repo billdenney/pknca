@@ -130,6 +130,9 @@
     <loc>http://billdenney.github.io/pknca/reference/choose.auc.intervals.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/choose_interp_extrap_method.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/clean.conc.blq.html</loc>
   </url>
   <url>
@@ -197,6 +200,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/interp.extrap.conc.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/interp_extrap_conc_method.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/model.frame.PKNCAconc.html</loc>

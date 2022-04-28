@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
       </span>
     </div>
 
@@ -116,6 +116,8 @@
 <ul><li>All <code>getData()</code> functions were removed.</li>
 <li>The <code><a href="../reference/getDataName.html">getDataName()</a></code> function for PKNCAdata objects was removed.</li>
 </ul></li>
+<li>
+<code><a href="../reference/interp.extrap.conc.html">interpolate.conc()</a></code> and <code><a href="../reference/interp.extrap.conc.html">interp.extrap.conc()</a></code> now give more errors with missing (NA) input. This should not affect typical NCA (where NA values are dropped), but it may affect direct calls to the functions themselves.</li>
 </ul></div>
 </div>
     <div class="section level2">
