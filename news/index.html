@@ -98,22 +98,18 @@
 <div class="section level3">
 <h3 id="new-features-0-9-6">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-9-6"></a></h3>
 <ul><li>Initial support for unit assignment and conversion has been added. See the <code>units</code> argument to the <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> function and the function <code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code>.</li>
-<li>With the addition of units, several outputs now will differ, if units are used:
-<ul><li>
+<li>With the addition of units, several outputs now will differ, if units are used:<ul><li>
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> on a PKNCAresults object shows the units in the column heading.</li>
 <li>When running <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> on a PKNCAresults object with the argument <code>out.format="wide"</code>, if standardized units values are available, they will be used. And if any unit are available, they will be in the column names.</li>
 </ul></li>
-<li>Summary tables with units use the “pretty_name” for a parameter which is intended for clearer representation in reports. “pretty_name” use can be controlled with the “pretty_names” argument to <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.
-<ul><li>Note that the pretty names themselves may be modified to help clarify and/or shorten the names to make the table heading more useful. If you intend to modify column headers programmatically, set <code>pretty_names=FALSE</code> when calling the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</li>
-</ul></li>
+<li>Summary tables with units use the “pretty_name” for a parameter which is intended for clearer representation in reports. “pretty_name” use can be controlled with the “pretty_names” argument to <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.<ul><li>Note that the pretty names themselves may be modified to help clarify and/or shorten the names to make the table heading more useful. If you intend to modify column headers programmatically, set <code>pretty_names=FALSE</code> when calling the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</li></ul></li>
 <li>
 <code><a href="../reference/pk.calc.time_above.html">pk.calc.time_above()</a></code> now uses the default AUC calculation method for interpolation of time above.</li>
 <li>PKNCA can now calculate parameters that require extra information by adding the extra information to the intervals data.frame. For example, add <code>conc_above</code> as a column to the intervals to allow calculation of <code>time_above</code>. With this change, the “conc_above” <code><a href="../reference/PKNCA.options.html">PKNCA.options()</a></code> value has been removed.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-9-6">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-9-6"></a></h3>
-<ul><li>Some functions that were intended to be internal were removed:
-<ul><li>All <code>getData()</code> functions were removed.</li>
+<ul><li>Some functions that were intended to be internal were removed:<ul><li>All <code>getData()</code> functions were removed.</li>
 <li>The <code><a href="../reference/getDataName.html">getDataName()</a></code> function for PKNCAdata objects was removed.</li>
 </ul></li>
 <li>
@@ -122,9 +118,7 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.5" id="pknca-095">PKNCA 0.9.5<small>2021-10-29</small><a class="anchor" aria-label="anchor" href="#pknca-095"></a></h2>
-<ul><li>The internals of how PKNCA performs calculations had a significant update. The only user-visible change should be that PKNCA does not perform parallel computations as of this version. Parallel computation is planned to return in the near future.
-<ul><li>Breaking change: As part of this change, the split methods for PKNCAconc and PKNCAdose objects were removed along with the merge.splitList function.</li>
-</ul></li>
+<ul><li>The internals of how PKNCA performs calculations had a significant update. The only user-visible change should be that PKNCA does not perform parallel computations as of this version. Parallel computation is planned to return in the near future.<ul><li>Breaking change: As part of this change, the split methods for PKNCAconc and PKNCAdose objects were removed along with the merge.splitList function.</li></ul></li>
 <li>Single-subject (ungrouped) analysis works without creating a dummy group (<a href="https://github.com/billdenney/pknca/issues/74" class="external-link">#74</a>)</li>
 <li>PKNCAconc objects are checked earlier for valid data (<a href="https://github.com/billdenney/pknca/issues/154" class="external-link">#154</a>)</li>
 <li>Add time_above parameter to calculate time above a given concentration.</li>
@@ -139,8 +133,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.3" id="pknca-093">PKNCA 0.9.3<small>2020-04-12</small><a class="anchor" aria-label="anchor" href="#pknca-093"></a></h2>
-<ul><li>Changes required for compatibility dplyr version 1.0. No functionality changed.</li>
-</ul></div>
+<ul><li>Changes required for compatibility dplyr version 1.0. No functionality changed.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.2" id="pknca-092">PKNCA 0.9.2<small>2020-02-28</small><a class="anchor" aria-label="anchor" href="#pknca-092"></a></h2>
 <ul><li>New feature: the <code><a href="../reference/time_calc.html">time_calc()</a></code> function will help convert time values to be relative to events (such as calculating time after and before doses)</li>
@@ -153,8 +146,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.1" id="pknca-091">PKNCA 0.9.1<small>2019-07-29</small><a class="anchor" aria-label="anchor" href="#pknca-091"></a></h2>
-<ul><li>Correct vignette building.</li>
-</ul></div>
+<ul><li>Correct vignette building.</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.0" id="pknca-090">PKNCA 0.9.0<a class="anchor" aria-label="anchor" href="#pknca-090"></a></h2>
 <ul><li>Breaking Change: <code>plot.PKNCAconc()</code> was moved to the pknca.reporting package (<a href="https://github.com/billdenney/pknca.reporting" class="external-link uri">https://github.com/billdenney/pknca.reporting</a>)</li>
@@ -234,16 +226,14 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7" id="pknca-07">PKNCA 0.7<small>2016-04-01</small><a class="anchor" aria-label="anchor" href="#pknca-07"></a></h2>
-<ul><li>Features added
-<ul><li>Additional PK parameters to support IV dosing added</li>
+<ul><li>Features added<ul><li>Additional PK parameters to support IV dosing added</li>
 <li>Fix <a href="https://github.com/billdenney/pknca/issues/11" class="external-link">#11</a>, Intervals can be specified manually, and will apply across appropriate parts of the grouping variables</li>
 <li>Enable dose and dose.time as parameters to NCA calculations</li>
 <li>More NCA parameters are calculated, especially related to IV dosing</li>
 <li>Fix <a href="https://github.com/billdenney/pknca/issues/8" class="external-link">#8</a>, Reporting times for time-based parameters are now within the current interval rather than since first dose (e.g. Tmax on day 14 should be between 0 and 24 not 2<em>7</em>24+c(0, 24))</li>
 <li>Added several vignettes</li>
 </ul></li>
-<li>Bugs fixed
-<ul><li>Dosing without concentration is probably placebo; warn and continue</li>
+<li>Bugs fixed<ul><li>Dosing without concentration is probably placebo; warn and continue</li>
 <li>Fix <a href="https://github.com/billdenney/pknca/issues/6" class="external-link">#6</a>, make merge.splitByData work with more than one dosing level</li>
 <li>Export some generic classes that were not previously exported to simplify their use</li>
 <li>Superposition extensions when lambda.z cannot be calculated</li>
@@ -269,7 +259,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
