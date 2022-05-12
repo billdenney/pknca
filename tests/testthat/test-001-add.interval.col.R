@@ -1,5 +1,3 @@
-context("Interval columns")
-
 # Save the original state
 original_state <- get("interval.cols", envir=PKNCA:::.PKNCAEnv)
 
@@ -108,6 +106,7 @@ test_that("add.interval.col", {
       unit_type="conc",
       pretty_name="a",
       desc="test addition",
+      sparse=FALSE,
       formalsmap=list(),
       depends=NULL,
       datatype="interval"
@@ -125,6 +124,7 @@ test_that("add.interval.col", {
       unit_type="conc",
       pretty_name="a",
       desc="test addition",
+      sparse=FALSE,
       formalsmap=list(),
       depends=NULL,
       datatype="interval"
@@ -142,6 +142,7 @@ test_that("add.interval.col", {
       unit_type="conc",
       pretty_name="a",
       desc="test addition",
+      sparse=FALSE,
       formalsmap=list(x="values"),
       depends=NULL,
       datatype="interval"

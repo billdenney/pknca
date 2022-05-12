@@ -23,6 +23,8 @@ pk.nca.interval(
   route.group = NULL,
   include_half.life = NULL,
   exclude_half.life = NULL,
+  subject,
+  sparse,
   interval,
   options = list()
 )
@@ -64,6 +66,11 @@ If given, no half-life point selection will occur.}
 \item{exclude_half.life}{An optional boolean vector of the
 concentration measurements to exclude from the half-life
 calculation.}
+
+\item{subject}{Subject identifiers (used for sparse calculations)}
+
+\item{sparse}{Should only sparse calculations be performed (TRUE) or only
+dense calculations (FALSE)?}
 
 \item{interval}{One row of an interval definition (see
 \code{\link{check.interval.specification}} for how to define the

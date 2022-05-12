@@ -12,6 +12,7 @@ add.interval.col(
   pretty_name,
   depends = NULL,
   desc = "",
+  sparse = FALSE,
   formalsmap = list(),
   datatype = c("interval", "individual", "population")
 )
@@ -35,6 +36,8 @@ column.}
 
 \item{desc}{A human-readable description of the parameter (<=40 characters to
 comply with SDTM)}
+
+\item{sparse}{Is the calculation for sparse PK?}
 
 \item{formalsmap}{A named list mapping parameter names in the function call
 to NCA parameter names.  See the details for information on use of

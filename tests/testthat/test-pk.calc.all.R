@@ -185,11 +185,11 @@ test_that("verbose pk.nca", {
   )
   expect_message(
     suppressWarnings(pk.nca(mydata, verbose=TRUE)),
-    regexp="Starting NCA calculations."
+    regexp="Starting dense PK NCA calculations."
   )
   expect_message(
     suppressWarnings(pk.nca(mydata, verbose=TRUE)),
-    regexp="Combining completed results."
+    regexp="Combining completed dense PK calculation results."
   )
 })
 
@@ -475,4 +475,33 @@ test_that("Can calculate parameters requiring extra arguments", {
   o_data <- PKNCAdata(o_conc, intervals=d_intervals, options=list(auc.method="linear"))
   o_nca <- suppressMessages(pk.nca(o_data))
   expect_equal(as.data.frame(o_nca)$PPORRES, 2)
+})
+
+test_that("calculate with sparse data", {
+  d_sparse <-
+    data.frame(
+      id = c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 4L, 5L, 6L, 4L, 5L, 6L, 7L, 8L, 9L, 7L, 8L, 9L),
+      conc = c(0, 0, 0,  1.75, 2.2, 1.58, 4.63, 2.99, 1.52, 3.03, 1.98, 2.22, 3.34, 1.3, 1.22, 3.54, 2.84, 2.55, 0.3, 0.0421, 0.231),
+      time = c(0, 0, 0, 1, 1, 1, 6, 6, 6, 2, 2, 2, 10, 10, 10, 4, 4, 4, 24, 24, 24),
+      dose = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100)
+    )
+  o_conc_sparse <- PKNCAconc(d_sparse, conc~time|id, sparse=TRUE)
+  d_intervals <-
+    data.frame(
+      start=0,
+      end=24,
+      aucinf.obs=TRUE,
+      cmax=TRUE,
+      sparse_auclast=TRUE
+    )
+  o_data_sparse <- PKNCAdata(o_conc_sparse, intervals=d_intervals)
+  suppressMessages(
+    expect_warning(
+      o_nca <- pk.nca(o_data_sparse),
+      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+    )
+  )
+  df_result <- as.data.frame(o_nca)
+  expect_true("sparse_auclast" %in% df_result$PPTESTCD)
+  expect_equal(df_result$PPORRES[df_result$PPTESTCD %in% "sparse_auclast"], 39.4689)
 })

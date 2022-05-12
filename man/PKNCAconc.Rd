@@ -23,6 +23,7 @@ PKNCAconc(data, ...)
   volume,
   exclude_half.life,
   include_half.life,
+  sparse = FALSE,
   ...
 )
 }
@@ -71,6 +72,10 @@ name in the dataset of the points to exclude from the half-life calculation
 or to include for the half-life (using specifically those points and
 bypassing automatic curve-stripping point selection).  See the "Half-Life
 Calculation" vignette for more details on the use of these arguments.}
+
+\item{sparse}{Are the concentration-time data sparse PK (commonly used in
+small nonclinical species or with terminal or difficult sampling) or dense
+PK (commonly used in clinical studies or larger nonclinical species)?}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

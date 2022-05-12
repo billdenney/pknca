@@ -20,7 +20,7 @@ extrapolate_conc_lambdaz(clast, lambda.z, tlast, time_out)
 
 \item{time_out}{Time when interpolation is requested}
 
-\item{clast}{The concentration at the last time above the LLOQ}
+\item{clast}{The concentration at the last time above the lower LOQ}
 
 \item{lambda.z}{The elimination rate}
 

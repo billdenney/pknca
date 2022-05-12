@@ -35,27 +35,33 @@
 #'   or to include for the half-life (using specifically those points and
 #'   bypassing automatic curve-stripping point selection).  See the "Half-Life
 #'   Calculation" vignette for more details on the use of these arguments.
+#' @param sparse Are the concentration-time data sparse PK (commonly used in
+#'   small nonclinical species or with terminal or difficult sampling) or dense
+#'   PK (commonly used in clinical studies or larger nonclinical species)?
 #' @param ... Ignored.
 #' @return A PKNCAconc object that can be used for automated NCA.
 #' @family PKNCA objects
 #' @export
-PKNCAconc <- function(data, ...)
+PKNCAconc <- function(data, ...) {
   UseMethod("PKNCAconc")
+}
 
 #' @rdname PKNCAconc
 #' @export
-PKNCAconc.default <- function(data, ...)
+PKNCAconc.default <- function(data, ...) {
   PKNCAconc.data.frame(as.data.frame(data), ...)
+}
 #' @rdname PKNCAconc
 #' @export
-PKNCAconc.tbl_df <- function(data, ...)
+PKNCAconc.tbl_df <- function(data, ...) {
   PKNCAconc.data.frame(as.data.frame(data), ...)
+}
 
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
                                  time.nominal, exclude, duration, volume,
-                                 exclude_half.life, include_half.life, ...) {
+                                 exclude_half.life, include_half.life, sparse=FALSE, ...) {
   # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
@@ -65,10 +71,12 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     stop("All of the variables in the formula must be in the data")
   }
   parsedForm <- parseFormula(formula, require.two.sided=TRUE)
-  if (length(all.vars(parsedForm$lhs)) != 1)
+  if (length(all.vars(parsedForm$lhs)) != 1) {
     stop("The left hand side of the formula must have exactly one variable")
-  if (length(all.vars(parsedForm$rhs)) != 1)
+  }
+  if (length(all.vars(parsedForm$rhs)) != 1) {
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
+  }
   # Do some general checking of the concentration and time data to give an early
   # error if the data are not correct.  Do not check monotonic.time because the
   # data may contain information for more than one subject.
@@ -78,13 +86,15 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     monotonic.time=FALSE
   )
   # Values must be unique (one value per measurement)
-  key.cols <- c(all.vars(parsedForm$rhs),
+  key_cols <- c(all.vars(parsedForm$rhs),
                 all.vars(parsedForm$groupFormula))
-  if (any(mask.dup <- duplicated(data[,key.cols])))
+  mask_dup <- duplicated(data[,key_cols])
+  if (any(mask_dup)) {
     stop("Rows that are not unique per group and time (column names: ",
-         paste(key.cols, collapse=", "),
+         paste(key_cols, collapse=", "),
          ") found within concentration data.  Row numbers: ",
-         paste(seq_along(mask.dup)[mask.dup], collapse=", "))
+         paste(seq_along(mask_dup)[mask_dup], collapse=", "))
+  }
   # Assign the subject
   if (missing(subject)) {
     tmp.groups <- all.vars(parsedForm$groupFormula)
@@ -113,14 +123,26 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     if (!(subject %in% names(data)))
       stop("The subject parameter must map to a name in the data")
   }
-  ret <- list(data=data,
-              formula=formula,
-              subject=subject)
+  if (sparse) {
+    ret <-
+      list(
+        data_sparse=data,
+        formula=formula,
+        subject=subject
+      )
+  } else {
+    ret <-
+      list(
+        data=data,
+        formula=formula,
+        subject=subject
+      )
+  }
   class(ret) <- c("PKNCAconc", class(ret))
   if (missing(exclude)) {
-    ret <- setExcludeColumn(ret)
+    ret <- setExcludeColumn(ret, dataname=getDataName.PKNCAconc(ret))
   } else {
-    ret <- setExcludeColumn(ret, exclude=exclude)
+    ret <- setExcludeColumn(ret, exclude=exclude, dataname=getDataName.PKNCAconc(ret))
   }
   if (missing(volume)) {
     ret <- setAttributeColumn(ret, attr_name="volume", default_value=NA_real_)
@@ -237,14 +259,23 @@ group_vars.PKNCAconc <- function(x) {
 }
 
 #' @rdname getDataName
-getDataName.PKNCAconc <- function(object)
-  "data"
+getDataName.PKNCAconc <- function(object) {
+  if ("data_sparse" %in% names(object)) {
+    "data_sparse"
+  } else {
+    "data"
+  }
+}
 
 setDuration.PKNCAconc <- function(object, duration, ...) {
   if (missing(duration)) {
     object <-
-      setAttributeColumn(object=object, attr_name="duration", default_value=0,
-                         message_if_default="Assuming point rather than interval concentration measurement")
+      setAttributeColumn(
+        object=object,
+        attr_name="duration",
+        default_value=0,
+        message_if_default="Assuming point rather than interval concentration measurement"
+      )
   } else {
     object <-
       setAttributeColumn(object=object, attr_name="duration", col_or_value=duration)
@@ -276,11 +307,21 @@ setDuration.PKNCAconc <- function(object, duration, ...) {
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))
   print(stats::formula(x), ...)
-  if (is.na(x$subject) || (length(x$subject) == 0)) {
+  if ("data_sparse" %in% names(x)) {
+    data_current <- x$data_sparse
+    is_sparse <- TRUE
+    cat("Data are sparse PK.\n")
+  } else {
+    data_current <- x$data
+    is_sparse <- FALSE
+    cat("Data are dense PK.\n")
+  }
+  single_subject <- is.na(x$subject) || (length(x$subject) == 0)
+  if (single_subject) {
     cat("As a single-subject dataset.\n")
   } else {
     cat(sprintf("With %d subjects defined in the '%s' column.\n",
-                length(unique(x$data[,x$subject])),
+                length(unique(data_current[,x$subject])),
                 x$subject))
   }
   if ("time.nominal" %in% names(x)) {
@@ -305,16 +346,16 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
     }
   }
   if (n != 0) {
-    if (n >= nrow(x$data)) {
+    if (n >= nrow(data_current)) {
       cat("\nData for concentration:\n")
     } else if (n < 0) {
       cat(sprintf("\nFirst %d rows of concentration data:\n",
-                  nrow(x$data)+n))
+                  nrow(data_current)+n))
     } else {
       cat(sprintf("\nFirst %d rows of concentration data:\n",
                   n))
     }
-    print.data.frame(utils::head(x$data, n=n), ..., row.names=FALSE)
+    print.data.frame(utils::head(data_current, n=n), ..., row.names=FALSE)
   }
 }
 
@@ -326,5 +367,9 @@ summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...) {
 
 #' @export
 as.data.frame.PKNCAconc <- function(x, ...) {
-  x$data
+  if ("data_sparse" %in% names(x)) {
+    x$data_sparse
+  } else {
+    x$data
+  }
 }

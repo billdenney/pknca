@@ -9,8 +9,10 @@ AUMCall
 AUMCinf
 AUMClast
 Analyte
+BIP
 BLQ
 Biometrics
+Biopharmaceutical
 CDISC
 CII
 Cav
@@ -24,6 +26,8 @@ Durations
 Gabrielsson
 Hadley
 ISSN
+Jia
+Jia's
 Kel
 Kirkwood
 LLOQ
@@ -33,6 +37,7 @@ Maes
 Maganti
 Metrum
 NCA
+Nedelman
 Noncompartmental
 PKNCAconc
 PKNCAdata
@@ -47,6 +52,7 @@ Pharmacodynamics
 Pharmacokinetic
 Pharmacokinetics
 SDTM
+Satterthwaite's
 Semilog
 Summarization
 Theophylline
@@ -144,6 +150,7 @@ tss
 unforseen
 ungrouped
 unitless
+unnested
 unreportable
 vd
 vss
