@@ -100,6 +100,37 @@ prepare_PKNCA_general <- function(.dat, cols, exclude, group_cols, data_name, in
   ret
 }
 
+prepare_PKNCAconc_dense <- function(.dat, needed_cols, group_cols_selected) {
+  ret <-
+    prepare_PKNCA_general(
+      .dat=.dat$data,
+      exclude=.dat$exclude,
+      cols=needed_cols,
+      data_name="data_conc",
+      group_cols=group_cols_selected
+    )
+  ret
+}
+
+prepare_PKNCAconc_sparse <- function(.dat, needed_cols, group_cols_selected) {
+  needed_cols$subject <- .dat$subject
+  ret <-
+    prepare_PKNCA_general(
+      .dat=.dat$data_sparse,
+      exclude=.dat$exclude,
+      cols=needed_cols,
+      data_name="data_sparse_conc",
+      group_cols=setdiff(group_cols_selected, .dat$subject)
+    )
+  # Generate the mean profile for non-sparse parameters
+  ret$data_conc <-
+    ret$data_sparse_conc %>%
+    lapply(FUN=as_sparse_pk) %>%
+    lapply(FUN=sparse_mean) %>%
+    lapply(FUN=sparse_to_dense_pk)
+  ret
+}
+
 prepare_PKNCAconc <- function(.dat) {
   # Remove rows to be excluded from all calculations
   # Drop unnecessary column names
@@ -113,14 +144,25 @@ prepare_PKNCAconc <- function(.dat) {
       include_half.life=.dat$columns$include_half.life,
       exclude_half.life=.dat$columns$exclude_half.life
     )
-  ret <-
-    prepare_PKNCA_general(
-      .dat=.dat$data,
-      exclude=.dat$exclude,
-      cols=needed_cols,
-      data_name="data_conc",
-      group_cols=all.vars(pformula_conc$groups)
-    )
+  data_name <- getDataName(.dat)
+  group_cols_selected <- all.vars(pformula_conc$groups)
+  if (data_name == "data_sparse") {
+    ret <-
+      prepare_PKNCAconc_sparse(
+        .dat=.dat,
+        needed_cols=needed_cols,
+        group_cols_selected=group_cols_selected
+      )
+  } else if (data_name == "data") {
+    ret <-
+      prepare_PKNCAconc_dense(
+        .dat=.dat,
+        needed_cols=needed_cols,
+        group_cols_selected=group_cols_selected
+      )
+  } else {
+    stop("Please report this as a bug: Invalid data_name") # nocov
+  }
   ret
 }
 

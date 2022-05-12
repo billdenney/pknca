@@ -14,6 +14,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #'   column.
 #' @param desc A human-readable description of the parameter (<=40 characters to
 #'   comply with SDTM)
+#' @param sparse Is the calculation for sparse PK?
 #' @param unit_type The type of units to use for assigning and converting units.
 #' @param pretty_name The name of the parameter to use for printing in summary
 #'   tables with units.  (If an analysis does not include units, then the normal
@@ -87,6 +88,7 @@ add.interval.col <- function(name,
                              pretty_name,
                              depends=NULL,
                              desc="",
+                             sparse=FALSE,
                              formalsmap=list(),
                              datatype=c("interval",
                                "individual",
@@ -102,6 +104,7 @@ add.interval.col <- function(name,
   } else if (!(is.character(FUN) | is.na(FUN))) {
     stop("FUN must be a character string or NA")
   }
+  checkmate::expect_logical(sparse, any.missing=FALSE, len=1)
   unit_type <-
     match.arg(
       unit_type,
@@ -160,6 +163,7 @@ add.interval.col <- function(name,
       unit_type=unit_type,
       pretty_name=pretty_name,
       desc=desc,
+      sparse=sparse,
       formalsmap=formalsmap,
       depends=depends,
       datatype=datatype

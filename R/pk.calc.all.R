@@ -35,9 +35,15 @@ pk.nca <- function(data, verbose=FALSE) {
     tmp.opt[names(data$options)] <- data$options
     data$options <- tmp.opt
     splitdata <- full_join_PKNCAdata(data)
+    group_info <-
+      splitdata[
+        ,
+        setdiff(names(splitdata), c("data_conc", "data_sparse_conc", "data_dose", "data_intervals")),
+        drop=FALSE
+      ]
     # Calculate the results
-    if (verbose) message("Starting NCA calculations.")
-    tmp_results <-
+    if (verbose) message("Starting dense PK NCA calculations.")
+    results_dense <-
       purrr::pmap(
         .l=list(
           data_conc=splitdata$data_conc,
@@ -46,51 +52,31 @@ pk.nca <- function(data, verbose=FALSE) {
         ),
         .f=pk.nca.intervals,
         options=data$options,
-        verbose=verbose
+        verbose=verbose,
+        sparse=FALSE
       )
-    if (verbose) message("Combining completed results.")
-    ret_prep <-
-      splitdata[
-        ,
-        setdiff(names(splitdata), c("data_conc", "data_dose", "data_intervals")),
-        drop=FALSE
-      ]
-    ret_prep$data_result <- tmp_results
-    # Gather, report, and remove warnings
-    mask_warning <- sapply(X=ret_prep$data_result, inherits, what="warning")
-    ret_warnings <- ret_prep[mask_warning, ]
-    if (nrow(ret_warnings) > 0) {
-      group_names <- setdiff(names(ret_warnings), "data_result")
-      # Tell the user where the warning comes from
-      warning_preamble <-
-        do.call(
-          what=paste,
-          args=
-            append(
-              lapply(
-                X=group_names,
-                FUN=function(x) paste(x, ret_warnings[[x]], sep="=")
-              ),
-              list(sep="; ")
-            )
+    if (verbose) message("Combining completed dense PK calculation results.")
+    results <- pk_nca_result_to_df(group_info, results_dense)
+    if ("data_sparse_conc" %in% names(splitdata)) {
+      if (verbose) message("Starting sparse PK NCA calculations.")
+      results_sparse <-
+        purrr::pmap(
+          .l=list(
+            data_conc=splitdata$data_sparse_conc,
+            data_dose=splitdata$data_dose,
+            data_intervals=splitdata$data_intervals
+          ),
+          .f=pk.nca.intervals,
+          options=data$options,
+          verbose=verbose,
+          sparse=TRUE
         )
-      invisible(lapply(
-        X=seq_along(warning_preamble),
-        FUN=function(idx) {
-          warning_prep <- ret_warnings$data_result[[idx]]
-          warning_prep$message <- paste(warning_preamble[idx], warning_prep$message, sep=": ")
-          warning(warning_prep)
-        }
-      ))
-    }
-    ret_nowarning <- ret_prep[!mask_warning, ]
-    # Generate the outputs
-    if (nrow(ret_nowarning) == 0) {
-      warning("All results generated warnings or errors; no results generated")
-      results <- data.frame()
-    } else {
-      results <- tidyr::unnest(ret_nowarning, cols="data_result")
-      rownames(results) <- NULL
+      if (verbose) message("Combining completed sparse PK calculation results.")
+      results <-
+        dplyr::bind_rows(
+          results,
+          pk_nca_result_to_df(group_info, results_sparse)
+        )
     }
   }
   PKNCAresults(
@@ -98,6 +84,70 @@ pk.nca <- function(data, verbose=FALSE) {
     data=data,
     exclude="exclude"
   )
+}
+
+#' Convert the grouping info and list of results for each group into a results
+#' data.frame
+#' 
+#' @param group_info A data.frame of grouping columns
+#' @param result A list of data.frames with the results from NCA parameter
+#'   calculations
+#' @return A data.frame with group_info and result combined, warnings filtered
+#'   out, and results unnested.
+#' @keywords Internal
+pk_nca_result_to_df <- function(group_info, result) {
+  ret <- group_info
+  ret$data_result <- result
+  # Gather, report, and remove warnings
+  mask_warning <- sapply(X=ret$data_result, inherits, what="warning")
+  ret_warnings <- ret[mask_warning, ]
+  if (nrow(ret_warnings) > 0) {
+    group_names <- setdiff(names(ret_warnings), "data_result")
+    # Tell the user where the warning comes from
+    warning_preamble <-
+      do.call(
+        what=paste,
+        args=
+          append(
+            lapply(
+              X=group_names,
+              FUN=function(x) paste(x, ret_warnings[[x]], sep="=")
+            ),
+            list(sep="; ")
+          )
+      )
+    invisible(lapply(
+      X=seq_along(warning_preamble),
+      FUN=function(idx) {
+        warning_prep <- ret_warnings$data_result[[idx]]
+        warning_prep$message <- paste(warning_preamble[idx], warning_prep$message, sep=": ")
+        warning(warning_prep)
+      }
+    ))
+  }
+  ret_nowarning <- ret[!mask_warning, ]
+  # Generate the outputs
+  if (nrow(ret_nowarning) == 0) {
+    warning("All results generated warnings or errors; no results generated")
+    results <- data.frame()
+  } else {
+    results <- tidyr::unnest(ret_nowarning, cols="data_result")
+    rownames(results) <- NULL
+  }
+  results
+}
+
+filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE) {
+  mask_na <- include_na & is.na(data$time)
+  mask_keep_start <- start <= data$time
+  mask_keep_end <-
+    if (include_end) {
+      data$time <= end
+    } else {
+      data$time < end
+    }
+  mask_time <- mask_keep_start & mask_keep_end
+  data[mask_na | mask_time, ]
 }
 
 # Subset data down to just the times of interest and then pass it
@@ -114,9 +164,10 @@ pk.nca <- function(data, verbose=FALSE) {
 #'   as output from \code{prepare_PKNCAintervals()}
 #' @inheritParams PKNCAdata
 #' @inheritParams pk.nca
+#' @inheritParams pk.nca.interval
 #' @return A data.frame with all NCA results
 #' @importFrom rlang warning_cnd
-pk.nca.intervals <- function(data_conc, data_dose, data_intervals,
+pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
                              options, verbose=FALSE) {
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
     # No concentration data; potentially placebo data
@@ -128,28 +179,22 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals,
   ret <- data.frame()
   for (i in seq_len(nrow(data_intervals))) {
     # Choose only times between the start and end.
-    mask.keep.conc <-
-      (
-        data_intervals$start[i] <= data_conc$time &
-          data_conc$time <= data_intervals$end[i]
-      )
-    conc_data_interval <- data_conc[mask.keep.conc,]
+    conc_data_interval <- filter_interval(data_conc, start=data_intervals$start[i], end=data_intervals$end[i])
+    # Sort the data in time order
+    conc_data_interval <- conc_data_interval[order(conc_data_interval$time),]
     NA_data_dose_ <- data.frame(dose=NA_real_, time=NA_real_, duration=NA_real_, route=NA_real_)
     if (is.null(data_dose) || identical(data_dose, NA)) {
       data_dose <- dose_data_interval <- NA_data_dose_
     } else {
-      mask.keep.dose <-
-        (
-          is.na(data_dose$time) |
-            # <= so that a dose at the start of an interval is included
-            (data_intervals$start[i] <= data_dose$time &
-               # < so that a dose at the end of an interval is not included
-               data_dose$time < data_intervals$end[i])
+      # include_end=FALSE so that a dose at the end of an interval is not included
+      dose_data_interval <-
+        filter_interval(
+          data_dose,
+          start=data_intervals$start[i],
+          end=data_intervals$end[i],
+          include_na=TRUE, include_end=FALSE
         )
-      dose_data_interval <- data_dose[mask.keep.dose,]
     }
-    # Sort the data in time order
-    conc_data_interval <- conc_data_interval[order(conc_data_interval$time),]
     if (nrow(dose_data_interval) > 0) {
       dose_data_interval <- dose_data_interval[order(dose_data_interval$time),]
     } else {
@@ -188,8 +233,12 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals,
         duration.dose.group=data_dose$duration,
         route.group=data_dose$route,
         # Generic data
+        sparse=sparse,
         interval=data_intervals[i, , drop=FALSE],
         options=options)
+      if ("subject" %in% names(conc_data_interval)) {
+        args$subject <- conc_data_interval$subject
+      }
       if ("include_half.life" %in% names(conc_data_interval)) {
         args$include_half.life <- conc_data_interval$include_half.life
       }
@@ -257,6 +306,9 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals,
 #' @param exclude_half.life An optional boolean vector of the
 #'   concentration measurements to exclude from the half-life
 #'   calculation.
+#' @param subject Subject identifiers (used for sparse calculations)
+#' @param sparse Should only sparse calculations be performed (TRUE) or only
+#'   dense calculations (FALSE)?
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @return A data frame with the start and end time along with all PK
@@ -270,7 +322,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                             conc.group=NULL, time.group=NULL, volume.group=NULL, duration.conc.group=NULL,
                             dose.group=NULL, time.dose.group=NULL, duration.dose.group=NULL, route.group=NULL,
                             include_half.life=NULL, exclude_half.life=NULL,
-                            interval, options=list()) {
+                            subject, sparse, interval, options=list()) {
   if (!is.data.frame(interval)) {
     stop("Please report a bug.  Interval must be a data.frame")
   }
@@ -302,8 +354,11 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   # Check if units will be used
   uses_units <- inherits(time, "units")
   # Do the calculations
-  for (n in names(all_intervals))
-    if (as.logical(interval[[n]][[1]]) & !is.na(all_intervals[[n]]$FUN)) {
+  for (n in names(all_intervals)) {
+    request_to_calculate <- as.logical(interval[[n]][[1]])
+    has_calculation_function <- !is.na(all_intervals[[n]]$FUN)
+    is_correct_sparse_dense <- all_intervals[[n]]$sparse == sparse
+    if (request_to_calculate & has_calculation_function & is_correct_sparse_dense) {
       call_args <- list()
       exclude_from_argument <- character(0)
       # Prepare to call the function by setting up its arguments.
@@ -357,6 +412,8 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
           call_args[[arg_formal]] <- duration.dose.group
         } else if (arg_mapped == "route.group") {
           call_args[[arg_formal]] <- route.group
+        } else if (arg_mapped == "subject") {
+          call_args[[arg_formal]] <- subject
         } else if (arg_mapped %in% c("start", "end")) {
           # Provide the start and end of the interval if they are requested
           call_args[[arg_formal]] <- interval[[arg_mapped]]
@@ -427,8 +484,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         #   }
         # }
         tmp_testcd <- names(tmp_result)
-        # I() due to https://github.com/r-quantities/units/issues/309
-        tmp_result <- I(unlist(tmp_result, use.names=FALSE, recursive=FALSE))
+        tmp_result <- unlist(tmp_result, use.names=FALSE, recursive=FALSE)
       } else {
         # if (uses_units) {
         #   if (inherits(tmp_result, "units")) {
@@ -451,5 +507,6 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         )
       ret <- rbind(ret, single_result)
     }
+  }
   ret
 }

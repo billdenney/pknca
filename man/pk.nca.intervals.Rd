@@ -8,6 +8,7 @@ pk.nca.intervals(
   data_conc,
   data_dose,
   data_intervals,
+  sparse,
   options,
   verbose = FALSE
 )
@@ -21,6 +22,9 @@ output from \code{prepare_PKNCAdose()}}
 
 \item{data_intervals}{A data.frame or tibble with standardized column names
 as output from \code{prepare_PKNCAintervals()}}
+
+\item{sparse}{Should only sparse calculations be performed (TRUE) or only
+dense calculations (FALSE)?}
 
 \item{options}{List of changes to the default 
 \code{\link{PKNCA.options}} for calculations.}
