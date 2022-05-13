@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -103,6 +103,7 @@
   <span class="va">data_conc</span>,
   <span class="va">data_dose</span>,
   <span class="va">data_intervals</span>,
+  <span class="va">sparse</span>,
   <span class="va">options</span>,
   verbose <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
@@ -119,6 +120,9 @@ output from <code>prepare_PKNCAdose()</code></p></dd>
 <dt>data_intervals</dt>
 <dd><p>A data.frame or tibble with standardized column names
 as output from <code>prepare_PKNCAintervals()</code></p></dd>
+<dt>sparse</dt>
+<dd><p>Should only sparse calculations be performed (TRUE) or only
+dense calculations (FALSE)?</p></dd>
 <dt>options</dt>
 <dd><p>List of changes to the default 
 <code><a href="PKNCA.options.html">PKNCA.options</a></code> for calculations.</p></dd>

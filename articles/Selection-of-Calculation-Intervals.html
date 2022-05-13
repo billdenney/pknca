@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -132,6 +132,7 @@
 <p>As a concrete example, consider the figure below shows the concentration-time profile of a study subject in a multiple-dose study. The group is all points in the figure, and the interval for the last day (144 to 168 hr) is the area with blue shading.</p>
 <pre><code><span class="co">## Formula for concentration:</span>
 <span class="co">##  conc ~ time | treatment + ID</span>
+<span class="co">## Data are dense PK.</span>
 <span class="co">## With 1 subjects defined in the 'ID' column.</span>
 <span class="co">## Nominal time column is not specified.</span>
 <span class="co">## </span>
@@ -174,6 +175,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">d_conc</span>, intervals<span class="op">=</span><span class="va">intervals_manual</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## Formula for concentration:</span>
 <span class="co">##  conc ~ time | treatment + ID</span>
+<span class="co">## Data are dense PK.</span>
 <span class="co">## With 1 subjects defined in the 'ID' column.</span>
 <span class="co">## Nominal time column is not specified.</span>
 <span class="co">## </span>
@@ -254,6 +256,7 @@
 <p>The end of an interval may be infinity. An interval to infinity works the same as any other interval in that points are selected by being at or after the <code>start</code> and at or before the <code>end</code> of the interval. Selecting <code>Inf</code> or any value at or after the maximum time yields no difference in effect, but <code>Inf</code> is simpler when scripting to ensure that all points are selected.</p>
 <pre><code><span class="co">## Formula for concentration:</span>
 <span class="co">##  conc ~ time | treatment + ID</span>
+<span class="co">## Data are dense PK.</span>
 <span class="co">## With 1 subjects defined in the 'ID' column.</span>
 <span class="co">## Nominal time column is not specified.</span>
 <span class="co">## </span>
@@ -297,6 +300,7 @@
 <p>More than one interval may be specified for the same subject or group of subjects by providing more than one row of interval specifications. In the figure below, the blue and green shaded regions indicate the first and second rows of the intervals, respectively.</p>
 <pre><code><span class="co">## Formula for concentration:</span>
 <span class="co">##  conc ~ time | treatment + ID</span>
+<span class="co">## Data are dense PK.</span>
 <span class="co">## With 1 subjects defined in the 'ID' column.</span>
 <span class="co">## Nominal time column is not specified.</span>
 <span class="co">## </span>
@@ -361,6 +365,7 @@
 <p>The example of overlapping intervals also illustrates that different calculations can be performed in different intervals. In this case, <code>auclast</code> is calculated in both intervals while <code>aucinf.obs</code> is only calculated in the 0-Inf interval.</p>
 <pre><code><span class="co">## Formula for concentration:</span>
 <span class="co">##  conc ~ time | treatment + ID</span>
+<span class="co">## Data are dense PK.</span>
 <span class="co">## With 1 subjects defined in the 'ID' column.</span>
 <span class="co">## Nominal time column is not specified.</span>
 <span class="co">## </span>
@@ -887,150 +892,156 @@
 <td align="left">See the parameter name half.life</td>
 </tr>
 <tr class="even">
+<td align="left">sparse_auclast</td>
+<td align="left">auc</td>
+<td align="left">For sparse PK sampling, the area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification</td>
+<td align="left">pk.calc.sparse_auclast</td>
+</tr>
+<tr class="odd">
 <td align="left">start</td>
 <td align="left">time</td>
 <td align="left">Starting time of the interval</td>
 <td align="left">(none)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">swing</td>
 <td align="left">%</td>
 <td align="left">Swing relative to Cmin</td>
 <td align="left">pk.calc.swing</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">tfirst</td>
 <td align="left">time</td>
 <td align="left">Time of the first concentration above the limit of quantification</td>
 <td align="left">pk.calc.tfirst</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">thalf.eff.iv.last</td>
 <td align="left">time</td>
 <td align="left">The effective half-life (as determined from the intravenous MRTlast)</td>
 <td align="left">pk.calc.thalf.eff</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">thalf.eff.iv.obs</td>
 <td align="left">time</td>
 <td align="left">The effective half-life (as determined from the intravenous MRTobs)</td>
 <td align="left">pk.calc.thalf.eff</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">thalf.eff.iv.pred</td>
 <td align="left">time</td>
 <td align="left">The effective half-life (as determined from the intravenous MRTpred)</td>
 <td align="left">pk.calc.thalf.eff</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">thalf.eff.last</td>
 <td align="left">time</td>
 <td align="left">The effective half-life (as determined from the MRTlast)</td>
 <td align="left">pk.calc.thalf.eff</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">thalf.eff.obs</td>
 <td align="left">time</td>
 <td align="left">The effective half-life (as determined from the MRTobs)</td>
 <td align="left">pk.calc.thalf.eff</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">thalf.eff.pred</td>
 <td align="left">time</td>
 <td align="left">The effective half-life (as determined from the MRTpred)</td>
 <td align="left">pk.calc.thalf.eff</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">time_above</td>
 <td align="left">time</td>
 <td align="left">Time above a given concentration</td>
 <td align="left">pk.calc.time_above</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">tlag</td>
 <td align="left">time</td>
 <td align="left">Lag time</td>
 <td align="left">pk.calc.tlag</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">tlast</td>
 <td align="left">time</td>
 <td align="left">Time of the last concentration observed above the limit of quantification</td>
 <td align="left">pk.calc.tlast</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">tmax</td>
 <td align="left">time</td>
 <td align="left">Time of the maximum observed concentration</td>
 <td align="left">pk.calc.tmax</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">vd.obs</td>
 <td align="left">volume</td>
 <td align="left">Apparent observed volume of distribution calculated with observed Clast</td>
 <td align="left">pk.calc.vd</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">vd.pred</td>
 <td align="left">volume</td>
 <td align="left">Apparent observed volume of distribution calculated with predicted Clast</td>
 <td align="left">pk.calc.vd</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">vss.iv.last</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution with intravenous infusion calculating through Tlast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">vss.iv.obs</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution with intravenous infusion using observed Clast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">vss.iv.pred</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution with intravenous infusion using predicted Clast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">vss.last</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution calculating through Tlast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">vss.md.obs</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution for nonlinear multiple-dose data using observed Clast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">vss.md.pred</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution for nonlinear multiple-dose data using predicted Clast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">vss.obs</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution using observed Clast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">vss.pred</td>
 <td align="left">volume</td>
 <td align="left">The steady-state volume of distribution using predicted Clast</td>
 <td align="left">pk.calc.vss</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">vz.obs</td>
 <td align="left">volume</td>
 <td align="left">The terminal volume of distribution using observed Clast</td>
 <td align="left">pk.calc.vz</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">vz.pred</td>
 <td align="left">volume</td>
 <td align="left">The terminal volume of distribution using predicted Clast</td>

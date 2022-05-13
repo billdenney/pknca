@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -151,10 +151,18 @@ provenance.</p></td>
         </td>
         <td><p>Calculate the adjusted r-squared value</p></td>
       </tr><tr><td>
+          <p><code><a href="any_sparse_dense_in_interval.html">any_sparse_dense_in_interval()</a></code> </p>
+        </td>
+        <td><p>Determine if there are any sparse or dense calculations requested within an interval</p></td>
+      </tr><tr><td>
           <p><code><a href="as.data.frame.PKNCAresults.html">as.data.frame(<i>&lt;PKNCAresults&gt;</i>)</a></code> </p>
         </td>
         <td><p>Extract the parameter results from a PKNCAresults and return them
 as a data frame.</p></td>
+      </tr><tr><td>
+          <p><code><a href="as_sparse_pk.html">as_sparse_pk()</a></code> </p>
+        </td>
+        <td><p>Generate a sparse_pk object</p></td>
       </tr><tr><td>
           <p><code><a href="business.mean.html">business.mean()</a></code> <code><a href="business.mean.html">business.sd()</a></code> <code><a href="business.mean.html">business.cv()</a></code> <code><a href="business.mean.html">business.geomean()</a></code> <code><a href="business.mean.html">business.geocv()</a></code> <code><a href="business.mean.html">business.min()</a></code> <code><a href="business.mean.html">business.max()</a></code> <code><a href="business.mean.html">business.median()</a></code> <code><a href="business.mean.html">business.range()</a></code> </p>
         </td>
@@ -201,6 +209,10 @@ the user.</p></td>
         </td>
         <td><p>Handle NA values in the concentration measurements as requested by 
 the user.</p></td>
+      </tr><tr><td>
+          <p><code><a href="cov_holder.html">cov_holder()</a></code> </p>
+        </td>
+        <td><p>Calculate the covariance for two time points with sparse sampling</p></td>
       </tr><tr><td>
           <p><code><a href="exclude.html">exclude()</a></code> </p>
         </td>
@@ -283,7 +295,7 @@ object).</p></td>
         <td><p>Get the independent variable (right hand side of the formula) from
 a PKNCA object.</p></td>
       </tr><tr><td>
-          <p><code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAconc()</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAdose()</a></code> </p>
+          <p><code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAdose&gt;</i>)</a></code> </p>
         </td>
         <td><p>Get grouping variables for a PKNCA object</p></td>
       </tr><tr><td>
@@ -404,6 +416,10 @@ kinetics.</p></td>
         </td>
         <td><p>Determine the peak-to-trough ratio</p></td>
       </tr><tr><td>
+          <p><code><a href="pk.calc.sparse_auc.html">pk.calc.sparse_auc()</a></code> <code><a href="pk.calc.sparse_auc.html">pk.calc.sparse_auclast()</a></code> </p>
+        </td>
+        <td><p>Calculate AUC and related parameters using sparse NCA methods</p></td>
+      </tr><tr><td>
           <p><code><a href="pk.calc.swing.html">pk.calc.swing()</a></code> </p>
         </td>
         <td><p>Determine the PK swing</p></td>
@@ -485,6 +501,11 @@ monoexponential time to steady-state.</p></td>
         <td><p>Compute the time to steady state using stepwise test of linear
 trend</p></td>
       </tr><tr><td>
+          <p><code><a href="pk_nca_result_to_df.html">pk_nca_result_to_df()</a></code> </p>
+        </td>
+        <td><p>Convert the grouping info and list of results for each group into a results
+data.frame</p></td>
+      </tr><tr><td>
           <p><code><a href="pknca_find_units_param.html">pknca_find_units_param()</a></code> </p>
         </td>
         <td><p>Find NCA parameters with a given unit type</p></td>
@@ -553,6 +574,24 @@ zeros, if applicable.</p></td>
         </td>
         <td><p>Sort the interval columns by dependencies.</p></td>
       </tr><tr><td>
+          <p><code><a href="sparse_auc_weight_linear.html">sparse_auc_weight_linear()</a></code> </p>
+        </td>
+        <td><p>Calculate the weight for sparse AUC calculation with the linear-trapezoidal
+rule</p></td>
+      </tr><tr><td>
+          <p><code><a href="sparse_mean.html">sparse_mean()</a></code> </p>
+        </td>
+        <td><p>Calculate the mean concentration at all time points for use in sparse NCA
+calculations</p></td>
+      </tr><tr><td>
+          <p><code><a href="sparse_pk_attribute.html">sparse_pk_attribute()</a></code> </p>
+        </td>
+        <td><p>Set or get a sparse_pk object attribute</p></td>
+      </tr><tr><td>
+          <p><code><a href="sparse_to_dense_pk.html">sparse_to_dense_pk()</a></code> </p>
+        </td>
+        <td><p>Extract the mean concentration-time profile as a data.frame</p></td>
+      </tr><tr><td>
           <p><code><a href="summary.PKNCAdata.html">summary(<i>&lt;PKNCAdata&gt;</i>)</a></code> </p>
         </td>
         <td><p>Summarize a PKNCAdata object showing important details about the
@@ -574,6 +613,10 @@ concentration, dosing, and interval information.</p></td>
         </td>
         <td><p>A helper function to generate the formula and starting values for
 the parameters in monoexponential models.</p></td>
+      </tr><tr><td>
+          <p><code><a href="var_sparse_auc.html">var_sparse_auc()</a></code> </p>
+        </td>
+        <td><p>Calculate the variance for the AUC of sparsely sampled PK</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

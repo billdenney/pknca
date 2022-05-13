@@ -20,7 +20,7 @@ function is the concentration and time."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -124,6 +124,8 @@ function is the <code>conc</code>entration and <code>time</code>.</p>
   route.group <span class="op">=</span> <span class="cn">NULL</span>,
   include_half.life <span class="op">=</span> <span class="cn">NULL</span>,
   exclude_half.life <span class="op">=</span> <span class="cn">NULL</span>,
+  <span class="va">subject</span>,
+  <span class="va">sparse</span>,
   <span class="va">interval</span>,
   options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
@@ -168,6 +170,11 @@ If given, no half-life point selection will occur.</p></dd>
 <dd><p>An optional boolean vector of the
 concentration measurements to exclude from the half-life
 calculation.</p></dd>
+<dt>subject</dt>
+<dd><p>Subject identifiers (used for sparse calculations)</p></dd>
+<dt>sparse</dt>
+<dd><p>Should only sparse calculations be performed (TRUE) or only
+dense calculations (FALSE)?</p></dd>
 <dt>interval</dt>
 <dd><p>One row of an interval definition (see
 <code><a href="check.interval.specification.html">check.interval.specification</a></code> for how to define the

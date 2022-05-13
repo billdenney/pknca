@@ -106,7 +106,13 @@
     <loc>http://billdenney.github.io/pknca/reference/adj.r.squared.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/any_sparse_dense_in_interval.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/as.data.frame.PKNCAresults.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/as_sparse_pk.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/business.mean.html</loc>
@@ -137,6 +143,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/clean.conc.na.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/cov_holder.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/exclude.html</loc>
@@ -280,6 +289,9 @@
     <loc>http://billdenney.github.io/pknca/reference/pk.calc.ptr.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/pk.calc.sparse_auc.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/pk.calc.swing.html</loc>
   </url>
   <url>
@@ -334,6 +346,9 @@
     <loc>http://billdenney.github.io/pknca/reference/pk.tss.stepwise.linear.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/pk_nca_result_to_df.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/pknca_find_units_param.html</loc>
   </url>
   <url>
@@ -385,6 +400,18 @@
     <loc>http://billdenney.github.io/pknca/reference/sort.interval.cols.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/sparse_auc_weight_linear.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/sparse_mean.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/sparse_pk_attribute.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/sparse_to_dense_pk.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/summary.PKNCAdata.html</loc>
   </url>
   <url>
@@ -398,5 +425,8 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/tss.monoexponential.generate.formula.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/var_sparse_auc.html</loc>
   </url>
 </urlset>

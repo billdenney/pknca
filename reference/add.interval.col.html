@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -107,6 +107,7 @@
   <span class="va">pretty_name</span>,
   depends <span class="op">=</span> <span class="cn">NULL</span>,
   desc <span class="op">=</span> <span class="st">""</span>,
+  sparse <span class="op">=</span> <span class="cn">FALSE</span>,
   formalsmap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
   datatype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"individual"</span>, <span class="st">"population"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
@@ -133,6 +134,8 @@ column.</p></dd>
 <dt>desc</dt>
 <dd><p>A human-readable description of the parameter (&lt;=40 characters to
 comply with SDTM)</p></dd>
+<dt>sparse</dt>
+<dd><p>Is the calculation for sparse PK?</p></dd>
 <dt>formalsmap</dt>
 <dd><p>A named list mapping parameter names in the function call
 to NCA parameter names.  See the details for information on use of

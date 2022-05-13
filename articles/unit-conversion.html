@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@
 <span class="co">#&gt; 42         ng/mL     cmax</span>
 <span class="co">#&gt; 66    mg/(ng/mL)   vd.obs</span>
 <span class="co">#&gt; 68      hr*ng/mL  auclast</span>
-<span class="co">#&gt; 94 mg/(hr*ng/mL)   cl.obs</span></code></pre></div>
+<span class="co">#&gt; 95 mg/(hr*ng/mL)   cl.obs</span></code></pre></div>
 <p>As you see above, the default units table has a column for the <code>PPTESTCD</code> indicating the parameter. And, the column <code>PPORRESU</code> indicates what the default units are.</p>
 <p>Without unit conversion, the units for some parameters (notably clearances and volumes) are not so useful. You can add a conversion table to make any units into the desired units. For automatic conversion to work, the units must always be convertible (by the <code>units</code> library). Notably for automatic conversion, you cannot go from mass to molar units since there is not a unique conversion from mass to moles.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -165,7 +165,7 @@
 <span class="co">#&gt; 42         ng/mL     cmax    ng/mL      1.000000e+00</span>
 <span class="co">#&gt; 66    mg/(ng/mL)   vd.obs        L      1.000000e+03</span>
 <span class="co">#&gt; 68      hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span>
-<span class="co">#&gt; 94 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></code></pre></div>
+<span class="co">#&gt; 95 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></code></pre></div>
 <p>Now, the units are much cleaner to look at.</p>
 <p>To do a conversion that is not possible directly with the <code>units</code> library, you can add the conversion factor manually by adding the <code>conversion_factor</code> column. You can mix-and-match manual and automatic modification by setting the <code>conversion_factor</code> column to <code>NA</code> when you want automatic conversion. In the example below, we convert concentration units to molar. Note that AUC units are not set to molar because we did not specify that conversion; all conversions must be specified.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -186,7 +186,7 @@
 <span class="co">#&gt; 42         ng/mL     cmax   nmol/L      8.130081e+00</span>
 <span class="co">#&gt; 66    mg/(ng/mL)   vd.obs        L      1.000000e+03</span>
 <span class="co">#&gt; 68      hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span>
-<span class="co">#&gt; 94 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></code></pre></div>
+<span class="co">#&gt; 95 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-basic-steps-to-add-units-to-an-nca-analysis">The Basic Steps to Add Units to an NCA Analysis<a class="anchor" aria-label="anchor" href="#the-basic-steps-to-add-units-to-an-nca-analysis"></a>

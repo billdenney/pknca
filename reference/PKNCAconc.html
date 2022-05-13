@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
       </span>
     </div>
 
@@ -118,6 +118,7 @@
   <span class="va">volume</span>,
   <span class="va">exclude_half.life</span>,
   <span class="va">include_half.life</span>,
+  sparse <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -169,6 +170,10 @@ name in the dataset of the points to exclude from the half-life calculation
 or to include for the half-life (using specifically those points and
 bypassing automatic curve-stripping point selection).  See the "Half-Life
 Calculation" vignette for more details on the use of these arguments.</p></dd>
+<dt>sparse</dt>
+<dd><p>Are the concentration-time data sparse PK (commonly used in
+small nonclinical species or with terminal or difficult sampling) or dense
+PK (commonly used in clinical studies or larger nonclinical species)?</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
