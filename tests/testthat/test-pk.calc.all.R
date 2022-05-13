@@ -486,6 +486,7 @@ test_that("calculate with sparse data", {
       dose = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100)
     )
   o_conc_sparse <- PKNCAconc(d_sparse, conc~time|id, sparse=TRUE)
+  
   d_intervals <-
     data.frame(
       start=0,
@@ -504,4 +505,32 @@ test_that("calculate with sparse data", {
   df_result <- as.data.frame(o_nca)
   expect_true("sparse_auclast" %in% df_result$PPTESTCD)
   expect_equal(df_result$PPORRES[df_result$PPTESTCD %in% "sparse_auclast"], 39.4689)
+  
+  # Mixed sparse and dense calculations when only one type is requested in an
+  # interval works The example below has dense-only; sparse and dense; and and
+  # sparse-only.
+  d_intervals_mixed <-
+    data.frame(
+      start=0,
+      end=c(23, 24, 25),
+      cmax=c(TRUE, TRUE, FALSE),
+      sparse_auclast=c(FALSE, TRUE, TRUE)
+    )
+  o_data_sparse_mixed <- PKNCAdata(o_conc_sparse, intervals=d_intervals_mixed)
+  suppressMessages(
+    expect_warning(
+      o_nca_sparse_mixed <- pk.nca(o_data_sparse_mixed),
+      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+    )
+  )
+  df_result_sparse_mixed <- as.data.frame(o_nca_sparse_mixed)
+  expect_true("sparse_auclast" %in% df_result_sparse_mixed$PPTESTCD)
+  expect_equal(df_result_sparse_mixed$PPORRES[df_result_sparse_mixed$PPTESTCD %in% "sparse_auclast"], rep(39.4689, 2))
+  expect_message(
+    expect_warning(
+      o_nca_sparse_mixed <- pk.nca(o_data_sparse_mixed, verbose=TRUE),
+      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+    ),
+    regexp="No sparse calculations requested for an interval"
+  )
 })
