@@ -150,6 +150,23 @@ filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE
   data[mask_na | mask_time, ]
 }
 
+#' Determine if there are any sparse or dense calculations requested within an interval
+#' 
+#' @param interval An interval specification
+#' @inheritParams PKNCAconc
+#' @return A logical value indicating if the interval requests any sparse (if
+#'   \code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
+#' @keywords Internal
+any_sparse_dense_in_interval <- function(interval, sparse) {
+  requested <- sapply(interval, isTRUE)
+  all_intervals <- get.interval.cols()
+  # Extract if the parameters to be calculated (`names(requested[requested])`)
+  # are sparse, and compare that to if the request is for sparse or dense
+  any(
+    sapply(X=all_intervals[names(requested[requested])], FUN="[[", "sparse") %in% sparse
+  )
+}
+
 # Subset data down to just the times of interest and then pass it
 # further to the calculation routines.
 #
@@ -178,6 +195,8 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
   }
   ret <- data.frame()
   for (i in seq_len(nrow(data_intervals))) {
+    current_interval <- data_intervals[i, , drop=FALSE]
+    has_calc_sparse_dense <- any_sparse_dense_in_interval(current_interval, sparse=sparse)
     # Choose only times between the start and end.
     conc_data_interval <- filter_interval(data_conc, start=data_intervals$start[i], end=data_intervals$end[i])
     # Sort the data in time order
@@ -207,11 +226,13 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         "Error with interval",
         paste(
           c("start", "end"),
-          unlist(data_intervals[i, c("start", "end")]),
+          unlist(current_interval[, c("start", "end")]),
           sep="=", collapse=", ")
       )
     if (nrow(conc_data_interval) == 0) {
       warning(paste(error.preamble, "No data for interval", sep=": "))
+    } else if (!has_calc_sparse_dense) {
+      if (verbose) message("No ", ifelse(sparse, "sparse", "dense"), " calculations requested for an interval")
     } else {
       args <- list(
         # Interval-level data
@@ -234,7 +255,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         route.group=data_dose$route,
         # Generic data
         sparse=sparse,
-        interval=data_intervals[i, , drop=FALSE],
+        interval=current_interval,
         options=options)
       if ("subject" %in% names(conc_data_interval)) {
         args$subject <- conc_data_interval$subject
@@ -259,7 +280,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         rbind(
           ret,
           cbind(
-            data_intervals[i, c("start", "end")],
+            current_interval[, c("start", "end")],
             calculated.interval,
             row.names=NULL
           )
