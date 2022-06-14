@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -295,7 +298,7 @@ object).</p></td>
         <td><p>Get the independent variable (right hand side of the formula) from
 a PKNCA object.</p></td>
       </tr><tr><td>
-          <p><code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAdose&gt;</i>)</a></code> </p>
+          <p><code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAconc()</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAdose()</a></code> </p>
         </td>
         <td><p>Get grouping variables for a PKNCA object</p></td>
       </tr><tr><td>
@@ -307,6 +310,10 @@ after the last measurement.</p></td>
           <p><code><a href="interp_extrap_conc_method.html">interpolate_conc_linear()</a></code> <code><a href="interp_extrap_conc_method.html">interpolate_conc_log()</a></code> <code><a href="interp_extrap_conc_method.html">extrapolate_conc_lambdaz()</a></code> </p>
         </td>
         <td><p>Interpolate or extrapolate concentrations using the provided method</p></td>
+      </tr><tr><td>
+          <p><code><a href="is_sparse_pk.html">is_sparse_pk()</a></code> </p>
+        </td>
+        <td><p>Is a PKNCA object used for sparse PK?</p></td>
       </tr><tr><td>
           <p><code><a href="model.frame.PKNCAconc.html">model.frame(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="model.frame.PKNCAconc.html">model.frame(<i>&lt;PKNCAdose&gt;</i>)</a></code> </p>
         </td>
@@ -630,7 +637,7 @@ the parameters in monoexponential models.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

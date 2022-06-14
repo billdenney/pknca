@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -115,30 +118,45 @@
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>The results to summarize</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Ignored.</p></dd>
+
+
 <dt>drop.group</dt>
 <dd><p>Which group(s) should be dropped from the formula?</p></dd>
+
+
 <dt>summarize.n.per.group</dt>
 <dd><p>Should a column for <code>N</code> be added 
 (<code>TRUE</code> or <code>FALSE</code>)?  Note that <code>N</code> is maximum number of 
 parameter results for any parameter; if no parameters are requested for a
 group, then <code>N</code> will be <code>NA</code>.</p></dd>
+
+
 <dt>not.requested.string</dt>
 <dd><p>A character string to use when a parameter 
 summary was not requested for a parameter within an interval.</p></dd>
+
+
 <dt>not.calculated.string</dt>
 <dd><p>A character string to use when a parameter 
 summary was requested, but the point estimate AND spread calculations (if 
 applicable) returned <code>NA</code>.</p></dd>
+
+
 <dt>pretty_names</dt>
 <dd><p>Should pretty names (easier to understand in a report) be
 used?  <code>TRUE</code> is yes, <code>FALSE</code> is no, and <code>NULL</code> is yes if
 units are used an no if units are not used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame of NCA parameter results summarized according to the 
+    
+
+<p>A data frame of NCA parameter results summarized according to the 
   summarization settings.</p>
     </div>
     <div id="details">
@@ -199,7 +217,7 @@ units are used an no if units are not used.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

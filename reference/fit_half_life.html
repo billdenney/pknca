@@ -23,7 +23,7 @@ components are done."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@ components are done."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -117,15 +120,22 @@ components are done.</p>
     <dl><dt>data</dt>
 <dd><p>The data to fit.  Must have two columns named "log_conc" 
 and "time"</p></dd>
+
+
 <dt>tlast</dt>
 <dd><p>The time of last observed concentration above the limit
 of quantification.</p></dd>
+
+
 <dt>conc_units</dt>
 <dd><p>NULL or the units to set for concentration measures</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame with one row and columns named "r.squared", 
+    
+
+<p>A data.frame with one row and columns named "r.squared", 
   "adj.r.squared", "PROB", "lambda.z", "clast.pred", 
   "lambda.z.n.points", "half.life", "span.ratio"</p>
     </div>
@@ -146,7 +156,7 @@ of quantification.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

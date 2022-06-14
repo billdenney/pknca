@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -128,8 +131,12 @@
     <dl><dt>data</dt>
 <dd><p>A data frame with concentration (or amount for
 urine/feces), time, and the groups defined in <code>formula</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Ignored.</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>The formula defining the
 <code>concentration~time|groups</code> or <code>amount~time|groups</code> for
@@ -138,6 +145,8 @@ used to describe concentration or amount.)  One special aspect of the
 <code>groups</code> part of the formula is that the last group is typically
 assumed to be the <code>subject</code>; see the documentation for the
 <code>subject</code> argument for exceptions to this assumption.</p></dd>
+
+
 <dt>subject</dt>
 <dd><p>The column indicating the subject number.  If not provided,
 this defaults to the beginning of the inner groups: For example with
@@ -147,22 +156,32 @@ there is only one grouping variable, it is assumed to be the subject (e.g.
 <code>concentration~time|Subject</code>), and if there are multiple grouping
 variables without a <code>/</code>, subject is assumed to be the last one.  For
 single-subject data, it is assigned as <code>NULL</code>.</p></dd>
+
+
 <dt>time.nominal</dt>
 <dd><p>(optional) The name of the nominal time column
 (if the main time variable is actual time.  The <code>time.nominal</code>
 is not used during calculations; it is available to assist with
 data summary and checking.</p></dd>
+
+
 <dt>exclude</dt>
 <dd><p>(optional) The name of a column with concentrations to
 exclude from calculations and summarization.  If given, the column
 should have values of <code>NA</code> or <code>""</code> for concentrations to
 include and non-empty text for concentrations to exclude.</p></dd>
+
+
 <dt>duration</dt>
 <dd><p>(optional) The duration of collection as is typically
 used for concentration measurements in urine or feces.</p></dd>
+
+
 <dt>volume</dt>
 <dd><p>(optional) The volume (or mass) of collection as is
 typically used for urine or feces measurements.</p></dd>
+
+
 <dt>exclude_half.life, include_half.life</dt>
 <dd><p>A character scalar for the column
 name in the dataset of the points to exclude from the half-life calculation
@@ -170,14 +189,19 @@ name in the dataset of the points to exclude from the half-life calculation
 or to include for the half-life (using specifically those points and
 bypassing automatic curve-stripping point selection).  See the "Half-Life
 Calculation" vignette for more details on the use of these arguments.</p></dd>
+
+
 <dt>sparse</dt>
 <dd><p>Are the concentration-time data sparse PK (commonly used in
 small nonclinical species or with terminal or difficult sampling) or dense
 PK (commonly used in clinical studies or larger nonclinical species)?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A PKNCAconc object that can be used for automated NCA.</p>
+    
+
+<p>A PKNCAconc object that can be used for automated NCA.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -199,7 +223,7 @@ PK (commonly used in clinical studies or larger nonclinical species)?</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

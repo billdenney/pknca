@@ -20,7 +20,7 @@ sparse_mean_method) are:"><!-- mathjax --><script src="https://cdnjs.cloudflare.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@ sparse_mean_method) are:"><!-- mathjax --><script src="https://cdnjs.cloudflare.
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -114,13 +117,18 @@ calculations</h1>
     <h2>Arguments</h2>
     <dl><dt>sparse_pk</dt>
 <dd><p>A sparse_pk object from <code><a href="as_sparse_pk.html">as_sparse_pk</a></code></p></dd>
+
+
 <dt>sparse_mean_method</dt>
 <dd><p>The method used to calculate the sparse mean (see
 details)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A vector the same length as <code>sparse_pk</code> with the mean
+    
+
+<p>A vector the same length as <code>sparse_pk</code> with the mean
   concentration at each of those times.</p>
     </div>
     <div id="details">
@@ -149,7 +157,7 @@ details)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

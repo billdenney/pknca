@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -106,15 +109,22 @@
     <h2>Arguments</h2>
     <dl><dt>form</dt>
 <dd><p>the formula to extract into its parts</p></dd>
+
+
 <dt>require.groups</dt>
 <dd><p>is it an error not to have groups?</p></dd>
+
+
 <dt>require.two.sided</dt>
 <dd><p>is it an error to have a one-sided
 formula?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A parseFormula class list with elements of</p><dl><dt>model</dt>
+    
+
+<p>A parseFormula class list with elements of</p><dl><dt>model</dt>
 <dd><p>The left~right side of the model (excluding groups)</p></dd>
 
   <dt>lhs</dt>
@@ -155,7 +165,7 @@ function in the doBy package.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">parseFormula</span><span class="op">(</span><span class="st">"a~b"</span>, require.groups<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a ~ b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb55d58cad8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb16db6c170&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lhs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a</span>
@@ -170,7 +180,7 @@ function in the doBy package.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb55d58cad8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb16db6c170&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parseFormula" "list"        </span>
@@ -178,7 +188,7 @@ function in the doBy package.</p>
 <span class="r-in"><span class="fu">parseFormula</span><span class="op">(</span><span class="st">"a~b|c"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a ~ b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb55d5ec3b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb16dbea040&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lhs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a</span>
@@ -191,10 +201,10 @@ function in the doBy package.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $groupFormula</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb55d5ec3b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb16dbea040&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb55d5ec3b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb16dbea040&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "parseFormula" "list"        </span>
@@ -214,7 +224,7 @@ function in the doBy package.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

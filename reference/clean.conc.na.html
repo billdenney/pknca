@@ -20,7 +20,7 @@ the BLQ values in the middle"><!-- mathjax --><script src="https://cdnjs.cloudfl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@ the BLQ values in the middle"><!-- mathjax --><script src="https://cdnjs.cloudfl
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -111,22 +114,35 @@ the BLQ values in the middle</p>
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Measured concentrations</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of the concentration measurement</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items to add to the data frame</p></dd>
+
+
 <dt>options</dt>
 <dd><p>List of changes to the default 
 <code><a href="PKNCA.options.html">PKNCA.options</a></code> for calculations.</p></dd>
+
+
 <dt>conc.na</dt>
 <dd><p>How to handle NA concentrations?  Either 'drop' or a 
 number to impute.</p></dd>
+
+
 <dt>check</dt>
 <dd><p>Run <code><a href="check.conc.time.html">check.conc.time</a></code>?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The concentration and time measurements (data frame) filtered
+    
+
+<p>The concentration and time measurements (data frame) filtered
   and cleaned as requested relative to NA in the concentration.</p>
     </div>
     <div id="see-also">
@@ -147,7 +163,7 @@ number to impute.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

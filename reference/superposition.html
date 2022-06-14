@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -130,62 +133,97 @@
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Concentration measured</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to the <code>half.life</code>
 function if required to compute <code>lambda.z</code>.</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of concentration measurement</p></dd>
+
+
 <dt>dose.input</dt>
 <dd><p>The dose given to generate the <code>conc</code> and
 <code>time</code> inputs.  If missing, output doses will be assumed to be
 equal to the input dose.</p></dd>
+
+
 <dt>tau</dt>
 <dd><p>The dosing interval</p></dd>
+
+
 <dt>dose.times</dt>
 <dd><p>The time of dosing within the dosing interval.
 The <code>min(dose.times)</code> must be &gt;= 0, and the
 <code>max(dose.times)</code> must be &lt; <code>tau</code>.  There may be more
 than one dose times given as a vector.</p></dd>
+
+
 <dt>dose.amount</dt>
 <dd><p>The doses given for the output.  Linear
 proportionality will be used from the input to output if they are
 not equal.  The length of dose.amount must be either 1 or matching
 the length of <code>dose.times</code>.</p></dd>
+
+
 <dt>n.tau</dt>
 <dd><p>The number of tau dosing intervals to simulate or
 <code>Inf</code> for steady-state.</p></dd>
+
+
 <dt>options</dt>
 <dd><p>The PKNCA.options to use for the calculation (passed
 on to subsequent functions like <code>pk.calc.half.life</code>).</p></dd>
+
+
 <dt>lambda.z</dt>
 <dd><p>The elimination rate (from the half life
 calculation, used to extrapolate beyond the maximum time observed).</p></dd>
+
+
 <dt>clast.pred</dt>
 <dd><p>To use predicted as opposed to observed Clast,
 either give the value for clast.pred here or set it to true (for
 automatic calculation from the half-life).</p></dd>
+
+
 <dt>tlast</dt>
 <dd><p>The time of last observed concentration above the
 limit of quantification.  This is calculated if not provided.</p></dd>
+
+
 <dt>additional.times</dt>
 <dd><p>Times to include in the final outputs in
 addition to the standard times (see details).  All
 <code>min(additional.times)</code> must be &gt;= 0, and the
 <code>max(additional.times)</code> must be &lt;= <code>tau</code>.</p></dd>
+
+
 <dt>check.blq</dt>
 <dd><p>Must the first concentration measurement be below
 the limit of quantification?</p></dd>
+
+
 <dt>interp.method</dt>
 <dd><p>See <code><a href="interp.extrap.conc.html">interp.extrap.conc</a></code></p></dd>
+
+
 <dt>extrap.method</dt>
 <dd><p>See <code><a href="interp.extrap.conc.html">interp.extrap.conc</a></code></p></dd>
+
+
 <dt>steady.state.tol</dt>
 <dd><p>The tolerance for assessing if steady-state
 has been achieved (between 0 and 1, exclusive).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame with columns named "conc" and "time".</p>
+    
+
+<p>A data frame with columns named "conc" and "time".</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -211,7 +249,7 @@ following times: 0 (zero), <code>dose.times</code>, <code>time modulo tau</code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

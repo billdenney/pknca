@@ -23,7 +23,7 @@ random.effects argument)."><!-- mathjax --><script src="https://cdnjs.cloudflare
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@ random.effects argument)."><!-- mathjax --><script src="https://cdnjs.cloudflare
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -123,9 +126,13 @@ steady-state concentration and time to stead-state by subject (see
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>See <code><a href="pk.tss.data.prep.html">pk.tss.data.prep</a></code></p></dd>
+
+
 <dt>tss.fraction</dt>
 <dd><p>The fraction of steady-state required for calling
 steady-state</p></dd>
+
+
 <dt>output</dt>
 <dd><p>Which types of outputs should be produced?
 <code>population</code> is the population estimate for time to
@@ -134,16 +141,23 @@ estimate (from an nlme model), <code>individual</code> fits each
 individual separately with a gnls model (requires more than one
 individual; use <code>single</code> for one individual), and
 <code>single</code> fits all the data to a single gnls model.</p></dd>
+
+
 <dt>check</dt>
 <dd><p>See <code><a href="pk.tss.data.prep.html">pk.tss.data.prep</a></code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Describe models as they are run, show convergence of
 the model (passed to the nlme function), and additional details
 while running.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A scalar float for the first time when steady-state is
+    
+
+<p>A scalar float for the first time when steady-state is
   achieved or <code>NA</code> if it is not observed.</p>
     </div>
     <div id="references">
@@ -171,7 +185,7 @@ AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

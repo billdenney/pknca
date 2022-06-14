@@ -25,7 +25,7 @@ first point."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -65,6 +65,9 @@ first point."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -176,61 +179,96 @@ first point.</p>
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Measured concentrations</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of the concentration measurement</p></dd>
+
+
 <dt>time.out</dt>
 <dd><p>Time when interpolation is requested (vector for
 <code>interp.extrap.conc()</code>, scalar otherwise)</p></dd>
+
+
 <dt>lambda.z</dt>
 <dd><p>The elimination rate constant.  <code>NA</code> will prevent
 extrapolation.</p></dd>
+
+
 <dt>clast</dt>
 <dd><p>The last observed concentration above the limit of
 quantification.  If not given, <code>clast</code> is calculated from
 <code><a href="pk.calc.clast.obs.html">pk.calc.clast.obs</a>()</code></p></dd>
+
+
 <dt>options</dt>
 <dd><p>List of changes to the default <code><a href="PKNCA.options.html">PKNCA.options</a>()</code>
 for calculations.</p></dd>
+
+
 <dt>interp.method</dt>
 <dd><p>The method for interpolation (either "lin up/log down"
 or "linear")</p></dd>
+
+
 <dt>extrap.method</dt>
 <dd><p>The method for extrapolation: "AUCinf", "AUClast", or
 "AUCall".  See details for usage.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code>interpolate.conc()</code> or
 <code>extrapolate.conc()</code>.</p></dd>
+
+
 <dt>conc.blq</dt>
 <dd><p>How to handle BLQ values. (See <code><a href="clean.conc.blq.html">clean.conc.blq</a>()</code>
 for usage instructions.)</p></dd>
+
+
 <dt>conc.na</dt>
 <dd><p>How to handle NA concentrations.  (See
 <code><a href="clean.conc.na.html">clean.conc.na</a>()</code>)</p></dd>
+
+
 <dt>check</dt>
 <dd><p>Run <code><a href="check.conc.time.html">check.conc.time</a>()</code>,
 <code><a href="clean.conc.blq.html">clean.conc.blq</a>()</code>, and <code><a href="clean.conc.na.html">clean.conc.na</a>()</code>?</p></dd>
+
+
 <dt>conc.origin</dt>
 <dd><p>The concentration before the first measurement.
 <code>conc.origin</code> is typically used to set predose values to zero
 (default), set a predose concentration for endogenous compounds, or set
 predose concentrations to <code>NA</code> if otherwise unknown.</p></dd>
+
+
 <dt>time.dose</dt>
 <dd><p>Time of the dose</p></dd>
+
+
 <dt>route.dose</dt>
 <dd><p>What is the route of administration ("intravascular" or
 "extravascular").  See the details for how this parameter is used.</p></dd>
+
+
 <dt>duration.dose</dt>
 <dd><p>What is the duration of administration? See the details
 for how this parameter is used.</p></dd>
+
+
 <dt>out.after</dt>
 <dd><p>Should interpolation occur from the data before
 (<code>FALSE</code>) or after (<code>TRUE</code>) the interpolated point?  See the
 details for how this parameter is used.  It only has a meaningful effect at
 the instant of an IV bolus dose.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The interpolated or extrapolated concentration value as a scalar
+    
+
+<p>The interpolated or extrapolated concentration value as a scalar
   double (or vector for <code>interp.extrap.conc()</code>).</p>
     </div>
     <div id="details">
@@ -293,7 +331,7 @@ concentrations without interpolating or extrapolating beyond doses.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

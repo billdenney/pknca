@@ -19,7 +19,7 @@ and extrapolation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -59,6 +59,9 @@ and extrapolation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -110,20 +113,32 @@ and extrapolation.</p>
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>A vector of concentrations (<code>NA</code> values are not allowed)</p></dd>
+
+
 <dt>time</dt>
 <dd><p>A vector of times (<code>NA</code> values are not allowed)</p></dd>
+
+
 <dt>interp_method</dt>
 <dd><p>Method to use for interpolation between time points</p></dd>
+
+
 <dt>extrap_method</dt>
 <dd><p>Method to use for extrapolation after the last time
 point above (an AUC calculation method)</p></dd>
+
+
 <dt>tmax</dt>
 <dd><p>Time of maximum concentration</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A character vector of extrapolation methods to use between each
-<code>conc</code> and after the last <code>conc</code>.  Values will be one or more of
+    
+
+<p>A character vector of extrapolation methods to use between each</p>
+<p></p>
+<p><code>conc</code> and after the last <code>conc</code>.  Values will be one or more of
   "linear" (use linear interpolation), "log" (use log interpolation), "zero"
   (the value is zero), and the last value may be "clastpred", "clastobs", or
   "zero" indicating extrapolation from tlast using lambda.z and clast,pred or
@@ -153,7 +168,7 @@ point above (an AUC calculation method)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

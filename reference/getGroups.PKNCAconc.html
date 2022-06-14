@@ -20,7 +20,7 @@ object)."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@ object)."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -130,26 +133,39 @@ object).</p>
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>The object to extract the data from</p></dd>
+
+
 <dt>form</dt>
 <dd><p>The formula to extract the data from (defaults to the 
 formula from <code>object</code>)</p></dd>
+
+
 <dt>level</dt>
 <dd><p>optional.  If included, this specifies the level(s) of 
 the groups to include.  If a numeric scalar, include the first 
 <code>level</code> number of groups.  If a numeric vector, include each 
 of the groups specified by the number.  If a character vector, 
 include the named group levels.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>The data to extract the groups from (defaults to the data
 from <code>object</code>)</p></dd>
+
+
 <dt>sep</dt>
 <dd><p>Unused (kept for compatibility with the nlme package)</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed to other getGroups functions</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame with the (selected) group columns.</p>
+    
+
+<p>A data frame with the (selected) group columns.</p>
     </div>
 
   </div>
@@ -164,7 +180,7 @@ from <code>object</code>)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

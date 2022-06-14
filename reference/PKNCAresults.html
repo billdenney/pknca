@@ -18,7 +18,7 @@ for summarization."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -58,6 +58,9 @@ for summarization."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -110,17 +113,24 @@ for summarization.</p>
 <dd><p>a data frame with NCA calculation results and groups.
 Each row is one interval and each column is a group name or the
 name of an NCA parameter.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>The PKNCAdata used to generate the result</p></dd>
+
+
 <dt>exclude</dt>
 <dd><p>(optional) The name of a column with concentrations to
 exclude from calculations and summarization.  If given, the column 
 should have values of <code>NA</code> or <code>""</code> for concentrations to
 include and non-empty text for concentrations to exclude.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A PKNCAresults object with each of the above within.</p>
+    
+
+<p>A PKNCAresults object with each of the above within.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -142,7 +152,7 @@ include and non-empty text for concentrations to exclude.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

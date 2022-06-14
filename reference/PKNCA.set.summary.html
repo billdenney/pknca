@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -115,17 +118,25 @@
 <dd><p>The parameter name or a vector of parameter names.  It
 must have already been defined (see
 <code><a href="add.interval.col.html">add.interval.col</a></code>).</p></dd>
+
+
 <dt>description</dt>
 <dd><p>A single-line description of the summary</p></dd>
+
+
 <dt>point</dt>
 <dd><p>The function to calculate the point estimate for the
 summary.  The function will be called as <code>point(x)</code> and must
 return a scalar value (typically a number, NA, or a string).</p></dd>
+
+
 <dt>spread</dt>
 <dd><p>Optional.  The function to calculate the spread (or
 variability).  The function will be called as <code>spread(x)</code> and
 must return a scalar or two-long vector (typically a number, NA, or
 a string).</p></dd>
+
+
 <dt>rounding</dt>
 <dd><p>Instructions for how to round the value of point and
 spread.  It may either be a list or a function.  If it is a list,
@@ -134,12 +145,17 @@ then it must have a single entry with a name of either "signif" or
 expected to return a scalar number or character string with the
 correct results for an input of either a scalar or a two-long
 vector.</p></dd>
+
+
 <dt>reset</dt>
 <dd><p>Reset all the summary instructions</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>All current summary settings (invisibly)</p>
+    
+
+<p>All current summary settings (invisibly)</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -174,7 +190,7 @@ vector.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

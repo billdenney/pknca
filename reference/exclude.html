@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -109,20 +112,30 @@
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>The object to exclude data from.</p></dd>
+
+
 <dt>reason</dt>
 <dd><p>The reason to add as a reason for exclusion.</p></dd>
+
+
 <dt>mask</dt>
 <dd><p>A logical vector or numeric index of values to exclude 
 (see details).</p></dd>
+
+
 <dt>FUN</dt>
 <dd><p>A function to operate on the data (one group at a time) to
 select reasons for exclusions (see details).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The object with updated information in the exclude column. 
-  The exclude column will contain the <code>reason</code> if <code>mask</code> or
-<code>FUN</code> indicate.  If a previous reason for exclusion was given,
+    
+
+<p>The object with updated information in the exclude column. 
+  The exclude column will contain the <code>reason</code> if <code>mask</code> or</p>
+<p></p>
+<p><code>FUN</code> indicate.  If a previous reason for exclusion was given,
   then subsequent reasons for exclusion will be added to the first 
   with a semicolon space ("; ") separator.</p>
     </div>
@@ -160,7 +173,7 @@ select reasons for exclusions (see details).</p></dd>
 <span class="r-in">        mask<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formula for concentration:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  conc ~ time | subject</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb558a2e6b0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x7fb16cec84e8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data are dense PK.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> With 1 subjects defined in the 'subject' column.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nominal time column is not specified.</span>
@@ -187,7 +200,7 @@ select reasons for exclusions (see details).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

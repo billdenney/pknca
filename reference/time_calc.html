@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -106,14 +109,21 @@
     <h2>Arguments</h2>
     <dl><dt>time_event</dt>
 <dd><p>A vector of times for events</p></dd>
+
+
 <dt>time_obs</dt>
 <dd><p>A vector of times for observations</p></dd>
+
+
 <dt>units</dt>
 <dd><p>Passed to `base::as.numeric.difftime()`</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame with columns for:</p><ul><li><p>event_number_beforeThe index of `time_event` that is the last one before `time_obs` or `NA` if none are before.</p></li>
+    
+
+<p>A data.frame with columns for:</p><ul><li><p>event_number_beforeThe index of `time_event` that is the last one before `time_obs` or `NA` if none are before.</p></li>
 <li><p>event_number_afterThe index of `time_event` that is the first one after `time_obs` or `NA` if none are after.</p></li>
 <li><p>time_beforeThe minimum time that the current `time_obs` is before a `time_event`, 0 if at least one `time_obs == time_event`.</p></li>
 <li><p>time_afterThe minimum time that the current `time_obs` is after a `time_event`, 0 if at least one `time_obs == time_event`.</p></li>
@@ -135,7 +145,7 @@ dose number in the `event_number_*` columns.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

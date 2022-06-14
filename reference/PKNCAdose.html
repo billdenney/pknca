@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -116,13 +119,19 @@
     <dl><dt>data</dt>
 <dd><p>A data frame with time and the groups defined in 
 <code>formula</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Ignored.</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>The formula defining the 
 <code>dose.amount~time|groups</code> where <code>time</code> is the time of the
 dosing and <code>dose.amount</code> is the amount administered at that 
 time (see Details).</p></dd>
+
+
 <dt>route</dt>
 <dd><p>Define the route of administration.  The value may be 
 either a column name from the <code>data</code> (checked first) or a 
@@ -130,6 +139,8 @@ character string of either <code>"extravascular"</code> or
 <code>"intravascular"</code> (checked second).  If given as a column 
 name, then every value of the column must be either 
 <code>"extravascular"</code> or <code>"intravascular"</code>.</p></dd>
+
+
 <dt>rate, duration</dt>
 <dd><p>(optional) for <code>"intravascular"</code> dosing, 
 the rate or duration of dosing.  If given as a character string, it
@@ -138,20 +149,27 @@ number, it is the value for all doses.  Only one may be given, and
 if neither is given, then the dose is assumed to be a bolus 
 (<code>duration=0</code>).  If <code>rate</code> is given, then the dose amount
 must be given (the left hand side of the <code>formula</code>).</p></dd>
+
+
 <dt>time.nominal</dt>
 <dd><p>(optional) The name of the nominal time column
 (if the main time variable is actual time.  The <code>time.nominal</code>
 is not used during calculations; it is available to assist with
 data summary and checking.</p></dd>
+
+
 <dt>exclude</dt>
 <dd><p>(optional) The name of a column with concentrations to
 exclude from calculations and summarization.  If given, the column 
 should have values of <code>NA</code> or <code>""</code> for concentrations to
 include and non-empty text for concentrations to exclude.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A PKNCAconc object that can be used for automated NCA.</p>
+    
+
+<p>A PKNCAconc object that can be used for automated NCA.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -190,7 +208,7 @@ include and non-empty text for concentrations to exclude.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

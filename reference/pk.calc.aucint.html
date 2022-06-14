@@ -23,7 +23,7 @@ interval."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@ interval."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -178,23 +181,35 @@ interval.</p>
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Concentration measured</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)</p></dd>
+
+
 <dt>interval</dt>
 <dd><p>Numeric vector of two numbers for the start and end time of
 integration</p></dd>
+
+
 <dt>start, end</dt>
 <dd><p>The start and end of the interval (cannot be given
 if <code>interval</code> is given)</p></dd>
+
+
 <dt>clast, clast.obs, clast.pred</dt>
 <dd><p>The last concentration above the
 limit of quantification; this is used for AUCinf calculations.  If
 provided as clast.obs (observed clast value, default), AUCinf is
 AUCinf,obs. If provided as clast.pred, AUCinf is AUCinf,pred.</p></dd>
+
+
 <dt>lambda.z</dt>
 <dd><p>The elimination rate (in units of inverse time) for
 extrapolation</p></dd>
+
+
 <dt>time.dose, route, duration.dose</dt>
 <dd><p>The time of doses, route of
 administration, and duration of dose used with interpolation and
@@ -202,28 +217,43 @@ extrapolation of concentration data (see
 <code><a href="interp.extrap.conc.html">interp.extrap.conc.dose</a></code>).  If <code>NULL</code>,
 <code><a href="interp.extrap.conc.html">interp.extrap.conc</a></code> will be used instead (assuming
 that no doses affecting concentrations are in the interval).</p></dd>
+
+
 <dt>method</dt>
 <dd><p>The method for integration (either 'lin up/log down' or
 'linear')</p></dd>
+
+
 <dt>auc.type</dt>
 <dd><p>The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.</p></dd>
+
+
 <dt>conc.blq</dt>
 <dd><p>How to handle BLQ values in between the first and last above
 LOQ concentrations. (See <code><a href="clean.conc.blq.html">clean.conc.blq</a></code> for usage
 instructions.)</p></dd>
+
+
 <dt>conc.na</dt>
 <dd><p>How to handle missing concentration values.  (See 
 <code><a href="clean.conc.na.html">clean.conc.na</a></code> for usage instructions.)</p></dd>
+
+
 <dt>check</dt>
 <dd><p>Run <code><a href="check.conc.time.html">check.conc.time</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq</a></code>,
 and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code>pk.calc.auxc</code> and
 <code>interp.extrap.conc</code></p></dd>
+
+
 <dt>options</dt>
 <dd><p>List of changes to the default <code><a href="PKNCA.options.html">PKNCA.options</a></code> for
 calculations.</p></dd>
+
 </dl></div>
     <div id="functions">
     <h2>Functions</h2>
@@ -252,7 +282,7 @@ calculations.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

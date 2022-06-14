@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -107,14 +110,21 @@
     <dl><dt>auclast</dt>
 <dd><p>the area under the curve from time 0 to the last 
 measurement above the limit of quantification</p></dd>
+
+
 <dt>aucinf</dt>
 <dd><p>the area under the curve from time 0 to infinity</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The numeric value of the AUC percent extrapolated or 
-<code>NA_real_</code> if any of the following are true 
-<code>is.na(aucinf)</code>, <code>is.na(auclast)</code>, <code>aucinf &lt;= 0</code>,
+    
+
+<p>The numeric value of the AUC percent extrapolated or</p>
+<p></p>
+<p><code>NA_real_</code> if any of the following are true</p>
+<p></p>
+<p><code>is.na(aucinf)</code>, <code>is.na(auclast)</code>, <code>aucinf &lt;= 0</code>,
   or <code>auclast &lt;= 0</code>.</p>
     </div>
     <div id="details">
@@ -134,7 +144,7 @@ measurement above the limit of quantification</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

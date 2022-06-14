@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -106,15 +109,22 @@
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Concentration measurements (must be numeric, finite, and not NA)</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of concentration measurements (must be numeric, finite, and
 not NA)</p></dd>
+
+
 <dt>subject</dt>
 <dd><p>Subject identifiers (may be any class; may not be null)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A sparse_pk object which is a list of lists.  The inner lists have
+    
+
+<p>A sparse_pk object which is a list of lists.  The inner lists have
   elements named: "time", The time of measurement; "conc", The concentration
   measured; "subject", The subject identifiers.  The object will usually be
   modified by future functions to add more named elements to the inner list.</p>
@@ -139,7 +149,7 @@ not NA)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

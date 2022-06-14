@@ -24,7 +24,7 @@ all conc is 0 or NA
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@ all conc is 0 or NA
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -116,21 +119,32 @@ all conc is 0 or NA
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Concentration measured</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of concentration measurement</p></dd>
+
+
 <dt>options</dt>
 <dd><p>List of changes to the default
 <code><a href="PKNCA.options.html">PKNCA.options</a></code> for calculations.</p></dd>
+
+
 <dt>first.tmax</dt>
 <dd><p>If there is more than time that matches the
 maximum concentration, should the first be considered as Tmax?  If
 not, then the last is considered Tmax.</p></dd>
+
+
 <dt>check</dt>
 <dd><p>Run <code><a href="check.conc.time.html">check.conc.time</a></code>?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>the time of the maximum concentration</p>
+    
+
+<p>the time of the maximum concentration</p>
     </div>
 
   </div>
@@ -145,7 +159,7 @@ not, then the last is considered Tmax.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

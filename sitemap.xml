@@ -43,6 +43,9 @@
     <loc>http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/articles/Sparse.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/articles/Superposition.html</loc>
   </url>
   <url>
@@ -212,6 +215,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/interp_extrap_conc_method.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/is_sparse_pk.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/model.frame.PKNCAconc.html</loc>

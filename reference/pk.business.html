@@ -21,7 +21,7 @@ PKNCA.options(" max.missing pk.business><meta property="og:description" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -61,6 +61,9 @@ PKNCA.options(" max.missing pk.business><meta property="og:description" content=
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -113,16 +116,23 @@ counting as missing.  The maximum fraction missing comes from
     <dl><dt>FUN</dt>
 <dd><p>function to run.  The function is called as <code>FUN(x, ...)</code>
 with missing values removed.</p></dd>
+
+
 <dt>zero.missing</dt>
 <dd><p>Are zeros counted as missing?  If <code>TRUE</code> then
 include them in the missing count.</p></dd>
+
+
 <dt>max.missing</dt>
 <dd><p>The maximum fraction of the data allowed to be missing (a
 number between 0 and 1, inclusive).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A version of FUN that can be called with parameters that are checked
+    
+
+<p>A version of FUN that can be called with parameters that are checked
   for missingness (and zeros) with missing (and zeros) removed before the
   call.  If <code>max.missing</code> is exceeded, then NA is returned.</p>
     </div>
@@ -153,7 +163,7 @@ number between 0 and 1, inclusive).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

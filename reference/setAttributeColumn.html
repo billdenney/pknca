@@ -20,7 +20,7 @@ to the names of the object."><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@ to the names of the object."><!-- mathjax --><script src="https://cdnjs.cloudfla
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -120,27 +123,40 @@ to the names of the object.</p>
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>The object to set the attribute column on.</p></dd>
+
+
 <dt>attr_name</dt>
 <dd><p>The attribute name to set</p></dd>
+
+
 <dt>col_or_value</dt>
 <dd><p>If this exists as a column in the data, it is used as the
 <code>col_name</code>.  If not, this becomes the <code>default_value</code>.</p></dd>
+
+
 <dt>col_name</dt>
 <dd><p>The name of the column within the dataset to use (if missing,
 uses <code>attr_name</code>)</p></dd>
+
+
 <dt>default_value</dt>
 <dd><p>The value to fill in the column if the column does not
 exist (the column is filled with <code>NA</code> if it does not exist and no
 value is provided).</p></dd>
+
+
 <dt>stop_if_default, warn_if_default, message_if_default</dt>
 <dd><p>A character string
 to provide as an error, a warning, or a message to the user if the
 <code>default_value</code> is used.  They are tested in order (if stop, the code
 stops; if warning, the message is ignored; and message last).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The object with the attribute column added to the data.</p>
+    
+
+<p>The object with the attribute column added to the data.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -159,7 +175,7 @@ stops; if warning, the message is ignored; and message last).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

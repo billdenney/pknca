@@ -20,7 +20,7 @@ well.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@ well.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathj
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -112,24 +115,37 @@ well.</p>
     <h2>Arguments</h2>
     <dl><dt>conc</dt>
 <dd><p>Concentration measured</p></dd>
+
+
 <dt>time</dt>
 <dd><p>Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)</p></dd>
+
+
 <dt>conc_above</dt>
 <dd><p>The concentration to be above</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Extra arguments.  Currently, the only extra argument that is used
 is <code>method</code> as described in the details section.</p></dd>
+
+
 <dt>options</dt>
 <dd><p>List of changes to the default <code><a href="PKNCA.options.html">PKNCA.options</a></code> for
 calculations.</p></dd>
+
+
 <dt>check</dt>
 <dd><p>Run <code><a href="check.conc.time.html">check.conc.time</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq</a></code>,
 and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>the time above the given concentration</p>
+    
+
+<p>the time above the given concentration</p>
     </div>
 
   </div>
@@ -144,7 +160,7 @@ and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

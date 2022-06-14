@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 2.0.3
+pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
   AUC-Calculation-with-PKNCA: AUC-Calculation-with-PKNCA.html
@@ -11,11 +11,12 @@ articles:
   PKNCA-validation: PKNCA-validation.html
   Post-Processing: Post-Processing.html
   Selection-of-Calculation-Intervals: Selection-of-Calculation-Intervals.html
+  Sparse: Sparse.html
   Superposition: Superposition.html
   Training-Session: Training-Session.html
   Writing-Parameter-Functions: Writing-Parameter-Functions.html
   unit-conversion: unit-conversion.html
-last_built: 2022-05-13T17:28Z
+last_built: 2022-06-14T13:58Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles

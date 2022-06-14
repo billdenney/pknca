@@ -18,7 +18,7 @@ PKNCAdata()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
       </span>
     </div>
 
@@ -58,6 +58,9 @@ PKNCAdata()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
     </li>
     <li>
       <a href="../articles/Selection-of-Calculation-Intervals.html">Selection of Calculation Intervals</a>
+    </li>
+    <li>
+      <a href="../articles/Sparse.html">Sparse NCA Calculations</a>
     </li>
     <li>
       <a href="../articles/Superposition.html">Superposition of Pharmacokinetic Data</a>
@@ -109,16 +112,22 @@ PKNCAdata()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
     <dl><dt>concu, doseu, amountu, timeu</dt>
 <dd><p>Units for concentration, dose, amount, and
 time</p></dd>
+
+
 <dt>conversions</dt>
 <dd><p>An optional data.frame with columns of c("PPORRESU",
 "PPSTRESU", "conversion_factor") for the original calculation units, the
 standardized units, and a conversion factor to multiply the initial value
 by to get a standardized value.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if
-<code>conversions</code> is not given, and adding "PPSTRESU" and
+    
+
+<p>A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if</p>
+<p></p>
+<p><code>conversions</code> is not given, and adding "PPSTRESU" and
   "conversion_factor" if <code>conversions</code> is given.</p>
     </div>
     <div id="see-also">
@@ -679,7 +688,7 @@ by to get a standardized value.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
