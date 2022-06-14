@@ -5,9 +5,9 @@
 \alias{group_vars.PKNCAdose}
 \title{Get grouping variables for a PKNCA object}
 \usage{
-\method{group_vars}{PKNCAconc}(x)
+group_vars.PKNCAconc(x)
 
-\method{group_vars}{PKNCAdose}(x)
+group_vars.PKNCAdose(x)
 }
 \arguments{
 \item{x}{The PKNCA object}
