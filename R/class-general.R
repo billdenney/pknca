@@ -59,6 +59,7 @@ getColumnValueOrNot <- function(data, value, prefix="X") {
 #' @family PKNCA object extractors
 #' @return A character scalar with the name of the data object (or NULL
 #'   if the method does not apply).
+#' @keywords Internal
 getDataName <- function(object)
   UseMethod("getDataName")
 

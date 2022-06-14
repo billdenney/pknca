@@ -42,3 +42,4 @@ Other PKNCA object extractors:
 \code{\link{getIndepVar}()}
 }
 \concept{PKNCA object extractors}
+\keyword{Internal}
