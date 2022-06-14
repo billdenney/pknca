@@ -21,7 +21,7 @@ test_that("prepare_*", {
     )
   )
   expect_equal(
-    prepare_PKNCAdose(o_dose),
+    prepare_PKNCAdose(o_dose, sparse=FALSE, subject_col=""),
     tidyr::nest(
       dplyr::mutate(
         tmp_dose,
@@ -63,7 +63,7 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
     full_join_PKNCAconc_PKNCAdose(o_conc, o_dose),
     dplyr::full_join(
       prepare_PKNCAconc(o_conc),
-      prepare_PKNCAdose(o_dose),
+      prepare_PKNCAdose(o_dose, sparse=FALSE, subject_col=""),
       by=c("treatment", "ID")
     )
   )
@@ -72,7 +72,7 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
     tidyr::crossing(
       dplyr::full_join(
         prepare_PKNCAconc(o_conc),
-        prepare_PKNCAdose(o_dose),
+        prepare_PKNCAdose(o_dose, sparse=FALSE, subject_col=""),
         by=c("treatment", "ID")
       ),
       data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")))
@@ -90,7 +90,7 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
     tidyr::crossing(
       dplyr::full_join(
         prepare_PKNCAconc(o_conc),
-        prepare_PKNCAdose(o_dose),
+        prepare_PKNCAdose(o_dose, sparse=FALSE, subject_col=""),
         by=c("treatment", "ID")
       ),
       data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")[1,]))

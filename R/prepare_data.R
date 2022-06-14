@@ -21,7 +21,7 @@ full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
     n_dose <- tibble::tibble(data_dose=list(NA))
   } else {
     stopifnot(inherits(x=dose, what="PKNCAdose"))
-    n_dose <- prepare_PKNCAdose(dose)
+    n_dose <- prepare_PKNCAdose(dose, sparse=is_sparse_pk(conc), subject_col=conc$subject)
   }
   n_conc <- prepare_PKNCAconc(conc)
   shared_groups <- intersect(names(n_conc), names(n_dose))
@@ -167,12 +167,68 @@ prepare_PKNCAconc <- function(.dat) {
 }
 
 #' @describeIn prepare_PKNCAconc Nest a PKNCAdose object
-#' @noRd
+#' 
+#' @param sparse Is the data for sparse PK?
+#' @param subject_col The column name indicating the subject identifier (to be
+#'   dropped from groups with sparse PK)
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @importFrom dplyr grouped_df
 #' @importFrom tidyr nest
-prepare_PKNCAdose <- function(.dat) {
+#' @noRd
+prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
+  ret <- prepare_PKNCAdose_general(.dat)
+  if (sparse && (length(subject_col) == 1) && (subject_col %in% names(ret))) {
+    # Verify that all subjects in a group had the same data_dose and then drop
+    # the subjects
+    # ret_grp will have one column named "sparse_group_check" with one row per ID and all of the dosing information within a group and 
+    ret_grp <-
+      nest(
+        ret,
+        sparse_group_check=!setdiff(names(ret), c("data_dose", subject_col))
+      )
+    ret_grp$data_dose <- rep(list(NULL), nrow(ret_grp))
+    for (current_row in seq_len(nrow(ret_grp))) {
+      # Dosing information for all subjects are identical to the first subject
+      all_match <-
+        all(sapply(
+          X=ret_grp$sparse_group_check[[current_row]]$data_dose,
+          FUN=identical,
+          y=ret_grp$sparse_group_check[[current_row]]$data_dose[[1]]
+        ))
+      if (all_match) {
+        # Drop the subject identifier from the dosing
+        ret_grp$data_dose[[current_row]] <- ret_grp$sparse_group_check[[current_row]]$data_dose[[1]]
+      } else {
+        names_to_print <- setdiff(names(ret_grp), c("sparse_group_check", "data_dose"))
+        msg_error_row <- paste(names_to_print, unlist(ret_grp[current_row, names_to_print]), sep="=", collapse="; ")
+        msg_error <-
+          if (length(names_to_print) > 0) {
+            paste(
+              "Not all subjects have the same dosing information for this group: ",
+              msg_error_row
+            )
+          } else {
+            "Not all subjects have the same dosing information."
+          }
+        stop(
+          "With sparse PK, all subjects in a group must have the same dosing information.\n",
+          msg_error
+        )
+      }
+    }
+    ret <- ret_grp[, setdiff(names(ret_grp), "sparse_group_check")]
+  }
+  ret
+}
+
+#' @describeIn prepare_PKNCAconc Nest a PKNCAdose object
+#' @family Combine PKNCA objects
+#' @keywords Internal
+#' @importFrom dplyr grouped_df
+#' @importFrom tidyr nest
+#' @noRd
+prepare_PKNCAdose_general <- function(.dat) {
   pformula_dose <- parseFormula(.dat)
   dose_col <- all.vars(pformula_dose$lhs)
   time_col <- all.vars(pformula_dose$rhs)

@@ -560,5 +560,30 @@ test_that("calculate with sparse data", {
       regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
     )
   )
-  expect_equal(nrow(as.data.frame(o_nca_sparse_multi_trt)), 8)
+  expect_equal(nrow(as.data.frame(o_nca_sparse_multi_trt)), 16)
+  
+  # Correct detection of mixed doses within a sparse dose group when there are
+  # no grouping columns other than subject
+  d_sparse_multi_trt_bad_dose_single <- d_sparse_multi_trt[d_sparse_multi_trt$dose == 100, ]
+  d_dose_sparse_multi_trt_bad_dose_single <- unique(d_sparse_multi_trt_bad_dose_single[, c("id", "dose")])
+  d_dose_sparse_multi_trt_bad_dose_single$time <- 0
+  d_dose_sparse_multi_trt_bad_dose_single$dose[1] <- d_dose_sparse_multi_trt_bad_dose_single$dose[1] + 1
+  o_conc_sparse_multi_trt_bad_dose_single <- PKNCAconc(d_sparse_multi_trt_bad_dose_single, conc~time|id, sparse=TRUE)
+  o_dose_sparse_multi_trt_bad_dose_single <- PKNCAdose(d_dose_sparse_multi_trt_bad_dose_single, dose~time|id)
+  o_data_sparse_multi_trt_bad_dose_single <- PKNCAdata(o_conc_sparse_multi_trt_bad_dose_single, o_dose_sparse_multi_trt_bad_dose_single, intervals=d_intervals_mixed)
+  expect_error(
+    pk.nca(o_data_sparse_multi_trt_bad_dose_single),
+    regexp="With sparse PK, all subjects in a group must have the same dosing information.*Not all subjects have the same dosing information"
+  )
+  
+  # Correct detection of mixed doses within a sparse dose group
+  d_dose_sparse_multi_trt_bad_dose <- d_dose_sparse_multi_trt
+  d_dose_sparse_multi_trt_bad_dose$dose[1] <- d_dose_sparse_multi_trt$dose[1] + 1
+  o_dose_sparse_multi_trt_bad_dose <- PKNCAdose(d_dose_sparse_multi_trt_bad_dose, dose~time|dose_grp+id)
+  o_data_sparse_multi_trt_bad_dose <- PKNCAdata(o_conc_sparse_multi_trt, o_dose_sparse_multi_trt_bad_dose, intervals=d_intervals_mixed)
+  expect_error(
+    pk.nca(o_data_sparse_multi_trt_bad_dose),
+    regexp="With sparse PK, all subjects in a group must have the same dosing information.*Not all subjects have the same dosing information for this group: +dose_grp=100"
+  )
+  # Correct detection of mixed doses within a sparse dose group when there are no groups
 })
