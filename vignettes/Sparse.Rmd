@@ -1,0 +1,74 @@
+---
+title: "Sparse NCA Calculations"
+author: "Bill Denney"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Sparse NCA Calculations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Sparse NCA Calculations
+
+Sparse noncompartmental analysis (NCA) is performed when multiple individuals contribute to a single concentration-time profile due to the fact that there are only one or a subset of the full profile samples taken per animal.  A typical example is when three mice have PK drawn per time point, but no animals have more than one sample drawn.  Another typical example is when animals may have two or three samples during an interval, but no animal has the full profile.
+
+## Sparse NCA Setup
+
+Sparse NCA is setup similarly to how normal, dense PK sampling is setup with PKNCA.  The only difference are that you give the `sparse` option to `PKNCAconc()`, and in your interval calculations, you will request the sparse variants of the parameters.  As of the writing of this vignette, the only sparse parameter for calculation is `sparse_auclast`.  Any of the non-sparse parameters will be calculated based on the mean profile of the animals in a group.
+
+The example below uses data extracted from Holder D. J., Hsuan F., Dixit R. and Soper K. (1999). A method for estimating and testing area under the curve in serial sacrifice, batch, and complete data designs. Journal of Biopharmaceutical Statistics, 9(3):451-464.
+
+```{r}
+# Setup the data
+d_sparse <-
+    data.frame(
+      id = c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 4L, 5L, 6L, 4L, 5L, 6L, 7L, 8L, 9L, 7L, 8L, 9L),
+      conc = c(0, 0, 0,  1.75, 2.2, 1.58, 4.63, 2.99, 1.52, 3.03, 1.98, 2.22, 3.34, 1.3, 1.22, 3.54, 2.84, 2.55, 0.3, 0.0421, 0.231),
+      time = c(0, 0, 0, 1, 1, 1, 6, 6, 6, 2, 2, 2, 10, 10, 10, 4, 4, 4, 24, 24, 24),
+      dose = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100)
+    )
+```
+
+Look at your data.  (This is not technically a required step, but it's good practice.)
+
+```{r}
+library(ggplot2)
+ggplot(d_sparse, aes(x=time, y=conc, group=id)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks=seq(0, 24, by=6))
+```
+
+# Calculate!
+
+Setup PKNCA for calculations and then calculate!
+
+```{r}
+library(PKNCA)
+o_conc_sparse <- PKNCAconc(d_sparse, conc~time|id, sparse=TRUE)
+d_intervals <-
+  data.frame(
+    start=0,
+    end=24,
+    aucinf.obs=TRUE,
+    cmax=TRUE,
+    sparse_auclast=TRUE
+  )
+o_data_sparse <- PKNCAdata(o_conc_sparse, intervals=d_intervals)
+o_nca <- pk.nca(o_data_sparse)
+```
+
+# Results
+
+As with any other PKNCA result, the data are available through the `summary()` function:
+
+```{r}
+summary(o_nca)
+```
+
+or individual results are available through the `as.data.frame()` function:
+
+```{r}
+as.data.frame(o_nca)
+```
