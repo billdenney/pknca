@@ -448,8 +448,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
           call_args[[arg_formal]] <- interval[[arg_mapped]]
         } else {
           # Give an error if there is not a default argument.
-          # FIXME: checking if the class is a name isn't perfect.
-          if (class(formals(get(all_intervals[[n]]$FUN))[[arg_formal]]) == "name") {
+          if (inherits(formals(get(all_intervals[[n]]$FUN))[[arg_formal]], "name")) {
             arg_text <-
               if (arg_formal == arg_mapped) {
                 sprintf("'%s'", arg_formal)
