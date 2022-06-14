@@ -170,6 +170,11 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   ret
 }
 
+#' @rdname is_sparse_pk
+is_sparse_pk.PKNCAdata <- function(object) {
+  is_sparse_pk(object$conc)
+}
+
 #' Print a PKNCAdata object
 #' @param x The object to print
 #' @param ... Arguments passed on to \code{\link{print.PKNCAconc}} and

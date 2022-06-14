@@ -505,7 +505,8 @@ test_that("calculate with sparse data", {
   df_result <- as.data.frame(o_nca)
   expect_true("sparse_auclast" %in% df_result$PPTESTCD)
   expect_equal(df_result$PPORRES[df_result$PPTESTCD %in% "sparse_auclast"], 39.4689)
-  
+  expect_s3_class(summary(o_nca), "summary_PKNCAresults")
+
   # Mixed sparse and dense calculations when only one type is requested in an
   # interval works The example below has dense-only; sparse and dense; and and
   # sparse-only.
@@ -533,4 +534,31 @@ test_that("calculate with sparse data", {
     ),
     regexp="No sparse calculations requested for an interval"
   )
+
+  # Sparse data with multiple treatments, confirm the correct number of rows of
+  # outputs are created.
+  d_sparse_200 <- d_sparse
+  d_sparse_200$dose <- 200
+  d_sparse_multi_trt <- rbind(d_sparse, d_sparse_200)
+  d_sparse_multi_trt$dose_grp <- d_sparse_multi_trt$dose
+  o_conc_sparse_multi_trt <- PKNCAconc(d_sparse_multi_trt, conc~time|dose_grp+id, sparse=TRUE)
+  d_intervals_mixed <-
+    data.frame(
+      start=0,
+      end=c(23, 24, 25),
+      cmax=c(TRUE, TRUE, FALSE),
+      sparse_auclast=c(FALSE, TRUE, TRUE)
+    )
+  d_dose_sparse_multi_trt <- unique(d_sparse_multi_trt[, c("id", "dose")])
+  d_dose_sparse_multi_trt$time <- 0
+  d_dose_sparse_multi_trt$dose_grp <- d_dose_sparse_multi_trt$dose
+  o_dose_sparse_multi_trt <- PKNCAdose(d_dose_sparse_multi_trt, dose~time|dose_grp+id)
+  o_data_sparse_multi_trt <- PKNCAdata(o_conc_sparse_multi_trt, o_dose_sparse_multi_trt, intervals=d_intervals_mixed)
+  suppressMessages(
+    expect_warning(
+      o_nca_sparse_multi_trt <- pk.nca(o_data_sparse_multi_trt),
+      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+    )
+  )
+  expect_equal(nrow(as.data.frame(o_nca_sparse_multi_trt)), 8)
 })

@@ -39,6 +39,6 @@ URL: https://billdenney.github.io/pknca/, https://github.com/billdenney/pknca
 BugReports: https://github.com/billdenney/pknca/issues
 NeedsCompilation: no
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0.9000
 Encoding: UTF-8
 Language: en-US

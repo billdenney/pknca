@@ -359,6 +359,11 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   }
 }
 
+#' @rdname is_sparse_pk
+is_sparse_pk.PKNCAconc <- function(object) {
+  "data_sparse" %in% names(object)
+}
+
 #' @rdname print.PKNCAconc
 #' @export
 summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...) {

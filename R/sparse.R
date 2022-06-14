@@ -343,3 +343,12 @@ PKNCA.set.summary(
   point=business.geomean,
   spread=business.geocv
 )
+
+#' Is a PKNCA object used for sparse PK?
+#' 
+#' @param object The object to see if it includes sparse PK
+#' @return \code{TRUE} if sparse and \code{FALSE} if dense (not sparse)
+#' @export
+is_sparse_pk <- function(object) {
+  UseMethod("is_sparse_pk")
+}

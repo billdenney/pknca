@@ -60,8 +60,14 @@ as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
 }
 
 #' @rdname getDataName
-getDataName.PKNCAresults <- function(object)
+getDataName.PKNCAresults <- function(object) {
   "result"
+}
+
+#' @rdname is_sparse_pk
+is_sparse_pk.PKNCAresults <- function(object) {
+  is_sparse_pk(object$data)
+}
 
 #' @rdname getGroups.PKNCAconc
 #' @export
@@ -70,6 +76,9 @@ getGroups.PKNCAresults <- function(object,
                                    data=object$result, sep) {
   # Include the start time as a group; this may be dropped later
   grpnames <- c(all.vars(parseFormula(form)$groups), "start")
+  if (is_sparse_pk(object)) {
+    grpnames <- setdiff(grpnames, object$data$conc$subject)
+  }
   if (!missing(level))
     if (is.factor(level) | is.character(level)) {
       level <- as.character(level)
