@@ -260,7 +260,7 @@ group_vars.PKNCAconc <- function(x) {
 
 #' @rdname getDataName
 getDataName.PKNCAconc <- function(object) {
-  if ("data_sparse" %in% names(object)) {
+  if (is_sparse_pk(object)) {
     "data_sparse"
   } else {
     "data"
@@ -307,7 +307,7 @@ setDuration.PKNCAconc <- function(object, duration, ...) {
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))
   print(stats::formula(x), ...)
-  if ("data_sparse" %in% names(x)) {
+  if (is_sparse_pk(x)) {
     data_current <- x$data_sparse
     is_sparse <- TRUE
     cat("Data are sparse PK.\n")
@@ -372,7 +372,7 @@ summary.PKNCAconc <- function(object, n=0, summarize=TRUE, ...) {
 
 #' @export
 as.data.frame.PKNCAconc <- function(x, ...) {
-  if ("data_sparse" %in% names(x)) {
+  if (is_sparse_pk(x)) {
     x$data_sparse
   } else {
     x$data

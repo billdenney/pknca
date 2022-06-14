@@ -146,7 +146,7 @@ prepare_PKNCAconc <- function(.dat) {
     )
   data_name <- getDataName(.dat)
   group_cols_selected <- all.vars(pformula_conc$groups)
-  if (data_name == "data_sparse") {
+  if (is_sparse_pk(.dat)) {
     ret <-
       prepare_PKNCAconc_sparse(
         .dat=.dat,

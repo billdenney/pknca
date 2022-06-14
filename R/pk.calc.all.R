@@ -57,7 +57,7 @@ pk.nca <- function(data, verbose=FALSE) {
       )
     if (verbose) message("Combining completed dense PK calculation results.")
     results <- pk_nca_result_to_df(group_info, results_dense)
-    if ("data_sparse_conc" %in% names(splitdata)) {
+    if (is_sparse_pk(data)) {
       if (verbose) message("Starting sparse PK NCA calculations.")
       results_sparse <-
         purrr::pmap(
