@@ -60,8 +60,9 @@ getColumnValueOrNot <- function(data, value, prefix="X") {
 #' @return A character scalar with the name of the data object (or NULL
 #'   if the method does not apply).
 #' @keywords Internal
-getDataName <- function(object)
+getDataName <- function(object) {
   UseMethod("getDataName")
+}
 
 #' @describeIn getDataName If no data name exists, returns NULL.
 getDataName.default <- function(object) {
