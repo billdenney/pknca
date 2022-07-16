@@ -28,6 +28,7 @@ dplyr filtering for PKNCA
 }
 \seealso{
 Other dplyr verbs: 
-\code{\link{inner_join.PKNCAresults}()}
+\code{\link{inner_join.PKNCAresults}()},
+\code{\link{mutate.PKNCAresults}()}
 }
 \concept{dplyr verbs}

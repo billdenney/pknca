@@ -9,6 +9,7 @@
 \alias{right_join}
 \alias{full_join}
 \alias{filter}
+\alias{mutate}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -16,7 +17,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{filter}}, \code{\link[dplyr:mutate-joins]{full_join}}, \code{\link[dplyr:mutate-joins]{inner_join}}, \code{\link[dplyr:mutate-joins]{left_join}}, \code{\link[dplyr:mutate-joins]{right_join}}}
+  \item{dplyr}{\code{\link[dplyr]{filter}}, \code{\link[dplyr:mutate-joins]{full_join}}, \code{\link[dplyr:mutate-joins]{inner_join}}, \code{\link[dplyr:mutate-joins]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr:mutate-joins]{right_join}}}
 
   \item{nlme}{\code{\link[nlme]{getGroups}}}
 }}

@@ -10,9 +10,14 @@ dplyr::right_join
 #' @importFrom dplyr full_join
 #' @export
 dplyr::full_join
+
 #' @importFrom dplyr filter
 #' @export
 dplyr::filter
+
+#' @importFrom dplyr mutate
+#' @export
+dplyr::mutate
 
 join_maker_PKNCA <- function(join_fun) {
   function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = FALSE) {
@@ -24,6 +29,11 @@ join_maker_PKNCA <- function(join_fun) {
 filter_PKNCA <- function(.data, ..., .preserve=FALSE) {
   dataname <- getDataName(.data)
   .data[[dataname]] <- dplyr::filter(.data[[dataname]], ..., .preserve=.preserve)
+  .data
+}
+mutate_PKNCA <- function(.data, ...) {
+  dataname <- getDataName(.data)
+  .data[[dataname]] <- dplyr::mutate(.data[[dataname]], ...)
   .data
 }
 
@@ -65,3 +75,13 @@ filter.PKNCAresults <- filter_PKNCA
 #' @rdname filter.PKNCAresults
 #' @export
 filter.PKNCAconc <- filter_PKNCA
+
+#' dplyr mutate-based modification for PKNCA
+#' 
+#' @inheritParams dplyr::mutate
+#' @family dplyr verbs
+#' @export
+mutate.PKNCAresults <- mutate_PKNCA
+#' @rdname mutate.PKNCAresults
+#' @export
+mutate.PKNCAconc <- mutate_PKNCA

@@ -133,6 +133,7 @@ dplyr joins for PKNCA
 }
 \seealso{
 Other dplyr verbs: 
-\code{\link{filter.PKNCAresults}()}
+\code{\link{filter.PKNCAresults}()},
+\code{\link{mutate.PKNCAresults}()}
 }
 \concept{dplyr verbs}

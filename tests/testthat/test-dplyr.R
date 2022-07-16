@@ -34,7 +34,26 @@ test_that("dplyr left_join", {
   expect_equal(joined, joined_manual)
   
   joined <- left_join(myconc, joindf)
-  joined_manual <- joined
+  joined_manual <- myconc
   joined_manual$data <- left_join(joined_manual$data, joindf)
   expect_equal(joined, joined_manual)
+})
+
+test_that("dplyr mutate", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  
+  mutated <- mutate(myresult, foo="bar")
+  mutated_manual <- myresult
+  mutated_manual$result <- mutate(mutated_manual$result, foo="bar")
+  expect_equal(mutated, mutated_manual)
+  
+  mutated <- mutate(myconc, foo="bar")
+  mutated_manual <- myconc
+  mutated_manual$data <- mutate(mutated_manual$data, foo="bar")
+  expect_equal(mutated, mutated_manual)
 })
