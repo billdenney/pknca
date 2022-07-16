@@ -112,69 +112,69 @@ interval.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pk.calc.aucint</span><span class="op">(</span>
-  <span class="va">conc</span>,
-  <span class="va">time</span>,
-  interval <span class="op">=</span> <span class="cn">NULL</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  clast <span class="op">=</span> <span class="fu"><a href="pk.calc.clast.obs.html">pk.calc.clast.obs</a></span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span><span class="op">)</span>,
-  lambda.z <span class="op">=</span> <span class="cn">NA</span>,
-  time.dose <span class="op">=</span> <span class="cn">NULL</span>,
-  route <span class="op">=</span> <span class="st">"extravascular"</span>,
-  duration.dose <span class="op">=</span> <span class="fl">0</span>,
-  method <span class="op">=</span> <span class="cn">NULL</span>,
-  auc.type <span class="op">=</span> <span class="st">"AUClast"</span>,
-  conc.blq <span class="op">=</span> <span class="cn">NULL</span>,
-  conc.na <span class="op">=</span> <span class="cn">NULL</span>,
-  check <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">pk.calc.aucint.last</span><span class="op">(</span>
-  <span class="va">conc</span>,
-  <span class="va">time</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">time.dose</span>,
-  <span class="va">...</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">pk.calc.aucint.all</span><span class="op">(</span>
-  <span class="va">conc</span>,
-  <span class="va">time</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">time.dose</span>,
-  <span class="va">...</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">pk.calc.aucint.inf.obs</span><span class="op">(</span>
-  <span class="va">conc</span>,
-  <span class="va">time</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">time.dose</span>,
-  <span class="va">lambda.z</span>,
-  <span class="va">clast.obs</span>,
-  <span class="va">...</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">pk.calc.aucint.inf.pred</span><span class="op">(</span>
-  <span class="va">conc</span>,
-  <span class="va">time</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">time.dose</span>,
-  <span class="va">lambda.z</span>,
-  <span class="va">clast.pred</span>,
-  <span class="va">...</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pk.calc.aucint</span><span class="op">(</span></span>
+<span>  <span class="va">conc</span>,</span>
+<span>  <span class="va">time</span>,</span>
+<span>  interval <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  clast <span class="op">=</span> <span class="fu"><a href="pk.calc.clast.obs.html">pk.calc.clast.obs</a></span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span><span class="op">)</span>,</span>
+<span>  lambda.z <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  time.dose <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  route <span class="op">=</span> <span class="st">"extravascular"</span>,</span>
+<span>  duration.dose <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  auc.type <span class="op">=</span> <span class="st">"AUClast"</span>,</span>
+<span>  conc.blq <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conc.na <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  check <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aucint.last</span><span class="op">(</span></span>
+<span>  <span class="va">conc</span>,</span>
+<span>  <span class="va">time</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">time.dose</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aucint.all</span><span class="op">(</span></span>
+<span>  <span class="va">conc</span>,</span>
+<span>  <span class="va">time</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">time.dose</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aucint.inf.obs</span><span class="op">(</span></span>
+<span>  <span class="va">conc</span>,</span>
+<span>  <span class="va">time</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">time.dose</span>,</span>
+<span>  <span class="va">lambda.z</span>,</span>
+<span>  <span class="va">clast.obs</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aucint.inf.pred</span><span class="op">(</span></span>
+<span>  <span class="va">conc</span>,</span>
+<span>  <span class="va">time</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">time.dose</span>,</span>
+<span>  <span class="va">lambda.z</span>,</span>
+<span>  <span class="va">clast.pred</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -282,7 +282,7 @@ calculations.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -116,23 +116,23 @@ data.frame then run the following code.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Load concentration-time data into a data.frame called d.conc</span></span>
-<span class="r-in"><span class="co"># with columns named "conc", "time", and "subject".</span></span>
-<span class="r-in"><span class="va">my.conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">d.conc</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">subject</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Load dose-time data into a data.frame called d.dose</span></span>
-<span class="r-in"><span class="co"># with columns named "dose", "time", and "subject".</span></span>
-<span class="r-in"><span class="va">my.dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="va">d.dose</span>, <span class="va">dose</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">subject</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Combine the concentration-time and dose-time data into an object</span></span>
-<span class="r-in"><span class="co"># ready for calculations.</span></span>
-<span class="r-in"><span class="va">my.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">my.conc</span>, <span class="va">my.dose</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Perform the calculations</span></span>
-<span class="r-in"><span class="va">my.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">my.data</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Look at summary results</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my.results</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Look at a listing of results</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">my.results</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Load concentration-time data into a data.frame called d.conc</span></span></span>
+<span class="r-in"><span><span class="co"># with columns named "conc", "time", and "subject".</span></span></span>
+<span class="r-in"><span><span class="va">my.conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">d.conc</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">subject</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Load dose-time data into a data.frame called d.dose</span></span></span>
+<span class="r-in"><span><span class="co"># with columns named "dose", "time", and "subject".</span></span></span>
+<span class="r-in"><span><span class="va">my.dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="va">d.dose</span>, <span class="va">dose</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">subject</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Combine the concentration-time and dose-time data into an object</span></span></span>
+<span class="r-in"><span><span class="co"># ready for calculations.</span></span></span>
+<span class="r-in"><span><span class="va">my.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">my.conc</span>, <span class="va">my.dose</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Perform the calculations</span></span></span>
+<span class="r-in"><span><span class="va">my.results</span> <span class="op">&lt;-</span> <span class="fu"><a href="pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">my.data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Look at summary results</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my.results</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Look at a listing of results</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">my.results</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -147,7 +147,7 @@ data.frame then run the following code.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

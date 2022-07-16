@@ -211,31 +211,31 @@
 <h2 id="putting-it-together">Putting It Together<a class="anchor" aria-label="anchor" href="#putting-it-together"></a>
 </h2>
 <p>One of the most common examples is the function to calculate C<sub>max</sub>:</p>
-<pre><code><span class="co">#' Determine maximum observed PK concentration</span>
-<span class="co">#'</span>
-<span class="co">#' @param conc Concentration measured</span>
-<span class="co">#' @param check Run \code{\link{check.conc.time}}?</span>
-<span class="co">#' @return a number for the maximum concentration or NA if all</span>
-<span class="co">#' concentrations are missing</span>
-<span class="co">#' @export</span>
-<span class="va">pk.calc.cmax</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">conc</span>, <span class="va">check</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">check</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/check.conc.time.html">check.conc.time</a></span><span class="op">(</span>conc<span class="op">=</span><span class="va">conc</span><span class="op">)</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="cn">NA</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">conc</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-<span class="co">## Add the column to the interval specification</span>
-<span class="fu"><a href="../reference/add.interval.col.html">add.interval.col</a></span><span class="op">(</span><span class="st">"cmax"</span>,
-                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,
-                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,
-                 unit_type<span class="op">=</span><span class="st">"conc"</span>,
-                 pretty_name<span class="op">=</span><span class="st">"Cmax"</span>,
-                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span>,
-                 depends<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span><span class="st">"cmax"</span>, <span class="st">"geometric mean and geometric coefficient of variation"</span>, <span class="va">business.geomean</span>, <span class="va">business.geocv</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="co">#' Determine maximum observed PK concentration</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param conc Concentration measured</span></span>
+<span><span class="co">#' @param check Run \code{\link{check.conc.time}}?</span></span>
+<span><span class="co">#' @return a number for the maximum concentration or NA if all</span></span>
+<span><span class="co">#' concentrations are missing</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="va">pk.calc.cmax</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">conc</span>, <span class="va">check</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">check</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/check.conc.time.html">check.conc.time</a></span><span class="op">(</span>conc<span class="op">=</span><span class="va">conc</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="cn">NA</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">conc</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">## Add the column to the interval specification</span></span>
+<span><span class="fu"><a href="../reference/add.interval.col.html">add.interval.col</a></span><span class="op">(</span><span class="st">"cmax"</span>,</span>
+<span>                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,</span>
+<span>                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>                 unit_type<span class="op">=</span><span class="st">"conc"</span>,</span>
+<span>                 pretty_name<span class="op">=</span><span class="st">"Cmax"</span>,</span>
+<span>                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span>,</span>
+<span>                 depends<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span><span class="st">"cmax"</span>, <span class="st">"geometric mean and geometric coefficient of variation"</span>, <span class="va">business.geomean</span>, <span class="va">business.geocv</span><span class="op">)</span></span></code></pre>
 </div>
   </div>
 
@@ -256,7 +256,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>

@@ -104,7 +104,7 @@ PKNCAdata()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pknca_units_table</span><span class="op">(</span><span class="va">concu</span>, <span class="va">doseu</span>, <span class="va">amountu</span>, <span class="va">timeu</span>, conversions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pknca_units_table</span><span class="op">(</span><span class="va">concu</span>, <span class="va">doseu</span>, <span class="va">amountu</span>, <span class="va">timeu</span>, conversions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -137,7 +137,7 @@ by to get a standardized value.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">pknca_units_table</span><span class="op">(</span><span class="op">)</span> <span class="co"># only parameters that are unitless</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">pknca_units_table</span><span class="op">(</span><span class="op">)</span> <span class="co"># only parameters that are unitless</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    PPORRESU          PPTESTCD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  unitless         r.squared</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  unitless     adj.r.squared</span>
@@ -150,9 +150,9 @@ by to get a standardized value.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9         %       aucpext.obs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10        %      aucpext.pred</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11    count lambda.z.n.points</span>
-<span class="r-in"><span class="fu">pknca_units_table</span><span class="op">(</span></span>
-<span class="r-in">  concu<span class="op">=</span><span class="st">"ng/mL"</span>, doseu<span class="op">=</span><span class="st">"mg/kg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">pknca_units_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  concu<span class="op">=</span><span class="st">"ng/mL"</span>, doseu<span class="op">=</span><span class="st">"mg/kg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                PPORRESU             PPTESTCD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1              unitless            r.squared</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2              unitless        adj.r.squared</span>
@@ -253,15 +253,15 @@ by to get a standardized value.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 97        mg/(hr*ng/mL)             clr.last</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 98        mg/(hr*ng/mL)              clr.obs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 99        mg/(hr*ng/mL)             clr.pred</span>
-<span class="r-in"><span class="fu">pknca_units_table</span><span class="op">(</span></span>
-<span class="r-in">  concu<span class="op">=</span><span class="st">"ng/mL"</span>, doseu<span class="op">=</span><span class="st">"mg/kg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span>,</span>
-<span class="r-in">  <span class="co"># Convert clearance and volume units to more understandable units with</span></span>
-<span class="r-in">  <span class="co"># automatic unit conversion</span></span>
-<span class="r-in">  conversions<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    PPORRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"(mg/kg)/(hr*ng/mL)"</span>, <span class="st">"(mg/kg)/(ng/mL)"</span><span class="op">)</span>,</span>
-<span class="r-in">    PPSTRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mL/hr/kg"</span>, <span class="st">"mL/kg"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">pknca_units_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  concu<span class="op">=</span><span class="st">"ng/mL"</span>, doseu<span class="op">=</span><span class="st">"mg/kg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Convert clearance and volume units to more understandable units with</span></span></span>
+<span class="r-in"><span>  <span class="co"># automatic unit conversion</span></span></span>
+<span class="r-in"><span>  conversions<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    PPORRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"(mg/kg)/(hr*ng/mL)"</span>, <span class="st">"(mg/kg)/(ng/mL)"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    PPSTRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mL/hr/kg"</span>, <span class="st">"mL/kg"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                PPORRESU             PPTESTCD             PPSTRESU</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1              unitless            r.squared             unitless</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2              unitless        adj.r.squared             unitless</span>
@@ -462,17 +462,17 @@ by to get a standardized value.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 97             1e+00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 98             1e+00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 99             1e+00</span>
-<span class="r-in"><span class="fu">pknca_units_table</span><span class="op">(</span></span>
-<span class="r-in">  concu<span class="op">=</span><span class="st">"mg/L"</span>, doseu<span class="op">=</span><span class="st">"mg/kg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span>,</span>
-<span class="r-in">  <span class="co"># Convert clearance and volume units to molar units (assuming </span></span>
-<span class="r-in">  conversions<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    PPORRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mg/L"</span>, <span class="st">"(mg/kg)/(hr*ng/mL)"</span>, <span class="st">"(mg/kg)/(ng/mL)"</span><span class="op">)</span>,</span>
-<span class="r-in">    PPSTRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mmol/L"</span>, <span class="st">"mL/hr/kg"</span>, <span class="st">"mL/kg"</span><span class="op">)</span>,</span>
-<span class="r-in">    <span class="co"># Manual conversion of concentration units from ng/mL to mmol/L (assuming</span></span>
-<span class="r-in">    <span class="co"># a molecular weight of 138.121 g/mol)</span></span>
-<span class="r-in">    conversion_factor<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">138.121</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">pknca_units_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  concu<span class="op">=</span><span class="st">"mg/L"</span>, doseu<span class="op">=</span><span class="st">"mg/kg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Convert clearance and volume units to molar units (assuming </span></span></span>
+<span class="r-in"><span>  conversions<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    PPORRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mg/L"</span>, <span class="st">"(mg/kg)/(hr*ng/mL)"</span>, <span class="st">"(mg/kg)/(ng/mL)"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    PPSTRESU<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mmol/L"</span>, <span class="st">"mL/hr/kg"</span>, <span class="st">"mL/kg"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="co"># Manual conversion of concentration units from ng/mL to mmol/L (assuming</span></span></span>
+<span class="r-in"><span>    <span class="co"># a molecular weight of 138.121 g/mol)</span></span></span>
+<span class="r-in"><span>    conversion_factor<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">138.121</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The following unit conversions were supplied but do not match any units to convert: '(mg/kg)/(hr*ng/mL)', '(mg/kg)/(ng/mL)'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               PPORRESU             PPTESTCD            PPSTRESU</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             unitless            r.squared            unitless</span>
@@ -688,7 +688,7 @@ by to get a standardized value.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

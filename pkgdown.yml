@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 2.0.4
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   AUC-Calculation-with-PKNCA: AUC-Calculation-with-PKNCA.html
@@ -16,7 +16,7 @@ articles:
   Training-Session: Training-Session.html
   Writing-Parameter-Functions: Writing-Parameter-Functions.html
   unit-conversion: unit-conversion.html
-last_built: 2022-06-22T21:12Z
+last_built: 2022-07-16T12:27Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles

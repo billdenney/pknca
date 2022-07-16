@@ -179,37 +179,37 @@
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Perform calculations for subject 1, only</span>
-<span class="va">data_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">)</span><span class="op">[</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">$</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span>
-
-<span class="co"># Keep all points</span>
-<span class="va">conc_obj</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>
-    <span class="va">data_conc</span>,
-    <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span>
-  <span class="op">)</span>
-
-<span class="co"># Only calculate half-life and parameters required for half-life</span>
-<span class="va">current_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>, half.life<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, intervals<span class="op">=</span><span class="va">current_intervals</span><span class="op">)</span>
-<span class="va">result_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Perform calculations for subject 1, only</span></span>
+<span><span class="va">data_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">)</span><span class="op">[</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">$</span><span class="va">Subject</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Keep all points</span></span>
+<span><span class="va">conc_obj</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span></span>
+<span>    <span class="va">data_conc</span>,</span>
+<span>    <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Only calculate half-life and parameters required for half-life</span></span>
+<span><span class="va">current_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>, half.life<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, intervals<span class="op">=</span><span class="va">current_intervals</span><span class="op">)</span></span>
+<span><span class="va">result_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Extract the results for subject 1 </span>
-<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span>
-<span class="co">##    Subject start   end PPTESTCD            PPORRES exclude</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> 1           0   <span style="color: #BB0000;">Inf</span> tmax                 1.12   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> 1           0   <span style="color: #BB0000;">Inf</span> tlast               24.4    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z             0.048<span style="text-decoration: underline;">5</span> <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> 1           0   <span style="color: #BB0000;">Inf</span> r.squared            1.00   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> 1           0   <span style="color: #BB0000;">Inf</span> adj.r.squared        1.00   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.time.first  9.05   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.n.points    3      <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> 1           0   <span style="color: #BB0000;">Inf</span> clast.pred           3.28   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> 1           0   <span style="color: #BB0000;">Inf</span> half.life           14.3    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> 1           0   <span style="color: #BB0000;">Inf</span> span.ratio           1.07   <span style="color: #BB0000;">NA</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Extract the results for subject 1 </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
+<span><span class="co">##    Subject start   end PPTESTCD            PPORRES exclude</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 1           0   <span style="color: #BB0000;">Inf</span> tmax                 1.12   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 1           0   <span style="color: #BB0000;">Inf</span> tlast               24.4    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z             0.048<span style="text-decoration: underline;">5</span> <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 1           0   <span style="color: #BB0000;">Inf</span> r.squared            1.00   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 1           0   <span style="color: #BB0000;">Inf</span> adj.r.squared        1.00   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.time.first  9.05   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.n.points    3      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 1           0   <span style="color: #BB0000;">Inf</span> clast.pred           3.28   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 1           0   <span style="color: #BB0000;">Inf</span> half.life           14.3    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> 1           0   <span style="color: #BB0000;">Inf</span> span.ratio           1.07   <span style="color: #BB0000;">NA</span></span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -221,40 +221,40 @@
 <p>In some cases, specific points will be known outliers, or there may be another reason to exclude specific points. And, with those points excluded, the half-life should be calculated using the normal curve stripping methods described above.</p>
 <p>To exclude specific points but otherwise use curve stripping, use the <code>exclude_half.life</code> option as the column name in the concentration dataset for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> as illustrated below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_conc</span><span class="op">$</span><span class="va">exclude_hl</span> <span class="op">&lt;-</span> <span class="va">data_conc</span><span class="op">$</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">12.12</span>
-<span class="co"># Confirm that we will be excluding exactly one point</span>
-<span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">data_conc</span><span class="op">$</span><span class="va">exclude_hl</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="co"># Drop one point</span>
-<span class="va">conc_obj_exclude1</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>
-    <span class="va">data_conc</span>,
-    <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span>,
-    exclude_half.life<span class="op">=</span><span class="st">"exclude_hl"</span>
-  <span class="op">)</span>
-
-<span class="va">data_obj_exclude1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj_exclude1</span>, intervals<span class="op">=</span><span class="va">current_intervals</span><span class="op">)</span>
-
-<span class="co"># Perform the calculations</span>
-<span class="va">result_obj_exclude1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj_exclude1</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">data_conc</span><span class="op">$</span><span class="va">exclude_hl</span> <span class="op">&lt;-</span> <span class="va">data_conc</span><span class="op">$</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">12.12</span></span>
+<span><span class="co"># Confirm that we will be excluding exactly one point</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">data_conc</span><span class="op">$</span><span class="va">exclude_hl</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Drop one point</span></span>
+<span><span class="va">conc_obj_exclude1</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span></span>
+<span>    <span class="va">data_conc</span>,</span>
+<span>    <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span>,</span>
+<span>    exclude_half.life<span class="op">=</span><span class="st">"exclude_hl"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_obj_exclude1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj_exclude1</span>, intervals<span class="op">=</span><span class="va">current_intervals</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Perform the calculations</span></span>
+<span><span class="va">result_obj_exclude1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj_exclude1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Results differ when excluding the 12-hour point for subject 1 (compare to</span>
-<span class="co"># example in the previous section)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj_exclude1</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span>
-<span class="co">##    Subject start   end PPTESTCD            PPORRES exclude</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> 1           0   <span style="color: #BB0000;">Inf</span> tmax                 1.12   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> 1           0   <span style="color: #BB0000;">Inf</span> tlast               24.4    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z             0.048<span style="text-decoration: underline;">2</span> <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> 1           0   <span style="color: #BB0000;">Inf</span> r.squared            1.00   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> 1           0   <span style="color: #BB0000;">Inf</span> adj.r.squared        0.999  <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.time.first  5.1    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.n.points    4      <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> 1           0   <span style="color: #BB0000;">Inf</span> clast.pred           3.28   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> 1           0   <span style="color: #BB0000;">Inf</span> half.life           14.4    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> 1           0   <span style="color: #BB0000;">Inf</span> span.ratio           1.34   <span style="color: #BB0000;">NA</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Results differ when excluding the 12-hour point for subject 1 (compare to</span></span>
+<span><span class="co"># example in the previous section)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj_exclude1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
+<span><span class="co">##    Subject start   end PPTESTCD            PPORRES exclude</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 1           0   <span style="color: #BB0000;">Inf</span> tmax                 1.12   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 1           0   <span style="color: #BB0000;">Inf</span> tlast               24.4    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z             0.048<span style="text-decoration: underline;">2</span> <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 1           0   <span style="color: #BB0000;">Inf</span> r.squared            1.00   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 1           0   <span style="color: #BB0000;">Inf</span> adj.r.squared        0.999  <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.time.first  5.1    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.n.points    4      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 1           0   <span style="color: #BB0000;">Inf</span> clast.pred           3.28   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 1           0   <span style="color: #BB0000;">Inf</span> half.life           14.4    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> 1           0   <span style="color: #BB0000;">Inf</span> span.ratio           1.34   <span style="color: #BB0000;">NA</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="specification-of-the-exact-points-for-analysis">Specification of the Exact Points for Analysis<a class="anchor" aria-label="anchor" href="#specification-of-the-exact-points-for-analysis"></a>
@@ -262,40 +262,40 @@
 <p>In other cases, the exact points to use for half-life calculation are known, and automatic point selection with curve stripping should not be performed.</p>
 <p>To exclude specific points but otherwise use curve stripping, use the <code>include_half.life</code> option as the column name in the concentration dataset for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> as illustrated below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_conc</span><span class="op">$</span><span class="va">include_hl</span> <span class="op">&lt;-</span> <span class="va">data_conc</span><span class="op">$</span><span class="va">Time</span> <span class="op">&gt;</span> <span class="fl">3</span>
-<span class="co"># Confirm that we will be excluding exactly one point</span>
-<span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">data_conc</span><span class="op">$</span><span class="va">include_hl</span><span class="op">)</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span>
-
-<span class="co"># Drop one point</span>
-<span class="va">conc_obj_include6</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>
-    <span class="va">data_conc</span>,
-    <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span>,
-    include_half.life<span class="op">=</span><span class="st">"include_hl"</span>
-  <span class="op">)</span>
-
-<span class="va">data_obj_include6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj_include6</span>, intervals<span class="op">=</span><span class="va">current_intervals</span><span class="op">)</span>
-
-<span class="co"># Perform the calculations</span>
-<span class="va">result_obj_include6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj_include6</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">data_conc</span><span class="op">$</span><span class="va">include_hl</span> <span class="op">&lt;-</span> <span class="va">data_conc</span><span class="op">$</span><span class="va">Time</span> <span class="op">&gt;</span> <span class="fl">3</span></span>
+<span><span class="co"># Confirm that we will be excluding exactly one point</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">data_conc</span><span class="op">$</span><span class="va">include_hl</span><span class="op">)</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Drop one point</span></span>
+<span><span class="va">conc_obj_include6</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span></span>
+<span>    <span class="va">data_conc</span>,</span>
+<span>    <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span>,</span>
+<span>    include_half.life<span class="op">=</span><span class="st">"include_hl"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_obj_include6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj_include6</span>, intervals<span class="op">=</span><span class="va">current_intervals</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Perform the calculations</span></span>
+<span><span class="va">result_obj_include6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">data_obj_include6</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Results differ when including 6 points (compare to example in the previous</span>
-<span class="co"># section)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj_include6</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span>
-<span class="co">##    Subject start   end PPTESTCD            PPORRES exclude</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> 1           0   <span style="color: #BB0000;">Inf</span> tmax                 1.12   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> 1           0   <span style="color: #BB0000;">Inf</span> tlast               24.4    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z             0.047<span style="text-decoration: underline;">5</span> <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> 1           0   <span style="color: #BB0000;">Inf</span> r.squared            0.999  <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> 1           0   <span style="color: #BB0000;">Inf</span> adj.r.squared        0.998  <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.time.first  3.82   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.n.points    6      <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> 1           0   <span style="color: #BB0000;">Inf</span> clast.pred           3.30   <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> 1           0   <span style="color: #BB0000;">Inf</span> half.life           14.6    <span style="color: #BB0000;">NA</span>     </span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> 1           0   <span style="color: #BB0000;">Inf</span> span.ratio           1.41   <span style="color: #BB0000;">NA</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Results differ when including 6 points (compare to example in the previous</span></span>
+<span><span class="co"># section)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">result_obj_include6</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
+<span><span class="co">##    Subject start   end PPTESTCD            PPORRES exclude</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 1           0   <span style="color: #BB0000;">Inf</span> tmax                 1.12   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 1           0   <span style="color: #BB0000;">Inf</span> tlast               24.4    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z             0.047<span style="text-decoration: underline;">5</span> <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 1           0   <span style="color: #BB0000;">Inf</span> r.squared            0.999  <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 1           0   <span style="color: #BB0000;">Inf</span> adj.r.squared        0.998  <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.time.first  3.82   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 1           0   <span style="color: #BB0000;">Inf</span> lambda.z.n.points    6      <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 1           0   <span style="color: #BB0000;">Inf</span> clast.pred           3.30   <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 1           0   <span style="color: #BB0000;">Inf</span> half.life           14.6    <span style="color: #BB0000;">NA</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> 1           0   <span style="color: #BB0000;">Inf</span> span.ratio           1.41   <span style="color: #BB0000;">NA</span></span></span></code></pre>
 </div>
 </div>
   </div>
@@ -317,7 +317,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>

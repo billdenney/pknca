@@ -102,18 +102,18 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add.interval.col</span><span class="op">(</span>
-  <span class="va">name</span>,
-  <span class="va">FUN</span>,
-  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,
-  <span class="va">unit_type</span>,
-  <span class="va">pretty_name</span>,
-  depends <span class="op">=</span> <span class="cn">NULL</span>,
-  desc <span class="op">=</span> <span class="st">""</span>,
-  sparse <span class="op">=</span> <span class="cn">FALSE</span>,
-  formalsmap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  datatype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"individual"</span>, <span class="st">"population"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add.interval.col</span><span class="op">(</span></span>
+<span>  <span class="va">name</span>,</span>
+<span>  <span class="va">FUN</span>,</span>
+<span>  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="va">unit_type</span>,</span>
+<span>  <span class="va">pretty_name</span>,</span>
+<span>  depends <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  desc <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  sparse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  formalsmap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  datatype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"individual"</span>, <span class="st">"population"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -256,22 +256,22 @@ the values should be one of the following:</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax"</span>,</span>
-<span class="r-in">                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,</span>
-<span class="r-in">                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">                 unit_type<span class="op">=</span><span class="st">"conc"</span>,</span>
-<span class="r-in">                 pretty_name<span class="op">=</span><span class="st">"Cmax"</span>,</span>
-<span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax.dn"</span>,</span>
-<span class="r-in">                 FUN<span class="op">=</span><span class="st">"pk.calc.dn"</span>,</span>
-<span class="r-in">                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">                 unit_type<span class="op">=</span><span class="st">"conc_dosenorm"</span>,</span>
-<span class="r-in">                 pretty_name<span class="op">=</span><span class="st">"Cmax (dose-normalized)"</span>,</span>
-<span class="r-in">                 desc<span class="op">=</span><span class="st">"Maximum observed concentration, dose normalized"</span>,</span>
-<span class="r-in">                 formalsmap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parameter<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span>,</span>
-<span class="r-in">                 depends<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax"</span>,</span></span>
+<span class="r-in"><span>                 FUN<span class="op">=</span><span class="st">"pk.calc.cmax"</span>,</span></span>
+<span class="r-in"><span>                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 unit_type<span class="op">=</span><span class="st">"conc"</span>,</span></span>
+<span class="r-in"><span>                 pretty_name<span class="op">=</span><span class="st">"Cmax"</span>,</span></span>
+<span class="r-in"><span>                 desc<span class="op">=</span><span class="st">"Maximum observed concentration"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">add.interval.col</span><span class="op">(</span><span class="st">"cmax.dn"</span>,</span></span>
+<span class="r-in"><span>                 FUN<span class="op">=</span><span class="st">"pk.calc.dn"</span>,</span></span>
+<span class="r-in"><span>                 values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 unit_type<span class="op">=</span><span class="st">"conc_dosenorm"</span>,</span></span>
+<span class="r-in"><span>                 pretty_name<span class="op">=</span><span class="st">"Cmax (dose-normalized)"</span>,</span></span>
+<span class="r-in"><span>                 desc<span class="op">=</span><span class="st">"Maximum observed concentration, dose normalized"</span>,</span></span>
+<span class="r-in"><span>                 formalsmap<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>parameter<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 depends<span class="op">=</span><span class="st">"cmax"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -286,7 +286,7 @@ the values should be one of the following:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

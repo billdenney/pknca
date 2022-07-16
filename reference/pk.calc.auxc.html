@@ -106,46 +106,46 @@ purposes when analyzing PK in drug development.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pk.calc.auxc</span><span class="op">(</span>
-  <span class="va">conc</span>,
-  <span class="va">time</span>,
-  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,
-  clast <span class="op">=</span> <span class="fu"><a href="pk.calc.clast.obs.html">pk.calc.clast.obs</a></span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
-  lambda.z <span class="op">=</span> <span class="cn">NA</span>,
-  auc.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AUClast"</span>, <span class="st">"AUCinf"</span>, <span class="st">"AUCall"</span><span class="op">)</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  method <span class="op">=</span> <span class="cn">NULL</span>,
-  conc.blq <span class="op">=</span> <span class="cn">NULL</span>,
-  conc.na <span class="op">=</span> <span class="cn">NULL</span>,
-  check <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">fun.linear</span>,
-  <span class="va">fun.log</span>,
-  <span class="va">fun.inf</span>
-<span class="op">)</span>
-
-<span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">pk.calc.auc.last</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">pk.calc.auc.inf</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span>
-
-<span class="fu">pk.calc.auc.inf.obs</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.obs</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span>
-
-<span class="fu">pk.calc.auc.inf.pred</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.pred</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span>
-
-<span class="fu">pk.calc.auc.all</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">pk.calc.aumc</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">pk.calc.aumc.last</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">pk.calc.aumc.inf</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span>
-
-<span class="fu">pk.calc.aumc.inf.obs</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.obs</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span>
-
-<span class="fu">pk.calc.aumc.inf.pred</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.pred</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span>
-
-<span class="fu">pk.calc.aumc.all</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pk.calc.auxc</span><span class="op">(</span></span>
+<span>  <span class="va">conc</span>,</span>
+<span>  <span class="va">time</span>,</span>
+<span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
+<span>  clast <span class="op">=</span> <span class="fu"><a href="pk.calc.clast.obs.html">pk.calc.clast.obs</a></span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, check <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  lambda.z <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  auc.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AUClast"</span>, <span class="st">"AUCinf"</span>, <span class="st">"AUCall"</span><span class="op">)</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conc.blq <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conc.na <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  check <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">fun.linear</span>,</span>
+<span>  <span class="va">fun.log</span>,</span>
+<span>  <span class="va">fun.inf</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.auc.last</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.auc.inf</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.auc.inf.obs</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.obs</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.auc.inf.pred</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.pred</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.auc.all</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aumc</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aumc.last</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aumc.inf</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aumc.inf.obs</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.obs</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aumc.inf.pred</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">clast.pred</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">lambda.z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pk.calc.aumc.all</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -278,11 +278,11 @@ Press, 2000.  164-7.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">myconc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mytime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>,   <span class="fl">5</span>,    <span class="fl">6</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">myconc</span>, <span class="va">mytime</span>, interval<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">myconc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mytime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>,   <span class="fl">5</span>,    <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">myconc</span>, <span class="va">mytime</span>, interval<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.524716</span>
-<span class="r-in"><span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">myconc</span>, <span class="va">mytime</span>, interval<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">myconc</span>, <span class="va">mytime</span>, interval<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.524716</span>
 </code></pre></div>
     </div>
@@ -298,7 +298,7 @@ Press, 2000.  164-7.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

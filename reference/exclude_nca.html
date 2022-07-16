@@ -102,11 +102,11 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">exclude_nca_span.ratio</span><span class="op">(</span><span class="va">min.span.ratio</span><span class="op">)</span>
-
-<span class="fu">exclude_nca_max.aucinf.pext</span><span class="op">(</span><span class="va">max.aucinf.pext</span><span class="op">)</span>
-
-<span class="fu">exclude_nca_min.hl.r.squared</span><span class="op">(</span><span class="va">min.hl.r.squared</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">exclude_nca_span.ratio</span><span class="op">(</span><span class="va">min.span.ratio</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">exclude_nca_max.aucinf.pext</span><span class="op">(</span><span class="va">max.aucinf.pext</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">exclude_nca_min.hl.r.squared</span><span class="op">(</span><span class="va">min.hl.r.squared</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -144,19 +144,19 @@ provided).</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">my_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>conc<span class="op">=</span><span class="fl">1.1</span><span class="op">^</span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">                                time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span>,</span>
-<span class="r-in">                                subject<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">                     <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">subject</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">my_conc</span>,</span>
-<span class="r-in">                     intervals<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>,</span>
-<span class="r-in">                                          aucinf.obs<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span class="r-in">                                          aucpext.obs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">my_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">my_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>conc<span class="op">=</span><span class="fl">1.1</span><span class="op">^</span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span>,</span></span>
+<span class="r-in"><span>                                subject<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                     <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">subject</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">my_conc</span>,</span></span>
+<span class="r-in"><span>                     intervals<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>,</span></span>
+<span class="r-in"><span>                                          aucinf.obs<span class="op">=</span><span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                                          aucpext.obs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No dose information provided, calculations requiring dose will return NA.</span>
-<span class="r-in"><span class="va">my_result_excluded</span> <span class="op">&lt;-</span> <span class="fu"><a href="exclude.html">exclude</a></span><span class="op">(</span><span class="va">my_result</span>,</span>
-<span class="r-in">                              FUN<span class="op">=</span><span class="fu">exclude_nca_max.aucinf.pext</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">my_result_excluded</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">my_result_excluded</span> <span class="op">&lt;-</span> <span class="fu"><a href="exclude.html">exclude</a></span><span class="op">(</span><span class="va">my_result</span>,</span></span>
+<span class="r-in"><span>                              FUN<span class="op">=</span><span class="fu">exclude_nca_max.aucinf.pext</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">my_result_excluded</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    subject start   end PPTESTCD            PPORRES exclude                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        </span>
@@ -188,7 +188,7 @@ provided).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

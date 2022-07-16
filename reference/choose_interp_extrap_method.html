@@ -106,7 +106,7 @@ and extrapolation.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">choose_interp_extrap_method</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">interp_method</span>, <span class="va">extrap_method</span>, <span class="va">tmax</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">choose_interp_extrap_method</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">interp_method</span>, <span class="va">extrap_method</span>, <span class="va">tmax</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -147,12 +147,12 @@ point above (an AUC calculation method)</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">PKNCA</span><span class="fu">:::</span><span class="fu">choose_interp_extrap_method</span><span class="op">(</span></span>
-<span class="r-in">  conc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span class="r-in">  time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">6</span>,</span>
-<span class="r-in">  interp_method<span class="op">=</span><span class="st">"lin up/log down"</span>,</span>
-<span class="r-in">  extrap_method<span class="op">=</span><span class="st">"aucinf.obs"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">PKNCA</span><span class="fu">:::</span><span class="fu">choose_interp_extrap_method</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  conc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">6</span>,</span></span>
+<span class="r-in"><span>  interp_method<span class="op">=</span><span class="st">"lin up/log down"</span>,</span></span>
+<span class="r-in"><span>  extrap_method<span class="op">=</span><span class="st">"aucinf.obs"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "linear"   "linear"   "log"      "log"      "zero"     "zero"     "clastobs"</span>
 </code></pre></div>
     </div>
@@ -168,7 +168,7 @@ point above (an AUC calculation method)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
