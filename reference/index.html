@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9005</span>
       </span>
     </div>
 
@@ -225,6 +225,10 @@ the user.</p></td>
         </td>
         <td><p>Exclude NCA parameters based on examining the parameter set.</p></td>
       </tr><tr><td>
+          <p><code><a href="filter.PKNCAresults.html">filter(<i>&lt;PKNCAresults&gt;</i>)</a></code> <code><a href="filter.PKNCAresults.html">filter(<i>&lt;PKNCAconc&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>dplyr filtering for PKNCA</p></td>
+      </tr><tr><td>
           <p><code><a href="find.tau.html">find.tau()</a></code> </p>
         </td>
         <td><p>Find the repeating interval within a vector of doses</p></td>
@@ -298,9 +302,13 @@ object).</p></td>
         <td><p>Get the independent variable (right hand side of the formula) from
 a PKNCA object.</p></td>
       </tr><tr><td>
-          <p><code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAconc()</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars.PKNCAdose()</a></code> </p>
+          <p><code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="group_vars.PKNCAconc.html">group_vars(<i>&lt;PKNCAdose&gt;</i>)</a></code> </p>
         </td>
         <td><p>Get grouping variables for a PKNCA object</p></td>
+      </tr><tr><td>
+          <p><code><a href="inner_join.PKNCAresults.html">inner_join(<i>&lt;PKNCAresults&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">left_join(<i>&lt;PKNCAresults&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">right_join(<i>&lt;PKNCAresults&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">full_join(<i>&lt;PKNCAresults&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">inner_join(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">left_join(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">right_join(<i>&lt;PKNCAconc&gt;</i>)</a></code> <code><a href="inner_join.PKNCAresults.html">full_join(<i>&lt;PKNCAconc&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>dplyr joins for PKNCA</p></td>
       </tr><tr><td>
           <p><code><a href="interp.extrap.conc.html">interp.extrap.conc()</a></code> <code><a href="interp.extrap.conc.html">interpolate.conc()</a></code> <code><a href="interp.extrap.conc.html">extrapolate.conc()</a></code> <code><a href="interp.extrap.conc.html">interp.extrap.conc.dose()</a></code> </p>
         </td>

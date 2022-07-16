@@ -157,6 +157,9 @@
     <loc>http://billdenney.github.io/pknca/reference/exclude_nca.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/filter.PKNCAresults.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/find.tau.html</loc>
   </url>
   <url>
@@ -209,6 +212,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/inner_join.PKNCAresults.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/interp.extrap.conc.html</loc>

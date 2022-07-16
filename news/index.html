@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9005</span>
       </span>
     </div>
 
@@ -109,6 +109,7 @@
 <li>
 <code><a href="../reference/pk.calc.time_above.html">pk.calc.time_above()</a></code> now uses the default AUC calculation method for interpolation of time above.</li>
 <li>PKNCA can now calculate parameters that require extra information by adding the extra information to the intervals data.frame. For example, add <code>conc_above</code> as a column to the intervals to allow calculation of <code>time_above</code>. With this change, the “conc_above” <code><a href="../reference/PKNCA.options.html">PKNCA.options()</a></code> value has been removed.</li>
+<li>Added dplyr joins and filter to allow modification of PKNCA objects after creation</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-9-6">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-9-6"></a></h3>
