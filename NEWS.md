@@ -32,6 +32,8 @@ the dosing including dose amount and route.
   `conc_above` as a column to the intervals to allow calculation of
   `time_above`.  With this change, the "conc_above" `PKNCA.options()` value has
   been removed.
+* Added dplyr joins and filter to allow modification of PKNCA objects after
+  creation
 
 ## Breaking Changes
 
