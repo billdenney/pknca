@@ -109,7 +109,7 @@
 <li>
 <code><a href="../reference/pk.calc.time_above.html">pk.calc.time_above()</a></code> now uses the default AUC calculation method for interpolation of time above.</li>
 <li>PKNCA can now calculate parameters that require extra information by adding the extra information to the intervals data.frame. For example, add <code>conc_above</code> as a column to the intervals to allow calculation of <code>time_above</code>. With this change, the “conc_above” <code><a href="../reference/PKNCA.options.html">PKNCA.options()</a></code> value has been removed.</li>
-<li>Added dplyr joins and filter to allow modification of PKNCA objects after creation</li>
+<li>Added dplyr joins, filter, and mutate to allow modification of PKNCA objects after creation. (Note that these functions will make the provenance no longer match for PKNCAresults objects.)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-9-6">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-9-6"></a></h3>
