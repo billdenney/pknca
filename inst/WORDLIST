@@ -90,10 +90,12 @@ cmin
 conc
 ctrough
 customizable
+dbplyr
 difftime
 doBy
 doi
 dplyr
+dtplyr
 durations
 entration
 extrap
@@ -141,6 +143,8 @@ signif
 signifString
 splitByData
 splitList
+src
+srcs
 summarization
 th
 thalf
