@@ -20,7 +20,7 @@ dplyr::filter
 dplyr::mutate
 
 join_maker_PKNCA <- function(join_fun) {
-  function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = FALSE) {
+  function(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ..., keep = FALSE) { # nocov
     dataname <- getDataName(x)
     x[[dataname]] <- join_fun(x=x[[dataname]], y=y, by = by, copy = copy, suffix = suffix, ..., keep = keep)
     x
