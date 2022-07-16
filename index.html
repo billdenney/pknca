@@ -139,39 +139,39 @@
 <h2 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
 </h2>
 <p>The current stable version of PKNCA is available on CRAN. You can install it and its dependencies using the following command:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"PKNCA"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"PKNCA"</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="from-github">From GitHub<a class="anchor" aria-label="anchor" href="#from-github"></a>
 </h2>
 <p>To install the development version from GitHub, type the following commands:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"billdenney/pknca"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"billdenney/pknca"</span>)</span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
 <h1 id="calculating-parameters">Calculating parameters<a class="anchor" aria-label="anchor" href="#calculating-parameters"></a>
 </h1>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load the package</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">library</span>(PKNCA)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># Set the business rule options with the PKNCA.options() function</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># Load your concentration-time data</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>conc_raw &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">"myconc.csv"</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># Load your dose data</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>dose_raw &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">"mydose.csv"</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># Put your concentration data into a PKNCAconc object</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>o_conc &lt;-<span class="st"> </span><span class="kw">PKNCAconc</span>(<span class="dt">data=</span>conc_raw,</span>
-<span id="cb3-10"><a href="#cb3-10"></a>                    <span class="dt">formula=</span>conc<span class="op">~</span>time<span class="op">|</span>treatment<span class="op">+</span>subject<span class="op">/</span>analyte)</span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co"># Put your dose data into a PKNCAdose object</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>o_dose &lt;-<span class="st"> </span><span class="kw">PKNCAdose</span>(<span class="dt">data=</span>dose_raw,</span>
-<span id="cb3-13"><a href="#cb3-13"></a>                    <span class="dt">formula=</span>dose<span class="op">~</span>time<span class="op">|</span>treatment<span class="op">+</span>subject)</span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co"># Combine the two (and automatically determine the intervals of</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co"># interest</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a>o_data &lt;-<span class="st"> </span><span class="kw">PKNCAdata</span>(o_conc, o_dose)</span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co"># Compute the NCA parameters</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>o_results &lt;-<span class="st"> </span><span class="kw">pk.nca</span>(o_data)</span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="co"># Summarize the results</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a><span class="kw">summary</span>(o_results)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PKNCA)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the business rule options with the PKNCA.options() function</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your concentration-time data</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>conc_raw <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"myconc.csv"</span>, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your dose data</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>dose_raw <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"mydose.csv"</span>, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Put your concentration data into a PKNCAconc object</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>o_conc <span class="ot">&lt;-</span> <span class="fu">PKNCAconc</span>(<span class="at">data=</span>conc_raw,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">formula=</span>conc<span class="sc">~</span>time<span class="sc">|</span>treatment<span class="sc">+</span>subject<span class="sc">/</span>analyte)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Put your dose data into a PKNCAdose object</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>o_dose <span class="ot">&lt;-</span> <span class="fu">PKNCAdose</span>(<span class="at">data=</span>dose_raw,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                    <span class="at">formula=</span>dose<span class="sc">~</span>time<span class="sc">|</span>treatment<span class="sc">+</span>subject)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the two (and automatically determine the intervals of</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># interest</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>o_data <span class="ot">&lt;-</span> <span class="fu">PKNCAdata</span>(o_conc, o_dose)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the NCA parameters</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>o_results <span class="ot">&lt;-</span> <span class="fu">pk.nca</span>(o_data)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the results</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(o_results)</span></code></pre></div>
 <p>More help is available in the function help files, and be sure to look at the PKNCA.options function for many choices to make PKNCA conform to your company’s business rules for calculations and summarization.</p>
 </div>
 <div class="section level1">

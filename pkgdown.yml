@@ -1,4 +1,4 @@
-pandoc: 2.7.3
+pandoc: 2.14.2
 pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
@@ -16,7 +16,7 @@ articles:
   Training-Session: Training-Session.html
   Writing-Parameter-Functions: Writing-Parameter-Functions.html
   unit-conversion: unit-conversion.html
-last_built: 2022-07-16T12:40Z
+last_built: 2022-07-16T18:20Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles

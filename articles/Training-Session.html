@@ -114,7 +114,7 @@
 
       
 
-      </header><script src="Training-Session_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>PKNCA Training Sessions</h1>
@@ -293,7 +293,7 @@
 </h2>
 <p>Creation of these materials were supported by funding from the Metrum Research Group.</p>
 <div class="section level3">
-<h3 id="introduction-to-pknca">Introduction to PKNCA<a class="anchor" aria-label="anchor" href="#introduction-to-pknca"></a>
+<h3 class="build smaller" id="introduction-to-pknca">Introduction to PKNCA<a class="anchor" aria-label="anchor" href="#introduction-to-pknca"></a>
 </h3>
 <p>PKNCA is a tool for calculating noncompartmental analysis (NCA) results for pharmacokinetic (PK) data.</p>
 <p>… but, you already knew that or you wouldn’t be here.</p>
@@ -319,7 +319,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="enjoy">Enjoy!<a class="anchor" aria-label="anchor" href="#enjoy"></a>
+<h3 class="build" id="enjoy">Enjoy!<a class="anchor" aria-label="anchor" href="#enjoy"></a>
 </h3>
 <p>I hope that you have a whale of a good time during this training.</p>
 <p><img src="https://apps-afsc.fisheries.noaa.gov/Quarterly/amj2005/images/killerwhales.jpg"></p>
@@ -397,7 +397,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="dataset-basics-example-concentration-data">Dataset Basics: Example concentration data<a class="anchor" aria-label="anchor" href="#dataset-basics-example-concentration-data"></a>
+<h3 class="columns-2" id="dataset-basics-example-concentration-data">Dataset Basics: Example concentration data<a class="anchor" aria-label="anchor" href="#dataset-basics-example-concentration-data"></a>
 </h3>
 <table style="width:53%;" class="table">
 <colgroup>
@@ -675,7 +675,7 @@
 <span><span class="va">o_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-do-a-simple-calculation-concentration-data">How do I do a simple calculation? Concentration data<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-concentration-data"></a>
+<h3 class="smaller" id="how-do-i-do-a-simple-calculation-concentration-data">How do I do a simple calculation? Concentration data<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-concentration-data"></a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load your dataset as a data.frame</span></span>
@@ -722,7 +722,7 @@
 <span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span>, data<span class="op">=</span><span class="va">d_conc</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-do-a-simple-calculation-dose-data">How do I do a simple calculation? Dose data<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-dose-data"></a>
+<h3 class="smaller" id="how-do-i-do-a-simple-calculation-dose-data">How do I do a simple calculation? Dose data<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-dose-data"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load your dataset as a data.frame</span></span>
@@ -761,7 +761,7 @@
 <span><span class="va">o_dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="va">Dose</span><span class="op">~</span><span class="va">Time</span>, data<span class="op">=</span><span class="va">d_dose</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-do-a-simple-calculation-calculate-results">How do I do a simple calculation? Calculate results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-calculate-results"></a>
+<h3 class="smaller" id="how-do-i-do-a-simple-calculation-calculate-results">How do I do a simple calculation? Calculate results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-calculate-results"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine the PKNCAconc and PKNCAdose objects.  You can add interval</span></span>
@@ -778,7 +778,7 @@
 <p>The individual results contain the columns for start time, end time, grouping variables (none in this example), parameter names, values, and if the value should be excluded.</p>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-do-a-simple-calculation-get-summary-results">How do I do a simple calculation? Get summary results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-get-summary-results"></a>
+<h3 class="smaller" id="how-do-i-do-a-simple-calculation-get-summary-results">How do I do a simple calculation? Get summary results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-get-summary-results"></a>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Look at summarized results</span></span>
@@ -830,7 +830,7 @@
 </table>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-do-a-simple-calculation-get-individual-results">How do I do a simple calculation? Get individual results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-get-individual-results"></a>
+<h3 class="smaller" id="how-do-i-do-a-simple-calculation-get-individual-results">How do I do a simple calculation? Get individual results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-get-individual-results"></a>
 </h3>
 <table style="width:62%;" class="table">
 <colgroup>
@@ -888,7 +888,7 @@
 <p><code>PKNCAconc</code> and <code>PKNCAdose</code> objects can optionally have groups. The groups in a <code>PKNCAdose</code> object must be the same or fewer than the groups in <code>PKNCAconc</code> object (for example, all subjects in a treatment arm may receive the same dose).</p>
 </div>
 <div class="section level3">
-<h3 id="what-is-an-interval-and-how-is-it-different-than-a-group">What is an “interval” and how is it different than a “group”?<a class="anchor" aria-label="anchor" href="#what-is-an-interval-and-how-is-it-different-than-a-group"></a>
+<h3 class="columns-2 smaller" id="what-is-an-interval-and-how-is-it-different-than-a-group">What is an “interval” and how is it different than a “group”?<a class="anchor" aria-label="anchor" href="#what-is-an-interval-and-how-is-it-different-than-a-group"></a>
 </h3>
 <p>A <strong>group</strong> separates one full concentration-time profile for a subject that you may ever want to consider at the same time. Usually, it groups by study, treatment, analyte, and subject (other groups can be useful depending on the study design).</p>
 <p>An <strong>interval</strong> selects a time range within a <strong>group</strong>.</p>
@@ -899,7 +899,7 @@
 <p><img src="Training-Session_files/figure-html/unnamed-chunk-17-1.png" width="384"></p>
 </div>
 <div class="section level3">
-<h3 id="common-data-management-requirements-before-sending-data-to-pknca">Common data management requirements before sending data to PKNCA<a class="anchor" aria-label="anchor" href="#common-data-management-requirements-before-sending-data-to-pknca"></a>
+<h3 class="smaller" id="common-data-management-requirements-before-sending-data-to-pknca">Common data management requirements before sending data to PKNCA<a class="anchor" aria-label="anchor" href="#common-data-management-requirements-before-sending-data-to-pknca"></a>
 </h3>
 <ol style="list-style-type: decimal">
 <li>Time must not be missing for <code>PKNCAconc</code> (if given to <code>PKNCAdose</code>, it must not be missing).</li>
@@ -920,7 +920,7 @@
 </ul>
 </div>
 <div class="section level3">
-<h3 id="setup-your-concentration-data">Setup your concentration data<a class="anchor" aria-label="anchor" href="#setup-your-concentration-data"></a>
+<h3 class="columns-2" id="setup-your-concentration-data">Setup your concentration data<a class="anchor" aria-label="anchor" href="#setup-your-concentration-data"></a>
 </h3>
 <ul>
 <li>Concentration data must be numeric</li>
@@ -934,7 +934,7 @@ A
 </div>
 </div>
 <div class="section level3">
-<h3 id="setup-your-concentration-data-1">Setup your concentration data<a class="anchor" aria-label="anchor" href="#setup-your-concentration-data-1"></a>
+<h3 class="columns-2" id="setup-your-concentration-data-1">Setup your concentration data<a class="anchor" aria-label="anchor" href="#setup-your-concentration-data-1"></a>
 </h3>
 <ul>
 <li>Concentration data must be numeric</li>
@@ -949,7 +949,7 @@ NA
 </div>
 </div>
 <div class="section level3">
-<h3 id="setup-your-concentration-data-2">Setup your concentration data<a class="anchor" aria-label="anchor" href="#setup-your-concentration-data-2"></a>
+<h3 class="columns-2" id="setup-your-concentration-data-2">Setup your concentration data<a class="anchor" aria-label="anchor" href="#setup-your-concentration-data-2"></a>
 </h3>
 <ul>
 <li>Concentration data must be numeric</li>
@@ -963,7 +963,7 @@ NA
 </div>
 </div>
 <div class="section level3">
-<h3 id="setup-your-dosing-data-if-you-have-it-and-even-if-you-dont">Setup your dosing data (if you have it and even if you don’t)<a class="anchor" aria-label="anchor" href="#setup-your-dosing-data-if-you-have-it-and-even-if-you-dont"></a>
+<h3 class="smaller" id="setup-your-dosing-data-if-you-have-it-and-even-if-you-dont">Setup your dosing data (if you have it and even if you don’t)<a class="anchor" aria-label="anchor" href="#setup-your-dosing-data-if-you-have-it-and-even-if-you-dont"></a>
 </h3>
 <p>Normal dosing data setup: <code>PKNCAdose(dose~time|actarm+usubjid, data=d_dose)</code></p>
 <ul>
@@ -1077,7 +1077,7 @@ NA
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>dose_time<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="calculate-without-dosing-data">Calculate without dosing data<a class="anchor" aria-label="anchor" href="#calculate-without-dosing-data"></a>
+<h3 class="build" id="calculate-without-dosing-data">Calculate without dosing data<a class="anchor" aria-label="anchor" href="#calculate-without-dosing-data"></a>
 </h3>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Treatment</span><span class="op">+</span><span class="va">Subject</span>, data<span class="op">=</span><span class="va">d_conc</span><span class="op">)</span></span>
@@ -1127,7 +1127,7 @@ NA
 <span><span class="co">## Caption: auclast, cmax, aucinf.obs, aucint.inf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="auc-considerations-with-pknca-13">AUC considerations with PKNCA (1/3)<a class="anchor" aria-label="anchor" href="#auc-considerations-with-pknca-13"></a>
+<h3 class="columns-2" id="auc-considerations-with-pknca-13">AUC considerations with PKNCA (1/3)<a class="anchor" aria-label="anchor" href="#auc-considerations-with-pknca-13"></a>
 </h3>
 <p><img src="Training-Session_files/figure-html/unnamed-chunk-23-1.png" width="100%"></p>
 <p class="forceBreak">
@@ -1140,7 +1140,7 @@ NA
 </ul>
 </div>
 <div class="section level3">
-<h3 id="auc-considerations-with-pknca-23">AUC considerations with PKNCA (2/3)<a class="anchor" aria-label="anchor" href="#auc-considerations-with-pknca-23"></a>
+<h3 class="columns-2" id="auc-considerations-with-pknca-23">AUC considerations with PKNCA (2/3)<a class="anchor" aria-label="anchor" href="#auc-considerations-with-pknca-23"></a>
 </h3>
 <p><img src="Training-Session_files/figure-html/unnamed-chunk-24-1.png" width="100%"></p>
 <p class="forceBreak">
@@ -1153,7 +1153,7 @@ NA
 </ul>
 </div>
 <div class="section level3">
-<h3 id="auc-considerations-with-pknca-23-1">AUC considerations with PKNCA (2/3)<a class="anchor" aria-label="anchor" href="#auc-considerations-with-pknca-23-1"></a>
+<h3 class="columns-2" id="auc-considerations-with-pknca-23-1">AUC considerations with PKNCA (2/3)<a class="anchor" aria-label="anchor" href="#auc-considerations-with-pknca-23-1"></a>
 </h3>
 <p><img src="Training-Session_files/figure-html/unnamed-chunk-25-1.png" width="100%"></p>
 <p class="forceBreak">
@@ -1216,7 +1216,7 @@ NA
 <p>For both ways of including/excluding data, it is defined by a column in the input data. The column is either <code>NA</code> or an empty string (<code>""</code>) to indicate “no” or any other text to indicate “yes”.</p>
 </div>
 <div class="section level3">
-<h3 id="exclude-data-points-overall">Exclude data points overall<a class="anchor" aria-label="anchor" href="#exclude-data-points-overall"></a>
+<h3 class="columns-2" id="exclude-data-points-overall">Exclude data points overall<a class="anchor" aria-label="anchor" href="#exclude-data-points-overall"></a>
 </h3>
 <p>Use the <code>exclude</code> argument for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> or <code><a href="../reference/PKNCAdose.html">PKNCAdose()</a></code>.</p>
 <p>When you use <code>exclude</code>, this is how you give your data to PKNCA:</p>
@@ -1308,7 +1308,7 @@ New phone. Who dis?
 </div>
 </div>
 <div class="section level3">
-<h3 id="digression-how-is-λz-automatically-calculated">Digression: How is λz automatically calculated?<a class="anchor" aria-label="anchor" href="#digression-how-is-%CE%BBz-automatically-calculated"></a>
+<h3 class="smaller" id="digression-how-is-λz-automatically-calculated">Digression: How is λz automatically calculated?<a class="anchor" aria-label="anchor" href="#digression-how-is-%CE%BBz-automatically-calculated"></a>
 </h3>
 <ul>
 <li>Filter the data from the first point after t<sub>max</sub> (or from t<sub>max</sub> if <code>allow.tmax.in.half.life=TRUE</code>) to t<sub>last</sub> and excluding BLQ in the middle.</li>
@@ -1384,7 +1384,7 @@ New phone. Who dis?
 <span><span class="co">## <span style="color: #BCBCBC;">1</span>     0   <span style="color: #BB0000;">Inf</span> cmax         0.5 <span style="color: #BB0000;">NA</span></span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="pknca-only-calculates-what-is-required-not-every-possible-parameter-2-of-2">PKNCA only calculates what is required, not every possible parameter (2 of 2)<a class="anchor" aria-label="anchor" href="#pknca-only-calculates-what-is-required-not-every-possible-parameter-2-of-2"></a>
+<h3 class="columns-2 smaller" id="pknca-only-calculates-what-is-required-not-every-possible-parameter-2-of-2">PKNCA only calculates what is required, not every possible parameter (2 of 2)<a class="anchor" aria-label="anchor" href="#pknca-only-calculates-what-is-required-not-every-possible-parameter-2-of-2"></a>
 </h3>
 <p>If you need AUC<sub>0-</sub>, PKNCA will calculate other required parameters behind the scenes.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -1426,7 +1426,7 @@ New phone. Who dis?
 <p>See the Selection of Calculation Intervals vignette in the <a href="http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1">Parameters Available for Calculation in an Interval section</a> for all available parameters.</p>
 </div>
 <div class="section level3">
-<h3 id="when-are-intervals-partly-ignored">When are intervals (partly) ignored?<a class="anchor" aria-label="anchor" href="#when-are-intervals-partly-ignored"></a>
+<h3 class="smaller" id="when-are-intervals-partly-ignored">When are intervals (partly) ignored?<a class="anchor" aria-label="anchor" href="#when-are-intervals-partly-ignored"></a>
 </h3>
 <p>Very few parameters reach outside of the <code>start</code> and <code>end</code> of an interval for additional information about what is being calculated. As of the writing of these training materials (PKNCA version 0.9.5), the only parameters that look outside are the <code>aucint</code> class of parameters.</p>
 <p>AUC<sub>int</sub> may look after the end of the interval to calculate the concentration at <code>end</code>.</p>
@@ -1438,7 +1438,7 @@ New phone. Who dis?
 <h2 id="control-your-results">Control your results<a class="anchor" aria-label="anchor" href="#control-your-results"></a>
 </h2>
 <div class="section level3">
-<h3 id="excluding-results-not-the-best-way">Excluding results (Not the best way)<a class="anchor" aria-label="anchor" href="#excluding-results-not-the-best-way"></a>
+<h3 class="smaller" id="excluding-results-not-the-best-way">Excluding results (Not the best way)<a class="anchor" aria-label="anchor" href="#excluding-results-not-the-best-way"></a>
 </h3>
 <p>A simple way to exclude a value from results is to convert the results to a data.frame and then drop the rows you don’t want:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
@@ -1461,7 +1461,7 @@ New phone. Who dis?
 <p>But, parameters derived from half-life remain.</p>
 </div>
 <div class="section level3">
-<h3 id="excluding-results-the-best-way-12">Excluding results (The best way, 1/2)<a class="anchor" aria-label="anchor" href="#excluding-results-the-best-way-12"></a>
+<h3 class="columns-2 smaller" id="excluding-results-the-best-way-12">Excluding results (The best way, 1/2)<a class="anchor" aria-label="anchor" href="#excluding-results-the-best-way-12"></a>
 </h3>
 <p>When you use the <code><a href="../reference/exclude.html">exclude()</a></code> function, parameters that are dependent on an excluded parameter will be excluded.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
@@ -1486,7 +1486,7 @@ New phone. Who dis?
 <span><span class="co">## <span style="color: #BCBCBC;">12</span>     0   <span style="color: #BB0000;">Inf</span> aucinf.obs           0.721  Span ratio &lt; 3</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="excluding-results-the-best-way-22">Excluding results (The best way, 2/2)<a class="anchor" aria-label="anchor" href="#excluding-results-the-best-way-22"></a>
+<h3 class="smaller" id="excluding-results-the-best-way-22">Excluding results (The best way, 2/2)<a class="anchor" aria-label="anchor" href="#excluding-results-the-best-way-22"></a>
 </h3>
 <p>Now, everything dependent on the half-life is excluded in summaries.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
@@ -1507,7 +1507,7 @@ New phone. Who dis?
 <h2 id="nca-related-calculations">NCA-related calculations<a class="anchor" aria-label="anchor" href="#nca-related-calculations"></a>
 </h2>
 <div class="section level3">
-<h3 id="superposition">Superposition<a class="anchor" aria-label="anchor" href="#superposition"></a>
+<h3 class="smaller columns-2" id="superposition">Superposition<a class="anchor" aria-label="anchor" href="#superposition"></a>
 </h3>
 <p>Superposition assumes linear kinetics and can convert a single-dose profile to multi-dose.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
@@ -1547,7 +1547,7 @@ New phone. Who dis?
 <p><img src="Training-Session_files/figure-html/unnamed-chunk-36-1.png" width="288"></p>
 </div>
 <div class="section level3">
-<h3 id="time-to-steady-state-calculations">Time-to-Steady-state calculations<a class="anchor" aria-label="anchor" href="#time-to-steady-state-calculations"></a>
+<h3 class="smaller" id="time-to-steady-state-calculations">Time-to-Steady-state calculations<a class="anchor" aria-label="anchor" href="#time-to-steady-state-calculations"></a>
 </h3>
 <p>Time-to-steady-state (tss) can be useful as a method to confirm that a subject is at steady-state. PKNCA can calculate tss using trough concentrations either with a monoexponential increase toward steady-state (preferred) or a linear trend back from the final point.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
@@ -1633,7 +1633,7 @@ New phone. Who dis?
 <div class="section level3">
 <h3 id="units-especially-clearance">Units (especially clearance)<a class="anchor" aria-label="anchor" href="#units-especially-clearance"></a>
 </h3>
-<p>PKNCA does not (yet) support units. The most common place where that becomes an issue is with clearance which ends up having unusual units like "mg/(hr*ng/mL)" (with units of mg for dosing, hr for time, and ng/mL for concentration).</p>
+<p>PKNCA does not (yet) support units. The most common place where that becomes an issue is with clearance which ends up having unusual units like “mg/(hr*ng/mL)” (with units of mg for dosing, hr for time, and ng/mL for concentration).</p>
 </div>
 <div class="section level3">
 <h3 id="data-imputation">Data imputation<a class="anchor" aria-label="anchor" href="#data-imputation"></a>
@@ -1665,7 +1665,7 @@ New phone. Who dis?
 <h2 id="hands-on">Hands-on<a class="anchor" aria-label="anchor" href="#hands-on"></a>
 </h2>
 <div class="section level3">
-<h3 id="single--and-multiple-dose-single-analyte-setup-the-underlying-datasets">Single- and Multiple-dose, single analyte: Setup the underlying datasets<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-setup-the-underlying-datasets"></a>
+<h3 class="smaller" id="single--and-multiple-dose-single-analyte-setup-the-underlying-datasets">Single- and Multiple-dose, single analyte: Setup the underlying datasets<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-setup-the-underlying-datasets"></a>
 </h3>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_conc</span> <span class="op">&lt;-</span></span>
@@ -1693,7 +1693,7 @@ New phone. Who dis?
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="single--and-multiple-dose-single-analyte-setup-the-concentration-and-dose-datasets">Single- and Multiple-dose, single analyte: Setup the concentration and dose datasets<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-setup-the-concentration-and-dose-datasets"></a>
+<h3 class="smaller" id="single--and-multiple-dose-single-analyte-setup-the-concentration-and-dose-datasets">Single- and Multiple-dose, single analyte: Setup the concentration and dose datasets<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-setup-the-concentration-and-dose-datasets"></a>
 </h3>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_single_multi_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">d_singledose_single_analyte</span>, <span class="va">d_multidose_single_analyte</span><span class="op">)</span></span>
@@ -1705,7 +1705,7 @@ New phone. Who dis?
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="single--and-multiple-dose-single-analyte-perform-basic-analysis">Single- and Multiple-dose, single analyte: Perform basic analysis<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-perform-basic-analysis"></a>
+<h3 class="smaller" id="single--and-multiple-dose-single-analyte-perform-basic-analysis">Single- and Multiple-dose, single analyte: Perform basic analysis<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-perform-basic-analysis"></a>
 </h3>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">d_single_multi_conc</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">Study_Part</span><span class="op">+</span><span class="va">Subject</span><span class="op">)</span></span>
@@ -1791,7 +1791,7 @@ New phone. Who dis?
 <code class="sourceCode R"><span><span class="va">o_nca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="single--and-multiple-dose-single-analyte-use-intervals-for-fewer-subjects">Single- and Multiple-dose, single analyte: Use intervals for fewer subjects<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-use-intervals-for-fewer-subjects"></a>
+<h3 class="smaller" id="single--and-multiple-dose-single-analyte-use-intervals-for-fewer-subjects">Single- and Multiple-dose, single analyte: Use intervals for fewer subjects<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-use-intervals-for-fewer-subjects"></a>
 </h3>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_intervals</span> <span class="op">&lt;-</span></span>
@@ -1834,7 +1834,7 @@ New phone. Who dis?
 <span><span class="co">## Caption: aucinf.obs: geometric mean and geometric coefficient of variation</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="single--and-multiple-dose-single-analyte-use-custom-intervals-per-subjects">Single- and Multiple-dose, single analyte: Use custom intervals per subjects<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-use-custom-intervals-per-subjects"></a>
+<h3 class="smaller" id="single--and-multiple-dose-single-analyte-use-custom-intervals-per-subjects">Single- and Multiple-dose, single analyte: Use custom intervals per subjects<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-use-custom-intervals-per-subjects"></a>
 </h3>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Find the time closest to 12 hours</span></span>
