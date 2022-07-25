@@ -3,11 +3,14 @@
 \name{mutate.PKNCAresults}
 \alias{mutate.PKNCAresults}
 \alias{mutate.PKNCAconc}
+\alias{mutate.PKNCAdose}
 \title{dplyr mutate-based modification for PKNCA}
 \usage{
 \method{mutate}{PKNCAresults}(.data, ...)
 
 \method{mutate}{PKNCAconc}(.data, ...)
+
+\method{mutate}{PKNCAdose}(.data, ...)
 }
 \arguments{
 \item{.data}{A data frame, data frame extension (e.g. a tibble), or a
@@ -32,6 +35,7 @@ dplyr mutate-based modification for PKNCA
 \seealso{
 Other dplyr verbs: 
 \code{\link{filter.PKNCAresults}()},
+\code{\link{group_by.PKNCAresults}()},
 \code{\link{inner_join.PKNCAresults}()}
 }
 \concept{dplyr verbs}

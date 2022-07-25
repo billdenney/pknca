@@ -9,6 +9,10 @@
 \alias{left_join.PKNCAconc}
 \alias{right_join.PKNCAconc}
 \alias{full_join.PKNCAconc}
+\alias{inner_join.PKNCAdose}
+\alias{left_join.PKNCAdose}
+\alias{right_join.PKNCAdose}
+\alias{full_join.PKNCAdose}
 \title{dplyr joins for PKNCA}
 \usage{
 \method{inner_join}{PKNCAresults}(
@@ -90,6 +94,46 @@
   ...,
   keep = FALSE
 )
+
+\method{inner_join}{PKNCAdose}(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...,
+  keep = FALSE
+)
+
+\method{left_join}{PKNCAdose}(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...,
+  keep = FALSE
+)
+
+\method{right_join}{PKNCAdose}(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...,
+  keep = FALSE
+)
+
+\method{full_join}{PKNCAdose}(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...,
+  keep = FALSE
+)
 }
 \arguments{
 \item{x, y}{A pair of data frames, data frame extensions (e.g. a tibble), or
@@ -134,6 +178,7 @@ dplyr joins for PKNCA
 \seealso{
 Other dplyr verbs: 
 \code{\link{filter.PKNCAresults}()},
+\code{\link{group_by.PKNCAresults}()},
 \code{\link{mutate.PKNCAresults}()}
 }
 \concept{dplyr verbs}

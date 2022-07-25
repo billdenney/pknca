@@ -3,11 +3,14 @@
 \name{filter.PKNCAresults}
 \alias{filter.PKNCAresults}
 \alias{filter.PKNCAconc}
+\alias{filter.PKNCAdose}
 \title{dplyr filtering for PKNCA}
 \usage{
 \method{filter}{PKNCAresults}(.data, ..., .preserve = FALSE)
 
 \method{filter}{PKNCAconc}(.data, ..., .preserve = FALSE)
+
+\method{filter}{PKNCAdose}(.data, ..., .preserve = FALSE)
 }
 \arguments{
 \item{.data}{A data frame, data frame extension (e.g. a tibble), or a
@@ -28,6 +31,7 @@ dplyr filtering for PKNCA
 }
 \seealso{
 Other dplyr verbs: 
+\code{\link{group_by.PKNCAresults}()},
 \code{\link{inner_join.PKNCAresults}()},
 \code{\link{mutate.PKNCAresults}()}
 }

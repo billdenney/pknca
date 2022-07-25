@@ -57,3 +57,18 @@ test_that("dplyr mutate", {
   mutated_manual$data <- mutate(mutated_manual$data, foo="bar")
   expect_equal(mutated, mutated_manual)
 })
+
+test_that("dplyr group_by and ungroup", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  myresult <- pk.nca(mydata)
+  
+  grouped <- group_by(myconc, treatment)
+  expect_s3_class(grouped$data, "grouped_df")
+  ungrouped <- ungroup(grouped)
+  expect_false("grouped_df" %in% class(ungrouped$data))
+  expect_s3_class(ungrouped$data, "data.frame")
+})
