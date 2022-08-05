@@ -173,15 +173,15 @@ has its own specific function.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>pk.calc.c0.method.logslope</code>: Semilog regress the first and second points
+<ul><li><p><code>pk.calc.c0.method.logslope()</code>: Semilog regress the first and second points
 after time.dose.  This method will return <code>NA</code> if the second
 <code>conc</code> after <code>time.dose</code> is 0 or greater than the first.</p></li>
-<li><p><code>pk.calc.c0.method.c0</code>: Use <code>C0</code> = <code>conc[time <!-- %in% -->
+<li><p><code>pk.calc.c0.method.c0()</code>: Use <code>C0</code> = <code>conc[time <!-- %in% -->
 time.dose]</code> if it is nonzero.</p></li>
-<li><p><code>pk.calc.c0.method.c1</code>: Use <code>C0</code> = <code>C1</code>.</p></li>
-<li><p><code>pk.calc.c0.method.set0</code>: Use <code>C0</code> = 0 (typically used for single
+<li><p><code>pk.calc.c0.method.c1()</code>: Use <code>C0</code> = <code>C1</code>.</p></li>
+<li><p><code>pk.calc.c0.method.set0()</code>: Use <code>C0</code> = 0 (typically used for single
 dose oral and IV infusion)</p></li>
-<li><p><code>pk.calc.c0.method.cmin</code>: Use <code>C0</code> = Cmin (typically used for
+<li><p><code>pk.calc.c0.method.cmin()</code>: Use <code>C0</code> = Cmin (typically used for
 multiple dose oral and IV infusion but not IV bolus)</p></li>
 </ul></div>
 
