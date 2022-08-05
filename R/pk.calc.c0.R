@@ -116,5 +116,21 @@ pk.calc.c0.method.set0 <- function(conc, time, time.dose=0, check=TRUE) {
 
 #' @describeIn pk.calc.c0 Use \code{C0} = Cmin (typically used for
 #' multiple dose oral and IV infusion but not IV bolus)
-pk.calc.c0.method.cmin <- function(conc, time, time.dose=0, check=TRUE)
+pk.calc.c0.method.cmin <- function(conc, time, time.dose=0, check=TRUE) {
   pk.calc.cmin(conc, check=check)
+}
+
+# Add the column to the interval specification
+add.interval.col("c0",
+                 FUN="pk.calc.c0",
+                 values=c(FALSE, TRUE),
+                 unit_type="conc",
+                 pretty_name="C0",
+                 desc="Initial concentration after an IV bolus",
+                 depends=NULL)
+PKNCA.set.summary(
+  name="c0",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
