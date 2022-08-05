@@ -44,9 +44,9 @@ mutate_PKNCA <- function(.data, ...) {
   .data[[dataname]] <- dplyr::mutate(.data[[dataname]], ...)
   .data
 }
-group_by_PKNCA <- function(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data)) {
+group_by_PKNCA <- function(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data)) {
   dataname <- getDataName(.data)
-  .data[[dataname]] <- dplyr::group_by(.data[[dataname]], ..., .add = FALSE, .drop = group_by_drop_default(.data))
+  .data[[dataname]] <- dplyr::group_by(.data[[dataname]], ..., .add = FALSE, .drop = .drop)
   .data
 }
 ungroup_PKNCA <- function(x, ...) {

@@ -14,3 +14,4 @@ cran-comments.md
 ^docs$
 ^pkgdown$
 ^Rprof.out$
+^data-raw$

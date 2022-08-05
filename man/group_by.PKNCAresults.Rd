@@ -9,11 +9,11 @@
 \alias{ungroup.PKNCAdose}
 \title{dplyr grouping for PKNCA}
 \usage{
-\method{group_by}{PKNCAresults}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+\method{group_by}{PKNCAresults}(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 
-\method{group_by}{PKNCAconc}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+\method{group_by}{PKNCAconc}(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 
-\method{group_by}{PKNCAdose}(.data, ..., .add = FALSE, .drop = group_by_drop_default(.data))
+\method{group_by}{PKNCAdose}(.data, ..., .add = FALSE, .drop = dplyr::group_by_drop_default(.data))
 
 \method{ungroup}{PKNCAresults}(x, ...)
 
