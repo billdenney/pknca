@@ -125,31 +125,31 @@ If all conc input are zero, then the AU(M)C is zero.
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.auc}: Compute the area under the curve
+\item \code{pk.calc.auc()}: Compute the area under the curve
 
-\item \code{pk.calc.auc.last}: Compute the AUClast.
+\item \code{pk.calc.auc.last()}: Compute the AUClast.
 
-\item \code{pk.calc.auc.inf}: Compute the AUCinf
+\item \code{pk.calc.auc.inf()}: Compute the AUCinf
 
-\item \code{pk.calc.auc.inf.obs}: Compute the AUCinf with the observed Clast.
+\item \code{pk.calc.auc.inf.obs()}: Compute the AUCinf with the observed Clast.
 
-\item \code{pk.calc.auc.inf.pred}: Compute the AUCinf with the predicted Clast.
+\item \code{pk.calc.auc.inf.pred()}: Compute the AUCinf with the predicted Clast.
 
-\item \code{pk.calc.auc.all}: Compute the AUCall.
+\item \code{pk.calc.auc.all()}: Compute the AUCall.
 
-\item \code{pk.calc.aumc}: Compute the area under the moment curve
+\item \code{pk.calc.aumc()}: Compute the area under the moment curve
 
-\item \code{pk.calc.aumc.last}: Compute the AUMClast.
+\item \code{pk.calc.aumc.last()}: Compute the AUMClast.
 
-\item \code{pk.calc.aumc.inf}: Compute the AUMCinf
+\item \code{pk.calc.aumc.inf()}: Compute the AUMCinf
 
-\item \code{pk.calc.aumc.inf.obs}: Compute the AUMCinf with the observed Clast.
+\item \code{pk.calc.aumc.inf.obs()}: Compute the AUMCinf with the observed Clast.
 
-\item \code{pk.calc.aumc.inf.pred}: Compute the AUMCinf with the predicted Clast.
+\item \code{pk.calc.aumc.inf.pred()}: Compute the AUMCinf with the predicted Clast.
 
-\item \code{pk.calc.aumc.all}: Compute the AUMCall.
+\item \code{pk.calc.aumc.all()}: Compute the AUMCall.
+
 }}
-
 \examples{
 myconc <- c(0, 1, 2, 1, 0.5, 0.25, 0)
 mytime <- c(0, 1, 2, 3, 4,   5,    6)

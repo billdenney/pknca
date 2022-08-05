@@ -58,19 +58,19 @@ has its own specific function.
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.c0.method.logslope}: Semilog regress the first and second points
+\item \code{pk.calc.c0.method.logslope()}: Semilog regress the first and second points
 after time.dose.  This method will return \code{NA} if the second
 \code{conc} after \code{time.dose} is 0 or greater than the first.
 
-\item \code{pk.calc.c0.method.c0}: Use \code{C0} = \code{conc[time %in%
+\item \code{pk.calc.c0.method.c0()}: Use \code{C0} = \code{conc[time %in%
 time.dose]} if it is nonzero.
 
-\item \code{pk.calc.c0.method.c1}: Use \code{C0} = \code{C1}.
+\item \code{pk.calc.c0.method.c1()}: Use \code{C0} = \code{C1}.
 
-\item \code{pk.calc.c0.method.set0}: Use \code{C0} = 0 (typically used for single
+\item \code{pk.calc.c0.method.set0()}: Use \code{C0} = 0 (typically used for single
 dose oral and IV infusion)
 
-\item \code{pk.calc.c0.method.cmin}: Use \code{C0} = Cmin (typically used for
+\item \code{pk.calc.c0.method.cmin()}: Use \code{C0} = Cmin (typically used for
 multiple dose oral and IV infusion but not IV bolus)
-}}
 
+}}

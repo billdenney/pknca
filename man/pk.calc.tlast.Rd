@@ -25,7 +25,7 @@ The time of the last observed concentration measurement
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.tfirst}: Determine the first concentration above
+\item \code{pk.calc.tfirst()}: Determine the first concentration above
 the limit of quantification.
-}}
 
+}}

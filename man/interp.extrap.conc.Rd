@@ -163,14 +163,14 @@ interpolation occurs from the data after dosing.
 }
 \section{Functions}{
 \itemize{
-\item \code{interpolate.conc}: Interpolate concentrations through Tlast (inclusive)
+\item \code{interpolate.conc()}: Interpolate concentrations through Tlast (inclusive)
 
-\item \code{extrapolate.conc}: Extrapolate concentrations after Tlast
+\item \code{extrapolate.conc()}: Extrapolate concentrations after Tlast
 
-\item \code{interp.extrap.conc.dose}: Interpolate and extrapolate 
+\item \code{interp.extrap.conc.dose()}: Interpolate and extrapolate 
 concentrations without interpolating or extrapolating beyond doses.
-}}
 
+}}
 \seealso{
 \code{\link{pk.calc.clast.obs}()},
   \code{\link{pk.calc.half.life}()}, \code{\link{pk.calc.c0}()}

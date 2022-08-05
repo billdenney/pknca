@@ -43,9 +43,9 @@ Only one of \code{mask} or \code{FUN} may be given.  If
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: The general case for data exclusion
-}}
+\item \code{exclude(default)}: The general case for data exclusion
 
+}}
 \examples{
 myconc <- PKNCAconc(data.frame(subject=1,
                                time=0:6,

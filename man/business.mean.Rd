@@ -47,23 +47,23 @@ the business rules.
 }
 \section{Functions}{
 \itemize{
-\item \code{business.sd}: Compute the standard deviation with business rules.
+\item \code{business.sd()}: Compute the standard deviation with business rules.
 
-\item \code{business.cv}: Compute the coefficient of variation with business rules.
+\item \code{business.cv()}: Compute the coefficient of variation with business rules.
 
-\item \code{business.geomean}: Compute the geometric mean with business rules.
+\item \code{business.geomean()}: Compute the geometric mean with business rules.
 
-\item \code{business.geocv}: Compute the geometric coefficient of variation with business rules.
+\item \code{business.geocv()}: Compute the geometric coefficient of variation with business rules.
 
-\item \code{business.min}: Compute the minimum with business rules.
+\item \code{business.min()}: Compute the minimum with business rules.
 
-\item \code{business.max}: Compute the maximum with business rules.
+\item \code{business.max()}: Compute the maximum with business rules.
 
-\item \code{business.median}: Compute the median with business rules.
+\item \code{business.median()}: Compute the median with business rules.
 
-\item \code{business.range}: Compute the range with business rules.
+\item \code{business.range()}: Compute the range with business rules.
+
 }}
-
 \seealso{
 \code{\link{pk.business}()}
 }

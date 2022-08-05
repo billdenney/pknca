@@ -53,9 +53,9 @@ Where:
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.sparse_auclast}: Compute the AUClast for sparse PK
-}}
+\item \code{pk.calc.sparse_auclast()}: Compute the AUClast for sparse PK
 
+}}
 \seealso{
 Other Sparse Methods: 
 \code{\link{as_sparse_pk}()},

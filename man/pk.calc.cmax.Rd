@@ -23,7 +23,7 @@ Determine maximum observed PK concentration
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.cmin}: Determine the minimum observed PK
+\item \code{pk.calc.cmin()}: Determine the minimum observed PK
 concentration
-}}
 
+}}

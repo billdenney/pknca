@@ -31,9 +31,9 @@ mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose =
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.mrt.iv}: MRT for an IV infusion
-}}
+\item \code{pk.calc.mrt.iv()}: MRT for an IV infusion
 
+}}
 \seealso{
 \code{\link{pk.calc.mrt.md}}
 }

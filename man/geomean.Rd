@@ -26,12 +26,12 @@ Compute the geometric mean, sd, and CV
 }
 \section{Functions}{
 \itemize{
-\item \code{geosd}: Compute the geometric standard deviation, \code{exp(sd(log(x)))}.
+\item \code{geosd()}: Compute the geometric standard deviation, \code{exp(sd(log(x)))}.
 
-\item \code{geocv}: Compute the geometric coefficient of variation,
+\item \code{geocv()}: Compute the geometric coefficient of variation,
 \code{sqrt(exp(sd(log(x))^2)-1)*100}.
-}}
 
+}}
 \examples{
 geomean(1:3)
 geosd(1:3)

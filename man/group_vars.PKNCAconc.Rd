@@ -20,6 +20,6 @@ Get grouping variables for a PKNCA object
 }
 \section{Functions}{
 \itemize{
-\item \code{group_vars.PKNCAdose}: Get group_vars for a PKNCAdose object
-}}
+\item \code{group_vars(PKNCAdose)}: Get group_vars for a PKNCAdose object
 
+}}

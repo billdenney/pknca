@@ -33,9 +33,9 @@ object.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{default}: If no data name exists, returns NULL.
-}}
+\item \code{getDataName(default)}: If no data name exists, returns NULL.
 
+}}
 \seealso{
 Other PKNCA object extractors: 
 \code{\link{getDepVar}()},
