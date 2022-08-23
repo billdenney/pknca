@@ -40,6 +40,14 @@ ggplot(d_sparse, aes(x=time, y=conc, group=id)) +
   scale_x_continuous(breaks=seq(0, 24, by=6))
 ```
 
+## Data Setup Note
+
+Sparse NCA requires that subject numbers (or animal numbers) are given, even if each subject only contributes a single sample.  The reason for this requirement is that which subject contributes to which time point changes the standard error calculation.  If all individuals contribute a single sample, a simple way to handle this is by setting a column with sequential numbers and giving that as the subject identifier:
+
+```{r eval=FALSE}
+d_sparse$id <- 1:nrow(d_sparse)
+```
+
 # Calculate!
 
 Setup PKNCA for calculations and then calculate!
