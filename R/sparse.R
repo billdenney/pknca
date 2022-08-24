@@ -333,7 +333,10 @@ pk.calc.sparse_auc <- function(conc, time, subject,
 #' @export
 pk.calc.sparse_auclast <- function(conc, time, subject, ..., options=list()) {
   if ("auc.type" %in% names(list(...))) {
-    stop("auc.type cannot be changed when calling pk.calc.sparse_auclast, please use pk.calc.sparse_auc")
+    rlang::abort(
+      message = "auc.type cannot be changed when calling pk.calc.sparse_auclast, please use pk.calc.sparse_auc",
+      class = "pknca_sparse_auclast_change_auclast"
+    )
   }
   ret <-
     pk.calc.sparse_auc(

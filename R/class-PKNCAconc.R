@@ -324,8 +324,8 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
                 length(unique(data_current[,x$subject])),
                 x$subject))
   }
-  if ("time.nominal" %in% names(x)) {
-    cat("Nominal time column is: ", x$time.nominal, "\n", sep="")
+  if ("time.nominal" %in% names(x$columns)) {
+    cat("Nominal time column is: ", x$columns$time.nominal, "\n", sep="")
   } else {
     cat("Nominal time column is not specified.\n")
   }

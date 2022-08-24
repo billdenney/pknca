@@ -171,6 +171,7 @@ generate.data <- function() {
                        (1-exp(log(1-0.9)*time/(tss.mean*exp(tss.re)))))
   tmpdata
 }
+
 # Note that this graphically represents the test
 # library(latticeExtra)
 # (xyplot(conc~time|treatment,
@@ -437,6 +438,47 @@ test_that("pk.tss.monoexponential", {
     ),
     data.frame(tss.monoexponential.single=NA_real_),
     info="Single-subject data fitting works when it does not converge."
+  )
+})
+
+test_that("pk.tss.monoexponential corner case tests", {
+  tmpdata <- generate.data()
+  # population output, only
+  expect_warning(
+    expect_equal(
+      pk.tss.monoexponential(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        output = "population",
+        verbose=FALSE
+      ),
+      data.frame(
+        subject=factor(as.character(seq_len(10))),
+        tss.monoexponential.population=4.57618156812974,
+        stringsAsFactors=FALSE
+      ),
+      tolerance=1e-4
+    )
+  )
+  # (Pseudo) single treatment, only
+  expect_equal(
+    pk.tss.monoexponential(
+      conc=tmpdata$conc,
+      time=tmpdata$time,
+      subject=tmpdata$subject,
+      time.dosing=0:14,
+      output = "population",
+      verbose=FALSE
+    ),
+    data.frame(
+      subject=factor(as.character(seq_len(10))),
+      tss.monoexponential.population=4.56157960341961,
+      stringsAsFactors=FALSE
+    ),
+    tolerance=1e-4
   )
 })
 

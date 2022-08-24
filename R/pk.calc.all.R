@@ -456,9 +456,10 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
               } else {
                 sprintf("'%s' mapped to '%s'", arg_formal, arg_mapped)
               }
-            stop(sprintf(
-              "Cannot find argument %s for NCA function '%s'",
-              arg_text, all_intervals[[n]]$FUN))
+            stop(sprintf( # nocov
+              "Cannot find argument %s for NCA function '%s'", # nocov
+              arg_text, all_intervals[[n]]$FUN) # nocov
+            ) # nocov
           }
         }
       }
