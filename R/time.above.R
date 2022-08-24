@@ -4,6 +4,10 @@
 #' Extrapolation outside of the measured times is not yet implemented.  The
 #' \code{method} may be changed by giving a named \code{method} argument, as
 #' well.
+#' 
+#' For \code{'lin up/log down'}, if \code{clast} is above \code{conc_above} and
+#' there are concentrations BLQ after that, linear down is used to extrapolate
+#' to the BLQ concentration (equivalent to AUCall).
 #'
 #' @inheritParams pk.calc.auxc
 #' @param conc_above The concentration to be above
@@ -47,13 +51,31 @@ pk.calc.time_above <- function(conc, time,
   if (nrow(data) < 2) {
     ret <- structure(NA_real_, exclude="Too few measured concentrations to assess time_above")
   } else if (method %in% 'lin up/log down') {
-    stop("'lin up/log down' is not yet implemented")
+    linear_up <- conc2 > conc1 | conc2 == conc1
+    linear_down <- conc2 == 0
+    log_down <- !linear_down & conc2 > 0
+    ret <-
+      sum((time2 - time1)[mask_both]) +
+      # log down
+      sum(
+        ((log(conc_above) - log(conc1))/(log(conc2) - log(conc1))*(time2 - time1))[mask_first & log_down]
+      ) +
+      # linear down
+      sum(
+        ((conc_above - conc1)/(conc2 - conc1)*(time2 - time1))[mask_first & linear_down]
+      ) +
+      # linear up
+      sum(
+        ((conc2 - conc_above)/(conc2 - conc1)*(time2 - time1))[mask_second & linear_up]
+      )
   } else if (method %in% 'linear') {
     ret <-
       sum((time2 - time1)[mask_both]) +
+      # linear down
       sum(
         ((conc_above - conc1)/(conc2 - conc1)*(time2 - time1))[mask_first]
       ) +
+      # linear up
       sum(
         ((conc2 - conc_above)/(conc2 - conc1)*(time2 - time1))[mask_second]
       )

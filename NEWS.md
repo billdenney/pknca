@@ -26,7 +26,7 @@ the dosing including dose amount and route.
       modify column headers programmatically, set `pretty_names=FALSE` when
       calling the `summary()` function.
 * `pk.calc.time_above()` now uses the default AUC calculation method for
-  interpolation of time above.
+  interpolation of time above.  And, it can use 'lin up/log down' interpolation.
 * PKNCA can now calculate parameters that require extra information by adding
   the extra information to the intervals data.frame.  For example, add
   `conc_above` as a column to the intervals to allow calculation of

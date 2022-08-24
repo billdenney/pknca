@@ -73,9 +73,25 @@ test_that("time_above linear", {
 })
 
 test_that("time_above with 'lin up/log down'", {
-  skip("not yet implemented")
   expect_equal(
     pk.calc.time_above(conc=c(6, 4, 5), time=1:3, conc_above=5, method='lin up/log down'),
-    0.5
+    (log(6) - log(5))/(log(6) - log(4))
+  )
+  expect_equal(
+    pk.calc.time_above(conc=c(6, 4, 5), time=(1:3)*2, conc_above=5, method='lin up/log down'),
+    (log(6) - log(5))/(log(6) - log(4))*2
+  )
+
+  expect_equal(
+    pk.calc.time_above(conc=c(6, 4, 6), time=1:3, conc_above=5, method='lin up/log down'),
+    (log(6) - log(5))/(log(6) - log(4)) + 0.5
+  )
+  expect_equal(
+    pk.calc.time_above(conc=c(6, 4, 6, 0), time=1:4, conc_above=5, method='lin up/log down'),
+    (log(6) - log(5))/(log(6) - log(4)) + 0.5 + 1/6
+  )
+  expect_equal(
+    pk.calc.time_above(conc=c(6, 0, 6, 0), time=1:4, conc_above=5, method='lin up/log down'),
+    1/6 + 1/6 + 1/6
   )
 })
