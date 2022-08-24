@@ -1,5 +1,3 @@
-context("Time to steady-state")
-
 test_that("pk.tss.data.prep", {
   conc.test <- 1:5
   time.test <- 0:4
@@ -119,7 +117,7 @@ test_that("pk.tss.data.prep", {
       treatment=factor(c("A", "F")),
       stringsAsFactors=FALSE
     ),
-    check.attributes=FALSE
+    ignore_attr = TRUE
   )
 
   # Check a multi-row output with treatments dropped
@@ -142,7 +140,7 @@ test_that("pk.tss.data.prep", {
       subject=factor(c("a", "f")),
       stringsAsFactors=FALSE
     ),
-    check.attributes=FALSE
+    ignore_attr = TRUE
   )
 })
 
@@ -396,8 +394,8 @@ test_that("pk.tss.stepwise.linear", {
 
 test_that("pk.tss.monoexponential", {
   tmpdata <- generate.data()
-  expect_equal(
-    expect_warning(
+  expect_warning(
+    expect_equal(
       pk.tss.monoexponential(
         conc=tmpdata$conc,
         time=tmpdata$time,
@@ -405,29 +403,27 @@ test_that("pk.tss.monoexponential", {
         treatment=tmpdata$treatment,
         time.dosing=0:14,
         verbose=FALSE
-      )
-    ),
-    data.frame(
-      subject=factor(as.character(c(1, 10, 2:9))),
-      tss.monoexponential.population=4.57618156812974,
-      tss.monoexponential.popind=c(
-        5.14156352865421, 4.64862524830397, 4.45956707917941,
-        4.41492203844343, 4.6782583033301, 4.0823047621517,
-        4.96242115751172, 4.52424147509819, 3.70338406668837,
-        5.1465280219363),
-      treatment=
-        factor(c("A", "B", "A", "A", "A", "A", "B", "B", "B", "B")),
-      tss.monoexponential.individual=c(
-        5.87784329336254, 4.71066285661623, 4.51882509145954,
-        3.91269286106442, 4.74475071729459, 3.99341726779716,
-        5.08737230904342, 4.50068650719192, 3.4876172020751,
-        5.35051537086801),
-      tss.monoexponential.single=4.56067603534,
-      stringsAsFactors=FALSE
-    ),
-    tolerance=1e-4,
-    check.attributes=FALSE,
-    info="pk.tss.monoexponential 1"
+      ),
+      data.frame(
+        subject=factor(as.character(c(1, 10, 2:9))),
+        tss.monoexponential.population=4.57618156812974,
+        tss.monoexponential.popind=c(
+          5.14156352865421, 4.64862524830397, 4.45956707917941,
+          4.41492203844343, 4.6782583033301, 4.0823047621517,
+          4.96242115751172, 4.52424147509819, 3.70338406668837,
+          5.1465280219363),
+        treatment=
+          factor(c("A", "B", "A", "A", "A", "A", "B", "B", "B", "B")),
+        tss.monoexponential.individual=c(
+          5.87784329336254, 4.71066285661623, 4.51882509145954,
+          3.91269286106442, 4.74475071729459, 3.99341726779716,
+          5.08737230904342, 4.50068650719192, 3.4876172020751,
+          5.35051537086801),
+        tss.monoexponential.single=4.56067603534,
+        stringsAsFactors=FALSE
+      ),
+      tolerance=1e-4
+    )
   )
   expect_equal(
     pk.tss.monoexponential(
@@ -455,14 +451,18 @@ test_that("pk.tss.monoexponential expected warnings and errors", {
                            tss.fraction=factor(1)),
     regexp="tss.fraction must be a number"
   )
-  expect_warning(
-    pk.tss.monoexponential(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           tss.fraction=c(0.5, 0.8)),
-    regexp="Only first value of tss.fraction is being used"
+  suppressWarnings(
+    expect_warning(
+      pk.tss.monoexponential(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        tss.fraction=c(0.5, 0.8)
+      ),
+      regexp="Only first value of tss.fraction is being used"
+    )
   )
   expect_error(
     pk.tss.monoexponential(conc=tmpdata$conc,
@@ -496,22 +496,27 @@ test_that("pk.tss.monoexponential expected warnings and errors", {
                            time.dosing=0:14,
                            tss.fraction=2),
     regexp="tss.fraction must be between 0 and 1, exclusive")
-  expect_warning(
-    pk.tss.monoexponential(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           tss.fraction=0.5),
-    regexp="tss.fraction is usually >= 0.8")
-  expect_warning(
-    pk.tss.monoexponential(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           tss.fraction=c(0.5, 0.8)),
-    regexp="Only first value of tss.fraction is being used"
+  suppressWarnings(
+    expect_warning(
+      pk.tss.monoexponential(conc=tmpdata$conc,
+                             time=tmpdata$time,
+                             subject=tmpdata$subject,
+                             treatment=tmpdata$treatment,
+                             time.dosing=0:14,
+                             tss.fraction=0.5),
+      regexp="tss.fraction is usually >= 0.8"
+    )
+  )
+  suppressWarnings(
+    expect_warning(
+      pk.tss.monoexponential(conc=tmpdata$conc,
+                             time=tmpdata$time,
+                             subject=tmpdata$subject,
+                             treatment=tmpdata$treatment,
+                             time.dosing=0:14,
+                             tss.fraction=c(0.5, 0.8)),
+      regexp="Only first value of tss.fraction is being used"
+    )
   )
   tmpdata_single_subject <- tmpdata[tmpdata$subject == 1 & tmpdata$treatment == "A", ]
   expect_warning(
@@ -537,23 +542,25 @@ test_that("pk.tss.monoexponential expected warnings and errors", {
 test_that("pk.tss", {
   # Ensure that pk.tss will go to the correct type of model
   tmpdata <- generate.data()
-  expect_equal(
-    expect_warning(
-      pk.tss(conc=tmpdata$conc,
-             time=tmpdata$time,
-             subject=tmpdata$subject,
-             treatment=tmpdata$treatment,
-             time.dosing=0:14,
-             verbose=FALSE,
-             type="monoexponential")
-    ),
-    expect_warning(
-      pk.tss.monoexponential(conc=tmpdata$conc,
-                             time=tmpdata$time,
-                             subject=tmpdata$subject,
-                             treatment=tmpdata$treatment,
-                             time.dosing=0:14,
-                             verbose=FALSE)
+  suppressWarnings(
+    expect_equal(
+      pk.tss(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        verbose=FALSE,
+        type="monoexponential"
+      ),
+      pk.tss.monoexponential(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        verbose=FALSE
+      )
     )
   )
 
@@ -573,32 +580,38 @@ test_that("pk.tss", {
                            verbose=FALSE))
 
   # pk.tss will calculate both if requested
-  expect_equal(
-    expect_warning(
-      pk.tss(conc=tmpdata$conc,
-             time=tmpdata$time,
-             subject=tmpdata$subject,
-             treatment=tmpdata$treatment,
-             time.dosing=0:14,
-             verbose=FALSE,
-             type=c("monoexponential", "stepwise.linear"))
-    ),
-    merge(
-      expect_warning(
-        pk.tss.monoexponential(conc=tmpdata$conc,
-                               time=tmpdata$time,
-                               subject=tmpdata$subject,
-                               treatment=tmpdata$treatment,
-                               time.dosing=0:14,
-                               verbose=FALSE)
+  suppressWarnings(
+    expect_equal(
+      pk.tss(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        verbose=FALSE,
+        type=c("monoexponential", "stepwise.linear")
       ),
-      pk.tss.stepwise.linear(conc=tmpdata$conc,
-                             time=tmpdata$time,
-                             subject=tmpdata$subject,
-                             treatment=tmpdata$treatment,
-                             time.dosing=0:14,
-                             verbose=FALSE),
-      all=TRUE))
+      merge(
+        pk.tss.monoexponential(
+          conc=tmpdata$conc,
+          time=tmpdata$time,
+          subject=tmpdata$subject,
+          treatment=tmpdata$treatment,
+          time.dosing=0:14,
+          verbose=FALSE
+        ),
+        pk.tss.stepwise.linear(
+          conc=tmpdata$conc,
+          time=tmpdata$time,
+          subject=tmpdata$subject,
+          treatment=tmpdata$treatment,
+          time.dosing=0:14,
+          verbose=FALSE
+        ),
+        all=TRUE
+      )
+    )
+  )
 })
 
 test_that("pk.tss.monoexponential with single-subject data", {

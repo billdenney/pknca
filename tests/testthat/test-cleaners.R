@@ -1,5 +1,3 @@
-context("Missing and BLQ data cleaners")
-
 test_that("clean.conc.na", {
   # Check that it gives errors for invalid conc.na values
   expect_error(clean.conc.na(conc=1, time=1, conc.na="foo"),
@@ -19,7 +17,7 @@ test_that("clean.conc.na", {
                data.frame(conc=1, time=1))
   expect_equal(clean.conc.na(conc=c(1, NA, 2), time=1:3, conc.na="drop"),
                data.frame(conc=1:2, time=c(1, 3)),
-               check.attributes=FALSE)
+               ignore_attr=TRUE)
 
   # It also works with a number as the conc.na value
   expect_warning(v3 <-
@@ -74,7 +72,7 @@ test_that("clean.conc.na", {
       extra=c("a", "c"),
       stringsAsFactors=FALSE
     ),
-    check.attributes=FALSE
+    ignore_attr=TRUE
   )
 })
 

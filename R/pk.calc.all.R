@@ -128,7 +128,10 @@ pk_nca_result_to_df <- function(group_info, result) {
   ret_nowarning <- ret[!mask_warning, ]
   # Generate the outputs
   if (nrow(ret_nowarning) == 0) {
-    warning("All results generated warnings or errors; no results generated")
+    rlang::warn(
+      message = "All results generated warnings or errors; no results generated",
+      class = "pknca_all_warnings_no_results"
+    )
     results <- data.frame()
   } else {
     results <- tidyr::unnest(ret_nowarning, cols="data_result")
@@ -188,10 +191,10 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
                              options, verbose=FALSE) {
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
     # No concentration data; potentially placebo data
-    return(rlang::warning_cnd(class="PKNCA_no_conc_data", message="No concentration data"))
+    return(rlang::warning_cnd(class="pknca_no_conc_data", message="No concentration data"))
   } else if (is.null(data_intervals) || (nrow(data_intervals) == 0)) {
     # No intervals; potentially placebo data
-    return(rlang::warning_cnd(class="PKNCA_no_intervals", message="No intervals for data"))
+    return(rlang::warning_cnd(class="pknca_no_intervals", message="No intervals for data"))
   }
   ret <- data.frame()
   for (i in seq_len(nrow(data_intervals))) {

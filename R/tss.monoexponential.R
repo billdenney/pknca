@@ -106,16 +106,21 @@ pk.tss.monoexponential <- function(...,
 tss.monoexponential.generate.formula <- function(data) {
   # Setup the correct ctrough.ss by treatment or not.
   if ("treatment" %in% names(data)) {
-    ctrough.by <-
-      list("Ctrough.ss by treatment"=list(
-        formula=ctrough.ss~treatment-1,
-        # Set the starting values for the ctrough.ss as the mean
-        # concentration by treatment
-        start=dplyr::summarize_(
-          dplyr::group_by_(data, "treatment"),
-          .dots=list(conc.mean=~mean(conc)))$conc.mean))
+    ctrough_by <-
+      list(
+        "Ctrough.ss by treatment"=
+          list(
+            formula=ctrough.ss~treatment-1,
+            # Set the starting values for the ctrough.ss as the mean
+            # concentration by treatment
+            start=dplyr::summarize(
+              dplyr::grouped_df(data, vars = "treatment"),
+              dplyr::across(.cols=dplyr::all_of("conc"), .fns = mean)
+            )$conc
+          )
+      )
   } else {
-    ctrough.by <-
+    ctrough_by <-
       list("Single Ctrough.ss"=list(
         formula=ctrough.ss~1,
         # Set the starting values for the ctrough.ss as the mean
@@ -140,7 +145,7 @@ tss.monoexponential.generate.formula <- function(data) {
          "Ctrough.ss"=list(formula=ctrough.ss~1|subject))
   # Return the list of parameters to test
   list(
-    ctrough.by=ctrough.by,
+    ctrough.by=ctrough_by,
     tss.by=tss.by,
     ranef.by=ranef.by
   )
@@ -308,7 +313,6 @@ pk.tss.monoexponential.population <- function(data,
 #' provided).  The columns will be named
 #' \code{tss.monoexponential.population} and/or
 #' \code{tss.monoexponential.popind}.
-#' @importFrom dplyr group_by_
 #' @importFrom nlme gnls
 #' @importFrom stats coef median
 pk.tss.monoexponential.individual <- function(data,
@@ -345,8 +349,7 @@ pk.tss.monoexponential.individual <- function(data,
   # Run by treatment or a single value for the full data frame
   data_maybe_grouped <-
     if ("treatment" %in% names(data)) {
-      data %>%
-        dplyr::group_by_("treatment")
+      dplyr::grouped_df(data, vars = "treatment")
     } else {
       data
     }
@@ -367,30 +370,26 @@ pk.tss.monoexponential.individual <- function(data,
       "individual" %in% output) {
     data_grouped <-
       if (all(c("treatment", "subject") %in% names(data))) {
-        data %>%
-          group_by_("treatment", "subject")
+        dplyr::grouped_df(data, vars = c("treatment", "subject"))
       } else if ("subject" %in% names(data)) {
-        data %>%
-          group_by_("subject")
+        dplyr::grouped_df(data, vars="subject")
       } else {
         stop("Subject must be specified to have subject-level fitting")
       }
-    ret.sub <-
-      data_grouped %>%
-      dplyr::summarize_(
-        .dots=list(
-          tss.monoexponential.individual=
-            ~fit_tss(
-              data.frame(
-                time=time,
-                tss.constant=tss.constant,
-                conc=conc,
-                stringsAsFactors=FALSE
-              )
+    ret_sub <- 
+      dplyr::summarize(
+        data_grouped,
+        tss.monoexponential.individual=
+          fit_tss(
+            data.frame(
+              time=time,
+              tss.constant=tss.constant,
+              conc=conc,
+              stringsAsFactors=FALSE
             )
-        )
+          )
       )
-    ret <- merge(ret, ret.sub, all=TRUE)
+    ret <- merge(ret, ret_sub, all=TRUE)
   }
   # Return the requested columns
   as.data.frame(

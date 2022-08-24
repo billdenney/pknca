@@ -1,6 +1,3 @@
-context("All NCA calculations")
-
-library(dplyr)
 source("generate.data.R")
 
 test_that("pk.nca", {
@@ -179,17 +176,15 @@ test_that("verbose pk.nca", {
   myconc <- PKNCAconc(tmpconc, formula=conc~time)
   mydose <- PKNCAdose(tmpdose, formula=dose~time)
   mydata <- PKNCAdata(myconc, mydose)
-  expect_message(
+  expect_message(expect_message(expect_message(
     suppressWarnings(pk.nca(mydata, verbose=TRUE)),
-    regexp="Setting up options"
+    regexp = "Setting up options"),
+    regexp = "Starting dense PK NCA calculations"),
+    regexp = "Combining completed dense PK calculation results"
   )
   expect_message(
-    suppressWarnings(pk.nca(mydata, verbose=TRUE)),
-    regexp="Starting dense PK NCA calculations."
-  )
-  expect_message(
-    suppressWarnings(pk.nca(mydata, verbose=TRUE)),
-    regexp="Combining completed dense PK calculation results."
+    suppressWarnings(pk.nca(mydata, verbose=FALSE)),
+    NA
   )
 })
 
@@ -339,14 +334,12 @@ test_that("No interval requested (e.g. for placebo)", {
           stringsAsFactors=FALSE
         )
     )
-  expect_warning(
-    pk.nca(mydata),
-    regexp="treatment=Trt 1; ID=1: No intervals for data"
-  )
-  expect_warning(
+  expect_warning(expect_warning(expect_warning(expect_warning(
     myresult <- pk.nca(mydata),
-    regexp="All results generated warnings or errors; no results generated",
-    info="No intervals apply to a group provides a message."
+    class = "pknca_no_intervals"),
+    class = "pknca_no_intervals"),
+    class = "pknca_no_conc_data"),
+    class = "pknca_all_warnings_no_results"
   )
   expect_equal(
     nrow(as.data.frame(myresult)),
@@ -497,9 +490,10 @@ test_that("calculate with sparse data", {
     )
   o_data_sparse <- PKNCAdata(o_conc_sparse, intervals=d_intervals)
   suppressMessages(
-    expect_warning(
+    expect_warning(expect_warning(
       o_nca <- pk.nca(o_data_sparse),
-      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+      class = "pknca_sparse_df_multi"),
+      class = "pknca_halflife_too_few_points"
     )
   )
   df_result <- as.data.frame(o_nca)
@@ -519,20 +513,24 @@ test_that("calculate with sparse data", {
     )
   o_data_sparse_mixed <- PKNCAdata(o_conc_sparse, intervals=d_intervals_mixed)
   suppressMessages(
-    expect_warning(
+    expect_warning(expect_warning(
       o_nca_sparse_mixed <- pk.nca(o_data_sparse_mixed),
-      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+      class = "pknca_sparse_df_multi"),
+      class = "pknca_sparse_df_multi"
     )
   )
   df_result_sparse_mixed <- as.data.frame(o_nca_sparse_mixed)
   expect_true("sparse_auclast" %in% df_result_sparse_mixed$PPTESTCD)
   expect_equal(df_result_sparse_mixed$PPORRES[df_result_sparse_mixed$PPTESTCD %in% "sparse_auclast"], rep(39.4689, 2))
-  expect_message(
-    expect_warning(
-      o_nca_sparse_mixed <- pk.nca(o_data_sparse_mixed, verbose=TRUE),
-      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
-    ),
-    regexp="No sparse calculations requested for an interval"
+  suppressMessages(
+    expect_message(
+      expect_warning(expect_warning(
+        o_nca_sparse_mixed <- pk.nca(o_data_sparse_mixed, verbose=TRUE),
+        class = "pknca_sparse_df_multi"),
+        class = "pknca_sparse_df_multi"
+      ),
+      regexp="No sparse calculations requested for an interval"
+    )
   )
 
   # Sparse data with multiple treatments, confirm the correct number of rows of
@@ -555,9 +553,12 @@ test_that("calculate with sparse data", {
   o_dose_sparse_multi_trt <- PKNCAdose(d_dose_sparse_multi_trt, dose~time|dose_grp+id)
   o_data_sparse_multi_trt <- PKNCAdata(o_conc_sparse_multi_trt, o_dose_sparse_multi_trt, intervals=d_intervals_mixed)
   suppressMessages(
-    expect_warning(
+    expect_warning(expect_warning(expect_warning(expect_warning(
       o_nca_sparse_multi_trt <- pk.nca(o_data_sparse_multi_trt),
-      regexp="Cannot yet calculate sparse degrees of freedom for multiple samples per subject"
+      class = "pknca_sparse_df_multi"),
+      class = "pknca_sparse_df_multi"),
+      class = "pknca_sparse_df_multi"),
+      class = "pknca_sparse_df_multi"
     )
   )
   expect_equal(nrow(as.data.frame(o_nca_sparse_multi_trt)), 16)

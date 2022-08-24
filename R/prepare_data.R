@@ -94,7 +94,7 @@ prepare_PKNCA_general <- function(.dat, cols, exclude, group_cols, data_name, in
     )
   # data_conc is used since it is reserved, and it will be replaced on the next
   # line.
-  as_nest <- tidyr::nest(data_standard, data_conc=!intermediate_group_cols)
+  as_nest <- tidyr::nest(data_standard, data_conc=!dplyr::all_of(intermediate_group_cols))
   names(as_nest)[names(as_nest) %in% "data_conc"] <- data_name
   ret <- restore_group_col_names(as_nest, group_cols=group_cols)
   ret
@@ -267,7 +267,7 @@ prepare_PKNCAintervals <- function(.dat, vars=character(0)) {
   if (length(vars) == 0) {
     as_nest <- tibble::tibble(data_intervals=list(.dat))
   } else {
-    as_nest <- tidyr::nest(.dat, data_intervals=!vars)
+    as_nest <- tidyr::nest(.dat, data_intervals=!dplyr::all_of(vars))
   }
   as_nest
 }

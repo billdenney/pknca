@@ -1,5 +1,3 @@
-context("Superposition")
-
 # The requirements for superposition are defined below to enable
 # test-driven development.
 
@@ -311,10 +309,12 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              steady.state.tol=2),
                regexp="steady.state.tol must be between 0 and 1, exclusive.")
-  expect_warning(
-    superposition(conc=c(0, 2), time=c(0, 1), tau=24, steady.state.tol=0.1),
-    regexp="steady.state.tol is usually <= 0.01",
-    fixed=TRUE
+  suppressWarnings(
+    expect_warning(
+      superposition(conc=c(0, 2), time=c(0, 1), tau=24, steady.state.tol=0.1),
+      regexp="steady.state.tol is usually <= 0.01",
+      fixed=TRUE
+    )
   )
   
   # Combinations of lambda.z, clast.pred, tlast

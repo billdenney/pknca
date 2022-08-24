@@ -62,7 +62,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   # Generate the conc element
   if (inherits(data.conc, "PKNCAconc")) {
     if (!missing(formula.conc)) {
-      warning("data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
+      rlang::warn(
+        message = "data.conc was given as a PKNCAconc object.  Ignoring formula.conc",
+        class = "pknca_dataconc_formulaconc"
+      )
     }
     ret$conc <- data.conc
   } else {
@@ -75,7 +78,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     ret$dose <- NA
   } else if (inherits(data.dose, "PKNCAdose")) {
     if (!missing(formula.dose))
-      warning("data.dose was given as a PKNCAdose object.  Ignoring formula.dose")
+      rlang::warn(
+        message = "data.dose was given as a PKNCAdose object.  Ignoring formula.dose",
+        class = "pknca_dataconc_formuladose"
+      )
     ret$dose <- data.dose
   } else {
     ret$dose <- PKNCAdose(data.dose, formula.dose)
@@ -140,7 +146,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
           warning(warning_prefix, "No intervals generated likely due to limited concentration data")
         }
       } else {
-        warning(warning_prefix, "No intervals generated due to no concentration data")
+        rlang::warn(
+          message = paste(warning_prefix, "No intervals generated due to no concentration data"),
+          class = "pknca_no_intervals_generated"
+        )
       }
     }
     intervals <-

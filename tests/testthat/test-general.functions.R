@@ -1,5 +1,3 @@
-context("Check Conversion")
-
 test_that("check.conversion", {
   good <- LETTERS
   expect_equal(check.conversion(good, as.character), good)
@@ -14,8 +12,6 @@ test_that("check.conversion", {
                as.character(good))
 })
 
-context("Check concentration and time inputs")
-
 test_that("check.conc.time", {
   # Check all the invalid cases
   expect_warning(check.conc.time(conc=-1),
@@ -25,7 +21,7 @@ test_that("check.conc.time", {
   expect_warning(check.conc.time(conc=c(NA, -1, 1)),
                  regexp="Negative concentrations found")
   expect_warning(check.conc.time(conc=NA),
-                 regexp="All concentration data is missing")
+                 regexp="All concentration data are missing")
   expect_error(check.conc.time(time=NA),
                regexp="Time may not be NA")
   expect_error(check.conc.time(time=c(0, 0)),
@@ -45,8 +41,6 @@ test_that("check.conc.time", {
   expect_error(check.conc.time(time=factor("A")),
                regexp="Time data must be numeric and not a factor")
 })
-
-context("Rounding to string values")
 
 test_that("Rounding", {
   expect_error(roundString(1, c(2, 3)),
@@ -103,9 +97,13 @@ test_that("Significance", {
   expect_equal(signifString(123456.05, 3), "123000")
   expect_warning(signifString(123456.05, 3, si_range=6),
                 regexp="The si_range argument is deprecated, please use sci_range")
-  expect_equal(signifString(123456.05, 3, sci_range=6),
-               expect_warning(signifString(123456.05, 3, si_range=6)),
-               info="si_range and sci_range arguments are treated equally.")
+  expect_warning(
+    expect_equal(
+      signifString(123456.05, 3, sci_range=6),
+      signifString(123456.05, 3, si_range=6),
+      info="si_range and sci_range arguments are treated equally."
+    )
+  )
   expect_equal(signifString(123456.05, 3, sci_range=6), "123000")
   expect_equal(signifString(123456.05, 3, sci_range=5), "1.23e5")
   expect_equal(signifString(-123000.05, 3, sci_range=5), "-1.23e5")
@@ -139,28 +137,32 @@ test_that("Significance", {
                info="Different numbers of digits for rounding work with signifString")
   
   # Data Frames
-  expect_equal(signifString(data.frame(A=c(0, 1.111111),
-                                       B=factor(LETTERS[1:2]),
-                                       C=LETTERS[1:2],
-                                       stringsAsFactors=FALSE),
-                            digits=3),
-               data.frame(A=c("0.000", "1.11"),
-                          B=factor(LETTERS[1:2]),
-                          C=LETTERS[1:2],
-                          stringsAsFactors=FALSE),
-               check.attributes=FALSE,
-               info="Data frame significance is calculated correctly")
-  expect_equal(signifString(data.frame(A=c(0, 1.111111),
-                                       B=factor(LETTERS[1:2]),
-                                       C=LETTERS[1:2],
-                                       stringsAsFactors=FALSE),
-                            digits=4),
-               data.frame(A=c("0.0000", "1.111"),
-                          B=factor(LETTERS[1:2]),
-                          C=LETTERS[1:2],
-                          stringsAsFactors=FALSE),
-               check.attributes=FALSE,
-               info="Data frame digits are respected")
+  expect_equal(
+    signifString(data.frame(A=c(0, 1.111111),
+                            B=factor(LETTERS[1:2]),
+                            C=LETTERS[1:2],
+                            stringsAsFactors=FALSE),
+                 digits=3),
+    data.frame(A=c("0.000", "1.11"),
+               B=factor(LETTERS[1:2]),
+               C=LETTERS[1:2],
+               stringsAsFactors=FALSE),
+    ignore_attr=TRUE,
+    info="Data frame significance is calculated correctly"
+  )
+  expect_equal(
+    signifString(data.frame(A=c(0, 1.111111),
+                            B=factor(LETTERS[1:2]),
+                            C=LETTERS[1:2],
+                            stringsAsFactors=FALSE),
+                 digits=4),
+    data.frame(A=c("0.0000", "1.111"),
+               B=factor(LETTERS[1:2]),
+               C=LETTERS[1:2],
+               stringsAsFactors=FALSE),
+    ignore_attr=TRUE,
+    info="Data frame digits are respected"
+  )
 })
 
 test_that("signifString stops when bad arguments are passed", {

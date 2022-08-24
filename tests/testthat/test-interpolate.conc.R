@@ -527,7 +527,7 @@ test_that("extrapolate.conc", {
         time.out=2,
         extrap.method="AUCinf"
       ),
-    regexp="All concentration data is missing"
+    regexp="All concentration data are missing"
   )
   expect_equal(v1, NA)
 
@@ -624,17 +624,18 @@ test_that("extrapolate.conc", {
   )
 
   # Extrapolating with all NA is NA.
-  expect_equal(
-    expect_warning(
+  expect_warning(
+    expect_equal(
       extrapolate.conc(
         conc=rep(NA, 3),
         time=1:3,
         time.out=2.5,
         lambda.z=NA,
         extrap.method="AUCinf"
-      )
+      ),
+      NA
     ),
-    NA
+    class = "pknca_conc_all_missing"
   )
 
   # Ensure that extrapolation beyond the last point works if the last point is 0
@@ -724,16 +725,16 @@ test_that("interp.extrap.conc", {
   )
 
   # Ensure that NA for time.out results in NA output
-  expect_equal(
-    expect_warning(
+  expect_warning(
+    expect_equal(
       interp.extrap.conc(
         conc=c(0, 1, 0.5, 1, 0),
         time=0:4,
         time.out=c(1.5, NA),
         interp.method="lin up/log down"
-      )
-    ),
-    c(exp(mean(log(c(1, 0.5)))), NA)
+      ),
+      c(exp(mean(log(c(1, 0.5)))), NA)
+    )
   )
 
   # Ensure a warning with NA for time.out

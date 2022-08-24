@@ -1,5 +1,3 @@
-context("exclude")
-
 source("generate.data.R")
 
 test_that("setExcludeColumn", {
@@ -60,10 +58,12 @@ test_that("setExcludeColumn", {
                info="setExcludeColumn gives error on non-character value")
 
   # Zero-row data works
-  expect_equal(
-    expect_warning(setExcludeColumn(list(data=data.frame()))),
-    list(data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
-         exclude="exclude"),
+  expect_warning(
+    expect_equal(
+      setExcludeColumn(list(data=data.frame())),
+      list(data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
+         exclude="exclude")
+    ),
     info="setExcludeColumn works with zero-row data"
   )
   expect_equal(
@@ -230,15 +230,17 @@ test_that("normalize_exclude makes blanks into NA_character_", {
 test_that("multiple exclusions for the same row provide all the reasons (fix #113)", {
   my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   my_conc$exclude <- c("", rep(NA_character_, nrow(my_conc) - 1))
-  result_obj <-
-    pk.nca(PKNCAdata(
-      PKNCAconc(
-        my_conc,
-        formula=conc~time|treatment+ID,
-        exclude="exclude"
-      ),
-      intervals=data.frame(start=0, end=Inf, cmax=TRUE)
-    ))
+  suppressMessages(
+    result_obj <-
+      pk.nca(PKNCAdata(
+        PKNCAconc(
+          my_conc,
+          formula=conc~time|treatment+ID,
+          exclude="exclude"
+        ),
+        intervals=data.frame(start=0, end=Inf, cmax=TRUE)
+      ))
+  )
   result_excl1 <-
     exclude(
       result_obj,

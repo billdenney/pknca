@@ -44,12 +44,18 @@ check.conversion <- function(x, FUN, ...) {
 check.conc.time <- function(conc, time, monotonic.time=TRUE) {
   if (!missing(conc)) {
     if (length(conc) == 0) {
-      warning("No concentration data given")
+      rlang::warn(
+        message = "No concentration data given",
+        class = "pknca_conc_none"
+      )
     } else if ((!is.numeric(conc) | is.factor(conc)) &
                    !(is.logical(conc) & all(is.na(conc)))) {
       stop("Concentration data must be numeric and not a factor")
     } else if (all(is.na(conc))) {
-      warning("All concentration data is missing")
+      rlang::warn(
+        message = "All concentration data are missing",
+        class = "pknca_conc_all_missing"
+      )
     } else if (any(!is.na(conc) & as.numeric(conc) < 0)) {
       # as.numeric(conc) is required for compatibility with units
       warning("Negative concentrations found")
@@ -57,7 +63,10 @@ check.conc.time <- function(conc, time, monotonic.time=TRUE) {
   }
   if (!missing(time)) {
     if (length(time) == 0) {
-      warning("No time data given")
+      rlang::warn(
+        message = "No time data given",
+        class = "pknca_time_none"
+      )
     } else if (any(is.na(time))) {
       stop("Time may not be NA")
     } else if (!is.numeric(time) | is.factor(time)) {

@@ -1,5 +1,3 @@
-context("C0 Calculations")
-
 test_that("pk.calc.c0", {
   # Input checks
   expect_error(pk.calc.c0(5:1, 4:0),
@@ -59,8 +57,10 @@ test_that("pk.calc.c0.method.c1", {
                info="works when time.dose matches a nonzero conc and skips over NA")
   expect_equal(pk.calc.c0.method.c1(c(2, NA, 0.5), 3:5, time.dose=30), NA,
                info="returns NA when time.dose is after the last measurement")
-  expect_warning(v1 <- pk.calc.c0.method.c1(rep(NA, 3), 3:5, time.dose=1),
-                 regexp="All concentration data is missing")
+  expect_warning(
+    v1 <- pk.calc.c0.method.c1(rep(NA, 3), 3:5, time.dose=1),
+    regexp="All concentration data are missing"
+  )
   expect_equal(v1, NA,
                info="returns NA when all inputs are NA")
 })

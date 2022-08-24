@@ -1,5 +1,3 @@
-context("Class generation-general")
-
 getDataName.list <- function(object) "data"
 
 test_that("getColumnValueorNot", {

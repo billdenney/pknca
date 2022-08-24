@@ -1,5 +1,3 @@
-context("Business rule functions")
-
 test_that("geomean", {
   # Test normal, nonzero scalars
   expect_equal(geomean(5), 5)

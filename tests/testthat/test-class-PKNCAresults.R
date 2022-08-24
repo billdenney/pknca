@@ -1,6 +1,3 @@
-context("Class generation-PKNCAresults")
-
-library(dplyr)
 source("generate.data.R")
 
 test_that("PKNCAresults object creation", {
@@ -488,12 +485,12 @@ test_that("ctrough is correctly calculated", {
           ctrough=TRUE
         )
     )
-  expect_equal(
-    expect_message(
+  expect_message(
+    expect_equal(
       as.data.frame(pk.nca(data_obj))$PPORRES,
-      regexp="No dose information provided",
+      c(2^-6, NA_real_)
     ),
-    c(2^-6, NA_real_)
+    regexp="No dose information provided"
   )
 })
 
@@ -510,12 +507,12 @@ test_that("single subject, ungrouped data works (#74)", {
           cmax=TRUE
         )
     )
-  expect_equal(
-    expect_message(
+  expect_message(
+    expect_equal(
       as.data.frame(pk.nca(data_obj))$PPORRES,
-      regexp="No dose information provided",
+      1
     ),
-    1
+    regexp="No dose information provided",
   )
 })
 
@@ -543,7 +540,7 @@ test_that("units work for calculations and summaries with one set of units acros
     unname(summary(myresult)),
     unname(summary(myresult_units_orig)),
     # The caption attribute will differ
-    check.attributes = FALSE
+    ignore_attr = TRUE
   )
   expect_equal(
     summary(myresult_units_orig) %>% dplyr::select(-`Cmax (ng/mL)`),
@@ -565,7 +562,7 @@ test_that("units work for calculations and summaries with one set of units acros
     as.data.frame(myresult, out.format="wide"),
     # The difference is the addition of units to the column names
     df_wide_orig %>%
-      rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
+      dplyr::rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
   )
   expect_true(
     all(

@@ -1,5 +1,3 @@
-context("Half-life")
-
 test_that("pk.calc.half.life", {
   # Confirm that half-life is correctly calculated with a simple
   # exponential decay
@@ -176,8 +174,8 @@ test_that("half-life manual point selection", {
 })
 
 test_that("two-point half-life succeeds (fix #114)", {
-  expect_equal(
-    expect_warning(
+  expect_warning(expect_warning(
+    expect_equal(
       pk.calc.half.life(
         conc=c(1, 0.5),
         time=c(0, 1),
@@ -185,19 +183,20 @@ test_that("two-point half-life succeeds (fix #114)", {
         allow.tmax.in.half.life=TRUE,
         check=FALSE
       ),
-      regexp="n must be > 2 for adj.r.squared"
+      data.frame(
+        lambda.z=log(2),
+        r.squared=1,
+        adj.r.squared=NA_real_,
+        lambda.z.time.first=0,
+        lambda.z.n.points=2,
+        clast.pred=0.5,
+        half.life=1,
+        span.ratio=1,
+        tmax=0,
+        tlast=1
+      )
     ),
-    data.frame(
-      lambda.z=log(2),
-      r.squared=1,
-      adj.r.squared=NA_real_,
-      lambda.z.time.first=0,
-      lambda.z.n.points=2,
-      clast.pred=0.5,
-      half.life=1,
-      span.ratio=1,
-      tmax=0,
-      tlast=1
-    )
+    class = "pknca_halflife_2points"),
+    class = "pknca_adjr2_2points"
   )
 })

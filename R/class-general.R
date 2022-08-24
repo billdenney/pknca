@@ -110,7 +110,10 @@ setAttributeColumn <- function(object, attr_name, col_or_value, col_name, defaul
   if (missing(col_name)) {
     col_name <- attr_name
     if (attr_name %in% names(object[[dataname]])) {
-      message("Found column named ", attr_name, ", using it for the attribute of the same name.")
+      rlang::inform(
+        message = paste0("Found column named ", attr_name, ", using it for the attribute of the same name."),
+        class = paste0("pknca_foundcolumn_", attr_name)
+      )
     }
   } else if (!is.character(col_name) | (length(col_name) != 1)) {
     stop("col_name must be a character scalar.")

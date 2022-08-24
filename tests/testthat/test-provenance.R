@@ -1,5 +1,3 @@
-context("Provenance")
-
 test_that("provenance", {
   a <- addProvenance("a")
   # It may take a bit of time between setting the value in addProvenance
@@ -38,9 +36,11 @@ test_that("provenance", {
   expect_output(print.provenance(fakeprov),
                 regexp="Provenance hash a generated on b with c.",
                 info="Provenance prints correctly")
-  expect_equal(
-    print.provenance(fakeprov),
-    invisible("Provenance hash a generated on b with c."),
-    info="Provenance printing returns an invisible string with the information in it."
+  expect_output(
+    expect_equal(
+      print.provenance(fakeprov),
+      invisible("Provenance hash a generated on b with c."),
+      info="Provenance printing returns an invisible string with the information in it."
+    )
   )
 })

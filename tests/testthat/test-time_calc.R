@@ -1,5 +1,3 @@
-context("time_calc()")
-
 test_that("Numeric time_calc() is successful with all scalar combinations of number and NA and numeric order.", {
   expect_equal(
     time_calc(time_event=0, time_obs=0),
@@ -69,13 +67,13 @@ test_that("Numeric time_calc() is successful with all scalar combinations of num
     regexp="Both `time_event` and `time_obs` must be the same class (numeric).",
     fixed=TRUE
   )
-  expect_equal(
-    expect_warning(
+  expect_warning(
+    expect_equal(
       time_calc(time_event=numeric(0), time_obs=1),
-      regexp="No events provided",
-      fixed=TRUE
+      time_calc(time_event=NA_real_, time_obs=1)
     ),
-    time_calc(time_event=NA_real_, time_obs=1)
+    regexp="No events provided",
+    fixed=TRUE
   )
 })
 

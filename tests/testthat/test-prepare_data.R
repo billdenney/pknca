@@ -1,4 +1,3 @@
-library(dplyr)
 source("generate.data.R")
 
 # prepare_* ####
@@ -98,12 +97,14 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
   )
   # When dosing is not provided
   o_data_no_dose <- PKNCAdata(o_conc, intervals=PKNCA.options("single.dose.aucs")[1,])
-  expect_equal(
-    full_join_PKNCAdata(o_data_no_dose),
-    tidyr::crossing(
-      prepare_PKNCAconc(o_conc),
-      tibble(data_dose=list(NA)),
-      data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")[1,]))
+  suppressMessages(
+    expect_equal(
+      full_join_PKNCAdata(o_data_no_dose),
+      tidyr::crossing(
+        prepare_PKNCAconc(o_conc),
+        tibble(data_dose=list(NA)),
+        data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")[1,]))
+      )
     )
   )
 })
