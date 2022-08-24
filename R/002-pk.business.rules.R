@@ -46,7 +46,6 @@ pk.business <- function(FUN,
 #' @examples
 #' geomean(1:3)
 #' @export
-#' @importFrom stats na.omit
 geomean <- function(x, na.rm=FALSE) {
   if (na.rm)
     x <- stats::na.omit(x)
@@ -67,7 +66,6 @@ geomean <- function(x, na.rm=FALSE) {
 #' @examples
 #' geosd(1:3)
 #' @export
-#' @importFrom stats sd
 geosd <- function(x, na.rm=FALSE)
   exp(stats::sd(log(x), na.rm=na.rm))
 
@@ -77,7 +75,6 @@ geosd <- function(x, na.rm=FALSE)
 #' @examples
 #' geocv(1:3)
 #' @export
-#' @importFrom stats sd
 geocv <- function(x, na.rm=FALSE)
   sqrt(exp(stats::sd(log(x), na.rm=na.rm)^2)-1)*100
 
@@ -96,13 +93,11 @@ business.mean <- pk.business(mean, max.missing=~PKNCA::PKNCA.Options("max.missin
 #' @describeIn business.mean
 #' Compute the standard deviation with business rules.
 #' @export
-#' @importFrom stats sd
 business.sd <- pk.business(stats::sd, max.missing=~PKNCA::PKNCA.Options("max.missing"))
 
 #' @describeIn business.mean
 #' Compute the coefficient of variation with business rules.
 #' @export
-#' @importFrom stats sd
 business.cv <-
   pk.business(
     function(x, ...) {
@@ -140,7 +135,6 @@ business.max <-
 #' @describeIn business.mean
 #' Compute the median with business rules.
 #' @export
-#' @importFrom stats median
 business.median <-
   pk.business(stats::median, max.missing=~PKNCA::PKNCA.Options("max.missing"))
 #' @describeIn business.mean

@@ -37,7 +37,6 @@ PKNCAresults <- function(result, data, exclude) {
 #' @param out.format Should the output be 'long' (default) or 'wide'?
 #' @return A data frame of results
 #' @export
-#' @importFrom tidyr spread
 as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
   ret <- x$result
   out.format <- match.arg(out.format)
@@ -358,7 +357,7 @@ summary.PKNCAresults <- function(object, ...,
 
 rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
   units_to_use <-
-    setNames(rep(NA_character_, ncol(data)), names(data))
+    stats::setNames(rep(NA_character_, ncol(data)), names(data))
   if (!is.null(unit_list)) {
     # add the units to the column header, if applicable
     for (nm in names(unit_list)) {
@@ -368,7 +367,7 @@ rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
     }
   }
   pretty_names_to_use <-
-    setNames(rep(NA_character_, ncol(data)), names(data))
+    stats::setNames(rep(NA_character_, ncol(data)), names(data))
   if (pretty_names) {
     all_intervals <- get.interval.cols()
     for (nm in names(pretty_names_to_use)) {
@@ -379,7 +378,7 @@ rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
   }
   for (idx in seq_len(ncol(data))) {
     current_col <- names(data)[idx]
-    first_part <- na.omit(c(pretty_names_to_use[current_col], current_col))[1]
+    first_part <- stats::na.omit(c(pretty_names_to_use[current_col], current_col))[1]
     unit_part <- units_to_use[current_col]
     names(data)[idx] <-
       if (is.na(unit_part)) {

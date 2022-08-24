@@ -20,7 +20,6 @@ time_calc <- function(time_event, time_obs, units=NULL) {
   UseMethod("time_calc")
 }
 
-#' @importFrom stats na.omit
 #' @export
 time_calc.numeric <- function(time_event, time_obs, units=NULL) {
   if (length(time_event) == 0) {
@@ -35,22 +34,24 @@ time_calc.numeric <- function(time_event, time_obs, units=NULL) {
   ret <-
     data.frame(
       event_number_before=
-        sapply(
-          X=time_obs,
-          FUN=function(x)
+        vapply(
+          X = time_obs,
+          FUN = function(x)
             max_zero_len(
               which(time_event <= x),
               zero_length=NA_integer_
-            )
+            ),
+          FUN.VALUE = 1L
         ),
       event_number_after=
-        sapply(
-          X=time_obs,
-          FUN=function(x)
+        vapply(
+          X = time_obs,
+          FUN = function(x)
             min_zero_len(
               which(time_event >= x),
-              zero_length=NA_integer_
-            )
+              zero_length = NA_integer_
+            ),
+          FUN.VALUE = 1L
         )
     )
   ret$time_after_event <-

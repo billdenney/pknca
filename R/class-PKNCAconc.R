@@ -185,8 +185,9 @@ PKNCAconc.data.frame <- function(data, formula, subject,
 #' @return A formula object
 #' @export
 #' @importFrom stats formula
-formula.PKNCAconc <- function(x, ...)
+formula.PKNCAconc <- function(x, ...) {
   x$formula
+}
 
 #' Extract the columns used in the formula (in order) from a PKNCAconc
 #' or PKNCAdose object.
@@ -198,8 +199,9 @@ formula.PKNCAconc <- function(x, ...)
 #' order.
 #' @export
 #' @importFrom stats model.frame
-model.frame.PKNCAconc <- function(formula, ...)
+model.frame.PKNCAconc <- function(formula, ...) {
   formula$data[, all.vars(formula$formula), drop=FALSE]
+}
 
 #' @export
 getDepVar.PKNCAconc <- function(x, ...) {
@@ -228,7 +230,7 @@ getIndepVar.PKNCAconc <- function(x, ...) {
 #' @param ... Arguments passed to other getGroups functions
 #' @return A data frame with the (selected) group columns.
 #' @export
-getGroups.PKNCAconc <- function(object, form=formula(object), level,
+getGroups.PKNCAconc <- function(object, form=stats::formula(object), level,
                                 data=as.data.frame(object), sep) {
   grpnames <- all.vars(parseFormula(form)$groups)
   if (!missing(level))
@@ -255,7 +257,7 @@ getGroups.PKNCAconc <- function(object, form=formula(object), level,
 #' @return A character vector (possibly empty) of the grouping variables
 #' @exportS3Method dplyr::group_vars
 group_vars.PKNCAconc <- function(x) {
-  all.vars(parseFormula(as.formula(x))$groups)
+  all.vars(parseFormula(stats::as.formula(x))$groups)
 }
 
 #' @rdname getDataName
@@ -302,8 +304,6 @@ setDuration.PKNCAconc <- function(object, duration, ...) {
 #' @param \dots Arguments passed to \code{print.formula} and
 #' \code{print.data.frame}
 #' @export
-#' @importFrom stats formula
-#' @importFrom utils head
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))
   print(stats::formula(x), ...)
@@ -324,8 +324,8 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
                 length(unique(data_current[,x$subject])),
                 x$subject))
   }
-  if ("time.nominal" %in% names(x)) {
-    cat("Nominal time column is: ", x$time.nominal, "\n", sep="")
+  if ("time.nominal" %in% names(x$columns)) {
+    cat("Nominal time column is: ", x$columns$time.nominal, "\n", sep="")
   } else {
     cat("Nominal time column is not specified.\n")
   }

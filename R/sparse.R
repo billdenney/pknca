@@ -48,7 +48,7 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
   args <- list(...)
   stopifnot(length(args) == 1)
   if (is.null(names(args))) {
-    sapply(X=sparse_pk, FUN="[[", args[[1]])
+    vapply(X=sparse_pk, FUN="[[", args[[1]], FUN.VALUE = 1)
   } else {
     stopifnot(length(args[[1]]) == length(sparse_pk))
     for (idx in seq_along(sparse_pk)) {
@@ -81,7 +81,7 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
 #' @family Sparse Methods
 #' @export
 sparse_auc_weight_linear <- function(sparse_pk) {
-  times <- sapply(X=sparse_pk, FUN="[[", "time")
+  times <- vapply(X=sparse_pk, FUN="[[", "time", FUN.VALUE = 1)
   half_diff_times <- diff(times)/2
   weights <- c(0, half_diff_times) + c(half_diff_times, 0)
   sparse_pk_attribute(sparse_pk=sparse_pk, weight=weights)
@@ -107,14 +107,29 @@ sparse_auc_weight_linear <- function(sparse_pk) {
 #' @export
 sparse_mean <- function(sparse_pk, sparse_mean_method=c("arithmetic mean, <=50% BLQ", "arithmetic mean")) {
   sparse_mean_method <- match.arg(sparse_mean_method)
+  ret <-
+    vapply(
+      X = sparse_pk,
+      FUN = function(current_time) mean(current_time$conc),
+      FUN.VALUE = 1
+    )
   if (sparse_mean_method == "arithmetic mean, <=50% BLQ") {
-    frac_blq <-
-      sapply(X=sparse_pk, FUN=function(current_time) sum(current_time$conc == 0))/
-      sapply(X=sparse_pk, FUN=function(current_time) length(current_time$conc))
-    ret <- sapply(X=sparse_pk, FUN=function(current_time) mean(current_time$conc))
+    numerator <-
+      vapply(
+        X=sparse_pk,
+        FUN=function(current_time) sum(current_time$conc == 0),
+        FUN.VALUE = 1
+      )
+    denominator <-
+      vapply(
+        X = sparse_pk,
+        FUN = function(current_time) length(current_time$conc),
+        FUN.VALUE = 1
+      )
+    frac_blq <- numerator/denominator
     ret[frac_blq > 0.5] <- 0
   } else if (sparse_mean_method == "arithmetic mean") {
-    ret <- sapply(X=sparse_pk, FUN=function(current_time) mean(current_time$conc))
+    # do nothing
   } else {
     stop("Invalid sparse_mean_method: ", sparse_mean_method) # nocov
   }
@@ -318,7 +333,10 @@ pk.calc.sparse_auc <- function(conc, time, subject,
 #' @export
 pk.calc.sparse_auclast <- function(conc, time, subject, ..., options=list()) {
   if ("auc.type" %in% names(list(...))) {
-    stop("auc.type cannot be changed when calling pk.calc.sparse_auclast, please use pk.calc.sparse_auc")
+    rlang::abort(
+      message = "auc.type cannot be changed when calling pk.calc.sparse_auclast, please use pk.calc.sparse_auc",
+      class = "pknca_sparse_auclast_change_auclast"
+    )
   }
   ret <-
     pk.calc.sparse_auc(

@@ -142,11 +142,12 @@ get.parameter.deps_helper_searchdeps <- function(current, funmap, all_intervals)
   start <- get.parameter.deps_helper_samefun(current, funmap)
   # Find any parameters that depend on the current parameter
   ret <-
-    sapply(
-      all_intervals,
-      function(x) {
+    vapply(
+      X = all_intervals,
+      FUN = function(x) {
         any(x$depends %in% start)
-      }
+      },
+      FUN.VALUE = TRUE
     )
   # Extract their names
   added <- setdiff(names(ret)[ret], start)

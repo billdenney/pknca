@@ -29,3 +29,10 @@ test_that("sparse_auc", {
   expect_equal(as.numeric(sparse_serial$sparse_auc_se), auclast_se_serial)
   expect_equal(sparse_serial$sparse_auc_df, auclast_df_serial)
 })
+
+test_that("sparse_auclast expected errors", {
+  expect_error(
+    pk.calc.sparse_auclast(auc.type = "foo"),
+    class = "pknca_sparse_auclast_change_auclast"
+  )
+})

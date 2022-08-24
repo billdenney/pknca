@@ -312,7 +312,6 @@ event_choices_interp.extrap.conc.dose <-
        output_only="output_only",
        none="none")
 
-#' @importFrom dplyr case_when
 #' @describeIn interp.extrap.conc Interpolate and extrapolate 
 #'   concentrations without interpolating or extrapolating beyond doses.
 #' @export

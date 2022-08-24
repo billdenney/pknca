@@ -19,11 +19,6 @@
 #'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
 #'  \code{\link{exclude}}
 #' @export
-#' @importFrom dplyr bind_rows
-#' @importFrom parallel mclapply
-#' @importFrom stats as.formula update.formula
-#' @importFrom utils capture.output
-#' @importFrom purrr pmap
 pk.nca <- function(data, verbose=FALSE) {
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
@@ -99,7 +94,7 @@ pk_nca_result_to_df <- function(group_info, result) {
   ret <- group_info
   ret$data_result <- result
   # Gather, report, and remove warnings
-  mask_warning <- sapply(X=ret$data_result, inherits, what="warning")
+  mask_warning <- vapply(X=ret$data_result, inherits, what="warning", TRUE)
   ret_warnings <- ret[mask_warning, ]
   if (nrow(ret_warnings) > 0) {
     group_names <- setdiff(names(ret_warnings), "data_result")
@@ -161,12 +156,17 @@ filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE
 #'   \code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
 #' @keywords Internal
 any_sparse_dense_in_interval <- function(interval, sparse) {
-  requested <- sapply(interval, isTRUE)
+  requested <- vapply(X = interval, FUN = isTRUE, FUN.VALUE = TRUE)
   all_intervals <- get.interval.cols()
   # Extract if the parameters to be calculated (`names(requested[requested])`)
   # are sparse, and compare that to if the request is for sparse or dense
   any(
-    sapply(X=all_intervals[names(requested[requested])], FUN="[[", "sparse") %in% sparse
+    vapply(
+      X=all_intervals[names(requested[requested])],
+      FUN="[[",
+      "sparse",
+      FUN.VALUE = TRUE
+    ) %in% sparse
   )
 }
 
@@ -186,7 +186,6 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #' @inheritParams pk.nca
 #' @inheritParams pk.nca.interval
 #' @return A data.frame with all NCA results
-#' @importFrom rlang warning_cnd
 pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
                              options, verbose=FALSE) {
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
@@ -339,7 +338,6 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #'   parameters for the \code{interval}
 #'
 #' @seealso \code{\link{check.interval.specification}}
-#' @importFrom stats na.omit setNames
 #' @export
 pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose, route,
@@ -393,7 +391,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       arglist <- stats::setNames(object=as.list(arglist), arglist)
       arglist[names(all_intervals[[n]]$formalsmap)] <- all_intervals[[n]]$formalsmap
       # Drop arguments that were set to NULL by the formalsmap
-      arglist <- arglist[!sapply(arglist, is.null)]
+      arglist <- arglist[!vapply(X = arglist, FUN = is.null, FUN.VALUE = TRUE)]
       for (arg_formal in names(arglist)) {
         arg_mapped <- arglist[[arg_formal]]
         if (arg_mapped == "conc") {
@@ -458,9 +456,10 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
               } else {
                 sprintf("'%s' mapped to '%s'", arg_formal, arg_mapped)
               }
-            stop(sprintf(
-              "Cannot find argument %s for NCA function '%s'",
-              arg_text, all_intervals[[n]]$FUN))
+            stop(sprintf( # nocov
+              "Cannot find argument %s for NCA function '%s'", # nocov
+              arg_text, all_intervals[[n]]$FUN) # nocov
+            ) # nocov
           }
         }
       }

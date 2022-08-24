@@ -33,8 +33,8 @@ test_that("prepare_*", {
   # No groups
   expect_equal(
     prepare_PKNCAintervals(.dat=PKNCA.options("single.dose.aucs")),
-    tibble(
-      data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")))
+    tibble::tibble(
+      data_intervals=list(tibble::as_tibble(PKNCA.options("single.dose.aucs")))
     )
   )
   # With groups
@@ -74,7 +74,7 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
         prepare_PKNCAdose(o_dose, sparse=FALSE, subject_col=""),
         by=c("treatment", "ID")
       ),
-      data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")))
+      data_intervals=list(tibble::as_tibble(PKNCA.options("single.dose.aucs")))
     )
   )
   # When intervals have no groups
@@ -92,7 +92,7 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
         prepare_PKNCAdose(o_dose, sparse=FALSE, subject_col=""),
         by=c("treatment", "ID")
       ),
-      data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")[1,]))
+      data_intervals=list(tibble::as_tibble(PKNCA.options("single.dose.aucs")[1,]))
     )
   )
   # When dosing is not provided
@@ -102,8 +102,8 @@ test_that("full_join for PKNCAconc, PKNCAdose, and PKNCAdata", {
       full_join_PKNCAdata(o_data_no_dose),
       tidyr::crossing(
         prepare_PKNCAconc(o_conc),
-        tibble(data_dose=list(NA)),
-        data_intervals=list(as_tibble(PKNCA.options("single.dose.aucs")[1,]))
+        tibble::tibble(data_dose=list(NA)),
+        data_intervals=list(tibble::as_tibble(PKNCA.options("single.dose.aucs")[1,]))
       )
     )
   )

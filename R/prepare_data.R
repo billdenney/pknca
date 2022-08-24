@@ -11,9 +11,6 @@
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-#' @importFrom dplyr full_join
-#' @importFrom tibble tibble
-#' @importFrom tidyr crossing
 full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
   stopifnot(inherits(x=conc, what="PKNCAconc"))
   if (identical(dose, NA)) {
@@ -44,8 +41,6 @@ full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-#' @importFrom dplyr full_join
-#' @importFrom tidyr crossing
 full_join_PKNCAdata <- function(x) {
   conc_dose <- full_join_PKNCAconc_PKNCAdose(x$conc, x$dose)
   n_i <-
@@ -70,8 +65,6 @@ full_join_PKNCAdata <- function(x) {
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
 prepare_PKNCA_general <- function(.dat, cols, exclude, group_cols, data_name, insert_if_missing=list()) {
   check_reserved_column_names(.dat)
   intermediate_group_cols <-
@@ -173,8 +166,6 @@ prepare_PKNCAconc <- function(.dat) {
 #'   dropped from groups with sparse PK)
 #' @family Combine PKNCA objects
 #' @keywords Internal
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
 #' @noRd
 prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
   ret <- prepare_PKNCAdose_general(.dat)
@@ -183,7 +174,7 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
     # the subjects
     # ret_grp will have one column named "sparse_group_check" with one row per ID and all of the dosing information within a group and 
     ret_grp <-
-      nest(
+      tidyr::nest(
         ret,
         sparse_group_check=!setdiff(names(ret), c("data_dose", subject_col))
       )
@@ -191,10 +182,11 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
     for (current_row in seq_len(nrow(ret_grp))) {
       # Dosing information for all subjects are identical to the first subject
       all_match <-
-        all(sapply(
+        all(vapply(
           X=ret_grp$sparse_group_check[[current_row]]$data_dose,
           FUN=identical,
-          y=ret_grp$sparse_group_check[[current_row]]$data_dose[[1]]
+          y=ret_grp$sparse_group_check[[current_row]]$data_dose[[1]],
+          FUN.VALUE = TRUE
         ))
       if (all_match) {
         # Drop the subject identifier from the dosing
@@ -225,8 +217,6 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
 #' @describeIn prepare_PKNCAconc Nest a PKNCAdose object
 #' @family Combine PKNCA objects
 #' @keywords Internal
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
 #' @noRd
 prepare_PKNCAdose_general <- function(.dat) {
   pformula_dose <- parseFormula(.dat)
@@ -257,9 +247,6 @@ prepare_PKNCAdose_general <- function(.dat) {
 #' @noRd
 #' @family Combine PKNCA objects
 #' @keywords Internal
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
-#' @importFrom tibble as_tibble tibble
 prepare_PKNCAintervals <- function(.dat, vars=character(0)) {
   check_reserved_column_names(.dat)
   .dat <- tibble::as_tibble(.dat)
@@ -328,9 +315,9 @@ standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing
   } else {
     new_group_cols <- NULL
   }
-  cols_clean <- cols[!sapply(X=cols, FUN=is.null)]
+  cols_clean <- cols[!vapply(X = cols, FUN = is.null, FUN.VALUE = TRUE)]
   ret <-
-    setNames(
+    stats::setNames(
       # Keep only columns of interest
       x[, c(group_cols, unlist(cols_clean)), drop=FALSE],
       nm=c(new_group_cols, names(cols_clean))

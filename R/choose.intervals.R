@@ -143,7 +143,6 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' }
 #' @family Interval determination
 #' @export
-#' @importFrom stats na.omit
 find.tau <- function(x, na.action=stats::na.omit,
                      options=list(),
                      tau.choices=NULL) {
@@ -157,7 +156,12 @@ find.tau <- function(x, na.action=stats::na.omit,
   } else if (identical(tau.choices, NA)) {
     all_deltas <-
       sort(unique(
-        as.vector(sapply(x, FUN=function(x, y) x - y, y=x))
+        as.vector(vapply(
+          X = x,
+          FUN = function(x, y) x - y,
+          y = x,
+          FUN.VALUE = x
+        ))
       ))
     tau.choices <- all_deltas[all_deltas > 0]
   }

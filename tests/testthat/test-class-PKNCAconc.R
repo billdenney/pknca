@@ -190,6 +190,12 @@ Nominal time column is not specified.",
     print(myconc, n=1e6),
     regexp="Data for concentration"
   )
+  
+  myconc <- PKNCAconc(tmp.conc, formula=conc~time|treatment+ID, time.nominal="time")
+  expect_output(
+    print(myconc),
+    regexp = "Nominal time column is: time"
+  )
 })
 
 test_that("summary.PKNCAconc", {
@@ -350,4 +356,40 @@ test_that("PKNCAconc with sparse data", {
   o_conc_sparse <- PKNCAconc(d_sparse, conc~time|id, sparse=TRUE)
   expect_true("data_sparse" %in% names(o_conc_sparse))
   expect_false("data" %in% names(o_conc_sparse))
+  
+  d_sparse_aug <- d_sparse
+  d_sparse_aug$exclude <- NA_character_
+  d_sparse_aug$volume <- NA_real_
+  d_sparse_aug$duration <- 0
+  expect_equal(
+    o_conc_sparse$data_sparse,
+    d_sparse_aug
+  )
+})
+
+test_that("print.PKNCAconc with sparse data", {
+  d_sparse <-
+    data.frame(
+      id = c(1L, 2L, 3L, 1L, 2L, 3L, 1L, 2L, 3L, 4L, 5L, 6L, 4L, 5L, 6L, 7L, 8L, 9L, 7L, 8L, 9L),
+      conc = c(0, 0, 0,  1.75, 2.2, 1.58, 4.63, 2.99, 1.52, 3.03, 1.98, 2.22, 3.34, 1.3, 1.22, 3.54, 2.84, 2.55, 0.3, 0.0421, 0.231),
+      time = c(0, 0, 0, 1, 1, 1, 6, 6, 6, 2, 2, 2, 10, 10, 10, 4, 4, 4, 24, 24, 24),
+      dose = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100)
+    )
+  o_conc_sparse <- PKNCAconc(d_sparse, conc~time|id, sparse=TRUE)
+  expect_output(print.PKNCAconc(o_conc_sparse),
+                regexp="Formula for concentration:
+ conc ~ time | id
+Data are sparse PK.
+With 9 subjects defined in the 'id' column.
+Nominal time column is not specified.
+
+First 6 rows of concentration data:
+ id conc time dose exclude volume duration
+  1 0.00    0  100    <NA>     NA        0
+  2 0.00    0  100    <NA>     NA        0
+  3 0.00    0  100    <NA>     NA        0
+  1 1.75    1  100    <NA>     NA        0
+  2 2.20    1  100    <NA>     NA        0
+  3 1.58    1  100    <NA>     NA        0"
+  )
 })

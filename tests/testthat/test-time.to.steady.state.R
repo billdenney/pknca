@@ -171,6 +171,7 @@ generate.data <- function() {
                        (1-exp(log(1-0.9)*time/(tss.mean*exp(tss.re)))))
   tmpdata
 }
+
 # Note that this graphically represents the test
 # library(latticeExtra)
 # (xyplot(conc~time|treatment,
@@ -189,8 +190,8 @@ test_that("pk.tss.stepwise.linear", {
                            treatment=tmpdata$treatment,
                            time.dosing=0:14,
                            verbose=FALSE),
-    data.frame(tss.stepwise.linear=7),
-    info="pk.tss.stepwise.linear 1")
+    data.frame(tss.stepwise.linear=7)
+  )
 
   expect_warning(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -200,8 +201,8 @@ test_that("pk.tss.stepwise.linear", {
                            min.points=c(3, 4),
                            time.dosing=0:14,
                            verbose=FALSE),
-    regexp="Only first value of min.points is used",
-    info="pk.tss.stepwise.linear 2")
+    regexp="Only first value of min.points is used"
+  )
 
   expect_error(
     pk.tss.stepwise.linear(
@@ -238,8 +239,8 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level="A",
                            verbose=FALSE),
-    regexp="level must be a number",
-    info="pk.tss.stepwise.linear 3")
+    regexp="level must be a number"
+  )
 
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -249,8 +250,8 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=2,
                            verbose=FALSE),
-    regexp="level must be between 0 and 1, exclusive",
-    info="pk.tss.stepwise.linear 4")
+    regexp="level must be between 0 and 1, exclusive"
+  )
   
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -260,8 +261,8 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=-1,
                            verbose=FALSE),
-    regexp="level must be between 0 and 1, exclusive",
-    info="pk.tss.stepwise.linear 5")
+    regexp="level must be between 0 and 1, exclusive"
+  )
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -270,8 +271,8 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=0,
                            verbose=FALSE),
-    regexp="level must be between 0 and 1, exclusive",
-    info="pk.tss.stepwise.linear 6")
+    regexp="level must be between 0 and 1, exclusive"
+  )
   expect_error(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
                            time=tmpdata$time,
@@ -280,8 +281,8 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=1,
                            verbose=FALSE),
-    regexp="level must be between 0 and 1, exclusive",
-    info="pk.tss.stepwise.linear 7")
+    regexp="level must be between 0 and 1, exclusive"
+  )
 
   expect_warning(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -291,8 +292,8 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=c(0.95, 0.99),
                            verbose=FALSE),
-    regexp="Only first value of level is being used",
-    info="pk.tss.stepwise.linear 8")
+    regexp="Only first value of level is being used"
+  )
 
   # This is mainly to test verbosity
   expect_warning(
@@ -303,38 +304,42 @@ test_that("pk.tss.stepwise.linear", {
                            time.dosing=0:14,
                            level=c(0.95, 0.99),
                            verbose=FALSE),
-    regexp="Only first value of level is being used",
-    info="pk.tss.stepwise.linear 9")
+    regexp="Only first value of level is being used"
+  )
 
   # Check outputs
-  withr::with_options(
-    list(try.outFile=nullfile()),
-    expect_message(
-      pk.tss.stepwise.linear(
-        conc=tmpdata$conc,
-        time=tmpdata$time,
-        subject=tmpdata$subject,
-        treatment=tmpdata$treatment,
-        time.dosing=0:14,
-        level=0.8,
-        verbose=TRUE
-      ),
-      regexp="Trying 0"
+  suppressMessages(
+    withr::with_options(
+      list(try.outFile=nullfile()),
+      expect_message(
+        pk.tss.stepwise.linear(
+          conc=tmpdata$conc,
+          time=tmpdata$time,
+          subject=tmpdata$subject,
+          treatment=tmpdata$treatment,
+          time.dosing=0:14,
+          level=0.8,
+          verbose=TRUE
+        ),
+        regexp="Trying 0"
+      )
     )
   )
-  withr::with_options(
-    list(try.outFile=nullfile()),
-    expect_message(
-      pk.tss.stepwise.linear(
-        conc=tmpdata$conc,
-        time=tmpdata$time,
-        subject=tmpdata$subject,
-        treatment=tmpdata$treatment,
-        time.dosing=0:14,
-        level=0.8,
-        verbose=TRUE
-      ),
-      regexp="Current interval"
+  suppressMessages(
+    withr::with_options(
+      list(try.outFile=nullfile()),
+      expect_message(
+        pk.tss.stepwise.linear(
+          conc=tmpdata$conc,
+          time=tmpdata$time,
+          subject=tmpdata$subject,
+          treatment=tmpdata$treatment,
+          time.dosing=0:14,
+          level=0.8,
+          verbose=TRUE
+        ),
+        regexp="Current interval"
+      )
     )
   )
   
@@ -349,26 +354,31 @@ test_that("pk.tss.stepwise.linear", {
                            verbose=FALSE))
   expect_equal(
     v1,
-    pk.tss.stepwise.linear(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           subject=tmpdata$subject,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           level=0.8,
-                           verbose=FALSE),
-    info="pk.tss.stepwise.linear 10")
+    pk.tss.stepwise.linear(
+      conc=tmpdata$conc,
+      time=tmpdata$time,
+      subject=tmpdata$subject,
+      treatment=tmpdata$treatment,
+      time.dosing=0:14,
+      level=0.8,
+      verbose=FALSE
+    )
+  )
 
   # Confirm testing for minimum number of data points
   expect_warning(
-    v1 <- pk.tss.stepwise.linear(conc=tmpdata$conc,
-                                 time=tmpdata$time,
-                                 subject=tmpdata$subject,
-                                 treatment=tmpdata$treatment,
-                                 time.dosing=0:1,
-                                 min.points=3,
-                                 level=0.99,
-                                 verbose=FALSE),
-    regexp="After removing non-dosing time points, insufficient data remains for tss calculation")
+    v1 <- pk.tss.stepwise.linear(
+      conc=tmpdata$conc,
+      time=tmpdata$time,
+      subject=tmpdata$subject,
+      treatment=tmpdata$treatment,
+      time.dosing=0:1,
+      min.points=3,
+      level=0.99,
+      verbose=FALSE
+    ),
+    regexp="After removing non-dosing time points, insufficient data remains for tss calculation"
+  )
   expect_equal(v1, NA)
   expect_warning(
     pk.tss.stepwise.linear(conc=tmpdata$conc,
@@ -382,14 +392,17 @@ test_that("pk.tss.stepwise.linear", {
     regexp="After removing non-dosing time points, insufficient data remains for tss calculation")
 
   # Confirm the glm model works when subject-level data is not given.
-  expect_equal(
-    pk.tss.stepwise.linear(conc=tmpdata$conc,
-                           time=tmpdata$time,
-                           treatment=tmpdata$treatment,
-                           time.dosing=0:14,
-                           verbose=FALSE),
-    data.frame(tss.stepwise.linear=5),
-    info="pk.tss.stepwise.linear no subject")
+  suppressMessages(
+    expect_equal(
+      pk.tss.stepwise.linear(conc=tmpdata$conc,
+                             time=tmpdata$time,
+                             treatment=tmpdata$treatment,
+                             time.dosing=0:14,
+                             verbose=FALSE),
+      data.frame(tss.stepwise.linear=5),
+      info="pk.tss.stepwise.linear no subject"
+    )
+  )
 })
 
 test_that("pk.tss.monoexponential", {
@@ -425,18 +438,62 @@ test_that("pk.tss.monoexponential", {
       tolerance=1e-4
     )
   )
+  expect_output(
+    expect_equal(
+      pk.tss.monoexponential(
+        conc=c(0, 1000),
+        time=0:1,
+        subject=c(1, 1),
+        treatment=c("A", "A"),
+        time.dosing=0:1,
+        tss.fraction=0.9,
+        output="single"
+      ),
+      data.frame(tss.monoexponential.single=NA_real_),
+      info="Single-subject data fitting works when it does not converge."
+    ),
+    regexp = "approximate covariance matrix for parameter estimates not of full rank"
+  )
+})
+
+test_that("pk.tss.monoexponential corner case tests", {
+  tmpdata <- generate.data()
+  # population output, only
+  expect_warning(
+    expect_equal(
+      pk.tss.monoexponential(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        treatment=tmpdata$treatment,
+        time.dosing=0:14,
+        output = "population",
+        verbose=FALSE
+      ),
+      data.frame(
+        subject=factor(as.character(seq_len(10))),
+        tss.monoexponential.population=4.57618156812974,
+        stringsAsFactors=FALSE
+      ),
+      tolerance=1e-4
+    )
+  )
+  # (Pseudo) single treatment, only
   expect_equal(
     pk.tss.monoexponential(
-      conc=c(0, 1000),
-      time=0:1,
-      subject=c(1, 1),
-      treatment=c("A", "A"),
-      time.dosing=0:1,
-      tss.fraction=0.9,
-      output="single"
+      conc=tmpdata$conc,
+      time=tmpdata$time,
+      subject=tmpdata$subject,
+      time.dosing=0:14,
+      output = "population",
+      verbose=FALSE
     ),
-    data.frame(tss.monoexponential.single=NA_real_),
-    info="Single-subject data fitting works when it does not converge."
+    data.frame(
+      subject=factor(as.character(seq_len(10))),
+      tss.monoexponential.population=4.56157960341961,
+      stringsAsFactors=FALSE
+    ),
+    tolerance=1e-4
   )
 })
 

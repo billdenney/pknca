@@ -278,7 +278,7 @@ test_that("no intervals auto-determined (Fix GitHub issue #84)", {
   )
   interval_2 <-
     check.interval.specification(
-      tibble(
+      tibble::tibble(
         start=1, end=c(2, Inf),
         auclast=c(TRUE, FALSE),
         cmax=c(TRUE, FALSE),

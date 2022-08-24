@@ -262,7 +262,6 @@ getDataName.PKNCAdose <- function(object)
 
 #' @rdname print.PKNCAconc
 #' @export
-#' @importFrom utils head
 print.PKNCAdose <- function(x, n=6, summarize=FALSE, ...) {
   cat("Formula for dosing:\n ")
   print(stats::formula(x), showEnv=FALSE, ...)
