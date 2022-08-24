@@ -46,7 +46,7 @@ test_that("choose_interp_extrap_method chooses correctly", {
             "log"
           }
         result[result %in% "decrease"] <-
-          if (current_interp %in% c("linear")) {
+          if (current_interp %in% "linear") {
             "linear"
           } else if (current_interp %in% c("lin up/log down", "log")) {
             "log"

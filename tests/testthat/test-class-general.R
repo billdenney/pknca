@@ -37,7 +37,7 @@ test_that("setAttributeColumn", {
                regexp="col_name must be a character scalar")
   expect_error(setAttributeColumn(object=obj1,
                                   attr_name="B",
-                                  default_value=c(1:2)),
+                                  default_value=1:2),
                regexp="default_value must be a scalar or the same length as the rows in the data")
   # Settings
   expect_message(val1 <- setAttributeColumn(object=obj1,

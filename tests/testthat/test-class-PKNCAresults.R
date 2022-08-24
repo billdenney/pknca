@@ -442,9 +442,9 @@ test_that("ptr works as a parameter", {
 test_that("exclude values are maintained in derived parameters during automatic calculation (#112)", {
   my_conc <-
     data.frame(
-      conc=c(0, 2.5, 3, 2.7, 2.3),
-      time=c(0:4),
-      subject=1
+      conc = c(0, 2.5, 3, 2.7, 2.3),
+      time = 0:4,
+      subject = 1
     )
   
   conc_obj <- PKNCAconc(my_conc, conc~time|subject)
