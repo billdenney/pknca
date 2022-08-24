@@ -51,7 +51,7 @@ exclude.default <- function(object, reason, mask, FUN) {
       ))
     mask_df <-
       object[[dataname]] %>%
-      dplyr::mutate(row_number_XXX=1:dplyr::n()) %>%
+      dplyr::mutate(row_number_XXX=seq_len(dplyr::n())) %>%
       dplyr::group_by(!!! rlang::syms(groupnames)) %>%
       dplyr::mutate(
         exclude_current_group_XXX_row_num=row_number_XXX,
