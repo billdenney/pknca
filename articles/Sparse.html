@@ -188,11 +188,10 @@
 <span><span class="va">o_data_sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc_sparse</span>, intervals<span class="op">=</span><span class="va">d_intervals</span><span class="op">)</span></span>
 <span><span class="va">o_nca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data_sparse</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in pk.calc.half.life(conc = c(0, 1.84333333333333, 2.41,</span></span>
-<span><span class="co">## 2.97666666666667, : Too few points for half-life calculation (min.hl.points=3</span></span>
-<span><span class="co">## with only 2 points)</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in var_sparse_auc(sparse_pk_mean): Cannot yet calculate sparse degrees</span></span>
-<span><span class="co">## of freedom for multiple samples per subject</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Too few points for half-life calculation (min.hl.points=3 with only 2</span></span>
+<span><span class="co">## points)</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Cannot yet calculate sparse degrees of freedom for multiple samples per</span></span>
+<span><span class="co">## subject</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
