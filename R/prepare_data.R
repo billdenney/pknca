@@ -317,7 +317,7 @@ standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing
   }
   cols_clean <- cols[!vapply(X = cols, FUN = is.null, FUN.VALUE = TRUE)]
   ret <-
-    setNames(
+    stats::setNames(
       # Keep only columns of interest
       x[, c(group_cols, unlist(cols_clean)), drop=FALSE],
       nm=c(new_group_cols, names(cols_clean))
