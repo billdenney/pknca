@@ -20,7 +20,6 @@ time_calc <- function(time_event, time_obs, units=NULL) {
   UseMethod("time_calc")
 }
 
-#' @importFrom stats na.omit
 #' @export
 time_calc.numeric <- function(time_event, time_obs, units=NULL) {
   if (length(time_event) == 0) {

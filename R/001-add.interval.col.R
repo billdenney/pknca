@@ -78,7 +78,6 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #'                  formalsmap=list(parameter="cmax"),
 #'                  depends="cmax")
 #' }
-#' @importFrom utils getAnywhere
 #' @family Interval specifications
 #' @export
 add.interval.col <- function(name,

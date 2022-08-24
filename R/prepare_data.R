@@ -11,9 +11,6 @@
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-#' @importFrom dplyr full_join
-#' @importFrom tibble tibble
-#' @importFrom tidyr crossing
 full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
   stopifnot(inherits(x=conc, what="PKNCAconc"))
   if (identical(dose, NA)) {
@@ -44,8 +41,6 @@ full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-#' @importFrom dplyr full_join
-#' @importFrom tidyr crossing
 full_join_PKNCAdata <- function(x) {
   conc_dose <- full_join_PKNCAconc_PKNCAdose(x$conc, x$dose)
   n_i <-
@@ -70,8 +65,6 @@ full_join_PKNCAdata <- function(x) {
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
 prepare_PKNCA_general <- function(.dat, cols, exclude, group_cols, data_name, insert_if_missing=list()) {
   check_reserved_column_names(.dat)
   intermediate_group_cols <-
@@ -173,8 +166,6 @@ prepare_PKNCAconc <- function(.dat) {
 #'   dropped from groups with sparse PK)
 #' @family Combine PKNCA objects
 #' @keywords Internal
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
 #' @noRd
 prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
   ret <- prepare_PKNCAdose_general(.dat)
@@ -183,7 +174,7 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
     # the subjects
     # ret_grp will have one column named "sparse_group_check" with one row per ID and all of the dosing information within a group and 
     ret_grp <-
-      nest(
+      tidyr::nest(
         ret,
         sparse_group_check=!setdiff(names(ret), c("data_dose", subject_col))
       )
@@ -226,8 +217,6 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
 #' @describeIn prepare_PKNCAconc Nest a PKNCAdose object
 #' @family Combine PKNCA objects
 #' @keywords Internal
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
 #' @noRd
 prepare_PKNCAdose_general <- function(.dat) {
   pformula_dose <- parseFormula(.dat)
@@ -258,9 +247,6 @@ prepare_PKNCAdose_general <- function(.dat) {
 #' @noRd
 #' @family Combine PKNCA objects
 #' @keywords Internal
-#' @importFrom dplyr grouped_df
-#' @importFrom tidyr nest
-#' @importFrom tibble as_tibble tibble
 prepare_PKNCAintervals <- function(.dat, vars=character(0)) {
   check_reserved_column_names(.dat)
   .dat <- tibble::as_tibble(.dat)

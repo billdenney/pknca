@@ -53,7 +53,6 @@ superposition <- function(conc, ...)
 
 #' @rdname superposition
 #' @export
-#' @importFrom parallel mclapply
 superposition.PKNCAconc <- function(conc, ...) {
   # Split the data by grouping and extract just the concentration and
   # time columns

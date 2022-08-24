@@ -19,11 +19,6 @@
 #'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
 #'  \code{\link{exclude}}
 #' @export
-#' @importFrom dplyr bind_rows
-#' @importFrom parallel mclapply
-#' @importFrom stats as.formula update.formula
-#' @importFrom utils capture.output
-#' @importFrom purrr pmap
 pk.nca <- function(data, verbose=FALSE) {
   if (nrow(data$intervals) == 0) {
     warning("No intervals given; no calculations done.")
@@ -191,7 +186,6 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #' @inheritParams pk.nca
 #' @inheritParams pk.nca.interval
 #' @return A data.frame with all NCA results
-#' @importFrom rlang warning_cnd
 pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
                              options, verbose=FALSE) {
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
@@ -344,7 +338,6 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #'   parameters for the \code{interval}
 #'
 #' @seealso \code{\link{check.interval.specification}}
-#' @importFrom stats na.omit setNames
 #' @export
 pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose, route,

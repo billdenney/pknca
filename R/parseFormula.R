@@ -30,7 +30,6 @@
 #' parseFormula("a~b|c")$groups
 #' @family Formula parsing
 #' @export
-#' @importFrom stats as.formula
 parseFormula <- function (form,
                           require.groups=FALSE,
                           require.two.sided=FALSE) {
@@ -93,7 +92,6 @@ parseFormula <- function (form,
 #' @return A formula (optionally with portions removed)
 #' @family Formula parsing
 #' @export
-#' @importFrom stats as.formula
 formula.parseFormula <- function(x, drop.groups=FALSE, drop.lhs=FALSE, ...) {
   if (identical(x$lhs, NA) | drop.lhs) {
     ret <- stats::as.formula(call("~", x$rhs))

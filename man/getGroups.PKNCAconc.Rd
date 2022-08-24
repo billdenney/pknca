@@ -10,7 +10,7 @@ object).}
 \usage{
 \method{getGroups}{PKNCAconc}(
   object,
-  form = formula(object),
+  form = stats::formula(object),
   level,
   data = as.data.frame(object),
   sep

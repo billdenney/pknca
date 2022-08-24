@@ -268,7 +268,6 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
 #'   "adj.r.squared", "PROB", "lambda.z", "clast.pred", 
 #'   "lambda.z.n.points", "half.life", "span.ratio"
 #' @seealso \code{\link{pk.calc.half.life}}
-#' @importFrom stats .lm.fit
 fit_half_life <- function(data, tlast, conc_units) {
   fit <- stats::.lm.fit(x=cbind(1, data$time), y=data$log_conc)
   # unit handling
