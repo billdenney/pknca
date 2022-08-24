@@ -236,7 +236,12 @@ pk.tss.monoexponential.population <- function(data,
   }
   # Find the best model of the set and return the output from that one.
   all.model.summary <- AIC.list(lapply(models, function(x) x$model))
-  rownames(all.model.summary) <- sapply(models, function(x) x$desc)
+  rownames(all.model.summary) <-
+    vapply(
+      X = models,
+      FUN = function(x) x$desc,
+      FUN.VALUE = ""
+    )
   if (verbose)
     print(all.model.summary)
   if (all(is.na(all.model.summary$AIC)) |

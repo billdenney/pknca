@@ -191,10 +191,11 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
     for (current_row in seq_len(nrow(ret_grp))) {
       # Dosing information for all subjects are identical to the first subject
       all_match <-
-        all(sapply(
+        all(vapply(
           X=ret_grp$sparse_group_check[[current_row]]$data_dose,
           FUN=identical,
-          y=ret_grp$sparse_group_check[[current_row]]$data_dose[[1]]
+          y=ret_grp$sparse_group_check[[current_row]]$data_dose[[1]],
+          FUN.VALUE = TRUE
         ))
       if (all_match) {
         # Drop the subject identifier from the dosing
@@ -328,7 +329,7 @@ standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing
   } else {
     new_group_cols <- NULL
   }
-  cols_clean <- cols[!sapply(X=cols, FUN=is.null)]
+  cols_clean <- cols[!vapply(X = cols, FUN = is.null, FUN.VALUE = TRUE)]
   ret <-
     setNames(
       # Keep only columns of interest

@@ -99,7 +99,7 @@ pk_nca_result_to_df <- function(group_info, result) {
   ret <- group_info
   ret$data_result <- result
   # Gather, report, and remove warnings
-  mask_warning <- sapply(X=ret$data_result, inherits, what="warning")
+  mask_warning <- vapply(X=ret$data_result, inherits, what="warning", TRUE)
   ret_warnings <- ret[mask_warning, ]
   if (nrow(ret_warnings) > 0) {
     group_names <- setdiff(names(ret_warnings), "data_result")
@@ -161,12 +161,17 @@ filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE
 #'   \code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
 #' @keywords Internal
 any_sparse_dense_in_interval <- function(interval, sparse) {
-  requested <- sapply(interval, isTRUE)
+  requested <- vapply(X = interval, FUN = isTRUE, FUN.VALUE = TRUE)
   all_intervals <- get.interval.cols()
   # Extract if the parameters to be calculated (`names(requested[requested])`)
   # are sparse, and compare that to if the request is for sparse or dense
   any(
-    sapply(X=all_intervals[names(requested[requested])], FUN="[[", "sparse") %in% sparse
+    vapply(
+      X=all_intervals[names(requested[requested])],
+      FUN="[[",
+      "sparse",
+      FUN.VALUE = TRUE
+    ) %in% sparse
   )
 }
 
@@ -393,7 +398,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       arglist <- stats::setNames(object=as.list(arglist), arglist)
       arglist[names(all_intervals[[n]]$formalsmap)] <- all_intervals[[n]]$formalsmap
       # Drop arguments that were set to NULL by the formalsmap
-      arglist <- arglist[!sapply(arglist, is.null)]
+      arglist <- arglist[!vapply(X = arglist, FUN = is.null, FUN.VALUE = TRUE)]
       for (arg_formal in names(arglist)) {
         arg_mapped <- arglist[[arg_formal]]
         if (arg_mapped == "conc") {
