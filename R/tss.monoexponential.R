@@ -315,6 +315,7 @@ pk.tss.monoexponential.population <- function(data,
 #' \code{tss.monoexponential.popind}.
 #' @importFrom nlme gnls
 #' @importFrom stats coef median
+#' @importFrom rlang .data
 pk.tss.monoexponential.individual <- function(data,
                                               output=c(
                                                 "individual",
@@ -382,9 +383,9 @@ pk.tss.monoexponential.individual <- function(data,
         tss.monoexponential.individual=
           fit_tss(
             data.frame(
-              time=time,
-              tss.constant=tss.constant,
-              conc=conc,
+              time=.data$time,
+              tss.constant=.data$tss.constant,
+              conc=.data$conc,
               stringsAsFactors=FALSE
             )
           )
