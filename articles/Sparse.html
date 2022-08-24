@@ -120,7 +120,7 @@
       <h1 data-toc-skip>Sparse NCA Calculations</h1>
                         <h4 data-toc-skip class="author">Bill Denney</h4>
             
-            <h4 data-toc-skip class="date">2022-08-05</h4>
+            <h4 data-toc-skip class="date">2022-08-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/Sparse.Rmd" class="external-link"><code>vignettes/Sparse.Rmd</code></a></small>
       <div class="hidden name"><code>Sparse.Rmd</code></div>
@@ -156,19 +156,26 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">24</span>, by<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Sparse_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
+<div class="section level3">
+<h3 id="data-setup-note">Data Setup Note<a class="anchor" aria-label="anchor" href="#data-setup-note"></a>
+</h3>
+<p>Sparse NCA requires that subject numbers (or animal numbers) are given, even if each subject only contributes a single sample. The reason for this requirement is that which subject contributes to which time point changes the standard error calculation. If all individuals contribute a single sample, a simple way to handle this is by setting a column with sequential numbers and giving that as the subject identifier:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d_sparse</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d_sparse</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="calculate">Calculate!<a class="anchor" aria-label="anchor" href="#calculate"></a>
 </h2>
 <p>Setup PKNCA for calculations and then calculate!</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Attaching package: 'PKNCA'</span></span></code></pre>
 <pre><code><span><span class="co">## The following object is masked from 'package:stats':</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##     filter</span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc_sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">d_sparse</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">id</span>, sparse<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">d_intervals</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -191,14 +198,14 @@
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
 </h2>
 <p>As with any other PKNCA result, the data are available through the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end N      cmax sparse_auclast aucinf.obs</span></span>
 <span><span class="co">##      0  24 1 3.05 [NC]      39.5 [NC]         NC</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Caption: cmax, sparse_auclast, aucinf.obs: geometric mean and geometric coefficient of variation</span></span></code></pre>
 <p>or individual results are available through the <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> function:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 16 × 5</span></span></span>
 <span><span class="co">##    start   end PPTESTCD            PPORRES exclude                              </span></span>
