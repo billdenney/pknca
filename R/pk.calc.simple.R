@@ -8,7 +8,10 @@
 #' @export
 adj.r.squared <- function(r.sq, n) {
   if (n <= 2) {
-    warning("n must be > 2 for adj.r.squared")
+    rlang::warn(
+      message = "n must be > 2 for adj.r.squared",
+      class = "pknca_adjr2_2points"
+    )
     structure(NA_real_, exclude="n must be > 2")
   } else {
     1-(1-r.sq)*(n-1)/(n-2)
@@ -213,9 +216,10 @@ PKNCA.set.summary(
 #' @return The last observed concentration above the LOQ
 #' @export
 pk.calc.clast.obs <- function(conc, time, check=TRUE) {
-  if (check)
+  if (check) {
     check.conc.time(conc, time)
-  tlast <- pk.calc.tlast(conc, time)
+  }
+  tlast <- pk.calc.tlast(conc, time, check = FALSE)
   if (!is.na(tlast)) {
     conc[time %in% tlast]
   } else {
@@ -366,9 +370,15 @@ pk.calc.aucpext <- function(auclast, aucinf) {
     (auclast >= aucinf)
   mask_calc <- !mask_na
   if (any(mask_greater))
-    warning("aucpext is typically only calculated when aucinf is greater than auclast.")
+    rlang::warn(
+      message = "aucpext is typically only calculated when aucinf is greater than auclast.",
+      class = "pknca_aucpext_aucinf_le_auclast"
+    )
   if (any(mask_negative))
-    warning("aucpext is typically only calculated when both aucinf and auclast are positive.")
+    rlang::warn(
+      message = "aucpext is typically only calculated when both aucinf and auclast are positive.",
+      class = "pknca_aucpext_aucinf_auclast_positive"
+    )
   ret[mask_calc] <-
     100*(1-auclast[mask_calc]/aucinf[mask_calc])
   ret

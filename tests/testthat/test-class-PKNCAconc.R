@@ -1,6 +1,3 @@
-context("Class generation-PKNCAconc")
-
-library(dplyr)
 source("generate.data.R")
 
 test_that("PKNCAconc expected errors", {

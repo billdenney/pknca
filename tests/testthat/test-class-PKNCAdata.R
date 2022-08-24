@@ -1,6 +1,3 @@
-context("Class generation-PKNCAdata")
-
-library(dplyr)
 source("generate.data.R")
 
 test_that("PKNCAdata", {
@@ -55,20 +52,23 @@ test_that("PKNCAdata", {
                info="Option names")
   
   # Single dose AUCs are appropriately selected
-  expect_equal(PKNCAdata(obj.conc, obj.dose),
-               {
-                 tmp.intervals <- merge(PKNCA.options("single.dose.aucs"), tmp.dose)
-                 tmp.intervals <- tmp.intervals[order(tmp.intervals$treatment, tmp.intervals$ID),]
-                 tmp.intervals$time <- NULL
-                 tmp.intervals$dose <- NULL
-                 tmp <- list(conc=obj.conc,
-                             dose=obj.dose,
-                             options=list(),
-                             intervals=tmp.intervals)
-                 class(tmp) <- c("PKNCAdata", "list")
-                 tmp
-               }, check.attributes=FALSE,
-               info="Selection of single dose AUCs")
+  expect_equal(
+    PKNCAdata(obj.conc, obj.dose),
+    {
+      tmp.intervals <- tibble::as_tibble(merge(PKNCA.options("single.dose.aucs"), tmp.dose))
+      tmp.intervals <- tmp.intervals[order(tmp.intervals$treatment, tmp.intervals$ID),]
+      tmp.intervals$time <- NULL
+      tmp.intervals$dose <- NULL
+      tmp <- list(conc=obj.conc,
+                  dose=obj.dose,
+                  options=list(),
+                  intervals=tmp.intervals)
+      class(tmp) <- c("PKNCAdata", "list")
+      tmp
+    },
+    ignore_attr=FALSE,
+    info="Selection of single dose AUCs"
+  )
   
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   tmp.dose <- generate.dose(tmp.conc)
@@ -76,16 +76,25 @@ test_that("PKNCAdata", {
   obj.conc <-
     PKNCAconc(tmp.conc, formula=conc~time|treatment+ID)
   obj.dose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
-  expect_warning(
+  expect_warning(expect_warning(
     PKNCAdata(obj.conc, obj.dose),
-    regexp="treatment=Trt 1; ID=1; data_intervals=NULL: No intervals generated due to no concentration data",
+    class = "pknca_no_intervals_generated"),
+    class = "pknca_no_intervals_generated",
     info="Missing concentration data with dose data gives a warning."
   )
   
-  expect_warning(PKNCAdata(obj.conc, obj.dose, formula.conc=a~b),
-                 regexp="data.conc was given as a PKNCAconc object.  Ignoring formula.conc")
-  expect_warning(PKNCAdata(obj.conc, obj.dose, formula.dose=a~b),
-                 regexp="data.dose was given as a PKNCAdose object.  Ignoring formula.dose")
+  expect_warning(expect_warning(expect_warning(
+    PKNCAdata(obj.conc, obj.dose, formula.conc=a~b),
+    class = "pknca_dataconc_formulaconc"),
+    class = "pknca_no_intervals_generated"),
+    class = "pknca_no_intervals_generated"
+  )
+  expect_warning(expect_warning(expect_warning(
+    PKNCAdata(obj.conc, obj.dose, formula.dose=a~b),
+    class = "pknca_dataconc_formuladose"),
+    class = "pknca_no_intervals_generated"),
+    class = "pknca_no_intervals_generated"
+  )
 })
 
 test_that("PKNCAdata with no or limited dose information", {
@@ -265,7 +274,7 @@ test_that("no intervals auto-determined (Fix GitHub issue #84)", {
   expect_equal(
     two_single_dose_treatments$intervals,
     interval_1,
-    check.attributes=FALSE
+    ignore_attr=TRUE
   )
   interval_2 <-
     check.interval.specification(

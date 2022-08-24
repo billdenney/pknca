@@ -1,5 +1,3 @@
-context("PKNCA option setting")
-
 test_that("PKNCA.options", {
   # Missing/incorrect option names give an error indicating all the
   # options that are missing.
@@ -315,8 +313,6 @@ test_that("PKNCA.choose.option", {
                check.interval.specification(data.frame(start=0, end=1, cmax=TRUE)),
                info="PKNCA.choose.option gives the default option when nothing else is given")
 })
-
-context("PKNCA summary setting")
 
 test_that("PKNCA.set.summary input checking", {
   # Get the current state to reset it at the end

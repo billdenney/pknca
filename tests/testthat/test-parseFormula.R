@@ -1,5 +1,3 @@
-context("Formula parsing")
-
 test_that("parseFormula", {
   tmp.env <- new.env()
   
@@ -13,7 +11,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f1),
                r1,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # Parse a lhs and rhs formula
   f2 <- as.formula("a~b", env=tmp.env)
@@ -25,7 +23,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f2),
                r2,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # Parse a rhs formula with groups
   f3 <- as.formula("~a|b", env=tmp.env)
@@ -37,7 +35,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f3),
                r3,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # Parse a rhs formula with nested groups
   f4 <- as.formula("~a|b/c", env=tmp.env)
@@ -49,7 +47,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f4),
                r4,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
   
   # Parse a rhs formula with crossed groups
   f5 <- as.formula("~a|b+c", env=tmp.env)
@@ -61,7 +59,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f5),
                r5,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # Parse a rhs formula with crossed and nested groups
   f6 <- as.formula("~a|b/c+d/e", env=tmp.env)
@@ -75,7 +73,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f6),
                r6,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # Parse a lhs and rhs formula with crossed and nested groups
   f7 <- as.formula("a~b+c|d/e+f/g", env=tmp.env)
@@ -89,7 +87,7 @@ test_that("parseFormula", {
              env=tmp.env)
   expect_equal(parseFormula(f7),
                r7,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # Ensure that things can be coerced into formulas (ignoring the
   # environment of the response)
@@ -103,7 +101,7 @@ test_that("parseFormula", {
                 t1$env <- NULL
                 t1},
                r8,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
 
   # If it can't be made into a formula, get an error.
   expect_error(parseFormula(5),
@@ -112,15 +110,15 @@ test_that("parseFormula", {
   # Test the requirements of the formula
   expect_equal(parseFormula(f7, require.groups=TRUE),
                r7,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
   expect_equal(parseFormula(f7, require.two.sided=TRUE),
                r7,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
   expect_equal(parseFormula(f7,
                             require.groups=TRUE,
                             require.two.sided=TRUE),
                r7,
-               check.attributes=FALSE)
+               ignore_attr = TRUE)
   expect_error(parseFormula(f2, require.groups=TRUE),
                regexp="rhs of formula must be a conditioning expression")
   expect_error(parseFormula(f1, require.two.sided=TRUE),
@@ -159,17 +157,6 @@ test_that("formula.parseFormula", {
 
   # Confirm that the environment is preserved
   expect_false(identical(formula(parseFormula("~a")), f1))
-})
-
-test_that("print.parseFormula", {
-  expect_output(print(parseFormula("~a")),
-                regexp="A one-sided formula without groups[. \n]+~a")
-  expect_output(print(parseFormula("~a|b")),
-                regexp="A one-sided formula with groups[. \n]+~a \\| b")
-  expect_output(print(parseFormula("a~b")),
-                regexp="A two-sided formula without groups[. \n]+a ~ b")
-  expect_output(print(parseFormula("a~b|c")),
-                regexp="A two-sided formula with groups[. \n]+a ~ b \\| c")
 })
 
 test_that("findOperator", {

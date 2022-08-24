@@ -1,5 +1,3 @@
-context("AIC.list testing")
-
 test_that("AIC.list", {
   tmpdat <- data.frame(x=c(1, 2, 3), y=c(1, 2.02, 3), z=c(0, 0.01, 0))
   mod1 <- glm(y~x, data=tmpdat)

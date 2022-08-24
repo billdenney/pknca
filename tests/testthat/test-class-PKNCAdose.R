@@ -1,6 +1,3 @@
-context("Class generation-PKNCAdose")
-
-library(dplyr)
 source("generate.data.R")
 
 test_that("PKNCAdose", {
@@ -132,7 +129,7 @@ test_that("PKNCAdose model.frame", {
                           treatment=rep(c("Trt 1", "Trt 2"), each=5),
                           ID=rep(1:5, 2),
                           stringsAsFactors=FALSE),
-               check.attributes=FALSE,
+               ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with two-sided formula")
   
   mydose2 <- PKNCAdose(formula=~time|treatment+ID, data=tmp.dose)
@@ -148,7 +145,7 @@ test_that("PKNCAdose model.frame", {
                           treatment=rep(c("Trt 1", "Trt 2"), each=5),
                           ID=rep(1:5, 2),
                           stringsAsFactors=FALSE),
-               check.attributes=FALSE,
+               ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with one-sided formula")
 
   mydose3 <- PKNCAdose(formula=.~time|treatment+ID, data=tmp.dose)
@@ -164,7 +161,7 @@ test_that("PKNCAdose model.frame", {
                           treatment=rep(c("Trt 1", "Trt 2"), each=5),
                           ID=rep(1:5, 2),
                           stringsAsFactors=FALSE),
-               check.attributes=FALSE,
+               ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with one-sided formula ('.' on LHS)")
   
   mydose4 <- PKNCAdose(formula=dose~.|treatment+ID, data=tmp.dose)
@@ -180,7 +177,7 @@ test_that("PKNCAdose model.frame", {
                           treatment=rep(c("Trt 1", "Trt 2"), each=5),
                           ID=rep(1:5, 2),
                           stringsAsFactors=FALSE),
-               check.attributes=FALSE,
+               ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with one-sided formula ('.' on RHS)")
   
   # You can't give multiple rows per group if you don't give time.
@@ -311,7 +308,7 @@ test_that("PKNCAdose route and duration", {
   tmp.dose.iv$route <- "intravascular"
   # Note that the column names are in a different order when specified
   # in the input data.frame or not.
-  expect_equivalent(
+  expect_equal(
     {
       tmp <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, duration=0, route="intravascular")
       tmp$data <- tmp$data[,sort(names(tmp$data))]
@@ -321,7 +318,9 @@ test_that("PKNCAdose route and duration", {
       tmp <- PKNCAdose(tmp.dose.iv, formula=dose~time|treatment+ID, duration=0, route="route")
       tmp$data <- tmp$data[,sort(names(tmp$data))]
       tmp
-    })
+    },
+    ignore_attr=TRUE
+  )
 
 })
 
@@ -375,17 +374,25 @@ test_that("setDuration", {
   tmp.dose$nom_time <- tmp.dose$time
   rownames(tmp.dose) <- NULL
   mydose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)
-  expect_equal(setDuration(mydose),
-               mydose,
-               info="No changes with no arguments")
+  expect_message(
+    expect_equal(
+      setDuration(mydose),
+      mydose,
+      info="No changes with no arguments"
+    ),
+    class = "pknca_foundcolumn_duration"
+  )
   expect_error(setDuration(mydose, duration="foo", rate="bar"),
                regexp="Both duration and rate cannot be given at the same time",
                fixed=TRUE,
                info="Cannot give both duration and rate")
-  expect_error(setDuration(mydose, duration="foobar"),
-               regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
-               fixed=TRUE,
-               info="Cannot give both duration as non-numeric")
+  expect_warning(expect_error(
+    setDuration(mydose, duration="foobar"),
+    regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
+    fixed=TRUE,
+    info="Cannot give both duration as non-numeric"),
+    class = "pknca_foundcolumn_duration"
+  )
   
   duration_example <- suppressMessages(setDuration(mydose, rate=2))
   expect_true(all(mydose$data$duration == 0))

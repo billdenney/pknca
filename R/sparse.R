@@ -168,7 +168,10 @@ var_sparse_auc <- function(sparse_pk) {
     sum(weights^2 * diag(covariance)/n)^2 /
     sum(weights^4 * diag(covariance)^2/(n^2*(n-1)))
   if (sum(covariance[lower.tri(covariance)] != 0) > 0) {
-    warning("Cannot yet calculate sparse degrees of freedom for multiple samples per subject")
+    rlang::warn(
+      message = "Cannot yet calculate sparse degrees of freedom for multiple samples per subject",
+      class = "pknca_sparse_df_multi"
+    )
     df <- NA_real_
   }
   attr(var_auc, "df") <- df

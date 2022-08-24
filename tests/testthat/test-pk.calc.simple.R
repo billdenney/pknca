@@ -1,17 +1,15 @@
-context("Simple NCA functions")
-
 test_that("adj.r.squared", {
   # Ensure correct calculation
   expect_equal(adj.r.squared(1, 5), 1)
   expect_equal(adj.r.squared(0.5, 5), 1-0.5*4/3)
 
   # Ensure that N must be an integer > 2
-  expect_equal(
-    expect_warning(
+  expect_warning(
+    expect_equal(
       adj.r.squared(1, 2),
-      regexp="n must be > 2"
+      structure(NA_real_, exclude="n must be > 2")
     ),
-    structure(NA_real_, exclude="n must be > 2")
+    regexp="n must be > 2"
   )
 })
 
@@ -61,7 +59,11 @@ test_that("pk.calc.cmin", {
 
 test_that("pk.calc.tmax", {
   # No data give a warning and NA
-  expect_warning(v1 <- pk.calc.tmax(numeric(), numeric()))
+  expect_warning(expect_warning(
+    v1 <- pk.calc.tmax(numeric(), numeric()),
+    class = "pknca_conc_none"),
+    class = "pknca_time_none"
+  )
   expect_equal(v1, NA)
 
   # Either concentration or time is missing, give an error
@@ -146,7 +148,10 @@ test_that("pk.calc.clast.obs", {
 
   c1 <- c(NA, NA, NA, NA)
   t1 <- c(0, 1, 2, 3)
-  expect_warning(v1 <- pk.calc.clast.obs(c1, t1))
+  expect_warning(
+    v1 <- pk.calc.clast.obs(c1, t1),
+    class = "pknca_conc_all_missing"
+  )
   expect_equal(v1, NA)
 
   c1 <- rep(0, 4)
@@ -241,8 +246,11 @@ test_that("pk.calc.aucpext", {
   expect_warning(v1 <- pk.calc.aucpext(2, 1),
                  regexp="aucpext is typically only calculated when aucinf is greater than auclast.")
   expect_equal(v1, -100)
-  expect_warning(v2 <- pk.calc.aucpext(auclast=0, aucinf=0),
-                 regexp="aucpext is typically only calculated when aucinf is greater than auclast.")
+  expect_warning(expect_warning(
+    v2 <- pk.calc.aucpext(auclast=0, aucinf=0),
+    class = "pknca_aucpext_aucinf_le_auclast"),
+    class = "pknca_aucpext_aucinf_auclast_positive"
+  )
   expect_equal(v2, NA_real_,
                info="aucinf<=0 gives NA_real_ (not infinity)")
   expect_equal(pk.calc.aucpext(NA, NA),

@@ -1,5 +1,3 @@
-context("Dose-normalized NCA functions")
-
 test_that("pk.calc.dn", {
   # Ensure correct calculation
   expect_equal(pk.calc.dn(1, 5), 0.2)

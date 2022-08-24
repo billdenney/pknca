@@ -1,5 +1,3 @@
-context("AUC interval checking")
-
 test_that(
   "check.interval.specification", {
 
@@ -11,9 +9,12 @@ test_that(
                      end=1,
                      stringsAsFactors=FALSE)
     r1[,setdiff(nameorder, names(r1))] <- FALSE
-    expect_warning(check.interval.specification(as.matrix(d1)),
-                   regexp="Interval specification must be a data.frame",
-                   info="Interval must be a data.frame or coercable into a data frame")
+    expect_warning(expect_warning(
+      check.interval.specification(as.matrix(d1)),
+      regexp="Interval specification must be a data.frame",
+      info="Interval must be a data.frame or coercable into a data frame"),
+      regexp="Nothing to be calculated in interval specification number\\(s\\): 1"
+    )
     expect_warning(d1.check <- check.interval.specification(d1),
                    regexp="Nothing to be calculated in interval specification number\\(s\\): 1",
                    info="Warn if nothing is to be calculated in an interval specification")

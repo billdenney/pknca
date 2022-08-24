@@ -116,9 +116,13 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   interval_end <- interval[2]
   # Find the first time point
   if (interval_start < min(data$time)) {
-    warning(sprintf(
-      "Requesting an AUC range starting (%g) before the first measurement (%g) is not allowed",
-      interval_start, min(data$time)))
+    rlang::warn(
+      message = sprintf(
+        "Requesting an AUC range starting (%g) before the first measurement (%g) is not allowed",
+        interval_start, min(data$time)
+      ),
+      class = "pknca_warn_auc_before_first"
+    )
     return(NA)
   } else if (interval_start > max(data$time)) {
     # Give this as a warning, but allow it to continue

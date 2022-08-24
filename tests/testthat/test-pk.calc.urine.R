@@ -1,5 +1,3 @@
-context("Urine")
-
 test_that("pk.calc.ae", {
   expect_equal(pk.calc.ae(conc=1:5,
                           volume=1:5),

@@ -28,14 +28,26 @@ test_that("dplyr left_join", {
   myresult <- pk.nca(mydata)
   
   joindf <- data.frame(ID=1, foo="bar")
-  joined <- left_join(myresult, joindf)
+  expect_message(
+    joined <- left_join(myresult, joindf),
+    "Joining, by = \"ID\""
+  )
   joined_manual <- myresult
-  joined_manual$result <- left_join(joined_manual$result, joindf)
+  expect_message(
+    joined_manual$result <- dplyr::left_join(joined_manual$result, joindf),
+    "Joining, by = \"ID\""
+  )
   expect_equal(joined, joined_manual)
   
-  joined <- left_join(myconc, joindf)
+  expect_message(
+    joined <- left_join(myconc, joindf),
+    "Joining, by = \"ID\""
+  )
   joined_manual <- myconc
-  joined_manual$data <- left_join(joined_manual$data, joindf)
+  expect_message(
+    joined_manual$data <- left_join(joined_manual$data, joindf),
+    "Joining, by = \"ID\""
+  )
   expect_equal(joined, joined_manual)
 })
 

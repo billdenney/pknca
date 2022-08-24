@@ -16,10 +16,12 @@
 #' a dose, they equal zero, and otherwise, they are calculated relative to the
 #' dose number in the `event_number_*` columns.
 #' @export
-time_calc <- function(time_event, time_obs, units=NULL)
+time_calc <- function(time_event, time_obs, units=NULL) {
   UseMethod("time_calc")
+}
 
 #' @importFrom stats na.omit
+#' @export
 time_calc.numeric <- function(time_event, time_obs, units=NULL) {
   if (length(time_event) == 0) {
     warning("No events provided")
@@ -64,6 +66,7 @@ time_calc.numeric <- function(time_event, time_obs, units=NULL) {
   ret
 }
 
+#' @export
 time_calc.POSIXt <- function(time_event, time_obs, units=NULL) {
   if (is.null(units)) {
     stop("`units` must be provided.")
@@ -79,6 +82,7 @@ time_calc.POSIXt <- function(time_event, time_obs, units=NULL) {
   )
 }
 
+#' @export
 time_calc.difftime <- function(time_event, time_obs, units=NULL) {
   if (is.null(units)) {
     stop("`units` must be provided.")

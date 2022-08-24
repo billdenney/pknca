@@ -1,5 +1,3 @@
-context("AUC and AUMC")
-
 test_that("pk.calc.auxc", {
   # Verify input checks
 
@@ -46,9 +44,7 @@ test_that("pk.calc.auxc", {
                info="Invalid integration methods are caught.")
 })
 
-test_that("pk.calc.auc", {
-  nullfun <- function(x) x
-  # Linear AUC when the conc at the end of the interval is above LOQ;
+test_that("pk.calc.auc: Linear AUC when the conc at the end of the interval is above LOQ", {
   # lambda.z is unused
   tests <- list(AUCinf=as.numeric(NA),
                 AUClast=1.5,
@@ -59,7 +55,7 @@ test_that("pk.calc.auc", {
     if (t == "AUCinf") {
       runner <- expect_warning
     } else {
-      runner <- nullfun
+      runner <- identity
     }
     runner(v1 <- pk.calc.auc(conc=c(0, 1, 1),
                              time=0:2,
@@ -69,9 +65,9 @@ test_that("pk.calc.auc", {
                              method="linear"))
     expect_equal(v1, tests[[t]], info=t)
   }
+})
 
-  
-  # Linear AUC when the conc at the end of the interval is BLQ;
+test_that("pk.calc.auc: Linear AUC when the conc at the end of the interval is BLQ, lambda.z missing", {
   # lambda.z is used to extrapolate to the end of the interval.
   # Since lambda.z is NA, the result is NA.
   tests <- list(AUCinf=as.numeric(NA),
@@ -83,7 +79,7 @@ test_that("pk.calc.auc", {
     if (t == "AUCinf") {
       runner <- expect_warning
     } else {
-      runner <- nullfun
+      runner <- identity
     }
     runner(v1 <- pk.calc.auc(conc=c(0, 1, 0),
                              time=0:2,
@@ -93,7 +89,9 @@ test_that("pk.calc.auc", {
                              method="linear"))
     expect_equal(v1, tests[[t]], info=t)
   }
+})
 
+test_that("pk.calc.auc: Linear AUC when the conc at the end of the interval is BLQ, lambda.z given", {
   # The same when lambda.z is given
   tests <- list(AUCinf=1.5,
                 AUClast=0.5,
@@ -104,7 +102,7 @@ test_that("pk.calc.auc", {
     if (t == "AUCinf") {
       runner <- expect_warning
     } else {
-      runner <- nullfun
+      runner <- identity
     }
     runner(v1 <- pk.calc.auc(conc=c(0, 1, 0),
                              time=0:2,
@@ -114,8 +112,9 @@ test_that("pk.calc.auc", {
                              method="linear"))
     expect_equal(v1, tests[[t]], info=t)
   }
+})
 
-  # And when there are multiple BLQ values at the end
+test_that("pk.calc.auc: Linear AUC when when there are multiple BLQ values at the end, lambda.z given", {
   tests <- list(AUCinf=1.5,
                 AUClast=0.5,
                 AUCall=1)
@@ -125,7 +124,7 @@ test_that("pk.calc.auc", {
     if (t == "AUCinf") {
       runner <- expect_warning
     } else {
-      runner <- nullfun
+      runner <- identity
     }
     runner(v1 <- pk.calc.auc(conc=c(0, 1, rep(0, 5)),
                              time=0:6,
@@ -135,9 +134,10 @@ test_that("pk.calc.auc", {
                              method="linear"))
     expect_equal(v1, tests[[t]], info=t)
   }
+})
 
-  # Confirm that center BLQ points are dropped, kept, or imputed
-  # correctly.  Do this with both "linear" and "lin up/log down"
+test_that("pk.calc.auc: Confirm that center BLQ points are dropped, kept, or imputed correctly", {
+  # Do this with both "linear" and "lin up/log down"
   tests <- list(
     "linear"=list(
       AUCinf=1+1+0.5+1.5+1.5+1,
@@ -147,14 +147,14 @@ test_that("pk.calc.auc", {
       AUCinf=1+1+0.5+1.5+1/log(2)+1,
       AUClast=1+1+0.5+1.5+1/log(2),
       AUCall=1+1+0.5+1.5+1/log(2)))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
       if (n == "AUCinf") {
         runner <- expect_warning
       } else {
-        runner <- nullfun
+        runner <- identity
       }
       runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1),
                                time=0:5,
@@ -165,7 +165,10 @@ test_that("pk.calc.auc", {
                                method=t))
       expect_equal(v1, tests[[t]][[n]], info=paste(t, n))
     }
+  }
+})
 
+test_that("pk.calc.auc: Confirm BLQ in the middle or end are calculated correctly", {
   # AUCall looks different when there are BLQs at the end
   tests <- list(
     "linear"=list(
@@ -176,14 +179,14 @@ test_that("pk.calc.auc", {
       AUCinf=1+1+0.5+1.5+1/log(2)+1,
       AUClast=1+1+0.5+1.5+1/log(2),
       AUCall=1+1+0.5+1.5+1/log(2)+0.5))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
       if (n == "AUCinf") {
         runner <- expect_warning
       } else {
-        runner <- nullfun
+        runner <- identity
       }
       runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
                                time=0:7,
@@ -194,6 +197,7 @@ test_that("pk.calc.auc", {
                                method=t))
       expect_equal(v1, tests[[t]][[n]], info=paste(t, n))
     }
+  }
 
   # When BLQ in the middle and end are dropped, you get different
   # answers.  (Note that first BLQ dropping would cause errors due to
@@ -207,14 +211,14 @@ test_that("pk.calc.auc", {
       AUCinf=1+2/log(2)+1.5+1/log(2)+1,
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
       if (n == "AUCinf") {
         runner <- expect_warning
       } else {
-        runner <- nullfun
+        runner <- identity
       }
       runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
                                time=0:7,
@@ -230,8 +234,10 @@ test_that("pk.calc.auc", {
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
-  
-  # When AUCinf is requested with NA for lambda.z, the result is NA.
+  }
+})
+
+test_that("pk.calc.auc: When AUCinf is requested with NA for lambda.z, the result is NA", {
   tests <- list(
     "linear"=list(
       AUCinf=as.numeric(NA),
@@ -241,14 +247,14 @@ test_that("pk.calc.auc", {
       AUCinf=as.numeric(NA),
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
       if (n == "AUCinf") {
         runner <- expect_warning
       } else {
-        runner <- nullfun
+        runner <- identity
       }
       runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0, 0),
                                time=0:7,
@@ -264,8 +270,13 @@ test_that("pk.calc.auc", {
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
-  # Test NA at the beginning
+  }
+})
 
+# Test NA at the beginning is in "Confirm error with NA at the same time as
+# the beginning of the interval" below
+
+test_that("pk.calc.auc: Test NA at the end", {
   # Test NA at the end
   tests <- list(
     "linear"=list(
@@ -283,7 +294,7 @@ test_that("pk.calc.auc", {
       if (n == "AUCinf") {
         runner <- expect_warning
       } else {
-        runner <- nullfun
+        runner <- identity
       }
       runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, NA, 0),
                                time=0:7,
@@ -299,8 +310,9 @@ test_that("pk.calc.auc", {
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
-  
-  # Test interpolation of times within the time interval
+})
+
+test_that("pk.calc.auc: interpolation of times within the time interval", {
   tests <- list(
     "linear"=list(
       AUCinf=1+3+1.5+1.5+1,
@@ -317,7 +329,7 @@ test_that("pk.calc.auc", {
       if (n == "AUCinf") {
         runner <- expect_warning
       } else {
-        runner <- nullfun
+        runner <- identity
       }
       runner(v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
                                time=c(0:5, 7),
@@ -333,9 +345,9 @@ test_that("pk.calc.auc", {
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
-  
-  # Confirm warning with beginning of interval before the beginning of
-  # time
+})
+
+test_that("pk.calc.auc: warning with beginning of interval before the beginning of time", {
   tests <- list(
     "linear"=list(
       AUCinf=NA,
@@ -345,26 +357,31 @@ test_that("pk.calc.auc", {
       AUCinf=NA,
       AUClast=NA,
       AUCall=NA))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
       expect_warning(
         v1 <- pk.calc.auc(conc=c(0, 2, 0, 1, 2, 1, 0),
                           time=c(0:5, 7),
-                          interval=c(-1, 6),
+                          interval=c(-1, Inf),
                           lambda.z=1,
                           auc.type=n,
                           conc.blq=list(
                             first="keep",
                             middle="drop",
                             last="keep"),
-                          method=t))
+                          method=t),
+        class="pknca_warn_auc_before_first"
+      )
       expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
-  
+  }
+})
+
+test_that("pk.calc.auc: warning with beginning of interval before the beginning of time", {
   # Requesting an AUC interval that starts after the last measurement
   # results in a warning, but will provide an answer (to be tested
   # elsewhere).
@@ -372,8 +389,7 @@ test_that("pk.calc.auc", {
                              method="linear"),
                  regexp="AUC start time \\(2\\) is after the maximum observed time \\(1\\)")
 
-  # Confirm error with NA at the same time as the beginning of the
-  # interval
+  # Confirm error with NA at the same time as the beginning of the interval
   tests <- list(
     "linear"=list(
       AUCinf=NA,
@@ -385,24 +401,19 @@ test_that("pk.calc.auc", {
       AUCall=NA))
   for (t in names(tests))
     for (n in names(tests[[t]])) {
-      # Note: using this structure ensures that there will not be
-      # excessive warnings during testing.
-      if (n == "AUCinf") {
-        runner <- expect_warning
-      } else {
-        runner <- nullfun
-      }
       expect_warning(
         v1 <- pk.calc.auc(conc=c(NA, 2, 0, 1, 2, 1, 0),
                           time=c(0:5, 7),
-                          interval=c(0, 6),
+                          interval=c(0, Inf),
                           lambda.z=1,
                           auc.type=n,
                           conc.blq=list(
                             first="keep",
                             middle="drop",
                             last="keep"),
-                          method=t))
+                          method=t),
+        class = "pknca_warn_auc_before_first"
+      )
       expect_equal(v1,
                    tests[[t]][[n]],
                    info=paste(t, n))

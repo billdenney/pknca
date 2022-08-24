@@ -82,21 +82,6 @@ parseFormula <- function (form,
   ret
 }
 
-#' @importFrom stats formula
-print.parseFormula <- function(x, ...) {
-  if (identical(x$lhs, NA)) {
-    cat("A one-sided formula ")
-  } else {
-    cat("A two-sided formula ")
-  }
-  if (is.null(x$groups)) {
-    cat("without groups.\n  ")
-  } else {
-    cat("with groups.\n  ")
-  }
-  cat(deparse(stats::formula(x)), "\n")
-}
-
 #' Convert the parsed formula back into the original
 #'
 #' @param x The parsed formula object to revert to the original
