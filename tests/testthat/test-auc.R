@@ -15,11 +15,15 @@ test_that("pk.calc.auxc", {
                info="Starting before the beginning time returns NA (not an error)")
 
   # All concentrations are NA, return NA
-  expect_warning(v2 <- pk.calc.auxc(conc=c(NA, NA), time=2:3, interval=c(1, 3),
-                                    method="linear"),
-                 info="All concentrations NA gives a warning")
-  expect_equal(v2, NA,
-               info="All concentrations NA is NA")
+  expect_warning(
+    v2 <- pk.calc.auxc(conc=c(NA, NA), time=2:3, interval=c(1, 3), method="linear"),
+    regexp = "All concentration data are missing"
+  )
+  expect_equal(
+    v2,
+    structure(NA_real_, exclude="No data for AUC calculation"),
+    info="All concentrations NA is NA"
+  )
   # All concentrations are 0, return 0
   expect_equal(
     pk.calc.auxc(
@@ -32,7 +36,7 @@ test_that("pk.calc.auxc", {
   # Concentrations mix 0 and NA, return 0
   expect_equal(
     pk.calc.auxc(
-      conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
+      conc=c(NA, 0, NA, 0, NA), time=2:6, interval=c(1, 3),
       method="linear"
     ),
     structure(0, exclude="DO NOT EXCLUDE"),
@@ -667,4 +671,25 @@ test_that("pk.calc.aumc.inf.pred", {
       interval=c(0, Inf),
       method="linear"),
     info="pk.calc.aumc.inf.pred is a simple wrapper around pk.calc.aumc.inf")
+})
+
+test_that("AUC with a single concentration measured should return NA (fix #176)", {
+  expect_equal(
+    pk.calc.auc.last(conc = 1, time = 0),
+    structure(
+      NA_real_,
+      exclude="AUC cannot be calculated with only one measured concentration"
+    )
+  )
+  # One concentration measured with others missing is sill excluded
+  expect_equal(
+    pk.calc.auxc(
+      conc=c(NA, 0, NA), time=2:4, interval=c(1, 3),
+      method="linear"
+    ),
+    structure(
+      NA_real_,
+      exclude="AUC cannot be calculated with only one measured concentration"
+    )
+  )
 })
