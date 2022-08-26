@@ -6,6 +6,11 @@ the dosing including dose amount and route.
 
 # PKNCA 0.9.6 (in development)
 
+## Bugs Fixed
+
+* When calculating AUC with only a single concentration measurement, NA is now
+  returned instead of 0. (fix #176)
+
 ## New Features
 
 * Initial support for unit assignment and conversion has been added.  See the

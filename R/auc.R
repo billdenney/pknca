@@ -94,7 +94,19 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   }
   if (nrow(data) == 0) {
     # All the data were missing
-    return(NA)
+    return(
+      structure(
+        NA_real_,
+        exclude="No data for AUC calculation"
+      )
+    )
+  } else if (nrow(data) == 1) {
+    return(
+      structure(
+        NA_real_,
+        exclude="AUC cannot be calculated with only one measured concentration"
+      )
+    )
   } else if (all(data$conc %in% c(0, NA))) {
     # All the data were missing or 0 before excluding points
     return(structure(0, exclude="DO NOT EXCLUDE"))
