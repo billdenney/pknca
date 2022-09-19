@@ -112,3 +112,10 @@ test_that("pknca_units_add_paren", {
   expect_equal(pknca_units_add_paren("mg/kg"), "(mg/kg)")
   expect_equal(pknca_units_add_paren("mg*kg"), "(mg*kg)")
 })
+
+test_that("pknca_units_table treats missing and NULL the same", {
+  expect_equal(
+    pknca_units_table(),
+    pknca_units_table(concu = NULL, doseu = NULL, amountu = NULL, timeu = NULL)
+  )
+})

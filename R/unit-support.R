@@ -1,8 +1,8 @@
 #' Create a unit assignment and conversion table
-#' 
+#'
 #' This data.frame is typically used for the \code{units} argument for
 #' \code{\link{PKNCAdata}()}.
-#' 
+#'
 #' @param concu,doseu,amountu,timeu Units for concentration, dose, amount, and
 #'   time
 #' @param conversions An optional data.frame with columns of c("PPORRESU",
@@ -29,7 +29,7 @@
 #' )
 #' pknca_units_table(
 #'   concu="mg/L", doseu="mg/kg", amountu="mg", timeu="hr",
-#'   # Convert clearance and volume units to molar units (assuming 
+#'   # Convert clearance and volume units to molar units (assuming
 #'   conversions=data.frame(
 #'     PPORRESU=c("mg/L", "(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
 #'     PPSTRESU=c("mmol/L", "mL/hr/kg", "mL/kg"),
@@ -133,7 +133,7 @@ pknca_units_table_unitless <- function() {
 }
 
 pknca_units_table_time <- function(timeu) {
-  if (!missing(timeu)) {
+  if (!missing(timeu) && !is.null(timeu)) {
     rbind(
       data.frame(
         PPORRESU=timeu,
@@ -150,7 +150,7 @@ pknca_units_table_time <- function(timeu) {
 }
 
 pknca_units_table_conc <- function(concu) {
-  if (!missing(concu)) {
+  if (!missing(concu) && !is.null(concu)) {
     data.frame(
       PPORRESU=concu,
       PPTESTCD=pknca_find_units_param(unit_type="conc"),
@@ -160,7 +160,7 @@ pknca_units_table_conc <- function(concu) {
 }
 
 pknca_units_table_amount <- function(amountu) {
-  if (!missing(amountu)) {
+  if (!missing(amountu) && !is.null(amountu)) {
     data.frame(
       PPORRESU=amountu,
       PPTESTCD=pknca_find_units_param(unit_type="amount"),
@@ -170,7 +170,7 @@ pknca_units_table_amount <- function(amountu) {
 }
 
 pknca_units_table_conc_dose <- function(concu, doseu) {
-  if (!missing(concu) & !missing(doseu)) {
+  if (!missing(concu) && !missing(doseu) && !is.null(concu) && !is.null(doseu)) {
     rbind(
       data.frame(
         PPORRESU=sprintf("%s/%s", pknca_units_add_paren(concu), pknca_units_add_paren(doseu)),
@@ -188,7 +188,7 @@ pknca_units_table_conc_dose <- function(concu, doseu) {
 }
 
 pknca_units_table_conc_time <- function(concu, timeu) {
-  if (!missing(concu) & !missing(timeu)) {
+  if (!missing(concu) && !missing(timeu) && !is.null(concu) && !is.null(timeu)) {
     rbind(
       data.frame(
         # AUC units
@@ -207,7 +207,8 @@ pknca_units_table_conc_time <- function(concu, timeu) {
 }
 
 pknca_units_table_conc_time_dose <- function(concu, timeu, doseu) {
-  if (!missing(concu) & !missing(timeu) & !missing(doseu)) {
+  if (!missing(concu) && !missing(timeu) && !missing(doseu) &&
+      !is.null(concu) && !is.null(timeu) && !is.null(doseu)) {
     rbind(
       data.frame(
         # AUC units, dose-normalized
@@ -232,7 +233,8 @@ pknca_units_table_conc_time_dose <- function(concu, timeu, doseu) {
 }
 
 pknca_units_table_conc_time_amount <- function(concu, timeu, amountu) {
-  if (!missing(concu) & !missing(timeu) & !missing(amountu)) {
+  if (!missing(concu) && !missing(timeu) && !missing(amountu) &&
+      !is.null(concu) && !is.null(timeu) && !is.null(amountu)) {
     data.frame(
       # Renal clearance units
       PPORRESU=sprintf("%s/(%s*%s)", pknca_units_add_paren(amountu), timeu, concu),
@@ -243,7 +245,7 @@ pknca_units_table_conc_time_amount <- function(concu, timeu, amountu) {
 }
 
 #' Find NCA parameters with a given unit type
-#' 
+#'
 #' @param unit_type The type of unit as assigned with \code{add.interval.col}
 #' @return A character vector of parameters with a given unit type
 #' @keywords Internal
@@ -264,7 +266,7 @@ pknca_find_units_param <- function(unit_type) {
 }
 
 #' Add parentheses to a unit value, if needed
-#' 
+#'
 #' @param unit The text of the unit
 #' @return The unit with parentheses around it, if needed
 #' @keywords Internal
@@ -274,7 +276,7 @@ pknca_units_add_paren <- function(unit) {
 }
 
 #' Perform unit conversion (if possible) on PKNCA results
-#' 
+#'
 #' @param result The results data.frame
 #' @param units The unit conversion table
 #' @return The result table with units converted
