@@ -113,7 +113,7 @@ kinetics.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>auctau</dt>
-<dd><p>the AUC from time 0 to the end of the dosing interval 
+<dd><p>the AUC from time 0 to the end of the dosing interval
 (tau).</p></dd>
 
 
@@ -123,7 +123,7 @@ kinetics.</p>
 
 
 <dt>aucinf</dt>
-<dd><p>the AUC from time 0 to infinity (typically using 
+<dd><p>the AUC from time 0 to infinity (typically using
 single-dose data)</p></dd>
 
 
@@ -135,8 +135,8 @@ single-dose data)</p></dd>
     <h2>Details</h2>
     <p>mrt.md is <code>aumctau/auctau + tau*(aucinf-auctau)/auctau</code> and
 should only be used for multiple dosing with equal intervals between doses.</p>
-<p>Note that if <code>aucinf == auctau</code> (as would be the 
-  assumption with linear kinetics), the equation becomes the same as 
+<p>Note that if <code>aucinf == auctau</code> (as would be the
+  assumption with linear kinetics), the equation becomes the same as
   the single-dose MRT.</p>
     </div>
     <div id="see-also">

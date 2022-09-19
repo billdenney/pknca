@@ -117,7 +117,7 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>A data frame with time and the groups defined in 
+<dd><p>A data frame with time and the groups defined in
 <code>formula</code>.</p></dd>
 
 
@@ -126,27 +126,27 @@
 
 
 <dt>formula</dt>
-<dd><p>The formula defining the 
+<dd><p>The formula defining the
 <code>dose.amount~time|groups</code> where <code>time</code> is the time of the
-dosing and <code>dose.amount</code> is the amount administered at that 
+dosing and <code>dose.amount</code> is the amount administered at that
 time (see Details).</p></dd>
 
 
 <dt>route</dt>
-<dd><p>Define the route of administration.  The value may be 
-either a column name from the <code>data</code> (checked first) or a 
-character string of either <code>"extravascular"</code> or 
-<code>"intravascular"</code> (checked second).  If given as a column 
-name, then every value of the column must be either 
+<dd><p>Define the route of administration.  The value may be
+either a column name from the <code>data</code> (checked first) or a
+character string of either <code>"extravascular"</code> or
+<code>"intravascular"</code> (checked second).  If given as a column
+name, then every value of the column must be either
 <code>"extravascular"</code> or <code>"intravascular"</code>.</p></dd>
 
 
 <dt>rate, duration</dt>
-<dd><p>(optional) for <code>"intravascular"</code> dosing, 
+<dd><p>(optional) for <code>"intravascular"</code> dosing,
 the rate or duration of dosing.  If given as a character string, it
-is the name of a column from the <code>data</code>, and if given as a 
-number, it is the value for all doses.  Only one may be given, and 
-if neither is given, then the dose is assumed to be a bolus 
+is the name of a column from the <code>data</code>, and if given as a
+number, it is the value for all doses.  Only one may be given, and
+if neither is given, then the dose is assumed to be a bolus
 (<code>duration=0</code>).  If <code>rate</code> is given, then the dose amount
 must be given (the left hand side of the <code>formula</code>).</p></dd>
 
@@ -160,7 +160,7 @@ data summary and checking.</p></dd>
 
 <dt>exclude</dt>
 <dd><p>(optional) The name of a column with concentrations to
-exclude from calculations and summarization.  If given, the column 
+exclude from calculations and summarization.  If given, the column
 should have values of <code>NA</code> or <code>""</code> for concentrations to
 include and non-empty text for concentrations to exclude.</p></dd>
 
@@ -173,19 +173,19 @@ include and non-empty text for concentrations to exclude.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The <code>formula</code> for a <code>PKNCAdose</code> object can be 
+    <p>The <code>formula</code> for a <code>PKNCAdose</code> object can be
   given three ways: one-sided (missing left side), one-sided (missing
-  right side), or two-sided.  Each of the three ways can be given 
-  with or without groups.  When given one-sided missing the left 
-  side, the left side can either be omitted or can be given as a 
-  period (<code>.</code>): <code>~time|treatment+subject</code> and 
+  right side), or two-sided.  Each of the three ways can be given
+  with or without groups.  When given one-sided missing the left
+  side, the left side can either be omitted or can be given as a
+  period (<code>.</code>): <code>~time|treatment+subject</code> and
   <code>.~time|treatment+subject</code> are identical, and dose-related NCA
-  parameters will all be reported as not calculable (for example, 
+  parameters will all be reported as not calculable (for example,
   clearance).  When given one-sided missing the right side, the right
-  side must be specified as a period (<code>.</code>): 
+  side must be specified as a period (<code>.</code>):
   <code>dose~.|treatment+subject</code>, and only a single row may be given
-  per group.  When the right side is missing, PKNCA assumes that the 
-  same dose is given in every interval.  When given as a two-sided 
+  per group.  When the right side is missing, PKNCA assumes that the
+  same dose is given in every interval.  When given as a two-sided
   formula</p>
     </div>
     <div id="see-also">
