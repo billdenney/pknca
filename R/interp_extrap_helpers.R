@@ -29,7 +29,7 @@ choose_interp_extrap_method <- function(conc, time, interp_method, extrap_method
   checkmate::assert_numeric(x=time, any.missing=FALSE, len=length(conc), unique=TRUE, sorted=TRUE)
   checkmate::assert_choice(x=interp_method, choices=c("linear", "lin up/log down", "lin/log", "log"))
   checkmate::assert_choice(x=extrap_method, choices=c("aucinf.obs", "aucinf.pred", "auclast", "aucall"))
-  
+
   if (length(conc) == 1) {
     # only extrapolate (consider adding a warning, but that may be too noisy)
     has_conc_zero_after <- conc == 0
@@ -45,7 +45,7 @@ choose_interp_extrap_method <- function(conc, time, interp_method, extrap_method
     tlast <- pk.calc.tlast(conc, time)
     before_tlast <- time[-1] <= tlast
     after_tlast <- !before_tlast
-  
+
     ret_interp <- rep(NA_character_, length(conc) - 1)
     ret_interp[after_tlast] <- "zero"
     if (all(has_conc_zero_after)) {

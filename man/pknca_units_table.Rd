@@ -40,7 +40,7 @@ pknca_units_table(
 )
 pknca_units_table(
   concu="mg/L", doseu="mg/kg", amountu="mg", timeu="hr",
-  # Convert clearance and volume units to molar units (assuming 
+  # Convert clearance and volume units to molar units (assuming
   conversions=data.frame(
     PPORRESU=c("mg/L", "(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
     PPSTRESU=c("mmol/L", "mL/hr/kg", "mL/kg"),

@@ -167,7 +167,7 @@ interpolation occurs from the data after dosing.
 
 \item \code{extrapolate.conc()}: Extrapolate concentrations after Tlast
 
-\item \code{interp.extrap.conc.dose()}: Interpolate and extrapolate 
+\item \code{interp.extrap.conc.dose()}: Interpolate and extrapolate
 concentrations without interpolating or extrapolating beyond doses.
 
 }}

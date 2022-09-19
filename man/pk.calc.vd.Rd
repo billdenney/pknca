@@ -26,10 +26,10 @@ distribution (Vd/F)
 vd is \code{dose/(aucinf * lambda.z)}.
 
 If \code{dose} is the same length as the other inputs, then
-  the output will be the same length as all of the inputs; the 
-  function assumes that you are calculating for multiple intervals 
-  simultaneously.  If the inputs other than \code{dose} are scalars 
-  and \code{dose} is a vector, then the function assumes multiple 
-  doses were given in a single interval, and the sum of the 
+  the output will be the same length as all of the inputs; the
+  function assumes that you are calculating for multiple intervals
+  simultaneously.  If the inputs other than \code{dose} are scalars
+  and \code{dose} is a vector, then the function assumes multiple
+  doses were given in a single interval, and the sum of the
   \code{dose}s will be used for the calculation.
 }

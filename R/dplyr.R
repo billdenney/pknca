@@ -56,7 +56,7 @@ ungroup_PKNCA <- function(x, ...) {
 }
 
 #' dplyr joins for PKNCA
-#' 
+#'
 #' @inheritParams dplyr::inner_join
 #' @family dplyr verbs
 #' @export
@@ -111,7 +111,7 @@ filter.PKNCAconc <- filter_PKNCA
 filter.PKNCAdose <- filter_PKNCA
 
 #' dplyr mutate-based modification for PKNCA
-#' 
+#'
 #' @inheritParams dplyr::mutate
 #' @family dplyr verbs
 #' @export
@@ -124,7 +124,7 @@ mutate.PKNCAconc <- mutate_PKNCA
 mutate.PKNCAdose <- mutate_PKNCA
 
 #' dplyr grouping for PKNCA
-#' 
+#'
 #' @inheritParams dplyr::group_by
 #' @family dplyr verbs
 #' @export

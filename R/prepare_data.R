@@ -1,8 +1,8 @@
 #' Combine PKNCAconc and PKNCAdose objects
-#' 
+#'
 #' The function is inspired by \code{dplyr::full_join}, but it has different
 #' semantics.
-#' 
+#'
 #' @param conc a PKNCAconc object
 #' @param dose a PKNCAdose object or \code{NA}
 #' @return A tibble with columns for the groups, "data_conc" (the concentration
@@ -30,10 +30,10 @@ full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
 }
 
 #' Convert a PKNCAdata object into a data.frame for analysis
-#' 
+#'
 #' The function is inspired by \code{dplyr::full_join}, but it has different
 #' semantics.
-#' 
+#'
 #' @param x The PKNCAdata object
 #' @return A tibble with columns the grouping variables, "data_conc" for
 #'   concentration data, "data_dose" for dosing data, and "data_intervals" for
@@ -58,10 +58,10 @@ full_join_PKNCAdata <- function(x) {
 }
 
 #' Prepare a PKNCA object and drop unnecessary columns
-#' 
+#'
 #' @param .dat The PKNCA object to prepare as a nested tibble
 #' @param ...,.names_sep,.key Ignored
-#' @return A nested tibble with a column named "data_conc" containing the concentration data and a column 
+#' @return A nested tibble with a column named "data_conc" containing the concentration data and a column
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
@@ -160,7 +160,7 @@ prepare_PKNCAconc <- function(.dat) {
 }
 
 #' @describeIn prepare_PKNCAconc Nest a PKNCAdose object
-#' 
+#'
 #' @param sparse Is the data for sparse PK?
 #' @param subject_col The column name indicating the subject identifier (to be
 #'   dropped from groups with sparse PK)
@@ -172,7 +172,7 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
   if (sparse && (length(subject_col) == 1) && (subject_col %in% names(ret))) {
     # Verify that all subjects in a group had the same data_dose and then drop
     # the subjects
-    # ret_grp will have one column named "sparse_group_check" with one row per ID and all of the dosing information within a group and 
+    # ret_grp will have one column named "sparse_group_check" with one row per ID and all of the dosing information within a group and
     ret_grp <-
       tidyr::nest(
         ret,
@@ -283,7 +283,7 @@ check_reserved_column_names <- function(x) {
 }
 
 #' Standardize column names and drop unnecessary columns from a data.frame or tibble
-#' 
+#'
 #' @param x The data.frame or tibble
 #' @param cols A named list where the names are the standardized column names and the values are the original column names
 #' @return A data.frame or tibble with columns cleaned of unlisted columns and with names set to the expected names.

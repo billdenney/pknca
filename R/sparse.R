@@ -1,5 +1,5 @@
 #' Generate a sparse_pk object
-#' 
+#'
 #' @param conc Concentration measurements (must be numeric, finite, and not NA)
 #' @param time Time of concentration measurements (must be numeric, finite, and
 #'   not NA)
@@ -38,7 +38,7 @@ as_sparse_pk <- function(conc, time, subject) {
 }
 
 #' Set or get a sparse_pk object attribute
-#' 
+#'
 #' @param sparse_pk A sparse_pk object from \code{\link{as_sparse_pk}}
 #' @param ... Either a character string (to get that value) or a named vector
 #'   the same length as \code{sparse_pk} to set the value.
@@ -60,21 +60,21 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
 
 #' Calculate the weight for sparse AUC calculation with the linear-trapezoidal
 #' rule
-#' 
+#'
 #' The weight is used as the \eqn{w_i}{w_i} parameter in
 #' \code{\link{pk.calc.sparse_auc}}
-#' 
+#'
 #' \deqn{w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}{2}}}{w_i = (d_time[i-1,i] + d_time[i,i+1])/2}
 #' \deqn{\delta_{time,i,i+1} = \begin{cases}0 & i < 1 | i > K \\ t_{i+1} - t_i\end{cases}}{d_time = t_[i+1] - t_i, and zero if i < 1 or i > K}
-#' 
+#'
 #' Where:
-#' 
+#'
 #' \itemize{
 #'   \item{\eqn{w_i}{w_i}}{is the weight at time i}
 #'   \item{\eqn{\delta_{time,i-1,i}}{d_time[i-1,i]} and \eqn{\delta_{time,i,i+1}}{d_time[i,i+1]}}{are the changes between time i-1 and i or i and i+1 (zero outside of the time range)}
 #'   \item{\eqn{t_i}{t_i}}{is the time at time i}
 #' }
-#' 
+#'
 #' @inheritParams sparse_pk_attribute
 #' @return A numeric vector of weights for sparse AUC calculations the same
 #'   length as \code{sparse_pk}
@@ -89,15 +89,15 @@ sparse_auc_weight_linear <- function(sparse_pk) {
 
 #' Calculate the mean concentration at all time points for use in sparse NCA
 #' calculations
-#' 
+#'
 #' Choices for the method of calculation (the argument
 #' \code{sparse_mean_method}) are:
-#' 
+#'
 #' \itemize{
 #'   \item{"arithmetic mean"}{Arithmetic mean (ignoring number of BLQ samples)}
 #'   \item{"arithmetic mean, <=50\% BLQ"}{If >= 50\% of the measurements are BLQ, zero.  Otherwise, the arithmetic mean of all samples (including the BLQ as zero).}
 #' }
-#' 
+#'
 #' @inheritParams sparse_pk_attribute
 #' @param sparse_mean_method The method used to calculate the sparse mean (see
 #'   details)
@@ -139,14 +139,14 @@ sparse_mean <- function(sparse_pk, sparse_mean_method=c("arithmetic mean, <=50% 
 }
 
 #' Calculate the variance for the AUC of sparsely sampled PK
-#' 
+#'
 #' Equation 7.vii in Nedelman and Jia, 1998 is used for this calculation:
-#' 
+#'
 #' \deqn{var\left(\hat{AUC}\right) = \sum\limits_{i=0}^m\left(\frac{w_i^2 s_i^2}{r_i}\right) + 2\sum\limits_{i<j}\left(\frac{w_i w_j r_{ij} s_{ij}}{r_i r_j}\right)}{var(AUC) = sum_(i=0)^(m) ((w_i^2 * s_i^2)/(r_i) + + 2*sum_(i<j)((w_i * w_j * r_ij * s_ij)/(r_i * r_j))}
-#' 
+#'
 #' The degrees of freedom are calculated as described in equation 6 of the same
 #' paper.
-#' 
+#'
 #' @inheritParams sparse_pk_attribute
 #' @references
 #' Nedelman JR, Jia X. An extension of Satterthwaite’s approximation applied to
@@ -194,14 +194,14 @@ var_sparse_auc <- function(sparse_pk) {
 }
 
 #' Calculate the covariance for two time points with sparse sampling
-#' 
+#'
 #' The calculation follows equation A3 in Holder 2001 (see references below):
-#' 
+#'
 #' \deqn{\hat{\sigma}_{ij} = \sum\limits_{k=1}^{r_{ij}}{\frac{\left(x_{ik} - \bar{x}_i\right)\left(x_{jk} - \bar{x}_j\right)}{\left(r_{ij} - 1\right) + \left(1 - \frac{r_{ij}}{r_i}\right)\left(1 - \frac{r_{ij}}{r_j}\right)}}}{sigma_ij = sum_(k=1)^(r_ij)((x_ik-xbar_i)(x_jk-xbar_j)/((r_ij-1)+(1-r_ij/r_i)*(1-r_ij/r_j)))}
-#' 
+#'
 #' If \eqn{r_{ij} = 0}{r_ij = 0}, then \eqn{\hat{\sigma}_{ij}}{sigma_ij} is
 #' defined as zero (rather than dividing by zero).
-#' 
+#'
 #' Where:
 #' \itemize{
 #'   \item{\eqn{\hat{\sigma}_{ij}}{sigma_ij}}{The covariance of times i and j}
@@ -210,11 +210,11 @@ var_sparse_auc <- function(sparse_pk) {
 #'   \item{\eqn{x_{ik}}{x_ik} and \eqn{x_{jk}}{x_jk}}{The concentration measured for animal k at times i and j, respectively}
 #'   \item{\eqn{\bar{x}_i}{xbar_i} and \eqn{\bar{x}_j}{xbar_j}}{The mean of the concentrations at times i and j, respectively}
 #' }
-#' 
+#'
 #' The Cauchy-Schwartz inequality is enforced for covariances to keep
 #' correlation coefficients between -1 and 1, inclusive, as described in
 #' equations 8 and 9 of Nedelman and Jia 1998.
-#' 
+#'
 #' @inheritParams sparse_pk_attribute
 #' @return A matrix with one row and one column for each element of
 #'   \code{sparse_pk_attribute}.  The covariances are on the off diagonals, and
@@ -225,7 +225,7 @@ var_sparse_auc <- function(sparse_pk) {
 #' Holder DJ. Comments on Nedelman and Jia’s Extension of Satterthwaite’s
 #' Approximation Applied to Pharmacokinetics. Journal of Biopharmaceutical
 #' Statistics. 2001;11(1-2):75-79. doi:10.1081/BIP-100104199
-#' 
+#'
 #' Nedelman JR, Jia X. An extension of Satterthwaite’s approximation applied to
 #' pharmacokinetics. Journal of Biopharmaceutical Statistics. 1998;8(2):317-328.
 #' doi:10.1080/10543409808835241
@@ -239,7 +239,7 @@ cov_holder <- function(sparse_pk) {
     )
 
   time_means <- sparse_pk_attribute(sparse_pk, "mean")
-  
+
   for (idx1 in seq_along(sparse_pk)) {
     # Variance on the diagonal
     ret[idx1, idx1] <- stats::var(sparse_pk[[idx1]]$conc)
@@ -277,7 +277,7 @@ cov_holder <- function(sparse_pk) {
 }
 
 #' Extract the mean concentration-time profile as a data.frame
-#' 
+#'
 #' @inheritParams sparse_pk_attribute
 #' @return A data.frame with names of "conc" and "time"
 #' @keywords Internal
@@ -289,13 +289,13 @@ sparse_to_dense_pk <- function(sparse_pk) {
 }
 
 #' Calculate AUC and related parameters using sparse NCA methods
-#' 
+#'
 #' The AUC is calculated as:
-#' 
+#'
 #' \deqn{AUC=\sum\limits_{i} w_i \bar{C}_i}{AUC = sum(w_i * Cbar_i)}
-#' 
+#'
 #' Where:
-#' 
+#'
 #' \itemize{
 #'   \item{\eqn{AUC}{AUC}}{is the estimated area under the concentration-time curve}
 #'   \item{\eqn{w_i}{w_i}}{is the weight applied to the concentration at time i (related to the time which it affects, see \code{\link{sparse_auc_weight_linear}})}
@@ -366,7 +366,7 @@ PKNCA.set.summary(
 )
 
 #' Is a PKNCA object used for sparse PK?
-#' 
+#'
 #' @param object The object to see if it includes sparse PK
 #' @return \code{TRUE} if sparse and \code{FALSE} if dense (not sparse)
 #' @export

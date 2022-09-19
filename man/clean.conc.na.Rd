@@ -2,7 +2,7 @@
 % Please edit documentation in R/cleaners.R
 \name{clean.conc.na}
 \alias{clean.conc.na}
-\title{Handle NA values in the concentration measurements as requested by 
+\title{Handle NA values in the concentration measurements as requested by
 the user.}
 \usage{
 clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
@@ -14,10 +14,10 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 
 \item{\dots}{Additional items to add to the data frame}
 
-\item{options}{List of changes to the default 
+\item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}
 
-\item{conc.na}{How to handle NA concentrations?  Either 'drop' or a 
+\item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}
 
 \item{check}{Run \code{\link{check.conc.time}}?}

@@ -7,14 +7,14 @@
 pk.calc.aucpext(auclast, aucinf)
 }
 \arguments{
-\item{auclast}{the area under the curve from time 0 to the last 
+\item{auclast}{the area under the curve from time 0 to the last
 measurement above the limit of quantification}
 
 \item{aucinf}{the area under the curve from time 0 to infinity}
 }
 \value{
-The numeric value of the AUC percent extrapolated or 
-  \code{NA_real_} if any of the following are true 
+The numeric value of the AUC percent extrapolated or
+  \code{NA_real_} if any of the following are true
   \code{is.na(aucinf)}, \code{is.na(auclast)}, \code{aucinf <= 0},
   or \code{auclast <= 0}.
 }

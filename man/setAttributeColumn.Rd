@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-general.R
 \name{setAttributeColumn}
 \alias{setAttributeColumn}
-\title{Add an attribute to an object where the attribute is added as a name 
+\title{Add an attribute to an object where the attribute is added as a name
 to the names of the object.}
 \usage{
 setAttributeColumn(
@@ -40,7 +40,7 @@ stops; if warning, the message is ignored; and message last).}
 The object with the attribute column added to the data.
 }
 \description{
-Add an attribute to an object where the attribute is added as a name 
+Add an attribute to an object where the attribute is added as a name
 to the names of the object.
 }
 \seealso{

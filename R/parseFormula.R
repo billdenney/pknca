@@ -1,6 +1,6 @@
 #' Parse a formula into its component parts.
 #'
-#' This function supports parsing 
+#' This function supports parsing
 #'
 #' This function extracts the left hand side (\code{lhs}), right hand
 #' side (\code{rhs}), groups (\code{groups} and as a formula,
@@ -10,7 +10,7 @@
 #' This function borrows heavily from the \code{parseGroupFormula}
 #' function in the doBy package.
 #'
-#' @param form the formula to extract into its parts 
+#' @param form the formula to extract into its parts
 #' @param require.groups is it an error not to have groups?
 #' @param require.two.sided is it an error to have a one-sided
 #' formula?

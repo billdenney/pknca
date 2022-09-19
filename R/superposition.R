@@ -46,7 +46,7 @@
 #' \code{additional.times}, and \code{tau}.
 #'
 #' @seealso \code{\link{interp.extrap.conc}}
-#' 
+#'
 #' @export
 superposition <- function(conc, ...)
   UseMethod("superposition", conc)
@@ -249,7 +249,7 @@ superposition.numeric <- function(conc, time, dose.input,
     tau.count <- 0
     # Stop either for reaching steady-state or for reaching the requested number of doses
     while (tau.count < n.tau &
-           !is.na(current.tol) & 
+           !is.na(current.tol) &
            current.tol >= steady.state.tol) {
       prev.conc <- ret$conc
       # Perform the dosing for a single dosing interval.

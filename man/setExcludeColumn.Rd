@@ -18,6 +18,6 @@ the exclude column to.}
 The object with an exclude column and attribute
 }
 \description{
-This function adds the exclude column to an object.  To change the 
+This function adds the exclude column to an object.  To change the
 exclude value, use the \code{\link{exclude}} function.
 }

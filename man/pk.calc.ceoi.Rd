@@ -11,7 +11,7 @@ pk.calc.ceoi(conc, time, duration.dose = NA, check = TRUE)
 
 \item{time}{Time of concentration measurement}
 
-\item{duration.dose}{The duration for the dosing administration 
+\item{duration.dose}{The duration for the dosing administration
 (typically from IV infusion)}
 
 \item{check}{Run \code{\link{check.conc.time}}?}

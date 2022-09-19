@@ -10,7 +10,7 @@ checkProvenance(object)
 \item{object}{The object to check provenance for}
 }
 \value{
-\code{TRUE} if the provenance is confirmed to be consistent, 
+\code{TRUE} if the provenance is confirmed to be consistent,
   \code{FALSE} if the provenance is not consistent, or \code{NA} if
   provenance is not present.
 }

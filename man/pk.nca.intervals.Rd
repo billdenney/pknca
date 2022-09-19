@@ -26,7 +26,7 @@ as output from \code{prepare_PKNCAintervals()}}
 \item{sparse}{Should only sparse calculations be performed (TRUE) or only
 dense calculations (FALSE)?}
 
-\item{options}{List of changes to the default 
+\item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}
 
 \item{verbose}{Indicate, by \code{message()}, the current state of

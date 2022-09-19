@@ -8,7 +8,7 @@
 #' name of an NCA parameter.
 #' @param data The PKNCAdata used to generate the result
 #' @param exclude (optional) The name of a column with concentrations to
-#'   exclude from calculations and summarization.  If given, the column 
+#'   exclude from calculations and summarization.  If given, the column
 #'   should have values of \code{NA} or \code{""} for concentrations to
 #'   include and non-empty text for concentrations to exclude.
 #' @return A PKNCAresults object with each of the above within.
@@ -127,25 +127,25 @@ roundingSummarize <- function(x, name) {
 }
 
 #' Summarize PKNCA results
-#' 
+#'
 #' @details Excluded results will not be included in the summary.
-#' 
+#'
 #' @param object The results to summarize
 #' @param drop.group Which group(s) should be dropped from the formula?
-#' @param not.requested.string A character string to use when a parameter 
+#' @param not.requested.string A character string to use when a parameter
 #'   summary was not requested for a parameter within an interval.
-#' @param not.calculated.string A character string to use when a parameter 
-#'   summary was requested, but the point estimate AND spread calculations (if 
+#' @param not.calculated.string A character string to use when a parameter
+#'   summary was requested, but the point estimate AND spread calculations (if
 #'   applicable) returned \code{NA}.
-#' @param summarize.n.per.group Should a column for \code{N} be added 
-#'   (\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of 
+#' @param summarize.n.per.group Should a column for \code{N} be added
+#'   (\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of
 #'   parameter results for any parameter; if no parameters are requested for a
 #'   group, then \code{N} will be \code{NA}.
 #' @param pretty_names Should pretty names (easier to understand in a report) be
 #'   used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
 #'   units are used an no if units are not used.
 #' @param ... Ignored.
-#' @return A data frame of NCA parameter results summarized according to the 
+#' @return A data frame of NCA parameter results summarized according to the
 #'   summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
 #' @examples
@@ -219,7 +219,7 @@ summary.PKNCAresults <- function(object, ...,
   if (is.null(pretty_names)) {
     pretty_names <- !is.null(unit_list)
   }
-  
+
   result_data_cols <- as.data.frame(result_data_cols_list)
   # If no other value is filled in, then the default is that it was not
   # requested.

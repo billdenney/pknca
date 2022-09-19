@@ -16,28 +16,28 @@ PKNCAdose(data, ...)
 \method{PKNCAdose}{data.frame}(data, formula, route, rate, duration, time.nominal, exclude, ...)
 }
 \arguments{
-\item{data}{A data frame with time and the groups defined in 
+\item{data}{A data frame with time and the groups defined in
 \code{formula}.}
 
 \item{...}{Ignored.}
 
-\item{formula}{The formula defining the 
+\item{formula}{The formula defining the
 \code{dose.amount~time|groups} where \code{time} is the time of the
-dosing and \code{dose.amount} is the amount administered at that 
+dosing and \code{dose.amount} is the amount administered at that
 time (see Details).}
 
-\item{route}{Define the route of administration.  The value may be 
-either a column name from the \code{data} (checked first) or a 
-character string of either \code{"extravascular"} or 
-\code{"intravascular"} (checked second).  If given as a column 
-name, then every value of the column must be either 
+\item{route}{Define the route of administration.  The value may be
+either a column name from the \code{data} (checked first) or a
+character string of either \code{"extravascular"} or
+\code{"intravascular"} (checked second).  If given as a column
+name, then every value of the column must be either
 \code{"extravascular"} or \code{"intravascular"}.}
 
-\item{rate, duration}{(optional) for \code{"intravascular"} dosing, 
+\item{rate, duration}{(optional) for \code{"intravascular"} dosing,
 the rate or duration of dosing.  If given as a character string, it
-is the name of a column from the \code{data}, and if given as a 
-number, it is the value for all doses.  Only one may be given, and 
-if neither is given, then the dose is assumed to be a bolus 
+is the name of a column from the \code{data}, and if given as a
+number, it is the value for all doses.  Only one may be given, and
+if neither is given, then the dose is assumed to be a bolus
 (\code{duration=0}).  If \code{rate} is given, then the dose amount
 must be given (the left hand side of the \code{formula}).}
 
@@ -47,7 +47,7 @@ is not used during calculations; it is available to assist with
 data summary and checking.}
 
 \item{exclude}{(optional) The name of a column with concentrations to
-exclude from calculations and summarization.  If given, the column 
+exclude from calculations and summarization.  If given, the column
 should have values of \code{NA} or \code{""} for concentrations to
 include and non-empty text for concentrations to exclude.}
 }
@@ -58,19 +58,19 @@ A PKNCAconc object that can be used for automated NCA.
 Create a PKNCAdose object
 }
 \details{
-The \code{formula} for a \code{PKNCAdose} object can be 
+The \code{formula} for a \code{PKNCAdose} object can be
   given three ways: one-sided (missing left side), one-sided (missing
-  right side), or two-sided.  Each of the three ways can be given 
-  with or without groups.  When given one-sided missing the left 
-  side, the left side can either be omitted or can be given as a 
-  period (\code{.}): \code{~time|treatment+subject} and 
+  right side), or two-sided.  Each of the three ways can be given
+  with or without groups.  When given one-sided missing the left
+  side, the left side can either be omitted or can be given as a
+  period (\code{.}): \code{~time|treatment+subject} and
   \code{.~time|treatment+subject} are identical, and dose-related NCA
-  parameters will all be reported as not calculable (for example, 
+  parameters will all be reported as not calculable (for example,
   clearance).  When given one-sided missing the right side, the right
-  side must be specified as a period (\code{.}): 
+  side must be specified as a period (\code{.}):
   \code{dose~.|treatment+subject}, and only a single row may be given
-  per group.  When the right side is missing, PKNCA assumes that the 
-  same dose is given in every interval.  When given as a two-sided 
+  per group.  When the right side is missing, PKNCA assumes that the
+  same dose is given in every interval.  When given as a two-sided
   formula
 }
 \seealso{

@@ -3,7 +3,7 @@
 #' \code{PKNCA.options("max.missing")}.
 #'
 #' Note that all missing values are removed prior to calling the function.
-#' 
+#'
 #' @param FUN function to run.  The function is called as \code{FUN(x, ...)}
 #'   with missing values removed.
 #' @param zero.missing Are zeros counted as missing?  If \code{TRUE} then
@@ -36,7 +36,7 @@ pk.business <- function(FUN,
   }
 
 #' Compute the geometric mean, sd, and CV
-#' 
+#'
 #' @param x A vector to compute the geometric mean of
 #' @param na.rm Should missing values be removed?
 #' @return The scalar value of the geometric mean, geometric standard deviation,

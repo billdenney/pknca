@@ -1,10 +1,10 @@
 #' Determine time at or above a set value
-#' 
+#'
 #' Interpolation is performed aligning with \code{PKNCA.options("auc.method")}.
 #' Extrapolation outside of the measured times is not yet implemented.  The
 #' \code{method} may be changed by giving a named \code{method} argument, as
 #' well.
-#' 
+#'
 #' For \code{'lin up/log down'}, if \code{clast} is above \code{conc_above} and
 #' there are concentrations BLQ after that, linear down is used to extrapolate
 #' to the BLQ concentration (equivalent to AUCall).

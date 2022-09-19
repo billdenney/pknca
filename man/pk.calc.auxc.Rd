@@ -66,12 +66,12 @@ increasing and the same length as the concentration data)}
 \item{interval}{Numeric vector of two numbers for the start and end time of
 integration}
 
-\item{clast, clast.obs, clast.pred}{The last concentration above the limit of 
+\item{clast, clast.obs, clast.pred}{The last concentration above the limit of
 quantification; this is used for AUCinf calculations.  If provided as
 clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
 provided as clast.pred, AUCinf is AUCinf,pred.}
 
-\item{lambda.z}{The elimination rate (in units of inverse time) for 
+\item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}
 
 \item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
@@ -87,7 +87,7 @@ calculations.}
 LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
 instructions.)}
 
-\item{conc.na}{How to handle missing concentration values.  (See 
+\item{conc.na}{How to handle missing concentration values.  (See
 \code{\link{clean.conc.na}} for usage instructions.)}
 
 \item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
@@ -100,7 +100,7 @@ the curve (not required for AUC or AUMC functions)}
 the curve (if log integration is used; not required for AUC or AUMC
 functions)}
 
-\item{fun.inf}{The function to use for extrapolation from the final 
+\item{fun.inf}{The function to use for extrapolation from the final
 measurement to infinite time (not required for AUC or AUMC functions.}
 
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are

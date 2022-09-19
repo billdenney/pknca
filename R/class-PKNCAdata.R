@@ -1,33 +1,33 @@
 #' Create a PKNCAdata object.
-#' 
-#' \code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and 
+#'
+#' \code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and
 #' adds in the intervals for PK calculations.
-#' 
+#'
 #' @param data.conc Concentration data as a \code{PKNCAconc} object or a
 #'   data frame
-#' @param data.dose Dosing data as a \code{PKNCAdose} object (see 
+#' @param data.dose Dosing data as a \code{PKNCAdose} object (see
 #'   details)
 #' @param formula.conc Formula for making a \code{PKNCAconc} object with
-#'   \code{data.conc}.  This must be given if \code{data.conc} is a 
-#'   data.frame, and it must not be given if \code{data.conc} is a 
+#'   \code{data.conc}.  This must be given if \code{data.conc} is a
+#'   data.frame, and it must not be given if \code{data.conc} is a
 #'   \code{PKNCAconc} object.
 #' @param formula.dose Formula for making a \code{PKNCAdose} object with
-#'   \code{data.dose}.  This must be given if \code{data.dose} is a 
-#'   data.frame, and it must not be given if \code{data.dose} is a 
+#'   \code{data.dose}.  This must be given if \code{data.dose} is a
+#'   data.frame, and it must not be given if \code{data.dose} is a
 #'   \code{PKNCAdose} object.
 #' @param intervals A data frame with the AUC interval specifications as
 #'   defined in \code{\link{check.interval.specification}}.  If missing,
-#'   this will be automatically chosen by 
+#'   this will be automatically chosen by
 #'   \code{\link{choose.auc.intervals}}. (see details)
 #' @param units A data.frame of unit assignments and conversions as created by
 #'   \code{\link{pknca_units_table}()}
-#' @param options List of changes to the default 
+#' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @param ... arguments passed to \code{PKNCAdata.default}
-#' @return A PKNCAdata object with concentration, dose, interval, and 
-#'   calculation options stored (note that PKNCAdata objects can also 
+#' @return A PKNCAdata object with concentration, dose, interval, and
+#'   calculation options stored (note that PKNCAdata objects can also
 #'   have results after a NCA calculations are done to the data).
-#' @details If \code{data.dose} is not given or is \code{NA}, then the 
+#' @details If \code{data.dose} is not given or is \code{NA}, then the
 #'   \code{intervals} must be given.  At least one of \code{data.dose}
 #'   and \code{intervals} must be given.
 #' @family PKNCA objects
@@ -162,7 +162,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   # Verify that either everything or nothing is using units
   units_interval_start <- inherits(ret$intervals$start, "units")
   units_interval_end <- inherits(ret$intervals$end, "units")
-  
+
   # Insert the unit conversion table
   if (!missing(units)) {
     stopifnot("`units` must be a data.frame"=is.data.frame(units))
@@ -173,7 +173,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     stopifnot("`units` must have at least one row"=nrow(units) > 0)
     ret$units <- units
   }
-  
+
   # Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret

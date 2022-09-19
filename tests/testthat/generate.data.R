@@ -10,7 +10,7 @@
 #' gives one analyte without an analyte column)
 #' @param resid The normally distributed random error
 #' @return A data frame with columns for study, treatment, subject,
-#' time, analyte, anc concentration.
+#' time, analyte, and concentration.
 generate.conc <- function(nsub, ntreat, time.points, nstudies=NA, nanalytes=NA, resid=0.1) {
   one.cmt.oral <- function(time, dose, v, ka, kel, f=1)
     f*dose*ka/(v*(ka-kel))*(exp(-kel*time) - exp(-ka*time))

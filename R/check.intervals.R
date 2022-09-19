@@ -163,10 +163,10 @@ get.parameter.deps_helper_searchdeps <- function(current, funmap, all_intervals)
 }
 
 #' Get all columns that depend on a parameter
-#' 
+#'
 #' @param x The parameter name (as a character string)
-#' @return A character vector of parameter names that depend on the 
-#'   parameter \code{x}.  If none depend on \code{x}, then the result 
+#' @return A character vector of parameter names that depend on the
+#'   parameter \code{x}.  If none depend on \code{x}, then the result
 #'   will be an empty vector.
 #' @family Interval specifications
 #' @export
