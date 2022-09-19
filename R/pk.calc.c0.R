@@ -9,7 +9,7 @@
 #'
 #' @details Methods available for interpolation are below, and each
 #' has its own specific function.
-#' 
+#'
 #' \describe{
 #'   \item{\code{c0}}{If the observed \code{conc} at \code{time.dose} is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.}
 #'   \item{\code{logslope}}{Compute the semilog line between the first two measured times, and use that line to extrapolate backward to \code{time.dose}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/provenance.R
 \name{addProvenance}
 \alias{addProvenance}
-\title{Add a hash and associated information to enable checking object 
+\title{Add a hash and associated information to enable checking object
 provenance.}
 \usage{
 addProvenance(object, replace = FALSE)
@@ -10,7 +10,7 @@ addProvenance(object, replace = FALSE)
 \arguments{
 \item{object}{The object to add provenance}
 
-\item{replace}{Replace provenance if the object already has a 
+\item{replace}{Replace provenance if the object already has a
 provenance attribute.  (If the object already has provenance and
 \code{replace} is \code{FALSE}, then an error will be raised.)}
 }
@@ -18,7 +18,7 @@ provenance attribute.  (If the object already has provenance and
 The object with provenance as an added item
 }
 \description{
-Add a hash and associated information to enable checking object 
+Add a hash and associated information to enable checking object
 provenance.
 }
 \seealso{

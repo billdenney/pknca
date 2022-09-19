@@ -1,6 +1,6 @@
 #' Interpolate concentrations between measurements or extrapolate concentrations
 #' after the last measurement.
-#' 
+#'
 #' \code{interpolate.conc()} and \code{extrapolate.conc()} returns an
 #' interpolated (or extrapolated) concentration. \code{interp.extrap.conc()}
 #' will choose whether interpolation or extrapolation is required and will also
@@ -8,7 +8,7 @@
 #' concentration between two measured concentrations or after the last measured
 #' concentration. Of note, these functions will not extrapolate prior to the
 #' first point.
-#' 
+#'
 #' @param conc Measured concentrations
 #' @param time Time of the concentration measurement
 #' @param time.dose Time of the dose
@@ -58,7 +58,7 @@
 #'     }
 #'   }
 #' }
-#' 
+#'
 #' \code{duration.dose} and \code{direction.out} are ignored if \code{route.dose
 #' == "extravascular"}.  \code{direction.out} is ignored if \code{duration.dose
 #' > 0}.
@@ -76,7 +76,7 @@
 #' interpolation occurs only with data before the dose (as is the case for
 #' \code{route.dose == "extravascular"}), but if \code{direction.out == "after"}
 #' interpolation occurs from the data after dosing.
-#' 
+#'
 #' @seealso \code{\link{pk.calc.clast.obs}()},
 #'   \code{\link{pk.calc.half.life}()}, \code{\link{pk.calc.c0}()}
 #' @export
@@ -312,7 +312,7 @@ event_choices_interp.extrap.conc.dose <-
        output_only="output_only",
        none="none")
 
-#' @describeIn interp.extrap.conc Interpolate and extrapolate 
+#' @describeIn interp.extrap.conc Interpolate and extrapolate
 #'   concentrations without interpolating or extrapolating beyond doses.
 #' @export
 interp.extrap.conc.dose <- function(conc, time,
@@ -353,7 +353,7 @@ interp.extrap.conc.dose <- function(conc, time,
   }
 
   # Generate a single timeline
-  
+
   # Concentrations are assumed to occur before dosing
   data_conc$out_after <- FALSE
   data_dose <-
@@ -558,7 +558,7 @@ iecd_iv_conc_value <- function(data_all, current_idx, ...) {
   tmp_conc <- data_all[data_all$conc_event &
                          (data_all$dose_count %in% data_all$dose_count[current_idx] |
                             data_all$dose_count_prev %in%  data_all$dose_count[current_idx]),]
-  tmp_dose <- data_all[data_all$dose_event & 
+  tmp_dose <- data_all[data_all$dose_event &
                          data_all$dose_count %in% data_all$dose_count[current_idx],]
   pk.calc.c0(conc=tmp_conc$conc, time=tmp_conc$time,
              time.dose=tmp_dose$time,
@@ -589,7 +589,7 @@ iecd_afteriv_conc_value <- function(data_all, current_idx, ...) {
                          (data_all$dose_count %in% data_all$dose_count[current_idx] |
                             data_all$dose_count_prev %in%  data_all$dose_count[current_idx]),
                        c("conc", "time")]
-  tmp_dose <- data_all[data_all$dose_event & 
+  tmp_dose <- data_all[data_all$dose_event &
                          data_all$dose_count %in% data_all$dose_count[current_idx],]
   tmp_conc <- rbind(
     data.frame(
@@ -644,7 +644,7 @@ iecd_dose_conc_value <- function(data_all, current_idx, ...) {
                    time.out=data_all$time[current_idx], ...,
                    check=FALSE)
 }
-  
+
 interp.extrap.conc.dose.select <-
   list(
     "Impossible combinations"=

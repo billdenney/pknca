@@ -11,7 +11,7 @@ PKNCA.options(..., default = FALSE, check = FALSE, name, value)
 
 \item{default}{(re)sets all default options}
 
-\item{check}{check a single option given, but do not set it (for 
+\item{check}{check a single option given, but do not set it (for
 validation of the values when used in another function)}
 
 \item{name}{An option name to use with the \code{value}.}
@@ -24,12 +24,12 @@ If...
 \describe{
   \item{no arguments are given}{returns the current options.}
   \item{a value is set (including the defaults)}{returns \code{NULL}}
-  \item{a single value is requested}{the current value of that option is returned as a scalar} 
+  \item{a single value is requested}{the current value of that option is returned as a scalar}
   \item{multiple values are requested}{the current values of those options are returned as a list}
 }
 }
 \description{
-This function will set the default PKNCA options.  If given no 
+This function will set the default PKNCA options.  If given no
 inputs, it will provide the current option set.  If given name/value
 pairs, it will set the option (as in the \code{\link{options}}
 function).  If given a name, it will return the value for the

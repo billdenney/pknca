@@ -10,7 +10,7 @@
 #' The model is fit with a different magnitude by treatment (as a factor,
 #' if given) and a random slope by subject (if given).  A minimum of
 #' \code{min.points} is required to fit the model.
-#' 
+#'
 #' @param \dots See \code{\link{pk.tss.data.prep}}
 #' @param check See \code{\link{pk.tss.data.prep}}
 #' @param min.points The minimum number of points required for the fit
@@ -75,7 +75,7 @@ pk.tss.stepwise.linear <- function(...,
     }
     try({
       # Try to make the model
-      current.interval <- 
+      current.interval <-
         if ("subject" %in% names(modeldata)) {
           # If we have a subject column, try to fit a linear
           # mixed-effects model.

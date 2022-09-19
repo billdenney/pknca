@@ -6,7 +6,7 @@
 #' different magnitude by treatment (as a factor) and a random
 #' steady-state concentration and time to stead-state by subject (see
 #' \code{random.effects} argument).
-#' 
+#'
 #' @param \dots See \code{\link{pk.tss.data.prep}}
 #' @param tss.fraction The fraction of steady-state required for calling
 #'   steady-state
@@ -21,7 +21,7 @@
 #' @param verbose Describe models as they are run, show convergence of
 #'   the model (passed to the nlme function), and additional details
 #'   while running.
-#' 
+#'
 #' @return A scalar float for the first time when steady-state is
 #'   achieved or \code{NA} if it is not observed.
 #' @family Time to steady-state calculations
@@ -155,7 +155,7 @@ tss.monoexponential.generate.formula <- function(data) {
 #'
 #' This function is not intended to be called directly.  Please use
 #' \code{pk.tss.monoexponential}.
-#' 
+#'
 #' If no model converges, then the
 #' \code{tss.monoexponential.population} column will be set to NA. If
 #' the best model does not include a random effect for subject on Tss
@@ -299,7 +299,7 @@ pk.tss.monoexponential.population <- function(data,
 #'
 #' This function is not intended to be called directly.  Please use
 #' \code{pk.tss.monoexponential}.
-#' 
+#'
 #' If no model converges, then the \code{tss.monoexponential.single}
 #' and/or \code{tss.monoexponential.individual} column will be set to
 #' NA.
@@ -377,7 +377,7 @@ pk.tss.monoexponential.individual <- function(data,
       } else {
         stop("Subject must be specified to have subject-level fitting")
       }
-    ret_sub <- 
+    ret_sub <-
       dplyr::summarize(
         data_grouped,
         tss.monoexponential.individual=

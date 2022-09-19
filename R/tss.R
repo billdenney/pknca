@@ -7,7 +7,7 @@
 #' model)
 #' @param treatment Treatment description (if missing, all subjects
 #' are assumed to be on the same treatment)
-#' @param subject.dosing Subject number for dosing 
+#' @param subject.dosing Subject number for dosing
 #' @param time.dosing Time of dosing
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.

@@ -5,7 +5,7 @@
 \alias{PKNCA}
 \title{Compute noncompartmental pharmacokinetics}
 \description{
-Compute pharmacokinetic (PK) noncompartmental analysis (NCA) 
+Compute pharmacokinetic (PK) noncompartmental analysis (NCA)
 parameters.
 }
 \details{
@@ -14,7 +14,7 @@ PKNCA has been cross-validated with both Phoenix WinNonlin(R) and Pumas
 \href{http://www.humanpredictions.com/wp-content/uploads/2020/01/ACOP_2019_T102_NCA_performance_evaluation_Yingbo_revised.pdf}{cross-validation
 article})
 
-A common workflow would load data from a file or database into a 
+A common workflow would load data from a file or database into a
 data.frame then run the following code.
 }
 \examples{

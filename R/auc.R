@@ -1,17 +1,17 @@
 #' A compute the Area Under the (Moment) Curve
-#' 
+#'
 #' Compute the area under the curve (AUC) and the area under the moment curve
 #' (AUMC) for pharmacokinetic (PK) data.  AUC and AUMC are used for many
 #' purposes when analyzing PK in drug development.
-#' 
+#'
 #' \code{pk.calc.auc.last} is simply a shortcut setting the \code{interval}
 #' parameter to \code{c(0, "last")}.
-#' 
+#'
 #' Extrapolation beyond Clast occurs using the half-life and Clast,obs;
 #' Clast,pred is not yet supported.
-#' 
+#'
 #' If all conc input are zero, then the AU(M)C is zero.
-#' 
+#'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement (must be monotonically
 #'   increasing and the same length as the concentration data)
@@ -19,11 +19,11 @@
 #'   integration
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.
-#' @param clast,clast.obs,clast.pred The last concentration above the limit of 
+#' @param clast,clast.obs,clast.pred The last concentration above the limit of
 #'   quantification; this is used for AUCinf calculations.  If provided as
 #'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
 #'   provided as clast.pred, AUCinf is AUCinf,pred.
-#' @param lambda.z The elimination rate (in units of inverse time) for 
+#' @param lambda.z The elimination rate (in units of inverse time) for
 #'   extrapolation
 #' @param options List of changes to the default \code{\link{PKNCA.options}} for
 #'   calculations.
@@ -32,7 +32,7 @@
 #' @param conc.blq How to handle BLQ values in between the first and last above
 #'   LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
 #'   instructions.)
-#' @param conc.na How to handle missing concentration values.  (See 
+#' @param conc.na How to handle missing concentration values.  (See
 #'   \code{\link{clean.conc.na}} for usage instructions.)
 #' @param check Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
 #'   and \code{\link{clean.conc.na}}?
@@ -41,7 +41,7 @@
 #' @param fun.log The function to use for integration of the logarithmic part of
 #'   the curve (if log integration is used; not required for AUC or AUMC
 #'   functions)
-#' @param fun.inf The function to use for extrapolation from the final 
+#' @param fun.inf The function to use for extrapolation from the final
 #'   measurement to infinite time (not required for AUC or AUMC functions.
 #' @param ... For functions other than \code{pk.calc.auxc}, these values are
 #'   passed to \code{pk.calc.auxc}
@@ -50,12 +50,12 @@
 #' @family AUC calculations
 #' @seealso \code{\link{clean.conc.blq}}
 #' @references
-#' 
+#'
 #' Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods - Linear
 #' trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
 #' and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical
 #' Press, 2000.  162-4.
-#' 
+#'
 #' Gabrielsson J, Weiner D.  "Section 2.8.3 Computation methods - Log-linear
 #' trapezoidal rule."  Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts
 #' and Applications, 4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical

@@ -1,8 +1,8 @@
-#' Add a hash and associated information to enable checking object 
+#' Add a hash and associated information to enable checking object
 #' provenance.
-#' 
+#'
 #' @param object The object to add provenance
-#' @param replace Replace provenance if the object already has a 
+#' @param replace Replace provenance if the object already has a
 #'   provenance attribute.  (If the object already has provenance and
 #'   \code{replace} is \code{FALSE}, then an error will be raised.)
 #' @return The object with provenance as an added item
@@ -30,9 +30,9 @@ addProvenance <- function(object, replace=FALSE) {
 }
 
 #' Check the hash of an object to confirm its provenance.
-#' 
+#'
 #' @param object The object to check provenance for
-#' @return \code{TRUE} if the provenance is confirmed to be consistent, 
+#' @return \code{TRUE} if the provenance is confirmed to be consistent,
 #'   \code{FALSE} if the provenance is not consistent, or \code{NA} if
 #'   provenance is not present.
 #' @seealso \code{\link{addProvenance}}
@@ -49,7 +49,7 @@ checkProvenance <- function(object) {
 }
 
 #' Print the summary of a provenance object
-#' 
+#'
 #' @param x The object to be printed
 #' @param ... Ignored
 #' @return invisible text of the printed information

@@ -8,13 +8,13 @@ kinetics.}
 pk.calc.mrt.md(auctau, aumctau, aucinf, tau)
 }
 \arguments{
-\item{auctau}{the AUC from time 0 to the end of the dosing interval 
+\item{auctau}{the AUC from time 0 to the end of the dosing interval
 (tau).}
 
 \item{aumctau}{the AUMC from time 0 to the end of the dosing interval
 (tau).}
 
-\item{aucinf}{the AUC from time 0 to infinity (typically using 
+\item{aucinf}{the AUC from time 0 to infinity (typically using
 single-dose data)}
 
 \item{tau}{the dosing interval}
@@ -27,8 +27,8 @@ kinetics.
 mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and
 should only be used for multiple dosing with equal intervals between doses.
 
-Note that if \code{aucinf == auctau} (as would be the 
-  assumption with linear kinetics), the equation becomes the same as 
+Note that if \code{aucinf == auctau} (as would be the
+  assumption with linear kinetics), the equation becomes the same as
   the single-dose MRT.
 }
 \seealso{

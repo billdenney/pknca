@@ -171,7 +171,7 @@ roundString <- function(x, digits=0, sci_range=Inf, sci_sep="e", si_range) {
 #'   \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 #' @seealso \code{\link{signif}}, \code{\link{roundString}}
 #' @export
-signifString <- function(x, ...) 
+signifString <- function(x, ...)
   UseMethod("signifString")
 
 #' @rdname signifString

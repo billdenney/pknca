@@ -2,8 +2,8 @@
 % Please edit documentation in R/class-general.R
 \name{getColumnValueOrNot}
 \alias{getColumnValueOrNot}
-\title{Get the value from a column in a data frame if the value is a column 
-there, otherwise, the value should be a scalar or the length of the 
+\title{Get the value from a column in a data frame if the value is a column
+there, otherwise, the value should be a scalar or the length of the
 data.}
 \usage{
 getColumnValueOrNot(data, value, prefix = "X")
@@ -11,8 +11,8 @@ getColumnValueOrNot(data, value, prefix = "X")
 \arguments{
 \item{data}{A data.frame or similar object}
 
-\item{value}{A character string giving the name of a column in the 
-\code{data}, a scalar, or a vector the same length as the 
+\item{value}{A character string giving the name of a column in the
+\code{data}, a scalar, or a vector the same length as the
 \code{data}}
 
 \item{prefix}{The prefix to use if a column must be added (it will be
@@ -20,12 +20,12 @@ used as the full column name if it is not already in the dataset or
 it will be prepended to the maximum column name if not.)}
 }
 \value{
-A list with elements named "data", "name" giving the 
-  \code{data} with a column named "name" with the value in that 
+A list with elements named "data", "name" giving the
+  \code{data} with a column named "name" with the value in that
   column.
 }
 \description{
-Get the value from a column in a data frame if the value is a column 
-there, otherwise, the value should be a scalar or the length of the 
+Get the value from a column in a data frame if the value is a column
+there, otherwise, the value should be a scalar or the length of the
 data.
 }

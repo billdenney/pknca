@@ -278,26 +278,26 @@
   })
 
 #' Set default options for PKNCA functions
-#' 
-#' This function will set the default PKNCA options.  If given no 
+#'
+#' This function will set the default PKNCA options.  If given no
 #' inputs, it will provide the current option set.  If given name/value
 #' pairs, it will set the option (as in the \code{\link{options}}
 #' function).  If given a name, it will return the value for the
 #' parameter.  If given the \code{default} option as true, it will
 #' provide the default options.
-#' 
+#'
 #' Options are either for calculation or summary functions. Calculation
 #' options are required for a calculation function to report a result
 #' (otherwise the reported value will be \code{NA}). Summary options are
 #' used during summarization and are used for assessing what values are
 #' included in the summary.
-#' 
+#'
 #' See the vignette 'Options for Controlling PKNCA' for a current list
 #' of options (\code{vignette("Options-for-Controlling-PKNCA", package="PKNCA")}).
-#' 
+#'
 #' @param \dots options to set or get the value for
 #' @param default (re)sets all default options
-#' @param check check a single option given, but do not set it (for 
+#' @param check check a single option given, but do not set it (for
 #'   validation of the values when used in another function)
 #' @param name An option name to use with the \code{value}.
 #' @param value An option value (paired with the \code{name}) to set or
@@ -306,13 +306,13 @@
 #' \describe{
 #'   \item{no arguments are given}{returns the current options.}
 #'   \item{a value is set (including the defaults)}{returns \code{NULL}}
-#'   \item{a single value is requested}{the current value of that option is returned as a scalar} 
+#'   \item{a single value is requested}{the current value of that option is returned as a scalar}
 #'   \item{multiple values are requested}{the current values of those options are returned as a list}
 #' }
 #' @family PKNCA calculation and summary settings
 #' @seealso \code{\link{PKNCA.options.describe}}
 #' @examples
-#' 
+#'
 #' PKNCA.options()
 #' PKNCA.options(default=TRUE)
 #' PKNCA.options("auc.method")
@@ -414,7 +414,7 @@ PKNCA.choose.option <- function(name, value=NULL, options=list())
   }
 
 #' Describe a PKNCA.options option by name.
-#' 
+#'
 #' @param name The option name requested.
 #' @return A character string of the description.
 #' @seealso \code{\link{PKNCA.options}}

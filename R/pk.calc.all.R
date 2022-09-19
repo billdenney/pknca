@@ -10,7 +10,7 @@
 #' the interval.  For example, if an interval starts at 168 hours, ends at 192
 #' hours, and and the maximum concentration is at 169 hours,
 #' \code{tmax=169-168=1}.
-#' 
+#'
 #' @param data A PKNCAdata object
 #' @param verbose Indicate, by \code{message()}, the current state of
 #'   calculation.
@@ -83,7 +83,7 @@ pk.nca <- function(data, verbose=FALSE) {
 
 #' Convert the grouping info and list of results for each group into a results
 #' data.frame
-#' 
+#'
 #' @param group_info A data.frame of grouping columns
 #' @param result A list of data.frames with the results from NCA parameter
 #'   calculations
@@ -149,7 +149,7 @@ filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE
 }
 
 #' Determine if there are any sparse or dense calculations requested within an interval
-#' 
+#'
 #' @param interval An interval specification
 #' @inheritParams PKNCAconc
 #' @return A logical value indicating if the interval requests any sparse (if
@@ -175,7 +175,7 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #
 # This is simply a helper for pk.nca
 #' Compute NCA for multiple intervals
-#' 
+#'
 #' @param data_conc A data.frame or tibble with standardized column names as
 #'   output from \code{prepare_PKNCAconc()}
 #' @param data_dose A data.frame or tibble with standardized column names as

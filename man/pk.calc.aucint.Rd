@@ -111,7 +111,7 @@ and 'AUCall'.}
 LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
 instructions.)}
 
-\item{conc.na}{How to handle missing concentration values.  (See 
+\item{conc.na}{How to handle missing concentration values.  (See
 \code{\link{clean.conc.na}} for usage instructions.)}
 
 \item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},

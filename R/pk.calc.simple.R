@@ -88,7 +88,7 @@ PKNCA.set.summary(
 #'   \item the length of \code{conc} and \code{time} is 0
 #'   \item all \code{conc} is 0 or \code{NA}
 #' }
-#' 
+#'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
 #' @param options List of changes to the default
@@ -242,7 +242,7 @@ PKNCA.set.summary(
 )
 
 #' Calculate the effective half-life
-#' 
+#'
 #' @details thalf.eff is \code{log(2)*mrt}.
 #'
 #' @param mrt the mean residence time to infinity
@@ -337,14 +337,14 @@ PKNCA.set.summary(
 )
 
 #' Calculate the AUC percent extrapolated
-#' 
+#'
 #' @details aucpext is \code{100*(1-auclast/aucinf)}.
-#' 
-#' @param auclast the area under the curve from time 0 to the last 
+#'
+#' @param auclast the area under the curve from time 0 to the last
 #'   measurement above the limit of quantification
 #' @param aucinf the area under the curve from time 0 to infinity
-#' @return The numeric value of the AUC percent extrapolated or 
-#'   \code{NA_real_} if any of the following are true 
+#' @return The numeric value of the AUC percent extrapolated or
+#'   \code{NA_real_} if any of the following are true
 #'   \code{is.na(aucinf)}, \code{is.na(auclast)}, \code{aucinf <= 0},
 #'   or \code{auclast <= 0}.
 #' @export
@@ -510,17 +510,17 @@ PKNCA.set.summary(
 )
 
 #' Calculate the (observed oral) clearance
-#' 
+#'
 #' @details cl is \code{dose/auc}.
-#' 
+#'
 #' @param dose the dose administered
 #' @param auc The area under the concentration-time curve.
 #' @return the numeric value of the total (CL) or observed oral clearance (CL/F)
-#' @details If \code{dose} is the same length as the other inputs, then the 
-#'   output will be the same length as all of the inputs; the function assumes 
-#'   that you are calculating for multiple intervals simultaneously.  If the 
+#' @details If \code{dose} is the same length as the other inputs, then the
+#'   output will be the same length as all of the inputs; the function assumes
+#'   that you are calculating for multiple intervals simultaneously.  If the
 #'   inputs other than \code{dose} are scalars and \code{dose} is a vector, then
-#'   the function assumes multiple doses were given in a single interval, and 
+#'   the function assumes multiple doses were given in a single interval, and
 #'   the sum of the \code{dose}s will be used for the calculation.
 #' @references Gabrielsson J, Weiner D. "Section 2.5.1 Derivation of clearance."
 #'   Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts and Applications,
@@ -597,7 +597,7 @@ PKNCA.set.summary(
 )
 
 #' Calculate the absolute (or relative) bioavailability
-#' 
+#'
 #' @details f is \code{(auc2/dose2)/(auc1/dose1)}.
 #'
 #' @param dose1 The dose administered in route or method 1
@@ -637,7 +637,7 @@ PKNCA.set.summary(
 #'
 #' @details mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose =
 #'   0} for oral administration.
-#' 
+#'
 #' @param auc the AUC from 0 to infinity or 0 to tau
 #' @param aumc the AUMC from 0 to infinity or 0 to tau
 #' @param duration.dose The duration of the dose (usually an infusion
@@ -751,16 +751,16 @@ PKNCA.set.summary(
 #'
 #' @details mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and
 #' should only be used for multiple dosing with equal intervals between doses.
-#' 
-#' @param auctau the AUC from time 0 to the end of the dosing interval 
+#'
+#' @param auctau the AUC from time 0 to the end of the dosing interval
 #'   (tau).
 #' @param aumctau the AUMC from time 0 to the end of the dosing interval
 #'   (tau).
-#' @param aucinf the AUC from time 0 to infinity (typically using 
+#' @param aucinf the AUC from time 0 to infinity (typically using
 #'   single-dose data)
 #' @param tau the dosing interval
-#' @details Note that if \code{aucinf == auctau} (as would be the 
-#'   assumption with linear kinetics), the equation becomes the same as 
+#' @details Note that if \code{aucinf == auctau} (as would be the
+#'   assumption with linear kinetics), the equation becomes the same as
 #'   the single-dose MRT.
 #' @seealso \code{\link{pk.calc.mrt}}
 #' @export
@@ -973,19 +973,19 @@ PKNCA.set.summary(
 
 #' Calculate the volume of distribution (Vd) or observed volume of
 #' distribution (Vd/F)
-#' 
+#'
 #' @details vd is \code{dose/(aucinf * lambda.z)}.
-#' 
+#'
 #' @param dose One or more doses given during an interval
 #' @param aucinf Area under the curve to infinity (either predicted or
 #'   observed).
 #' @param lambda.z Elimination rate constant
 #' @details If \code{dose} is the same length as the other inputs, then
-#'   the output will be the same length as all of the inputs; the 
-#'   function assumes that you are calculating for multiple intervals 
-#'   simultaneously.  If the inputs other than \code{dose} are scalars 
-#'   and \code{dose} is a vector, then the function assumes multiple 
-#'   doses were given in a single interval, and the sum of the 
+#'   the output will be the same length as all of the inputs; the
+#'   function assumes that you are calculating for multiple intervals
+#'   simultaneously.  If the inputs other than \code{dose} are scalars
+#'   and \code{dose} is a vector, then the function assumes multiple
+#'   doses were given in a single interval, and the sum of the
 #'   \code{dose}s will be used for the calculation.
 #' @return The observed volume of distribution
 #' @export
@@ -1034,7 +1034,7 @@ PKNCA.set.summary(
 )
 
 #' Calculate the average concentration during an interval.
-#' 
+#'
 #' @details cav is \code{auclast/(end-start)}.
 #'
 #' @param auclast The area under the curve during the interval
@@ -1158,7 +1158,7 @@ PKNCA.set.summary(
 )
 
 #' Determine the degree of fluctuation
-#' 
+#'
 #' @details deg.fluc is \code{100*(cmax - cmin)/cav}.
 #'
 #' @param cmax The maximum observed concentration
@@ -1188,9 +1188,9 @@ PKNCA.set.summary(
 )
 
 #' Determine the PK swing
-#' 
+#'
 #' @details swing is \code{100*(cmax - cmin)/cmin}.
-#' 
+#'
 #' @param cmax The maximum observed concentration
 #' @param cmin The minimum observed concentration
 #' @return The swing above the minimum concentration.  If \code{cmin} is zero,
@@ -1217,10 +1217,10 @@ PKNCA.set.summary(
 )
 
 #' Determine the concentration at the end of infusion
-#' 
+#'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param duration.dose The duration for the dosing administration 
+#' @param duration.dose The duration for the dosing administration
 #'   (typically from IV infusion)
 #' @param check Run \code{\link{check.conc.time}}?
 #' @return The concentration at the end of the infusion, \code{NA} if
