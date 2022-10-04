@@ -16,49 +16,49 @@
     <loc>http://billdenney.github.io/pknca/LICENSE.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/articles/AUC-Calculation-with-PKNCA.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Example-theophylline.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Half-Life-Calculation.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Introduction-and-Usage.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Methods-for-Dose-Aware-Interpolation-and-Extrapolation.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Options-for-Controlling-PKNCA.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/PKNCA-validation.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Post-Processing.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Sparse.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Superposition.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Training-Session.html</loc>
-  </url>
-  <url>
-    <loc>http://billdenney.github.io/pknca/articles/Writing-Parameter-Functions.html</loc>
-  </url>
-  <url>
     <loc>http://billdenney.github.io/pknca/articles/index.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/articles/unit-conversion.html</loc>
+    <loc>http://billdenney.github.io/pknca/articles/v01-introduction-and-usage.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v02-example-theophylline.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v03-selection-of-calculation-intervals.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v04-sparse.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v05-auc-calculation-with-PKNCA.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v06-half-life-calculation.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v07-post-processing.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v07-unit-conversion.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v20-superposition.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v21-methods-for-dose-aware-interpolation-and-extrapolation.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v30-training-session.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v40-options-for-controlling-PKNCA.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v60-PKNCA-validation.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/articles/v80-writing-parameter-functions.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/authors.html</loc>

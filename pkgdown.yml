@@ -2,21 +2,21 @@ pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
-  AUC-Calculation-with-PKNCA: AUC-Calculation-with-PKNCA.html
-  Example-theophylline: Example-theophylline.html
-  Half-Life-Calculation: Half-Life-Calculation.html
-  Introduction-and-Usage: Introduction-and-Usage.html
-  Methods-for-Dose-Aware-Interpolation-and-Extrapolation: Methods-for-Dose-Aware-Interpolation-and-Extrapolation.html
-  Options-for-Controlling-PKNCA: Options-for-Controlling-PKNCA.html
-  PKNCA-validation: PKNCA-validation.html
-  Post-Processing: Post-Processing.html
-  Selection-of-Calculation-Intervals: Selection-of-Calculation-Intervals.html
-  Sparse: Sparse.html
-  Superposition: Superposition.html
-  Training-Session: Training-Session.html
-  Writing-Parameter-Functions: Writing-Parameter-Functions.html
-  unit-conversion: unit-conversion.html
-last_built: 2022-10-04T20:57Z
+  v01-introduction-and-usage: v01-introduction-and-usage.html
+  v02-example-theophylline: v02-example-theophylline.html
+  v03-selection-of-calculation-intervals: v03-selection-of-calculation-intervals.html
+  v04-sparse: v04-sparse.html
+  v05-auc-calculation-with-PKNCA: v05-auc-calculation-with-PKNCA.html
+  v06-half-life-calculation: v06-half-life-calculation.html
+  v07-post-processing: v07-post-processing.html
+  v07-unit-conversion: v07-unit-conversion.html
+  v20-superposition: v20-superposition.html
+  v21-methods-for-dose-aware-interpolation-and-extrapolation: v21-methods-for-dose-aware-interpolation-and-extrapolation.html
+  v30-training-session: v30-training-session.html
+  v40-options-for-controlling-PKNCA: v40-options-for-controlling-PKNCA.html
+  v60-PKNCA-validation: v60-PKNCA-validation.html
+  v80-writing-parameter-functions: v80-writing-parameter-functions.html
+last_built: 2022-10-04T21:05Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles
