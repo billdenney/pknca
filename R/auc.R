@@ -370,12 +370,6 @@ add.interval.col("aucinf.obs",
                  pretty_name="AUCinf,obs",
                  desc="The area under the concentration time curve from the beginning of the interval to infinity with extrapolation to infinity from the observed Clast",
                  depends=c("lambda.z", "clast.obs"))
-PKNCA.set.summary(
-  name="aucinf.obs",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("aucinf.pred",
                  FUN="pk.calc.auc.inf.pred",
@@ -384,12 +378,6 @@ add.interval.col("aucinf.pred",
                  pretty_name="AUCinf,pred",
                  desc="The area under the concentration time curve from the beginning of the interval to infinity with extrapolation to infinity from the predicted Clast",
                  depends=c("lambda.z", "clast.pred"))
-PKNCA.set.summary(
-  name="aucinf.pred",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("auclast",
                  FUN="pk.calc.auc.last",
@@ -397,12 +385,6 @@ add.interval.col("auclast",
                  unit_type="auc",
                  pretty_name="AUClast",
                  desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification")
-PKNCA.set.summary(
-  name="auclast",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("aucall",
                  FUN="pk.calc.auc.all",
@@ -410,12 +392,6 @@ add.interval.col("aucall",
                  unit_type="auc",
                  pretty_name="AUCall",
                  desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification",)
-PKNCA.set.summary(
-  name="aucall",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("aumcinf.obs",
                  FUN="pk.calc.aumc.inf.obs",
@@ -424,12 +400,6 @@ add.interval.col("aumcinf.obs",
                  pretty_name="AUMC,inf,obs",
                  desc="The area under the concentration time moment curve from the beginning of the interval to infinity with extrapolation to infinity from the observed Clast",
                  depends=c("lambda.z", "clast.obs"))
-PKNCA.set.summary(
-  name="aumcinf.obs",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("aumcinf.pred",
                  FUN="pk.calc.aumc.inf.pred",
@@ -438,12 +408,6 @@ add.interval.col("aumcinf.pred",
                  pretty_name="AUMC,inf,pred",
                  desc="The area under the concentration time moment curve from the beginning of the interval to infinity with extrapolation to infinity from the predicted Clast",
                  depends=c("lambda.z", "clast.pred"))
-PKNCA.set.summary(
-  name="aumcinf.pred",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("aumclast",
                  FUN="pk.calc.aumc.last",
@@ -451,12 +415,6 @@ add.interval.col("aumclast",
                  unit_type="aumc",
                  pretty_name="AUMC,last",
                  desc="The area under the concentration time moment curve from the beginning of the interval to the last concentration above the limit of quantification")
-PKNCA.set.summary(
-  name="aumclast",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
 
 add.interval.col("aumcall",
                  FUN="pk.calc.aumc.all",
@@ -464,8 +422,13 @@ add.interval.col("aumcall",
                  unit_type="aumc",
                  pretty_name="AUMC,all",
                  desc="The area under the concentration time moment curve from the beginning of the interval to the last concentration above the limit of quantification plus the moment of the triangle from that last concentration to 0 at the first concentration below the limit of quantification")
+
 PKNCA.set.summary(
-  name="aumcall",
+  name=
+    c(
+      "aucinf.obs", "aucinf.pred", "auclast", "aucall",
+      "aumcinf.obs", "aumcinf.pred", "aumclast", "aumcall"
+    ),
   description="geometric mean and geometric coefficient of variation",
   point=business.geomean,
   spread=business.geocv
