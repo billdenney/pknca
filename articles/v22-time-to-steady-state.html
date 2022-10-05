@@ -149,7 +149,11 @@
 <span><span class="va">steady_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/superposition.html">superposition</a></span><span class="op">(</span><span class="va">conc_obj</span>, dose.times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">168</span> <span class="op">-</span> <span class="fl">12</span>, by<span class="op">=</span><span class="fl">12</span><span class="op">)</span>, tau<span class="op">=</span><span class="fl">168</span>, n.tau<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co"># Add some noise to the data so that it seems more reasonable</span></span>
 <span><span class="va">steady_state_noise</span> <span class="op">&lt;-</span> <span class="va">steady_state</span></span>
-<span><span class="va">steady_state_noise</span><span class="op">$</span><span class="va">conc</span> <span class="op">&lt;-</span> <span class="va">steady_state_noise</span><span class="op">$</span><span class="va">conc</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">steady_state_noise</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">steady_state_noise</span><span class="op">$</span><span class="va">conc</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_seed.html" class="external-link">with_seed</a></span><span class="op">(</span></span>
+<span>    seed <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>    <span class="va">steady_state_noise</span><span class="op">$</span><span class="va">conc</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">steady_state_noise</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Examine the data graphically.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -181,34 +185,35 @@
 <span><span class="co">#&gt; tss)), : Iteration 1, LME step: nlminb() did not converge (code = 1). Do</span></span>
 <span><span class="co">#&gt; increase 'msMaxIter'!</span></span>
 <span><span class="co">#&gt; Warning in nlme.formula(conc ~ ctrough.ss * (1 - exp(tss.constant * time/</span></span>
-<span><span class="co">#&gt; tss)), : Singular precision matrix in level -1, block 1</span></span>
+<span><span class="co">#&gt; tss)), : Iteration 2, LME step: nlminb() did not converge (code = 1). Do</span></span>
+<span><span class="co">#&gt; increase 'msMaxIter'!</span></span>
 <span><span class="va">tss_mono</span></span>
 <span><span class="co">#&gt;    subject tss.monoexponential.population tss.monoexponential.popind</span></span>
-<span><span class="co">#&gt; 1        1                       27.07868                   46.14390</span></span>
-<span><span class="co">#&gt; 2       10                       27.07868                   35.61582</span></span>
-<span><span class="co">#&gt; 3       11                       27.07868                   21.28500</span></span>
-<span><span class="co">#&gt; 4       12                       27.07868                   27.21991</span></span>
-<span><span class="co">#&gt; 5        2                       27.07868                   21.75230</span></span>
-<span><span class="co">#&gt; 6        3                       27.07868                   24.89766</span></span>
-<span><span class="co">#&gt; 7        4                       27.07868                   25.98023</span></span>
-<span><span class="co">#&gt; 8        5                       27.07868                   29.15396</span></span>
-<span><span class="co">#&gt; 9        6                       27.07868                   21.45445</span></span>
-<span><span class="co">#&gt; 10       7                       27.07868                   24.24893</span></span>
-<span><span class="co">#&gt; 11       8                       27.07868                   24.15776</span></span>
-<span><span class="co">#&gt; 12       9                       27.07868                   23.03427</span></span>
+<span><span class="co">#&gt; 1        1                       26.41652                   36.94194</span></span>
+<span><span class="co">#&gt; 2       10                       26.41652                   31.95598</span></span>
+<span><span class="co">#&gt; 3       11                       26.41652                   22.79647</span></span>
+<span><span class="co">#&gt; 4       12                       26.41652                   26.59829</span></span>
+<span><span class="co">#&gt; 5        2                       26.41652                   23.53877</span></span>
+<span><span class="co">#&gt; 6        3                       26.41652                   24.72185</span></span>
+<span><span class="co">#&gt; 7        4                       26.41652                   25.73778</span></span>
+<span><span class="co">#&gt; 8        5                       26.41652                   26.93369</span></span>
+<span><span class="co">#&gt; 9        6                       26.41652                   23.21849</span></span>
+<span><span class="co">#&gt; 10       7                       26.41652                   25.39682</span></span>
+<span><span class="co">#&gt; 11       8                       26.41652                   24.54165</span></span>
+<span><span class="co">#&gt; 12       9                       26.41652                   24.61653</span></span>
 <span><span class="co">#&gt;    tss.monoexponential.individual tss.monoexponential.single</span></span>
-<span><span class="co">#&gt; 1                        48.91051                   29.73119</span></span>
-<span><span class="co">#&gt; 2                        29.78224                   29.73119</span></span>
-<span><span class="co">#&gt; 3                        31.77675                   29.73119</span></span>
-<span><span class="co">#&gt; 4                        23.49958                   29.73119</span></span>
-<span><span class="co">#&gt; 5                        18.56632                   29.73119</span></span>
-<span><span class="co">#&gt; 6                        21.44897                   29.73119</span></span>
-<span><span class="co">#&gt; 7                        21.60315                   29.73119</span></span>
-<span><span class="co">#&gt; 8                        32.23187                   29.73119</span></span>
-<span><span class="co">#&gt; 9                        25.77302                   29.73119</span></span>
-<span><span class="co">#&gt; 10                       25.71758                   29.73119</span></span>
-<span><span class="co">#&gt; 11                       33.13911                   29.73119</span></span>
-<span><span class="co">#&gt; 12                       21.70858                   29.73119</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                        40.65290                   27.87592</span></span>
+<span><span class="co">#&gt; 2                        24.72591                   27.87592</span></span>
+<span><span class="co">#&gt; 3                        20.18663                   27.87592</span></span>
+<span><span class="co">#&gt; 4                        22.58610                   27.87592</span></span>
+<span><span class="co">#&gt; 5                        25.45251                   27.87592</span></span>
+<span><span class="co">#&gt; 6                        29.97015                   27.87592</span></span>
+<span><span class="co">#&gt; 7                        21.60401                   27.87592</span></span>
+<span><span class="co">#&gt; 8                        25.04023                   27.87592</span></span>
+<span><span class="co">#&gt; 9                        23.53884                   27.87592</span></span>
+<span><span class="co">#&gt; 10                       31.37369                   27.87592</span></span>
+<span><span class="co">#&gt; 11                       32.02870                   27.87592</span></span>
+<span><span class="co">#&gt; 12                       26.01334                   27.87592</span></span></code></pre></div>
 <p>The fraction of steady-state required for time to steady-state can be changed with the <code>tss.fraction</code> argument (see <code><a href="../reference/pk.tss.monoexponential.html">?pk.tss.monoexponential</a></code>).</p>
 </div>
 <div class="section level4">
@@ -225,7 +230,7 @@
 <span>  <span class="op">)</span></span>
 <span><span class="va">tss_step</span></span>
 <span><span class="co">#&gt;   tss.stepwise.linear</span></span>
-<span><span class="co">#&gt; 1                  72</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                 108</span></span></code></pre></div>
 </div>
 </div>
 </div>
