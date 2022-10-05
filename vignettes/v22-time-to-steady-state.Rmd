@@ -34,7 +34,7 @@ TSS can be estimated using either method using the `pk.tss()` function in PKNCA.
 ## Data setup
 
 Illustrating time to steady-state, the example from the
-[v20-superposition.html](superposition vignette) will be used.
+[superposition vignette](v20-superposition.html) will be used.
 
 ```{r superposition, error=TRUE}
 library(PKNCA)
