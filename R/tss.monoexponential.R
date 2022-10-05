@@ -26,9 +26,9 @@
 #'   achieved or \code{NA} if it is not observed.
 #' @family Time to steady-state calculations
 #' @references
-#' Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
-#' Estimating Time to Steady State with Examples from Phase 1 Studies.
-#' AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
+#' Maganti, L., Panebianco, D.L. & Maes, A.L. Evaluation of Methods for
+#' Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS J
+#' 10, 141–147 (2008). https://doi.org/10.1208/s12248-008-9014-y
 #' @export
 pk.tss.monoexponential <- function(...,
                                    tss.fraction=0.9,
