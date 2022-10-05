@@ -87,7 +87,7 @@ is statistically significant starting from the last measurement and moving
 backward in time.  It has bias in that more individuals will move the time to
 steady-state to a late time point.
 
-```{r tss-mono}
+```{r tss-step}
 tss_step <-
   pk.tss.stepwise.linear(
     conc = steady_state_noise$conc,
