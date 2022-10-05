@@ -45,9 +45,9 @@ steady-state concentration and time to stead-state by subject (see
 \code{random.effects} argument).
 }
 \references{
-Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
-Estimating Time to Steady State with Examples from Phase 1 Studies.
-AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
+Maganti, L., Panebianco, D.L. & Maes, A.L. Evaluation of Methods for
+Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS J
+10, 141–147 (2008). https://doi.org/10.1208/s12248-008-9014-y
 }
 \seealso{
 Other Time to steady-state calculations: 

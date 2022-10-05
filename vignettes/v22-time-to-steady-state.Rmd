@@ -1,0 +1,103 @@
+---
+title: "Noncompartmental evaluation of time to steady-state"
+author: "Bill Denney"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Noncompartmental evaluation of time to steady-state}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(PKNCA)
+library(knitr)
+library(ggplot2)
+scale_colour_discrete <- scale_colour_hue
+scale_fill_discrete <- scale_fill_hue
+scale_colour_ordinal <- scale_colour_hue
+scale_fill_ordinal <- scale_fill_hue
+```
+
+Time to steady-state (TSS) can be estimated with PKNCA using either a monoexponential
+increase toward an asymptote or by a linear regression of the last points.
+According to Maganti (2008), the monoexponential method is preferred.
+
+TSS can be estimated using either method using the `pk.tss()` function in PKNCA.
+
+# Example
+
+## Data setup
+
+Illustrating time to steady-state, the example from the
+[v20-superposition.html](superposition vignette) will be used.
+
+```{r superposition, error=TRUE}
+library(PKNCA)
+theoph_corrected <- as.data.frame(datasets::Theoph)
+theoph_corrected$conc[theoph_corrected$Time == 0] <- 0
+conc_obj <- PKNCAconc(theoph_corrected, conc~Time|Subject)
+steady_state <- superposition(conc_obj, dose.times = seq(0, 168 - 12, by=12), tau=168, n.tau=1)
+# Add some noise to the data so that it seems more reasonable
+steady_state_noise <- steady_state
+steady_state_noise$conc <- steady_state_noise$conc*exp(rnorm(nrow(steady_state_noise), mean = 0, sd = 0.1))
+```
+
+Examine the data graphically.
+
+```{r superposition-fig}
+library(ggplot2)
+ggplot(steady_state_noise, aes(x=time, y=conc, groups=Subject)) + geom_line()
+```
+
+## Estimate time to Steady State
+
+### Monoexponential
+
+The below code estimates four different types of monoexponential time to
+steady-state:
+
+1. tss.monoexponential.population: The population estimate of TSS using a nonlinear mixed effects model (one value for all subjects)
+2. tss.monoexponential.popind: The individual estimate from a nonlinear mixed effects model (one value per subject)
+3. tss.monoexponential.individual: The individual estimate using a gnls model to estimate each subject separately (one value per subject)
+4. tss.monoexponential.single: The mean estiamte of TSS using a nonlinear model
+
+```{r tss-mono}
+tss_mono <-
+  pk.tss.monoexponential(
+    conc = steady_state_noise$conc,
+    time = steady_state_noise$time,
+    subject = steady_state_noise$Subject,
+    time.dosing = seq(0, 168 - 12, by=12)
+  )
+tss_mono
+```
+
+The fraction of steady-state required for time to steady-state can be changed
+with the `tss.fraction` argument (see `?pk.tss.monoexponential`).
+
+### Stepwise Linear
+
+The stepwise linear method estimates if the slope of the predose concentrations
+is statistically significant starting from the last measurement and moving
+backward in time.  It has bias in that more individuals will move the time to
+steady-state to a late time point.
+
+```{r tss-mono}
+tss_step <-
+  pk.tss.stepwise.linear(
+    conc = steady_state_noise$conc,
+    time = steady_state_noise$time,
+    subject = steady_state_noise$Subject,
+    time.dosing = seq(0, 168 - 12, by=12)
+  )
+tss_step
+```
+
+# References
+
+1. Maganti, L., Panebianco, D.L. & Maes, A.L. Evaluation of Methods for Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS J 10, 141–147 (2008). https://doi.org/10.1208/s12248-008-9014-y
