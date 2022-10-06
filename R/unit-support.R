@@ -1,7 +1,8 @@
 #' Create a unit assignment and conversion table
 #'
 #' This data.frame is typically used for the \code{units} argument for
-#' \code{\link{PKNCAdata}()}.
+#' \code{\link{PKNCAdata}()}.  If a unit is not given, then all of the units
+#' derived from that unit will be \code{NA}.
 #'
 #' @param concu,doseu,amountu,timeu Units for concentration, dose, amount, and
 #'   time
@@ -132,116 +133,148 @@ pknca_units_table_unitless <- function() {
   )
 }
 
+useless <- function(x) {
+  missing(x) || is.null(x) || is.na(x)
+}
+
 pknca_units_table_time <- function(timeu) {
-  if (!missing(timeu) && !is.null(timeu)) {
-    rbind(
-      data.frame(
-        PPORRESU=timeu,
-        PPTESTCD=pknca_find_units_param(unit_type="time"),
-        stringsAsFactors=FALSE
-      ),
-      data.frame(
-        PPORRESU=sprintf("1/%s", pknca_units_add_paren(timeu)),
-        PPTESTCD=pknca_find_units_param(unit_type="inverse_time"),
-        stringsAsFactors=FALSE
-      )
-    )
+  if (useless(timeu)) {
+    timeu <- NA_character_
   }
+  inverse_timeu <-
+    if (is.na(timeu)) {
+      NA_character_
+    } else {
+      sprintf("1/%s", pknca_units_add_paren(timeu))
+    }
+  rbind(
+    data.frame(
+      PPORRESU=timeu,
+      PPTESTCD=pknca_find_units_param(unit_type="time"),
+      stringsAsFactors=FALSE
+    ),
+    data.frame(
+      PPORRESU=inverse_timeu,
+      PPTESTCD=pknca_find_units_param(unit_type="inverse_time"),
+      stringsAsFactors=FALSE
+    )
+  )
 }
 
 pknca_units_table_conc <- function(concu) {
-  if (!missing(concu) && !is.null(concu)) {
-    data.frame(
-      PPORRESU=concu,
-      PPTESTCD=pknca_find_units_param(unit_type="conc"),
-      stringsAsFactors=FALSE
-    )
+  if (useless(concu)) {
+    concu <- NA_character_
   }
+  data.frame(
+    PPORRESU=concu,
+    PPTESTCD=pknca_find_units_param(unit_type="conc"),
+    stringsAsFactors=FALSE
+  )
 }
 
 pknca_units_table_amount <- function(amountu) {
-  if (!missing(amountu) && !is.null(amountu)) {
-    data.frame(
-      PPORRESU=amountu,
-      PPTESTCD=pknca_find_units_param(unit_type="amount"),
-      stringsAsFactors=FALSE
-    )
+  if (useless(amountu)) {
+    amountu <- NA_character_
   }
+  data.frame(
+    PPORRESU=amountu,
+    PPTESTCD=pknca_find_units_param(unit_type="amount"),
+    stringsAsFactors=FALSE
+  )
 }
 
 pknca_units_table_conc_dose <- function(concu, doseu) {
-  if (!missing(concu) && !missing(doseu) && !is.null(concu) && !is.null(doseu)) {
-    rbind(
-      data.frame(
-        PPORRESU=sprintf("%s/%s", pknca_units_add_paren(concu), pknca_units_add_paren(doseu)),
-        PPTESTCD=pknca_find_units_param(unit_type="conc_dosenorm"),
-        stringsAsFactors=FALSE
-      ),
-      data.frame(
-        # Volume units
-        PPORRESU=sprintf("%s/%s", pknca_units_add_paren(doseu), pknca_units_add_paren(concu)),
-        PPTESTCD=pknca_find_units_param(unit_type="volume"),
-        stringsAsFactors=FALSE
-      )
-    )
+  if (useless(concu) || useless(doseu)) {
+    conc_dosenorm <- NA_character_
+    volume <- NA_character_
+  } else {
+    conc_dosenorm <- sprintf("%s/%s", pknca_units_add_paren(concu), pknca_units_add_paren(doseu))
+    volume <- sprintf("%s/%s", pknca_units_add_paren(doseu), pknca_units_add_paren(concu))
   }
+  rbind(
+    data.frame(
+      PPORRESU=conc_dosenorm,
+      PPTESTCD=pknca_find_units_param(unit_type="conc_dosenorm"),
+      stringsAsFactors=FALSE
+    ),
+    data.frame(
+      # Volume units
+      PPORRESU=volume,
+      PPTESTCD=pknca_find_units_param(unit_type="volume"),
+      stringsAsFactors=FALSE
+    )
+  )
 }
 
 pknca_units_table_conc_time <- function(concu, timeu) {
-  if (!missing(concu) && !missing(timeu) && !is.null(concu) && !is.null(timeu)) {
-    rbind(
-      data.frame(
-        # AUC units
-        PPORRESU=sprintf("%s*%s", timeu, concu),
-        PPTESTCD=pknca_find_units_param(unit_type="auc"),
-        stringsAsFactors=FALSE
-      ),
-      data.frame(
-        # AUMC units
-        PPORRESU=sprintf("%s^2*%s", pknca_units_add_paren(timeu), concu),
-        PPTESTCD=pknca_find_units_param(unit_type="aumc"),
-        stringsAsFactors=FALSE
-      )
-    )
+  if (useless(concu) || useless(timeu)) {
+    auc <- NA_character_
+    aumc <- NA_character_
+  } else {
+    auc <- sprintf("%s*%s", timeu, concu)
+    aumc <- sprintf("%s^2*%s", pknca_units_add_paren(timeu), concu)
   }
+  rbind(
+    data.frame(
+      # AUC units
+      PPORRESU=auc,
+      PPTESTCD=pknca_find_units_param(unit_type="auc"),
+      stringsAsFactors=FALSE
+    ),
+    data.frame(
+      # AUMC units
+      PPORRESU=aumc,
+      PPTESTCD=pknca_find_units_param(unit_type="aumc"),
+      stringsAsFactors=FALSE
+    )
+  )
 }
 
 pknca_units_table_conc_time_dose <- function(concu, timeu, doseu) {
-  if (!missing(concu) && !missing(timeu) && !missing(doseu) &&
-      !is.null(concu) && !is.null(timeu) && !is.null(doseu)) {
-    rbind(
-      data.frame(
-        # AUC units, dose-normalized
-        PPORRESU=sprintf("(%s*%s)/%s", timeu, concu, pknca_units_add_paren(doseu)),
-        PPTESTCD=pknca_find_units_param(unit_type="auc_dosenorm"),
-        stringsAsFactors=FALSE
-      ),
-      data.frame(
-        # AUMC units, dose-normalized
-        PPORRESU=sprintf("(%s^2*%s)/%s", pknca_units_add_paren(timeu), concu, pknca_units_add_paren(doseu)),
-        PPTESTCD=pknca_find_units_param(unit_type="aumc_dosenorm"),
-        stringsAsFactors=FALSE
-      ),
-      data.frame(
-        # Clearance units
-        PPORRESU=sprintf("%s/(%s*%s)", pknca_units_add_paren(doseu), timeu, concu),
-        PPTESTCD=pknca_find_units_param(unit_type="clearance"),
-        stringsAsFactors=FALSE
-      )
-    )
+  if (useless(concu) || useless(timeu) || useless(doseu)) {
+    auc_dosenorm <-
+      aumc_dosenorm <-
+      clearance <-
+      NA_character_
+  } else {
+    auc_dosenorm <- sprintf("(%s*%s)/%s", timeu, concu, pknca_units_add_paren(doseu))
+    aumc_dosenorm <- sprintf("(%s^2*%s)/%s", pknca_units_add_paren(timeu), concu, pknca_units_add_paren(doseu))
+    clearance <- sprintf("%s/(%s*%s)", pknca_units_add_paren(doseu), timeu, concu)
   }
+  rbind(
+    data.frame(
+      # AUC units, dose-normalized
+      PPORRESU=auc_dosenorm,
+      PPTESTCD=pknca_find_units_param(unit_type="auc_dosenorm"),
+      stringsAsFactors=FALSE
+    ),
+    data.frame(
+      # AUMC units, dose-normalized
+      PPORRESU=aumc_dosenorm,
+      PPTESTCD=pknca_find_units_param(unit_type="aumc_dosenorm"),
+      stringsAsFactors=FALSE
+    ),
+    data.frame(
+      # Clearance units
+      PPORRESU=clearance,
+      PPTESTCD=pknca_find_units_param(unit_type="clearance"),
+      stringsAsFactors=FALSE
+    )
+  )
 }
 
 pknca_units_table_conc_time_amount <- function(concu, timeu, amountu) {
-  if (!missing(concu) && !missing(timeu) && !missing(amountu) &&
-      !is.null(concu) && !is.null(timeu) && !is.null(amountu)) {
-    data.frame(
-      # Renal clearance units
-      PPORRESU=sprintf("%s/(%s*%s)", pknca_units_add_paren(amountu), timeu, concu),
-      PPTESTCD=pknca_find_units_param(unit_type="renal_clearance"),
-      stringsAsFactors=FALSE
-    )
+  if (useless(concu) || useless(timeu) || useless(amountu)) {
+    renal_clearance <- NA_character_
+  } else {
+    renal_clearance <- sprintf("%s/(%s*%s)", pknca_units_add_paren(amountu), timeu, concu)
   }
+  data.frame(
+    # Renal clearance units
+    PPORRESU=renal_clearance,
+    PPTESTCD=pknca_find_units_param(unit_type="renal_clearance"),
+    stringsAsFactors=FALSE
+  )
 }
 
 #' Find NCA parameters with a given unit type

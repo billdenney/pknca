@@ -113,9 +113,45 @@ test_that("pknca_units_add_paren", {
   expect_equal(pknca_units_add_paren("mg*kg"), "(mg*kg)")
 })
 
-test_that("pknca_units_table treats missing and NULL the same", {
+test_that("pknca_units_table treats missing, NULL, and NA the same", {
   expect_equal(
     pknca_units_table(),
     pknca_units_table(concu = NULL, doseu = NULL, amountu = NULL, timeu = NULL)
   )
+  expect_equal(
+    pknca_units_table(),
+    pknca_units_table(concu = NA, doseu = NULL, amountu = NULL, timeu = NULL)
+  )
+  expect_equal(
+    pknca_units_table(),
+    pknca_units_table(concu = NA, doseu = NA, amountu = NULL, timeu = NULL)
+  )
+  expect_equal(
+    pknca_units_table(),
+    pknca_units_table(concu = NA, doseu = NA, amountu = NA, timeu = NULL)
+  )
+  expect_equal(
+    pknca_units_table(),
+    pknca_units_table(concu = NA, doseu = NULL, amountu = NULL, timeu = NA)
+  )
+  expect_true(all(is.na(
+    pknca_units_table(concu = "ng/mL", doseu = "mg", amountu = "umol", timeu = NULL) %>%
+      dplyr::filter(PPTESTCD %in% c("start", "lambda.z", "auclast", "aumclast", "auclast.dn", "aumclast.dn", "cl.last", "clr.last")) %>%
+      dplyr::pull("PPORRESU")
+  )))
+  expect_true(all(is.na(
+    pknca_units_table(concu = "ng/mL", doseu = "mg", amountu = NULL, timeu = "hr") %>%
+      dplyr::filter(PPTESTCD %in% c("ae", "clr.last")) %>%
+      dplyr::pull("PPORRESU")
+  )))
+  expect_true(all(is.na(
+    pknca_units_table(concu = "ng/mL", doseu = NULL, amountu = "umol", timeu = "hr") %>%
+      dplyr::filter(PPTESTCD %in% c("cmax.dn", "vss.last", "cl.last", "auclast.dn", "aumclast.dn")) %>%
+      dplyr::pull("PPORRESU")
+  )))
+  expect_true(all(is.na(
+    pknca_units_table(concu = NULL, doseu = "mg", amountu = "umol", timeu = "hr") %>%
+      dplyr::filter(PPTESTCD %in% c("cmax", "cmax.dn", "vss.last", "auclast", "aumclast", "auclast.dn", "aumclast.dn", "cl.last", "clr.last")) %>%
+      dplyr::pull("PPORRESU")
+  )))
 })
