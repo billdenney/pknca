@@ -21,6 +21,7 @@ pk.nca.interval(
   time.dose.group = NULL,
   duration.dose.group = NULL,
   route.group = NULL,
+  impute_method = NA_character_,
   include_half.life = NULL,
   exclude_half.life = NULL,
   subject,
@@ -58,6 +59,8 @@ nonzero for intravascular infusion)}
 
 \item{route, route.group}{The route of dosing for the current interval
 or all data for the group}
+
+\item{impute_method}{The method to use for imputation as a character string}
 
 \item{include_half.life}{An optional boolean vector of the
 concentration measurements to include in the half-life calculation.
