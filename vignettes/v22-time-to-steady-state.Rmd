@@ -68,7 +68,7 @@ steady-state:
 1. tss.monoexponential.population: The population estimate of TSS using a nonlinear mixed effects model (one value for all subjects)
 2. tss.monoexponential.popind: The individual estimate from a nonlinear mixed effects model (one value per subject)
 3. tss.monoexponential.individual: The individual estimate using a gnls model to estimate each subject separately (one value per subject)
-4. tss.monoexponential.single: The mean estiamte of TSS using a nonlinear model
+4. tss.monoexponential.single: The mean estimate of TSS using a nonlinear model
 
 ```{r tss-mono}
 tss_mono <-

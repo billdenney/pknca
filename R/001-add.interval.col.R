@@ -103,7 +103,7 @@ add.interval.col <- function(name,
   } else if (!(is.character(FUN) | is.na(FUN))) {
     stop("FUN must be a character string or NA")
   }
-  checkmate::expect_logical(sparse, any.missing=FALSE, len=1)
+  checkmate::assert_logical(sparse, any.missing=FALSE, len=1)
   unit_type <-
     match.arg(
       unit_type,

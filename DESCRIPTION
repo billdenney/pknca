@@ -15,7 +15,6 @@ Imports:
     purrr,
     rlang,
     stats,
-    testthat,
     tidyr,
     tibble,
     utils
@@ -29,6 +28,7 @@ Suggests:
     pmxTools,
     rmarkdown,
     spelling,
+    testthat,
     tidyverse,
     units,
     withr
