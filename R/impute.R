@@ -112,7 +112,7 @@ PKNCA_impute_fun_list <- function(x) {
   # Confirm that the functions exist and are functions
   # Sort will ensure that the results are not NA
   all_funs <- sort(unlist(ret))
-  bad_fun <- c()
+  bad_fun <- character()
   for (idx in seq_along(all_funs)) {
     found_fun <- utils::getAnywhere(all_funs[[idx]])
     if (length(found_fun$objs) == 0) {
