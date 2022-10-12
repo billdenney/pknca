@@ -43,6 +43,9 @@
     <loc>http://billdenney.github.io/pknca/articles/v07-unit-conversion.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/articles/v08-data-imputation.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/articles/v20-superposition.html</loc>
   </url>
   <url>
@@ -91,6 +94,12 @@
     <loc>http://billdenney.github.io/pknca/reference/PKNCA.set.summary.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/reference/PKNCA_impute_fun_list.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/PKNCA_impute_method.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/reference/PKNCAconc.html</loc>
   </url>
   <url>
@@ -107,6 +116,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/addProvenance.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/add_impute_to_intervals.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/adj.r.squared.html</loc>

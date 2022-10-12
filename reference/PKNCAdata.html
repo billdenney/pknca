@@ -57,6 +57,9 @@ adds in the intervals for PK calculations."><!-- mathjax --><script src="https:/
       <a href="../articles/v07-unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
     </li>
     <li>
+      <a href="../articles/v08-data-imputation.html">Data Imputation</a>
+    </li>
+    <li>
       <a href="../articles/v20-superposition.html">Superposition of Pharmacokinetic Data</a>
     </li>
     <li>
@@ -122,6 +125,7 @@ adds in the intervals for PK calculations.</p>
 <span>  <span class="va">...</span>,</span>
 <span>  <span class="va">formula.conc</span>,</span>
 <span>  <span class="va">formula.dose</span>,</span>
+<span>  impute <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  <span class="va">intervals</span>,</span>
 <span>  <span class="va">units</span>,</span>
 <span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -156,6 +160,13 @@ data.frame, and it must not be given if <code>data.conc</code> is a
 <code>data.dose</code>.  This must be given if <code>data.dose</code> is a
 data.frame, and it must not be given if <code>data.dose</code> is a
 <code>PKNCAdose</code> object.</p></dd>
+
+
+<dt>impute</dt>
+<dd><p>Methods for imputation.  <code>NA</code> for no imputation, a
+comma-or space-separated list of names, or the name of a column in the
+<code>intervals</code> data.frame.  See
+<code><a href="../articles/v08-data-imputation.html">vignette("v08-data-imputation", package="PKNCA")</a></code> for more details.</p></dd>
 
 
 <dt>intervals</dt>

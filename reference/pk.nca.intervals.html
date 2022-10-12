@@ -56,6 +56,9 @@
       <a href="../articles/v07-unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
     </li>
     <li>
+      <a href="../articles/v08-data-imputation.html">Data Imputation</a>
+    </li>
+    <li>
       <a href="../articles/v20-superposition.html">Superposition of Pharmacokinetic Data</a>
     </li>
     <li>
@@ -111,6 +114,7 @@
 <span>  <span class="va">data_intervals</span>,</span>
 <span>  <span class="va">sparse</span>,</span>
 <span>  <span class="va">options</span>,</span>
+<span>  <span class="va">impute</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -140,6 +144,10 @@ dense calculations (FALSE)?</p></dd>
 <dt>options</dt>
 <dd><p>List of changes to the default
 <code><a href="PKNCA.options.html">PKNCA.options</a></code> for calculations.</p></dd>
+
+
+<dt>impute</dt>
+<dd><p>The column name in <code>data_intervals</code> to use for imputation</p></dd>
 
 
 <dt>verbose</dt>

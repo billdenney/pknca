@@ -10,6 +10,7 @@ articles:
   v06-half-life-calculation: v06-half-life-calculation.html
   v07-post-processing: v07-post-processing.html
   v07-unit-conversion: v07-unit-conversion.html
+  v08-data-imputation: v08-data-imputation.html
   v20-superposition: v20-superposition.html
   v21-methods-for-dose-aware-interpolation-and-extrapolation: v21-methods-for-dose-aware-interpolation-and-extrapolation.html
   v22-time-to-steady-state: v22-time-to-steady-state.html
@@ -17,7 +18,7 @@ articles:
   v40-options-for-controlling-PKNCA: v40-options-for-controlling-PKNCA.html
   v60-PKNCA-validation: v60-PKNCA-validation.html
   v80-writing-parameter-functions: v80-writing-parameter-functions.html
-last_built: 2022-10-06T01:20Z
+last_built: 2022-10-12T17:23Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles

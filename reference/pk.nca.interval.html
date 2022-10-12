@@ -59,6 +59,9 @@ function is the concentration and time."><!-- mathjax --><script src="https://cd
       <a href="../articles/v07-unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
     </li>
     <li>
+      <a href="../articles/v08-data-imputation.html">Data Imputation</a>
+    </li>
+    <li>
       <a href="../articles/v20-superposition.html">Superposition of Pharmacokinetic Data</a>
     </li>
     <li>
@@ -128,6 +131,7 @@ function is the <code>conc</code>entration and <code>time</code>.</p>
 <span>  time.dose.group <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  duration.dose.group <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  route.group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  impute_method <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  include_half.life <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  exclude_half.life <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">subject</span>,</span>
@@ -182,6 +186,10 @@ nonzero for intravascular infusion)</p></dd>
 <dt>route, route.group</dt>
 <dd><p>The route of dosing for the current interval
 or all data for the group</p></dd>
+
+
+<dt>impute_method</dt>
+<dd><p>The method to use for imputation as a character string</p></dd>
 
 
 <dt>include_half.life</dt>
