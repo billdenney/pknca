@@ -26,9 +26,12 @@ pk.nca <- function(data, verbose=FALSE) {
   } else {
     if (verbose) message("Setting up options")
     # Merge the options into the default options.
-    tmp.opt <- PKNCA.options()
-    tmp.opt[names(data$options)] <- data$options
-    data$options <- tmp.opt
+    tmp_options <- PKNCA.options()
+    tmp_options[names(data$options)] <- data$options
+    data$options <- tmp_options
+    if (!is.na(data$impute)) {
+      data <- add_impute_to_intervals(data)
+    }
     splitdata <- full_join_PKNCAdata(data)
     group_info <-
       splitdata[
@@ -47,6 +50,7 @@ pk.nca <- function(data, verbose=FALSE) {
         ),
         .f=pk.nca.intervals,
         options=data$options,
+        impute=data$impute,
         verbose=verbose,
         sparse=FALSE
       )
@@ -63,6 +67,7 @@ pk.nca <- function(data, verbose=FALSE) {
           ),
           .f=pk.nca.intervals,
           options=data$options,
+          impute=data$impute,
           verbose=verbose,
           sparse=TRUE
         )
@@ -182,12 +187,13 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #'   output from \code{prepare_PKNCAdose()}
 #' @param data_intervals A data.frame or tibble with standardized column names
 #'   as output from \code{prepare_PKNCAintervals()}
+#' @param impute The column name in \code{data_intervals} to use for imputation
 #' @inheritParams PKNCAdata
 #' @inheritParams pk.nca
 #' @inheritParams pk.nca.interval
 #' @return A data.frame with all NCA results
 pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
-                             options, verbose=FALSE) {
+                             options, impute, verbose=FALSE) {
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
     # No concentration data; potentially placebo data
     return(rlang::warning_cnd(class="pknca_no_conc_data", message="No concentration data"))
@@ -236,6 +242,12 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
     } else if (!has_calc_sparse_dense) {
       if (verbose) message("No ", ifelse(sparse, "sparse", "dense"), " calculations requested for an interval")
     } else {
+      impute_method <-
+        if (is.na(impute)) {
+          NA_character_
+        } else {
+          data_intervals[[impute]][i]
+        }
       args <- list(
         # Interval-level data
         conc=conc_data_interval$conc,
@@ -246,6 +258,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         time.dose=dose_data_interval$time,
         duration.dose=dose_data_interval$duration,
         route=dose_data_interval$route,
+        impute_method=impute_method,
         # Group-level data
         conc.group=data_conc$conc,
         time.group=data_conc$time,
@@ -320,6 +333,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #'   nonzero for intravascular infusion)
 #' @param route,route.group The route of dosing for the current interval
 #'   or all data for the group
+#' @param impute_method The method to use for imputation as a character string
 #' @param interval One row of an interval definition (see
 #'   \code{\link{check.interval.specification}} for how to define the
 #'   interval.
@@ -343,6 +357,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose, route,
                             conc.group=NULL, time.group=NULL, volume.group=NULL, duration.conc.group=NULL,
                             dose.group=NULL, time.dose.group=NULL, duration.dose.group=NULL, route.group=NULL,
+                            impute_method=NA_character_,
                             include_half.life=NULL, exclude_half.life=NULL,
                             subject, sparse, interval, options=list()) {
   if (!is.data.frame(interval)) {
@@ -350,6 +365,20 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   }
   if (nrow(interval) != 1) {
     stop("Please report a bug.  Interval must be a one-row data.frame")
+  }
+  if (!is.na(impute_method)) {
+    impute_funs <- PKNCA_impute_fun_list(impute_method)
+    stopifnot(length(impute_funs) == 1)
+    impute_data <- data.frame(conc=conc, time=time)
+    for (current_fun_nm in impute_funs[[1]]) {
+      impute_args <- as.list(impute_data)
+      impute_args$start <- interval$start[1]
+      impute_args$end <- interval$end[1]
+      impute_args$options <- options
+      impute_data <- do.call(current_fun_nm, args=impute_args)
+    }
+    conc <- impute_data$conc
+    time <- impute_data$time
   }
   # Prepare the return value using SDTM names
   ret <- data.frame(PPTESTCD=NA, PPORRES=NA)[-1,]
@@ -374,7 +403,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
     }
   }
   # Check if units will be used
-  uses_units <- inherits(time, "units")
+  #uses_units <- inherits(time, "units")
   # Do the calculations
   for (n in names(all_intervals)) {
     request_to_calculate <- as.logical(interval[[n]][[1]])

@@ -7,6 +7,10 @@
 #'   data frame
 #' @param data.dose Dosing data as a \code{PKNCAdose} object (see
 #'   details)
+#' @param impute Methods for imputation.  \code{NA} for no imputation, a
+#'   comma-or space-separated list of names, or the name of a column in the
+#'   \code{intervals} data.frame.  See
+#'   \code{vignette("v08-data-imputation", package="PKNCA")} for more details.
 #' @param formula.conc Formula for making a \code{PKNCAconc} object with
 #'   \code{data.conc}.  This must be given if \code{data.conc} is a
 #'   data.frame, and it must not be given if \code{data.conc} is a
@@ -54,6 +58,7 @@ PKNCAdata.PKNCAdose <- function(data.conc, data.dose, ...) {
 #' @export
 PKNCAdata.default <- function(data.conc, data.dose, ...,
                               formula.conc, formula.dose,
+                              impute = NA_character_,
                               intervals, units, options=list()) {
   if (length(list(...))) {
     stop("Unknown argument provided to PKNCAdata.  All arguments other than `data.conc` and `data.dose` must be named.")
@@ -174,6 +179,12 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     ret$units <- units
   }
 
+  # Insert the imputation methods, if applicable
+  if (!identical(NA, impute)) {
+    checkmate::assert_character(impute, len = 1)
+    ret$impute <- impute
+  }
+
   # Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
   ret
@@ -196,8 +207,14 @@ print.PKNCAdata <- function(x, ...) {
   } else {
     print.PKNCAdose(x$dose, ...)
   }
-  cat(sprintf("\nWith %d rows of AUC specifications.\n",
+  cat(sprintf("\nWith %d rows of interval specifications.\n",
               nrow(x$intervals)))
+  if (!is.null(x$units)) {
+    cat("With units\n")
+  }
+  if (!is.null(x$impute)) {
+    cat(sprintf("With imputation: %s\n", x$impute))
+  }
   if (length(x$options) == 0) {
     cat("No options are set differently than default.\n")
   } else {

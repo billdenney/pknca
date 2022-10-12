@@ -19,6 +19,7 @@ PKNCAdata(data.conc, data.dose, ...)
   ...,
   formula.conc,
   formula.dose,
+  impute = NA_character_,
   intervals,
   units,
   options = list()
@@ -42,6 +43,11 @@ data.frame, and it must not be given if \code{data.conc} is a
 \code{data.dose}.  This must be given if \code{data.dose} is a
 data.frame, and it must not be given if \code{data.dose} is a
 \code{PKNCAdose} object.}
+
+\item{impute}{Methods for imputation.  \code{NA} for no imputation, a
+comma-or space-separated list of names, or the name of a column in the
+\code{intervals} data.frame.  See
+\code{vignette("v08-data-imputation", package="PKNCA")} for more details.}
 
 \item{intervals}{A data frame with the AUC interval specifications as
 defined in \code{\link{check.interval.specification}}.  If missing,
