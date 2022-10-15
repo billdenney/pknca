@@ -20,7 +20,7 @@ pk.calc.sparse_auc"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PKNCA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.5.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -133,8 +133,8 @@ rule</h1>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>$$w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}{2}}$$
-$$\delta_{time,i,i+1} = \begin{cases}0 &amp; i &lt; 1 | i &gt; K \\ t_{i+1} - t_i\end{cases}$$</p>
+    <p>$$w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}}{2}$$
+$$\delta_{time,i,i+1} = t_{i+1} - t_i$$</p>
 <p>Where:</p>
 <ul><li><p>\(w_i\)is the weight at time i</p></li>
 <li><p>\(\delta_{time,i-1,i}\) and \(\delta_{time,i,i+1}\)are the changes between time i-1 and i or i and i+1 (zero outside of the time range)</p></li>
