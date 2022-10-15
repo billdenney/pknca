@@ -16,3 +16,4 @@ cran-comments.md
 ^Rprof.out$
 ^data-raw$
 ^revdep$
+^CRAN-SUBMISSION$
