@@ -64,8 +64,8 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
 #' The weight is used as the \eqn{w_i}{w_i} parameter in
 #' \code{\link{pk.calc.sparse_auc}}
 #'
-#' \deqn{w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}{2}}}{w_i = (d_time[i-1,i] + d_time[i,i+1])/2}
-#' \deqn{\delta_{time,i,i+1} = \begin{cases}0 & i < 1 | i > K \\ t_{i+1} - t_i\end{cases}}{d_time = t_[i+1] - t_i, and zero if i < 1 or i > K}
+#' \deqn{w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}}{2}}{w_i = (d_time[i-1,i] + d_time[i,i+1])/2}
+#' \deqn{\delta_{time,i,i+1} = t_{i+1} - t_i}{d_time = t_[i+1] - t_i, and zero if i < 1 or i > K}
 #'
 #' Where:
 #'
