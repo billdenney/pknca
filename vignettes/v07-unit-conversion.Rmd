@@ -73,7 +73,7 @@ d_units_clean_manual[d_units_clean_manual$PPTESTCD %in% c("cmax", "tmax", "aucla
 
 # The Basic Steps to Add Units to an NCA Analysis
 
-For more details on parts of this NCA calculation example unrelated to units, see the [theophylline example vignette](Example-theophylline.html).
+For more details on parts of this NCA calculation example unrelated to units, see the [theophylline example vignette](v02-example-theophylline.html).
 
 ```{r create-conc-dose-obj}
 conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)

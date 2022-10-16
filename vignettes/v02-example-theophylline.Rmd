@@ -96,7 +96,7 @@ knitr::kable(summary(results_obj_manual))
 
 Assessing multiple dose pharmacokinetics is conceptually the same as single-dose in PKNCA.
 
-To assess multiple dose PK, the theophylline data will be extended from single to multiple doses using superposition (see the [Superposition](Superposition.html) vignette for more information).
+To assess multiple dose PK, the theophylline data will be extended from single to multiple doses using superposition (see the [superposition](v20-superposition.html) vignette for more information).
 
 ```{r superposition}
 d_conc <- PKNCAconc(as.data.frame(Theoph), conc~Time|Subject)
