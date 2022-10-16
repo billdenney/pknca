@@ -4303,7 +4303,7 @@
 <h2 id="multiple-dose-example">Multiple Dose Example<a class="anchor" aria-label="anchor" href="#multiple-dose-example"></a>
 </h2>
 <p>Assessing multiple dose pharmacokinetics is conceptually the same as single-dose in PKNCA.</p>
-<p>To assess multiple dose PK, the theophylline data will be extended from single to multiple doses using superposition (see the <a href="Superposition.html">Superposition</a> vignette for more information).</p>
+<p>To assess multiple dose PK, the theophylline data will be extended from single to multiple doses using superposition (see the <a href="v20-superposition.html">superposition</a> vignette for more information).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">Theoph</span><span class="op">)</span>, <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span><span class="op">)</span></span>
 <span><span class="va">conc_obj_multi</span> <span class="op">&lt;-</span></span>
@@ -4579,7 +4579,7 @@
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "PKNCAresults" "list"        </span></span>
 <span><span class="co">## attr(,"provenance")</span></span>
-<span><span class="co">## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2022-10-15 19:25:52 with R version 4.2.1 (2022-06-23).</span></span></code></pre>
+<span><span class="co">## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2022-10-16 02:00:45 with R version 4.2.1 (2022-06-23).</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end  N     auclast        cmax</span></span>
