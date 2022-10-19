@@ -155,3 +155,15 @@ test_that("pknca_units_table treats missing, NULL, and NA the same", {
       dplyr::pull("PPORRESU")
   )))
 })
+
+test_that("allow duplicate PPSTRESU units", {
+  d_conversion <-
+    data.frame(
+      PPORRESU = c("ng/mL", "(ng/mL)/(mg/kg)", "(mg/kg)/(hr*ng/mL)", "(mg/kg)/(ng/mL)"),
+      PPSTRESU = c("mg/mL", "mL/kg", "mL/(h*kg)", "mL/kg")
+    )
+  # No error for consistent volume conversion
+  expect_silent(
+    pknca_units_table(concu = "ng/mL", doseu = "mg/kg", timeu = "hr", conversions = d_conversion)
+  )
+})

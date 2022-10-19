@@ -67,7 +67,8 @@ pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.fra
   }
   if (nrow(conversions) > 0) {
     stopifnot(!duplicated(conversions$PPORRESU))
-    stopifnot(!duplicated(conversions$PPSTRESU))
+    # PPSTRESU may be duplicated because some differing original units may
+    # converge (e.g. cmax.dn and vss)
     stopifnot(length(setdiff(names(conversions), c("PPORRESU", "PPSTRESU", "conversion_factor"))) == 0)
     if (!("conversion_factor" %in% names(conversions))) {
       if (!requireNamespace("units", quietly=TRUE)) {
