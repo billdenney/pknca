@@ -4,6 +4,11 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
+# PKNCA 0.10.9000
+
+* A new parameter `aucabove.trough.all` was added to calculate the NCA above the
+  trough concentration.
+
 # PKNCA 0.10.0
 
 ## Bugs Fixed

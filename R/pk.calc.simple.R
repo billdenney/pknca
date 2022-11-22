@@ -1249,3 +1249,41 @@ PKNCA.set.summary(
   point=business.geomean,
   spread=business.geocv
 )
+
+#' Calculate the AUC above a given concentration
+#'
+#' Concentrations below the given concentration (\code{conc_above}) will be set
+#' to zero.
+#' @inheritParams pk.calc.time_above
+#' @return The AUC of the concentration above the limit
+#' @export
+pk.calc.aucabove <- function(conc, time, conc_above = NA_real_, ..., options=list()) {
+  stopifnot(length(conc_above) == 1)
+  stopifnot(is.numeric(conc_above))
+  if (is.na(conc_above)) {
+    ret <- structure(NA_real_, exclude = "Missing concentration to be above")
+  } else {
+    ret <-
+      pk.calc.auc(
+        conc=pmax(conc - conc_above, 0), time=time, ..., options=options,
+        auc.type="AUCall",
+        lambda.z=NA
+      )
+  }
+  ret
+}
+add.interval.col(
+  "aucabove.trough.all",
+  FUN="pk.calc.aucabove",
+  unit_type="auc",
+  pretty_name="AUC,above",
+  desc="The area under the concentration time the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification, with a concentration subtracted from all concentrations and values below zero after subtraction set to zero",
+  depends="ctrough",
+  formalsmap = list(conc_above = "ctrough")
+)
+PKNCA.set.summary(
+  name="aucabove.trough.all",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)

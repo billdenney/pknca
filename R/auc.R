@@ -391,7 +391,8 @@ add.interval.col("aucall",
                  values=c(FALSE, TRUE),
                  unit_type="auc",
                  pretty_name="AUCall",
-                 desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification",)
+                 desc="The area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification"
+)
 
 add.interval.col("aumcinf.obs",
                  FUN="pk.calc.aumc.inf.obs",
