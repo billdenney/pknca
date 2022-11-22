@@ -447,17 +447,25 @@ test_that("pk.calc.aucabove", {
   )
 
   # Confirm that it works through NCA calculations
-
-  d_conc <- data.frame(conc = c(2, 1:5, 2), time = 0:6)
-  d_intervals <- data.frame(start = 0, end = 6, aucabove.trough.all = TRUE)
+  d_conc <- data.frame(conc = c(2, 1:5, 3), time = 0:6)
+  d_intervals <- data.frame(start = 0, end = 6, aucabove.trough.all = TRUE, aucabove.predose.all = TRUE)
   o_conc <- PKNCAconc(d_conc, conc~time)
   o_data <- PKNCAdata(o_conc, intervals = d_intervals)
   suppressMessages(
     o_nca <- pk.nca(o_data)
   )
   expect_equal(
-    as.data.frame(o_nca)$PPORRES,
-    c(2, 6)
+    as.data.frame(o_nca),
+    tibble::tibble(
+      start = 0, end = 6,
+      PPTESTCD = c("ctrough", "cstart", "aucabove.predose.all", "aucabove.trough.all"),
+      PPORRES =
+        c(
+          3, 2,
+          pk.calc.aucabove(conc = d_conc$conc, time = d_conc$time, conc_above = 2),
+          pk.calc.aucabove(conc = d_conc$conc, time = d_conc$time, conc_above = 3)
+        ),
+      exclude = NA_character_
+    )
   )
-  expect_equal(as.data.frame(o_nca)$exclude, rep(NA_character_, 2))
 })
