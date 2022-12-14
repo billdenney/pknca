@@ -28,14 +28,16 @@ Suggests:
     pmxTools,
     rmarkdown,
     spelling,
-    testthat,
+    testthat (>= 3.0.0),
     tidyverse,
     units,
     withr
 Description: Compute standard Non-Compartmental Analysis (NCA) parameters for
     typical pharmacokinetic analyses and summarize them.
 License: AGPL-3
-URL: https://billdenney.github.io/pknca/, https://github.com/billdenney/pknca
+URL: https://billdenney.github.io/pknca/,
+    https://github.com/billdenney/pknca,
+    http://billdenney.github.io/pknca/
 BugReports: https://github.com/billdenney/pknca/issues
 NeedsCompilation: no
 VignetteBuilder: knitr
