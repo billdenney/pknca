@@ -11,7 +11,7 @@ pk.calc.cstart(conc, time, start)
 
 \item{time}{Times of \code{conc} observations}
 
-\item{end}{End time of the interval}
+\item{start}{Start time of the interval}
 }
 \value{
 The concentration when \code{time == end}.  If none

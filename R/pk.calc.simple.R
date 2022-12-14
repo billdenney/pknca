@@ -1107,7 +1107,7 @@ PKNCA.set.summary(
 #'
 #' @param conc Observed concentrations during the interval
 #' @param time Times of \code{conc} observations
-#' @param end End time of the interval
+#' @param start Start time of the interval
 #' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
 #' @family NCA parameters for concentrations during the intervals
