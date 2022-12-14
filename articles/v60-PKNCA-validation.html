@@ -124,7 +124,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>PKNCA Validation</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v60-PKNCA-validation.Rmd" class="external-link"><code>vignettes/v60-PKNCA-validation.Rmd</code></a></small>
@@ -151,29 +152,37 @@
 </ul>
 </li>
 </ul>
-<p>Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.</p>
-<p>Re-running this vignette in your local environment will confirm that local results match those in the original package development. Test success is confirmed by the existence of no failed tests; warnings are expected during testing (and not shown in this vignette for that reason); and some tests may be skipped, but those are expected as well.</p>
+<p>Testing and validation that results match in a local environment
+compared to the original environment is an important part of
+confirmation that a package works as expected.</p>
+<p>Re-running this vignette in your local environment will confirm that
+local results match those in the original package development. Test
+success is confirmed by the existence of no failed tests; warnings are
+expected during testing (and not shown in this vignette for that
+reason); and some tests may be skipped, but those are expected as
+well.</p>
 </div>
 <div class="section level2">
 <h2 id="summary-of-testing">Summary of Testing<a class="anchor" aria-label="anchor" href="#summary-of-testing"></a>
 </h2>
-<p>The following sentence is dynamically generated to summarize the testing results: Tests were not run because tests are not installed.</p>
+<p>The following sentence is dynamically generated to summarize the
+testing results: Tests were not run because tests are not installed.</p>
 </div>
 <div class="section level2">
 <h2 id="session-information">Session Information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "2022-10-19"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "2022-12-14"</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<pre><code><span><span class="co">## R version 4.2.2 (2022-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">## Running under: Ubuntu 20.04.5 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.1 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -185,20 +194,20 @@
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] dplyr_1.0.10      testthat_3.1.5    knitr_1.40        PKNCA_0.10.0.9000</span></span>
+<span><span class="co">## [1] dplyr_1.0.10      testthat_3.1.6    knitr_1.41        PKNCA_0.10.0.9000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] bslib_0.4.0       compiler_4.2.1    pillar_1.8.1      jquerylib_0.1.4  </span></span>
-<span><span class="co">##  [5] tools_4.2.1       digest_0.6.29     lattice_0.20-45   nlme_3.1-160     </span></span>
-<span><span class="co">##  [9] jsonlite_1.8.2    evaluate_0.17     memoise_2.0.1     lifecycle_1.0.3  </span></span>
-<span><span class="co">## [13] tibble_3.1.8      pkgconfig_2.0.3   rlang_1.0.6       DBI_1.1.3        </span></span>
-<span><span class="co">## [17] cli_3.4.1         yaml_2.3.5        pkgdown_2.0.6     xfun_0.33        </span></span>
-<span><span class="co">## [21] fastmap_1.1.0     stringr_1.4.1     desc_1.4.2        generics_0.1.3   </span></span>
-<span><span class="co">## [25] fs_1.5.2          sass_0.4.2        vctrs_0.4.2       systemfonts_1.0.4</span></span>
-<span><span class="co">## [29] grid_4.2.1        rprojroot_2.0.3   tidyselect_1.2.0  glue_1.6.2       </span></span>
-<span><span class="co">## [33] R6_2.5.1          textshaping_0.3.6 fansi_1.0.3       rmarkdown_2.17   </span></span>
-<span><span class="co">## [37] purrr_0.3.5       magrittr_2.0.3    htmltools_0.5.3   assertthat_0.2.1 </span></span>
-<span><span class="co">## [41] ragg_1.2.3        utf8_1.2.2        stringi_1.7.8     cachem_1.0.6     </span></span>
+<span><span class="co">##  [1] bslib_0.4.1       compiler_4.2.2    pillar_1.8.1      jquerylib_0.1.4  </span></span>
+<span><span class="co">##  [5] tools_4.2.2       digest_0.6.31     lattice_0.20-45   nlme_3.1-160     </span></span>
+<span><span class="co">##  [9] jsonlite_1.8.4    evaluate_0.19     memoise_2.0.1     lifecycle_1.0.3  </span></span>
+<span><span class="co">## [13] tibble_3.1.8      pkgconfig_2.0.3   rlang_1.0.6       cli_3.4.1        </span></span>
+<span><span class="co">## [17] DBI_1.1.3         yaml_2.3.6        pkgdown_2.0.6     xfun_0.35        </span></span>
+<span><span class="co">## [21] fastmap_1.1.0     stringr_1.5.0     desc_1.4.2        generics_0.1.3   </span></span>
+<span><span class="co">## [25] fs_1.5.2          vctrs_0.5.1       sass_0.4.4        systemfonts_1.0.4</span></span>
+<span><span class="co">## [29] grid_4.2.2        rprojroot_2.0.3   tidyselect_1.2.0  glue_1.6.2       </span></span>
+<span><span class="co">## [33] R6_2.5.1          textshaping_0.3.6 fansi_1.0.3       rmarkdown_2.18   </span></span>
+<span><span class="co">## [37] purrr_0.3.5       magrittr_2.0.3    htmltools_0.5.4   assertthat_0.2.1 </span></span>
+<span><span class="co">## [41] ragg_1.2.4        utf8_1.2.2        stringi_1.7.8     cachem_1.0.6     </span></span>
 <span><span class="co">## [45] brio_1.1.3</span></span></code></pre>
 </div>
   </div>

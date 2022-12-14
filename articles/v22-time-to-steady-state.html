@@ -123,10 +123,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Noncompartmental evaluation of time to steady-state</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+      <h1 data-toc-skip>Noncompartmental evaluation of time to
+steady-state</h1>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
-            <h4 data-toc-skip class="date">2022-10-19</h4>
+            <h4 data-toc-skip class="date">2022-12-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v22-time-to-steady-state.Rmd" class="external-link"><code>vignettes/v22-time-to-steady-state.Rmd</code></a></small>
       <div class="hidden name"><code>v22-time-to-steady-state.Rmd</code></div>
@@ -135,15 +137,20 @@
 
     
     
-<p>Time to steady-state (TSS) can be estimated with PKNCA using either a monoexponential increase toward an asymptote or by a linear regression of the last points. According to Maganti (2008), the monoexponential method is preferred.</p>
-<p>TSS can be estimated using either method using the <code><a href="../reference/pk.tss.html">pk.tss()</a></code> function in PKNCA.</p>
+<p>Time to steady-state (TSS) can be estimated with PKNCA using either a
+monoexponential increase toward an asymptote or by a linear regression
+of the last points. According to Maganti (2008), the monoexponential
+method is preferred.</p>
+<p>TSS can be estimated using either method using the
+<code><a href="../reference/pk.tss.html">pk.tss()</a></code> function in PKNCA.</p>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <div class="section level3">
 <h3 id="data-setup">Data setup<a class="anchor" aria-label="anchor" href="#data-setup"></a>
 </h3>
-<p>Illustrating time to steady-state, the example from the <a href="v20-superposition.html">superposition vignette</a> will be used.</p>
+<p>Illustrating time to steady-state, the example from the <a href="v20-superposition.html">superposition vignette</a> will be
+used.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
 <span><span class="va">theoph_corrected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">)</span></span>
@@ -169,12 +176,17 @@
 <div class="section level4">
 <h4 id="monoexponential">Monoexponential<a class="anchor" aria-label="anchor" href="#monoexponential"></a>
 </h4>
-<p>The below code estimates four different types of monoexponential time to steady-state:</p>
+<p>The below code estimates four different types of monoexponential time
+to steady-state:</p>
 <ol style="list-style-type: decimal">
-<li>tss.monoexponential.population: The population estimate of TSS using a nonlinear mixed effects model (one value for all subjects)</li>
-<li>tss.monoexponential.popind: The individual estimate from a nonlinear mixed effects model (one value per subject)</li>
-<li>tss.monoexponential.individual: The individual estimate using a gnls model to estimate each subject separately (one value per subject)</li>
-<li>tss.monoexponential.single: The mean estimate of TSS using a nonlinear model</li>
+<li>tss.monoexponential.population: The population estimate of TSS using
+a nonlinear mixed effects model (one value for all subjects)</li>
+<li>tss.monoexponential.popind: The individual estimate from a nonlinear
+mixed effects model (one value per subject)</li>
+<li>tss.monoexponential.individual: The individual estimate using a gnls
+model to estimate each subject separately (one value per subject)</li>
+<li>tss.monoexponential.single: The mean estimate of TSS using a
+nonlinear model</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tss_mono</span> <span class="op">&lt;-</span></span>
@@ -184,26 +196,23 @@
 <span>    subject <span class="op">=</span> <span class="va">steady_state_noise</span><span class="op">$</span><span class="va">Subject</span>,</span>
 <span>    time.dosing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">168</span> <span class="op">-</span> <span class="fl">12</span>, by<span class="op">=</span><span class="fl">12</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in nlme.formula(conc ~ ctrough.ss * (1 - exp(tss.constant * time/</span></span>
-<span><span class="co">#&gt; tss)), : Iteration 1, LME step: nlminb() did not converge (code = 1). Do</span></span>
-<span><span class="co">#&gt; increase 'msMaxIter'!</span></span>
-<span><span class="co">#&gt; Warning in nlme.formula(conc ~ ctrough.ss * (1 - exp(tss.constant * time/</span></span>
-<span><span class="co">#&gt; tss)), : Iteration 2, LME step: nlminb() did not converge (code = 1). Do</span></span>
+<span><span class="co">#&gt; Warning in nlme.formula(conc ~ ctrough.ss * (1 - exp(tss.constant *</span></span>
+<span><span class="co">#&gt; time/tss)), : Iteration 1, LME step: nlminb() did not converge (code = 1). Do</span></span>
 <span><span class="co">#&gt; increase 'msMaxIter'!</span></span>
 <span><span class="va">tss_mono</span></span>
 <span><span class="co">#&gt;    subject tss.monoexponential.population tss.monoexponential.popind</span></span>
-<span><span class="co">#&gt; 1        1                       26.41652                   36.94194</span></span>
-<span><span class="co">#&gt; 2       10                       26.41652                   31.95598</span></span>
-<span><span class="co">#&gt; 3       11                       26.41652                   22.79647</span></span>
-<span><span class="co">#&gt; 4       12                       26.41652                   26.59829</span></span>
-<span><span class="co">#&gt; 5        2                       26.41652                   23.53877</span></span>
-<span><span class="co">#&gt; 6        3                       26.41652                   24.72185</span></span>
-<span><span class="co">#&gt; 7        4                       26.41652                   25.73778</span></span>
-<span><span class="co">#&gt; 8        5                       26.41652                   26.93369</span></span>
-<span><span class="co">#&gt; 9        6                       26.41652                   23.21849</span></span>
-<span><span class="co">#&gt; 10       7                       26.41652                   25.39682</span></span>
-<span><span class="co">#&gt; 11       8                       26.41652                   24.54165</span></span>
-<span><span class="co">#&gt; 12       9                       26.41652                   24.61653</span></span>
+<span><span class="co">#&gt; 1        1                       26.41701                   36.94302</span></span>
+<span><span class="co">#&gt; 2       10                       26.41701                   31.95440</span></span>
+<span><span class="co">#&gt; 3       11                       26.41701                   22.79700</span></span>
+<span><span class="co">#&gt; 4       12                       26.41701                   26.59834</span></span>
+<span><span class="co">#&gt; 5        2                       26.41701                   23.53955</span></span>
+<span><span class="co">#&gt; 6        3                       26.41701                   24.72274</span></span>
+<span><span class="co">#&gt; 7        4                       26.41701                   25.73791</span></span>
+<span><span class="co">#&gt; 8        5                       26.41701                   26.93386</span></span>
+<span><span class="co">#&gt; 9        6                       26.41701                   23.21917</span></span>
+<span><span class="co">#&gt; 10       7                       26.41701                   25.39804</span></span>
+<span><span class="co">#&gt; 11       8                       26.41701                   24.54281</span></span>
+<span><span class="co">#&gt; 12       9                       26.41701                   24.61729</span></span>
 <span><span class="co">#&gt;    tss.monoexponential.individual tss.monoexponential.single</span></span>
 <span><span class="co">#&gt; 1                        40.65290                   27.87592</span></span>
 <span><span class="co">#&gt; 2                        24.72591                   27.87592</span></span>
@@ -217,12 +226,17 @@
 <span><span class="co">#&gt; 10                       31.37369                   27.87592</span></span>
 <span><span class="co">#&gt; 11                       32.02870                   27.87592</span></span>
 <span><span class="co">#&gt; 12                       26.01334                   27.87592</span></span></code></pre></div>
-<p>The fraction of steady-state required for time to steady-state can be changed with the <code>tss.fraction</code> argument (see <code><a href="../reference/pk.tss.monoexponential.html">?pk.tss.monoexponential</a></code>).</p>
+<p>The fraction of steady-state required for time to steady-state can be
+changed with the <code>tss.fraction</code> argument (see
+<code><a href="../reference/pk.tss.monoexponential.html">?pk.tss.monoexponential</a></code>).</p>
 </div>
 <div class="section level4">
 <h4 id="stepwise-linear">Stepwise Linear<a class="anchor" aria-label="anchor" href="#stepwise-linear"></a>
 </h4>
-<p>The stepwise linear method estimates if the slope of the predose concentrations is statistically significant starting from the last measurement and moving backward in time. It has bias in that more individuals will move the time to steady-state to a late time point.</p>
+<p>The stepwise linear method estimates if the slope of the predose
+concentrations is statistically significant starting from the last
+measurement and moving backward in time. It has bias in that more
+individuals will move the time to steady-state to a late time point.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tss_step</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/pk.tss.stepwise.linear.html">pk.tss.stepwise.linear</a></span><span class="op">(</span></span>
@@ -241,7 +255,9 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ol style="list-style-type: decimal">
-<li>Maganti, L., Panebianco, D.L. &amp; Maes, A.L. Evaluation of Methods for Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS J 10, 141–147 (2008). <a href="https://doi.org/10.1208/s12248-008-9014-y" class="external-link uri">https://doi.org/10.1208/s12248-008-9014-y</a>
+<li>Maganti, L., Panebianco, D.L. &amp; Maes, A.L. Evaluation of Methods
+for Estimating Time to Steady State with Examples from Phase 1 Studies.
+AAPS J 10, 141–147 (2008). <a href="https://doi.org/10.1208/s12248-008-9014-y" class="external-link uri">https://doi.org/10.1208/s12248-008-9014-y</a>
 </li>
 </ol>
 </div>

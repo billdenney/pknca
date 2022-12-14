@@ -124,7 +124,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Options for Controlling PKNCA</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v40-options-for-controlling-PKNCA.Rmd" class="external-link"><code>vignettes/v40-options-for-controlling-PKNCA.Rmd</code></a></small>
@@ -137,7 +138,12 @@
 <div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
-<p>PKNCA has many options that control its function. These options have effects throughout the package. The options are controlled using either the <code>PKNCA.options</code> function or by passing the <code>options</code> argument to any of the functions with that as an argument. All options supported by the current version of PKNCA (0.10.0.9000) are listed below with their descriptions.</p>
+<p>PKNCA has many options that control its function. These options have
+effects throughout the package. The options are controlled using either
+the <code>PKNCA.options</code> function or by passing the
+<code>options</code> argument to any of the functions with that as an
+argument. All options supported by the current version of PKNCA
+(0.10.0.9000) are listed below with their descriptions.</p>
 </div>
 <div class="section level2">
 <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
@@ -145,31 +151,38 @@
 <div class="section level3">
 <h3 id="adj-r-squared-factor">adj.r.squared.factor<a class="anchor" aria-label="anchor" href="#adj-r-squared-factor"></a>
 </h3>
-<p>The adjusted r^2 for the calculation of lambda.z has this factor times the number of data points added to it. It allows for more data points to be preferred in the calculation of half-life.</p>
+<p>The adjusted r^2 for the calculation of lambda.z has this factor
+times the number of data points added to it. It allows for more data
+points to be preferred in the calculation of half-life.</p>
 <p>The default value is: 1e-04</p>
 </div>
 <div class="section level3">
 <h3 id="max-missing">max.missing<a class="anchor" aria-label="anchor" href="#max-missing"></a>
 </h3>
-<p>The maximum fraction of the data that may be missing (‘NA’) to calculate summary statistics with the business.* functions.</p>
+<p>The maximum fraction of the data that may be missing (‘NA’) to
+calculate summary statistics with the business.* functions.</p>
 <p>The default value is: 0.5</p>
 </div>
 <div class="section level3">
 <h3 id="auc-method">auc.method<a class="anchor" aria-label="anchor" href="#auc-method"></a>
 </h3>
-<p>The method used to calculate the AUC and related statistics. Options are ‘lin up/log down’ and ‘linear’.</p>
+<p>The method used to calculate the AUC and related statistics. Options
+are ‘lin up/log down’ and ‘linear’.</p>
 <p>The default value is: lin up/log down</p>
 </div>
 <div class="section level3">
 <h3 id="conc-na">conc.na<a class="anchor" aria-label="anchor" href="#conc-na"></a>
 </h3>
-<p>How should missing (‘NA’) concentration values be handled? See help for ‘clean.conc.na’ for how to use this option.</p>
+<p>How should missing (‘NA’) concentration values be handled? See help
+for ‘clean.conc.na’ for how to use this option.</p>
 <p>The default value is: drop</p>
 </div>
 <div class="section level3">
 <h3 id="conc-blq">conc.blq<a class="anchor" aria-label="anchor" href="#conc-blq"></a>
 </h3>
-<p>How should below the limit of quantification (zero, 0) concentration values be handled? See help for ‘clean.conc.blq’ for how to use this option.</p>
+<p>How should below the limit of quantification (zero, 0) concentration
+values be handled? See help for ‘clean.conc.blq’ for how to use this
+option.</p>
 <p>$first [1] “keep”</p>
 <p>$middle [1] “drop”</p>
 <p>$last [1] “keep”</p>
@@ -177,43 +190,54 @@
 <div class="section level3">
 <h3 id="first-tmax">first.tmax<a class="anchor" aria-label="anchor" href="#first-tmax"></a>
 </h3>
-<p>If there is more than one concentration equal to Cmax, which time should be selected for Tmax? If ‘TRUE’, the first will be selected. If ‘FALSE’, the last will be selected.</p>
+<p>If there is more than one concentration equal to Cmax, which time
+should be selected for Tmax? If ‘TRUE’, the first will be selected. If
+‘FALSE’, the last will be selected.</p>
 <p>The default value is: TRUE</p>
 </div>
 <div class="section level3">
 <h3 id="allow-tmax-in-half-life">allow.tmax.in.half.life<a class="anchor" aria-label="anchor" href="#allow-tmax-in-half-life"></a>
 </h3>
-<p>Should the concentration and time at Tmax be allowed in the half-life calculation? ‘TRUE’ is yes and ‘FALSE’ is no.</p>
+<p>Should the concentration and time at Tmax be allowed in the half-life
+calculation? ‘TRUE’ is yes and ‘FALSE’ is no.</p>
 <p>The default value is: FALSE</p>
 </div>
 <div class="section level3">
 <h3 id="min-hl-points">min.hl.points<a class="anchor" aria-label="anchor" href="#min-hl-points"></a>
 </h3>
-<p>What is the minimum number of points required to calculate half-life?</p>
+<p>What is the minimum number of points required to calculate
+half-life?</p>
 <p>The default value is: 3</p>
 </div>
 <div class="section level3">
 <h3 id="min-span-ratio">min.span.ratio<a class="anchor" aria-label="anchor" href="#min-span-ratio"></a>
 </h3>
-<p>What is the minimum span ratio required to consider a half-life valid?</p>
+<p>What is the minimum span ratio required to consider a half-life
+valid?</p>
 <p>The default value is: 2</p>
 </div>
 <div class="section level3">
 <h3 id="max-aucinf-pext">max.aucinf.pext<a class="anchor" aria-label="anchor" href="#max-aucinf-pext"></a>
 </h3>
-<p>What is the maximum percent extrapolation to consider an AUCinf valid?</p>
+<p>What is the maximum percent extrapolation to consider an AUCinf
+valid?</p>
 <p>The default value is: 20</p>
 </div>
 <div class="section level3">
 <h3 id="min-hl-r-squared">min.hl.r.squared<a class="anchor" aria-label="anchor" href="#min-hl-r-squared"></a>
 </h3>
-<p>What is the minimum r-squared value to consider a half-life calculation valid?</p>
+<p>What is the minimum r-squared value to consider a half-life
+calculation valid?</p>
 <p>The default value is: 0.9</p>
 </div>
 <div class="section level3">
 <h3 id="tau-choices">tau.choices<a class="anchor" aria-label="anchor" href="#tau-choices"></a>
 </h3>
-<p>What values for tau (repeating interdose interval) should be considered when attempting to automatically determine the intervals for multiple dosing? See ‘choose.auc.intervals’ and ‘find.tau’ for more information. ‘NA’ means automatically look at any potential interval.</p>
+<p>What values for tau (repeating interdose interval) should be
+considered when attempting to automatically determine the intervals for
+multiple dosing? See ‘choose.auc.intervals’ and ‘find.tau’ for more
+information. ‘NA’ means automatically look at any potential
+interval.</p>
 <p>The default value is: NA</p>
 </div>
 <div class="section level3">

@@ -124,9 +124,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Data Imputation</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
-            <h4 data-toc-skip class="date">2022-10-19</h4>
+            <h4 data-toc-skip class="date">2022-12-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v08-data-imputation.Rmd" class="external-link"><code>vignettes/v08-data-imputation.Rmd</code></a></small>
       <div class="hidden name"><code>v08-data-imputation.Rmd</code></div>
@@ -135,9 +136,14 @@
 
     
     
-<p>Imputation may be required for noncompartmental analysis (NCA) calculations. Typical imputations may require setting the concentration before the first dose to zero or shifting actual time predose concentrations to the beginning of the dosing interval.</p>
-<p>PKNCA supports imputation either for the full analysis dataset or per calculation interval.</p>
-<p>The current list of imputation methods built into PKNCA can be found by looking at <code><a href="../reference/PKNCA_impute_method.html">?PKNCA_impute_method</a></code>:</p>
+<p>Imputation may be required for noncompartmental analysis (NCA)
+calculations. Typical imputations may require setting the concentration
+before the first dose to zero or shifting actual time predose
+concentrations to the beginning of the dosing interval.</p>
+<p>PKNCA supports imputation either for the full analysis dataset or per
+calculation interval.</p>
+<p>The current list of imputation methods built into PKNCA can be found
+by looking at <code><a href="../reference/PKNCA_impute_method.html">?PKNCA_impute_method</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -154,27 +160,60 @@
 <div class="section level2">
 <h2 id="how-does-imputation-occur">How does imputation occur?<a class="anchor" aria-label="anchor" href="#how-does-imputation-occur"></a>
 </h2>
-<p>(You can skip this section if you don’t desire the details of the methods of imputation.)</p>
-<p>Imputation occurs just before calculations are performed within PKNCA. Imputation occurs only on a single interval definition at a time, so the same group (usually meaning the same subject with the same analyte) at the same time range can have different imputations for different parameter calculations.</p>
-<p>The reason that this is done is to ensure that there are no unintentional modifications to the data. As an example, if an AUC<sub>0-24</sub> were calculated on Day 1 and Day 2 of a study with actual times, the nominal 24 hour sample may be collected at 23.5 hours. It may be preferable to keep the 23.5 hour sample at 23.5 hours for the Day 1 calculation, and at the same time, it may be preferred to shift the same 23.5 hr sample to 24 hours (time 0 on Day 2) for the Day 2 calculation.</p>
+<p>(You can skip this section if you don’t desire the details of the
+methods of imputation.)</p>
+<p>Imputation occurs just before calculations are performed within
+PKNCA. Imputation occurs only on a single interval definition at a time,
+so the same group (usually meaning the same subject with the same
+analyte) at the same time range can have different imputations for
+different parameter calculations.</p>
+<p>The reason that this is done is to ensure that there are no
+unintentional modifications to the data. As an example, if an
+AUC<sub>0-24</sub> were calculated on Day 1 and Day 2 of a study with
+actual times, the nominal 24 hour sample may be collected at 23.5 hours.
+It may be preferable to keep the 23.5 hour sample at 23.5 hours for the
+Day 1 calculation, and at the same time, it may be preferred to shift
+the same 23.5 hr sample to 24 hours (time 0 on Day 2) for the Day 2
+calculation.</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-select-imputation-methods-to-use">How to select imputation methods to use<a class="anchor" aria-label="anchor" href="#how-to-select-imputation-methods-to-use"></a>
 </h2>
-<p>The selection of imputation methods uses a string of text with commas or spaces (or both) separating the imputation methods to use. No imputation will be performed if the imputation method is requested as <code>NA</code> or <code>""</code>.</p>
+<p>The selection of imputation methods uses a string of text with commas
+or spaces (or both) separating the imputation methods to use. No
+imputation will be performed if the imputation method is requested as
+<code>NA</code> or <code>""</code>.</p>
 <ul>
-<li>To select no imputation (the default), indicate the imputation by <code>NA</code> or <code>""</code>.</li>
-<li>To set imputation on the full dataset, use the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> to specify the methods to use.</li>
-<li>To set imputation by interval, use the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> to specify the column in the intervals dataset to use for imputation.</li>
-<li>You cannot specify imputation for both the full dataset and by interval at the same time. And, if a column name in the dataset matches the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code>, that will be used.</li>
+<li>To select no imputation (the default), indicate the imputation by
+<code>NA</code> or <code>""</code>.</li>
+<li>To set imputation on the full dataset, use the <code>impute</code>
+argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> to specify the methods to use.</li>
+<li>To set imputation by interval, use the <code>impute</code> argument
+to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> to specify the column in the intervals
+dataset to use for imputation.</li>
+<li>You cannot specify imputation for both the full dataset and by
+interval at the same time. And, if a column name in the dataset matches
+the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code>, that will
+be used.</li>
 </ul>
-<p>Imputation method functions are named <code>PKNCA_impute_method_[method name]</code>. For example, the method to impute a concentration of 0 at time 0 is named <code>PKNCA_impute_method_start_conc0</code>. When specifying the imputation method to use, give the <code>[method name]</code> part of the function name. So for the example above, use <code>"start_conc0"</code>.</p>
-<p>To specify more than one, give all the methods in order with a comma or space separating them. For example, to first move a predose concentration up to the time of dosing and then set time 0 to concentration 0, use <code>"start_predose,start_conc0"</code>, and the two methods will be applied in order.</p>
+<p>Imputation method functions are named
+<code>PKNCA_impute_method_[method name]</code>. For example, the method
+to impute a concentration of 0 at time 0 is named
+<code>PKNCA_impute_method_start_conc0</code>. When specifying the
+imputation method to use, give the <code>[method name]</code> part of
+the function name. So for the example above, use
+<code>"start_conc0"</code>.</p>
+<p>To specify more than one, give all the methods in order with a comma
+or space separating them. For example, to first move a predose
+concentration up to the time of dosing and then set time 0 to
+concentration 0, use <code>"start_predose,start_conc0"</code>, and the
+two methods will be applied in order.</p>
 </div>
 <div class="section level2">
 <h2 id="imputation-for-the-full-dataset">Imputation for the full dataset<a class="anchor" aria-label="anchor" href="#imputation-for-the-full-dataset"></a>
 </h2>
-<p>If an imputation applies to the full dataset, it can be provided in the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code>:</p>
+<p>If an imputation applies to the full dataset, it can be provided in
+the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
 <span><span class="co"># Remove time 0 to illustrate that imputation works</span></span>
@@ -195,7 +234,9 @@
 <div class="section level2">
 <h2 id="imputation-by-calculation-interval">Imputation by calculation interval<a class="anchor" aria-label="anchor" href="#imputation-by-calculation-interval"></a>
 </h2>
-<p>If an imputation applies to specific intervals, the column in the interval data.frame can be provided in the <code>impute</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code>:</p>
+<p>If an imputation applies to specific intervals, the column in the
+interval data.frame can be provided in the <code>impute</code> argument
+to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
 <span><span class="co"># Remove time 0 to illustrate that imputation works</span></span>
@@ -245,13 +286,23 @@
 <div class="section level2">
 <h2 id="advanced-writing-your-own-imputation-functions">Advanced: Writing your own imputation functions<a class="anchor" aria-label="anchor" href="#advanced-writing-your-own-imputation-functions"></a>
 </h2>
-<p>Writing your own imputation function is intended to be a simple process. To create an imputation function requires the following steps:</p>
+<p>Writing your own imputation function is intended to be a simple
+process. To create an imputation function requires the following
+steps:</p>
 <ol style="list-style-type: decimal">
-<li>Write a function where the name starts with <code>PKNCA_impute_method_</code> and the remainder of the function name is a brief description of the method. (Such as <code>PKNCA_impute_method_start_conc0</code>.)</li>
-<li>The function should have 4 arguments: <code>conc</code>, <code>time</code>, <code>...</code>, and <code>options</code>.</li>
-<li>The function should return a single data.frame with two columns named <code>conc</code> and <code>time</code>. The rows in the data.frame must be sorted by <code>time</code>.</li>
+<li>Write a function where the name starts with
+<code>PKNCA_impute_method_</code> and the remainder of the function name
+is a brief description of the method. (Such as
+<code>PKNCA_impute_method_start_conc0</code>.)</li>
+<li>The function should have 4 arguments: <code>conc</code>,
+<code>time</code>, <code>...</code>, and <code>options</code>.</li>
+<li>The function should return a single data.frame with two columns
+named <code>conc</code> and <code>time</code>. The rows in the
+data.frame must be sorted by <code>time</code>.</li>
 </ol>
-<p>In addition to the above, the function may take named arguments of <code>start</code> and <code>end</code> to indicate the start and end time of the interval.</p>
+<p>In addition to the above, the function may take named arguments of
+<code>start</code> and <code>end</code> to indicate the start and end
+time of the interval.</p>
 </div>
   </div>
 

@@ -124,7 +124,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Half-Life Calculation</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v06-half-life-calculation.Rmd" class="external-link"><code>vignettes/v06-half-life-calculation.Rmd</code></a></small>
@@ -137,48 +138,71 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Half-life is calculated by fitting the natural logarithm of concentration by time. The default calculation method is curve stripping (described in more detail below). Manual half-life points with no automated half-life selection can be performed, or specific points can be excluded while still performing curve stripping.</p>
+<p>Half-life is calculated by fitting the natural logarithm of
+concentration by time. The default calculation method is curve stripping
+(described in more detail below). Manual half-life points with no
+automated half-life selection can be performed, or specific points can
+be excluded while still performing curve stripping.</p>
 </div>
 <div class="section level2">
 <h2 id="curve-stripping-method">Curve Stripping Method<a class="anchor" aria-label="anchor" href="#curve-stripping-method"></a>
 </h2>
-<p>When automatic point selection is performed for curve stripping, the algorithm described below is used.</p>
+<p>When automatic point selection is performed for curve stripping, the
+algorithm described below is used.</p>
 <div class="section level3">
 <h3 id="select-the-points">Select the Points<a class="anchor" aria-label="anchor" href="#select-the-points"></a>
 </h3>
-<p>All sets of points that are applicable according to the current options are selected.</p>
+<p>All sets of points that are applicable according to the current
+options are selected.</p>
 <ul>
 <li>Drop all BLQ values, then</li>
 <li>Choose all sets of points that start from the <span class="math inline">\(T_{last}\)</span> and step back:
 <ul>
-<li>at least 3 points (customizable with <code>PKNCA.options("min.hl.points")</code>)</li>
-<li>Not including <span class="math inline">\(T_{max}\)</span> (customizable with <code>PKNCA.options("allow.tmax.in.half.life")</code>)</li>
+<li>at least 3 points (customizable with
+<code>PKNCA.options("min.hl.points")</code>)</li>
+<li>Not including <span class="math inline">\(T_{max}\)</span>
+(customizable with
+<code>PKNCA.options("allow.tmax.in.half.life")</code>)</li>
 </ul>
 </li>
 </ul>
-<p>As a specific example, if measurements were at 0, 1, 2, 3, 4, 6, 8, 12, and 24 hours; if <span class="math inline">\(T_{last}\)</span> is 12 hours; and if <span class="math inline">\(T_{max}\)</span> is 1 hour then the default point sets that would be fit are:</p>
+<p>As a specific example, if measurements were at 0, 1, 2, 3, 4, 6, 8,
+12, and 24 hours; if <span class="math inline">\(T_{last}\)</span> is 12
+hours; and if <span class="math inline">\(T_{max}\)</span> is 1 hour
+then the default point sets that would be fit are:</p>
 <ol style="list-style-type: decimal">
 <li>6, 8, and 12 hours;</li>
 <li>4, 6, 8, and 12 hours;</li>
 <li>3, 4, 6, 8, and 12 hours; and</li>
 <li>2, 3, 4, 6, 8, and 12 hours.</li>
 </ol>
-<p>If <code>PKNCA.options("min.hl.points")</code> were set to <code>4</code>, then the 6, 8, and 12 hour set would not be fit. If <code>PKNCA.options("allow.tmax.in.half.life")</code> were set to <code>TRUE</code>, then 1, 2, 3, 4, 6, 8, and 12 hours would be fit.</p>
+<p>If <code>PKNCA.options("min.hl.points")</code> were set to
+<code>4</code>, then the 6, 8, and 12 hour set would not be fit. If
+<code>PKNCA.options("allow.tmax.in.half.life")</code> were set to
+<code>TRUE</code>, then 1, 2, 3, 4, 6, 8, and 12 hours would be fit.</p>
 </div>
 <div class="section level3">
 <h3 id="select-the-best-fit">Select the Best Fit<a class="anchor" aria-label="anchor" href="#select-the-best-fit"></a>
 </h3>
-<p>After fitting all points, the best fit among the set of possible fit is selected by the following rules:</p>
+<p>After fitting all points, the best fit among the set of possible fit
+is selected by the following rules:</p>
 <ol style="list-style-type: decimal">
 <li>
-<span class="math inline">\(\lambda_z &gt; 0\)</span> and at the same time the maximum r-squared must be within an adjusted <span class="math inline">\(r^2\)</span> factor of the best.
+<span class="math inline">\(\lambda_z &gt; 0\)</span> and at the
+same time the maximum r-squared must be within an adjusted <span class="math inline">\(r^2\)</span> factor of the best.
 <ol style="list-style-type: decimal">
-<li>The adjusted <span class="math inline">\(r^2\)</span> factor is controlled by <code>PKNCA.options("adj.r.squared.factor")</code> and it defaults to 10^{-4}.</li>
-<li>These rules must be met simultaneously, so if the maximum adjusted <span class="math inline">\(r^2\)</span> is for a line with <span class="math inline">\(\lambda_z \leq 0\)</span>, the half-life may end up being unreportable.</li>
+<li>The adjusted <span class="math inline">\(r^2\)</span> factor is
+controlled by <code>PKNCA.options("adj.r.squared.factor")</code> and it
+defaults to 10^{-4}.</li>
+<li>These rules must be met simultaneously, so if the maximum adjusted
+<span class="math inline">\(r^2\)</span> is for a line with <span class="math inline">\(\lambda_z \leq 0\)</span>, the half-life may end
+up being unreportable.</li>
 </ol>
 </li>
-<li>If fitting the log-linear concentration-time line fails, then it is not the best line.</li>
-<li>If more than one fit still meets the criteria above, then choose the fit with the most points included.</li>
+<li>If fitting the log-linear concentration-time line fails, then it is
+not the best line.</li>
+<li>If more than one fit still meets the criteria above, then choose the
+fit with the most points included.</li>
 </ol>
 </div>
 <div class="section level3">
@@ -224,8 +248,14 @@
 <div class="section level3">
 <h3 id="exclusion-of-specific-points-with-curve-stripping">Exclusion of Specific Points with Curve Stripping<a class="anchor" aria-label="anchor" href="#exclusion-of-specific-points-with-curve-stripping"></a>
 </h3>
-<p>In some cases, specific points will be known outliers, or there may be another reason to exclude specific points. And, with those points excluded, the half-life should be calculated using the normal curve stripping methods described above.</p>
-<p>To exclude specific points but otherwise use curve stripping, use the <code>exclude_half.life</code> option as the column name in the concentration dataset for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> as illustrated below.</p>
+<p>In some cases, specific points will be known outliers, or there may
+be another reason to exclude specific points. And, with those points
+excluded, the half-life should be calculated using the normal curve
+stripping methods described above.</p>
+<p>To exclude specific points but otherwise use curve stripping, use the
+<code>exclude_half.life</code> option as the column name in the
+concentration dataset for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> as illustrated
+below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_conc</span><span class="op">$</span><span class="va">exclude_hl</span> <span class="op">&lt;-</span> <span class="va">data_conc</span><span class="op">$</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">12.12</span></span>
 <span><span class="co"># Confirm that we will be excluding exactly one point</span></span>
@@ -265,8 +295,13 @@
 <div class="section level3">
 <h3 id="specification-of-the-exact-points-for-analysis">Specification of the Exact Points for Analysis<a class="anchor" aria-label="anchor" href="#specification-of-the-exact-points-for-analysis"></a>
 </h3>
-<p>In other cases, the exact points to use for half-life calculation are known, and automatic point selection with curve stripping should not be performed.</p>
-<p>To exclude specific points but otherwise use curve stripping, use the <code>include_half.life</code> option as the column name in the concentration dataset for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> as illustrated below.</p>
+<p>In other cases, the exact points to use for half-life calculation are
+known, and automatic point selection with curve stripping should not be
+performed.</p>
+<p>To exclude specific points but otherwise use curve stripping, use the
+<code>include_half.life</code> option as the column name in the
+concentration dataset for <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> as illustrated
+below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_conc</span><span class="op">$</span><span class="va">include_hl</span> <span class="op">&lt;-</span> <span class="va">data_conc</span><span class="op">$</span><span class="va">Time</span> <span class="op">&gt;</span> <span class="fl">3</span></span>
 <span><span class="co"># Confirm that we will be excluding exactly one point</span></span>

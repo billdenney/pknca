@@ -148,8 +148,11 @@
 <div class="section level2">
 <h2 id="prepare-a-unit-assignment-and-conversion-table">Prepare a Unit Assignment and Conversion Table<a class="anchor" aria-label="anchor" href="#prepare-a-unit-assignment-and-conversion-table"></a>
 </h2>
-<p>A unit assignment and conversion table can be generated as a data.frame to use with the <code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code> function or manually.</p>
-<p>The simplest method each of the types of units for inputs and automatically generates the units for each NCA parameter.</p>
+<p>A unit assignment and conversion table can be generated as a
+data.frame to use with the <code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code> function or
+manually.</p>
+<p>The simplest method each of the types of units for inputs and
+automatically generates the units for each NCA parameter.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_units_auto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pknca_units_table.html">pknca_units_table</a></span><span class="op">(</span>concu<span class="op">=</span><span class="st">"ng/mL"</span>, doseu<span class="op">=</span><span class="st">"mg"</span>, amountu<span class="op">=</span><span class="st">"mg"</span>, timeu<span class="op">=</span><span class="st">"hr"</span><span class="op">)</span></span>
 <span><span class="co"># Show a selection of the units generated</span></span>
@@ -160,8 +163,16 @@
 <span><span class="co">#&gt; 73     mg/(ng/mL)   vd.obs</span></span>
 <span><span class="co">#&gt; 75       hr*ng/mL  auclast</span></span>
 <span><span class="co">#&gt; 108 mg/(hr*ng/mL)   cl.obs</span></span></code></pre></div>
-<p>As you see above, the default units table has a column for the <code>PPTESTCD</code> indicating the parameter. And, the column <code>PPORRESU</code> indicates what the default units are.</p>
-<p>Without unit conversion, the units for some parameters (notably clearances and volumes) are not so useful. You can add a conversion table to make any units into the desired units. For automatic conversion to work, the units must always be convertible (by the <code>units</code> library). Notably for automatic conversion, you cannot go from mass to molar units since there is not a unique conversion from mass to moles.</p>
+<p>As you see above, the default units table has a column for the
+<code>PPTESTCD</code> indicating the parameter. And, the column
+<code>PPORRESU</code> indicates what the default units are.</p>
+<p>Without unit conversion, the units for some parameters (notably
+clearances and volumes) are not so useful. You can add a conversion
+table to make any units into the desired units. For automatic conversion
+to work, the units must always be convertible (by the <code>units</code>
+library). Notably for automatic conversion, you cannot go from mass to
+molar units since there is not a unique conversion from mass to
+moles.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_units_clean</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/pknca_units_table.html">pknca_units_table</a></span><span class="op">(</span></span>
@@ -181,7 +192,14 @@
 <span><span class="co">#&gt; 75       hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span></span>
 <span><span class="co">#&gt; 108 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></span></code></pre></div>
 <p>Now, the units are much cleaner to look at.</p>
-<p>To do a conversion that is not possible directly with the <code>units</code> library, you can add the conversion factor manually by adding the <code>conversion_factor</code> column. You can mix-and-match manual and automatic modification by setting the <code>conversion_factor</code> column to <code>NA</code> when you want automatic conversion. In the example below, we convert concentration units to molar. Note that AUC units are not set to molar because we did not specify that conversion; all conversions must be specified.</p>
+<p>To do a conversion that is not possible directly with the
+<code>units</code> library, you can add the conversion factor manually
+by adding the <code>conversion_factor</code> column. You can
+mix-and-match manual and automatic modification by setting the
+<code>conversion_factor</code> column to <code>NA</code> when you want
+automatic conversion. In the example below, we convert concentration
+units to molar. Note that AUC units are not set to molar because we did
+not specify that conversion; all conversions must be specified.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_units_clean_manual</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/pknca_units_table.html">pknca_units_table</a></span><span class="op">(</span></span>
@@ -205,14 +223,20 @@
 <div class="section level2">
 <h2 id="the-basic-steps-to-add-units-to-an-nca-analysis">The Basic Steps to Add Units to an NCA Analysis<a class="anchor" aria-label="anchor" href="#the-basic-steps-to-add-units-to-an-nca-analysis"></a>
 </h2>
-<p>For more details on parts of this NCA calculation example unrelated to units, see the <a href="v02-example-theophylline.html">theophylline example vignette</a>.</p>
+<p>For more details on parts of this NCA calculation example unrelated
+to units, see the <a href="v02-example-theophylline.html">theophylline
+example vignette</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conc_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">)</span>, <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span><span class="op">)</span></span>
 <span><span class="va">d_dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">[</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">$</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>                                  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dose"</span>, <span class="st">"Time"</span>, <span class="st">"Subject"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">dose_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="va">d_dose</span>, <span class="va">Dose</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span><span class="op">)</span></span></code></pre></div>
-<p>The difference from a calculation without units comes when setting up the <code>PKNCAdata</code> object. You will add the units with the <code>units</code> argument.</p>
-<p>Since no urine or other similar collection is performed, the <code>amountu</code> argument is omitted for <code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code>.</p>
+<p>The difference from a calculation without units comes when setting up
+the <code>PKNCAdata</code> object. You will add the units with the
+<code>units</code> argument.</p>
+<p>Since no urine or other similar collection is performed, the
+<code>amountu</code> argument is omitted for
+<code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_units</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/pknca_units_table.html">pknca_units_table</a></span><span class="op">(</span></span>
@@ -241,9 +265,14 @@
 <div class="section level2">
 <h2 id="how-do-i-add-different-unit-conversions-for-different-analytes">How do I add different unit conversions for different analytes?<a class="anchor" aria-label="anchor" href="#how-do-i-add-different-unit-conversions-for-different-analytes"></a>
 </h2>
-<p>Sometimes, when multiple analytes are used and, for example, molar outputs are desired while inputs are in mass units. Different unit conversions may be required for different inputs.</p>
-<p>Different unit conversions can be used by adding the grouping column to the units specification.</p>
-<p>Start by setting up a concentration dataset with two analytes. Since the dosing doesn’t have an “Analyte” column, it will be matched to all concentration measures for the subject.</p>
+<p>Sometimes, when multiple analytes are used and, for example, molar
+outputs are desired while inputs are in mass units. Different unit
+conversions may be required for different inputs.</p>
+<p>Different unit conversions can be used by adding the grouping column
+to the units specification.</p>
+<p>Start by setting up a concentration dataset with two analytes. Since
+the dosing doesn’t have an “Analyte” column, it will be matched to all
+concentration measures for the subject.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_conc_theoph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">)</span></span>
 <span><span class="va">d_conc_theoph</span><span class="op">$</span><span class="va">Analyte</span> <span class="op">&lt;-</span> <span class="st">"Theophylline"</span></span>
@@ -257,7 +286,8 @@
 <span></span>
 <span><span class="va">d_dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">[</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">$</span><span class="va">Time</span> <span class="op">==</span> <span class="fl">0</span>,</span>
 <span>                                  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dose"</span>, <span class="st">"Time"</span>, <span class="st">"Subject"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p>Setup the units with an “Analyte” column to separate the units used.</p>
+<p>Setup the units with an “Analyte” column to separate the units
+used.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_units_theoph</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/pknca_units_table.html">pknca_units_table</a></span><span class="op">(</span></span>
@@ -284,7 +314,8 @@
 <span>  <span class="op">)</span></span>
 <span><span class="va">d_units_caffeine</span><span class="op">$</span><span class="va">Analyte</span> <span class="op">&lt;-</span> <span class="st">"Caffeine"</span></span>
 <span><span class="va">d_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">d_units_theoph</span>, <span class="va">d_units_caffeine</span><span class="op">)</span></span></code></pre></div>
-<p>Now, calculate adding the different units per analyte to the data object.</p>
+<p>Now, calculate adding the different units per analyte to the data
+object.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conc_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">d_conc</span>, <span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span><span class="op">/</span><span class="va">Analyte</span><span class="op">)</span></span>
 <span><span class="va">dose_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="va">d_dose</span>, <span class="va">Dose</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span><span class="op">)</span></span>

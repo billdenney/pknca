@@ -123,8 +123,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Methods Used for Dose-Aware Concentration Interpolation/Extrapolation</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+      <h1 data-toc-skip>Methods Used for Dose-Aware Concentration
+Interpolation/Extrapolation</h1>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v21-methods-for-dose-aware-interpolation-and-extrapolation.Rmd" class="external-link"><code>vignettes/v21-methods-for-dose-aware-interpolation-and-extrapolation.Rmd</code></a></small>
@@ -137,26 +139,42 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Interpolation and extrapolation with awareness of doses occurring before, at the same time of, or after the requested interpolation time point must account for many interactions. To ensure clarity in the interpolation/extrapolation methods and the decisions made by the algorithm, each potential choice is listed below with its accompanying calculation method. The code used to generate the table is the same as the code within the function.</p>
+<p>Interpolation and extrapolation with awareness of doses occurring
+before, at the same time of, or after the requested interpolation time
+point must account for many interactions. To ensure clarity in the
+interpolation/extrapolation methods and the decisions made by the
+algorithm, each potential choice is listed below with its accompanying
+calculation method. The code used to generate the table is the same as
+the code within the function.</p>
 </div>
 <div class="section level2">
 <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
 </h2>
-<p>The method list below is described and sorted in order of how many scenarios the method is applied to in the list.</p>
-<p>For each of the summary tables below, the column headers are as follows:</p>
+<p>The method list below is described and sorted in order of how many
+scenarios the method is applied to in the list.</p>
+<p>For each of the summary tables below, the column headers are as
+follows:</p>
 <ul>
 <li>
-<strong>Event Before</strong>: The type of event before the time of the requested output may be one of the following</li>
+<strong>Event Before</strong>: The type of event before the time of
+the requested output may be one of the following</li>
 <li>
-<strong>Event At</strong>: The equivalent to “Event Before” but for the event occurring at the requested output time.</li>
+<strong>Event At</strong>: The equivalent to “Event Before” but for
+the event occurring at the requested output time.</li>
 <li>
-<strong>Event After</strong>: The equivalent to “Event Before” but for the next event occurring after the requested output time.</li>
+<strong>Event After</strong>: The equivalent to “Event Before” but
+for the next event occurring after the requested output time.</li>
 </ul>
 <div class="section level3">
 <h3 id="observed-concentration">Observed concentration<a class="anchor" aria-label="anchor" href="#observed-concentration"></a>
 </h3>
 <p>Copy the input concentration at the given time to the output.</p>
 <table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Event Before</th>
 <th align="left">Event At</th>
@@ -611,6 +629,11 @@
 </h3>
 <p>The event combination cannot exist.</p>
 <table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Event Before</th>
 <th align="left">Event At</th>
@@ -1071,7 +1094,8 @@
 <div class="section level3">
 <h3 id="immediately-after-an-iv-bolus-without-a-concentration-next">Immediately after an IV bolus without a concentration next<a class="anchor" aria-label="anchor" href="#immediately-after-an-iv-bolus-without-a-concentration-next"></a>
 </h3>
-<p>Cannot calculate C0 without a concentration after an IV bolus; return NA.</p>
+<p>Cannot calculate C0 without a concentration after an IV bolus; return
+NA.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1155,7 +1179,10 @@
 <div class="section level3">
 <h3 id="before-all-events">Before all events<a class="anchor" aria-label="anchor" href="#before-all-events"></a>
 </h3>
-<p>Interpolation before any events is NA or zero (0) depending on the value of conc.origin. conc.origin defaults to zero which is the implicit assumption that a complete washout occurred and there is no endogenous source of the analyte.</p>
+<p>Interpolation before any events is NA or zero (0) depending on the
+value of conc.origin. conc.origin defaults to zero which is the implicit
+assumption that a complete washout occurred and there is no endogenous
+source of the analyte.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1219,7 +1246,9 @@
 <div class="section level3">
 <h3 id="immediately-after-an-iv-bolus-with-a-concentration-next">Immediately after an IV bolus with a concentration next<a class="anchor" aria-label="anchor" href="#immediately-after-an-iv-bolus-with-a-concentration-next"></a>
 </h3>
-<p>Calculate C0 for the time immediately after an IV bolus. First, attempt using log slope back-extrapolation. If that fails, use the first concentration after the dose as C0.</p>
+<p>Calculate C0 for the time immediately after an IV bolus. First,
+attempt using log slope back-extrapolation. If that fails, use the first
+concentration after the dose as C0.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1273,7 +1302,8 @@
 <div class="section level3">
 <h3 id="interpolation">Interpolation<a class="anchor" aria-label="anchor" href="#interpolation"></a>
 </h3>
-<p>With concentrations before and after and not an IV bolus before, interpolate between observed concentrations.</p>
+<p>With concentrations before and after and not an IV bolus before,
+interpolate between observed concentrations.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1312,7 +1342,9 @@
 <div class="section level3">
 <h3 id="after-an-iv-bolus-with-a-concentration-next">After an IV bolus with a concentration next<a class="anchor" aria-label="anchor" href="#after-an-iv-bolus-with-a-concentration-next"></a>
 </h3>
-<p>First, calculate C0 using log slope back-extrapolation (falling back to the first post-dose concentration if that fails). Then, interpolate between C0 and the first post-dose concentration.</p>
+<p>First, calculate C0 using log slope back-extrapolation (falling back
+to the first post-dose concentration if that fails). Then, interpolate
+between C0 and the first post-dose concentration.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1336,7 +1368,8 @@
 <div class="section level3">
 <h3 id="after-an-iv-bolus-without-a-concentration-next">After an IV bolus without a concentration next<a class="anchor" aria-label="anchor" href="#after-an-iv-bolus-without-a-concentration-next"></a>
 </h3>
-<p>Between an IV bolus and anything other than a concentration, interpolation cannot occur. Return NA</p>
+<p>Between an IV bolus and anything other than a concentration,
+interpolation cannot occur. Return NA</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1358,9 +1391,11 @@
 </table>
 </div>
 <div class="section level3">
-<h3 id="dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after">Dose as the last event in the timeline and requesting a concentration after<a class="anchor" aria-label="anchor" href="#dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after"></a>
+<h3 id="dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after">Dose as the last event in the timeline and requesting a
+concentration after<a class="anchor" aria-label="anchor" href="#dose-as-the-last-event-in-the-timeline-and-requesting-a-concentration-after"></a>
 </h3>
-<p>Cannot estimate the concentration after a dose without concentrations after the dose, return NA.</p>
+<p>Cannot estimate the concentration after a dose without concentrations
+after the dose, return NA.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1384,7 +1419,8 @@
 <div class="section level3">
 <h3 id="dose-before-concentration-after-without-a-dose">Dose before, concentration after without a dose<a class="anchor" aria-label="anchor" href="#dose-before-concentration-after-without-a-dose"></a>
 </h3>
-<p>If the concentration at the dose is estimable, interpolate. Otherwise, NA.</p>
+<p>If the concentration at the dose is estimable, interpolate.
+Otherwise, NA.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Event Before</th>
@@ -1564,13 +1600,15 @@
 <td align="left">conc</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">conc</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc_dose</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
@@ -1582,7 +1620,8 @@
 <td align="left">conc</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
@@ -1594,7 +1633,8 @@
 <td align="left">conc</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">none</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">conc</td>
@@ -1780,13 +1820,15 @@
 <td align="left">conc_dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">conc_dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc_dose</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">conc_dose</td>
@@ -1798,7 +1840,8 @@
 <td align="left">conc_dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">conc_dose</td>
@@ -1810,7 +1853,8 @@
 <td align="left">conc_dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">none</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">conc_dose</td>
@@ -1846,7 +1890,8 @@
 <td align="left">conc_dose</td>
 <td align="left">output_only</td>
 <td align="left">none</td>
-<td align="left">Dose as the last event in the timeline and requesting a concentration after</td>
+<td align="left">Dose as the last event in the timeline and requesting a
+concentration after</td>
 </tr>
 <tr class="odd">
 <td align="left">conc_dose_iv_bolus_after</td>
@@ -2212,13 +2257,15 @@
 <td align="left">dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc_dose</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
@@ -2230,7 +2277,8 @@
 <td align="left">dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
@@ -2242,7 +2290,8 @@
 <td align="left">dose</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">none</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">dose</td>
@@ -2278,7 +2327,8 @@
 <td align="left">dose</td>
 <td align="left">output_only</td>
 <td align="left">none</td>
-<td align="left">Dose as the last event in the timeline and requesting a concentration after</td>
+<td align="left">Dose as the last event in the timeline and requesting a
+concentration after</td>
 </tr>
 <tr class="odd">
 <td align="left">dose_iv_bolus_after</td>
@@ -2392,37 +2442,43 @@
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
 <td align="left">conc</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
 <td align="left">conc_dose</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
 <td align="left">conc_dose_iv_bolus_after</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
 <td align="left">dose</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
 <td align="left">dose_iv_bolus_after</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
 <td align="left">none</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">dose_iv_bolus_after</td>
@@ -2644,13 +2700,15 @@
 <td align="left">none</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="even">
 <td align="left">none</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">conc_dose</td>
-<td align="left">Immediately after an IV bolus with a concentration next</td>
+<td align="left">Immediately after an IV bolus with a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">none</td>
@@ -2662,7 +2720,8 @@
 <td align="left">none</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">dose</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">none</td>
@@ -2674,7 +2733,8 @@
 <td align="left">none</td>
 <td align="left">dose_iv_bolus_after</td>
 <td align="left">none</td>
-<td align="left">Immediately after an IV bolus without a concentration next</td>
+<td align="left">Immediately after an IV bolus without a concentration
+next</td>
 </tr>
 <tr class="odd">
 <td align="left">none</td>

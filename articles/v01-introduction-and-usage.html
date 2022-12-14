@@ -123,8 +123,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Introduction to PKNCA and Usage Instructions</h1>
-                        <h4 data-toc-skip class="author">Bill Denney</h4>
+      <h1 data-toc-skip>Introduction to PKNCA and Usage
+Instructions</h1>
+                        <h4 data-toc-skip class="author">Bill
+Denney</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v01-introduction-and-usage.Rmd" class="external-link"><code>vignettes/v01-introduction-and-usage.Rmd</code></a></small>
@@ -134,12 +136,25 @@
 
     
     
-<p>PKNCA provides functions to complete noncompartmental analysis (NCA) for pharmacokinetic (PK) data. Its intent is to provide a complete R-based solution enabling data provenance for NCA including tracking data cleaning, enabling calculations, exporting results, and reporting. The library is designed to give a reasonable answer without user intervention (load, calculate, and summarize), but it allows the user to override the automatic selections at any point.</p>
-<p>The library design is modular to allow expansion based on needs unforseen by the authors including new NCA parameters, novel data cleaning methods, and modular summarization decisions. Expanding the library will be discussed in a separate vignette.</p>
+<p>PKNCA provides functions to complete noncompartmental analysis (NCA)
+for pharmacokinetic (PK) data. Its intent is to provide a complete
+R-based solution enabling data provenance for NCA including tracking
+data cleaning, enabling calculations, exporting results, and reporting.
+The library is designed to give a reasonable answer without user
+intervention (load, calculate, and summarize), but it allows the user to
+override the automatic selections at any point.</p>
+<p>The library design is modular to allow expansion based on needs
+unforseen by the authors including new NCA parameters, novel data
+cleaning methods, and modular summarization decisions. Expanding the
+library will be discussed in a separate vignette.</p>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>The simplest analysis requires concentration and dosing data, then five function calls can provide summarized results. (Please note that this and the other examples in this document are intended to show the typical workflow, but they are not intended to run directly. For an example to run directly, please see <a href="v02-example-theophylline.html">the theophylline example</a>.)</p>
+<p>The simplest analysis requires concentration and dosing data, then
+five function calls can provide summarized results. (Please note that
+this and the other examples in this document are intended to show the
+typical workflow, but they are not intended to run directly. For an
+example to run directly, please see <a href="v02-example-theophylline.html">the theophylline example</a>.)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -197,8 +212,12 @@
 <div class="section level2">
 <h2 id="data-handling">Data Handling<a class="anchor" aria-label="anchor" href="#data-handling"></a>
 </h2>
-<p>After loading data, it must be in the right form. The minimum requirements are that concentration, dose, and time must all be numeric (and not factors). Grouping variables have no specific requirements; they can be any mode.</p>
-<p>Values below the limit of quantification are coded as zeros (<code>0</code>), and missing values are coded as <code>NA</code>.</p>
+<p>After loading data, it must be in the right form. The minimum
+requirements are that concentration, dose, and time must all be numeric
+(and not factors). Grouping variables have no specific requirements;
+they can be any mode.</p>
+<p>Values below the limit of quantification are coded as zeros
+(<code>0</code>), and missing values are coded as <code>NA</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="options-make-pknca-work-your-way">Options: Make PKNCA Work Your Way<a class="anchor" aria-label="anchor" href="#options-make-pknca-work-your-way"></a>
@@ -206,8 +225,12 @@
 <div class="section level3">
 <h3 id="calculation-options-the-pknca-options-function">Calculation Options: the PKNCA.options Function<a class="anchor" aria-label="anchor" href="#calculation-options-the-pknca-options-function"></a>
 </h3>
-<p>Different organizations have different requirements for computation and summarization of NCA. Options for how to perform calculations and summaries are handled by the <code>PKNCA.options</code> command.</p>
-<p>Default options have been set to commonly-used standard parameters. The current value for options can be found by running the command with no arguments:</p>
+<p>Different organizations have different requirements for computation
+and summarization of NCA. Options for how to perform calculations and
+summaries are handled by the <code>PKNCA.options</code> command.</p>
+<p>Default options have been set to commonly-used standard parameters.
+The current value for options can be found by running the command with
+no arguments:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.options.html">PKNCA.options</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $adj.r.squared.factor</span></span>
@@ -306,28 +329,45 @@
 <span><span class="co">##   aumcinf.pred.dn cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn</span></span>
 <span><span class="co">## 1           FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
 <span><span class="co">## 2           FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE</span></span></code></pre>
-<p>And, to reset the current values to the library defaults, run the function with the default argument set to <code>TRUE</code>.</p>
+<p>And, to reset the current values to the library defaults, run the
+function with the default argument set to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.options.html">PKNCA.options</a></span><span class="op">(</span>default<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Each of the options is documented where it is used; for example, the first.tmax option is documented in the <code>pk.calc.tmax</code> function.</p>
+<p>Each of the options is documented where it is used; for example, the
+first.tmax option is documented in the <code>pk.calc.tmax</code>
+function.</p>
 </div>
 <div class="section level3">
 <h3 id="summarization-options-the-pknca-set-summary-function">Summarization Options: the PKNCA.set.summary Function<a class="anchor" aria-label="anchor" href="#summarization-options-the-pknca-set-summary-function"></a>
 </h3>
-<p>On top of methods of calculation, summarization method preferences differ. Typical summarization preferences include selection of the measurement of central tendency and dispersion, handling of missing values, handling of values below the limit of quantification, and more. Beyond the method for summarization, presentation is managed through user preferences. Presentation is typically controlled by rounding to either a defined number of decimal places or significant figures.</p>
-<p>An example is that C<sub>max</sub> may be summarized by the geometric mean with the geometric CV using three significant figures, and having a summary result requires that at least half of the available values are present (not missing). The code below will set this example.</p>
+<p>On top of methods of calculation, summarization method preferences
+differ. Typical summarization preferences include selection of the
+measurement of central tendency and dispersion, handling of missing
+values, handling of values below the limit of quantification, and more.
+Beyond the method for summarization, presentation is managed through
+user preferences. Presentation is typically controlled by rounding to
+either a defined number of decimal places or significant figures.</p>
+<p>An example is that C<sub>max</sub> may be summarized by the geometric
+mean with the geometric CV using three significant figures, and having a
+summary result requires that at least half of the available values are
+present (not missing). The code below will set this example.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"cmax"</span>,</span>
 <span>                  point<span class="op">=</span><span class="va">business.geomean</span>,</span>
 <span>                  spread<span class="op">=</span><span class="va">business.geocv</span>,</span>
 <span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Another example is that T<sub>max</sub> is usually summarized by the median and range, and as measurements are often taken with minute resolution and recorded in hours, reporting is usually to the second decimal place.</p>
+<p>Another example is that T<sub>max</sub> is usually summarized by the
+median and range, and as measurements are often taken with minute
+resolution and recorded in hours, reporting is usually to the second
+decimal place.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"tmax"</span>,</span>
 <span>                  point<span class="op">=</span><span class="va">business.median</span>,</span>
 <span>                  spread<span class="op">=</span><span class="va">business.range</span>,</span>
 <span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>round<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>If the functions or default rounding options provided in the library do not meet the summarization needs, a user-supplied function can be used for rounding.</p>
+<p>If the functions or default rounding options provided in the library
+do not meet the summarization needs, a user-supplied function can be
+used for rounding.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">median_na</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
@@ -339,7 +379,9 @@
 <span>                  point<span class="op">=</span><span class="va">median_na</span>,</span>
 <span>                  spread<span class="op">=</span><span class="va">quantprob_na</span>,</span>
 <span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>In some cases multiple parameters may need the same summary functions (as often occurs with simulated data). Many parameters can be set simultaneously by specifying a vector of <code>name</code>s.</p>
+<p>In some cases multiple parameters may need the same summary functions
+(as often occurs with simulated data). Many parameters can be set
+simultaneously by specifying a vector of <code>name</code>s.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">median_na</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
@@ -356,8 +398,20 @@
 <div class="section level2">
 <h2 id="grouping-nca-data">Grouping NCA Data<a class="anchor" aria-label="anchor" href="#grouping-nca-data"></a>
 </h2>
-<p>As described in the <a href="#quick-start">quick start</a>, concentration and dose data are generally grouped to identify how to separate the data. Typical groups for concentration data include study, treatment, subject, and analyte. Typical groups for dose data include study, treatment, and subject. By default, summaries are produced based on the concentration groups dropping the subject (so that averages are taken across subjects within the other parameters).</p>
-<p>The quick start example can be extended to include multiple analytes as follows. The only difference is the <code>/analyte</code> formula element in the concentration data. The reason for the slash instead of the plus is that the last element before a slash is assumed to be the subject, and as noted before, the subject is (by default) excluded from the summary grouping (so that summaries are grouped by study, treatment, etc., but not by subject).</p>
+<p>As described in the <a href="#quick-start">quick start</a>,
+concentration and dose data are generally grouped to identify how to
+separate the data. Typical groups for concentration data include study,
+treatment, subject, and analyte. Typical groups for dose data include
+study, treatment, and subject. By default, summaries are produced based
+on the concentration groups dropping the subject (so that averages are
+taken across subjects within the other parameters).</p>
+<p>The quick start example can be extended to include multiple analytes
+as follows. The only difference is the <code>/analyte</code> formula
+element in the concentration data. The reason for the slash instead of
+the plus is that the last element before a slash is assumed to be the
+subject, and as noted before, the subject is (by default) excluded from
+the summary grouping (so that summaries are grouped by study, treatment,
+etc., but not by subject).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Generate a faux multi-study, multi-analyte dataset.</span></span>
 <span><span class="va">d_conc_parent</span> <span class="op">&lt;-</span> <span class="va">d_conc</span></span>
@@ -392,8 +446,16 @@
 <div class="section level2">
 <h2 id="selecting-calculation-intervals">Selecting Calculation Intervals<a class="anchor" aria-label="anchor" href="#selecting-calculation-intervals"></a>
 </h2>
-<p>All NCA calculations require the interval over which they are calculated. When the concentration and dosing information are combined to the PKNCAdata object, intervals are automatically determined. The exception to this automatic determination is if the user provides intervals.</p>
-<p>When selected either automatically or manually, intervals define at minimum a start time, an end time, and the parameters to be calculated. The parameter list is available from the <code>get.interval.cols</code> function. The parameters requested are specified by setting the entry in a data.frame as requested.</p>
+<p>All NCA calculations require the interval over which they are
+calculated. When the concentration and dosing information are combined
+to the PKNCAdata object, intervals are automatically determined. The
+exception to this automatic determination is if the user provides
+intervals.</p>
+<p>When selected either automatically or manually, intervals define at
+minimum a start time, an end time, and the parameters to be calculated.
+The parameter list is available from the <code>get.interval.cols</code>
+function. The parameters requested are specified by setting the entry in
+a data.frame as requested.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">intervals</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
@@ -401,18 +463,42 @@
 <span>             tmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>             auclast<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>             aucinf.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Intervals like the above is sufficient for designs with a single type of treatment– like single doses. For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set. See the <a href="#manual-interval-specification">Manual Interval Specification</a> section below for more details.</p>
+<p>Intervals like the above is sufficient for designs with a single type
+of treatment– like single doses. For more complex treatments in a single
+analysis, like the combination of single and multiple doses, include a
+treatment column matching the treatment column name from the
+concentration data set. See the <a href="#manual-interval-specification">Manual Interval Specification</a>
+section below for more details.</p>
 <div class="section level3">
 <h3 id="selection-of-data-used-for-calculation">Selection of Data Used for Calculation<a class="anchor" aria-label="anchor" href="#selection-of-data-used-for-calculation"></a>
 </h3>
-<p>When choosing which data is used for a calculation, PKNCA will never look beyond the data specified in the group and interval. Groups are defined by the call to the <code>PKNCAconc</code> function, and they will typically define the measurement of a single analyte from a single individual receiving a single treatment. Intervals are subsets within a group by start and end time. PKNCA never examines data outside of the group and interval for standard NCA calculations. As an example, with data from 0 to 48 hours and an interval set to <code>start</code> at 0 and <code>end</code> at 24 with the calculation of <code>aucinf.obs</code>, any data after 24 hours will not be used for the half-life or AUC<sub>inf</sub> calculations.</p>
-<p>A few functions look at data outside of a single interval, but these functions do not look at data outside of a single group, and these functions are typically used during preparation for NCA calculations not for the calculations themselves. Functions that look a group as a whole include <code>choose.auc.intervals</code>, <code>find.tau</code>, and <code>pk.tss</code>.</p>
+<p>When choosing which data is used for a calculation, PKNCA will never
+look beyond the data specified in the group and interval. Groups are
+defined by the call to the <code>PKNCAconc</code> function, and they
+will typically define the measurement of a single analyte from a single
+individual receiving a single treatment. Intervals are subsets within a
+group by start and end time. PKNCA never examines data outside of the
+group and interval for standard NCA calculations. As an example, with
+data from 0 to 48 hours and an interval set to <code>start</code> at 0
+and <code>end</code> at 24 with the calculation of
+<code>aucinf.obs</code>, any data after 24 hours will not be used for
+the half-life or AUC<sub>inf</sub> calculations.</p>
+<p>A few functions look at data outside of a single interval, but these
+functions do not look at data outside of a single group, and these
+functions are typically used during preparation for NCA calculations not
+for the calculations themselves. Functions that look a group as a whole
+include <code>choose.auc.intervals</code>, <code>find.tau</code>, and
+<code>pk.tss</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="automatic-interval-determination">Automatic Interval Determination<a class="anchor" aria-label="anchor" href="#automatic-interval-determination"></a>
 </h3>
-<p>If intervals are not specified when combining the concentration and dosing data, they will automatically be found from the concentration and dosing data.</p>
-<p>Single dose data has a simple interval selection: the option <code>single.dose.aucs</code> is used from the <code>PKNCA.options</code>.</p>
+<p>If intervals are not specified when combining the concentration and
+dosing data, they will automatically be found from the concentration and
+dosing data.</p>
+<p>Single dose data has a simple interval selection: the option
+<code>single.dose.aucs</code> is used from the
+<code>PKNCA.options</code>.</p>
 <table class="table">
 <colgroup>
 <col width="0%">
@@ -873,7 +959,12 @@
 </tr>
 </tbody>
 </table>
-<p>For multiple-dose studies, PKNCA selects one group at a time and compares the concentration and dosing times. When there is a concentration measurement between doses, an interval row is added. The dosing interval (<span class="math inline">\(\tau\)</span>) is determined by looking for pattern repeats within the dosing data using the <code>find.tau</code> function.</p>
+<p>For multiple-dose studies, PKNCA selects one group at a time and
+compares the concentration and dosing times. When there is a
+concentration measurement between doses, an interval row is added. The
+dosing interval (<span class="math inline">\(\tau\)</span>) is
+determined by looking for pattern repeats within the dosing data using
+the <code>find.tau</code> function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## find.tau can work when all doses have the same interval...</span></span>
 <span><span class="va">dose_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">168</span>, by<span class="op">=</span><span class="fl">24</span><span class="op">)</span></span>
@@ -891,18 +982,33 @@
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">PKNCA</span><span class="fu">::</span><span class="fu"><a href="../reference/find.tau.html">find.tau</a></span><span class="op">(</span><span class="va">dose_times</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 24</span></span></code></pre>
-<p>After finding <span class="math inline">\(\tau\)</span>, PKNCA will also look after the last dose (or the beginning of the last dosing interval), and two additional intervals may be added:</p>
+<p>After finding <span class="math inline">\(\tau\)</span>, PKNCA will
+also look after the last dose (or the beginning of the last dosing
+interval), and two additional intervals may be added:</p>
 <ul>
-<li>one interval for the dosing interval after the beginning of the last dosing interval (if there are concentrations measured in the interval)</li>
-<li>one interval for the half-life after the last dosing interval (if there are concentration more than <span class="math inline">\(\tau\)</span> after the beginning of the last interval).</li>
+<li>one interval for the dosing interval after the beginning of the last
+dosing interval (if there are concentrations measured in the
+interval)</li>
+<li>one interval for the half-life after the last dosing interval (if
+there are concentration more than <span class="math inline">\(\tau\)</span> after the beginning of the last
+interval).</li>
 </ul>
-<p>One consequence of automatic interval selection is that many rows are generated for intervals; one row is generated per interval per subject. The benefit of the method producing a large number of rows is that it is fully flexible to the actual study results. If a subject has a different schedule than the others for the same treatment (e.g. measurements that were nominally scheduled for day 14 occurred on day 13), those differences will be found.</p>
+<p>One consequence of automatic interval selection is that many rows are
+generated for intervals; one row is generated per interval per subject.
+The benefit of the method producing a large number of rows is that it is
+fully flexible to the actual study results. If a subject has a different
+schedule than the others for the same treatment (e.g. measurements that
+were nominally scheduled for day 14 occurred on day 13), those
+differences will be found.</p>
 </div>
 <div class="section level3">
 <h3 id="manual-interval-specification">Manual Interval Specification<a class="anchor" aria-label="anchor" href="#manual-interval-specification"></a>
 </h3>
-<p>Intervals can also be specified manually. Two use cases are common for manual specification: fully manual (never requesting the automatic intervals) and updating the automatic intervals.</p>
-<p>Fully manual intervals can be specified by providing it to the <code>PKNCAdata</code> call.</p>
+<p>Intervals can also be specified manually. Two use cases are common
+for manual specification: fully manual (never requesting the automatic
+intervals) and updating the automatic intervals.</p>
+<p>Fully manual intervals can be specified by providing it to the
+<code>PKNCAdata</code> call.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">intervals_manual</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
@@ -912,7 +1018,8 @@
 <span>             aucinf.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span>, </span>
 <span>                      intervals<span class="op">=</span><span class="va">intervals_manual</span><span class="op">)</span></span></code></pre></div>
-<p>To update the automatically-selected intervals, extract the intervals, modify them, and put them back.</p>
+<p>To update the automatically-selected intervals, extract the
+intervals, modify them, and put them back.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span><span class="op">)</span></span>
 <span><span class="va">intervals_manual</span> <span class="op">&lt;-</span> <span class="va">data_obj</span><span class="op">$</span><span class="va">intervals</span></span>
