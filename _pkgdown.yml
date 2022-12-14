@@ -1,1 +1,4 @@
-url: http://billdenney.github.io/pknca
+url: http://billdenney.github.io/pknca/
+template:
+  bootstrap: 5
+
