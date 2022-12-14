@@ -24,6 +24,7 @@ adj.r.squared <- function(r.sq, n) {
 #' @param check Run \code{\link{check.conc.time}}?
 #' @return a number for the maximum concentration or NA if all
 #' concentrations are missing
+#' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cmax <- function(conc, check=TRUE) {
   if (check)
@@ -51,6 +52,7 @@ PKNCA.set.summary(
 
 #' @describeIn pk.calc.cmax Determine the minimum observed PK
 #'   concentration
+#' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cmin <- function(conc, check=TRUE) {
   if (check)
@@ -214,6 +216,7 @@ PKNCA.set.summary(
 #' @param time Time of concentration measurement
 #' @param check Run \code{\link{check.conc.time}}?
 #' @return The last observed concentration above the LOQ
+#' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.clast.obs <- function(conc, time, check=TRUE) {
   if (check) {
@@ -1064,13 +1067,14 @@ PKNCA.set.summary(
   spread=business.geocv
 )
 
-#' Determine the trough (predose) concentration
+#' Determine the trough (end of interval) concentration
 #'
 #' @param conc Observed concentrations during the interval
 #' @param time Times of \code{conc} observations
 #' @param end End time of the interval
 #' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
+#' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.ctrough <- function(conc, time, end) {
   check.conc.time(conc, time)
@@ -1090,10 +1094,46 @@ add.interval.col("ctrough",
                  values=c(FALSE, TRUE),
                  unit_type="conc",
                  pretty_name="Ctrough",
-                 desc="The trough (predose) concentration",
+                 desc="The trough (end of interval) concentration",
                  depends=NULL)
 PKNCA.set.summary(
   name="ctrough",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
+
+#' Determine the concentration at the beginning of the interval
+#'
+#' @param conc Observed concentrations during the interval
+#' @param time Times of \code{conc} observations
+#' @param start Start time of the interval
+#' @return The concentration when \code{time == end}.  If none
+#'   match, then \code{NA}
+#' @family NCA parameters for concentrations during the intervals
+#' @export
+pk.calc.cstart <- function(conc, time, start) {
+  check.conc.time(conc, time)
+  mask_start <- time %in% start
+  if (sum(mask_start) == 1) {
+    conc[mask_start]
+  } else if (sum(mask_start) == 0) {
+    NA_real_
+  } else {
+    # This should be impossible as check.conc.time should catch
+    # duplicates.
+    stop("More than one time matches the starting time.  Please report this as a bug with a reproducible example.") # nocov
+  }
+}
+add.interval.col("cstart",
+                 FUN="pk.calc.cstart",
+                 values=c(FALSE, TRUE),
+                 unit_type="conc",
+                 pretty_name="Cstart",
+                 desc="The predose concentration",
+                 depends=NULL)
+PKNCA.set.summary(
+  name="cstart",
   description="geometric mean and geometric coefficient of variation",
   point=business.geomean,
   spread=business.geocv
@@ -1245,6 +1285,59 @@ add.interval.col("ceoi",
                  depends=NULL)
 PKNCA.set.summary(
   name="ceoi",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
+
+#' Calculate the AUC above a given concentration
+#'
+#' Concentrations below the given concentration (\code{conc_above}) will be set
+#' to zero.
+#' @inheritParams pk.calc.time_above
+#' @return The AUC of the concentration above the limit
+#' @export
+pk.calc.aucabove <- function(conc, time, conc_above = NA_real_, ..., options=list()) {
+  stopifnot(length(conc_above) == 1)
+  stopifnot(is.numeric(conc_above))
+  if (is.na(conc_above)) {
+    ret <- structure(NA_real_, exclude = "Missing concentration to be above")
+  } else {
+    ret <-
+      pk.calc.auc(
+        conc=pmax(conc - conc_above, 0), time=time, ..., options=options,
+        auc.type="AUCall",
+        lambda.z=NA
+      )
+  }
+  ret
+}
+add.interval.col(
+  "aucabove.predose.all",
+  FUN="pk.calc.aucabove",
+  unit_type="auc",
+  pretty_name="AUC,above",
+  desc="The area under the concentration time the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification, with a concentration subtracted from all concentrations and values below zero after subtraction set to zero",
+  depends="cstart",
+  formalsmap = list(conc_above = "cstart")
+)
+PKNCA.set.summary(
+  name="aucabove.predose.all",
+  description="geometric mean and geometric coefficient of variation",
+  point=business.geomean,
+  spread=business.geocv
+)
+add.interval.col(
+  "aucabove.trough.all",
+  FUN="pk.calc.aucabove",
+  unit_type="auc",
+  pretty_name="AUC,above",
+  desc="The area under the concentration time the beginning of the interval to the last concentration above the limit of quantification plus the triangle from that last concentration to 0 at the first concentration below the limit of quantification, with a concentration subtracted from all concentrations and values below zero after subtraction set to zero",
+  depends="ctrough",
+  formalsmap = list(conc_above = "ctrough")
+)
+PKNCA.set.summary(
+  name="aucabove.trough.all",
   description="geometric mean and geometric coefficient of variation",
   point=business.geomean,
   spread=business.geocv

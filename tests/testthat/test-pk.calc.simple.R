@@ -165,7 +165,7 @@ test_that("pk.calc.thalf.eff", {
     pk.calc.thalf.eff(numeric()),
     numeric()
   )
-  
+
   # NA input gives equivalent NA output
   expect_equal(pk.calc.thalf.eff(NA),
                as.numeric(NA))
@@ -183,7 +183,7 @@ test_that("pk.calc.kel", {
     pk.calc.kel(numeric()),
     numeric()
   )
-  
+
   # NA input gives equivalent NA output
   expect_equal(
     pk.calc.kel(NA),
@@ -318,7 +318,7 @@ test_that("pk.calc.vz", {
   expect_error(pk.calc.vz(cl=1:3, lambda.z=1:2),
                regexp="'cl' and 'lambda.z' must be the same length",
                info="CL and lambda.z must be the same length (lambda.z shorter)")
-  
+
   # Estimate a single Vz (with permutations to ensure the right math
   # is happening)
   expect_equal(pk.calc.vz(cl=1, lambda.z=1), 1,
@@ -362,12 +362,12 @@ test_that("pk.calc.vd and its wrappers", {
                info="Vd calculation returns NA when aucinf is NA")
   expect_equal(pk.calc.vd(1, 2, NA), NA_integer_,
                info="Vd calculation returns NA when lambda.z is NA")
-  
+
   expect_equal(pk.calc.vd(c(1, 2), c(2, 4), c(3, 6)), c(1/6, 1/12),
                info="Vd calculation works with three vector inputs returning a vector")
   expect_equal(pk.calc.vd(c(1, 2), 2, 3), 0.5,
                info="Vd calculation works with vector dose and scalar aucinf and lambda.z inputs returning a scalar with the sum of doses used.")
-  
+
   expect_equal(pk.calc.vd(dose=1, aucinf=0, lambda.z=1),
                NA_real_,
                info="aucinf<=0 becomes NA")
@@ -438,4 +438,34 @@ test_that("pk.calc.ceoi", {
   expect_equal(pk.calc.ceoi(conc=0:5, time=0:5, duration.dose=NA),
                NA_real_,
                info="Ceoi returns NA if there is no dosing duration")
+})
+
+test_that("pk.calc.aucabove", {
+  expect_equal(
+    pk.calc.aucabove(conc = c(0:5, 1), time = 0:6, conc_above = 2),
+    pk.calc.auc.all(conc = c(0, 0, 0, 1:3, 0), time = 0:6)
+  )
+
+  # Confirm that it works through NCA calculations
+  d_conc <- data.frame(conc = c(2, 1:5, 3), time = 0:6)
+  d_intervals <- data.frame(start = 0, end = 6, aucabove.trough.all = TRUE, aucabove.predose.all = TRUE)
+  o_conc <- PKNCAconc(d_conc, conc~time)
+  o_data <- PKNCAdata(o_conc, intervals = d_intervals)
+  suppressMessages(
+    o_nca <- pk.nca(o_data)
+  )
+  expect_equal(
+    as.data.frame(o_nca),
+    tibble::tibble(
+      start = 0, end = 6,
+      PPTESTCD = c("ctrough", "cstart", "aucabove.predose.all", "aucabove.trough.all"),
+      PPORRES =
+        c(
+          3, 2,
+          pk.calc.aucabove(conc = d_conc$conc, time = d_conc$time, conc_above = 2),
+          pk.calc.aucabove(conc = d_conc$conc, time = d_conc$time, conc_above = 3)
+        ),
+      exclude = NA_character_
+    )
+  )
 })

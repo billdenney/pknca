@@ -21,3 +21,10 @@ The last observed concentration above the LOQ
 If Tlast is NA (due to no non-missing above LOQ measurements), this
 will return NA.
 }
+\seealso{
+Other NCA parameters for concentrations during the intervals: 
+\code{\link{pk.calc.cmax}()},
+\code{\link{pk.calc.cstart}()},
+\code{\link{pk.calc.ctrough}()}
+}
+\concept{NCA parameters for concentrations during the intervals}

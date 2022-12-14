@@ -93,7 +93,7 @@ test_that(
                  info="In interval specification, end may not be negative infinity (start is 0).")
     expect_error(check.interval.specification(data.frame(start=-Inf, end=-Inf)),
                  info="In interval specification, end may not be negative infinity (start is -Inf).")
-    
+
     # When the no-calculation interval specification is not the first,
     # ensure that is warned correctly
     d14 <- data.frame(start=0, end=24, auclast=c(rep(FALSE, 3), TRUE))
@@ -158,7 +158,7 @@ test_that("get.parameter.deps", {
   )
   expect_equal(
     get.parameter.deps("ctrough"),
-    c("ctrough", "ctrough.dn", "ptr"),
+    c("aucabove.trough.all", "ctrough", "ctrough.dn", "ptr"),
     info="Parameters with formalsmap-related dependencies return themselves and the formalsmap-related dependencies."
   )
   expect_equal(
@@ -191,7 +191,7 @@ test_that("check.intervals works with tibble input (fix #141)", {
       SUBJ=c(rep(1,17),rep(2,17)),
       Dose=c(rep(5,17)),rep(5,17)
     )
-  
+
   intervals_manual_first <-
     e.dat %>%
     dplyr::group_by(SUBJ) %>%
