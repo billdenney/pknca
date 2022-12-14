@@ -4,6 +4,10 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
+# PKNCA 0.10.1
+
+* Testing updates were made to work with dplyr version 1.1.0 (fix #198)
+
 # PKNCA 0.10.0
 
 ## Bugs Fixed
