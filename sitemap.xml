@@ -187,9 +187,6 @@
     <loc>http://billdenney.github.io/pknca/reference/formula.PKNCAconc.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/formula.parseFormula.html</loc>
-  </url>
-  <url>
     <loc>http://billdenney.github.io/pknca/reference/geomean.html</loc>
   </url>
   <url>
@@ -253,7 +250,7 @@
     <loc>http://billdenney.github.io/pknca/reference/normalize_exclude.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/parseFormula.html</loc>
+    <loc>http://billdenney.github.io/pknca/reference/parse_formula_to_cols.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/pk.business.html</loc>
