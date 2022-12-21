@@ -1,6 +1,6 @@
 test_that("parseFormula", {
   tmp.env <- new.env()
-  
+
   # Parse a rhs-only formula
   f1 <- as.formula("~a", env=tmp.env)
   r1 <- list(model=~a,
@@ -48,7 +48,7 @@ test_that("parseFormula", {
   expect_equal(parseFormula(f4),
                r4,
                ignore_attr = TRUE)
-  
+
   # Parse a rhs formula with crossed groups
   f5 <- as.formula("~a|b+c", env=tmp.env)
   r5 <- list(model=as.formula(~a, env=tmp.env),
@@ -248,9 +248,113 @@ test_that("findOperator", {
   # When given an invalid class, return an error
   expect_error(findOperator(list(), side="both"),
                regexp="Cannot handle class list")
-  
+
   expect_error(
     findOperator(x=a~b(), op="+", side="left"),
     regexp="call or formula with length 1 found without finding the operator, unknown how to proceed"
+  )
+})
+
+test_that("parse_formula_to_cols", {
+  expect_equal(
+    parse_formula_to_cols(form = "~foo"),
+    parse_formula_to_cols(form = ~foo)
+  )
+  expect_equal(
+    parse_formula_to_cols(form = ~foo),
+    list(
+      lhs = character(),
+      rhs = "foo",
+      groups = character(),
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = .~foo),
+    list(
+      lhs = character(),
+      rhs = "foo",
+      groups = character(),
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~.),
+    list(
+      lhs = "foo",
+      rhs = character(),
+      groups = character(),
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~bar),
+    list(
+      lhs = "foo",
+      rhs = "bar",
+      groups = character(),
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~.|bar),
+    list(
+      lhs = "foo",
+      rhs = character(),
+      groups = "bar",
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~baz|bar),
+    list(
+      lhs = "foo",
+      rhs = "baz",
+      groups = "bar",
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~baz|bar+quk),
+    list(
+      lhs = "foo",
+      rhs = "baz",
+      groups = c("bar", "quk"),
+      groups_left_of_slash = character(),
+      groups_right_of_slash = character()
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~baz|bar+quk/zot),
+    list(
+      lhs = "foo",
+      rhs = "baz",
+      groups = character(),
+      groups_left_of_slash = c("bar", "quk"),
+      groups_right_of_slash = "zot"
+    )
+  )
+  expect_equal(
+    parse_formula_to_cols(form = foo~baz|bar+quk/zot+yap),
+    list(
+      lhs = "foo",
+      rhs = "baz",
+      groups = character(),
+      groups_left_of_slash = c("bar", "quk"),
+      groups_right_of_slash = c("zot", "yap")
+    )
+  )
+})
+
+test_that("parse_formula_to_cols expected errors", {
+  expect_error(
+    parse_formula_to_cols(form = "foo"),
+    regexp = "form must be a formula or coercable into one"
   )
 })

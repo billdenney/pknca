@@ -46,6 +46,7 @@ parseFormula("a~b|c")$groups
 \seealso{
 Other Formula parsing: 
 \code{\link{findOperator}()},
-\code{\link{formula.parseFormula}()}
+\code{\link{formula.parseFormula}()},
+\code{\link{parse_formula_to_cols}()}
 }
 \concept{Formula parsing}

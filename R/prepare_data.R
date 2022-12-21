@@ -18,7 +18,7 @@ full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
     n_dose <- tibble::tibble(data_dose=list(NA))
   } else {
     stopifnot(inherits(x=dose, what="PKNCAdose"))
-    n_dose <- prepare_PKNCAdose(dose, sparse=is_sparse_pk(conc), subject_col=conc$subject)
+    n_dose <- prepare_PKNCAdose(dose, sparse=is_sparse_pk(conc), subject_col=conc$columns$subject)
   }
   n_conc <- prepare_PKNCAconc(conc)
   shared_groups <- intersect(names(n_conc), names(n_dose))
@@ -97,7 +97,7 @@ prepare_PKNCAconc_dense <- function(.dat, needed_cols, group_cols_selected) {
   ret <-
     prepare_PKNCA_general(
       .dat=.dat$data,
-      exclude=.dat$exclude,
+      exclude=.dat$columns$exclude,
       cols=needed_cols,
       data_name="data_conc",
       group_cols=group_cols_selected
@@ -106,14 +106,14 @@ prepare_PKNCAconc_dense <- function(.dat, needed_cols, group_cols_selected) {
 }
 
 prepare_PKNCAconc_sparse <- function(.dat, needed_cols, group_cols_selected) {
-  needed_cols$subject <- .dat$subject
+  needed_cols$subject <- .dat$columns$subject
   ret <-
     prepare_PKNCA_general(
       .dat=.dat$data_sparse,
-      exclude=.dat$exclude,
+      exclude=.dat$columns$exclude,
       cols=needed_cols,
       data_name="data_sparse_conc",
-      group_cols=setdiff(group_cols_selected, .dat$subject)
+      group_cols=setdiff(group_cols_selected, .dat$columns$subject)
     )
   # Generate the mean profile for non-sparse parameters
   ret$data_conc <-
@@ -127,18 +127,17 @@ prepare_PKNCAconc_sparse <- function(.dat, needed_cols, group_cols_selected) {
 prepare_PKNCAconc <- function(.dat) {
   # Remove rows to be excluded from all calculations
   # Drop unnecessary column names
-  pformula_conc <- parseFormula(.dat)
   needed_cols <-
     list(
-      conc=all.vars(pformula_conc$lhs),
-      time=all.vars(pformula_conc$rhs),
+      conc=.dat$columns$concentration,
+      time=.dat$columns$time,
       volume=.dat$columns$volume,
       duration=.dat$columns$duration,
       include_half.life=.dat$columns$include_half.life,
       exclude_half.life=.dat$columns$exclude_half.life
     )
   data_name <- getDataName(.dat)
-  group_cols_selected <- all.vars(pformula_conc$groups)
+  group_cols_selected <- unlist(.dat$columns$groups)
   if (is_sparse_pk(.dat)) {
     ret <-
       prepare_PKNCAconc_sparse(
@@ -219,11 +218,10 @@ prepare_PKNCAdose <- function(.dat, sparse, subject_col) {
 #' @keywords Internal
 #' @noRd
 prepare_PKNCAdose_general <- function(.dat) {
-  pformula_dose <- parseFormula(.dat)
-  dose_col <- all.vars(pformula_dose$lhs)
-  time_col <- all.vars(pformula_dose$rhs)
-  if (length(dose_col) == 0 || dose_col %in% ".") dose_col <- NULL
-  if (time_col %in% ".") time_col <- NULL
+  dose_col <- .dat$columns$dose
+  time_col <- .dat$columns$time
+  if (length(dose_col) == 0) dose_col <- NULL
+  if (length(time_col) == 0) time_col <- NULL
   needed_cols <-
     list(
       dose=dose_col,
@@ -234,10 +232,10 @@ prepare_PKNCAdose_general <- function(.dat) {
   ret <-
     prepare_PKNCA_general(
       .dat=.dat$data,
-      exclude=.dat$exclude,
+      exclude=.dat$columns$exclude,
       cols=needed_cols,
       data_name="data_dose",
-      group_cols=all.vars(pformula_dose$groups),
+      group_cols=unlist(.dat$columns$groups),
       insert_if_missing=list(dose=NA, time=NA)
     )
   ret

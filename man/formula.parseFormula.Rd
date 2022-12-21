@@ -26,6 +26,7 @@ Convert the parsed formula back into the original
 \seealso{
 Other Formula parsing: 
 \code{\link{findOperator}()},
-\code{\link{parseFormula}()}
+\code{\link{parseFormula}()},
+\code{\link{parse_formula_to_cols}()}
 }
 \concept{Formula parsing}

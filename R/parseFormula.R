@@ -174,3 +174,47 @@ findOperator <- function(x, op, side) {
   }
   ret
 }
+
+#' Convert a formula representation to the columns for input data
+#'
+#' @param form the formula (or something coercible into a formula) to extract
+#'   into its parts
+#' @return A list of column names for various formula parts
+#' @keywords Internal
+#' @family Formula parsing
+parse_formula_to_cols <- function(form) {
+  if (!inherits(form, "formula")) {
+    form <- try({stats::as.formula(form)}, silent = TRUE)
+  }
+  if (!inherits(form, "formula")) {
+    stop("form must be a formula or coercable into one")
+  }
+  rhs_raw <- findOperator(form, "~", "right")
+  groups_raw <- findOperator(rhs_raw, "|", "right")
+  if (!is.null(groups_raw)) {
+    rhs <- findOperator(rhs_raw, "|", "left")
+  } else {
+    rhs <- rhs_raw
+  }
+  # groups_los_raw becomes the last variable to the left of the slash
+  groups_raw_c <- all.vars(groups_raw)
+  groups_los_raw <- all.vars(findOperator(groups_raw, "/", "left"))
+  if (length(groups_los_raw) > 0) {
+    groups <- character()
+    groups_los <- groups_raw_c[1:which(groups_raw_c == groups_los_raw)]
+    groups_ros <- setdiff(groups_raw_c, groups_los)
+  } else {
+    groups <- groups_raw_c
+    groups_los <- character()
+    groups_ros <- character()
+  }
+  ret <-
+    list(
+      lhs=setdiff(all.vars(findOperator(form, "~", "left")), "."),
+      rhs=setdiff(all.vars(rhs), "."),
+      groups=groups,
+      groups_left_of_slash=groups_los,
+      groups_right_of_slash=groups_ros
+    )
+  ret
+}

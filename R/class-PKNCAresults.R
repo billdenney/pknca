@@ -74,9 +74,9 @@ getGroups.PKNCAresults <- function(object,
                                    form=formula(object$data$conc), level,
                                    data=object$result, sep) {
   # Include the start time as a group; this may be dropped later
-  grpnames <- c(all.vars(parseFormula(form)$groups), "start")
+  grpnames <- c(unlist(object$data$conc$columns$groups), "start")
   if (is_sparse_pk(object)) {
-    grpnames <- setdiff(grpnames, object$data$conc$subject)
+    grpnames <- setdiff(grpnames, object$data$conc$columns$subject)
   }
   if (!missing(level))
     if (is.factor(level) | is.character(level)) {
@@ -172,7 +172,7 @@ roundingSummarize <- function(x, name) {
 #' summary(results_obj_automatic, not.requested.string="NA")
 #' @export
 summary.PKNCAresults <- function(object, ...,
-                                 drop.group=object$data$conc$subject,
+                                 drop.group=object$data$conc$columns$subject,
                                  summarize.n.per.group=TRUE,
                                  not.requested.string=".",
                                  not.calculated.string="NC",
@@ -182,7 +182,7 @@ summary.PKNCAresults <- function(object, ...,
     warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
   }
   group_cols <- unique(setdiff(c("start", "end", names(all_group_cols)), drop.group))
-  exclude_col <- object$exclude
+  exclude_col <- object$columns$exclude
   # Ensure that the exclude_col is NA instead of "" for subsequent processing.
   raw_results <- object$result
   raw_results[[exclude_col]] <- normalize_exclude(raw_results[[exclude_col]])

@@ -3,34 +3,44 @@ source("generate.data.R")
 test_that("setExcludeColumn", {
   # exclude argument not given
   expect_equal(
-    setExcludeColumn(list(data=data.frame(a=1),
-                          exclude="fake")),
-    list(data=data.frame(a=1),
-         exclude="fake"),
+    setExcludeColumn(list(data=data.frame(a=1), columns = list(exclude="fake"))),
+    list(data=data.frame(a=1), columns = list(exclude="fake")),
     info="setExcludeColumn does nothing if the exclude name is already given."
   )
-  expect_equal(setExcludeColumn(list(data=data.frame(a=1))),
-               list(data=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
-                    exclude="exclude"),
-               info="setExcludeColumn adds a column named exclude")
-  expect_equal(setExcludeColumn(list(data=data.frame(a=1, exclude=2))),
-               list(data=data.frame(a=1, exclude=2, exclude.exclude=NA_character_, stringsAsFactors=FALSE),
-                    exclude="exclude.exclude"),
-               info="setExcludeColumn adds a column named exclude.exclude if 'exclude' is already present")
-  expect_equal(setExcludeColumn(list(results=data.frame(a=1)), dataname="results"),
-               list(results=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
-                    exclude="exclude"),
-               info="setExcludeColumn works with an alternate dataname")
-  
+  expect_equal(
+    setExcludeColumn(list(data=data.frame(a=1))),
+    list(data=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
+         columns = list(exclude="exclude")),
+    info="setExcludeColumn adds a column named exclude"
+  )
+  expect_equal(
+    setExcludeColumn(list(data=data.frame(a=1, exclude=2))),
+    list(data=data.frame(a=1, exclude=2, exclude.exclude=NA_character_, stringsAsFactors=FALSE),
+         columns = list(exclude="exclude.exclude")),
+    info="setExcludeColumn adds a column named exclude.exclude if 'exclude' is already present"
+  )
+  expect_equal(
+    setExcludeColumn(list(results=data.frame(a=1)), dataname="results"),
+    list(results=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
+         columns = list(exclude="exclude")),
+    info="setExcludeColumn works with an alternate dataname"
+  )
+
   # exclude argument given
-  expect_equal(setExcludeColumn(list(data=data.frame(a=1, exclude=2),
-                                     exclude="exclude"),
-                                exclude="exclude"),
-               list(data=data.frame(a=1, exclude=2),
-                    exclude="exclude"),
-               info="setExcludeColumn does nothing if exclude is given and matching")
+  expect_equal(
+    setExcludeColumn(
+      list(data=data.frame(a=1, exclude=2),
+           columns = list(exclude="exclude")),
+      exclude="exclude"
+    ),
+    list(
+      data=data.frame(a=1, exclude=2),
+      columns = list(exclude="exclude")
+    ),
+    info="setExcludeColumn does nothing if exclude is given and matching"
+  )
   expect_error(setExcludeColumn(list(data=data.frame(a=1, exclude=2),
-                                     exclude="exclude"),
+                                     columns = list(exclude="exclude")),
                                 exclude="foo"),
                regexp="exclude is already set for the object.",
                info="setExcludeColumn gives an error if exclude is given and not matching")
@@ -38,16 +48,20 @@ test_that("setExcludeColumn", {
                                 exclude="exclude"),
                regexp="exclude, if given, must be a column name in the input data.",
                info="setExcludeColumn exclude column must be in the data.")
-  expect_equal(setExcludeColumn(list(data=data.frame(a=1, exclude=factor("a"))),
-                                exclude="exclude"),
-               list(data=data.frame(a=1, exclude="a", stringsAsFactors=FALSE),
-                    exclude="exclude"),
-               info="setExcludeColumn converts factor column to character")
-  expect_equal(setExcludeColumn(list(data=data.frame(a=1, exclude=NA, stringsAsFactors=FALSE)),
-                                exclude="exclude"),
-               list(data=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
-                    exclude="exclude"),
-               info="setExcludeColumn converts logical NA column to character")
+  expect_equal(
+    setExcludeColumn(list(data=data.frame(a=1, exclude=factor("a"))),
+                     exclude="exclude"),
+    list(data=data.frame(a=1, exclude="a", stringsAsFactors=FALSE),
+         columns = list(exclude="exclude")),
+    info="setExcludeColumn converts factor column to character"
+  )
+  expect_equal(
+    setExcludeColumn(list(data=data.frame(a=1, exclude=NA, stringsAsFactors=FALSE)),
+                     exclude="exclude"),
+    list(data=data.frame(a=1, exclude=NA_character_, stringsAsFactors=FALSE),
+         columns = list(exclude="exclude")),
+    info="setExcludeColumn converts logical NA column to character"
+  )
   expect_error(setExcludeColumn(list(data=data.frame(a=1, exclude=FALSE, stringsAsFactors=FALSE)),
                                 exclude="exclude"),
                regexp="exclude column must be character vector or something convertable to character without loss of information.",
@@ -61,15 +75,19 @@ test_that("setExcludeColumn", {
   expect_warning(
     expect_equal(
       setExcludeColumn(list(data=data.frame())),
-      list(data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
-         exclude="exclude")
+      list(
+        data=data.frame(exclude=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
+        columns = list(exclude="exclude")
+      )
     ),
     info="setExcludeColumn works with zero-row data"
   )
   expect_equal(
     setExcludeColumn(list(data=data.frame()), exclude="foo"),
-    list(data=data.frame(foo=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
-         exclude="foo"),
+    list(
+      data=data.frame(foo=NA_character_, stringsAsFactors=FALSE)[-1,,drop=FALSE],
+      columns = list(exclude="foo")
+    ),
     info="setExcludeColumn works with zero-row data"
   )
 })
@@ -90,14 +108,14 @@ test_that("exclude.default", {
                regexp="Either mask for FUN must be given \\(but not both\\).",
                info="Both mask and FUN may not be given")
   obj2 <- obj1
-  obj2$exclude <- NULL
+  obj2$columns$exclude <- NULL
   expect_error(exclude.default(obj2,
                               reason="Just because",
                               mask=rep(TRUE, 5)),
                regexp="object must have an exclude column specified.",
                info="exclude column is required.")
   obj3 <- obj1
-  obj3$exclude <- "foo"
+  obj3$columns$exclude <- "foo"
   expect_error(exclude.default(obj3,
                               reason="Just because",
                               mask=rep(TRUE, 5)),
@@ -123,7 +141,7 @@ test_that("exclude.default", {
                               FUN=function(x, ...) TRUE),
                regexp="reason must be a character string.",
                info="Interpretation of a non-character reason is unclear")
-  
+
   # Check operation
   obj4 <- obj1
   obj4$data$exclude <- c(NA_character_, rep("Just because", nrow(obj4$data)-1))
@@ -133,7 +151,7 @@ test_that("exclude.default", {
                               mask=c(FALSE, rep(TRUE, nrow(obj1$data)-1))),
                obj4,
                info="Mask given as a vector works")
-  
+
   obj5 <- obj1
   obj5$data$exclude <- ifelse(obj5$data$time == 0,
                               NA_character_, "Just because")
@@ -161,7 +179,7 @@ test_that("exclude.default", {
                                FUN=function(x, ...) c(NA_character_, rep("Just because", nrow(x)-1))),
                obj5,
                info="A function returning a character vector works")
-  
+
   obj6 <- obj5
   obj6$data$exclude[1:2] <- c("really", "Just because; really")
 
@@ -174,7 +192,7 @@ test_that("exclude.default", {
       mask=c(TRUE, TRUE, rep(FALSE, nrow(obj1$data) - 2))),
     obj6,
     info="Multiple reasons are tracked.")
-  
+
   # Check exclusion for PKNCAdose class
   my_dose <- generate.dose(my_conc)
   dose_obj <- PKNCAdose(my_dose, dose~time|treatment+ID)
@@ -183,7 +201,7 @@ test_that("exclude.default", {
   expect_equal(exclude(dose_obj, reason="Not 1", FUN=function(x, ...) x$ID == 1),
                dose_obj_ex1,
                info="exclude works for PKNCAdose objects (with functions)")
-  
+
   # Dose exclusion is respected
   data_obj <- PKNCAdata(obj1, dose_obj, intervals=data.frame(start=0, end=Inf, cl.last=TRUE))
   data_obj_ex1 <- PKNCAdata(obj1, dose_obj_ex1, intervals=data.frame(start=0, end=Inf, cl.last=TRUE))
@@ -194,7 +212,7 @@ test_that("exclude.default", {
                                                result_obj_ex1$result$PPTESTCD == "cl.last"],
                rep(NA_real_, 2),
                info="exclude of dose is respected")
-  
+
   # Check exclusion for PKNCAresults class
   result_obj_not_1 <- result_obj
   result_obj_not_1$result$exclude[result_obj_not_1$result$ID == 1] <- "Not 1"

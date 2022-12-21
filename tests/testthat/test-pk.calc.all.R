@@ -11,7 +11,7 @@ test_that("pk.nca", {
   myresult <- pk.nca(mydata)
 
   expect_equal(names(myresult),
-               c("result", "data", "exclude"),
+               c("result", "data", "columns"),
                info="Make sure that the result has the expected names (and only the expected names) in it.")
   expect_true(checkProvenance(myresult),
               info="Provenance works on results")
@@ -24,7 +24,7 @@ test_that("pk.nca", {
   expect_warning(myresult.failure <- pk.nca(mydata.failure),
                  regexp="No intervals given; no calculations done.",
                  info="An empty result is returned if there are no intervals")
-  
+
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
@@ -89,8 +89,8 @@ test_that("pk.nca", {
   expect_equal(myresult.newinterval$result,
                myresult$result,
                info="Intervals can be specified manually, and will apply across appropriate parts of the grouping variables.")
-  
-  
+
+
   # Dosing not at time 0
   tmpconc.multi <- generate.conc(2, 1, 0:24)
   tmpdose.multi <- generate.dose(tmpconc.multi)
@@ -136,7 +136,7 @@ test_that("pk.nca", {
   expect_equal(subset(myresult$result, PPTESTCD %in% "cav")$PPORRES,
                c(0.5642, 0.5846), tolerance=0.0001,
                info="PK intervals work with passing in start and end as parameters")
-  
+
   # Ensure that the correct number of doses are included in parameters that use dosing.
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
@@ -167,7 +167,7 @@ test_that("pk.nca", {
                NA/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "auclast"],
                tolerance=0.0001,
                info="The correct number of doses is selected for an interval (>=start and <end), no doses selected")
-  
+
 })
 
 test_that("verbose pk.nca", {
@@ -220,12 +220,11 @@ test_that("Calculations when dose time is missing", {
   mydata <- PKNCAdata(myconc, mydose,
                       intervals=data.frame(start=0, end=24, cl.obs=TRUE))
   myresult <- pk.nca(mydata)
-  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.obs"],
-               1/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "aucinf.obs"],
-               info="The correct number of doses is selected for an interval (>=start and <end), 4 doses and not 5")
-
-  tmpdose$time <- NULL
-  tmpdose <- merge(tmpdose, data.frame(time=c(0, 6, 12, 18, 24)))
+  expect_equal(
+    myresult$result$PPORRES[myresult$result$PPTESTCD %in% "cl.obs"],
+    1/myresult$result$PPORRES[myresult$result$PPTESTCD %in% "aucinf.obs"],
+    info="The correct number of doses is selected for an interval (>=start and <end), 4 doses and not 5"
+  )
 })
 
 test_that("Calculations when no dose info is given", {
@@ -383,7 +382,7 @@ test_that("pk.nca can calculate values with group-level data", {
   tmpconc_observe <- tmpconc_observe[order(tmpconc_observe$treatment, tmpconc_observe$ID, tmpconc_observe$time),]
   tmpdose <- generate.dose(tmpconc_impute)
   tmpdose$time <- 0.5
-  
+
   myconc_impute <- PKNCAconc(tmpconc_impute, formula=conc~time|treatment+ID)
   myconc_observe <- PKNCAconc(tmpconc_observe, formula=conc~time|treatment+ID)
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
@@ -421,14 +420,14 @@ test_that("Missing dose info for some subjects gives a warning, not a difficult-
 # Fix issue #68
 test_that("Ensure that options are respected during pk.nca call", {
   doses <- data.frame(ID=1:2, Time=0, Dose=0.5)
-  
+
   conc.data <- c(0, 1, 2, 1.3, 0.4, 0.35, 0.125)
   time.data <- c(0, 1, 2, 4,   8,   24,   48)
   concs <- merge(doses["ID"], data.frame(Conc=conc.data, Time=time.data))
-  
+
   myconc <- PKNCA::PKNCAconc(concs, formula=Conc~Time|ID)
   mydose <- PKNCA::PKNCAdose(doses, formula=Dose~Time|ID)
-  
+
   myintervals <- data.frame(start=c(0,0,0),
                             end=c(24,48,Inf),
                             auclast=TRUE,
@@ -437,11 +436,11 @@ test_that("Ensure that options are respected during pk.nca call", {
                             aumclast=TRUE,
                             aumcall=TRUE,
                             half.life=TRUE)
-  
+
   linear.mydata <- PKNCA::PKNCAdata(myconc, mydose, intervals = myintervals,
                                     options = list(auc.method = "linear"))
   linear.results <- PKNCA::pk.nca(linear.mydata)
-  
+
   linlog.mydata <- PKNCA::PKNCAdata(myconc, mydose, intervals = myintervals,
                                     options = list(auc.method = "lin up/log down"))
   linlog.results <- PKNCA::pk.nca(linlog.mydata)
@@ -479,7 +478,7 @@ test_that("calculate with sparse data", {
       dose = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100)
     )
   o_conc_sparse <- PKNCAconc(d_sparse, conc~time|id, sparse=TRUE)
-  
+
   d_intervals <-
     data.frame(
       start=0,
@@ -562,7 +561,7 @@ test_that("calculate with sparse data", {
     )
   )
   expect_equal(nrow(as.data.frame(o_nca_sparse_multi_trt)), 16)
-  
+
   # Correct detection of mixed doses within a sparse dose group when there are
   # no grouping columns other than subject
   d_sparse_multi_trt_bad_dose_single <- d_sparse_multi_trt[d_sparse_multi_trt$dose == 100, ]
@@ -576,7 +575,7 @@ test_that("calculate with sparse data", {
     pk.nca(o_data_sparse_multi_trt_bad_dose_single),
     regexp="With sparse PK, all subjects in a group must have the same dosing information.*Not all subjects have the same dosing information"
   )
-  
+
   # Correct detection of mixed doses within a sparse dose group
   d_dose_sparse_multi_trt_bad_dose <- d_dose_sparse_multi_trt
   d_dose_sparse_multi_trt_bad_dose$dose[1] <- d_dose_sparse_multi_trt$dose[1] + 1

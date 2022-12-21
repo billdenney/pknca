@@ -111,7 +111,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   } else if (missing(intervals)) {
     # Generate the intervals for each grouping of concentration and
     # dosing.
-    if (identical(all.vars(parseFormula(ret$dose)$rhs), ".")) {
+    if (length(ret$dose$columns$time) == 0) {
       stop("Dose times were not given, so intervals must be manually specified.")
     }
     n_conc_dose <-
