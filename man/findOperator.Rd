@@ -27,8 +27,6 @@ the left, right, or both sides of the operator.
 }
 \seealso{
 Other Formula parsing: 
-\code{\link{formula.parseFormula}()},
-\code{\link{parseFormula}()},
 \code{\link{parse_formula_to_cols}()}
 }
 \concept{Formula parsing}
