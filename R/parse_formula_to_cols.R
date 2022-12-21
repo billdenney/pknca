@@ -10,7 +10,6 @@
 #' left side of a unary operator, and NULL if the operator is not
 #' found.
 #' @family Formula parsing
-#' @export
 findOperator <- function(x, op, side) {
   side <- match.arg(tolower(side),
                     choices=c("left", "right", "both"))
