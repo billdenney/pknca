@@ -2,9 +2,9 @@ source("generate.data.R")
 
 test_that("PKNCAresults object creation", {
   minimal_result <- PKNCAresults(data.frame(a=1), data=list())
-  expect_equal(minimal_result$exclude, "exclude")
+  expect_equal(minimal_result$columns$exclude, "exclude")
   result_with_exclude_col <- PKNCAresults(data.frame(exclude=1), data=list())
-  expect_equal(result_with_exclude_col$exclude, "exclude.exclude")
+  expect_equal(result_with_exclude_col$columns$exclude, "exclude.exclude")
 })
 
 test_that("PKNCAresults generation", {
@@ -19,14 +19,14 @@ test_that("PKNCAresults generation", {
 
   expect_equal(
     names(myresult),
-    c("result", "data", "exclude"),
+    c("result", "data", "columns"),
     info="Make sure that the result has the expected names (and only the expected names) in it."
   )
   expect_true(
     checkProvenance(myresult),
     info="Provenance exists and can be confirmed on results"
   )
-  
+
   # Test each of the pieces for myresult for accuracy
   expect_equal(
     myresult$data, {
@@ -37,7 +37,7 @@ test_that("PKNCAresults generation", {
       tmp
     }, info="The data is just a copy of the input data plus an instantiation of the PKNCA.options"
   )
-  
+
   verify.result <-
     tibble::tibble(
       treatment="Trt 1",
@@ -66,7 +66,7 @@ test_that("PKNCAresults generation", {
     tolerance=0.001,
     info="The specific order of the levels isn't important-- the fact that they are factors and that the set doesn't change is important."
   )
-  
+
   # Test conversion to a data.frame
   expect_equal(
     as.data.frame(myresult),
@@ -169,7 +169,7 @@ test_that("PKNCAresults summary", {
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
-  
+
   # Testing the summarization
   mysummary <- summary(myresult)
   expect_true(is.data.frame(mysummary))
@@ -192,7 +192,7 @@ test_that("PKNCAresults summary", {
     ),
     info="simple summary of PKNCAresults performs as expected"
   )
-  
+
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpconc$conc[tmpconc$ID %in% 2] <- 0
   tmpdose <- generate.dose(tmpconc)
@@ -224,7 +224,7 @@ test_that("PKNCAresults summary", {
     ),
     info="summary of PKNCAresults with some missing values results in NA for spread"
   )
-  
+
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpconc$conc <- 0
   tmpdose <- generate.dose(tmpconc)
@@ -255,7 +255,7 @@ test_that("PKNCAresults summary", {
     ),
     info="summary of PKNCAresults without most results gives NC"
   )
-  
+
   mysummary <- summary(myresult,
                        not.requested.string="NR",
                        not.calculated.string="NoCalc")
@@ -278,7 +278,7 @@ test_that("PKNCAresults summary", {
     ),
     info="Summary respects the not.requested.string and not.calculated.string"
   )
-  
+
   mysummary <- summary(myresult,
                        summarize.n.per.group=FALSE,
                        not.requested.string="NR",
@@ -309,7 +309,7 @@ test_that("dropping `start` and `end` from groups is allowed with a warning.", {
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
-  
+
   expect_warning(
     current_summary <- summary(myresult, drop.group=c("ID", "start")),
     regexp="drop.group including start or end may result", fixed=TRUE
@@ -413,8 +413,8 @@ test_that("print.summary_PKNCAresults works", {
   expect_output(
     print(summary(myresult)),
     paste(
-      " start end treatment N     auclast         cmax              tmax   half.life.*", 
-      "     0  24     Trt 1 2 13.8 \\[2.51\\]            .                 .           ..*", 
+      " start end treatment N     auclast         cmax              tmax   half.life.*",
+      "     0  24     Trt 1 2 13.8 \\[2.51\\]            .                 .           ..*",
       "     0 Inf     Trt 1 2           . 0.970 \\[4.29\\] 3.00 \\[2.00, 4.00\\] 14.2 \\[2.79\\].*",
       "",
       "Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation",
@@ -446,7 +446,7 @@ test_that("exclude values are maintained in derived parameters during automatic 
       time = 0:4,
       subject = 1
     )
-  
+
   conc_obj <- PKNCAconc(my_conc, conc~time|subject)
   data_obj <-
     PKNCAdata(
@@ -534,7 +534,7 @@ test_that("units work for calculations and summaries with one set of units acros
   myresult_units_orig <- pk.nca(mydata_orig)
   mydata_std <- PKNCAdata(myconc, mydose, units=d_units_std)
   myresult_units_std <- pk.nca(mydata_std)
-  
+
   # Summaries are the same except for the column names
   expect_equal(
     unname(summary(myresult)),
@@ -588,13 +588,13 @@ test_that("units work for calculations and summaries with one set of units acros
   tmpconc2 <- tmpconc1
   tmpconc2$analyte <- "drug2"
   tmpconc <- rbind(tmpconc1, tmpconc2)
-  
+
   tmpdose <- generate.dose(tmpconc)
   myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID/analyte)
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
-  
+
   d_units_std1 <-
     pknca_units_table(
       concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
@@ -623,7 +623,7 @@ test_that("units work for calculations and summaries with one set of units acros
     summary_myresult_units_std$Cmax,
     c(".", "9.70e-7 [4.29] mg/mL", ".", "1.94 [4.29] mmol/L")
   )
-  
+
   # I can't think of a way to trigger this error without explicit manipulation.
   myresult_units_manipulated <- myresult_units_std
   myresult_units_manipulated$result$PPSTRESU[myresult_units_manipulated$result$PPTESTCD %in% "auclast"][1] <- "foo"
@@ -641,7 +641,7 @@ test_that("summary pretty_name control", {
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
-  
+
   d_units_orig <- pknca_units_table(concu="ng/mL", doseu="mg", amountu="mg", timeu="hr")
   d_units_std <-
     pknca_units_table(
@@ -661,18 +661,18 @@ test_that("summary pretty_name control", {
   )
   expect_equal(
     names(s_pretty),
-    c("Interval Start", "Interval End", "treatment", "N", "AUClast", 
+    c("Interval Start", "Interval End", "treatment", "N", "AUClast",
       "Cmax", "Tmax", "Half-life", "AUCinf,obs")
   )
   expect_equal(
     names(s_plain_units),
-    c("start", "end", "treatment", "N", "auclast (hr*ng/mL)", "cmax (ng/mL)", 
+    c("start", "end", "treatment", "N", "auclast (hr*ng/mL)", "cmax (ng/mL)",
       "tmax (hr)", "half.life (hr)", "aucinf.obs (hr*ng/mL)")
   )
   expect_equal(
     names(s_pretty_units),
     c(
-      "Interval Start", "Interval End", "treatment", "N", "AUClast (hr*ng/mL)", 
+      "Interval Start", "Interval End", "treatment", "N", "AUClast (hr*ng/mL)",
       "Cmax (ng/mL)", "Tmax (hr)", "Half-life (hr)", "AUCinf,obs (hr*ng/mL)"
     )
   )
@@ -703,7 +703,7 @@ test_that("getGroups.PKNCAresults", {
   mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
   mydata <- PKNCAdata(myconc, mydose)
   myresult <- pk.nca(mydata)
-  
+
   expect_equal(
     getGroups(myresult, level="treatment"),
     myresult$result[, "treatment", drop=FALSE]
@@ -731,12 +731,12 @@ test_that("roundingSummarize", {
     roundingSummarize(1, "foo"),
     regexp="foo is not in the summarization instructions from PKNCA.set.summary"
   )
-  
+
   PKNCA.set.summary(name="lambda.z.n.points", description="not a real parameter", point=mean, spread=sd, rounding=function(x) round(x, 1))
   expect_equal(roundingSummarize(1.2345, "lambda.z.n.points"), "1.2")
   PKNCA.set.summary(name="lambda.z.n.points", description="not a real parameter", point=mean, spread=sd, rounding=list(round=1))
   expect_equal(roundingSummarize(1.2345, "lambda.z.n.points"), "1.2")
-  
+
   # reset it
   PKNCA.set.summary(
     name="lambda.z.n.points",

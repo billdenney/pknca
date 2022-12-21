@@ -72,32 +72,58 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
     }
   }
   # Verify that all the variables in the formula are columns in the data.
-  parsedForm <- parseFormula(formula, require.two.sided=FALSE)
+  parsed_form_raw <- parse_formula_to_cols(form = formula)
+  if (length(parsed_form_raw$groups_left_of_slash) > 0) {
+    stop("formula for PKNCAdose may not include a slash")
+  }
+  parsed_form_groups <-
+    if (length(parsed_form_raw$groups) > 0) {
+      list(
+        group_vars=parsed_form_raw$groups,
+        group_analyte=character()
+      )
+    } else {
+      list(
+        group_vars=parsed_form_raw$groups_left_of_slash,
+        group_analyte=parsed_form_raw$groups_right_of_slash
+      )
+    }
+  parsed_form <-
+    list(
+      dose = parsed_form_raw$lhs,
+      time = parsed_form_raw$rhs,
+      groups = parsed_form_groups
+    )
   # Check for variable existence and length
-  if (!(length(all.vars(parsedForm$lhs)) %in% c(0, 1)))
+  if (!(length(parsed_form$dose) %in% c(0, 1))) {
     stop("The left side of the formula must have zero or one variable")
-  if (!(identical(parsedForm$lhs, NA) ||
-        all.vars(parsedForm$lhs) %in% c(".", names(data)))) {
+  } else if (length(parsed_form$dose) == 1 &&
+             !(parsed_form$dose %in% names(data))) {
+    # the "." is handled in parse_formula_to_cols
     stop("The left side formula must be a variable in the data, empty, or '.'.")
   }
-  if (length(all.vars(parsedForm$rhs)) != 1)
+  if (!(length(parsed_form$time) %in% c(0, 1))) {
     stop("The right side of the formula (excluding groups) must have exactly one variable")
-  if (!(all.vars(parsedForm$rhs) %in% c(".", names(data)))) {
+  } else if (length(parsed_form$time) == 1 &&
+             !(parsed_form$time %in% names(data))) {
     stop("The right side formula must be a variable in the data or '.'.")
   }
-  if (!all(all.vars(parsedForm$groups) %in% names(data))) {
+  if (!all(unlist(parsed_form$groups) %in% names(data))) {
     stop("All of the variables in the groups must be in the data")
   }
   # Values must be unique (one value per measurement)
-  key.cols <- c(setdiff(all.vars(parsedForm$rhs), "."),
-                all.vars(parsedForm$groupFormula))
-  if (any(mask.dup <- duplicated(data[,key.cols])))
+  key_cols <- c(parsed_form$time, unlist(parsed_form$groups))
+  if (any(mask_dup <- duplicated(data[,key_cols])))
     stop("Rows that are not unique per group and time (column names: ",
-         paste(key.cols, collapse=", "),
+         paste(key_cols, collapse=", "),
          ") found within dosing data.  Row numbers: ",
-         paste(seq_along(mask.dup)[mask.dup], collapse=", "))
-  ret <- list(data=data,
-              formula=formula)
+         paste(seq_along(mask_dup)[mask_dup], collapse=", "))
+  ret <-
+    list(
+      data = data,
+      formula = formula,
+      columns = parsed_form
+    )
   class(ret) <- c("PKNCAdose", class(ret))
   if (missing(exclude)) {
     ret <- setExcludeColumn(ret)
@@ -176,7 +202,7 @@ setDuration <- function(object, ...)
 #' @export
 setDuration.PKNCAdose <- function(object, duration, rate, dose, ...) {
   if (missing(dose)) {
-    dose <- as.character(parseFormula(object$formula)$lhs)
+    dose <- object$columns$dose
   }
   if (missing(duration) & missing(rate)) {
     object <- setAttributeColumn(object=object, attr_name="duration", default_value=0,
@@ -224,23 +250,21 @@ model.frame.PKNCAdose <- function(formula, ...) {
 
 #' @export
 getDepVar.PKNCAdose <- function(x, ...) {
-  parsedForm <- parseFormula(x$formula, require.two.sided=FALSE)
-  if (identical(parsedForm$lhs, NA) ||
-      identical(all.vars(parsedForm$lhs), ".")) {
+  dose_col <- x$columns$dose
+  if (length(dose_col) == 0) {
     rep(NA_integer_, nrow(x$data))
   } else {
-    x$data[, all.vars(parseFormula(x)$lhs)]
+    x$data[, dose_col]
   }
 }
 
 #' @export
 getIndepVar.PKNCAdose <- function(x, ...) {
-  parsedForm <- parseFormula(x$formula, require.two.sided=FALSE)
-  if (identical(parsedForm$rhs, NA) ||
-      identical(all.vars(parsedForm$rhs), ".")) {
+  time_col <- x$columns$time
+  if (length(time_col) == 0) {
     rep(NA_integer_, nrow(x$data))
   } else {
-    x$data[, all.vars(parseFormula(x)$rhs)]
+    x$data[, time_col]
   }
 }
 

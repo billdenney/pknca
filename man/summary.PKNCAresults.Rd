@@ -7,7 +7,7 @@
 \method{summary}{PKNCAresults}(
   object,
   ...,
-  drop.group = object$data$conc$subject,
+  drop.group = object$data$conc$columns$subject,
   summarize.n.per.group = TRUE,
   not.requested.string = ".",
   not.calculated.string = "NC",

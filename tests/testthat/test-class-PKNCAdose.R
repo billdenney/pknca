@@ -13,7 +13,7 @@ test_that("PKNCAdose", {
   tmp.dose.analyte <- generate.dose(tmp.conc.analyte)
   tmp.dose.study <- generate.dose(tmp.conc.study)
   tmp.dose.analyte.study <- generate.dose(tmp.conc.analyte.study)
-  
+
   # Data exists
   expect_error(PKNCAdose(data.frame()),
                regexp="data must have at least one row.",
@@ -29,7 +29,7 @@ test_that("PKNCAdose", {
   expect_error(PKNCAdose(tmp.dose, formula=dose~time|treatmenta+ID),
                regexp="All of the variables in the groups must be in the data",
                info="All formula parameters must be in the data (groups)")
-  
+
   # Number of variables
   expect_error(PKNCAdose(tmp.dose, formula=dose+ID~time|treatment+ID),
                regexp="The left side of the formula must have zero or one variable",
@@ -40,35 +40,64 @@ test_that("PKNCAdose", {
   expect_error(PKNCAdose(tmp.dose, formula=~time+ID|treatment+ID),
                regexp="The right side of the formula \\(excluding groups\\) must have exactly one variable",
                info="The right number of parameters in the formula (RHS)")
-  
+
   # Accept "." on either side of the ~
-  expect_equal(PKNCAdose(tmp.dose, formula=.~time|treatment+ID),
-               structure(list(
-                 data=cbind(tmp.dose,
-                            data.frame(exclude=NA_character_,
-                                       route="extravascular",
-                                       duration=0,
-                                       stringsAsFactors=FALSE)),
-                 formula = . ~ time | treatment + ID,
-                 exclude="exclude",
-                 columns=list(route="route",
-                              duration="duration")),
-                 class = c("PKNCAdose", "list")),
-               info="PKNCAdose accepts . on the left side of the formula")
-  expect_equal(PKNCAdose(tmp.dose, formula=dose~.|treatment+ID),
-               structure(list(
-                 data=cbind(tmp.dose,
-                            data.frame(exclude=NA_character_,
-                                       route="extravascular",
-                                       duration=0,
-                                       stringsAsFactors=FALSE)),
-                 formula = dose ~ . | treatment + ID,
-                 exclude="exclude",
-                 columns=list(route="route",
-                              duration="duration")),
-                 class = c("PKNCAdose", "list")),
-               info="PKNCAdose accepts . on the right side of the formula")
-  
+  expect_equal(
+    PKNCAdose(tmp.dose, formula=.~time|treatment+ID),
+    structure(
+      list(
+        data=cbind(tmp.dose,
+                   data.frame(exclude=NA_character_,
+                              route="extravascular",
+                              duration=0,
+                              stringsAsFactors=FALSE)),
+        formula = . ~ time | treatment + ID,
+        columns=
+          list(
+            dose = character(),
+            time = "time",
+            groups =
+              list(
+                group_vars=c("treatment", "ID"),
+                group_analyte=character()
+              ),
+            exclude="exclude",
+            route="route",
+            duration="duration"
+          )
+      ),
+      class = c("PKNCAdose", "list")
+    ),
+    info="PKNCAdose accepts . on the left side of the formula"
+  )
+  expect_equal(
+    PKNCAdose(tmp.dose, formula=dose~.|treatment+ID),
+    structure(
+      list(
+        data=cbind(tmp.dose,
+                   data.frame(exclude=NA_character_,
+                              route="extravascular",
+                              duration=0,
+                              stringsAsFactors=FALSE)),
+        formula = dose ~ . | treatment + ID,
+        columns=list(
+          dose = "dose",
+          time = character(),
+          groups =
+            list(
+              group_vars=c("treatment", "ID"),
+              group_analyte=character()
+            ),
+          exclude="exclude",
+          route="route",
+          duration="duration"
+          )
+        ),
+      class = c("PKNCAdose", "list")
+    ),
+    info="PKNCAdose accepts . on the right side of the formula"
+  )
+
   tmp.dose.na <- tmp.dose
   tmp.dose.na$time[1] <- NA
   expect_error(PKNCAdose(tmp.dose.na, formula=dose~time|treatment+ID),
@@ -81,7 +110,7 @@ test_that("PKNCAdose", {
   expect_error(PKNCAdose(bad.dose.analyte, formula=dose~time|treatment+ID),
                regexp="Rows that are not unique per group and time",
                info="Duplicated key rows")
-  
+
   expect_equal(
     PKNCAdose(
       tmp.dose,
@@ -131,7 +160,7 @@ test_that("PKNCAdose model.frame", {
                           stringsAsFactors=FALSE),
                ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with two-sided formula")
-  
+
   mydose2 <- PKNCAdose(formula=~time|treatment+ID, data=tmp.dose)
   expect_equal(getDepVar.PKNCAdose(mydose2),
                rep(NA_integer_, 10),
@@ -163,7 +192,7 @@ test_that("PKNCAdose model.frame", {
                           stringsAsFactors=FALSE),
                ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with one-sided formula ('.' on LHS)")
-  
+
   mydose4 <- PKNCAdose(formula=dose~.|treatment+ID, data=tmp.dose)
   expect_equal(getDepVar.PKNCAdose(mydose4),
                rep(1:2, each=5),
@@ -179,12 +208,12 @@ test_that("PKNCAdose model.frame", {
                           stringsAsFactors=FALSE),
                ignore_attr=TRUE,
                info="model.frame.PKNCAdose works with one-sided formula ('.' on RHS)")
-  
+
   # You can't give multiple rows per group if you don't give time.
   expect_error(PKNCAdose(formula=dose~.|treatment+ID, data=rbind(tmp.dose, tmp.dose)),
                regexp="Rows that are not unique per group and time.*found within dosing data",
                info="Dosing must have unique values with time and group")
-  
+
   expect_equal(
     group_vars.PKNCAdose(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID)),
     c("treatment", "ID")
@@ -203,7 +232,7 @@ test_that("print.PKNCAdose", {
   tmp.conc.nogroup <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
   tmp.dose.nogroup <- generate.dose(tmp.conc.nogroup)
   mydose.nogroup <- PKNCAdose(tmp.dose.nogroup, formula=dose~time)
-  
+
   expect_output(print(mydose),
                 regexp="Formula for dosing:
  dose ~ time | treatment + ID
@@ -229,7 +258,7 @@ Data for dosing:
      Trt 1  1    1    0    <NA> extravascular        0",
                 fixed=TRUE,
                 info="Generic print.PKNCAdose works with no groups")
-  
+
   expect_output(print(mydose, n=-5),
                 regexp="Formula for dosing:
  dose ~ time | treatment + ID
@@ -244,7 +273,7 @@ First 5 rows of dosing data:
      Trt 1  5    1    0    <NA> extravascular        0",
                 fixed=TRUE,
                 info="Generic print.PKNCAdose works")
-  
+
   expect_output(print(mydose, summarize=TRUE),
                 regexp="Formula for dosing:
  dose ~ time | treatment + ID
@@ -255,7 +284,7 @@ Number unique entries in each group:
          2  5",
                 fixed=TRUE,
                 info="Summary print.PKNCAdose works")
-  
+
   expect_output(
     print(mydose.nogroup, summarize=TRUE),
     regexp="No groups"
@@ -267,17 +296,34 @@ test_that("PKNCAdose with exclusions", {
   tmp.dose <- generate.dose(tmp.conc)
   tmp.dose$excl <- NA_character_
   mydose <- PKNCAdose(tmp.dose, formula=dose~time|treatment+ID, exclude="excl")
-  expect_equal(mydose,
-               structure(
-                 list(data=cbind(tmp.dose,
-                                 data.frame(route="extravascular",
-                                            duration=0,
-                                            stringsAsFactors=FALSE)),
-                      formula=dose~time|treatment+ID,
-                      exclude="excl",
-                      columns=list(route="route",
-                                   duration="duration")),
-                 class=c("PKNCAdose", "list")))
+  expect_equal(
+    mydose,
+    structure(
+      list(data=cbind(
+        tmp.dose,
+        data.frame(
+          route="extravascular",
+          duration=0,
+          stringsAsFactors=FALSE)
+      ),
+      formula=dose~time|treatment+ID,
+      columns=
+        list(
+          dose = "dose",
+          time = "time",
+          groups =
+            list(
+              group_vars=c("treatment", "ID"),
+              group_analyte=character()
+            ),
+          exclude="excl",
+          route="route",
+          duration="duration"
+        )
+      ),
+      class=c("PKNCAdose", "list")
+    )
+  )
 })
 
 test_that("PKNCAdose route and duration", {
@@ -329,21 +375,29 @@ test_that("time.nominal within PKNCAdose", {
   tmp.dose <- generate.dose(tmp.conc)
   tmp.dose$nom_time <- tmp.dose$time
   rownames(tmp.dose) <- NULL
-  expect_equal(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID,
-                         time.nominal="nom_time"),
-               structure(list(
-                 data=cbind(tmp.dose,
-                            data.frame(exclude=NA_character_,
-                                       route="extravascular",
-                                       duration=0,
-                                       stringsAsFactors=FALSE)),
-                 formula = dose ~ time | treatment + ID,
-                 exclude="exclude",
-                 columns=list(route="route",
-                              duration="duration",
-                              time.nominal="nom_time")),
-                 class = c("PKNCAdose", "list")),
-               info="PKNCAdose accepts time.nominal")
+  expect_equal(
+    PKNCAdose(tmp.dose, formula=dose~time|treatment+ID,
+              time.nominal="nom_time"),
+    structure(list(
+      data=cbind(tmp.dose,
+                 data.frame(exclude=NA_character_,
+                            route="extravascular",
+                            duration=0,
+                            stringsAsFactors=FALSE)),
+      formula = dose ~ time | treatment + ID,
+      columns=list(
+        dose = "dose",
+        time = "time",
+        groups=list(group_vars=c("treatment", "ID"), group_analyte=character()),
+        exclude="exclude",
+        route="route",
+        duration="duration",
+        time.nominal="nom_time"
+      )
+    ),
+    class = c("PKNCAdose", "list")),
+    info="PKNCAdose accepts time.nominal"
+  )
   expect_error(PKNCAdose(tmp.dose, formula=dose~time|treatment+ID,
                          time.nominal="foo"),
                regexp="time.nominal, if given, must be a column name in the input data",
@@ -393,7 +447,7 @@ test_that("setDuration", {
     info="Cannot give both duration as non-numeric"),
     class = "pknca_foundcolumn_duration"
   )
-  
+
   duration_example <- suppressMessages(setDuration(mydose, rate=2))
   expect_true(all(mydose$data$duration == 0))
   expect_equal(

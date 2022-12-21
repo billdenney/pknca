@@ -70,24 +70,41 @@ PKNCAconc.data.frame <- function(data, formula, subject,
   if (!all(all.vars(formula) %in% names(data))) {
     stop("All of the variables in the formula must be in the data")
   }
-  parsedForm <- parseFormula(formula, require.two.sided=TRUE)
-  if (length(all.vars(parsedForm$lhs)) != 1) {
+  parsed_form_raw <- parse_formula_to_cols(form = formula)
+  parsed_form_groups <-
+    if (length(parsed_form_raw$groups) > 0) {
+      list(
+        group_vars=parsed_form_raw$groups,
+        group_analyte=character()
+      )
+    } else {
+      list(
+        group_vars=parsed_form_raw$groups_left_of_slash,
+        group_analyte=parsed_form_raw$groups_right_of_slash
+      )
+    }
+  parsed_form <-
+    list(
+      concentration = parsed_form_raw$lhs,
+      time = parsed_form_raw$rhs,
+      groups = parsed_form_groups
+    )
+  if (length(parsed_form$concentration) != 1) {
     stop("The left hand side of the formula must have exactly one variable")
   }
-  if (length(all.vars(parsedForm$rhs)) != 1) {
+  if (length(parsed_form$time) != 1) {
     stop("The right hand side of the formula (excluding groups) must have exactly one variable")
   }
   # Do some general checking of the concentration and time data to give an early
   # error if the data are not correct.  Do not check monotonic.time because the
   # data may contain information for more than one subject.
   check.conc.time(
-    conc=data[[as.character(parsedForm$lhs)]],
-    time=data[[as.character(parsedForm$rhs)]],
+    conc=data[[parsed_form$concentration]],
+    time=data[[parsed_form$time]],
     monotonic.time=FALSE
   )
   # Values must be unique (one value per measurement)
-  key_cols <- c(all.vars(parsedForm$rhs),
-                all.vars(parsedForm$groupFormula))
+  key_cols <- c(parsed_form$time, unlist(parsed_form$groups))
   mask_dup <- duplicated(data[,key_cols])
   if (any(mask_dup)) {
     stop("Rows that are not unique per group and time (column names: ",
@@ -97,22 +114,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
   }
   # Assign the subject
   if (missing(subject)) {
-    tmp.groups <- all.vars(parsedForm$groupFormula)
-    if (length(tmp.groups) == 1) {
-      subject <- tmp.groups
-    } else {
-      subject <- all.vars(findOperator(parsedForm$groupFormula,
-                                       "/",
-                                       side="left"))
-      if (length(subject) == 0) {
-        # There is no / in the group formula, use the last element
-        subject <- tmp.groups[length(tmp.groups)]
-      } else if (length(subject) == 1) {
-        # There is a subject given; use it as is.
-      } else {
-        stop("Unknown how to handle subject definition from the formula") # nocov
-      }
-    }
+    subject <- parsed_form$groups$group_vars[length(parsed_form$groups$group_vars)]
   } else {
     # Ensure that the subject is part of the data definition and a scalar
     # character string.
@@ -123,19 +125,20 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     if (!(subject %in% names(data)))
       stop("The subject parameter must map to a name in the data")
   }
+  parsed_form$subject <- subject
   if (sparse) {
     ret <-
       list(
-        data_sparse=data,
-        formula=formula,
-        subject=subject
+        data_sparse = data,
+        formula = formula,
+        columns = parsed_form
       )
   } else {
     ret <-
       list(
-        data=data,
-        formula=formula,
-        subject=subject
+        data = data,
+        formula = formula,
+        columns = parsed_form
       )
   }
   class(ret) <- c("PKNCAconc", class(ret))
@@ -205,12 +208,12 @@ model.frame.PKNCAconc <- function(formula, ...) {
 
 #' @export
 getDepVar.PKNCAconc <- function(x, ...) {
-  x$data[, all.vars(parseFormula(x)$lhs)]
+  x$data[, x$columns$concentration]
 }
 
 #' @export
 getIndepVar.PKNCAconc <- function(x, ...) {
-  x$data[, all.vars(parseFormula(x)$rhs)]
+  x$data[, x$columns$time]
 }
 
 #' Get the groups (right hand side after the \code{|} from a PKNCA
@@ -232,7 +235,7 @@ getIndepVar.PKNCAconc <- function(x, ...) {
 #' @export
 getGroups.PKNCAconc <- function(object, form=stats::formula(object), level,
                                 data=as.data.frame(object), sep) {
-  grpnames <- all.vars(parseFormula(form)$groups)
+  grpnames <- unlist(object$columns$groups)
   if (!missing(level))
     if (is.factor(level) | is.character(level)) {
       level <- as.character(level)
@@ -257,7 +260,7 @@ getGroups.PKNCAconc <- function(object, form=stats::formula(object), level,
 #' @return A character vector (possibly empty) of the grouping variables
 #' @exportS3Method dplyr::group_vars
 group_vars.PKNCAconc <- function(x) {
-  all.vars(parseFormula(stats::as.formula(x))$groups)
+  unname(unlist(x$columns$groups))
 }
 
 #' @rdname getDataName
@@ -316,13 +319,13 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
     is_sparse <- FALSE
     cat("Data are dense PK.\n")
   }
-  single_subject <- is.na(x$subject) || (length(x$subject) == 0)
+  single_subject <- is.na(x$columns$subject) || (length(x$columns$subject) == 0)
   if (single_subject) {
     cat("As a single-subject dataset.\n")
   } else {
     cat(sprintf("With %d subjects defined in the '%s' column.\n",
-                length(unique(data_current[,x$subject])),
-                x$subject))
+                length(unique(data_current[,x$columns$subject])),
+                x$columns$subject))
   }
   if ("time.nominal" %in% names(x$columns)) {
     cat("Nominal time column is: ", x$columns$time.nominal, "\n", sep="")

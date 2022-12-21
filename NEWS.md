@@ -9,6 +9,9 @@ the dosing including dose amount and route.
 * A new parameter `aucabove.trough.all` was added to calculate the NCA above the
   trough concentration.
 * Testing updates were made to work with dplyr version 1.1.0 (fix #198)
+* Internal changes to how columns are identified were made, and the parseFormula
+  function was subsequently removed (parseFormula was never intended for
+  external use).
 
 # PKNCA 0.10.0
 

@@ -82,16 +82,16 @@ exclude.default <- function(object, reason, mask, FUN) {
   } else if (!is.character(reason)) {
     stop("reason must be a character string.")
   }
-  if (!("exclude" %in% names(object))) {
+  if (!("exclude" %in% names(object$columns))) {
     stop("object must have an exclude column specified.")
-  } else if (!(object$exclude %in% names(object[[dataname]]))) {
+  } else if (!(object$columns$exclude %in% names(object[[dataname]]))) {
     stop("exclude column must exist in object[['", dataname, "']].")
   }
   # Make a scalar reason a vector
   if (length(reason) == 1)
     reason <- rep(reason, length(mask))
   # Find the original value of the 'exclude' column.
-  orig <- object[[dataname]][[object$exclude]]
+  orig <- object[[dataname]][[object$columns$exclude]]
   if (length(mask) != length(orig)) {
     stop("mask must match the length of the data.")
   }
@@ -108,7 +108,7 @@ exclude.default <- function(object, reason, mask, FUN) {
   if (any(mask.multiple)) {
     ret[mask.multiple] <- paste(ret[mask.multiple], reason[mask.multiple], sep="; ")
   }
-  object[[dataname]][,object$exclude] <- ret
+  object[[dataname]][,object$columns$exclude] <- ret
   object
 }
 
@@ -125,15 +125,15 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
   add.exclude <- FALSE
   if (missing(exclude)) {
     # Exclude is not provided.
-    if ("exclude" %in% names(object)) {
+    if ("exclude" %in% names(object$columns)) {
       # If exclude is already given, then do nothing.
     } else {
       add.exclude <- TRUE
     }
-  } else if ("exclude" %in% names(object)) {
+  } else if ("exclude" %in% names(object$columns)) {
     # If exclude is already in the object, then make sure it matches
     # (and do nothing).
-    if (!(object$exclude == exclude)) {
+    if (!(object$columns$exclude == exclude)) {
       stop("exclude is already set for the object.")
     }
   } else {
@@ -162,7 +162,7 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
         stop("exclude column must be character vector or something convertable to character without loss of information.")
       }
     }
-    object[["exclude"]] <- exclude
+    object$columns$exclude <- exclude
   }
   object
 }
@@ -177,7 +177,7 @@ normalize_exclude <- function(object) {
   if (is.null(dataname)) {
     ret <- object
   } else {
-    ret <- object[[dataname]][[object[["exclude"]]]]
+    ret <- object[[dataname]][[object$columns$exclude]]
   }
   mask_blank <- ret %in% ""
   if (any(mask_blank)) {
