@@ -67,8 +67,9 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     stop("data must have at least one row.")
   }
   # Verify that all the variables in the formula are columns in the data.
-  if (!all(all.vars(formula) %in% names(data))) {
-    stop("All of the variables in the formula must be in the data")
+  missing_vars <- setdiff(all.vars(formula), names(data))
+  if (length(missing_vars) > 0) {
+    stop("All of the variables in the formula must be in the data.  Missing: ", paste(missing_vars))
   }
   parsed_form_raw <- parse_formula_to_cols(form = formula)
   parsed_form_groups <-
