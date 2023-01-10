@@ -28,15 +28,21 @@ test_that("PKNCAconc", {
                info="PKNCAconc requires data")
 
   # Variables present
-  expect_error(PKNCAconc(tmp.conc, formula=XXX~time|treatment+ID),
-               regexp="All of the variables in the formula must be in the data",
-               info="All formula parameters must be in the data (LHS)")
-  expect_error(PKNCAconc(tmp.conc, formula=conc~XXX|treatment+ID),
-               regexp="All of the variables in the formula must be in the data",
-               info="All formula parameters must be in the data (RHS)")
-  expect_error(PKNCAconc(tmp.conc, formula=conc~time|XXX+ID),
-               regexp="All of the variables in the formula must be in the data",
-               info="All formula parameters must be in the data (groups)")
+  expect_error(
+    PKNCAconc(tmp.conc, formula=XXX~time|treatment+ID),
+    regexp="All of the variables in the formula must be in the data.  Missing: XXX",
+    info="All formula parameters must be in the data (LHS)"
+  )
+  expect_error(
+    PKNCAconc(tmp.conc, formula=conc~XXX|treatment+ID),
+    regexp="All of the variables in the formula must be in the data.  Missing: XXX",
+    info="All formula parameters must be in the data (RHS)"
+  )
+  expect_error(
+    PKNCAconc(tmp.conc, formula=conc~time|XXX+ID),
+    regexp="All of the variables in the formula must be in the data.  Missing: XXX",
+    info="All formula parameters must be in the data (groups)"
+  )
 
   # Number of variables
   expect_error(PKNCAconc(tmp.conc, formula=conc+ID~time|treatment+ID),
