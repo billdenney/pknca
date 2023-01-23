@@ -6,7 +6,7 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2054/badge)](https://bestpractices.coreinfrastructure.org/projects/2054)
 <!-- badges: end -->
 
-The PKNCA R Package
+The PKNCA R Package <img src="man/figures/pknca-hex.png" align="right" />
 =====
 
 The PKNCA R package is designed to perform all noncompartmental
