@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +90,7 @@
                         <h4 data-toc-skip class="author">Bill
 Denney</h4>
             
-            <h4 data-toc-skip class="date">2023-01-23</h4>
+            <h4 data-toc-skip class="date">2023-02-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v22-time-to-steady-state.Rmd" class="external-link"><code>vignettes/v22-time-to-steady-state.Rmd</code></a></small>
       <div class="d-none name"><code>v22-time-to-steady-state.Rmd</code></div>
@@ -157,9 +157,9 @@ nonlinear model</li>
 <span>    subject <span class="op">=</span> <span class="va">steady_state_noise</span><span class="op">$</span><span class="va">Subject</span>,</span>
 <span>    time.dosing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">168</span> <span class="op">-</span> <span class="fl">12</span>, by<span class="op">=</span><span class="fl">12</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in nlme.formula(conc ~ ctrough.ss * (1 - exp(tss.constant *</span></span>
-<span><span class="co">#&gt; time/tss)), : Iteration 1, LME step: nlminb() did not converge (code = 1). Do</span></span>
-<span><span class="co">#&gt; increase 'msMaxIter'!</span></span>
+<span><span class="co">#&gt; Warning in nlme.formula(conc ~ ctrough.ss * (1 - exp(tss.constant * time/tss)),</span></span>
+<span><span class="co">#&gt; : Iteration 1, LME step: nlminb() did not converge (code = 1). Do increase</span></span>
+<span><span class="co">#&gt; 'msMaxIter'!</span></span>
 <span><span class="va">tss_mono</span></span>
 <span><span class="co">#&gt;    subject tss.monoexponential.population tss.monoexponential.popind</span></span>
 <span><span class="co">#&gt; 1        1                       26.41701                   36.94302</span></span>
