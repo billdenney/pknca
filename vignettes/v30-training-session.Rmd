@@ -15,7 +15,8 @@ vignette: >
 knitr::opts_chunk$set(echo = FALSE)
 requireNamespace("pmxTools")
 library(PKNCA)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 breaks_hours <- function(n=5, Q=c(1, 6, 4, 12, 2, 24, 168), ...) {
   n_default <- n
   Q_default <- Q
@@ -341,7 +342,10 @@ Groups are not required, if you want the same intervals calculated for each grou
 ## Hands-on: First NCA calculation with PKNCA
 
 ```{r echo=TRUE}
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
 library(PKNCA)
 # Concentration data setup
 d_conc <-
