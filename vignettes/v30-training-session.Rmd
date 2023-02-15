@@ -15,6 +15,8 @@ vignette: >
 knitr::opts_chunk$set(echo = FALSE)
 requireNamespace("pmxTools")
 library(PKNCA)
+library(dplyr)
+library(ggplot2)
 breaks_hours <- function(n=5, Q=c(1, 6, 4, 12, 2, 24, 168), ...) {
   n_default <- n
   Q_default <- Q
