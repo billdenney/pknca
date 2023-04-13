@@ -12,6 +12,8 @@ the dosing including dose amount and route.
 * Internal changes to how columns are identified were made, and the parseFormula
   function was subsequently removed (parseFormula was never intended for
   external use).
+* A minor change to `pk.calc.aucpext()` was made so that it now returns
+  `NA_real_` instead of `NaN`.
 
 # PKNCA 0.10.0
 

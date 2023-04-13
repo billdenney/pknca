@@ -371,7 +371,7 @@ pk.calc.aucpext <- function(auclast, aucinf) {
   mask_greater <-
     !mask_na &
     (auclast >= aucinf)
-  mask_calc <- !mask_na
+  mask_calc <- !mask_na & !(aucinf %in% 0)
   if (any(mask_greater))
     rlang::warn(
       message = "aucpext is typically only calculated when aucinf is greater than auclast.",
