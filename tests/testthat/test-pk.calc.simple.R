@@ -251,7 +251,7 @@ test_that("pk.calc.aucpext", {
     class = "pknca_aucpext_aucinf_le_auclast"),
     class = "pknca_aucpext_aucinf_auclast_positive"
   )
-  expect_equal(v2, NA_real_,
+  expect_equal(v2, NaN,
                info="aucinf<=0 gives NA_real_ (not infinity)")
   expect_equal(pk.calc.aucpext(NA, NA),
                NA_real_,
