@@ -440,12 +440,11 @@ test_that("setDuration", {
                regexp="Both duration and rate cannot be given at the same time",
                fixed=TRUE,
                info="Cannot give both duration and rate")
-  expect_warning(expect_error(
+  expect_message(expect_error(
     setDuration(mydose, duration="foobar"),
     regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
     fixed=TRUE,
-    info="Cannot give both duration as non-numeric"),
-    class = "pknca_foundcolumn_duration"
+    info="Cannot give both duration as non-numeric")
   )
 
   duration_example <- suppressMessages(setDuration(mydose, rate=2))
