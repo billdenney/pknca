@@ -444,7 +444,8 @@ test_that("setDuration", {
     setDuration(mydose, duration="foobar"),
     regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
     fixed=TRUE,
-    info="Cannot give both duration as non-numeric")
+    info="Cannot give both duration as non-numeric"),
+    class = "pknca_foundcolumn_duration"
   )
 
   duration_example <- suppressMessages(setDuration(mydose, rate=2))
