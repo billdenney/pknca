@@ -440,7 +440,7 @@ test_that("setDuration", {
                regexp="Both duration and rate cannot be given at the same time",
                fixed=TRUE,
                info="Cannot give both duration and rate")
-  expect_warning(expect_error(
+  expect_message(expect_error(
     setDuration(mydose, duration="foobar"),
     regexp="duration must be numeric without missing (NA) or infinite values, and all values must be >= 0",
     fixed=TRUE,
