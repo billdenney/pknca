@@ -77,60 +77,61 @@ summary(results_obj)
 
 # Data Handling
 
-After loading data, it must be in the right form.  The minimum
-requirements are that concentration, dose, and time must all be
-numeric (and not factors).  Grouping variables have no specific
-requirements; they can be any mode.
+After loading data, it must be in the right form.  The minimum requirements are
+that concentration, dose, and time must all be numeric (and not factors).
+Grouping variables have no specific requirements; they can be any mode.
 
-Values below the limit of quantification are coded as zeros (`0`), and missing values are coded as `NA`.
+Values below the limit of quantification are coded as zeros (`0`), and missing
+values are coded as `NA`.
 
 # Options: Make PKNCA Work Your Way
 
 ## Calculation Options: the PKNCA.options Function
 
-Different organizations have different requirements for computation
-and summarization of NCA.  Options for how to perform calculations and
-summaries are handled by the `PKNCA.options` command.
+Different organizations have different requirements for computation and
+summarization of NCA.  Options for how to perform calculations and summaries are
+handled by the `PKNCA.options` command.
 
-Default options have been set to commonly-used standard parameters.
-The current value for options can be found by running the command with
-no arguments:
+Default options have been set to commonly-used standard parameters. The current
+value for options can be found by running the command with no arguments:
 
 ```{r}
 PKNCA.options()
 ```
 
-And, to reset the current values to the library defaults, run the
-function with the default argument set to `TRUE`.
+And, to reset the current values to the library defaults, run the function with
+the default argument set to `TRUE`.
 
 ```{r eval=FALSE}
 PKNCA.options(default=TRUE)
 ```
 
-Each of the options is documented where it is used; for example, the
-first.tmax option is documented in the `pk.calc.tmax` function.
+Each of the options is documented where it is used; for example, the first.tmax
+option is documented in the `pk.calc.tmax` function.
 
 ## Summarization Options: the PKNCA.set.summary Function
 
-On top of methods of calculation, summarization method preferences
-differ.  Typical summarization preferences include selection of the
-measurement of central tendency and dispersion, handling of missing
-values, handling of values below the limit of quantification, and
-more.  Beyond the method for summarization, presentation is managed
-through user preferences.  Presentation is typically controlled by
-rounding to either a defined number of decimal places or significant
-figures.
+On top of methods of calculation, summarization method preferences differ.
+Typical summarization preferences include selection of the measurement of
+central tendency and dispersion, handling of missing values, handling of values
+below the limit of quantification, and more.  Beyond the method for
+summarization, presentation is managed through user preferences.  Presentation
+is typically controlled by rounding to either a defined number of decimal places
+or significant figures.
 
-An example is that C~max~ may be summarized by the geometric mean with
-the geometric CV using three significant figures, and having a summary
-result requires that at least half of the available values are present
-(not missing).  The code below will set this example.
+An example is that C~max~ may be summarized by the geometric mean with the
+geometric CV using three significant figures, and having a summary result
+requires that at least half of the available values are present (not missing).
+The code below will set this example.
 
 ```{r eval=FALSE}
-PKNCA.set.summary(name="cmax",
-                  point=business.geomean,
-                  spread=business.geocv,
-                  rounding=list(signif=3))
+PKNCA.set.summary(
+  name = "cmax",
+  description = "geometric mean and geometric coefficient of variation",
+  point = business.geomean,
+  spread = business.geocv,
+  rounding = list(signif=3)
+)
 ```
 
 Another example is that T~max~ is usually summarized by the median and
@@ -138,10 +139,13 @@ range, and as measurements are often taken with minute resolution and
 recorded in hours, reporting is usually to the second decimal place.
 
 ```{r eval=FALSE}
-PKNCA.set.summary(name="tmax",
-                  point=business.median,
-                  spread=business.range,
-                  rounding=list(round=2))
+PKNCA.set.summary(
+  name = "tmax",
+  description = "median and range",
+  point = business.median,
+  spread = business.range,
+  rounding = list(round=2)
+)
 ```
 
 If the functions or default rounding options provided in the library
@@ -150,15 +154,18 @@ used for rounding.
 
 ```{r custom_summary_fun, eval=FALSE}
 median_na <- function(x) {
-  median(x, na.rm=TRUE)
+  median(x, na.rm = TRUE)
 }
 quantprob_na <- function(x) {
-  quantile(x, probs=c(0.05, 0.95), na.rm=TRUE)
+  quantile(x, probs = c(0.05, 0.95), na.rm=TRUE)
 }
-PKNCA.set.summary(name="auclast",
-                  point=median_na,
-                  spread=quantprob_na,
-                  rounding=list(signif=3))
+PKNCA.set.summary(
+  name="auclast",
+  description = "median and 5th to 95th percentile",
+  point=median_na,
+  spread=quantprob_na,
+  rounding=list(signif=3)
+)
 ```
 
 In some cases multiple parameters may need the same summary functions
@@ -172,10 +179,13 @@ median_na <- function(x) {
 quantprob_na <- function(x) {
   quantile(x, probs=c(0.05, 0.95), na.rm=TRUE)
 }
-PKNCA.set.summary(name=c("auclast", "cmax", "tmax", "half.life", "aucinf.pred"),
-                  point=median_na,
-                  spread=quantprob_na,
-                  rounding=list(signif=3))
+PKNCA.set.summary(
+  name=c("auclast", "cmax", "tmax", "half.life", "aucinf.pred"),
+  description = "median and 5th to 95th percentile",
+  point=median_na,
+  spread=quantprob_na,
+  rounding=list(signif=3)
+)
 ```
 
 # Grouping NCA Data
@@ -244,32 +254,57 @@ a data.frame as requested.
 
 ```{r}
 intervals <-
-  data.frame(start=0, end=c(24, Inf),
-             cmax=c(FALSE, TRUE),
-             tmax=c(FALSE, TRUE),
-             auclast=TRUE,
-             aucinf.obs=c(FALSE, TRUE))
+  data.frame(
+    start=0, end=c(24, Inf),
+    cmax=c(FALSE, TRUE),
+    tmax=c(FALSE, TRUE),
+    auclast=TRUE,
+    aucinf.obs=c(FALSE, TRUE)
+  )
 ```
 
-Intervals like the above is sufficient for designs with a single type of treatment-- like single doses.  For more complex treatments in a single analysis, like the combination of single and multiple doses, include a treatment column matching the treatment column name from the concentration data set.  See the [Manual Interval Specification](#manual-interval-specification) section below for more details.
+Intervals like the above is sufficient for designs with a single type of
+treatment-- like single doses.  For more complex treatments in a single
+analysis, like the combination of single and multiple doses, include a treatment
+column matching the treatment column name from the concentration data set.  See
+the [Manual Interval Specification](#manual-interval-specification) section
+below for more details.
 
 ## Selection of Data Used for Calculation
 
-When choosing which data is used for a calculation, PKNCA will never look beyond the data specified in the group and interval.  Groups are defined by the call to the `PKNCAconc` function, and they will typically define the measurement of a single analyte from a single individual receiving a single treatment.  Intervals are subsets within a group by start and end time.  PKNCA never examines data outside of the group and interval for standard NCA calculations.  As an example, with data from 0 to 48 hours and an interval set to `start` at 0 and `end` at 24 with the calculation of `aucinf.obs`, any data after 24 hours will not be used for the half-life or AUC~inf~ calculations.
+When choosing which data is used for a calculation, PKNCA will never look beyond
+the data specified in the group and interval.  Groups are defined by the call to
+the `PKNCAconc` function, and they will typically define the measurement of a
+single analyte from a single individual receiving a single treatment.  Intervals
+are subsets within a group by start and end time.  PKNCA never examines data
+outside of the group and interval for standard NCA calculations.  As an example,
+with data from 0 to 48 hours and an interval set to `start` at 0 and `end` at 24
+with the calculation of `aucinf.obs`, any data after 24 hours will not be used
+for the half-life or AUC~inf~ calculations.
 
-A few functions look at data outside of a single interval, but these functions do not look at data outside of a single group, and these functions are typically used during preparation for NCA calculations not for the calculations themselves.  Functions that look a group as a whole include `choose.auc.intervals`, `find.tau`, and `pk.tss`.
+A few functions look at data outside of a single interval, but these functions
+do not look at data outside of a single group, and these functions are typically
+used during preparation for NCA calculations not for the calculations
+themselves.  Functions that look a group as a whole include
+`choose.auc.intervals`, `find.tau`, and `pk.tss`.
 
 ## Automatic Interval Determination
 
-If intervals are not specified when combining the concentration and dosing data, they will automatically be found from the concentration and dosing data.
+If intervals are not specified when combining the concentration and dosing data,
+they will automatically be found from the concentration and dosing data.
 
-Single dose data has a simple interval selection:  the option `single.dose.aucs` is used from the `PKNCA.options`.
+Single dose data has a simple interval selection:  the option `single.dose.aucs`
+is used from the `PKNCA.options`.
 
 ```{r asis=TRUE, echo=FALSE}
 knitr::kable(PKNCA.options()$single.dose.aucs)
 ```
 
-For multiple-dose studies, PKNCA selects one group at a time and compares the concentration and dosing times.  When there is a concentration measurement between doses, an interval row is added.  The dosing interval ($\tau$) is determined by looking for pattern repeats within the dosing data using the `find.tau` function.
+For multiple-dose studies, PKNCA selects one group at a time and compares the
+concentration and dosing times.  When there is a concentration measurement
+between doses, an interval row is added.  The dosing interval ($\tau$) is
+determined by looking for pattern repeats within the dosing data using the
+`find.tau` function.
 
 ```{r}
 ## find.tau can work when all doses have the same interval...
@@ -284,28 +319,43 @@ print(dose_times)
 PKNCA::find.tau(dose_times)
 ```
 
-After finding $\tau$, PKNCA will also look after the last dose (or the beginning of the last dosing interval), and two additional intervals may be added:
+After finding $\tau$, PKNCA will also look after the last dose (or the beginning
+of the last dosing interval), and two additional intervals may be added:
 
-* one interval for the dosing interval after the beginning of the last dosing interval (if there are concentrations measured in the interval)
-* one interval for the half-life after the last dosing interval (if there are concentration more than $\tau$ after the beginning of the last interval).
+* one interval for the dosing interval after the beginning of the last dosing
+  interval (if there are concentrations measured in the interval)
+* one interval for the half-life after the last dosing interval (if there are
+  concentration more than $\tau$ after the beginning of the last interval).
 
-One consequence of automatic interval selection is that many rows are generated for intervals; one row is generated per interval per subject.  The benefit of the method producing a large number of rows is that it is fully flexible to the actual study results.  If a subject has a different schedule than the others for the same treatment (e.g. measurements that were nominally scheduled for day 14 occurred on day 13), those differences will be found.
+One consequence of automatic interval selection is that many rows are generated
+for intervals; one row is generated per interval per subject.  The benefit of
+the method producing a large number of rows is that it is fully flexible to the
+actual study results.  If a subject has a different schedule than the others for
+the same treatment (e.g. measurements that were nominally scheduled for day 14
+occurred on day 13), those differences will be found.
 
 ## Manual Interval Specification
 
-Intervals can also be specified manually.  Two use cases are common for manual specification:  fully manual (never requesting the automatic intervals) and updating the automatic intervals.
+Intervals can also be specified manually.  Two use cases are common for manual
+specification:  fully manual (never requesting the automatic intervals) and
+updating the automatic intervals.
 
 Fully manual intervals can be specified by providing it to the `PKNCAdata` call.
 
 ```{r eval=FALSE}
 intervals_manual <-
-  data.frame(start=0, end=c(24, Inf),
-             cmax=c(FALSE, TRUE),
-             tmax=c(FALSE, TRUE),
-             auclast=TRUE,
-             aucinf.obs=c(FALSE, TRUE))
-data_obj <- PKNCAdata(conc_obj, dose_obj, 
-                      intervals=intervals_manual)
+  data.frame(
+    start=0, end=c(24, Inf),
+    cmax=c(FALSE, TRUE),
+    tmax=c(FALSE, TRUE),
+    auclast=TRUE,
+    aucinf.obs=c(FALSE, TRUE)
+  )
+data_obj <-
+  PKNCAdata(
+    conc_obj, dose_obj, 
+    intervals=intervals_manual
+  )
 ```
 
 To update the automatically-selected intervals, extract the intervals, modify them, and put them back.
