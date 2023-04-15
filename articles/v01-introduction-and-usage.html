@@ -316,33 +316,42 @@ mean with the geometric CV using three significant figures, and having a
 summary result requires that at least half of the available values are
 present (not missing). The code below will set this example.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"cmax"</span>,</span>
-<span>                  point<span class="op">=</span><span class="va">business.geomean</span>,</span>
-<span>                  spread<span class="op">=</span><span class="va">business.geocv</span>,</span>
-<span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"cmax"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"geometric mean and geometric coefficient of variation"</span>,</span>
+<span>  point <span class="op">=</span> <span class="va">business.geomean</span>,</span>
+<span>  spread <span class="op">=</span> <span class="va">business.geocv</span>,</span>
+<span>  rounding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Another example is that T<sub>max</sub> is usually summarized by the
 median and range, and as measurements are often taken with minute
 resolution and recorded in hours, reporting is usually to the second
 decimal place.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"tmax"</span>,</span>
-<span>                  point<span class="op">=</span><span class="va">business.median</span>,</span>
-<span>                  spread<span class="op">=</span><span class="va">business.range</span>,</span>
-<span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>round<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"tmax"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"median and range"</span>,</span>
+<span>  point <span class="op">=</span> <span class="va">business.median</span>,</span>
+<span>  spread <span class="op">=</span> <span class="va">business.range</span>,</span>
+<span>  rounding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>round<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>If the functions or default rounding options provided in the library
 do not meet the summarization needs, a user-supplied function can be
 used for rounding.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">median_na</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">quantprob_na</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.95</span><span class="op">)</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.95</span><span class="op">)</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"auclast"</span>,</span>
-<span>                  point<span class="op">=</span><span class="va">median_na</span>,</span>
-<span>                  spread<span class="op">=</span><span class="va">quantprob_na</span>,</span>
-<span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span></span>
+<span>  name<span class="op">=</span><span class="st">"auclast"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"median and 5th to 95th percentile"</span>,</span>
+<span>  point<span class="op">=</span><span class="va">median_na</span>,</span>
+<span>  spread<span class="op">=</span><span class="va">quantprob_na</span>,</span>
+<span>  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>In some cases multiple parameters may need the same summary functions
 (as often occurs with simulated data). Many parameters can be set
 simultaneously by specifying a vector of <code>name</code>s.</p>
@@ -353,10 +362,13 @@ simultaneously by specifying a vector of <code>name</code>s.</p>
 <span><span class="va">quantprob_na</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.95</span><span class="op">)</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span>name<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auclast"</span>, <span class="st">"cmax"</span>, <span class="st">"tmax"</span>, <span class="st">"half.life"</span>, <span class="st">"aucinf.pred"</span><span class="op">)</span>,</span>
-<span>                  point<span class="op">=</span><span class="va">median_na</span>,</span>
-<span>                  spread<span class="op">=</span><span class="va">quantprob_na</span>,</span>
-<span>                  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary</a></span><span class="op">(</span></span>
+<span>  name<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auclast"</span>, <span class="st">"cmax"</span>, <span class="st">"tmax"</span>, <span class="st">"half.life"</span>, <span class="st">"aucinf.pred"</span><span class="op">)</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"median and 5th to 95th percentile"</span>,</span>
+<span>  point<span class="op">=</span><span class="va">median_na</span>,</span>
+<span>  spread<span class="op">=</span><span class="va">quantprob_na</span>,</span>
+<span>  rounding<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>signif<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -422,11 +434,13 @@ function. The parameters requested are specified by setting the entry in
 a data.frame as requested.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">intervals</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>             cmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>             tmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>             auclast<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span>             aucinf.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
+<span>    cmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    tmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    auclast<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>    aucinf.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Intervals like the above is sufficient for designs with a single type
 of treatment– like single doses. For more complex treatments in a single
 analysis, like the combination of single and multiple doses, include a
@@ -987,13 +1001,18 @@ intervals) and updating the automatic intervals.</p>
 <code>PKNCAdata</code> call.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">intervals_manual</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>             cmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>             tmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>             auclast<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span>             aucinf.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span>, </span>
-<span>                      intervals<span class="op">=</span><span class="va">intervals_manual</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
+<span>    cmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    tmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    auclast<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>    aucinf.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">data_obj</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span></span>
+<span>    <span class="va">conc_obj</span>, <span class="va">dose_obj</span>, </span>
+<span>    intervals<span class="op">=</span><span class="va">intervals_manual</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>To update the automatically-selected intervals, extract the
 intervals, modify them, and put them back.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
