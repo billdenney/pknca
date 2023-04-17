@@ -14,6 +14,9 @@ the dosing including dose amount and route.
   external use).
 * A minor change to `pk.calc.aucpext()` was made so that it now returns
   `NA_real_` instead of `NaN`.
+* A minor change was made so that AUC calculations will provide an exclusion
+  reason when the warning "Requesting an AUC range starting before the first
+  measurement is not allowed" occurs.
 
 # PKNCA 0.10.0
 
