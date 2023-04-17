@@ -11,8 +11,11 @@ test_that("pk.calc.auxc", {
   expect_warning(v1 <- pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
                                     method="linear"),
                  info="Starting before the beginning time returns NA (not an error)")
-  expect_equal(v1, NA,
-               info="Starting before the beginning time returns NA (not an error)")
+  expect_equal(
+    v1,
+    structure(NA_real_, exclude = 'Requesting an AUC range starting (1) before the first measurement (2) is not allowed'),
+    info="Starting before the beginning time returns NA (not an error)"
+  )
 
   # All concentrations are NA, return NA
   expect_warning(
@@ -352,15 +355,26 @@ test_that("pk.calc.auc: interpolation of times within the time interval", {
 })
 
 test_that("pk.calc.auc: warning with beginning of interval before the beginning of time", {
-  tests <- list(
-    "linear"=list(
-      AUCinf=NA,
-      AUClast=NA,
-      AUCall=NA),
-    "lin up/log down"=list(
-      AUCinf=NA,
-      AUClast=NA,
-      AUCall=NA))
+  na_before_start <-
+    structure(
+      NA_real_,
+      exclude = 'Requesting an AUC range starting (-1) before the first measurement (0) is not allowed'
+    )
+  tests <-
+    list(
+      "linear"=
+        list(
+          AUCinf=na_before_start,
+          AUClast=na_before_start,
+          AUCall=na_before_start
+        ),
+      "lin up/log down"=
+        list(
+          AUCinf=na_before_start,
+          AUClast=na_before_start,
+          AUCall=na_before_start
+        )
+    )
   for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
@@ -378,9 +392,11 @@ test_that("pk.calc.auc: warning with beginning of interval before the beginning 
                           method=t),
         class="pknca_warn_auc_before_first"
       )
-      expect_equal(v1,
-                   tests[[t]][[n]],
-                   info=paste(t, n))
+      expect_equal(
+        v1,
+        tests[[t]][[n]],
+        info=paste(t, n)
+      )
     }
   }
 })
@@ -394,15 +410,26 @@ test_that("pk.calc.auc: warning with beginning of interval before the beginning 
                  regexp="AUC start time \\(2\\) is after the maximum observed time \\(1\\)")
 
   # Confirm error with NA at the same time as the beginning of the interval
-  tests <- list(
-    "linear"=list(
-      AUCinf=NA,
-      AUClast=NA,
-      AUCall=NA),
-    "lin up/log down"=list(
-      AUCinf=NA,
-      AUClast=NA,
-      AUCall=NA))
+  na_before_start <-
+    structure(
+      NA_real_,
+      exclude = 'Requesting an AUC range starting (0) before the first measurement (1) is not allowed'
+    )
+  tests <-
+    list(
+      "linear"=
+        list(
+          AUCinf=na_before_start,
+          AUClast=na_before_start,
+          AUCall=na_before_start
+        ),
+      "lin up/log down"=
+        list(
+          AUCinf=na_before_start,
+          AUClast=na_before_start,
+          AUCall=na_before_start
+        )
+    )
   for (t in names(tests))
     for (n in names(tests[[t]])) {
       expect_warning(
