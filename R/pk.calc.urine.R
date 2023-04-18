@@ -11,7 +11,34 @@
 #' @seealso \code{\link{pk.calc.clr}}, \code{\link{pk.calc.fe}}
 #' @export
 pk.calc.ae <- function(conc, volume, check=TRUE) {
-  sum(conc*volume)
+  mask_missing_conc <- is.na(conc)
+  mask_missing_vol <- is.na(volume)
+  mask_missing_both <- mask_missing_conc & mask_missing_vol
+  mask_missing_conc <- mask_missing_conc & !mask_missing_both
+  mask_missing_vol <- mask_missing_vol & !mask_missing_both
+  message_both <- message_conc <- message_vol <- NA_character_
+  if (all(mask_missing_both)) {
+    message_both <- "All concentrations and volumes are missing"
+  } else if (any(mask_missing_both)) {
+    message_both <- sprintf("%g of %g concentrations and volumes are missing", sum(mask_missing_both), length(conc))
+  }
+  if (all(mask_missing_conc)) {
+    message_conc <- "All concentrations are missing"
+  } else if (any(mask_missing_conc)) {
+    message_conc <- sprintf("%g of %g concentrations are missing", sum(mask_missing_conc), length(conc))
+  }
+  if (all(mask_missing_vol)) {
+    message_vol <- "All volumes are missing"
+  } else if (any(mask_missing_vol)) {
+    message_vol <- sprintf("%g of %g volumes are missing", sum(mask_missing_vol), length(conc))
+  }
+  message_all <- na.omit(c(message_both, message_conc, message_vol))
+  ret <- sum(conc*volume)
+  if (length(message_all) != 0) {
+    message <- paste(message_all, collapse = "; ")
+    ret <- structure(ret, exclude = message)
+  }
+  ret
 }
 add.interval.col("ae",
                  FUN="pk.calc.ae",
