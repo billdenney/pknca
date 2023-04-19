@@ -11,7 +11,8 @@ pk.nca.intervals(
   sparse,
   options,
   impute,
-  verbose = FALSE
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ dense calculations (FALSE)?}
 
 \item{verbose}{Indicate, by \code{message()}, the current state of
 calculation.}
+
+\item{...}{Ignored (added to swallow .progress for versions of
+\code{purrr::pmap()} before 1.0.0)}
 }
 \value{
 A data.frame with all NCA results
