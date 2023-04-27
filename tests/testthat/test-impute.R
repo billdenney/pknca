@@ -139,12 +139,16 @@ test_that("PKNCA_impute_fun_list_paste", {
     "PKNCA_impute_method_A"
   )
   expect_equal(
+    PKNCA_impute_fun_list_paste("PKNCA_impute_method_A"),
+    "PKNCA_impute_method_A"
+  )
+  expect_equal(
     PKNCA_impute_fun_list_paste(NA_character_),
     NA_character_
   )
   expect_equal(
-    PKNCA_impute_fun_list_paste(c("A", NA)),
-    c("PKNCA_impute_method_A", NA_character_)
+    PKNCA_impute_fun_list_paste(c("PKNCA_impute_method_A", "A", NA)),
+    c("PKNCA_impute_method_A", "PKNCA_impute_method_A", NA_character_)
   )
 })
 

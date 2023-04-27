@@ -133,7 +133,7 @@ PKNCA_impute_fun_list <- function(x) {
 # A helper for PKNCA_impute_fun_list that pastes PKNCA_impute_method_ to the
 # beginning of everything but NA
 PKNCA_impute_fun_list_paste <- function(x) {
-  mask_paste <- !is.na(x)
+  mask_paste <- !is.na(x) & !startsWith(x, "PKNCA_impute_method_")
   if (any(mask_paste)) {
     x[mask_paste] <- paste0("PKNCA_impute_method_", x[mask_paste])
   }
