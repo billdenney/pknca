@@ -276,6 +276,16 @@
           cmax=c(FALSE, TRUE))
       }
       check.interval.specification(x)
+    },
+    progress_bar=function(x, default = TRUE, description = FALSE) {
+      if (description)
+        return("Show a progress bar for the calculations (passed to purrr::pmap())")
+      if (default)
+        return(TRUE)
+      # Don't do checking at this time.  Allow purrr::pmap to check the option
+      # later so that if the purrr::pmap() interface changes this will
+      # automatically stay in sync.
+      x
     }
   )
 

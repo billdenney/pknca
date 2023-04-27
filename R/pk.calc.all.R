@@ -52,7 +52,8 @@ pk.nca <- function(data, verbose=FALSE) {
         options=data$options,
         impute=data$impute,
         verbose=verbose,
-        sparse=FALSE
+        sparse=FALSE,
+        .progress = tmp_options$progress_bar
       )
     if (verbose) message("Combining completed dense PK calculation results.")
     results <- pk_nca_result_to_df(group_info, results_dense)
@@ -188,12 +189,14 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #' @param data_intervals A data.frame or tibble with standardized column names
 #'   as output from \code{prepare_PKNCAintervals()}
 #' @param impute The column name in \code{data_intervals} to use for imputation
+#' @param ... Ignored (added to swallow .progress for versions of
+#'   \code{purrr::pmap()} before 1.0.0)
 #' @inheritParams PKNCAdata
 #' @inheritParams pk.nca
 #' @inheritParams pk.nca.interval
 #' @return A data.frame with all NCA results
 pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
-                             options, impute, verbose=FALSE) {
+                             options, impute, verbose=FALSE, ...) {
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
     # No concentration data; potentially placebo data
     return(rlang::warning_cnd(class="pknca_no_conc_data", message="No concentration data"))
