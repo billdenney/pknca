@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,13 +66,16 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.10.2" id="pknca-0102">PKNCA 0.10.2<a class="anchor" aria-label="anchor" href="#pknca-0102"></a></h2>
+<ul><li>A minor change to <code><a href="../reference/pk.calc.aucpext.html">pk.calc.aucpext()</a></code> was made so that it now returns <code>NA_real_</code> instead of <code>NaN</code>.</li>
+<li>A minor change was made so that AUC and amount excreted (ae) calculations will provide an exclusion reason the result is <code>NA</code>.</li>
+<li>A minor new feature makes the specification of imputation easier. You can give the imputation with or without the “PKNCA_impute_method_” prefix. So, “PKNCA_impute_method_start_predose” and “start_predose” are equivalent.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.1" id="pknca-0101">PKNCA 0.10.1<a class="anchor" aria-label="anchor" href="#pknca-0101"></a></h2><p class="text-muted">CRAN release: 2023-01-11</p>
 <ul><li>A new parameter <code>aucabove.trough.all</code> was added to calculate the NCA above the trough concentration.</li>
 <li>Testing updates were made to work with dplyr version 1.1.0 (fix <a href="https://github.com/billdenney/pknca/issues/198" class="external-link">#198</a>)</li>
 <li>Internal changes to how columns are identified were made, and the parseFormula function was subsequently removed (parseFormula was never intended for external use).</li>
-<li>A minor change to <code><a href="../reference/pk.calc.aucpext.html">pk.calc.aucpext()</a></code> was made so that it now returns <code>NA_real_</code> instead of <code>NaN</code>.</li>
-<li>A minor change was made so that AUC and amount excreted (ae) calculations will provide an exclusion reason the result is <code>NA</code>.</li>
-<li>A minor new feature makes the specification of imputation easier. You can give the imputation with or without the “PKNCA_impute_method_” prefix. So, “PKNCA_impute_method_start_predose” and “start_predose” are equivalent.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.0" id="pknca-0100">PKNCA 0.10.0<a class="anchor" aria-label="anchor" href="#pknca-0100"></a></h2><p class="text-muted">CRAN release: 2022-10-16</p>
