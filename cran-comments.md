@@ -2,4 +2,4 @@
 
 0 errors | 0 warnings | 1 note
 
-* The primary purpose of this release is to fix an issue related to the upcoming release of dplyr.
+* The primary purpose of this release is to fix a issues related to the upcoming releases of testthat and waldo.
