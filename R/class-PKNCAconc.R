@@ -275,6 +275,8 @@ getDataName.PKNCAconc <- function(object) {
   }
 }
 
+#' @rdname setDuration
+#' @export
 setDuration.PKNCAconc <- function(object, duration, ...) {
   if (missing(duration)) {
     object <-
