@@ -59,11 +59,13 @@ as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
 }
 
 #' @rdname getDataName
+#' @export
 getDataName.PKNCAresults <- function(object) {
   "result"
 }
 
 #' @rdname is_sparse_pk
+#' @export
 is_sparse_pk.PKNCAresults <- function(object) {
   is_sparse_pk(object$data)
 }

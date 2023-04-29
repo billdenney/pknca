@@ -191,6 +191,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
 }
 
 #' @rdname is_sparse_pk
+#' @export
 is_sparse_pk.PKNCAdata <- function(object) {
   is_sparse_pk(object$conc)
 }

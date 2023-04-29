@@ -50,12 +50,14 @@ PKNCAdose <- function(data, ...)
 
 #' @rdname PKNCAdose
 #' @export
-PKNCAdose.default <- function(data, ...)
+PKNCAdose.default <- function(data, ...) {
   PKNCAdose.data.frame(as.data.frame(data), ...)
+}
 #' @rdname PKNCAdose
 #' @export
-PKNCAdose.tbl_df <- function(data, ...)
+PKNCAdose.tbl_df <- function(data, ...) {
   PKNCAdose.data.frame(as.data.frame(data), ...)
+}
 
 #' @rdname PKNCAdose
 #' @export
@@ -242,6 +244,7 @@ formula.PKNCAdose <-  function(x, ...) {
 #' @rdname model.frame.PKNCAconc
 #' @export
 #' @importFrom stats model.frame
+#' @method model.frame PKNCAdose
 model.frame.PKNCAdose <- function(formula, ...) {
   cbind(getDepVar.PKNCAdose(formula),
         getIndepVar.PKNCAdose(formula),
@@ -281,8 +284,10 @@ group_vars.PKNCAdose <- function(x) {
 }
 
 #' @rdname getDataName
-getDataName.PKNCAdose <- function(object)
+#' @export
+getDataName.PKNCAdose <- function(object) {
   "data"
+}
 
 #' @rdname print.PKNCAconc
 #' @export
