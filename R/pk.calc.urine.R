@@ -32,7 +32,7 @@ pk.calc.ae <- function(conc, volume, check=TRUE) {
   } else if (any(mask_missing_vol)) {
     message_vol <- sprintf("%g of %g volumes are missing", sum(mask_missing_vol), length(conc))
   }
-  message_all <- na.omit(c(message_both, message_conc, message_vol))
+  message_all <- stats::na.omit(c(message_both, message_conc, message_vol))
   ret <- sum(conc*volume)
   if (length(message_all) != 0) {
     message <- paste(message_all, collapse = "; ")

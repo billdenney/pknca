@@ -203,6 +203,7 @@ formula.PKNCAconc <- function(x, ...) {
 #' order.
 #' @export
 #' @importFrom stats model.frame
+#' @method model.frame PKNCAconc
 model.frame.PKNCAconc <- function(formula, ...) {
   formula$data[, all.vars(formula$formula), drop=FALSE]
 }
@@ -265,6 +266,7 @@ group_vars.PKNCAconc <- function(x) {
 }
 
 #' @rdname getDataName
+#' @export
 getDataName.PKNCAconc <- function(object) {
   if (is_sparse_pk(object)) {
     "data_sparse"
@@ -273,6 +275,8 @@ getDataName.PKNCAconc <- function(object) {
   }
 }
 
+#' @rdname setDuration
+#' @export
 setDuration.PKNCAconc <- function(object, duration, ...) {
   if (missing(duration)) {
     object <-
@@ -364,6 +368,7 @@ print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
 }
 
 #' @rdname is_sparse_pk
+#' @export
 is_sparse_pk.PKNCAconc <- function(object) {
   "data_sparse" %in% names(object)
 }
