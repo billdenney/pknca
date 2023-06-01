@@ -24,6 +24,7 @@ will return NA.
 \seealso{
 Other NCA parameters for concentrations during the intervals: 
 \code{\link{pk.calc.cmax}()},
+\code{\link{pk.calc.count_conc}()},
 \code{\link{pk.calc.cstart}()},
 \code{\link{pk.calc.ctrough}()}
 }

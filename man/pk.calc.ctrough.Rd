@@ -24,6 +24,7 @@ Determine the trough (end of interval) concentration
 Other NCA parameters for concentrations during the intervals: 
 \code{\link{pk.calc.clast.obs}()},
 \code{\link{pk.calc.cmax}()},
+\code{\link{pk.calc.count_conc}()},
 \code{\link{pk.calc.cstart}()}
 }
 \concept{NCA parameters for concentrations during the intervals}
