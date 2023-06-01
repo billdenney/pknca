@@ -4,6 +4,10 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
+# PKNCA development version
+
+* The `count_conc` parameter was added to assist in data quality checking.
+
 # PKNCA 0.10.2
 
 * A minor change to `pk.calc.aucpext()` was made so that it now returns

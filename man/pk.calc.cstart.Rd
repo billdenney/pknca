@@ -24,6 +24,7 @@ Determine the concentration at the beginning of the interval
 Other NCA parameters for concentrations during the intervals: 
 \code{\link{pk.calc.clast.obs}()},
 \code{\link{pk.calc.cmax}()},
+\code{\link{pk.calc.count_conc}()},
 \code{\link{pk.calc.ctrough}()}
 }
 \concept{NCA parameters for concentrations during the intervals}
