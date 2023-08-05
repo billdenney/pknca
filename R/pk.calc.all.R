@@ -396,17 +396,15 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   # Make sure that we calculate all of the dependencies.  Do this in
   # reverse order for dependencies of dependencies.
   for (n in rev(names(all_intervals))) {
-    if (interval[[1,n]]) {
-      for (deps in all_intervals[[n]]$depends) {
-        interval[1,deps] <- TRUE
-      }
+    if (interval[[n]]) {
+      interval[all_intervals[[n]]$depends] <- TRUE
     }
   }
   # Check if units will be used
   #uses_units <- inherits(time, "units")
   # Do the calculations
   for (n in names(all_intervals)) {
-    request_to_calculate <- as.logical(interval[[n]][[1]])
+    request_to_calculate <- as.logical(interval[[n]])
     has_calculation_function <- !is.na(all_intervals[[n]]$FUN)
     is_correct_sparse_dense <- all_intervals[[n]]$sparse == sparse
     if (request_to_calculate & has_calculation_function & is_correct_sparse_dense) {

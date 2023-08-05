@@ -6,7 +6,18 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
-* The `count_conc` parameter was added to assist in data quality checking.
+* The `count_conc` NCA parameter was added to assist in data quality checking.
+* Multiple changes were made to speed up calculations.  These will mainly be
+  noticed when performing NCA on many subjects (for instance, following
+  simulations).  None of these should have external effects that users will
+  notice:
+  * Adding in dependent parameters required for requested parameters is now more
+    efficient (approx 40% time savings)
+  * Sorting interval dependencies happens less often (approx 5% time savings)
+  * Determining if a parameter is needed for calculation when looking across all
+    parameters is more efficient (negligible time savings)
+* The `depends` argument to `add.interval.col()` must either be NULL or a
+  character vector.
 
 # PKNCA 0.10.2
 

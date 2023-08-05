@@ -687,7 +687,7 @@ add.interval.col("mrt.last",
                  pretty_name="MRT (based on AUClast)",
                  desc="The mean residence time to the last observed concentration above the LOQ",
                  formalsmap=list(auc="auclast", aumc="aumclast"),
-                 depends=list("auclast", "aumclast"))
+                 depends=c("auclast", "aumclast"))
 PKNCA.set.summary(
   name="mrt.last",
   description="geometric mean and geometric coefficient of variation",
@@ -741,7 +741,7 @@ add.interval.col("mrt.iv.last",
                  pretty_name="MRT (for IV dosing, based on AUClast)",
                  desc="The mean residence time to the last observed concentration above the LOQ correcting for dosing duration",
                  formalsmap=list(auc="auclast", aumc="aumclast"),
-                 depends=list("auclast", "aumclast"))
+                 depends=c("auclast", "aumclast"))
 PKNCA.set.summary(
   name="mrt.iv.last",
   description="geometric mean and geometric coefficient of variation",
