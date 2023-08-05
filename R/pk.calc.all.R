@@ -396,10 +396,8 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   # Make sure that we calculate all of the dependencies.  Do this in
   # reverse order for dependencies of dependencies.
   for (n in rev(names(all_intervals))) {
-    if (interval[[1,n]]) {
-      for (deps in all_intervals[[n]]$depends) {
-        interval[1,deps] <- TRUE
-      }
+    if (interval[[n]]) {
+      interval[all_intervals[[n]]$depends] <- TRUE
     }
   }
   # Check if units will be used

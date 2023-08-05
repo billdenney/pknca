@@ -11,6 +11,8 @@ the dosing including dose amount and route.
   noticed when performing NCA on many subjects (for instance, following
   simulations).  None of these should have external effects that users will
   notice:
+  * Adding in dependent parameters required for requested parameters is now more
+    efficient (approx 40% time savings)
   * Sorting interval dependencies happens less often (approx 5% time savings)
 
 # PKNCA 0.10.2
