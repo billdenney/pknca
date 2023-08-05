@@ -6,7 +6,12 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
-* The `count_conc` parameter was added to assist in data quality checking.
+* The `count_conc` NCA parameter was added to assist in data quality checking.
+* Multiple changes were made to speed up calculations.  These will mainly be
+  noticed when performing NCA on many subjects (for instance, following
+  simulations).  None of these should have external effects that users will
+  notice:
+  * Sorting interval dependencies happens less often (approx 5% time savings)
 
 # PKNCA 0.10.2
 

@@ -170,27 +170,17 @@ add.interval.col <- function(name,
   assign("interval.cols", current, envir=.PKNCAEnv)
 }
 
-# Add the start and end interval columns
-add.interval.col("start",
-  FUN = NA,
-  values = as.numeric,
-  unit_type="time",
-  pretty_name="Interval Start",
-  desc = "Starting time of the interval"
-)
-add.interval.col("end",
-  FUN = NA,
-  values = as.numeric,
-  unit_type="time",
-  pretty_name="Interval End",
-  desc = "Ending time of the interval (potentially infinity)"
-)
-
 #' Sort the interval columns by dependencies.
 #'
 #' Columns are always to the right of columns that they depend on.
 sort.interval.cols <- function() {
   current <- get("interval.cols", envir=.PKNCAEnv)
+  # Only sort if necessary
+  sort_order <- get0("interval.cols_sorted", envir=.PKNCAEnv)
+  if (identical(sort_order, names(current))) {
+    # It is already sorted
+    return(sort_order)
+  }
   # Build a dependency tree
   myorder <- rep(NA, length(current))
   names(myorder) <- names(current)
@@ -221,6 +211,7 @@ sort.interval.cols <- function() {
     }
   }
   current <- current[names(sort(myorder))]
+  assign("interval.cols_sorted", names(current), envir=.PKNCAEnv)
   assign("interval.cols", current, envir=.PKNCAEnv)
   invisible(myorder)
 }
@@ -238,3 +229,21 @@ get.interval.cols <- function() {
   sort.interval.cols()
   get("interval.cols", envir=.PKNCAEnv)
 }
+
+# Add the start and end interval columns
+add.interval.col(
+  "start",
+  FUN = NA,
+  values = as.numeric,
+  unit_type="time",
+  pretty_name="Interval Start",
+  desc = "Starting time of the interval"
+)
+add.interval.col(
+  "end",
+  FUN = NA,
+  values = as.numeric,
+  unit_type="time",
+  pretty_name="Interval End",
+  desc = "Ending time of the interval (potentially infinity)"
+)
