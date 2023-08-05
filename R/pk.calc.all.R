@@ -404,7 +404,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   #uses_units <- inherits(time, "units")
   # Do the calculations
   for (n in names(all_intervals)) {
-    request_to_calculate <- as.logical(interval[[n]][[1]])
+    request_to_calculate <- as.logical(interval[[n]])
     has_calculation_function <- !is.na(all_intervals[[n]]$FUN)
     is_correct_sparse_dense <- all_intervals[[n]]$sparse == sparse
     if (request_to_calculate & has_calculation_function & is_correct_sparse_dense) {

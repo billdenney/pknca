@@ -14,6 +14,10 @@ the dosing including dose amount and route.
   * Adding in dependent parameters required for requested parameters is now more
     efficient (approx 40% time savings)
   * Sorting interval dependencies happens less often (approx 5% time savings)
+  * Determining if a parameter is needed for calculation when looking across all
+    parameters is more efficient (negligible time savings)
+* The `depends` argument to `add.interval.col()` must either be NULL or a
+  character vector.
 
 # PKNCA 0.10.2
 
