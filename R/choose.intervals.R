@@ -13,7 +13,7 @@
 #'   \item If there are samples \eqn{> \tau} after the last dose,
 #'         calculate the half life after the last dose.
 #'  }
-#' 
+#'
 #' @param time.conc Time of concentration measurement
 #' @param time.dosing Time of dosing
 #' @param options List of changes to the default
@@ -199,4 +199,26 @@ find.tau <- function(x, na.action=stats::na.omit,
     }
   }
   ret
+}
+
+#' Select typical parameters for calculation in an interval
+#'
+#' @param start,end The start and end times for the interval
+#' @param route One of
+interval_selector <- function(start, end, route, duration, single_ss, matrix) {
+  checkmate::assert_number(start, null.ok = FALSE)
+  checkmate::assert_number(end, null.ok = FALSE)
+  checkmate::assert_choice(route, choices = c("extravascular", "IV", "IV bolus", "IV infusion", "IV continuous infusion"))
+  is_extravascular <- route == "extravascular"
+  is_intravascular <- !is_extravascular
+  if (is_extravascular & !missing(duration)) {
+    cli::cli_warn("'duration' is ignored with \"extravascular\" 'route'")
+  }
+  if (is_intravascular) {
+    checkmate::assert_number(duration, lower = 0, na.ok = FALSE, null.ok = FALSE)
+  }
+
+  is_bolus <- is_extravascular | duration == 0
+  is_short_infusion <- is_intravascular & duration < end
+  is_continuous_infusion <- is_intravascular & duration >= end
 }
