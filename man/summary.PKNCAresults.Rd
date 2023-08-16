@@ -8,7 +8,7 @@
   object,
   ...,
   drop.group = object$data$conc$columns$subject,
-  summarize.n.per.group = TRUE,
+  summarize.n.per.group = NA,
   not.requested.string = ".",
   not.calculated.string = "NC",
   pretty_names = NULL
@@ -22,9 +22,10 @@
 \item{drop.group}{Which group(s) should be dropped from the formula?}
 
 \item{summarize.n.per.group}{Should a column for \code{N} be added
-(\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of
-parameter results for any parameter; if no parameters are requested for a
-group, then \code{N} will be \code{NA}.}
+(\code{TRUE} or \code{FALSE})?  \code{NA} means to automatically detect
+adding \code{N} if the data has a subject column indicated.  Note that
+\code{N} is maximum number of parameter results for any parameter; if no
+parameters are requested for a group, then \code{N} will be \code{NA}.}
 
 \item{not.requested.string}{A character string to use when a parameter
 summary was not requested for a parameter within an interval.}
