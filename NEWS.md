@@ -9,6 +9,9 @@ the dosing including dose amount and route.
 * The parameter `vd` was removed (it was not specific like `vz` or `vss`, and it
   was effectively a duplicate of `vz`).  Use `vz`, instead.
 * The `count_conc` NCA parameter was added to assist in data quality checking.
+* Subject count ("N") previously counted the number of rows of data, but in
+  unusual circumstances, the number of subjects in an NCA result could be fewer
+  than the number of rows.  Now the number of subjects is counted (fix #223).
 
 ## Changes under the hood
 
