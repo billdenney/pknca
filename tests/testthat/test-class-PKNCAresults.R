@@ -312,7 +312,11 @@ test_that("PKNCAresults summary counts N correctly", {
 
   # Testing the summarization
   mysummary_two_row <- summary(myresult)
-  mysummary_one_row <- suppressWarnings(summary(myresult, drop.group = c("ID", "end")))
+  expect_warning(expect_warning(
+    mysummary_one_row <- summary(myresult, drop.group = c("ID", "end")),
+    "Some subjects may have more than one result for cmax"),
+    "drop.group including start or end may result in incorrect groupings"
+  )
   expect_equal(mysummary_two_row$N, c("2", "2"))
   expect_equal(mysummary_one_row$N, "2")
 })

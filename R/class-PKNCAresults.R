@@ -260,7 +260,14 @@ summary.PKNCAresults <- function(object, ...,
           warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
         } else {
           if (summarize.n.per.group) {
-            ret$N[row_idx] <- max(ret$N[row_idx], nrow(current_data), na.rm=TRUE)
+            subject_col <- object$data$conc$columns$subject
+            n_subjects <- length(unique(current_data[[subject_col]]))
+            if (n_subjects < nrow(current_data)) {
+              warning("Some subjects may have more than one result for ", current_parameter)
+            }
+            # max() because the summary table provides the N for the full row, not
+            # for a single parameter.
+            ret$N[row_idx] <- max(ret$N[row_idx], n_subjects, na.rm=TRUE)
           }
           # Calculation is required
           if (is.null(summary_instructions[[current_parameter]])) {
