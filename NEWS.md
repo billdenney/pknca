@@ -6,7 +6,12 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
+* The parameter `vd` was removed (it was not specific like `vz` or `vss`, and it
+  was effectively a duplicate of `vz`).  Use `vz`, instead.
 * The `count_conc` NCA parameter was added to assist in data quality checking.
+
+## Changes under the hood
+
 * Multiple changes were made to speed up calculations.  These will mainly be
   noticed when performing NCA on many subjects (for instance, following
   simulations).  None of these should have external effects that users will
@@ -18,6 +23,8 @@ the dosing including dose amount and route.
     parameters is more efficient (negligible time savings)
 * The `depends` argument to `add.interval.col()` must either be NULL or a
   character vector.
+* The AIC.list() function is no longer exported (it was never intended to be an
+  external function).
 
 # PKNCA 0.10.2
 

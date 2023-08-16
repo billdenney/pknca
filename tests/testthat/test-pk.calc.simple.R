@@ -353,29 +353,6 @@ test_that("pk.calc.vss and its wrappers", {
   expect_equal(pk.calc.vss(1, 2), 2)
 })
 
-test_that("pk.calc.vd and its wrappers", {
-  expect_equal(pk.calc.vd(1, 2, 3), 1/6,
-               info="Normal Vd calculation works")
-  expect_equal(pk.calc.vd(NA, 2, 3), NA_integer_,
-               info="Vd calculation returns NA when dose is NA")
-  expect_equal(pk.calc.vd(1, NA, 3), NA_integer_,
-               info="Vd calculation returns NA when aucinf is NA")
-  expect_equal(pk.calc.vd(1, 2, NA), NA_integer_,
-               info="Vd calculation returns NA when lambda.z is NA")
-
-  expect_equal(pk.calc.vd(c(1, 2), c(2, 4), c(3, 6)), c(1/6, 1/12),
-               info="Vd calculation works with three vector inputs returning a vector")
-  expect_equal(pk.calc.vd(c(1, 2), 2, 3), 0.5,
-               info="Vd calculation works with vector dose and scalar aucinf and lambda.z inputs returning a scalar with the sum of doses used.")
-
-  expect_equal(pk.calc.vd(dose=1, aucinf=0, lambda.z=1),
-               NA_real_,
-               info="aucinf<=0 becomes NA")
-  expect_equal(pk.calc.vd(dose=1, aucinf=1, lambda.z=0),
-               NA_real_,
-               info="lambda.z<=0 becomes NA")
-})
-
 test_that("pk.calc.cav", {
   expect_equal(pk.calc.cav(2, 0, 1), 2)
   expect_equal(pk.calc.cav(NA, 0, 1), NA_real_)
