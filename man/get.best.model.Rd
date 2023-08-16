@@ -2,7 +2,7 @@
 % Please edit documentation in R/AIC.list.R
 \name{get.best.model}
 \alias{get.best.model}
-\title{Extract the best model from a list of models using AIC.list.}
+\title{Extract the best model from a list of models using the AIC.}
 \usage{
 get.best.model(object, ...)
 }
@@ -12,12 +12,9 @@ get.best.model(object, ...)
 \item{\dots}{Parameters passed to AIC.list}
 }
 \value{
-The model which is assessed as best.  If more than one are
-equal, the first is chosen.
+The model which is assessed as best.  If more than one are equal, the
+  first is chosen.
 }
 \description{
-Extract the best model from a list of models using AIC.list.
-}
-\seealso{
-\code{\link{AIC.list}}
+Extract the best model from a list of models using the AIC.
 }
