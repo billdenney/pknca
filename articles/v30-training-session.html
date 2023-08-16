@@ -812,18 +812,16 @@ coefficient of variation; tmax: median and range; half.life: arithmetic
 mean and standard deviation</caption>
 <colgroup>
 <col width="9%">
-<col width="6%">
-<col width="4%">
-<col width="13%">
-<col width="13%">
-<col width="22%">
-<col width="13%">
+<col width="7%">
 <col width="14%">
+<col width="14%">
+<col width="24%">
+<col width="14%">
+<col width="15%">
 </colgroup>
 <thead><tr class="header">
 <th align="center">start</th>
 <th align="center">end</th>
-<th align="center">N</th>
 <th align="center">auclast</th>
 <th align="center">cmax</th>
 <th align="center">tmax</th>
@@ -834,7 +832,6 @@ mean and standard deviation</caption>
 <tr class="odd">
 <td align="center">0</td>
 <td align="center">24</td>
-<td align="center">1</td>
 <td align="center">92.4 [NC]</td>
 <td align="center">.</td>
 <td align="center">.</td>
@@ -844,7 +841,6 @@ mean and standard deviation</caption>
 <tr class="even">
 <td align="center">0</td>
 <td align="center">Inf</td>
-<td align="center">1</td>
 <td align="center">.</td>
 <td align="center">10.5 [NC]</td>
 <td align="center">1.12 [1.12, 1.12]</td>
@@ -1452,8 +1448,8 @@ included.</p>
 <span><span class="va">o_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span>, intervals<span class="op">=</span><span class="va">d_intervals</span><span class="op">)</span></span>
 <span><span class="va">o_nca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  start end N        ae</span></span>
-<span><span class="co">##      0  24 1 1300 [NC]</span></span>
+<pre><code><span><span class="co">##  start end        ae</span></span>
+<span><span class="co">##      0  24 1300 [NC]</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Caption: ae: geometric mean and geometric coefficient of variation</span></span></code></pre>
 </div>
@@ -1618,14 +1614,14 @@ dependent on an excluded parameter will be excluded.</p>
 summaries.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  start end N aucinf.obs</span></span>
-<span><span class="co">##      0 Inf 1 0.721 [NC]</span></span>
+<pre><code><span><span class="co">##  start end aucinf.obs</span></span>
+<span><span class="co">##      0 Inf 0.721 [NC]</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Caption: aucinf.obs: geometric mean and geometric coefficient of variation</span></span></code></pre>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca_excluded</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  start end N aucinf.obs</span></span>
-<span><span class="co">##      0 Inf 1         NC</span></span>
+<pre><code><span><span class="co">##  start end aucinf.obs</span></span>
+<span><span class="co">##      0 Inf         NC</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Caption: aucinf.obs: geometric mean and geometric coefficient of variation</span></span></code></pre>
 </div>
@@ -1737,25 +1733,22 @@ NCA results, and use <code><a href="https://rdrr.io/pkg/pander/man/pander.html" 
 table with captions.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pander</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pander/man/pander.html" class="external-link">pander</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table style="width:43%;" class="table">
+<table style="width:38%;" class="table">
 <caption>aucinf.obs: geometric mean and geometric coefficient of
 variation</caption>
 <colgroup>
 <col width="11%">
 <col width="8%">
-<col width="5%">
 <col width="18%">
 </colgroup>
 <thead><tr class="header">
 <th align="center">start</th>
 <th align="center">end</th>
-<th align="center">N</th>
 <th align="center">aucinf.obs</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td align="center">0</td>
 <td align="center">Inf</td>
-<td align="center">1</td>
 <td align="center">0.721 [NC]</td>
 </tr></tbody>
 </table>
