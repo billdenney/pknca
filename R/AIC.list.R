@@ -61,13 +61,12 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
   ret
 }
 
-#' Extract the best model from a list of models using AIC.list.
+#' Extract the best model from a list of models using the AIC.
 #'
 #' @param object the list of models
 #' @param \dots Parameters passed to AIC.list
-#' @seealso \code{\link{AIC.list}}
-#' @return The model which is assessed as best.  If more than one are
-#' equal, the first is chosen.
+#' @return The model which is assessed as best.  If more than one are equal, the
+#'   first is chosen.
 #' @export
 get.best.model <- function(object, ...) {
   object[stats::AIC(object, ...)$isBest %in% "Best Model"][[1]]
