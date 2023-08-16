@@ -857,8 +857,9 @@ PKNCA.set.summary(
 #' @param mrt the mean residence time
 #' @return the volume of distribution at steady-state
 #' @export
-pk.calc.vss <- function(cl, mrt)
+pk.calc.vss <- function(cl, mrt) {
   cl*mrt
+}
 # Add the columns to the interval specification
 add.interval.col("vss.obs",
                  FUN="pk.calc.vss",
@@ -969,68 +970,6 @@ add.interval.col("vss.md.pred",
                  depends=c("cl.last", "mrt.md.pred"))
 PKNCA.set.summary(
   name="vss.md.pred",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
-
-#' Calculate the volume of distribution (Vd) or observed volume of
-#' distribution (Vd/F)
-#'
-#' @details vd is \code{dose/(aucinf * lambda.z)}.
-#'
-#' @param dose One or more doses given during an interval
-#' @param aucinf Area under the curve to infinity (either predicted or
-#'   observed).
-#' @param lambda.z Elimination rate constant
-#' @details If \code{dose} is the same length as the other inputs, then
-#'   the output will be the same length as all of the inputs; the
-#'   function assumes that you are calculating for multiple intervals
-#'   simultaneously.  If the inputs other than \code{dose} are scalars
-#'   and \code{dose} is a vector, then the function assumes multiple
-#'   doses were given in a single interval, and the sum of the
-#'   \code{dose}s will be used for the calculation.
-#' @return The observed volume of distribution
-#' @export
-pk.calc.vd <- function(dose, aucinf, lambda.z) {
-  if (length(aucinf) == 1 &
-      length(lambda.z) == 1) {
-    dose <- sum(dose)
-  }
-  ret <- dose/(aucinf * lambda.z)
-  mask_zero <-
-    is.na(aucinf) | aucinf <= 0 |
-    is.na(lambda.z) | lambda.z <= 0
-  if (any(mask_zero)) {
-    ret[mask_zero] <- NA_real_
-  }
-  ret
-}
-# Add the columns to the interval specification
-add.interval.col("vd.obs",
-                 FUN="pk.calc.vd",
-                 values=c(FALSE, TRUE),
-                 unit_type="volume",
-                 pretty_name="Vd (based on Clast,obs)",
-                 desc="Apparent observed volume of distribution calculated with observed Clast",
-                 formalsmap=list(aucinf="aucinf.obs"),
-                 depends=c("aucinf.obs", "lambda.z"))
-PKNCA.set.summary(
-  name="vd.obs",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
-)
-add.interval.col("vd.pred",
-                 FUN="pk.calc.vd",
-                 values=c(FALSE, TRUE),
-                 unit_type="volume",
-                 pretty_name="Vd (based on Clast,pred)",
-                 desc="Apparent observed volume of distribution calculated with predicted Clast",
-                 formalsmap=list(aucinf="aucinf.pred"),
-                 depends=c("aucinf.pred", "lambda.z"))
-PKNCA.set.summary(
-  name="vd.pred",
   description="geometric mean and geometric coefficient of variation",
   point=business.geomean,
   spread=business.geocv

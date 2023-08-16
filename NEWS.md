@@ -6,6 +6,8 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
+* The parameter `vd` was removed (it was not specific like `vz` or `vss`, and it
+  was effectively a duplicate of `vz`).  Use `vz`, instead.
 * The `count_conc` NCA parameter was added to assist in data quality checking.
 
 ## Changes under the hood
