@@ -140,9 +140,10 @@ roundingSummarize <- function(x, name) {
 #'   summary was requested, but the point estimate AND spread calculations (if
 #'   applicable) returned \code{NA}.
 #' @param summarize.n.per.group Should a column for \code{N} be added
-#'   (\code{TRUE} or \code{FALSE})?  Note that \code{N} is maximum number of
-#'   parameter results for any parameter; if no parameters are requested for a
-#'   group, then \code{N} will be \code{NA}.
+#'   (\code{TRUE} or \code{FALSE})?  \code{NA} means to automatically detect
+#'   adding \code{N} if the data has a subject column indicated.  Note that
+#'   \code{N} is maximum number of parameter results for any parameter; if no
+#'   parameters are requested for a group, then \code{N} will be \code{NA}.
 #' @param pretty_names Should pretty names (easier to understand in a report) be
 #'   used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
 #'   units are used an no if units are not used.
@@ -175,7 +176,7 @@ roundingSummarize <- function(x, name) {
 #' @export
 summary.PKNCAresults <- function(object, ...,
                                  drop.group=object$data$conc$columns$subject,
-                                 summarize.n.per.group=TRUE,
+                                 summarize.n.per.group=NA,
                                  not.requested.string=".",
                                  not.calculated.string="NC",
                                  pretty_names=NULL) {
@@ -231,9 +232,19 @@ summary.PKNCAresults <- function(object, ...,
   simplified_results <-
     raw_results[raw_results$PPTESTCD %in% names(result_data_cols), , drop=FALSE]
   ret <- unique(raw_results[, group_cols, drop=FALSE])
+
+  subject_col <- object$data$conc$columns$subject
+  has_subject_col <- length(subject_col) > 0
+  if (is.na(summarize.n.per.group)) {
+    summarize.n.per.group <- has_subject_col
+  } else if (summarize.n.per.group & !has_subject_col) {
+    warning("summarize.n.per.group was requested, but no subject column exists")
+    summarize.n.per.group <- FALSE
+  }
   if (summarize.n.per.group) {
     ret$N <- NA_integer_
   }
+
   ret <- cbind(ret, result_data_cols)
   # Loop over every group that needs summarization
   for (row_idx in seq_len(nrow(ret)))
@@ -260,7 +271,13 @@ summary.PKNCAresults <- function(object, ...,
           warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
         } else {
           if (summarize.n.per.group) {
-            ret$N[row_idx] <- max(ret$N[row_idx], nrow(current_data), na.rm=TRUE)
+            n_subjects <- length(unique(current_data[[subject_col]]))
+            if (n_subjects < nrow(current_data)) {
+              warning("Some subjects may have more than one result for ", current_parameter)
+            }
+            # max() because the summary table provides the N for the full row, not
+            # for a single parameter.
+            ret$N[row_idx] <- max(ret$N[row_idx], n_subjects, na.rm=TRUE)
           }
           # Calculation is required
           if (is.null(summary_instructions[[current_parameter]])) {

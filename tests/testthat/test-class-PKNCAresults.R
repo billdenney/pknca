@@ -302,6 +302,41 @@ test_that("PKNCAresults summary", {
   )
 })
 
+test_that("PKNCAresults summary counts N correctly", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = c(24, Inf), cmax = TRUE))
+  myresult <- pk.nca(mydata)
+
+  # Testing the summarization
+  mysummary_two_row <- summary(myresult)
+  expect_warning(expect_warning(
+    mysummary_one_row <- summary(myresult, drop.group = c("ID", "end")),
+    "Some subjects may have more than one result for cmax"),
+    "drop.group including start or end may result in incorrect groupings"
+  )
+  expect_equal(mysummary_two_row$N, c("2", "2"))
+  expect_equal(mysummary_one_row$N, "2")
+
+  # No subject identifier
+  tmpconc <- generate.conc(1, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = c(24, Inf), cmax = TRUE))
+  myresult <- pk.nca(mydata)
+
+  mysummary_one_subject <- summary(myresult)
+  expect_false("N" %in% names(mysummary_one_subject))
+  expect_warning(
+    mysummary_one_subject_askn <- summary(myresult, summarize.n.per.group = TRUE),
+    "summarize.n.per.group was requested, but no subject column exists"
+  )
+  expect_false("N" %in% names(mysummary_one_subject_askn))
+})
+
 test_that("dropping `start` and `end` from groups is allowed with a warning.", {
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
