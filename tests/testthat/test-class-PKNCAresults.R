@@ -302,6 +302,21 @@ test_that("PKNCAresults summary", {
   )
 })
 
+test_that("PKNCAresults summary counts N correctly", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = c(24, Inf), cmax = TRUE))
+  myresult <- pk.nca(mydata)
+
+  # Testing the summarization
+  mysummary_two_row <- summary(myresult)
+  mysummary_one_row <- suppressWarnings(summary(myresult, drop.group = c("ID", "end")))
+  expect_equal(mysummary_two_row$N, c("2", "2"))
+  expect_equal(mysummary_one_row$N, "2")
+})
+
 test_that("dropping `start` and `end` from groups is allowed with a warning.", {
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
