@@ -268,7 +268,7 @@ selected based on the <code>single.dose.aucs setting</code> in
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_obj_automatic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="../reference/PKNCA.options.html">PKNCA.options</a></span><span class="op">(</span><span class="st">"single.dose.aucs"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
 <col width="0%">
 <col width="0%">
@@ -346,8 +346,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <col width="1%">
 <col width="0%">
 <col width="1%">
-<col width="0%">
-<col width="0%">
 <col width="0%">
 <col width="0%">
 <col width="0%">
@@ -480,8 +478,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <th align="left">vss.iv.pred</th>
 <th align="left">vss.md.obs</th>
 <th align="left">vss.md.pred</th>
-<th align="left">vd.obs</th>
-<th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
 <th align="left">thalf.eff.iv.obs</th>
@@ -510,8 +506,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -739,8 +733,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 </tr>
 </tbody>
 </table>
@@ -793,64 +785,14 @@ selected based on the <code>single.dose.aucs setting</code> in
 <col width="0%">
 <col width="0%">
 <col width="1%">
-<col width="0%">
 <col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="0%">
-<col width="1%">
-<col width="0%">
-<col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="0%">
-<col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="1%">
-<col width="1%">
-<col width="1%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
 <col width="1%">
 <col width="1%">
 <col width="1%">
 <col width="1%">
 <col width="0%">
 <col width="0%">
-<col width="0%">
-<col width="0%">
-<col width="0%">
+<col width="1%">
 <col width="0%">
 <col width="1%">
 <col width="1%">
@@ -861,6 +803,54 @@ selected based on the <code>single.dose.aucs setting</code> in
 <col width="0%">
 <col width="0%">
 <col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
+<col width="1%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
+<col width="1%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
 <col width="1%">
 <col width="0%">
 <col width="0%">
@@ -959,8 +949,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <th align="left">vss.iv.pred</th>
 <th align="left">vss.md.obs</th>
 <th align="left">vss.md.pred</th>
-<th align="left">vd.obs</th>
-<th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
 <th align="left">thalf.eff.iv.obs</th>
@@ -1101,8 +1089,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">1</td>
 </tr>
 <tr class="even">
@@ -1220,16 +1206,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1458,8 +1440,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">2</td>
 </tr>
 <tr class="odd">
@@ -1577,8 +1557,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">3</td>
 </tr>
 <tr class="even">
@@ -1696,16 +1674,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">3</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -1934,8 +1908,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">4</td>
 </tr>
 <tr class="odd">
@@ -2053,8 +2025,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">5</td>
 </tr>
 <tr class="even">
@@ -2172,16 +2142,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">5</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2410,8 +2376,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">6</td>
 </tr>
 <tr class="odd">
@@ -2529,8 +2493,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">7</td>
 </tr>
 <tr class="even">
@@ -2648,16 +2610,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">7</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -2886,8 +2844,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">8</td>
 </tr>
 <tr class="odd">
@@ -3005,8 +2961,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">9</td>
 </tr>
 <tr class="even">
@@ -3124,16 +3078,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">9</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3362,16 +3312,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">10</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3600,16 +3546,12 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">11</td>
 </tr>
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">24</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3787,8 +3729,6 @@ selected based on the <code>single.dose.aucs setting</code> in
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -3865,7 +3805,7 @@ you do not have to specify it in the parameters requested.</p>
 <span><span class="va">data_obj_manual</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span>,</span>
 <span>                             intervals<span class="op">=</span><span class="va">intervals_manual</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">data_obj_manual</span><span class="op">$</span><span class="va">intervals</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="0%">
 <col width="0%">
@@ -3943,8 +3883,6 @@ you do not have to specify it in the parameters requested.</p>
 <col width="1%">
 <col width="0%">
 <col width="1%">
-<col width="0%">
-<col width="0%">
 <col width="0%">
 <col width="0%">
 <col width="0%">
@@ -4077,8 +4015,6 @@ you do not have to specify it in the parameters requested.</p>
 <th align="left">vss.iv.pred</th>
 <th align="left">vss.md.obs</th>
 <th align="left">vss.md.pred</th>
-<th align="left">vd.obs</th>
-<th align="left">vd.pred</th>
 <th align="left">thalf.eff.obs</th>
 <th align="left">thalf.eff.pred</th>
 <th align="left">thalf.eff.iv.obs</th>
@@ -4166,8 +4102,6 @@ you do not have to specify it in the parameters requested.</p>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
@@ -4561,18 +4495,18 @@ not to calculate anything that was not requested.</p>
 <span><span class="co">##   vz.obs vz.pred vss.obs vss.pred vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred</span></span>
 <span><span class="co">## 1  FALSE   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE</span></span>
 <span><span class="co">## 2  FALSE   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE</span></span>
-<span><span class="co">##   vd.obs vd.pred thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs</span></span>
-<span><span class="co">## 1  FALSE   FALSE         FALSE          FALSE            FALSE</span></span>
-<span><span class="co">## 2  FALSE   FALSE         FALSE          FALSE            FALSE</span></span>
-<span><span class="co">##   thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs kel.iv.pred auclast.dn</span></span>
-<span><span class="co">## 1             FALSE   FALSE    FALSE      FALSE       FALSE      FALSE</span></span>
-<span><span class="co">## 2             FALSE   FALSE    FALSE      FALSE       FALSE      FALSE</span></span>
-<span><span class="co">##   aucall.dn aucinf.obs.dn aucinf.pred.dn aumclast.dn aumcall.dn aumcinf.obs.dn</span></span>
-<span><span class="co">## 1     FALSE         FALSE          FALSE       FALSE      FALSE          FALSE</span></span>
-<span><span class="co">## 2     FALSE         FALSE          FALSE       FALSE      FALSE          FALSE</span></span>
-<span><span class="co">##   aumcinf.pred.dn cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn</span></span>
-<span><span class="co">## 1           FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
-<span><span class="co">## 2           FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE</span></span></code></pre>
+<span><span class="co">##   thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs</span></span>
+<span><span class="co">## 1         FALSE          FALSE            FALSE             FALSE   FALSE</span></span>
+<span><span class="co">## 2         FALSE          FALSE            FALSE             FALSE   FALSE</span></span>
+<span><span class="co">##   kel.pred kel.iv.obs kel.iv.pred auclast.dn aucall.dn aucinf.obs.dn</span></span>
+<span><span class="co">## 1    FALSE      FALSE       FALSE      FALSE     FALSE         FALSE</span></span>
+<span><span class="co">## 2    FALSE      FALSE       FALSE      FALSE     FALSE         FALSE</span></span>
+<span><span class="co">##   aucinf.pred.dn aumclast.dn aumcall.dn aumcinf.obs.dn aumcinf.pred.dn cmax.dn</span></span>
+<span><span class="co">## 1          FALSE       FALSE      FALSE          FALSE           FALSE   FALSE</span></span>
+<span><span class="co">## 2          FALSE       FALSE      FALSE          FALSE           FALSE   FALSE</span></span>
+<span><span class="co">##   cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn</span></span>
+<span><span class="co">## 1   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
+<span><span class="co">## 2   FALSE        FALSE         FALSE  FALSE      FALSE</span></span></code></pre>
 <p>After the data is ready, the calculations and summary can
 progress.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -4712,18 +4646,18 @@ progress.</p>
 <span><span class="co">##   vz.obs vz.pred vss.obs vss.pred vss.iv.obs vss.iv.pred vss.md.obs vss.md.pred</span></span>
 <span><span class="co">## 1  FALSE   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE</span></span>
 <span><span class="co">## 2  FALSE   FALSE   FALSE    FALSE      FALSE       FALSE      FALSE       FALSE</span></span>
-<span><span class="co">##   vd.obs vd.pred thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs</span></span>
-<span><span class="co">## 1  FALSE   FALSE         FALSE          FALSE            FALSE</span></span>
-<span><span class="co">## 2  FALSE   FALSE         FALSE          FALSE            FALSE</span></span>
-<span><span class="co">##   thalf.eff.iv.pred kel.obs kel.pred kel.iv.obs kel.iv.pred auclast.dn</span></span>
-<span><span class="co">## 1             FALSE   FALSE    FALSE      FALSE       FALSE      FALSE</span></span>
-<span><span class="co">## 2             FALSE   FALSE    FALSE      FALSE       FALSE      FALSE</span></span>
-<span><span class="co">##   aucall.dn aucinf.obs.dn aucinf.pred.dn aumclast.dn aumcall.dn aumcinf.obs.dn</span></span>
-<span><span class="co">## 1     FALSE         FALSE          FALSE       FALSE      FALSE          FALSE</span></span>
-<span><span class="co">## 2     FALSE         FALSE          FALSE       FALSE      FALSE          FALSE</span></span>
-<span><span class="co">##   aumcinf.pred.dn cmax.dn cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn</span></span>
-<span><span class="co">## 1           FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
-<span><span class="co">## 2           FALSE   FALSE   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
+<span><span class="co">##   thalf.eff.obs thalf.eff.pred thalf.eff.iv.obs thalf.eff.iv.pred kel.obs</span></span>
+<span><span class="co">## 1         FALSE          FALSE            FALSE             FALSE   FALSE</span></span>
+<span><span class="co">## 2         FALSE          FALSE            FALSE             FALSE   FALSE</span></span>
+<span><span class="co">##   kel.pred kel.iv.obs kel.iv.pred auclast.dn aucall.dn aucinf.obs.dn</span></span>
+<span><span class="co">## 1    FALSE      FALSE       FALSE      FALSE     FALSE         FALSE</span></span>
+<span><span class="co">## 2    FALSE      FALSE       FALSE      FALSE     FALSE         FALSE</span></span>
+<span><span class="co">##   aucinf.pred.dn aumclast.dn aumcall.dn aumcinf.obs.dn aumcinf.pred.dn cmax.dn</span></span>
+<span><span class="co">## 1          FALSE       FALSE      FALSE          FALSE           FALSE   FALSE</span></span>
+<span><span class="co">## 2          FALSE       FALSE      FALSE          FALSE           FALSE   FALSE</span></span>
+<span><span class="co">##   cmin.dn clast.obs.dn clast.pred.dn cav.dn ctrough.dn</span></span>
+<span><span class="co">## 1   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
+<span><span class="co">## 2   FALSE        FALSE         FALSE  FALSE      FALSE</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $columns</span></span>
@@ -4734,7 +4668,7 @@ progress.</p>
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "PKNCAresults" "list"        </span></span>
 <span><span class="co">## attr(,"provenance")</span></span>
-<span><span class="co">## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2023-08-05 03:52:08.605111 with R version 4.3.1 (2023-06-16).</span></span></code></pre>
+<span><span class="co">## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2023-08-16 19:13:53.327678 with R version 4.3.1 (2023-06-16).</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end  N     auclast        cmax</span></span>
