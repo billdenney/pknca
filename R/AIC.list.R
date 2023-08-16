@@ -1,16 +1,15 @@
 #' Assess the AIC for all models in a list of models
 #'
 #' @param object the list of models
-#' @param \dots parameters passed to the underlying AIC function
-#' (typically the parameter k)
-#' @param assess.best determine which model is the best (by lowest
-#' AIC)
+#' @param \dots parameters passed to the underlying AIC function (typically the
+#'   parameter k)
+#' @param assess.best determine which model is the best (by lowest AIC)
 #' @seealso \code{\link{get.best.model}}
-#' @return a data frame with row names matching the names of the list
-#' \code{x} and columns for degrees of freedom (\code{df}) and
-#' \code{AIC}.  If \code{assess.best} is true, then there will be
-#' another column \code{isBest}.
-#' @export
+#' @return a data frame with row names matching the names of the list \code{x}
+#'   and columns for degrees of freedom (\code{df}) and \code{AIC}.  If
+#'   \code{assess.best} is true, then there will be another column
+#'   \code{isBest}.
+#' @noRd
 AIC.list <- function(object, ..., assess.best=TRUE) {
   allAICs <-
     lapply(object, FUN=function(subobject, ...) {
