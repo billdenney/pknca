@@ -3,6 +3,7 @@
 \docType{package}
 \name{PKNCA}
 \alias{PKNCA}
+\alias{PKNCA-package}
 \title{Compute noncompartmental pharmacokinetics}
 \description{
 Compute pharmacokinetic (PK) noncompartmental analysis (NCA)
@@ -35,4 +36,28 @@ summary(my.results)
 # Look at a listing of results
 as.data.frame(my.results)
 }
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://billdenney.github.io/pknca/}
+  \item \url{https://github.com/billdenney/pknca}
+  \item \url{http://billdenney.github.io/pknca/}
+  \item Report bugs at \url{https://github.com/billdenney/pknca/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Bill Denney \email{wdenney@humanpredictions.com} (\href{https://orcid.org/0000-0002-5759-428X}{ORCID})
+
+Authors:
+\itemize{
+  \item Clare Buckeridge \email{clare.buckeridge@pfizer.com}
+}
+
+Other contributors:
+\itemize{
+  \item Sridhar Duvvuri [contributor]
+}
+
 }

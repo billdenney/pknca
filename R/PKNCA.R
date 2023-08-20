@@ -30,7 +30,7 @@
 #' }
 #' @docType package
 #' @name PKNCA
-NULL
+"_PACKAGE"
 
 # To work with the use of dplyr's pipe within the exclude function
 utils::globalVariables(".")
