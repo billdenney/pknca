@@ -498,7 +498,13 @@ test_that("calculate with sparse data", {
   df_result <- as.data.frame(o_nca)
   expect_true("sparse_auclast" %in% df_result$PPTESTCD)
   expect_equal(df_result$PPORRES[df_result$PPTESTCD %in% "sparse_auclast"], 39.4689)
-  expect_s3_class(summary(o_nca), "summary_PKNCAresults")
+  expect_warning(expect_warning(expect_warning(
+    sum_o_nca <- summary(o_nca),
+    regexp = "Some subjects may have more than one result for cmax"),
+    regexp = "Some subjects may have more than one result for sparse_auclast"),
+    regexp = "Some subjects may have more than one result for aucinf.obs"
+  )
+  expect_s3_class(sum_o_nca, "summary_PKNCAresults")
 
   # Mixed sparse and dense calculations when only one type is requested in an
   # interval works The example below has dense-only; sparse and dense; and and
