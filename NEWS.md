@@ -12,6 +12,8 @@ the dosing including dose amount and route.
 * Subject count ("N") previously counted the number of rows of data, but in
   unusual circumstances, the number of subjects in an NCA result could be fewer
   than the number of rows.  Now the number of subjects is counted (fix #223).
+* Extra column in the `intervals` argument to `PKNCAdata()` will no longer cause
+  an error (fix #238)
 
 ## Changes under the hood
 
