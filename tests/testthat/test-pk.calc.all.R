@@ -593,3 +593,18 @@ test_that("calculate with sparse data", {
   )
   # Correct detection of mixed doses within a sparse dose group when there are no groups
 })
+
+test_that("Unexpected interval columns do not cause an error (#238)", {
+  d_conc <-
+    data.frame(
+      ID = 1L,
+      time = 0:6,
+      conc = c(0, 0.7, 0.71, 0.85, 1, 0.76, 0.74)
+    )
+  d_dose <- data.frame(dose = 1)
+  d_intervals <- data.frame(start = 0, end = 6, cmax = TRUE, aucinf = TRUE)
+  o_conc <- PKNCAconc(d_conc, formula = conc~time|ID)
+  o_dose <- PKNCAdose(d_dose, formula = dose~.)
+  o_data <- PKNCAdata(o_conc, o_dose, intervals = d_intervals)
+  expect_s3_class(pk.nca(o_data), "PKNCAresults")
+})

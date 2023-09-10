@@ -161,8 +161,9 @@ filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE
 #'   \code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
 #' @keywords Internal
 any_sparse_dense_in_interval <- function(interval, sparse) {
-  requested <- vapply(X = interval, FUN = isTRUE, FUN.VALUE = TRUE)
   all_intervals <- get.interval.cols()
+  interval_subset <- interval[, names(interval) %in% names(all_intervals)]
+  requested <- vapply(X = interval_subset, FUN = isTRUE, FUN.VALUE = TRUE)
   # Extract if the parameters to be calculated (`names(requested[requested])`)
   # are sparse, and compare that to if the request is for sparse or dense
   any(
