@@ -2,6 +2,13 @@
 #' extrapolation of concentrations for the beginning and end of the
 #' interval.
 #'
+#' @details
+#' When `pk.calc.aucint()` needs to extrapolate using `lambda.z` (in other
+#' words, using the half-life), it will always extrapolate using the logarithmic
+#' trapezoidal rule to align with using a half-life calculation for the
+#' extrapolation.
+#'
+#'
 #' @inheritParams pk.calc.auxc
 #' @param start,end The start and end of the interval (cannot be given
 #'   if \code{interval} is given)
