@@ -113,7 +113,8 @@ pk.calc.aucint <- function(conc, time,
           extrap.method=auc.type,
           clast=clast, lambda.z=lambda.z,
           options=options,
-          ...)
+          ...
+        )
     } else {
       missing_conc <-
         interp.extrap.conc.dose(
@@ -128,7 +129,8 @@ pk.calc.aucint <- function(conc, time,
           route.dose=route,
           duration.dose=duration.dose,
           out.after=FALSE,
-          ...)
+          ...
+        )
     }
     new_data <- data.frame(conc=c(data$conc, conc_clast, missing_conc),
                            time=c(data$time, time_clast, missing_times))
@@ -162,22 +164,28 @@ pk.calc.aucint <- function(conc, time,
   # their own curves.  Or, they all trace their own curves.
   auc.type_map <-
     if (is.infinite(interval[2])) {
-      list(AUClast="AUClast",
-           AUCall="AUCall",
-           AUCinf="AUCinf")[[auc.type]]
+      list(
+        AUClast="AUClast",
+        AUCall="AUCall",
+        AUCinf="AUCinf"
+      )[[auc.type]]
     } else {
-      list(AUClast="AUClast",
-           AUCall="AUCall",
-           AUCinf="AUClast")[[auc.type]]
+      list(
+        AUClast="AUClast",
+        AUCall="AUCall",
+        AUCinf="AUClast"
+      )[[auc.type]]
     }
-  pk.calc.auc(conc=conc_interp, time=time_interp,
-              interval=interval,
-              clast=clast, lambda.z=lambda.z,
-              auc.type=auc.type_map,
-              options=options,
-              method=method,
-              ...,
-              check=FALSE)
+  pk.calc.auc(
+    conc=conc_interp, time=time_interp,
+    interval=interval,
+    clast=clast, lambda.z=lambda.z,
+    auc.type=auc.type_map,
+    options=options,
+    method=method,
+    ...,
+    check=FALSE
+  )
 }
 
 #' @describeIn pk.calc.aucint
