@@ -25,6 +25,38 @@ aumcintegrate_inf <- function(conc.last, time.last, lambda.z) {
   (conc.last*time.last/lambda.z) + conc.last/(lambda.z^2)
 }
 
+#' Interpolate or extrapolate concentrations using the provided method
+#'
+#' @param conc_1,conc_2 The concentration at time1 and time2
+#' @param time_1,time_2 The time value associated with conc1 and conc2
+#' @param time_out Time when interpolation is requested
+#' @param tlast The time of the last concentration above the lower limit of
+#'   quantification (LOQ)
+#' @return The interpolated or extrapolated value using the correct method
+#' @keywords Internal
+#' @name interp_extrap_conc_method
+NULL
+
+#' @rdname interp_extrap_conc_method
+interpolate_conc_linear <- function(conc_1, conc_2, time_1, time_2, time_out) {
+  conc_1+(time_out-time_1)/(time_2-time_1)*(conc_2-conc_1)
+}
+
+#' @rdname interp_extrap_conc_method
+interpolate_conc_log <- function(conc_1, conc_2, time_1, time_2, time_out) {
+  exp(
+    log(conc_1)+
+      (time_out-time_1)/(time_2-time_1)*(log(conc_2)-log(conc_1))
+  )
+}
+
+#' @param clast The concentration at the last time above the lower LOQ
+#' @param lambda.z The elimination rate
+#' @rdname interp_extrap_conc_method
+extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
+  clast*exp(-lambda.z*(time_out - tlast))
+}
+
 #' Choose how to interpolate, extrapolate, or integrate data in each
 #' concentration interval
 #'
