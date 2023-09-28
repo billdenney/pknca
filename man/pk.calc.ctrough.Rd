@@ -11,7 +11,7 @@ pk.calc.ctrough(conc, time, end)
 
 \item{time}{Times of \code{conc} observations}
 
-\item{end}{End time of the interval}
+\item{end}{The end time of the interval}
 }
 \value{
 The concentration when \code{time == end}.  If none

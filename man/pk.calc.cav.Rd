@@ -9,9 +9,9 @@ pk.calc.cav(auclast, start, end)
 \arguments{
 \item{auclast}{The area under the curve during the interval}
 
-\item{start}{The starting time of the interval}
+\item{start}{The start time of the interval}
 
-\item{end}{The ending time of the interval}
+\item{end}{The end time of the interval}
 }
 \value{
 The Cav (average concentration during the interval)

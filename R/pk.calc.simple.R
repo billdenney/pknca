@@ -980,8 +980,7 @@ PKNCA.set.summary(
 #' @details cav is \code{auclast/(end-start)}.
 #'
 #' @param auclast The area under the curve during the interval
-#' @param start The starting time of the interval
-#' @param end The ending time of the interval
+#' @inheritParams assert_intervaltime_single
 #' @return The Cav (average concentration during the interval)
 #' @export
 pk.calc.cav <- function(auclast, start, end) {
@@ -1010,7 +1009,7 @@ PKNCA.set.summary(
 #'
 #' @param conc Observed concentrations during the interval
 #' @param time Times of \code{conc} observations
-#' @param end End time of the interval
+#' @inheritParams assert_intervaltime_single
 #' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
 #' @family NCA parameters for concentrations during the intervals
@@ -1046,7 +1045,7 @@ PKNCA.set.summary(
 #'
 #' @param conc Observed concentrations during the interval
 #' @param time Times of \code{conc} observations
-#' @param start Start time of the interval
+#' @inheritParams assert_intervaltime_single
 #' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
 #' @family NCA parameters for concentrations during the intervals

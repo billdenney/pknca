@@ -15,8 +15,7 @@
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement (must be monotonically
 #'   increasing and the same length as the concentration data)
-#' @param interval Numeric vector of two numbers for the start and end time of
-#'   integration
+#' @inheritParams assert_intervaltime_single
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.
 #' @param clast,clast.obs,clast.pred The last concentration above the limit of
@@ -112,16 +111,10 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     return(structure(0, exclude="DO NOT EXCLUDE"))
   }
   auc.type <- match.arg(auc.type)
-  if (interval[1] >= interval[2])
-    stop("The AUC interval must be increasing")
-  if (auc.type %in% "AUCinf" &
-        is.finite(interval[2]))
+  interval <- assert_intervaltime_single(interval = interval)
+  if (auc.type %in% "AUCinf" & is.finite(interval[2])) {
     warning("Requesting AUCinf when the end of the interval is not Inf")
-  # if (requireNamespace("units", quietly=TRUE)) {
-  #   if (inherits(time, "units") & !inherits(interval, "units")) {
-  #     interval <- units::set_units(interval, units(time), mode="standard")
-  #   }
-  # }
+  }
 
   # Subset the data to the range of interest ####
   interval_start <- interval[1]

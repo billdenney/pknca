@@ -1,9 +1,10 @@
 test_that("pk.calc.auxc", {
   # Verify input checks
 
-  expect_error(pk.calc.auxc(conc=1:2, time=0:1, interval=2:1, method="linear"),
-               regexp="The AUC interval must be increasing",
-               info="Start and end of the interval must be in the correct order")
+  expect_error(
+    pk.calc.auxc(conc=1:2, time=0:1, interval=2:1, method="linear"),
+    regexp="Assertion on 'interval' failed: Must be sorted."
+  )
   expect_warning(pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
                               method="linear"),
                  regexp="Requesting an AUC range starting \\(1\\) before the first measurement \\(2\\) is not allowed",

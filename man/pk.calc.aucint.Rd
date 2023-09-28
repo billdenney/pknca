@@ -83,8 +83,9 @@ increasing and the same length as the concentration data)}
 \item{interval}{Numeric vector of two numbers for the start and end time of
 integration}
 
-\item{start, end}{The start and end of the interval (cannot be given
-if \code{interval} is given)}
+\item{start}{The start time of the interval}
+
+\item{end}{The end time of the interval}
 
 \item{clast, clast.obs, clast.pred}{The last concentration above the
 limit of quantification; this is used for AUCinf calculations.  If

@@ -27,12 +27,14 @@ PKNCA_impute_method_start_predose(
 \item{time}{Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)}
 
-\item{start, end}{The start and end of the interval}
+\item{start}{The start time of the interval}
 
 \item{...}{ignored}
 
 \item{options}{List of changes to the default \code{\link{PKNCA.options}} for
 calculations.}
+
+\item{end}{The end time of the interval}
 
 \item{max_shift}{The maximum amount of time to shift a concentration forward
 (defaults to 5\% of the interval duration, i.e. \code{0.05*(end - start)})}

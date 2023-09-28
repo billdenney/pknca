@@ -1,92 +1,75 @@
 test_that("AUCint gives errors appropriately", {
-  expect_error(pk.calc.aucint(conc = 1, time = 1),
-    regexp = "If interval is not given, start and end must be given.",
-    fixed = TRUE,
-    info = "Neither start nor end is given."
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1),
+    regexp = "One of `interval` or `start` and `end` must be given"
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, end = 1),
-    regexp = "If interval is not given, start and end must be given.",
-    fixed = TRUE,
-    info = "start is not given."
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, end = 1),
+    regexp = "Both `start` and `end` or neither must be given"
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = 1),
-    regexp = "If interval is not given, start and end must be given.",
-    fixed = TRUE,
-    info = "end is not given."
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, start = 1),
+    regexp = "Both `start` and `end` or neither must be given"
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = 1:2, end = 1),
-    regexp = "start must be a scalar",
-    fixed = TRUE
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, start = 1:2, end = 1),
+    regexp = "Assertion on 'start' failed: Must have length 1."
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = 1, end = 1:2),
-    regexp = "end must be a scalar",
-    fixed = TRUE
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, start = 1, end = 1:2),
+    regexp = "Assertion on 'end' failed: Must have length 1."
   )
 
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = "A", end = 1),
-    regexp = "start must be a number",
-    fixed = TRUE,
-    info = "start not a number"
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, start = "A", end = 1),
+    regexp = "Assertion on 'start' failed: Must be of type 'number', not 'character'."
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = factor("A"), end = 1),
-    regexp = "start must be a number",
-    fixed = TRUE,
-    info = "start not a number (factor)"
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, start = factor("A"), end = 1),
+    regexp = "Assertion on 'start' failed: Must be of type 'number', not 'factor'."
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = Inf, end = 1),
-    regexp = "interval beginning (or start) must be finite",
-    fixed = TRUE,
-    info = "start not finite"
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, start = Inf, end = 1),
+    regexp = "Assertion on 'start' failed: Must be finite."
   )
 
-  expect_error(pk.calc.aucint(conc = 1, time = 1, end = "A", start = 1),
-    regexp = "end must be a number",
-    fixed = TRUE,
-    info = "end not a number"
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, end = "A", start = 1),
+    regexp = "Assertion on 'end' failed: Must be of type 'number', not 'character'."
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, end = factor("A"), start = 1),
-    regexp = "end must be a number",
-    fixed = TRUE,
-    info = "end not a number (factor)"
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, end = factor("A"), start = 1),
+    regexp = "Assertion on 'end' failed: Must be of type 'number', not 'factor'."
   )
 
-  expect_error(pk.calc.aucint(conc = 1, time = 1, start = 1, end = 2, interval = c(1, 2)),
-    regexp = "start and end cannot be given if interval is given",
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = 1:3),
+    regexp = "Assertion on 'interval' failed: Must have length 2, but has length 3."
+  )
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = c("A", "B")),
+    regexp = "Assertion on 'interval' failed: Must be of type 'numeric', not 'character'."
+  )
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = factor(c("A", "B"))),
+    regexp = "Assertion on 'interval' failed: Must be of type 'numeric', not 'factor'."
+  )
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = c(Inf, 1)),
+    regexp = "Assertion on 'interval' failed: Must be sorted."
+  )
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = c(-Inf, 1)),
+    regexp = "Assertion on 'interval[1]' failed: Must be finite.",
     fixed = TRUE
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = 1:3),
-    regexp = "interval must be a vector with 2 elements",
-    fixed = TRUE
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = c(1, 1)),
+    regexp = "Assertion on 'interval' failed: Contains duplicated values, position 2."
   )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = c("A", "B")),
-    regexp = "interval must be numeric",
-    fixed = TRUE,
-    info = "interval not a number"
-  )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = factor(c("A", "B"))),
-    regexp = "interval must be numeric",
-    fixed = TRUE,
-    info = "interval not a number (factor)"
-  )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = c(Inf, 1)),
-    regexp = "interval beginning (or start) must be finite",
-    fixed = TRUE,
-    info = "interval not finite (start)"
-  )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = c(-Inf, 1)),
-    regexp = "interval beginning (or start) must be finite",
-    fixed = TRUE,
-    info = "interval not finite (start)"
-  )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = c(1, 1)),
-    regexp = "interval start must be before interval end.",
-    fixed = TRUE,
-    info = "interval must be increasing (equal)"
-  )
-  expect_error(pk.calc.aucint(conc = 1, time = 1, interval = c(1, 0)),
-    regexp = "interval start must be before interval end.",
-    fixed = TRUE,
-    info = "interval must be increasing (decreasing)"
+  expect_error(
+    pk.calc.aucint(conc = 1, time = 1, interval = c(1, 0)),
+    regexp = "Assertion on 'interval' failed: Must be sorted."
   )
 })
 
