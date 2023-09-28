@@ -164,11 +164,13 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                          extrap.method=auc.type,
                          check=FALSE)
     # !mask.end because we may be replacing an entry that is a 0.
-    data <-
-      rbind(
-        data[!(data$time %in% interval_end), ],
-        data.frame(conc=conc_end, time=interval_end)
-      )
+    if (!is.na(conc_end)) {
+      data <-
+        rbind(
+          data[!(data$time %in% interval_end), ],
+          data.frame(conc=conc_end, time=interval_end)
+        )
+    }
   }
   # Subset the conc and time data to the interval of interest
   data <- data[interval_start <= data$time & data$time <= interval_end, , drop=FALSE]
@@ -183,66 +185,44 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     # still true)
     stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
   } else {
-
+    integrate_method <- choose_interval_method(conc = data$conc, time = data$time, tlast = tlast, method = method, auc.type = auc.type)
+    integrate_method_within <- integrate_method[-length(integrate_method)]
+    integrate_method_extrap <- integrate_method[length(integrate_method)]
+    idx_1 <- seq_len(nrow(data) - 1)
+    idx_1_linear <- idx_1[integrate_method_within == "linear"]
+    idx_1_log <- idx_1[integrate_method_within == "log"]
     # Compute the AUxC ####
-    # Compute it in linear space from the start to Tlast
-    if (auc.type %in% "AUCall" &
-        tlast != max(data$time)) {
-      # Include the first point after tlast if it exists and we are
-      # looking for AUCall
-      idx_1 <- seq_len(sum(data$time <= tlast))
-    } else {
-      idx_1 <- seq_len(sum(data$time <= tlast) - 1)
-    }
-    idx_2 <- idx_1 + 1
-    if (method %in% "linear") {
-      ret <- fun.linear(data$conc[idx_1], data$conc[idx_2],
-                        data$time[idx_1], data$time[idx_2])
-    } else if (method %in% "lin up/log down") {
-      # Compute log down if required (and if the later point is not 0)
-      mask_down <- (data$conc[idx_2] < data$conc[idx_1] &
-                      data$conc[idx_2] != 0)
-      mask_up <- !mask_down
-      idx_1_down <- idx_1[mask_down]
-      idx_2_down <- idx_2[mask_down]
-      idx_1_up <- idx_1[mask_up]
-      idx_2_up <- idx_2[mask_up]
-      ret <- rep(NA_real_, length(idx_1))
-      ret[mask_up] <-
-        fun.linear(data$conc[idx_1_up], data$conc[idx_2_up],
-                   data$time[idx_1_up], data$time[idx_2_up])
-      ret[mask_down] <-
-        fun.log(data$conc[idx_1_down], data$conc[idx_2_down],
-                data$time[idx_1_down], data$time[idx_2_down])
-    } else if (!(method %in% "linear")) { # nocov
-      # This should have already been caught, but the test exists to double-check
-      stop("Invalid AUC integration method (please report a bug)") # nocov
-    }
-    if (auc.type %in% "AUCinf") {
+    ret <-
+      c(
+        fun.linear(data$conc[idx_1_linear], data$conc[idx_1_linear + 1],
+                   data$time[idx_1_linear], data$time[idx_1_linear + 1]),
+        fun.log(data$conc[idx_1_log], data$conc[idx_1_log + 1],
+                data$time[idx_1_log], data$time[idx_1_log + 1])
+      )
+
+    if (integrate_method_extrap %in% "extrap_log") {
       # Whether AUCinf,obs or AUCinf,pred is calculated depends on if clast,obs
       # or clast,pred is passed in.
       ret[length(ret)+1] <- fun.inf(clast, tlast, lambda.z)
+    } else if (integrate_method_extrap != "zero") {
+      stop("Invalid integrate_method_extrap, please report a bug: ", integrate_method_extrap) # nocov
     }
     ret <- sum(ret)
   }
   ret
 }
 
-fun.auc.linear <- function(conc.1, conc.2, time.1, time.2)
-  (time.2-time.1) * (conc.2+conc.1)/2
-fun.auc.log <- function(conc.1, conc.2, time.1, time.2)
-  (time.2-time.1) * (conc.2-conc.1)/log(conc.2/conc.1)
-fun.auc.inf <- function(clast, tlast, lambda.z)
-  clast/lambda.z
-
 #' @describeIn pk.calc.auxc Compute the area under the curve
 #' @export
-pk.calc.auc <- function(conc, time, ..., options=list())
-  pk.calc.auxc(conc=conc, time=time, ...,
-               options=options,
-               fun.linear=fun.auc.linear,
-               fun.log=fun.auc.log,
-               fun.inf=fun.auc.inf)
+pk.calc.auc <- function(conc, time, ..., options=list()) {
+  pk.calc.auxc(
+    conc=conc, time=time, ...,
+    options=options,
+    fun.linear=aucintegrate_linear,
+    fun.log=aucintegrate_log,
+    fun.inf=aucintegrate_inf
+  )
+}
 
 # Note that lambda.z is set to NA for both auc.last and auc.all because all
 # interpolation should happen within given points. lambda.z should not be used,
@@ -301,18 +281,13 @@ pk.calc.auc.all <- function(conc, time, ..., options=list()) {
 
 #' @describeIn pk.calc.auxc Compute the area under the moment curve
 #' @export
-pk.calc.aumc <- function(conc, time, ..., options=list())
+pk.calc.aumc <- function(conc, time, ..., options=list()) {
   pk.calc.auxc(conc=conc, time=time, ..., options=options,
-    fun.linear=function(conc.1, conc.2, time.1, time.2) {
-      (time.2-time.1) * (conc.2*time.2+conc.1*time.1)/2
-    },
-    fun.log=function(conc.1, conc.2, time.1, time.2) {
-      ((time.2-time.1) * (conc.2*time.2-conc.1*time.1) / log(conc.2/conc.1)-
-       (time.2-time.1)^2 * (conc.2-conc.1) / (log(conc.2/conc.1)^2))
-    },
-    fun.inf=function(conc.last, time.last, lambda.z) {
-      (conc.last*time.last/lambda.z) + conc.last/(lambda.z^2)
-    })
+    fun.linear = aumcintegrate_linear,
+    fun.log = aumcintegrate_log,
+    fun.inf = aumcintegrate_inf
+  )
+}
 
 #' @describeIn pk.calc.auxc Compute the AUMClast.
 #' @export
@@ -328,8 +303,9 @@ pk.calc.aumc.last <- function(conc, time, ..., options=list()) {
 #' @export
 pk.calc.aumc.inf <- function(conc, time, ..., options=list(),
                              lambda.z) {
-  if ("auc.type" %in% names(list(...)))
+  if ("auc.type" %in% names(list(...))) {
     stop("auc.type cannot be changed when calling pk.calc.aumc.inf, please use pk.calc.aumc")
+  }
   pk.calc.aumc(conc=conc, time=time, ..., options=options,
                auc.type="AUCinf",
                lambda.z=lambda.z)

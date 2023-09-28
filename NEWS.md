@@ -14,6 +14,8 @@ the dosing including dose amount and route.
   than the number of rows.  Now the number of subjects is counted (fix #223).
 * Extra column in the `intervals` argument to `PKNCAdata()` will no longer cause
   an error (fix #238)
+* An internal change was made to make AUC integration simpler and simplify the
+  ability to create new AUC integration methods
 
 ## Changes under the hood
 

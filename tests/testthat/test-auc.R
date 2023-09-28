@@ -329,7 +329,7 @@ test_that("pk.calc.auc: interpolation of times within the time interval", {
       AUCinf=1+2/log(2)+1.5+1/log(2)+1,
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5/log(2)))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
@@ -352,6 +352,7 @@ test_that("pk.calc.auc: interpolation of times within the time interval", {
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
+  }
 })
 
 test_that("pk.calc.auc: warning with beginning of interval before the beginning of time", {

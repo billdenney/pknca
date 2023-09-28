@@ -128,6 +128,12 @@ Calculate the AUC over an interval with interpolation and/or
 extrapolation of concentrations for the beginning and end of the
 interval.
 }
+\details{
+When `pk.calc.aucint()` needs to extrapolate using `lambda.z` (in other
+words, using the half-life), it will always extrapolate using the logarithmic
+trapezoidal rule to align with using a half-life calculation for the
+extrapolation.
+}
 \section{Functions}{
 \itemize{
 \item \code{pk.calc.aucint.last()}: Interpolate or extrapolate concentrations for AUClast
