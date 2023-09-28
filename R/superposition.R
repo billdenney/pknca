@@ -1,48 +1,44 @@
 #' Compute noncompartmental superposition for repeated dosing
 #'
 #' @inheritParams assert_conc_time
-#' @param dose.input The dose given to generate the \code{conc} and
-#' \code{time} inputs.  If missing, output doses will be assumed to be
-#' equal to the input dose.
+#' @param dose.input The dose given to generate the \code{conc} and \code{time}
+#'   inputs.  If missing, output doses will be assumed to be equal to the input
+#'   dose.
 #' @param tau The dosing interval
-#' @param dose.times The time of dosing within the dosing interval.
-#' The \code{min(dose.times)} must be >= 0, and the
-#' \code{max(dose.times)} must be < \code{tau}.  There may be more
-#' than one dose times given as a vector.
-#' @param dose.amount The doses given for the output.  Linear
-#' proportionality will be used from the input to output if they are
-#' not equal.  The length of dose.amount must be either 1 or matching
-#' the length of \code{dose.times}.
-#' @param n.tau The number of tau dosing intervals to simulate or
-#' \code{Inf} for steady-state.
-#' @param options The PKNCA.options to use for the calculation (passed
-#' on to subsequent functions like \code{pk.calc.half.life}).
-#' @param lambda.z The elimination rate (from the half life
-#' calculation, used to extrapolate beyond the maximum time observed).
-#' @param clast.pred To use predicted as opposed to observed Clast,
-#' either give the value for clast.pred here or set it to true (for
-#' automatic calculation from the half-life).
-#' @param tlast The time of last observed concentration above the
-#' limit of quantification.  This is calculated if not provided.
-#' @param additional.times Times to include in the final outputs in
-#' addition to the standard times (see details).  All
-#' \code{min(additional.times)} must be >= 0, and the
-#' \code{max(additional.times)} must be <= \code{tau}.
-#' @param check.blq Must the first concentration measurement be below
-#' the limit of quantification?
+#' @param dose.times The time of dosing within the dosing interval. The
+#'   \code{min(dose.times)} must be >= 0, and the \code{max(dose.times)} must be
+#'   < \code{tau}.  There may be more than one dose times given as a vector.
+#' @param dose.amount The doses given for the output.  Linear proportionality
+#'   will be used from the input to output if they are not equal.  The length of
+#'   dose.amount must be either 1 or matching the length of \code{dose.times}.
+#' @param n.tau The number of tau dosing intervals to simulate or \code{Inf} for
+#'   steady-state.
+#' @param options The PKNCA.options to use for the calculation (passed on to
+#'   subsequent functions like \code{pk.calc.half.life}).
+#' @param lambda.z The elimination rate (from the half life calculation, used to
+#'   extrapolate beyond the maximum time observed).
+#' @param clast.pred To use predicted as opposed to observed Clast, either give
+#'   the value for clast.pred here or set it to true (for automatic calculation
+#'   from the half-life).
+#' @param tlast The time of last observed concentration above the limit of
+#'   quantification.  This is calculated if not provided.
+#' @param additional.times Times to include in the final outputs in addition to
+#'   the standard times (see details).  All \code{min(additional.times)} must be
+#'   >= 0, and the \code{max(additional.times)} must be <= \code{tau}.
+#' @param check.blq Must the first concentration measurement be below the limit
+#'   of quantification?
 #' @param interp.method See \code{\link{interp.extrap.conc}}
 #' @param extrap.method See \code{\link{interp.extrap.conc}}
-#' @param steady.state.tol The tolerance for assessing if steady-state
-#' has been achieved (between 0 and 1, exclusive).
-#' @param ... Additional arguments passed to the \code{half.life}
-#' function if required to compute \code{lambda.z}.
+#' @param steady.state.tol The tolerance for assessing if steady-state has been
+#'   achieved (between 0 and 1, exclusive).
+#' @param ... Additional arguments passed to the \code{half.life} function if
+#'   required to compute \code{lambda.z}.
 #' @return A data frame with columns named "conc" and "time".
 #'
 #' @details
-#' The returned superposition times will include all of the
-#' following times: 0 (zero), \code{dose.times}, \code{time modulo tau}
-#' (shifting \code{time} for each dose time as well),
-#' \code{additional.times}, and \code{tau}.
+#' The returned superposition times will include all of the following times: 0
+#' (zero), \code{dose.times}, \code{time modulo tau} (shifting \code{time} for
+#' each dose time as well), \code{additional.times}, and \code{tau}.
 #'
 #' @seealso \code{\link{interp.extrap.conc}}
 #'
