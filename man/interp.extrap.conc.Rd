@@ -68,7 +68,7 @@ interp.extrap.conc.dose(
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{time}{Time of the concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{time.out}{Time when interpolation is requested (vector for
 \code{interp.extrap.conc()}, scalar otherwise)}

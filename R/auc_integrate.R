@@ -60,9 +60,7 @@ extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
 #' Choose how to interpolate, extrapolate, or integrate data in each
 #' concentration interval
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement (must be monotonically
-#'   increasing and the same length as the concentration data)
+#' @inheritParams assert_conc_time
 #' @param method The method for integration (either 'lin up/log down' or
 #'   'linear')
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',

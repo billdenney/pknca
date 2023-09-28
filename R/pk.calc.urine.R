@@ -2,7 +2,7 @@
 #'
 #' @details ae is \code{sum(conc*volume)}.
 #'
-#' @param conc The concentration in the sample
+#' @inheritParams assert_conc_time
 #' @param volume The volume (or mass) of the sample
 #' @param check Should the concentration and volume data be checked?
 #' @return The amount excreted during the interval

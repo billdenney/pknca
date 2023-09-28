@@ -1,7 +1,6 @@
 #' Estimate the concentration at dosing time for an IV bolus dose.
 #'
-#' @param conc The observed concentrations
-#' @param time The observed times
+#' @inheritParams assert_conc_time
 #' @param time.dose The time when dosing occurred
 #' @param method The order of methods to test (see details)
 #' @param check Check the \code{conc} and \code{time} inputs

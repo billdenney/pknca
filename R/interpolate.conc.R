@@ -9,8 +9,7 @@
 #' concentration. Of note, these functions will not extrapolate prior to the
 #' first point.
 #'
-#' @param conc Measured concentrations
-#' @param time Time of the concentration measurement
+#' @inheritParams assert_conc_time
 #' @param time.dose Time of the dose
 #' @param time.out Time when interpolation is requested (vector for
 #'   \code{interp.extrap.conc()}, scalar otherwise)

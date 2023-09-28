@@ -28,9 +28,9 @@ pk.calc.c0.method.set0(conc, time, time.dose = 0, check = TRUE)
 pk.calc.c0.method.cmin(conc, time, time.dose = 0, check = TRUE)
 }
 \arguments{
-\item{conc}{The observed concentrations}
+\item{conc}{Measured concentrations}
 
-\item{time}{The observed times}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{time.dose}{The time when dosing occurred}
 

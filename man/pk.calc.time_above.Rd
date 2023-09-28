@@ -7,10 +7,9 @@
 pk.calc.time_above(conc, time, conc_above, ..., options = list(), check = TRUE)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{conc_above}{The concentration to be above}
 

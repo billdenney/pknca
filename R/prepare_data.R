@@ -12,6 +12,7 @@
 #' @keywords Internal
 #' @noRd
 full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
+  # TODO: Rename inputs to o_conc and o_dose
   stopifnot(inherits(x=conc, what="PKNCAconc"))
   if (identical(dose, NA)) {
     message("No dose information provided, calculations requiring dose will return NA.")

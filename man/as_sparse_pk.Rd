@@ -7,10 +7,9 @@
 as_sparse_pk(conc, time, subject)
 }
 \arguments{
-\item{conc}{Concentration measurements (must be numeric, finite, and not NA)}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurements (must be numeric, finite, and
-not NA)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{subject}{Subject identifiers (may be any class; may not be null)}
 }

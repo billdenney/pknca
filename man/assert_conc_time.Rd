@@ -6,14 +6,16 @@
 \alias{assert_conc_time}
 \title{Verify that concentration measurements are valid}
 \usage{
-assert_conc(conc)
+assert_conc(conc, any_missing_conc = TRUE)
 
 assert_time(time, sorted_time = TRUE)
 
-assert_conc_time(conc, time, sorted_time = TRUE)
+assert_conc_time(conc, time, any_missing_conc = TRUE, sorted_time = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}
+
+\item{any_missing_conc}{Are any concentration values allowed to be `NA`?}
 
 \item{time}{Time of the measurement of the concentrations}
 

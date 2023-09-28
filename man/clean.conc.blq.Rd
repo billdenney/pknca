@@ -18,7 +18,7 @@ clean.conc.blq(
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{time}{Time of the concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{\dots}{Additional arguments passed to clean.conc.na}
 

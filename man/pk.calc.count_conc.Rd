@@ -7,7 +7,7 @@
 pk.calc.count_conc(conc, check = TRUE)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
 \item{check}{Run \code{\link{assert_conc}}?}
 }

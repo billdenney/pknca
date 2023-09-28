@@ -313,10 +313,9 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #' prior to running.  The only part that changes with a call to this
 #' function is the \code{conc}entration and \code{time}.
 #'
-#' @param conc,conc.group Concentration measured for the current
-#'   interval or all data for the group
-#' @param time,time.group Time of concentration measurement for the
-#'   current interval or all data for the group
+#' @inheritParams assert_conc_time
+#' @param conc.group All concentrations measured for the group
+#' @param time.group Time of all concentrations measured for the group
 #' @param volume,volume.group The volume (or mass) of the concentration
 #'   measurement for the current interval or all data for the group
 #'   (typically for urine and fecal measurements)

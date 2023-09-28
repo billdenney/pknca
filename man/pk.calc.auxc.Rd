@@ -58,10 +58,9 @@ pk.calc.aumc.inf.pred(conc, time, clast.pred, ..., options = list(), lambda.z)
 pk.calc.aumc.all(conc, time, ..., options = list())
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{interval}{Numeric vector of two numbers for the start and end time of
 integration}

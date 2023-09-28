@@ -4,8 +4,7 @@
 #' NA concentrations (and their associated times) will be removed then
 #' the BLQ values in the middle
 #'
-#' @param conc Measured concentrations
-#' @param time Time of the concentration measurement
+#' @inheritParams assert_conc_time
 #' @param \dots Additional items to add to the data frame
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
@@ -41,8 +40,7 @@ clean.conc.na <- function(conc, time, ...,
 #' Handle BLQ values in the concentration measurements as requested by
 #' the user.
 #'
-#' @param conc Measured concentrations
-#' @param time Time of the concentration measurement
+#' @inheritParams assert_conc_time
 #' @param \dots Additional arguments passed to clean.conc.na
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.

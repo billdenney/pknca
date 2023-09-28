@@ -18,10 +18,9 @@ pk.calc.sparse_auc(
 pk.calc.sparse_auclast(conc, time, subject, ..., options = list())
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{subject}{Subject identifiers (may be any class; may not be null)}
 

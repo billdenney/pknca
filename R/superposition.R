@@ -1,7 +1,6 @@
 #' Compute noncompartmental superposition for repeated dosing
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param dose.input The dose given to generate the \code{conc} and
 #' \code{time} inputs.  If missing, output doses will be assumed to be
 #' equal to the input dose.

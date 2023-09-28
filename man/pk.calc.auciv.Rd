@@ -10,10 +10,9 @@ pk.calc.auciv(conc, time, c0, auc, ..., check = TRUE)
 pk.calc.auciv_pbext(auc, auciv)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{c0}{The concentration at time 0, typically calculated using
 \code{pk.calc.c0()}}

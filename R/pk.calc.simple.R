@@ -20,7 +20,7 @@ adj.r.squared <- function(r.sq, n) {
 
 #' Determine maximum observed PK concentration
 #'
-#' @param conc Concentration measured
+#' @inheritParams assert_conc_time
 #' @param check Run \code{\link{assert_conc}}?
 #' @return a number for the maximum concentration or NA if all
 #' concentrations are missing
@@ -93,8 +93,7 @@ PKNCA.set.summary(
 #'   \item all \code{conc} is 0 or \code{NA}
 #' }
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param options List of changes to the default
 #' \code{\link{PKNCA.options}} for calculations.
 #' @param first.tmax If there is more than time that matches the
@@ -142,8 +141,7 @@ PKNCA.set.summary(
 #'
 #' \code{NA} will be returned if all \code{conc} are \code{NA} or 0.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param check Run \code{\link{assert_conc_time}}?
 #' @return The time of the last observed concentration measurement
 #' @export
@@ -205,8 +203,8 @@ PKNCA.set.summary(
 #'
 #' If Tlast is NA (due to no non-missing above LOQ measurements), this
 #' will return NA.
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#'
+#' @inheritParams assert_conc_time
 #' @param check Run \code{\link{assert_conc_time}}?
 #' @return The last observed concentration above the LOQ
 #' @family NCA parameters for concentrations during the intervals
@@ -1000,8 +998,7 @@ PKNCA.set.summary(
 
 #' Determine the trough (end of interval) concentration
 #'
-#' @param conc Observed concentrations during the interval
-#' @param time Times of \code{conc} observations
+#' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
 #' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
@@ -1036,8 +1033,7 @@ PKNCA.set.summary(
 
 #' Determine the concentration at the beginning of the interval
 #'
-#' @param conc Observed concentrations during the interval
-#' @param time Times of \code{conc} observations
+#' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
 #' @return The concentration when \code{time == end}.  If none
 #'   match, then \code{NA}
@@ -1101,8 +1097,7 @@ PKNCA.set.summary(
 #' concentration above the limit of quantification or above the first
 #' concentration in the interval)
 #'
-#' @param conc The observed concentrations
-#' @param time The observed times
+#' @inheritParams assert_conc_time
 #' @return The time associated with the first increasing concentration
 #' @export
 pk.calc.tlag <- function(conc, time) {
@@ -1189,8 +1184,7 @@ PKNCA.set.summary(
 
 #' Determine the concentration at the end of infusion
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param duration.dose The duration for the dosing administration
 #'   (typically from IV infusion)
 #' @param check Run \code{\link{assert_conc_time}}?

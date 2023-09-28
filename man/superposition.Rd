@@ -31,12 +31,12 @@ superposition(conc, ...)
 )
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
 \item{...}{Additional arguments passed to the \code{half.life}
 function if required to compute \code{lambda.z}.}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{dose.input}{The dose given to generate the \code{conc} and
 \code{time} inputs.  If missing, output doses will be assumed to be

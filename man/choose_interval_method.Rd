@@ -8,10 +8,9 @@ concentration interval}
 choose_interval_method(conc, time, tlast, method, auc.type)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{tlast}{Time of last concentration above the limit of quantification
 (will be calculated, if not provided)}

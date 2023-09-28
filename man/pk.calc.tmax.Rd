@@ -7,9 +7,9 @@
 pk.calc.tmax(conc, time, options = list(), first.tmax = NULL, check = TRUE)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}

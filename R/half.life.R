@@ -24,8 +24,7 @@
 #' and \code{time} data are used as-is without any form of selection for
 #' the best-fit half-life.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param tmax Time of maximum concentration (will be calculated and
 #'   included in the return data frame if not given)
 #' @param tlast Time of last concentration above the limit of

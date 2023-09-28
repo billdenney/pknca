@@ -38,16 +38,17 @@ assert_intervaltime_single <- function(interval = NULL, start = NULL, end = NULL
 #' Verify that concentration measurements are valid
 #'
 #' @param conc Measured concentrations
+#' @param any_missing_conc Are any concentration values allowed to be `NA`?
 #' @return `conc` or give an informative error
 #' @rdname assert_conc_time
-assert_conc <- function(conc) {
+assert_conc <- function(conc, any_missing_conc = TRUE) {
   if (length(conc) == 0) {
     rlang::warn(
       message = "No concentration data given",
       class = "pknca_conc_none"
     )
   } else {
-    checkmate::assert_numeric(conc)
+    checkmate::assert_numeric(conc, finite = TRUE, any.missing = any_missing_conc)
     if (all(is.na(conc))) {
       rlang::warn(
         message = "All concentration data are missing",
@@ -100,8 +101,8 @@ assert_time <- function(time, sorted_time = TRUE) {
 #'
 #' @return A data.frame with columns named "conc" and "time" or an informative
 #'   error
-assert_conc_time <- function(conc, time, sorted_time = TRUE) {
-  assert_conc(conc)
+assert_conc_time <- function(conc, time, any_missing_conc = TRUE, sorted_time = TRUE) {
+  assert_conc(conc, any_missing_conc = any_missing_conc)
   assert_time(time, sorted_time = sorted_time)
   checkmate::assert_numeric(conc, len = length(time))
   data.frame(conc = conc, time = time)

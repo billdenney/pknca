@@ -12,9 +12,7 @@
 #'
 #' If all conc input are zero, then the AU(M)C is zero.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement (must be monotonically
-#'   increasing and the same length as the concentration data)
+#' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.

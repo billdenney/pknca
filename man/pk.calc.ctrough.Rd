@@ -7,9 +7,9 @@
 pk.calc.ctrough(conc, time, end)
 }
 \arguments{
-\item{conc}{Observed concentrations during the interval}
+\item{conc}{Measured concentrations}
 
-\item{time}{Times of \code{conc} observations}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{end}{The end time of the interval}
 }

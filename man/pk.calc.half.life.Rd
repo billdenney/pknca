@@ -21,9 +21,9 @@ pk.calc.half.life(
 )
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{tmax}{Time of maximum concentration (will be calculated and
 included in the return data frame if not given)}

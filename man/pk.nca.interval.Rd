@@ -31,11 +31,9 @@ pk.nca.interval(
 )
 }
 \arguments{
-\item{conc, conc.group}{Concentration measured for the current
-interval or all data for the group}
+\item{conc}{Measured concentrations}
 
-\item{time, time.group}{Time of concentration measurement for the
-current interval or all data for the group}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{volume, volume.group}{The volume (or mass) of the concentration
 measurement for the current interval or all data for the group
@@ -59,6 +57,10 @@ nonzero for intravascular infusion)}
 
 \item{route, route.group}{The route of dosing for the current interval
 or all data for the group}
+
+\item{conc.group}{All concentrations measured for the group}
+
+\item{time.group}{Time of all concentrations measured for the group}
 
 \item{impute_method}{The method to use for imputation as a character string}
 

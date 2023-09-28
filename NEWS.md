@@ -26,7 +26,8 @@ the dosing including dose amount and route.
   directly, please reach out as they were intended to be internal arguments, and
   I would like to know your use case for changing them.)
 * `check.conc.time()` is defunct (it was never intended to be an external
-  function).
+  function).  It has been replaced by `assert_conc()`, `assert_time()` and
+  `assert_conc_time()`.
 
 ## Changes under the hood
 

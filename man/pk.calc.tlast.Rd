@@ -11,9 +11,9 @@ pk.calc.tlast(conc, time, check = TRUE)
 pk.calc.tfirst(conc, time, check = TRUE)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{check}{Run \code{\link{assert_conc_time}}?}
 }
