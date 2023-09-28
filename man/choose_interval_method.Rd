@@ -13,6 +13,9 @@ choose_interval_method(conc, time, tlast, method, auc.type)
 \item{time}{Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)}
 
+\item{tlast}{Time of last concentration above the limit of quantification
+(will be calculated, if not provided)}
+
 \item{method}{The method for integration (either 'lin up/log down' or
 'linear')}
 

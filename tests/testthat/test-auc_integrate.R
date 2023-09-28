@@ -1,4 +1,9 @@
 test_that("choose_interval_method", {
+  # All zeros ####
+  expect_equal(
+    choose_interval_method(conc = rep(0, 2), time = 1:2, method = "linear", auc.type = "AUCinf"),
+    c("zero", "zero")
+  )
   # Increasing, no zeros, AUCinf ####
   expect_equal(
     choose_interval_method(conc = 1:2, time = 1:2, method = "linear", auc.type = "AUCinf"),

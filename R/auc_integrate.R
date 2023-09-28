@@ -35,6 +35,8 @@ aumcintegrate_inf <- function(conc.last, time.last, lambda.z) {
 #'   'linear')
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.
+#' @param tlast Time of last concentration above the limit of quantification
+#'   (will be calculated, if not provided)
 #' @keywords Internal
 #' @return A character vector of methods for interpolation/extrapolation methods
 #'   that is the same length as `conc` which indicates how to
@@ -71,6 +73,8 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type) {
   mask_zero <- conc[idx_1] == 0 & conc[idx_2] == 0
   if (all(conc %in% 0)) {
     ret[] <- "zero"
+    # short circuit other options
+    return(ret)
   } else if (method == "linear") {
     ret[seq_len(idx_tlast - 1)] <- "linear"
   } else if (method == "lin up/log down") {
