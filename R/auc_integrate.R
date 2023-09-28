@@ -145,6 +145,8 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type) {
 #'
 #' @inheritParams choose_interval_method
 #' @inheritParams pk.calc.auxc
+#' @param clast The last concentration above the limit of quantification
+#' @param interval_method The method for integrating each interval of `conc`
 #' @keywords Internal
 auc_integrate <- function(conc, time, clast, tlast, lambda.z, interval_method, fun_linear, fun_log, fun_inf) {
   interval_method_within <- interval_method[-length(interval_method)]
@@ -152,7 +154,7 @@ auc_integrate <- function(conc, time, clast, tlast, lambda.z, interval_method, f
   idx_1 <- seq_len(length(conc) - 1)
   idx_1_linear <- idx_1[interval_method_within == "linear"]
   idx_1_log <- idx_1[interval_method_within == "log"]
-  # Compute the AUxC ####
+
   ret <-
     c(
       fun_linear(conc[idx_1_linear], conc[idx_1_linear + 1],

@@ -22,11 +22,15 @@ auc_integrate(
 \item{time}{Time of concentration measurement (must be monotonically
 increasing and the same length as the concentration data)}
 
+\item{clast}{The last concentration above the limit of quantification}
+
 \item{tlast}{Time of last concentration above the limit of quantification
 (will be calculated, if not provided)}
 
 \item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}
+
+\item{interval_method}{The method for integrating each interval of `conc`}
 
 \item{fun_linear}{The function to use for integration of the linear part of
 the curve (not required for AUC or AUMC functions)}
