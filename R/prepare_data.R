@@ -3,25 +3,24 @@
 #' The function is inspired by \code{dplyr::full_join}, but it has different
 #' semantics.
 #'
-#' @param conc a PKNCAconc object
-#' @param dose a PKNCAdose object or \code{NA}
+#' @param o_conc a PKNCAconc object
+#' @param o_dose a PKNCAdose object or \code{NA}
 #' @return A tibble with columns for the groups, "data_conc" (the concentration
-#'   data), and "data_dose" (the dosing data).  If \code{is.na(dose)},
+#'   data), and "data_dose" (the dosing data).  If \code{is.na(o_dose)},
 #'   "data_dose" will be \code{NA}.
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
-  # TODO: Rename inputs to o_conc and o_dose
-  stopifnot(inherits(x=conc, what="PKNCAconc"))
-  if (identical(dose, NA)) {
+full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose) {
+  stopifnot(inherits(x=o_conc, what="PKNCAconc"))
+  if (identical(o_dose, NA)) {
     message("No dose information provided, calculations requiring dose will return NA.")
     n_dose <- tibble::tibble(data_dose=list(NA))
   } else {
-    stopifnot(inherits(x=dose, what="PKNCAdose"))
-    n_dose <- prepare_PKNCAdose(dose, sparse=is_sparse_pk(conc), subject_col=conc$columns$subject)
+    stopifnot(inherits(x=o_dose, what="PKNCAdose"))
+    n_dose <- prepare_PKNCAdose(o_dose, sparse=is_sparse_pk(o_conc), subject_col=o_conc$columns$subject)
   }
-  n_conc <- prepare_PKNCAconc(conc)
+  n_conc <- prepare_PKNCAconc(o_conc)
   shared_groups <- intersect(names(n_conc), names(n_dose))
   if (length(shared_groups) > 0) {
     dplyr::full_join(n_conc, n_dose, by=shared_groups)
@@ -43,7 +42,7 @@ full_join_PKNCAconc_PKNCAdose <- function(conc, dose) {
 #' @keywords Internal
 #' @noRd
 full_join_PKNCAdata <- function(x) {
-  conc_dose <- full_join_PKNCAconc_PKNCAdose(x$conc, x$dose)
+  conc_dose <- full_join_PKNCAconc_PKNCAdose(o_conc = x$conc, o_dose = x$dose)
   n_i <-
     prepare_PKNCAintervals(
       .dat=x$intervals,

@@ -38,14 +38,16 @@
 #' @seealso \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}},
 #'   \code{\link{pknca_units_table}()}
 #' @export
-PKNCAdata <- function(data.conc, data.dose, ...)
+PKNCAdata <- function(data.conc, data.dose, ...) {
   UseMethod("PKNCAdata", data.conc)
+}
 
 # Ensure that arguments are reversible
 #' @rdname PKNCAdata
 #' @export
-PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...)
+PKNCAdata.PKNCAconc <- function(data.conc, data.dose, ...) {
   PKNCAdata.default(data.conc=data.conc, data.dose=data.dose, ...)
+}
 
 #' @rdname PKNCAdata
 #' @export
@@ -116,8 +118,8 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     }
     n_conc_dose <-
       full_join_PKNCAconc_PKNCAdose(
-        conc=ret$conc,
-        dose=ret$dose
+        o_conc = ret$conc,
+        o_dose = ret$dose
       )
     n_conc_dose$data_intervals <- rep(list(NULL), nrow(n_conc_dose))
     for (idx in seq_len(nrow(n_conc_dose))) {
