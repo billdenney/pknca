@@ -20,9 +20,9 @@ pk.tss.data.prep(
 )
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{subject}{Subject identifiers (used as a random effect in the
 model)}
@@ -41,7 +41,7 @@ are assumed to be on the same treatment)}
 
 \item{conc.na}{See \code{\link{clean.conc.na}}}
 
-\item{check}{Run \code{\link{check.conc.time}}?}
+\item{check}{Run \code{\link{assert_conc_time}}?}
 
 \item{\dots}{Discarded inputs to allow generic calls between tss
 methods.}

@@ -22,3 +22,67 @@ test_that("assert_intervaltime_single", {
     fixed = TRUE
   )
 })
+
+test_that("assert_conc", {
+  expect_warning(
+    assert_conc(conc = -1),
+    regexp="Negative concentrations found"
+  )
+  expect_warning(
+    assert_conc(conc = c(NA, -1)),
+    regexp="Negative concentrations found"
+  )
+  expect_warning(
+    assert_conc(conc = c(NA, -1, 1)),
+    regexp="Negative concentrations found"
+  )
+  expect_warning(
+    assert_conc(conc = NA),
+    regexp="All concentration data are missing"
+  )
+  expect_error(
+    assert_conc(conc="A"),
+    regexp="Assertion on 'conc' failed: Must be of type 'numeric', not 'character'."
+  )
+  expect_error(
+    assert_conc(conc=factor("A")),
+    regexp="Assertion on 'conc' failed: Must be of type 'numeric', not 'factor'."
+  )
+})
+
+test_that("assert_time", {
+  expect_error(
+    assert_time(time=NA),
+    regexp="Assertion on 'time' failed: Contains missing values (element 1).",
+    fixed = TRUE
+  )
+  expect_error(
+    assert_time(time = c(0, 0)),
+    regexp="Assertion on 'time' failed: Contains duplicated values, position 2."
+  )
+  expect_error(
+    assert_time(time = c(1, 0)),
+    regexp="Assertion on 'time' failed: Must be sorted."
+  )
+  expect_error(
+    assert_time(time="A"),
+    regexp="Assertion on 'time' failed: Must be of type 'numeric', not 'character'."
+  )
+  expect_error(
+    assert_time(time=factor("A")),
+    regexp="Assertion on 'time' failed: Must be of type 'numeric', not 'factor'."
+  )
+})
+
+test_that("assert_conc_time", {
+  expect_error(
+    assert_conc_time(conc = 1, time = 1:2),
+    regexp="Assertion on 'conc' failed: Must have length 2, but has length 1."
+  )
+  expect_error(
+    assert_conc_time(conc = 1:2, time = 2),
+    regexp="Assertion on 'conc' failed: Must have length 1, but has length 2."
+  )
+})
+
+

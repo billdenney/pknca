@@ -12,36 +12,6 @@ test_that("check.conversion", {
                as.character(good))
 })
 
-test_that("check.conc.time", {
-  # Check all the invalid cases
-  expect_warning(check.conc.time(conc=-1),
-                 regexp="Negative concentrations found")
-  expect_warning(check.conc.time(conc=c(NA, -1)),
-                 regexp="Negative concentrations found")
-  expect_warning(check.conc.time(conc=c(NA, -1, 1)),
-                 regexp="Negative concentrations found")
-  expect_warning(check.conc.time(conc=NA),
-                 regexp="All concentration data are missing")
-  expect_error(check.conc.time(time=NA),
-               regexp="Time may not be NA")
-  expect_error(check.conc.time(time=c(0, 0)),
-               regexp="Time must be monotonically increasing")
-  expect_error(check.conc.time(time=c(1, 0)),
-               regexp="Time must be monotonically increasing")
-  expect_error(check.conc.time(conc=1, time=1:2),
-               regexp="Conc and time must be the same length")
-  expect_error(check.conc.time(conc=1:2, time=2),
-               regexp="Conc and time must be the same length")
-  expect_error(check.conc.time(conc="A"),
-               regexp="Concentration data must be numeric and not a factor")
-  expect_error(check.conc.time(conc=factor("A")),
-               regexp="Concentration data must be numeric and not a factor")
-  expect_error(check.conc.time(time="A"),
-               regexp="Time data must be numeric and not a factor")
-  expect_error(check.conc.time(time=factor("A")),
-               regexp="Time data must be numeric and not a factor")
-})
-
 test_that("Rounding", {
   expect_error(roundString(1, c(2, 3)),
                regexp="digits must either be a scalar or the same length as x")
@@ -135,7 +105,7 @@ test_that("Significance", {
   expect_equal(signifString(c(1e7, 1e10), digits=3),
                c("1.00e7", "1.00e10"),
                info="Different numbers of digits for rounding work with signifString")
-  
+
   # Data Frames
   expect_equal(
     signifString(data.frame(A=c(0, 1.111111),

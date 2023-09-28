@@ -31,7 +31,7 @@ values?  See details for description.}
 \item{conc.na}{How to handle NA concentrations.  (See
 \code{\link{clean.conc.na}})}
 
-\item{check}{Run \code{\link{check.conc.time}}?}
+\item{check}{Run \code{\link{assert_conc_time}}?}
 }
 \value{
 The concentration and time measurements (data frame) filtered

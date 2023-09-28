@@ -24,7 +24,7 @@ increasing and the same length as the concentration data)}
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are
 passed to \code{pk.calc.auxc}}
 
-\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 
 \item{auciv}{The AUC calculated using \code{c0}}

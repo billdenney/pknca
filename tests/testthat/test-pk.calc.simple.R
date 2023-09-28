@@ -68,12 +68,12 @@ test_that("pk.calc.tmax", {
 
   # Either concentration or time is missing, give an error
   expect_error(
-    pk.calc.tmax(conc=numeric()),
-    regexp="time must be given"
+    suppressWarnings(pk.calc.tmax(conc = numeric())),
+    regexp='argument "time" is missing, with no default'
   )
   expect_error(
     pk.calc.tmax(time=numeric()),
-    regexp="conc must be given"
+    regexp='argument "conc" is missing, with no default'
   )
 
   # It calculates tmax correctly based on the use.first option
@@ -90,12 +90,12 @@ test_that("pk.calc.tmax", {
 test_that("pk.calc.tlast", {
   # Either concentration or time is missing, give an error
   expect_error(
-    pk.calc.tlast(conc=numeric()),
-    regexp="time must be given"
+    suppressWarnings(pk.calc.tlast(conc = numeric())),
+    regexp='argument "time" is missing, with no default'
   )
   expect_error(
-    pk.calc.tlast(time=numeric()),
-    regexp="conc must be given"
+    pk.calc.tlast(time = numeric()),
+    regexp = 'argument "conc" is missing, with no default'
   )
 
   # It calculates tlast correctly
@@ -114,11 +114,11 @@ test_that("pk.calc.tlast", {
 test_that("pk.calc.tfirst", {
   expect_error(
     pk.calc.tfirst(),
-    regexp="conc must be given"
+    regexp='argument "conc" is missing, with no default'
   )
   expect_error(
-    pk.calc.tfirst(conc="A"),
-    regexp="time must be given"
+    pk.calc.tfirst(conc=1),
+    regexp='argument "time" is missing, with no default'
   )
   expect_equal(
     pk.calc.tfirst(conc=1, time=2, check=TRUE),
@@ -367,8 +367,10 @@ test_that("pk.calc.ctrough", {
                info="Found and it's not the first time")
   expect_equal(pk.calc.ctrough(1:5, 0:4, 1.5), NA_real_,
                info="Not found")
-  expect_error(pk.calc.ctrough(1:5, c(0, 0:3), 0),
-               regexp="Time must be monotonically increasing")
+  expect_error(
+    pk.calc.ctrough(1:5, c(0, 0:3), 0),
+    regexp = "Assertion on 'time' failed: Contains duplicated values, position 2."
+  )
 })
 
 test_that("pk.calc.ptr", {

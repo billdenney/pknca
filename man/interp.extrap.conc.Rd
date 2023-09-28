@@ -98,7 +98,7 @@ for usage instructions.)}
 \item{conc.na}{How to handle NA concentrations.  (See
 \code{\link{clean.conc.na}()})}
 
-\item{check}{Run \code{\link{check.conc.time}()},
+\item{check}{Run \code{\link{assert_conc_time}()},
 \code{\link{clean.conc.blq}()}, and \code{\link{clean.conc.na}()}?}
 
 \item{conc.origin}{The concentration before the first measurement.

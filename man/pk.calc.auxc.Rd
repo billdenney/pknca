@@ -90,7 +90,7 @@ instructions.)}
 \item{conc.na}{How to handle missing concentration values.  (See
 \code{\link{clean.conc.na}} for usage instructions.)}
 
-\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 
 \item{fun_linear}{The function to use for integration of the linear part of

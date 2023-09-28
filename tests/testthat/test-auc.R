@@ -453,16 +453,22 @@ test_that("pk.calc.auc: warning with beginning of interval before the beginning 
     }
 
   # Confirm error with concentration and time not of equal lengths
-  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2)),
-               regexp="Conc and time must be the same length")
+  expect_error(
+    pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2)),
+    regexp="Assertion on 'conc' failed: Must have length 2, but has length 3."
+  )
 
   # Confirm error with time not monotonically increasing (less than)
-  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 1)),
-               regexp="Time must be monotonically increasing")
+  expect_error(
+    pk.calc.auc(conc = c(1, 2, 3), time = c(1, 2, 1)),
+    regexp = "Assertion on 'time' failed: Contains duplicated values, position 3."
+  )
 
   # Confirm error with time not monotonically increasing (equal)
-  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 2)),
-               regexp="Time must be monotonically increasing")
+  expect_error(
+    pk.calc.auc(conc = c(1, 2, 3), time = c(1, 2, 2)),
+    regexp = "Assertion on 'time' failed: Contains duplicated values, position 3."
+  )
 
   # Confirm that AUC method checking works
   expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 3), method="wrong"),

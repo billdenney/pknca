@@ -12,7 +12,7 @@ pk.calc.cmin(conc, check = TRUE)
 \arguments{
 \item{conc}{Concentration measured}
 
-\item{check}{Run \code{\link{check.conc.time}}?}
+\item{check}{Run \code{\link{assert_conc}}?}
 }
 \value{
 a number for the maximum concentration or NA if all

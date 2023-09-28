@@ -20,7 +20,7 @@ is \code{method} as described in the details section.}
 \item{options}{List of changes to the default \code{\link{PKNCA.options}} for
 calculations.}
 
-\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 }
 \value{

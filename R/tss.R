@@ -1,8 +1,7 @@
 #' Clean up the time to steady-state parameters and return a data
 #' frame for use by the tss calculators.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param subject Subject identifiers (used as a random effect in the
 #' model)
 #' @param treatment Treatment description (if missing, all subjects
