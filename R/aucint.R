@@ -47,7 +47,7 @@ pk.calc.aucint <- function(conc, time,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
         conc, time,

@@ -41,7 +41,7 @@
 #'   (\code{FALSE}) or after (\code{TRUE}) the interpolated point?  See the
 #'   details for how this parameter is used.  It only has a meaningful effect at
 #'   the instant of an IV bolus dose.
-#' @param check Run \code{\link{check.conc.time}()},
+#' @param check Run \code{\link{assert_conc_time}()},
 #'   \code{\link{clean.conc.blq}()}, and \code{\link{clean.conc.na}()}?
 #' @param ... Additional arguments passed to \code{interpolate.conc()} or
 #'   \code{extrapolate.conc()}.
@@ -95,7 +95,7 @@ interp.extrap.conc <- function(conc, time, time.out,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
     data <-
       clean.conc.blq(
         conc, time,
@@ -164,7 +164,7 @@ interpolate.conc <- function(conc, time, time.out,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
         conc=conc, time=time,
@@ -242,7 +242,7 @@ extrapolate.conc <- function(conc, time, time.out,
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
         conc=conc, time=time,
@@ -327,7 +327,7 @@ interp.extrap.conc.dose <- function(conc, time,
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
     data_conc <-
       clean.conc.blq(conc, time,
                      conc.blq=conc.blq, conc.na=conc.na,

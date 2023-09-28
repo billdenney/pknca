@@ -87,10 +87,13 @@ superposition.numeric <- function(conc, time, dose.input,
   # Check the inputs
   interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
   # Concentration and time
-  check.conc.time(conc, time)
-  if (check.blq)
-    if (!(conc[1] %in% 0))
+  assert_conc_time(conc = conc, time = time)
+  if (check.blq) {
+    if (!(conc[1] %in% 0)) {
       stop("The first concentration must be 0 (and not NA).  To change this set check.blq=FALSE.")
+    }
+  }
+  # TODO: convert to checkmate
   # dose.input
   if (!missing(dose.input)) {
     if (length(dose.input) != 1)

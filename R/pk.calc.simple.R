@@ -21,14 +21,15 @@ adj.r.squared <- function(r.sq, n) {
 #' Determine maximum observed PK concentration
 #'
 #' @param conc Concentration measured
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc}}?
 #' @return a number for the maximum concentration or NA if all
 #' concentrations are missing
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cmax <- function(conc, check=TRUE) {
-  if (check)
-    check.conc.time(conc=conc)
+  if (check) {
+    assert_conc(conc = conc)
+  }
   if (length(conc) == 0 | all(is.na(conc))) {
     NA
   } else {
@@ -55,8 +56,9 @@ PKNCA.set.summary(
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cmin <- function(conc, check=TRUE) {
-  if (check)
-    check.conc.time(conc=conc)
+  if (check) {
+    assert_conc(conc=conc)
+  }
   if (length(conc) == 0 | all(is.na(conc))) {
     NA
   } else {
@@ -98,7 +100,7 @@ PKNCA.set.summary(
 #' @param first.tmax If there is more than time that matches the
 #' maximum concentration, should the first be considered as Tmax?  If
 #' not, then the last is considered Tmax.
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @return the time of the maximum concentration
 #' @export
 pk.calc.tmax <- function(conc, time,
@@ -106,12 +108,9 @@ pk.calc.tmax <- function(conc, time,
                          first.tmax=NULL,
                          check=TRUE) {
   first.tmax <- PKNCA.choose.option(name="first.tmax", value=first.tmax, options=options)
-  if (missing(conc))
-    stop("conc must be given")
-  if (missing(time))
-    stop("time must be given")
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   if (length(conc) == 0 | all(conc %in% c(NA, 0))) {
     NA
   } else {
@@ -145,16 +144,13 @@ PKNCA.set.summary(
 #'
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @return The time of the last observed concentration measurement
 #' @export
 pk.calc.tlast <- function(conc, time, check=TRUE) {
-  if (missing(conc))
-    stop("conc must be given")
-  if (missing(time))
-    stop("time must be given")
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   if (all(conc %in% c(NA, 0))) {
     NA
   } else {
@@ -180,12 +176,9 @@ PKNCA.set.summary(
 #'   the limit of quantification.
 #' @export
 pk.calc.tfirst <- function(conc, time, check=TRUE) {
-  if (missing(conc))
-    stop("conc must be given")
-  if (missing(time))
-    stop("time must be given")
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc, time)
+  }
   if (all(conc %in% c(NA, 0))) {
     NA
   } else {
@@ -214,13 +207,13 @@ PKNCA.set.summary(
 #' will return NA.
 #' @param conc Concentration measured
 #' @param time Time of concentration measurement
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @return The last observed concentration above the LOQ
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.clast.obs <- function(conc, time, check=TRUE) {
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
   }
   tlast <- pk.calc.tlast(conc, time, check = FALSE)
   if (!is.na(tlast)) {
@@ -1015,14 +1008,14 @@ PKNCA.set.summary(
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.ctrough <- function(conc, time, end) {
-  check.conc.time(conc, time)
+  assert_conc_time(conc = conc, time = time)
   mask_end <- time %in% end
   if (sum(mask_end) == 1) {
     conc[mask_end]
   } else if (sum(mask_end) == 0) {
     NA_real_
   } else {
-    # This should be impossible as check.conc.time should catch
+    # This should be impossible as assert_conc_time should catch
     # duplicates.
     stop("More than one time matches the starting time.  Please report this as a bug with a reproducible example.") # nocov
   }
@@ -1051,14 +1044,14 @@ PKNCA.set.summary(
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cstart <- function(conc, time, start) {
-  check.conc.time(conc, time)
+  assert_conc_time(conc = conc, time = time)
   mask_start <- time %in% start
   if (sum(mask_start) == 1) {
     conc[mask_start]
   } else if (sum(mask_start) == 0) {
     NA_real_
   } else {
-    # This should be impossible as check.conc.time should catch
+    # This should be impossible as assert_conc_time should catch
     # duplicates.
     stop("More than one time matches the starting time.  Please report this as a bug with a reproducible example.") # nocov
   }
@@ -1113,7 +1106,7 @@ PKNCA.set.summary(
 #' @return The time associated with the first increasing concentration
 #' @export
 pk.calc.tlag <- function(conc, time) {
-  check.conc.time(conc, time)
+  assert_conc_time(conc = conc, time = time)
   mask.increase <- c(conc[-1] > conc[-length(conc)], FALSE)
   if (any(mask.increase)) {
     time[mask.increase][1]
@@ -1200,13 +1193,14 @@ PKNCA.set.summary(
 #' @param time Time of concentration measurement
 #' @param duration.dose The duration for the dosing administration
 #'   (typically from IV infusion)
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @return The concentration at the end of the infusion, \code{NA} if
 #'   duration.dose is \code{NA}, or \code{NA} if all \code{time != duration.dose}
 #' @export
 pk.calc.ceoi <- function(conc, time, duration.dose=NA, check=TRUE) {
-  if (check)
-    check.conc.time(conc=conc, time=time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   if (is.na(duration.dose)) {
     NA_real_
   } else if (all(time != duration.dose)) {
@@ -1294,8 +1288,9 @@ PKNCA.set.summary(
 #' @export
 pk.calc.count_conc <- function(conc,
                          check=TRUE) {
-  if (check)
-    check.conc.time(conc)
+  if (check) {
+    assert_conc(conc)
+  }
   sum(!is.na(conc))
 }
 # Add the column to the interval specification

@@ -44,7 +44,7 @@
 #'   adding another point.
 #' @param conc.blq See \code{\link{clean.conc.blq}}
 #' @param conc.na See \code{\link{clean.conc.na}}
-#' @param check Run \code{\link{check.conc.time}},
+#' @param check Run \code{\link{assert_conc_time}},
 #'   \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
 #' @param first.tmax See \code{\link{pk.calc.tmax}}.
 #' @param allow.tmax.in.half.life Allow the concentration point for tmax
@@ -110,7 +110,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       name="allow.tmax.in.half.life", value=allow.tmax.in.half.life, options=options
     )
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
     data <- clean.conc.blq(conc, time, conc.blq=conc.blq, conc.na=conc.na)
   } else {
     data <- data.frame(conc, time)

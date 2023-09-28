@@ -99,10 +99,10 @@ PKNCAconc.data.frame <- function(data, formula, subject,
   # Do some general checking of the concentration and time data to give an early
   # error if the data are not correct.  Do not check monotonic.time because the
   # data may contain information for more than one subject.
-  check.conc.time(
-    conc=data[[parsed_form$concentration]],
-    time=data[[parsed_form$time]],
-    monotonic.time=FALSE
+  assert_conc_time(
+    conc = data[[parsed_form$concentration]],
+    time = data[[parsed_form$time]],
+    sorted_time = FALSE
   )
   # Values must be unique (one value per measurement)
   key_cols <- c(parsed_form$time, unlist(parsed_form$groups))

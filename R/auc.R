@@ -33,7 +33,7 @@
 #'   instructions.)
 #' @param conc.na How to handle missing concentration values.  (See
 #'   \code{\link{clean.conc.na}} for usage instructions.)
-#' @param check Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+#' @param check Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 #'   and \code{\link{clean.conc.na}}?
 #' @param fun_linear The function to use for integration of the linear part of
 #'   the curve (not required for AUC or AUMC functions)
@@ -80,7 +80,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
     data <-
       clean.conc.blq(
         conc, time,
@@ -89,7 +89,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
         check=FALSE
       )
   } else {
-    data <- data.frame(conc, time)
+    data <- data.frame(conc = conc, time = time)
   }
   if (nrow(data) == 0) {
     # All the data were missing

@@ -21,7 +21,7 @@
 #' @export
 pk.calc.auciv <- function(conc, time, c0, auc, ..., check=TRUE) {
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
   }
   if (!(0 %in% time)) {
     return(structure(NA_real_, exclude="No time 0 in data"))

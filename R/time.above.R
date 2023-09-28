@@ -33,7 +33,7 @@ pk.calc.time_above <- function(conc, time,
   stopifnot("conc_above must not be NA"=!is.na(conc_above))
   stopifnot("conc_above must be numeric"=is.numeric(conc_above))
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
   }
   # Only keep evaluable rows
   data <- data.frame(conc=conc, time=time)[!is.na(conc), , drop=FALSE]
