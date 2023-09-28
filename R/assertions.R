@@ -24,10 +24,10 @@ assert_intervaltime_single <- function(interval = NULL, start = NULL, end = NULL
 
     if (is.null(interval)) {
       interval <- c(start, end)
-    } else {
-      # Verify that the values are the same
-      checkmate::assert_set_equal(start, interval[1])
-      checkmate::assert_set_equal(end, interval[2])
+    } else if (start != interval[1]) {
+      stop("`start` must be the same as the first value in the interval if both are given: ", start, "!=", interval[1])
+    } else if (end != interval[2]) {
+      stop("`end` must be the same as the second value in the interval if both are given: ", end, "!=", interval[2])
     }
   }
 
