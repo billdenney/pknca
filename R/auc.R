@@ -36,12 +36,12 @@
 #'   \code{\link{clean.conc.na}} for usage instructions.)
 #' @param check Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
 #'   and \code{\link{clean.conc.na}}?
-#' @param fun.linear The function to use for integration of the linear part of
+#' @param fun_linear The function to use for integration of the linear part of
 #'   the curve (not required for AUC or AUMC functions)
-#' @param fun.log The function to use for integration of the logarithmic part of
+#' @param fun_log The function to use for integration of the logarithmic part of
 #'   the curve (if log integration is used; not required for AUC or AUMC
 #'   functions)
-#' @param fun.inf The function to use for extrapolation from the final
+#' @param fun_inf The function to use for extrapolation from the final
 #'   measurement to infinite time (not required for AUC or AUMC functions.
 #' @param ... For functions other than \code{pk.calc.auxc}, these values are
 #'   passed to \code{pk.calc.auxc}
@@ -75,7 +75,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
                          conc.blq=NULL,
                          conc.na=NULL,
                          check=TRUE,
-                         fun.linear, fun.log, fun.inf) {
+                         fun_linear, fun_log, fun_inf) {
   # Check the inputs
   method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
@@ -185,29 +185,14 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     # still true)
     stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
   } else {
-    integrate_method <- choose_interval_method(conc = data$conc, time = data$time, tlast = tlast, method = method, auc.type = auc.type)
-    integrate_method_within <- integrate_method[-length(integrate_method)]
-    integrate_method_extrap <- integrate_method[length(integrate_method)]
-    idx_1 <- seq_len(nrow(data) - 1)
-    idx_1_linear <- idx_1[integrate_method_within == "linear"]
-    idx_1_log <- idx_1[integrate_method_within == "log"]
-    # Compute the AUxC ####
+    interval_method <- choose_interval_method(conc = data$conc, time = data$time, tlast = tlast, method = method, auc.type = auc.type)
     ret <-
-      c(
-        fun.linear(data$conc[idx_1_linear], data$conc[idx_1_linear + 1],
-                   data$time[idx_1_linear], data$time[idx_1_linear + 1]),
-        fun.log(data$conc[idx_1_log], data$conc[idx_1_log + 1],
-                data$time[idx_1_log], data$time[idx_1_log + 1])
+      auc_integrate(
+        conc = data$conc, time = data$time,
+        clast = clast, tlast = tlast, lambda.z = lambda.z,
+        interval_method = interval_method,
+        fun_linear = fun_linear, fun_log = fun_log, fun_inf = fun_inf
       )
-
-    if (integrate_method_extrap %in% "extrap_log") {
-      # Whether AUCinf,obs or AUCinf,pred is calculated depends on if clast,obs
-      # or clast,pred is passed in.
-      ret[length(ret)+1] <- fun.inf(clast, tlast, lambda.z)
-    } else if (integrate_method_extrap != "zero") {
-      stop("Invalid integrate_method_extrap, please report a bug: ", integrate_method_extrap) # nocov
-    }
-    ret <- sum(ret)
   }
   ret
 }
@@ -218,9 +203,9 @@ pk.calc.auc <- function(conc, time, ..., options=list()) {
   pk.calc.auxc(
     conc=conc, time=time, ...,
     options=options,
-    fun.linear=aucintegrate_linear,
-    fun.log=aucintegrate_log,
-    fun.inf=aucintegrate_inf
+    fun_linear=aucintegrate_linear,
+    fun_log=aucintegrate_log,
+    fun_inf=aucintegrate_inf
   )
 }
 
@@ -283,9 +268,9 @@ pk.calc.auc.all <- function(conc, time, ..., options=list()) {
 #' @export
 pk.calc.aumc <- function(conc, time, ..., options=list()) {
   pk.calc.auxc(conc=conc, time=time, ..., options=options,
-    fun.linear = aumcintegrate_linear,
-    fun.log = aumcintegrate_log,
-    fun.inf = aumcintegrate_inf
+    fun_linear = aumcintegrate_linear,
+    fun_log = aumcintegrate_log,
+    fun_inf = aumcintegrate_inf
   )
 }
 

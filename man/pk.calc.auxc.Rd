@@ -28,9 +28,9 @@ pk.calc.auxc(
   conc.blq = NULL,
   conc.na = NULL,
   check = TRUE,
-  fun.linear,
-  fun.log,
-  fun.inf
+  fun_linear,
+  fun_log,
+  fun_inf
 )
 
 pk.calc.auc(conc, time, ..., options = list())
@@ -93,14 +93,14 @@ instructions.)}
 \item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 
-\item{fun.linear}{The function to use for integration of the linear part of
+\item{fun_linear}{The function to use for integration of the linear part of
 the curve (not required for AUC or AUMC functions)}
 
-\item{fun.log}{The function to use for integration of the logarithmic part of
+\item{fun_log}{The function to use for integration of the logarithmic part of
 the curve (if log integration is used; not required for AUC or AUMC
 functions)}
 
-\item{fun.inf}{The function to use for extrapolation from the final
+\item{fun_inf}{The function to use for extrapolation from the final
 measurement to infinite time (not required for AUC or AUMC functions.}
 
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are

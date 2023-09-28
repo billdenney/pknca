@@ -572,7 +572,7 @@ test_that("pk.calc.aumc", {
       auc.type="AUCinf",
       lambda.z=1,
       method="lin up/log down"),
-    2-0.5/log(0.5)+0.5/(log(0.5)^2)+1.5+0.5)
+    2 - 0.5/log(0.5) + 0.5/(log(0.5)^2) + 1.5 + 0.5)
 })
 
 

@@ -14,9 +14,6 @@ the dosing including dose amount and route.
   than the number of rows.  Now the number of subjects is counted (fix #223).
 * Extra column in the `intervals` argument to `PKNCAdata()` will no longer cause
   an error (fix #238)
-* An internal change was made to make AUC integration and concentration
-  interpolation simpler and simplify the ability to create new AUC integration
-  or concentration interpolation methods
 
 ## Changes under the hood
 
@@ -33,6 +30,13 @@ the dosing including dose amount and route.
   character vector.
 * The AIC.list() function is no longer exported (it was never intended to be an
   external function).
+* An internal change was made to make AUC integration and concentration
+  interpolation simpler and simplify the ability to create new AUC integration
+  or concentration interpolation methods
+* The names of the `fun.linear`, `fun.log`, and `fun.inf` arguments to
+  `pk.calc.auxc` were changed to use underscores.  (If you were using those
+  directly, please reach out as they were intended to be internal arguments, and
+  I would like to know your use case for changing them.)
 
 # PKNCA 0.10.2
 

@@ -140,3 +140,34 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type) {
   }
   ret
 }
+
+#' Support function for AUC integration
+#'
+#' @inheritParams choose_interval_method
+#' @inheritParams pk.calc.auxc
+#' @keywords Internal
+auc_integrate <- function(conc, time, clast, tlast, lambda.z, interval_method, fun_linear, fun_log, fun_inf) {
+  interval_method_within <- interval_method[-length(interval_method)]
+  interval_method_extrap <- interval_method[length(interval_method)]
+  idx_1 <- seq_len(length(conc) - 1)
+  idx_1_linear <- idx_1[interval_method_within == "linear"]
+  idx_1_log <- idx_1[interval_method_within == "log"]
+  # Compute the AUxC ####
+  ret <-
+    c(
+      fun_linear(conc[idx_1_linear], conc[idx_1_linear + 1],
+                 time[idx_1_linear], time[idx_1_linear + 1]),
+      fun_log(conc[idx_1_log], conc[idx_1_log + 1],
+              time[idx_1_log], time[idx_1_log + 1])
+    )
+
+  if (interval_method_extrap %in% "extrap_log") {
+    # Whether AUCinf,obs or AUCinf,pred is calculated depends on if clast,obs
+    # or clast,pred is passed in.
+    ret[length(ret)+1] <- fun_inf(clast, tlast, lambda.z)
+  } else if (interval_method_extrap != "zero") {
+    stop("Invalid interval_method_extrap, please report a bug: ", interval_method_extrap) # nocov
+  }
+  ret <- sum(ret)
+  ret
+}
