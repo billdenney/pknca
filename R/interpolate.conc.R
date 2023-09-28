@@ -195,12 +195,12 @@ interpolate.conc <- function(conc, time, time.out,
     ret <- data$conc[time.out == data$time]
   } else {
     interp_methods_all <-
-      choose_interp_extrap_method(
+      choose_interval_method(
         conc=data$conc,
         time=data$time,
-        interp_method=interp.method,
-        # auclast because it doesn't affect the output for interpolation
-        extrap_method="auclast"
+        method=interp.method,
+        # AUClast because it doesn't affect the output for interpolation
+        auc.type="AUClast"
       )
     # Find the last time before and the first time after the output
     # time, then interpolate.
