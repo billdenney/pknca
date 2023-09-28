@@ -7,6 +7,9 @@
 \usage{
 check.conc.time(...)
 }
+\arguments{
+\item{...}{Ignored}
+}
 \description{
 The following functions are defunct
 }
