@@ -1,49 +1,44 @@
 #' Compute noncompartmental superposition for repeated dosing
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
-#' @param dose.input The dose given to generate the \code{conc} and
-#' \code{time} inputs.  If missing, output doses will be assumed to be
-#' equal to the input dose.
-#' @param tau The dosing interval
-#' @param dose.times The time of dosing within the dosing interval.
-#' The \code{min(dose.times)} must be >= 0, and the
-#' \code{max(dose.times)} must be < \code{tau}.  There may be more
-#' than one dose times given as a vector.
-#' @param dose.amount The doses given for the output.  Linear
-#' proportionality will be used from the input to output if they are
-#' not equal.  The length of dose.amount must be either 1 or matching
-#' the length of \code{dose.times}.
-#' @param n.tau The number of tau dosing intervals to simulate or
-#' \code{Inf} for steady-state.
-#' @param options The PKNCA.options to use for the calculation (passed
-#' on to subsequent functions like \code{pk.calc.half.life}).
-#' @param lambda.z The elimination rate (from the half life
-#' calculation, used to extrapolate beyond the maximum time observed).
-#' @param clast.pred To use predicted as opposed to observed Clast,
-#' either give the value for clast.pred here or set it to true (for
-#' automatic calculation from the half-life).
-#' @param tlast The time of last observed concentration above the
-#' limit of quantification.  This is calculated if not provided.
-#' @param additional.times Times to include in the final outputs in
-#' addition to the standard times (see details).  All
-#' \code{min(additional.times)} must be >= 0, and the
-#' \code{max(additional.times)} must be <= \code{tau}.
-#' @param check.blq Must the first concentration measurement be below
-#' the limit of quantification?
+#' @inheritParams assert_conc_time
+#' @param dose.input The dose given to generate the \code{conc} and \code{time}
+#'   inputs.  If missing, output doses will be assumed to be equal to the input
+#'   dose.
+#' @inheritParams assert_dosetau
+#' @param dose.times The time of dosing within the dosing interval. The
+#'   \code{min(dose.times)} must be >= 0, and the \code{max(dose.times)} must be
+#'   < \code{tau}.  There may be more than one dose times given as a vector.
+#' @param dose.amount The doses given for the output.  Linear proportionality
+#'   will be used from the input to output if they are not equal.  The length of
+#'   dose.amount must be either 1 or matching the length of \code{dose.times}.
+#' @param n.tau The number of tau dosing intervals to simulate or \code{Inf} for
+#'   steady-state.
+#' @param options The PKNCA.options to use for the calculation (passed on to
+#'   subsequent functions like \code{pk.calc.half.life}).
+#' @param lambda.z The elimination rate (from the half life calculation, used to
+#'   extrapolate beyond the maximum time observed).
+#' @param clast.pred To use predicted as opposed to observed Clast, either give
+#'   the value for clast.pred here or set it to true (for automatic calculation
+#'   from the half-life).
+#' @param tlast The time of last observed concentration above the limit of
+#'   quantification.  This is calculated if not provided.
+#' @param additional.times Times to include in the final outputs in addition to
+#'   the standard times (see details).  All \code{min(additional.times)} must be
+#'   >= 0, and the \code{max(additional.times)} must be <= \code{tau}.
+#' @param check.blq Must the first concentration measurement be below the limit
+#'   of quantification?
 #' @param interp.method See \code{\link{interp.extrap.conc}}
 #' @param extrap.method See \code{\link{interp.extrap.conc}}
-#' @param steady.state.tol The tolerance for assessing if steady-state
-#' has been achieved (between 0 and 1, exclusive).
-#' @param ... Additional arguments passed to the \code{half.life}
-#' function if required to compute \code{lambda.z}.
+#' @param steady.state.tol The tolerance for assessing if steady-state has been
+#'   achieved (between 0 and 1, exclusive).
+#' @param ... Additional arguments passed to the \code{half.life} function if
+#'   required to compute \code{lambda.z}.
 #' @return A data frame with columns named "conc" and "time".
 #'
 #' @details
-#' The returned superposition times will include all of the
-#' following times: 0 (zero), \code{dose.times}, \code{time modulo tau}
-#' (shifting \code{time} for each dose time as well),
-#' \code{additional.times}, and \code{tau}.
+#' The returned superposition times will include all of the following times: 0
+#' (zero), \code{dose.times}, \code{time modulo tau} (shifting \code{time} for
+#' each dose time as well), \code{additional.times}, and \code{tau}.
 #'
 #' @seealso \code{\link{interp.extrap.conc}}
 #'
@@ -75,7 +70,7 @@ superposition.PKNCAconc <- function(conc, ...) {
 
 #' @rdname superposition
 #' @export
-superposition.numeric <- function(conc, time, dose.input,
+superposition.numeric <- function(conc, time, dose.input = NULL,
                                   tau, dose.times=0, dose.amount, n.tau=Inf,
                                   options=list(),
                                   lambda.z, clast.pred=FALSE, tlast,
@@ -87,87 +82,52 @@ superposition.numeric <- function(conc, time, dose.input,
   # Check the inputs
   interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
   # Concentration and time
-  check.conc.time(conc, time)
-  if (check.blq)
-    if (!(conc[1] %in% 0))
+  assert_conc_time(conc = conc, time = time)
+  if (check.blq) {
+    if (!(conc[1] %in% 0)) {
       stop("The first concentration must be 0 (and not NA).  To change this set check.blq=FALSE.")
-  # dose.input
-  if (!missing(dose.input)) {
-    if (length(dose.input) != 1)
-      stop("dose.input must be a scalar")
-    if (!is.numeric(dose.input) | is.factor(dose.input) | is.na(dose.input))
-      stop("dose.input must be a number")
-    if (dose.input <= 0)
-      stop("dose.input must be > 0")
+    }
   }
-  # tau
-  if (length(tau) != 1)
-    stop("tau must be a scalar")
-  if (!is.numeric(tau) | is.factor(tau) | is.na(tau))
-    stop("tau must be a number")
-  if (tau <= 0)
-    stop("tau must be > 0")
-  # dose.times
-  if (length(dose.times) < 1)
-    stop("There must be at least one dose time")
-  if (!is.numeric(dose.times) | is.factor(dose.times) | any(is.na(dose.times)))
-    stop("dose.times must be a number")
-  if (any(dose.times < 0))
-    stop("All dose.times must be non-negative")
-  if (any(dose.times >= tau))
-    stop("dose.times must be < tau")
+  assert_number_between(dose.input, na.ok = FALSE, null.ok = TRUE, lower = 0)
+  assert_dosetau(tau)
+  assert_numeric_between(x = dose.times, lower_eq = 0, min.len = 1, upper = tau)
   # dose.amount
   if (!missing(dose.amount)) {
-    if (missing(dose.input))
+    if (missing(dose.input)) {
       stop("must give dose.input to give dose.amount")
+    }
+    assert_numeric_between(x = dose.amount, lower = 0, finite = TRUE)
     if (!(length(dose.amount) %in% c(1, length(dose.times))))
       stop("dose.amount must either be a scalar or match the length of dose.times")
-    if (!is.numeric(dose.amount) | is.factor(dose.amount))
-      stop("dose.amount must be a number")
-    if (any(is.infinite(dose.amount)) | any(is.na(dose.amount)))
-      stop("dose.amount must be finite and not NA")
-    if (any(dose.amount <= 0))
-      stop("All dose.amount must be positive")
   }
-  # n.tau
-  if (length(n.tau) != 1)
-    stop("n.tau must be a scalar")
-  if (!is.numeric(n.tau) | is.factor(n.tau) | is.na(n.tau))
-    stop("n.tau must be a number")
-  if (n.tau < 1)
-    stop("n.tau must be >= 1")
-  if (!is.infinite(n.tau) &
-      ((n.tau %% 1) > 10*.Machine$double.eps))
-    stop("n.tau must be an integer or Inf")
+  checkmate::assert_number(n.tau, lower = 1)
+  if (is.finite(n.tau)) {
+    n.tau <- checkmate::assert_integerish(n.tau, lower = 1)
+  }
   # lambda.z
   if (!missing(lambda.z)) {
-    if (length(lambda.z) != 1)
-      stop("lambda.z must be a scalar")
-    if (!is.numeric(lambda.z) | is.factor(lambda.z))
-      stop("lambda.z must be a number")
+    lambda.z <- assert_number_between(x = lambda.z, lower = 0)
   }
   # clast.pred
-  if (length(clast.pred) != 1)
-    stop("clast.pred must be a scalar")
-  if (is.na(clast.pred))
+  checkmate::assert(
+    checkmate::check_number(clast.pred, lower = 0, na.ok = TRUE),
+    checkmate::check_logical(clast.pred, any.missing = TRUE, len = 1),
+    .var.name = "clast.pred"
+  )
+  if (is.na(clast.pred)) {
     clast.pred <- FALSE
-  if (!is.logical(clast.pred) &
-      (!is.numeric(clast.pred) |
-       is.factor(clast.pred)))
-    stop("clast.pred must either be a logical (TRUE/FALSE) or numeric value")
-  if (is.numeric(clast.pred) & clast.pred <= 0)
-    stop("clast.pred must be positive (if it is a number)")
+  } else if (!is.numeric(clast.pred)) {
+    checkmate::assert_logical(clast.pred, any.missing = FALSE, len = 1)
+  }
   # tlast
   if (!missing(tlast)) {
-    if (length(tlast) != 1)
-      stop("tlast must be a scalar")
-    if (!is.numeric(tlast) | is.factor(tlast) | is.na(tlast))
-      stop("tlast must be a number")
+    checkmate::assert_number(tlast)
   }
   # additional.times
   if (length(additional.times) > 0) {
-    if (any(is.na(additional.times)))
+    if (any(is.na(additional.times))) {
       stop("No additional.times may be NA (to not include any additional.times, enter c() as the function argument)")
+    }
     if (!is.numeric(additional.times) | is.factor(additional.times))
       stop("additional.times must be a number")
     if (any(additional.times < 0))

@@ -1,8 +1,9 @@
 test_that("pk.calc.c0", {
   # Input checks
-  expect_error(pk.calc.c0(5:1, 4:0),
-               regexp="Time must be monotonically increasing",
-               info="conc, time inputs are checked")
+  expect_error(
+    pk.calc.c0(5:1, 4:0),
+    regexp="Assertion on 'time' failed: Must be sorted."
+  )
   expect_error(pk.calc.c0(5:1, 0:4, time.dose=1:2),
                regexp="time.dose must be a scalar")
   expect_error(pk.calc.c0(5:1, 0:4, time.dose="1"),
@@ -28,7 +29,7 @@ test_that("pk.calc.c0", {
   expect_equal(pk.calc.c0(c(0, 2, 1, 0.5), 0:3, method="c1"),
                pk.calc.c0.method.c1(c(0, 2, 1, 0.5), 0:3),
                info="Respects method order")
-  
+
 })
 
 test_that("pk.calc.c0.method.logslope", {

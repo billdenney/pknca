@@ -1,7 +1,6 @@
 #' Estimate the concentration at dosing time for an IV bolus dose.
 #'
-#' @param conc The observed concentrations
-#' @param time The observed times
+#' @inheritParams assert_conc_time
 #' @param time.dose The time when dosing occurred
 #' @param method The order of methods to test (see details)
 #' @param check Check the \code{conc} and \code{time} inputs
@@ -22,8 +21,9 @@ pk.calc.c0 <- function(conc, time, time.dose=0,
                        method=c("c0", "logslope", "c1", "cmin", "set0"),
                        check=TRUE) {
   # Check the inputs
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   if (length(time.dose) != 1)
     stop("time.dose must be a scalar")
   if (!is.numeric(time.dose) | is.factor(time.dose))
@@ -57,8 +57,9 @@ pk.calc.c0 <- function(conc, time, time.dose=0,
 #' \code{conc} after \code{time.dose} is 0 or greater than the first.
 pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
                                        check=TRUE) {
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   mask.positive.time <- (time > time.dose &
                          !(is.na(conc)))
   positive.time <- time[mask.positive.time]
@@ -82,8 +83,9 @@ pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
 #' @describeIn pk.calc.c0 Use \code{C0} = \code{conc[time %in%
 #' time.dose]} if it is nonzero.
 pk.calc.c0.method.c0 <- function(conc, time, time.dose=0, check=TRUE) {
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   # If there is a non-missing and nonzero concentration measurement
   # at time.dose, that's our answer.
   mask.dose <- (time %in% time.dose &
@@ -97,8 +99,9 @@ pk.calc.c0.method.c0 <- function(conc, time, time.dose=0, check=TRUE) {
 
 #' @describeIn pk.calc.c0 Use \code{C0} = \code{C1}.
 pk.calc.c0.method.c1 <- function(conc, time, time.dose=0, check=TRUE) {
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc = conc, time = time)
+  }
   mask.post.dose <- (time > time.dose &
                      !is.na(conc))
   if (any(mask.post.dose)) {

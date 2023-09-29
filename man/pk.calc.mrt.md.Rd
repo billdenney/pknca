@@ -17,7 +17,7 @@ pk.calc.mrt.md(auctau, aumctau, aucinf, tau)
 \item{aucinf}{the AUC from time 0 to infinity (typically using
 single-dose data)}
 
-\item{tau}{the dosing interval}
+\item{tau}{The dosing interval}
 }
 \description{
 Calculate the mean residence time (MRT) for multiple-dose data with nonlinear

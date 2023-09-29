@@ -75,16 +75,16 @@ pk.calc.aucint.inf.pred(
 )
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{interval}{Numeric vector of two numbers for the start and end time of
 integration}
 
-\item{start, end}{The start and end of the interval (cannot be given
-if \code{interval} is given)}
+\item{start}{The start time of the interval}
+
+\item{end}{The end time of the interval}
 
 \item{clast, clast.obs, clast.pred}{The last concentration above the
 limit of quantification; this is used for AUCinf calculations.  If
@@ -114,7 +114,7 @@ instructions.)}
 \item{conc.na}{How to handle missing concentration values.  (See
 \code{\link{clean.conc.na}} for usage instructions.)}
 
-\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 
 \item{...}{Additional arguments passed to \code{pk.calc.auxc} and
@@ -127,6 +127,12 @@ calculations.}
 Calculate the AUC over an interval with interpolation and/or
 extrapolation of concentrations for the beginning and end of the
 interval.
+}
+\details{
+When `pk.calc.aucint()` needs to extrapolate using `lambda.z` (in other
+words, using the half-life), it will always extrapolate using the logarithmic
+trapezoidal rule to align with using a half-life calculation for the
+extrapolation.
 }
 \section{Functions}{
 \itemize{

@@ -1,9 +1,10 @@
 test_that("pk.calc.auxc", {
   # Verify input checks
 
-  expect_error(pk.calc.auxc(conc=1:2, time=0:1, interval=2:1, method="linear"),
-               regexp="The AUC interval must be increasing",
-               info="Start and end of the interval must be in the correct order")
+  expect_error(
+    pk.calc.auxc(conc=1:2, time=0:1, interval=2:1, method="linear"),
+    regexp="Assertion on 'interval' failed: Must be sorted."
+  )
   expect_warning(pk.calc.auxc(conc=1:2, time=2:3, interval=c(1, 3),
                               method="linear"),
                  regexp="Requesting an AUC range starting \\(1\\) before the first measurement \\(2\\) is not allowed",
@@ -329,7 +330,7 @@ test_that("pk.calc.auc: interpolation of times within the time interval", {
       AUCinf=1+2/log(2)+1.5+1/log(2)+1,
       AUClast=1+2/log(2)+1.5+1/log(2),
       AUCall=1+2/log(2)+1.5+1/log(2)+0.5/log(2)))
-  for (t in names(tests))
+  for (t in names(tests)) {
     for (n in names(tests[[t]])) {
       # Note: using this structure ensures that there will not be
       # excessive warnings during testing.
@@ -352,6 +353,7 @@ test_that("pk.calc.auc: interpolation of times within the time interval", {
                    tests[[t]][[n]],
                    info=paste(t, n))
     }
+  }
 })
 
 test_that("pk.calc.auc: warning with beginning of interval before the beginning of time", {
@@ -451,16 +453,22 @@ test_that("pk.calc.auc: warning with beginning of interval before the beginning 
     }
 
   # Confirm error with concentration and time not of equal lengths
-  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2)),
-               regexp="Conc and time must be the same length")
+  expect_error(
+    pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2)),
+    regexp="Assertion on 'conc' failed: Must have length 2, but has length 3."
+  )
 
   # Confirm error with time not monotonically increasing (less than)
-  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 1)),
-               regexp="Time must be monotonically increasing")
+  expect_error(
+    pk.calc.auc(conc = c(1, 2, 3), time = c(1, 2, 1)),
+    regexp = "Assertion on 'time' failed: Contains duplicated values, position 3."
+  )
 
   # Confirm error with time not monotonically increasing (equal)
-  expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 2)),
-               regexp="Time must be monotonically increasing")
+  expect_error(
+    pk.calc.auc(conc = c(1, 2, 3), time = c(1, 2, 2)),
+    regexp = "Assertion on 'time' failed: Contains duplicated values, position 3."
+  )
 
   # Confirm that AUC method checking works
   expect_error(pk.calc.auc(conc=c(1, 2, 3), time=c(1, 2, 3), method="wrong"),
@@ -571,7 +579,7 @@ test_that("pk.calc.aumc", {
       auc.type="AUCinf",
       lambda.z=1,
       method="lin up/log down"),
-    2-0.5/log(0.5)+0.5/(log(0.5)^2)+1.5+0.5)
+    2 - 0.5/log(0.5) + 0.5/(log(0.5)^2) + 1.5 + 0.5)
 })
 
 

@@ -35,7 +35,7 @@ NULL
 #'   time, even if a nonzero concentration exists at that time (usually used
 #'   with single-dose data)
 #' @inheritParams pk.calc.auxc
-#' @param start,end The start and end of the interval
+#' @inheritParams assert_intervaltime_single
 #' @param ... ignored
 #' @export
 PKNCA_impute_method_start_conc0 <- function(conc, time, start=0, ..., options = list()) {

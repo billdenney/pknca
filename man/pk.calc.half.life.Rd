@@ -21,9 +21,9 @@ pk.calc.half.life(
 )
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{tmax}{Time of maximum concentration (will be calculated and
 included in the return data frame if not given)}
@@ -56,7 +56,7 @@ adding another point.}
 \item{allow.tmax.in.half.life}{Allow the concentration point for tmax
 to be included in the half-life slope calculation.}
 
-\item{check}{Run \code{\link{check.conc.time}},
+\item{check}{Run \code{\link{assert_conc_time}},
 \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
 }
 \value{

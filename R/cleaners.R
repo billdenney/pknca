@@ -4,14 +4,13 @@
 #' NA concentrations (and their associated times) will be removed then
 #' the BLQ values in the middle
 #'
-#' @param conc Measured concentrations
-#' @param time Time of the concentration measurement
+#' @inheritParams assert_conc_time
 #' @param \dots Additional items to add to the data frame
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
 #' @param conc.na How to handle NA concentrations?  Either 'drop' or a
 #'   number to impute.
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @return The concentration and time measurements (data frame) filtered
 #'   and cleaned as requested relative to NA in the concentration.
 #' @family Data cleaners
@@ -22,7 +21,7 @@ clean.conc.na <- function(conc, time, ...,
                           check=TRUE) {
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check)
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
   # Prep it as a data frame
   ret <- data.frame(conc, time, ..., stringsAsFactors=FALSE)
   if (conc.na %in% "drop") {
@@ -41,8 +40,7 @@ clean.conc.na <- function(conc, time, ...,
 #' Handle BLQ values in the concentration measurements as requested by
 #' the user.
 #'
-#' @param conc Measured concentrations
-#' @param time Time of the concentration measurement
+#' @inheritParams assert_conc_time
 #' @param \dots Additional arguments passed to clean.conc.na
 #' @param options List of changes to the default
 #'   \code{\link{PKNCA.options}} for calculations.
@@ -50,7 +48,7 @@ clean.conc.na <- function(conc, time, ...,
 #'   values?  See details for description.
 #' @param conc.na How to handle NA concentrations.  (See
 #'   \code{\link{clean.conc.na}})
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @return The concentration and time measurements (data frame) filtered
 #'   and cleaned as requested relative to BLQ in the middle.
 #'
@@ -90,8 +88,9 @@ clean.conc.blq <- function(conc, time,
                            check=TRUE) {
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
-  if (check)
-    check.conc.time(conc, time)
+  if (check) {
+    assert_conc_time(conc, time)
+  }
   # Handle NA concentrations and make the data frame
   ret <- clean.conc.na(conc, time, ..., conc.na=conc.na, check=FALSE)
   # If all data has been excluded, then don't do anything

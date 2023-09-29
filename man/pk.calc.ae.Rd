@@ -7,7 +7,7 @@
 pk.calc.ae(conc, volume, check = TRUE)
 }
 \arguments{
-\item{conc}{The concentration in the sample}
+\item{conc}{Measured concentrations}
 
 \item{volume}{The volume (or mass) of the sample}
 

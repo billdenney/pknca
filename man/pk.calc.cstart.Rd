@@ -7,11 +7,11 @@
 pk.calc.cstart(conc, time, start)
 }
 \arguments{
-\item{conc}{Observed concentrations during the interval}
+\item{conc}{Measured concentrations}
 
-\item{time}{Times of \code{conc} observations}
+\item{time}{Time of the measurement of the concentrations}
 
-\item{start}{Start time of the interval}
+\item{start}{The start time of the interval}
 }
 \value{
 The concentration when \code{time == end}.  If none

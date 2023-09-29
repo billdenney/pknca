@@ -7,10 +7,9 @@
 pk.calc.time_above(conc, time, conc_above, ..., options = list(), check = TRUE)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{conc_above}{The concentration to be above}
 
@@ -20,7 +19,7 @@ is \code{method} as described in the details section.}
 \item{options}{List of changes to the default \code{\link{PKNCA.options}} for
 calculations.}
 
-\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 }
 \value{

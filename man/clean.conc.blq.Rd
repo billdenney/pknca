@@ -18,7 +18,7 @@ clean.conc.blq(
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{time}{Time of the concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{\dots}{Additional arguments passed to clean.conc.na}
 
@@ -31,7 +31,7 @@ values?  See details for description.}
 \item{conc.na}{How to handle NA concentrations.  (See
 \code{\link{clean.conc.na}})}
 
-\item{check}{Run \code{\link{check.conc.time}}?}
+\item{check}{Run \code{\link{assert_conc_time}}?}
 }
 \value{
 The concentration and time measurements (data frame) filtered

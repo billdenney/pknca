@@ -10,7 +10,7 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{time}{Time of the concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{\dots}{Additional items to add to the data frame}
 
@@ -20,7 +20,7 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 \item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}
 
-\item{check}{Run \code{\link{check.conc.time}}?}
+\item{check}{Run \code{\link{assert_conc_time}}?}
 }
 \value{
 The concentration and time measurements (data frame) filtered

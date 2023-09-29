@@ -68,7 +68,7 @@ interp.extrap.conc.dose(
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{time}{Time of the concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{time.out}{Time when interpolation is requested (vector for
 \code{interp.extrap.conc()}, scalar otherwise)}
@@ -98,7 +98,7 @@ for usage instructions.)}
 \item{conc.na}{How to handle NA concentrations.  (See
 \code{\link{clean.conc.na}()})}
 
-\item{check}{Run \code{\link{check.conc.time}()},
+\item{check}{Run \code{\link{assert_conc_time}()},
 \code{\link{clean.conc.blq}()}, and \code{\link{clean.conc.na}()}?}
 
 \item{conc.origin}{The concentration before the first measurement.

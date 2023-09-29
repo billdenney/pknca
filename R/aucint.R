@@ -2,9 +2,15 @@
 #' extrapolation of concentrations for the beginning and end of the
 #' interval.
 #'
+#' @details
+#' When `pk.calc.aucint()` needs to extrapolate using `lambda.z` (in other
+#' words, using the half-life), it will always extrapolate using the logarithmic
+#' trapezoidal rule to align with using a half-life calculation for the
+#' extrapolation.
+#'
+#'
 #' @inheritParams pk.calc.auxc
-#' @param start,end The start and end of the interval (cannot be given
-#'   if \code{interval} is given)
+#' @inheritParams assert_intervaltime_single
 #' @param clast,clast.obs,clast.pred The last concentration above the
 #'   limit of quantification; this is used for AUCinf calculations.  If
 #'   provided as clast.obs (observed clast value, default), AUCinf is
@@ -41,7 +47,7 @@ pk.calc.aucint <- function(conc, time,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
         conc, time,
@@ -52,32 +58,7 @@ pk.calc.aucint <- function(conc, time,
   } else {
     data <- data.frame(conc, time)
   }
-  if (is.null(interval)) {
-    if (is.null(start) | is.null(end)) {
-      stop("If interval is not given, start and end must be given.")
-    } else if (length(start) != 1) {
-      stop("start must be a scalar")
-    } else if (length(end) != 1) {
-      stop("end must be a scalar")
-    } else if (!is.numeric(start) | is.factor(start)) {
-      stop("start must be a number")
-    } else if (!is.numeric(end) | is.factor(end)) {
-      stop("end must be a number")
-    }
-    interval <- c(start, end)
-  } else if (!is.null(start) | !is.null(end)) {
-    stop("start and end cannot be given if interval is given")
-  }
-  if (length(interval) != 2) {
-    stop("interval must be a vector with 2 elements")
-  } else if (!is.numeric(interval) | is.factor(interval)) {
-    stop("interval must be numeric")
-  } else if (is.infinite(interval[1])) {
-    stop("interval beginning (or start) must be finite")
-  }
-  if (interval[1] >= interval[2]) {
-    stop("interval start must be before interval end.")
-  }
+  interval <- assert_intervaltime_single(interval = interval, start = start, end = end)
   missing_times <-
     if (is.infinite(interval[2])) {
       setdiff(c(interval[1], time.dose), data$time)

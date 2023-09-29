@@ -21,11 +21,11 @@ test_that("time_above expected errors", {
   )
   expect_error(
     pk.calc.time_above(conc="X", time="X", conc_above=5, method="linear"),
-    regexp='Concentration data must be numeric and not a factor'
+    regexp="Assertion on 'conc' failed: Must be of type 'numeric', not 'character'."
   )
   expect_error(
     pk.calc.time_above(conc=5, time="X", conc_above=5, method="linear"),
-    regexp='Time data must be numeric and not a factor'
+    regexp="Assertion on 'time' failed: Must be of type 'numeric', not 'character'."
   )
   expect_error(
     pk.calc.time_above(conc=5, time=5, conc_above=5, method="foo"),

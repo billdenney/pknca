@@ -1,8 +1,6 @@
 #' Generate a sparse_pk object
 #'
-#' @param conc Concentration measurements (must be numeric, finite, and not NA)
-#' @param time Time of concentration measurements (must be numeric, finite, and
-#'   not NA)
+#' @inheritParams assert_conc_time
 #' @param subject Subject identifiers (may be any class; may not be null)
 #' @return A sparse_pk object which is a list of lists.  The inner lists have
 #'   elements named: "time", The time of measurement; "conc", The concentration
@@ -16,8 +14,7 @@ as_sparse_pk <- function(conc, time, subject) {
     subject <- conc$subject
     conc <- conc$conc
   }
-  checkmate::check_numeric(conc, finite=TRUE, any.missing=FALSE, null.ok=FALSE)
-  checkmate::check_numeric(time, finite=TRUE, any.missing=FALSE, len=length(conc), null.ok=FALSE)
+  assert_conc_time(conc = conc, time = time, any_missing_conc = FALSE, sorted_time = FALSE)
   checkmate::check_vector(subject, any.missing=FALSE, len=length(conc), null.ok=FALSE)
   unique_times <- sort(unique(time))
   ret <- list()

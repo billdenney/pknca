@@ -1,8 +1,7 @@
 #' Clean up the time to steady-state parameters and return a data
 #' frame for use by the tss calculators.
 #'
-#' @param conc Concentration measured
-#' @param time Time of concentration measurement
+#' @inheritParams assert_conc_time
 #' @param subject Subject identifiers (used as a random effect in the
 #' model)
 #' @param treatment Treatment description (if missing, all subjects
@@ -13,7 +12,7 @@
 #' \code{\link{PKNCA.options}} for calculations.
 #' @param conc.blq See \code{\link{clean.conc.blq}}
 #' @param conc.na See \code{\link{clean.conc.na}}
-#' @param check Run \code{\link{check.conc.time}}?
+#' @param check Run \code{\link{assert_conc_time}}?
 #' @param \dots Discarded inputs to allow generic calls between tss
 #' methods.
 #' @return a data frame with columns for \code{conc}entration,
@@ -28,10 +27,10 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    # When subject and time are given, then monotonicity tests for
+    # When subject and time are not given, then monotonicity tests for
     # time are not required.
-    monotonic.time <- missing(subject) & missing(treatment)
-    check.conc.time(conc, time, monotonic.time=monotonic.time)
+    sorted_time <- missing(subject) & missing(treatment)
+    assert_conc_time(conc = conc, time = time, sorted_time = sorted_time)
   }
   if (!missing(subject.dosing) & missing(subject)) {
     stop("Cannot give subject.dosing without subject")

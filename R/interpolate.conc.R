@@ -9,8 +9,7 @@
 #' concentration. Of note, these functions will not extrapolate prior to the
 #' first point.
 #'
-#' @param conc Measured concentrations
-#' @param time Time of the concentration measurement
+#' @inheritParams assert_conc_time
 #' @param time.dose Time of the dose
 #' @param time.out Time when interpolation is requested (vector for
 #'   \code{interp.extrap.conc()}, scalar otherwise)
@@ -41,7 +40,7 @@
 #'   (\code{FALSE}) or after (\code{TRUE}) the interpolated point?  See the
 #'   details for how this parameter is used.  It only has a meaningful effect at
 #'   the instant of an IV bolus dose.
-#' @param check Run \code{\link{check.conc.time}()},
+#' @param check Run \code{\link{assert_conc_time}()},
 #'   \code{\link{clean.conc.blq}()}, and \code{\link{clean.conc.na}()}?
 #' @param ... Additional arguments passed to \code{interpolate.conc()} or
 #'   \code{extrapolate.conc()}.
@@ -95,7 +94,7 @@ interp.extrap.conc <- function(conc, time, time.out,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
     data <-
       clean.conc.blq(
         conc, time,
@@ -164,7 +163,7 @@ interpolate.conc <- function(conc, time, time.out,
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
         conc=conc, time=time,
@@ -195,12 +194,12 @@ interpolate.conc <- function(conc, time, time.out,
     ret <- data$conc[time.out == data$time]
   } else {
     interp_methods_all <-
-      choose_interp_extrap_method(
+      choose_interval_method(
         conc=data$conc,
         time=data$time,
-        interp_method=interp.method,
-        # auclast because it doesn't affect the output for interpolation
-        extrap_method="auclast"
+        method=interp.method,
+        # AUClast because it doesn't affect the output for interpolation
+        auc.type="AUClast"
       )
     # Find the last time before and the first time after the output
     # time, then interpolate.
@@ -242,7 +241,7 @@ extrapolate.conc <- function(conc, time, time.out,
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
         conc=conc, time=time,
@@ -327,7 +326,7 @@ interp.extrap.conc.dose <- function(conc, time,
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
-    check.conc.time(conc, time)
+    assert_conc_time(conc = conc, time = time)
     data_conc <-
       clean.conc.blq(conc, time,
                      conc.blq=conc.blq, conc.na=conc.na,

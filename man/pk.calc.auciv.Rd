@@ -10,10 +10,9 @@ pk.calc.auciv(conc, time, c0, auc, ..., check = TRUE)
 pk.calc.auciv_pbext(auc, auciv)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{c0}{The concentration at time 0, typically calculated using
 \code{pk.calc.c0()}}
@@ -24,7 +23,7 @@ increasing and the same length as the concentration data)}
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are
 passed to \code{pk.calc.auxc}}
 
-\item{check}{Run \code{\link{check.conc.time}}, \code{\link{clean.conc.blq}},
+\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}
 
 \item{auciv}{The AUC calculated using \code{c0}}

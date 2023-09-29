@@ -38,67 +38,95 @@ test_that("superposition inputs", {
                regexp="The first concentration must be 0")
 
   # dose.input must be scalar
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=c(0, 1)),
-               regexp="dose.input must be a scalar")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=c(0, 1)),
+    regexp="Assertion on 'dose.input' failed: Must have length 1."
+  )
   # Ensure that dose.input must be a number
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=NA),
-               regexp="dose.input must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=factor("1")),
-               regexp="dose.input must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input="1"),
-               regexp="dose.input must be a number")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=NA),
+    regexp = "Assertion on 'dose.input' failed: Contains missing values (element 1).",
+    fixed = TRUE
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=factor("1")),
+    regexp="Assertion on 'dose.input' failed: Must be of type 'numeric' (or 'NULL'), not 'factor'.",
+    fixed = TRUE
+  )
   # dose.input must be > 0
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=-1),
-               regexp="dose.input must be > 0")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=0),
-               regexp="dose.input must be > 0")
-  
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=-1),
+    regexp="Assertion on 'dose.input' failed: Element 1 is not > 0"
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=0),
+    regexp="Assertion on 'dose.input' failed: Element 1 is not > 0"
+  )
+
   # tau must be scalar
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=c(0, 1)),
-               regexp="tau must be a scalar")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=c(0, 1)),
+    regexp="Assertion on 'tau' failed: Must have length 1, but has length 2."
+  )
   # Ensure that tau must be a number
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=NA),
-               regexp="tau must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=factor("1")),
-               regexp="tau must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau="1"),
-               regexp="tau must be a number")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=NA),
+    regexp="Assertion on 'tau' failed: Contains missing values (element 1).",
+    fixed = TRUE
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=factor("1")),
+    regexp="Assertion on 'tau' failed: Must be of type 'numeric', not 'factor'."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau="1"),
+    regexp="Assertion on 'tau' failed: Must be of type 'numeric', not 'character'."
+  )
   # tau must be > 0
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=-1),
-               regexp="tau must be > 0")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=0),
-               regexp="tau must be > 0")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=-1),
+    regexp="Assertion on 'tau' failed: Element 1 is not > 0"
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=0),
+    regexp="Assertion on 'tau' failed: Element 1 is not > 0"
+  )
 
   # >= 1 dose time
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=numeric()),
-               regexp="There must be at least one dose time")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times=numeric()),
+    regexp="Assertion on 'dose.times' failed: Must have length >= 1, but has length 0."
+  )
   # Dose times must be a number
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times="1"),
-               regexp="dose.times must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=factor("1")),
-               regexp="dose.times must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=NA),
-               regexp="dose.times must be a number")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times="1"),
+    regexp = "Assertion on 'dose.times' failed: Must be of type 'numeric', not 'character'."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times=factor("1")),
+    regexp="Assertion on 'dose.times' failed: Must be of type 'numeric', not 'factor'."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times=NA),
+    regexp = "Assertion on 'dose.times' failed: Contains missing values (element 1).",
+    fixed = TRUE
+  )
   # Dose times nonnegative
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=c(-1, 0)),
-               regexp="dose.times must be non-negative")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times=c(-1, 0)),
+    regexp="Assertion on 'dose.times' failed: Element 1 is not >= 0."
+  )
   # Dose times <= tau
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=c(0, 25)),
-               regexp="dose.times must be < tau")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=25),
-               regexp="dose.times must be < tau")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times=c(0, 25)),
+    regexp = "Assertion on 'dose.times' failed: Element 2 is not < 24"
+  )
 
   # dose.amount without dose.input
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             dose.times=0, dose.amount=1),
-               regexp="must give dose.input to give dose.amount")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, dose.times=0, dose.amount=1),
+    regexp="must give dose.input to give dose.amount"
+  )
   # dose.amount same length as dose.times
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
                              tau=24, dose.times=0, dose.amount=c(1, 2)),
@@ -107,72 +135,74 @@ test_that("superposition inputs", {
                              tau=24, dose.times=c(0, 1), dose.amount=c(1, 2, 3)),
                regexp="dose.amount must either be a scalar or match the length of dose.times")
   # dose.amount numeric
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount="1"),
-               regexp="dose.amount must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount=factor("1")),
-               regexp="dose.amount must be a number")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=1, tau=24, dose.times=0, dose.amount="1"),
+    regexp = "Assertion on 'dose.amount' failed: Must be of type 'numeric', not 'character'."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=1, tau=24, dose.times=0, dose.amount=factor("1")),
+    regexp = "Assertion on 'dose.amount' failed: Must be of type 'numeric', not 'factor'."
+  )
   # dose.amount finite/NA
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount=as.numeric(NA)),
-               regexp="dose.amount must be finite and not NA")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount=Inf),
-               regexp="dose.amount must be finite and not NA")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount=-Inf),
-               regexp="dose.amount must be finite and not NA")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=1, tau=24, dose.times=0, dose.amount=NA_real_),
+    regexp = "Assertion on 'dose.amount' failed: Contains missing values (element 1).",
+    fixed = TRUE
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=1, tau=24, dose.times=0, dose.amount=Inf),
+    regexp = "Assertion on 'dose.amount' failed: Must be finite."
+  )
   # dose.amount non-negative
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount=-1),
-               regexp="dose.amount must be positive")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), dose.input=1,
-                             tau=24, dose.times=0, dose.amount=0),
-               regexp="dose.amount must be positive")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=1, tau=24, dose.times=0, dose.amount=-1),
+    regexp = "Assertion on 'dose.amount' failed: Element 1 is not > 0"
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), dose.input=1, tau=24, dose.times=0, dose.amount=0),
+    regexp="Assertion on 'dose.amount' failed: Element 1 is not > 0"
+  )
 
-  # n.tau scalar
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=c(1, 2)),
-               regexp="n.tau must be a scalar")
-  # n.tau number
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau="1"),
-               regexp="n.tau must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=factor("1")),
-               regexp="n.tau must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=NA),
-               regexp="n.tau must be a number")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=c(1, 2)),
+    regexp="Assertion on 'n.tau' failed: Must have length 1."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau="1"),
+    regexp = "Assertion on 'n.tau' failed: Must be of type 'number', not 'character'."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=NA),
+    regexp="Assertion on 'n.tau' failed: May not be NA."
+  )
   # n.tau >= 1
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=0),
-               regexp="n.tau must be >= 1")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=-Inf),
-               regexp="n.tau must be >= 1")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=0),
+    regexp="Assertion on 'n.tau' failed: Element 1 is not >= 1."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=-Inf),
+    regexp = "Assertion on 'n.tau' failed: Element 1 is not >= 1."
+  )
   # n.tau integer
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=1.1),
-               regexp="n.tau must be an integer or Inf")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=1.0000001),
-               regexp="n.tau must be an integer or Inf")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=1.1),
+    regexp = "Assertion on 'n.tau' failed: Must be of type 'integerish', but element 1 is not close to an integer."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=1.0000001),
+    regexp = "Assertion on 'n.tau' failed: Must be of type 'integerish', but element 1 is not close to an integer."
+  )
 
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             n.tau=Inf, lambda.z=c(1, 2)),
-               regexp="lambda.z must be a scalar",
-               info="lambda.z must be a scalar")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, n.tau=Inf, lambda.z=c(1, 2)),
+    regexp="Assertion on 'lambda.z' failed: Must have length 1, but has length 2."
+  )
 
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             lambda.z="1"),
-               regexp="lambda.z must be a number",
-               info="lambda.z must be a number (character)")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             lambda.z=factor("1")),
-               regexp="lambda.z must be a number",
-               info="lambda.z must be a number (factor)")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, lambda.z="1"),
+    regexp="Assertion on 'lambda.z' failed: Must be of type 'numeric', not 'character'."
+  )
 
   expect_equal(
     superposition(
@@ -212,42 +242,39 @@ test_that("superposition inputs", {
     ),
     info="clast.pred NA is the same as FALSE"
   )
-  
+
   expect_error(
-    superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                  clast.pred=c(1, 2)),
-    regexp="clast.pred must be a scalar"
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, clast.pred=c(1, 2)),
+    regexp = "Assertion on 'clast.pred' failed: One of the following must apply:.*Must have length 1"
   )
   expect_error(
-    superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                  clast.pred=-1),
-    regexp="clast.pred must be positive (if it is a number)",
-    fixed=TRUE
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, clast.pred=-1),
+    regexp = "Assertion on 'clast.pred' failed: One of the following must apply:.*Element 1 is not >= 0"
   )
-  
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             clast.pred="1"),
-               regexp="clast.pred must either be a logical .* or numeric value",
-               info="clast.pred must be a number or logical or NA (character)")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             clast.pred=factor("1")),
-               regexp="clast.pred must either be a logical .* or numeric value",
-               info="clast.pred must be a number or logical or NA (factor)")
+
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, clast.pred="1"),
+    regexp="Must be of type"
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, clast.pred=factor("1")),
+    regexp="Must be of type"
+  )
 
   # tlast given and not a scalar
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             tlast=c(1, 2)),
-               regexp="tlast must be a scalar")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, tlast=c(1, 2)),
+    regexp="Assertion on 'tlast' failed: Must have length 1."
+  )
   # tlast given and not a number
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             tlast="1"),
-               regexp="tlast must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             tlast=factor("1")),
-               regexp="tlast must be a number")
-  expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
-                             tlast=NA),
-               regexp="tlast must be a number")
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, tlast="1"),
+    regexp="Assertion on 'tlast' failed: Must be of type 'number', not 'character'."
+  )
+  expect_error(
+    superposition(conc=c(0, 2), time=c(0, 1), tau=24, tlast=NA),
+    regexp="Assertion on 'tlast' failed: May not be NA."
+  )
   # TODO: test mixing clast.pred and lambda.z
 
   # additional.times NA
@@ -316,7 +343,7 @@ test_that("superposition inputs", {
       fixed=TRUE
     )
   )
-  
+
   # Combinations of lambda.z, clast.pred, tlast
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              clast.pred=1),
@@ -339,7 +366,7 @@ test_that("superposition inputs", {
   expect_error(superposition(conc=c(0, 2), time=c(0, 1), tau=24,
                              lambda.z=1, tlast=1),
                regexp="Either give all or none of the values for these arguments: lambda.z, clast.pred, and tlast")
-  
+
 })
 
 test_that("superposition math", {
@@ -455,14 +482,20 @@ test_that("superposition math", {
                data.frame(conc=NA, time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24)),
                info="Uncalculable lambda.z with extrapolation to steady-state gives NA conc")
 
-  expect_equal(superposition(conc=c(0, 2, 3, 5, 6, 3, 1, 0),
-                             time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24),
-                             tau=24,
-                             lambda.z=1, clast.pred=1, tlast=12),
-               data.frame(conc=c(6.144e-6, 2, 3, 5, 6, 3, 1, 6.144e-6),
-                          time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24)),
-               tolerance=0.001,
-               info="Uncalculable lambda.z with extrapolation to steady-state with lambda.z given, gives conc values")
+  expect_equal(
+    superposition(
+      conc=c(0, 2, 3, 5, 6, 3, 1, 0),
+      time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24),
+      tau=24,
+      lambda.z=1, clast.pred=1, tlast=12
+    ),
+    data.frame(
+      conc=c(6.144e-6, 2, 3, 5, 6, 3, 1, 6.144e-6),
+      time=c(0, 0.5, 1, 1.5, 2, 8, 12, 24)
+    ),
+    tolerance=0.001,
+    info="Uncalculable lambda.z with extrapolation to steady-state with lambda.z given, gives conc values"
+  )
 })
 
 test_that("PKNCAconc superposition", {

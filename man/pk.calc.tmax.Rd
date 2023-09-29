@@ -7,9 +7,9 @@
 pk.calc.tmax(conc, time, options = list(), first.tmax = NULL, check = TRUE)
 }
 \arguments{
-\item{conc}{Concentration measured}
+\item{conc}{Measured concentrations}
 
-\item{time}{Time of concentration measurement}
+\item{time}{Time of the measurement of the concentrations}
 
 \item{options}{List of changes to the default
 \code{\link{PKNCA.options}} for calculations.}
@@ -18,7 +18,7 @@ pk.calc.tmax(conc, time, options = list(), first.tmax = NULL, check = TRUE)
 maximum concentration, should the first be considered as Tmax?  If
 not, then the last is considered Tmax.}
 
-\item{check}{Run \code{\link{check.conc.time}}?}
+\item{check}{Run \code{\link{assert_conc_time}}?}
 }
 \value{
 the time of the maximum concentration

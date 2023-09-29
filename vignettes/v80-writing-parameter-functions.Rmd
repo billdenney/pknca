@@ -42,7 +42,7 @@ The return value may have an attribute of `exclude` (set by `attr(return_value, 
 
 ## Best Practices
 
-* Use the function `check.conc.time` if the function takes either `conc` or `time` as an input.
+* Use the function `assert_conc_time` if the function takes either `conc` or `time` as an input.
 * Make sure that you check for missing values (`NA`) in your inputs.
 * Don't recalculate other NCA parameters within your function unless you absolutely must.  Take the NCA parameter as an input.  That way, PKNCA will track the calculation dependencies.
 * For consistency with the rest of PKNCA, start the function name with "pk.calc" (like "pk.calc.cmax").
@@ -73,14 +73,14 @@ One of the most common examples is the function to calculate C~max~:
 
     #' Determine maximum observed PK concentration
     #'
-    #' @param conc Concentration measured
-    #' @param check Run \code{\link{check.conc.time}}?
+    #' @inheritParams assert_conc_time
+    #' @param check Run \code{\link{assert_conc_time}}?
     #' @return a number for the maximum concentration or NA if all
     #' concentrations are missing
     #' @export
     pk.calc.cmax <- function(conc, check=TRUE) {
       if (check)
-        check.conc.time(conc=conc)
+        assert_conc_time(conc=conc)
       if (length(conc) == 0 | all(is.na(conc))) {
         NA
       } else {

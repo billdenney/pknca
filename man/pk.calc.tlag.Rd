@@ -9,9 +9,9 @@ concentration in the interval)}
 pk.calc.tlag(conc, time)
 }
 \arguments{
-\item{conc}{The observed concentrations}
+\item{conc}{Measured concentrations}
 
-\item{time}{The observed times}
+\item{time}{Time of the measurement of the concentrations}
 }
 \value{
 The time associated with the first increasing concentration

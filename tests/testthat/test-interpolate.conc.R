@@ -73,8 +73,7 @@ test_that("interpolate.conc expected errors", {
       time=c(0, 1),
       time.out=0.5,
       check=FALSE
-    ),
-    regexp="Contains missing values"
+    )
   )
 
   # When tlast is before the end of the data, do not extrapolate  
