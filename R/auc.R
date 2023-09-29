@@ -14,6 +14,7 @@
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
+#' @inheritParams choose_interval_method
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.
 #' @param clast,clast.obs,clast.pred The last concentration above the limit of
@@ -24,8 +25,6 @@
 #'   extrapolation
 #' @param options List of changes to the default \code{\link{PKNCA.options}} for
 #'   calculations.
-#' @param method The method for integration (either 'lin up/log down' or
-#'   'linear')
 #' @param conc.blq How to handle BLQ values in between the first and last above
 #'   LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
 #'   instructions.)
