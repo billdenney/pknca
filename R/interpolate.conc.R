@@ -9,12 +9,13 @@
 #' concentration. Of note, these functions will not extrapolate prior to the
 #' first point.
 #'
+#' An `NA` value for the `lambda.z` parameter will prevent extrapolation.
+#'
 #' @inheritParams assert_conc_time
+#' @inheritParams assert_lambdaz
 #' @param time.dose Time of the dose
 #' @param time.out Time when interpolation is requested (vector for
 #'   \code{interp.extrap.conc()}, scalar otherwise)
-#' @param lambda.z The elimination rate constant.  \code{NA} will prevent
-#'   extrapolation.
 #' @param clast The last observed concentration above the limit of
 #'   quantification.  If not given, \code{clast} is calculated from
 #'   \code{\link{pk.calc.clast.obs}()}
@@ -238,6 +239,7 @@ extrapolate.conc <- function(conc, time, time.out,
                              conc.blq=NULL,
                              ...,
                              check=TRUE) {
+  assert_lambdaz(lambda.z)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {

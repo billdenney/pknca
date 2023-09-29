@@ -799,10 +799,11 @@ PKNCA.set.summary(
 #'
 #' @details vz is \code{cl/lambda.z}.
 #'
+#' @inheritParams assert_lambdaz
 #' @param cl the clearance (or apparent observed clearance)
-#' @param lambda.z the elimination rate
 #' @export
 pk.calc.vz <- function(cl, lambda.z) {
+  assert_lambdaz(lambda.z)
   # Ensure that cl is either a scalar or the same length as AUC
   # (more complex repeating patterns while valid for general R are
   # likely errors here).

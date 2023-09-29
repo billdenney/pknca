@@ -312,12 +312,16 @@ test_that("pk.calc.vz", {
                info="CL required for Vz calculation")
 
   # Ensure that length of cl and lambda.z are either 1 or the same length
-  expect_error(pk.calc.vz(cl=1:2, lambda.z=1:3),
-               regexp="'cl' and 'lambda.z' must be the same length",
-               info="CL and lambda.z must be the same length (CL shorter)")
-  expect_error(pk.calc.vz(cl=1:3, lambda.z=1:2),
-               regexp="'cl' and 'lambda.z' must be the same length",
-               info="CL and lambda.z must be the same length (lambda.z shorter)")
+  expect_error(
+    pk.calc.vz(cl=1:2, lambda.z=1:3),
+    regexp="'cl' and 'lambda.z' must be the same length",
+    info="CL and lambda.z must be the same length (CL shorter)"
+  )
+  expect_error(
+    pk.calc.vz(cl=1:3, lambda.z=1:2),
+    regexp="'cl' and 'lambda.z' must be the same length",
+    info="CL and lambda.z must be the same length (lambda.z shorter)"
+  )
 
   # Estimate a single Vz (with permutations to ensure the right math
   # is happening)

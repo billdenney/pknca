@@ -50,8 +50,8 @@ interpolate_conc_log <- function(conc_1, conc_2, time_1, time_2, time_out) {
   )
 }
 
+#' @inheritParams assert_lambdaz
 #' @param clast The concentration at the last time above the lower LOQ
-#' @param lambda.z The elimination rate
 #' @rdname interp_extrap_conc_method
 extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
   clast*exp(-lambda.z*(time_out - tlast))
@@ -147,6 +147,7 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type) {
 #' @param interval_method The method for integrating each interval of `conc`
 #' @keywords Internal
 auc_integrate <- function(conc, time, clast, tlast, lambda.z, interval_method, fun_linear, fun_log, fun_inf) {
+  assert_lambdaz(lambda.z = lambda.z)
   interval_method_within <- interval_method[-length(interval_method)]
   interval_method_extrap <- interval_method[length(interval_method)]
   idx_1 <- seq_len(length(conc) - 1)

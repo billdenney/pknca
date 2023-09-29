@@ -58,8 +58,8 @@ steady-state.}
 \item{options}{The PKNCA.options to use for the calculation (passed on to
 subsequent functions like \code{pk.calc.half.life}).}
 
-\item{lambda.z}{The elimination rate (from the half life calculation, used to
-extrapolate beyond the maximum time observed).}
+\item{lambda.z}{The elimination rate (in units of inverse time) for
+extrapolation}
 
 \item{clast.pred}{To use predicted as opposed to observed Clast, either give
 the value for clast.pred here or set it to true (for automatic calculation

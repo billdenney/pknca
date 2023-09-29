@@ -9,7 +9,8 @@ pk.calc.vz(cl, lambda.z)
 \arguments{
 \item{cl}{the clearance (or apparent observed clearance)}
 
-\item{lambda.z}{the elimination rate}
+\item{lambda.z}{The elimination rate (in units of inverse time) for
+extrapolation}
 }
 \description{
 Calculate the terminal volume of distribution (Vz)
