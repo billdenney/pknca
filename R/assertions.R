@@ -107,3 +107,71 @@ assert_conc_time <- function(conc, time, any_missing_conc = TRUE, sorted_time = 
   checkmate::assert_numeric(conc, len = length(time))
   data.frame(conc = conc, time = time)
 }
+
+#' Confirm that a value is greater than another value
+#'
+#' @inheritParams checkmate::assert_numeric
+#' @return `x`
+#' @noRd
+assert_numeric_between <- function(x, any.missing = FALSE, null.ok = FALSE, lower_eq = -Inf, lower = -Inf, upper = Inf, upper_eq = Inf, ..., .var.name = checkmate::vname(x)) {
+  checkmate::assert_numeric(x, any.missing = any.missing, null.ok = null.ok, lower = lower_eq, upper = upper_eq, ..., .var.name = .var.name)
+  if (is.null(x) & null.ok) {
+    # do nothing
+  } else {
+    # disallowed missing will have been previously caught
+    mask_na <- is.na(x)
+    mask_lower <- !mask_na & !is.infinite(lower) & x <= lower
+    mask_upper <- !mask_na & !is.infinite(upper) & x >= upper
+    msg <- c()
+    if (any(mask_lower)) {
+      msg <-
+        c(
+          msg,
+          sprintf("Assertion on '%s' failed: %s is not > %g", .var.name, element_find(mask_lower), lower)
+        )
+    }
+    if (any(mask_upper)) {
+      msg <-
+        c(
+          msg,
+          sprintf("Assertion on '%s' failed: %s is not < %g", .var.name, element_find(mask_upper), upper)
+        )
+    }
+    if (length(msg) > 0) {
+      stop(paste(msg, collapse = "\n"))
+    }
+  }
+  x
+}
+
+element_find <- function(x) {
+  values <- which(x)
+  ret_values <-
+    if (length(values) > 6) {
+      paste(values[1:5], collapse = ", ")
+    } else {
+      paste(values, collapse = ", ")
+    }
+  paste(
+    ngettext(length(values), msg1 = "Element", msg2 = "Elements"),
+    ret_values
+  )
+}
+
+#' Confirm that a value is greater than another value
+#'
+#' @inheritParams checkmate::assert_number
+#' @return `x`
+#' @noRd
+assert_number_between <- function(x, ..., na.ok = FALSE, len = 1, .var.name = checkmate::vname(x)) {
+  assert_numeric_between(x, len = 1, .var.name = .var.name, ..., any.missing = na.ok)
+}
+
+#' Assert that a value is a dosing interval
+#'
+#' @param tau The dosing interval
+#' @return `tau` or an informative error
+#' @export
+assert_dosetau <- function(tau) {
+  assert_number_between(x = tau, lower = 0, .var.name = checkmate::vname(tau), finite = TRUE)
+}

@@ -13,7 +13,7 @@ superposition(conc, ...)
 \method{superposition}{numeric}(
   conc,
   time,
-  dose.input,
+  dose.input = NULL,
   tau,
   dose.times = 0,
   dose.amount,

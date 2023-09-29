@@ -752,7 +752,7 @@ PKNCA.set.summary(
 #'   (tau).
 #' @param aucinf the AUC from time 0 to infinity (typically using
 #'   single-dose data)
-#' @param tau the dosing interval
+#' @inheritParams assert_dosetau
 #' @details Note that if \code{aucinf == auctau} (as would be the
 #'   assumption with linear kinetics), the equation becomes the same as
 #'   the single-dose MRT.

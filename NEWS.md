@@ -14,6 +14,8 @@ the dosing including dose amount and route.
   than the number of rows.  Now the number of subjects is counted (fix #223).
 * Extra column in the `intervals` argument to `PKNCAdata()` will no longer cause
   an error (fix #238)
+* Many new `assert_*` functions were added to standardize input checking in the
+  style of the `checkmate` library.
   
 ## Breaking changes
 
