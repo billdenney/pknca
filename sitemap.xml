@@ -130,10 +130,19 @@
     <loc>http://billdenney.github.io/pknca/reference/as_sparse_pk.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/business.mean.html</loc>
+    <loc>http://billdenney.github.io/pknca/reference/assert_conc_time.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/check.conc.time.html</loc>
+    <loc>http://billdenney.github.io/pknca/reference/assert_dosetau.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/assert_intervaltime_single.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/auc_integrate.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/business.mean.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/check.conversion.html</loc>
@@ -151,7 +160,7 @@
     <loc>http://billdenney.github.io/pknca/reference/choose.auc.intervals.html</loc>
   </url>
   <url>
-    <loc>http://billdenney.github.io/pknca/reference/choose_interp_extrap_method.html</loc>
+    <loc>http://billdenney.github.io/pknca/reference/choose_interval_method.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/clean.conc.blq.html</loc>
@@ -161,6 +170,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/cov_holder.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/defunct.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/exclude.html</loc>

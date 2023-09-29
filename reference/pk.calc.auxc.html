@@ -90,9 +90,9 @@ purposes when analyzing PK in drug development.</p>
 <span>  conc.blq <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conc.na <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  check <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">fun.linear</span>,</span>
-<span>  <span class="va">fun.log</span>,</span>
-<span>  <span class="va">fun.inf</span></span>
+<span>  <span class="va">fun_linear</span>,</span>
+<span>  <span class="va">fun_log</span>,</span>
+<span>  <span class="va">fun_inf</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pk.calc.auc</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -123,12 +123,11 @@ purposes when analyzing PK in drug development.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>conc</dt>
-<dd><p>Concentration measured</p></dd>
+<dd><p>Measured concentrations</p></dd>
 
 
 <dt>time</dt>
-<dd><p>Time of concentration measurement (must be monotonically
-increasing and the same length as the concentration data)</p></dd>
+<dd><p>Time of the measurement of the concentrations</p></dd>
 
 
 <dt>interval</dt>
@@ -175,22 +174,22 @@ instructions.)</p></dd>
 
 
 <dt>check</dt>
-<dd><p>Run <code><a href="check.conc.time.html">check.conc.time</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq</a></code>,
+<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq</a></code>,
 and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
 
 
-<dt>fun.linear</dt>
+<dt>fun_linear</dt>
 <dd><p>The function to use for integration of the linear part of
 the curve (not required for AUC or AUMC functions)</p></dd>
 
 
-<dt>fun.log</dt>
+<dt>fun_log</dt>
 <dd><p>The function to use for integration of the logarithmic part of
 the curve (if log integration is used; not required for AUC or AUMC
 functions)</p></dd>
 
 
-<dt>fun.inf</dt>
+<dt>fun_inf</dt>
 <dd><p>The function to use for extrapolation from the final
 measurement to infinite time (not required for AUC or AUMC functions.</p></dd>
 

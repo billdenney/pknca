@@ -81,7 +81,7 @@
 <span><span class="fu">superposition</span><span class="op">(</span></span>
 <span>  <span class="va">conc</span>,</span>
 <span>  <span class="va">time</span>,</span>
-<span>  <span class="va">dose.input</span>,</span>
+<span>  dose.input <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">tau</span>,</span>
 <span>  dose.times <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  <span class="va">dose.amount</span>,</span>
@@ -102,22 +102,22 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>conc</dt>
-<dd><p>Concentration measured</p></dd>
+<dd><p>Measured concentrations</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments passed to the <code>half.life</code>
-function if required to compute <code>lambda.z</code>.</p></dd>
+<dd><p>Additional arguments passed to the <code>half.life</code> function if
+required to compute <code>lambda.z</code>.</p></dd>
 
 
 <dt>time</dt>
-<dd><p>Time of concentration measurement</p></dd>
+<dd><p>Time of the measurement of the concentrations</p></dd>
 
 
 <dt>dose.input</dt>
-<dd><p>The dose given to generate the <code>conc</code> and
-<code>time</code> inputs.  If missing, output doses will be assumed to be
-equal to the input dose.</p></dd>
+<dd><p>The dose given to generate the <code>conc</code> and <code>time</code>
+inputs.  If missing, output doses will be assumed to be equal to the input
+dose.</p></dd>
 
 
 <dt>tau</dt>
@@ -125,55 +125,52 @@ equal to the input dose.</p></dd>
 
 
 <dt>dose.times</dt>
-<dd><p>The time of dosing within the dosing interval.
-The <code>min(dose.times)</code> must be &gt;= 0, and the
-<code>max(dose.times)</code> must be &lt; <code>tau</code>.  There may be more
-than one dose times given as a vector.</p></dd>
+<dd><p>The time of dosing within the dosing interval. The
+<code>min(dose.times)</code> must be &gt;= 0, and the <code>max(dose.times)</code> must be
+&lt; <code>tau</code>.  There may be more than one dose times given as a vector.</p></dd>
 
 
 <dt>dose.amount</dt>
-<dd><p>The doses given for the output.  Linear
-proportionality will be used from the input to output if they are
-not equal.  The length of dose.amount must be either 1 or matching
-the length of <code>dose.times</code>.</p></dd>
+<dd><p>The doses given for the output.  Linear proportionality
+will be used from the input to output if they are not equal.  The length of
+dose.amount must be either 1 or matching the length of <code>dose.times</code>.</p></dd>
 
 
 <dt>n.tau</dt>
-<dd><p>The number of tau dosing intervals to simulate or
-<code>Inf</code> for steady-state.</p></dd>
+<dd><p>The number of tau dosing intervals to simulate or <code>Inf</code> for
+steady-state.</p></dd>
 
 
 <dt>options</dt>
-<dd><p>The PKNCA.options to use for the calculation (passed
-on to subsequent functions like <code>pk.calc.half.life</code>).</p></dd>
+<dd><p>The PKNCA.options to use for the calculation (passed on to
+subsequent functions like <code>pk.calc.half.life</code>).</p></dd>
 
 
 <dt>lambda.z</dt>
-<dd><p>The elimination rate (from the half life
-calculation, used to extrapolate beyond the maximum time observed).</p></dd>
+<dd><p>The elimination rate (from the half life calculation, used to
+extrapolate beyond the maximum time observed).</p></dd>
 
 
 <dt>clast.pred</dt>
-<dd><p>To use predicted as opposed to observed Clast,
-either give the value for clast.pred here or set it to true (for
-automatic calculation from the half-life).</p></dd>
+<dd><p>To use predicted as opposed to observed Clast, either give
+the value for clast.pred here or set it to true (for automatic calculation
+from the half-life).</p></dd>
 
 
 <dt>tlast</dt>
-<dd><p>The time of last observed concentration above the
-limit of quantification.  This is calculated if not provided.</p></dd>
+<dd><p>The time of last observed concentration above the limit of
+quantification.  This is calculated if not provided.</p></dd>
 
 
 <dt>additional.times</dt>
-<dd><p>Times to include in the final outputs in
-addition to the standard times (see details).  All
-<code>min(additional.times)</code> must be &gt;= 0, and the
-<code>max(additional.times)</code> must be &lt;= <code>tau</code>.</p></dd>
+<dd><p>Times to include in the final outputs in addition to
+the standard times (see details).  All <code>min(additional.times)</code> must be
+&gt;= 0, and the <code>max(additional.times)</code> must be &lt;= <code>tau</code>.</p></dd>
 
 
 <dt>check.blq</dt>
-<dd><p>Must the first concentration measurement be below
-the limit of quantification?</p></dd>
+<dd><p>Must the first concentration measurement be below the limit
+of quantification?</p></dd>
 
 
 <dt>interp.method</dt>
@@ -185,8 +182,8 @@ the limit of quantification?</p></dd>
 
 
 <dt>steady.state.tol</dt>
-<dd><p>The tolerance for assessing if steady-state
-has been achieved (between 0 and 1, exclusive).</p></dd>
+<dd><p>The tolerance for assessing if steady-state has been
+achieved (between 0 and 1, exclusive).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -197,10 +194,9 @@ has been achieved (between 0 and 1, exclusive).</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The returned superposition times will include all of the
-following times: 0 (zero), <code>dose.times</code>, <code>time modulo tau</code>
-(shifting <code>time</code> for each dose time as well),
-<code>additional.times</code>, and <code>tau</code>.</p>
+    <p>The returned superposition times will include all of the following times: 0
+(zero), <code>dose.times</code>, <code>time modulo tau</code> (shifting <code>time</code> for
+each dose time as well), <code>additional.times</code>, and <code>tau</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

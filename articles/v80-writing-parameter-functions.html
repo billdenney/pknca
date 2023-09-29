@@ -172,7 +172,7 @@ the <code>exclude</code> column is set to
 <h3 id="best-practices">Best Practices<a class="anchor" aria-label="anchor" href="#best-practices"></a>
 </h3>
 <ul>
-<li>Use the function <code>check.conc.time</code> if the function takes
+<li>Use the function <code>assert_conc_time</code> if the function takes
 either <code>conc</code> or <code>time</code> as an input.</li>
 <li>Make sure that you check for missing values (<code>NA</code>) in
 your inputs.</li>
@@ -251,14 +251,14 @@ must return a scalar or a two-long vector.</li>
 C<sub>max</sub>:</p>
 <pre><code><span><span class="co">#' Determine maximum observed PK concentration</span></span>
 <span><span class="co">#'</span></span>
-<span><span class="co">#' @param conc Concentration measured</span></span>
-<span><span class="co">#' @param check Run \code{\link{check.conc.time}}?</span></span>
+<span><span class="co">#' @inheritParams assert_conc_time</span></span>
+<span><span class="co">#' @param check Run \code{\link{assert_conc_time}}?</span></span>
 <span><span class="co">#' @return a number for the maximum concentration or NA if all</span></span>
 <span><span class="co">#' concentrations are missing</span></span>
 <span><span class="co">#' @export</span></span>
 <span><span class="va">pk.calc.cmax</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">conc</span>, <span class="va">check</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">check</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="../reference/check.conc.time.html">check.conc.time</a></span><span class="op">(</span>conc<span class="op">=</span><span class="va">conc</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/assert_conc_time.html">assert_conc_time</a></span><span class="op">(</span>conc<span class="op">=</span><span class="va">conc</span><span class="op">)</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="cn">NA</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
