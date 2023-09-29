@@ -42,6 +42,7 @@ Monoexponential
 NCA
 Nedelman
 Noncompartmental
+ORCID
 PKNCAconc
 PKNCAdata
 PKNCAdose
@@ -64,7 +65,6 @@ Theophylline
 Tlast
 Tmax
 Tss
-Vd
 Vss
 Vz
 Weiner
@@ -86,8 +86,6 @@ bioequivalence
 calc
 cav
 clast
-clastobs
-clastpred
 clr
 cmax
 cmin
@@ -166,7 +164,6 @@ ungrouped
 unitless
 unnested
 unreportable
-vd
 vss
 vz
 λz
