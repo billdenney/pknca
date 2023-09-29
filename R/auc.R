@@ -15,12 +15,11 @@
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
 #' @inheritParams choose_interval_method
+#' @inheritParams assert_lambdaz
 #' @param clast,clast.obs,clast.pred The last concentration above the limit of
 #'   quantification; this is used for AUCinf calculations.  If provided as
 #'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
 #'   provided as clast.pred, AUCinf is AUCinf,pred.
-#' @param lambda.z The elimination rate (in units of inverse time) for
-#'   extrapolation
 #' @param options List of changes to the default \code{\link{PKNCA.options}} for
 #'   calculations.
 #' @param conc.blq How to handle BLQ values in between the first and last above
@@ -213,8 +212,7 @@ pk.calc.auc.last <- function(conc, time, ..., options=list()) {
 
 #' @describeIn pk.calc.auxc Compute the AUCinf
 #' @export
-pk.calc.auc.inf <- function(conc, time, ..., options=list(),
-                            lambda.z) {
+pk.calc.auc.inf <- function(conc, time, ..., options=list(), lambda.z) {
   if ("auc.type" %in% names(list(...)))
     stop("auc.type cannot be changed when calling pk.calc.auc.inf, please use pk.calc.auc")
   pk.calc.auc(conc=conc, time=time, ...,

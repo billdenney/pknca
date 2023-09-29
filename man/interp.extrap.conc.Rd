@@ -73,8 +73,8 @@ interp.extrap.conc.dose(
 \item{time.out}{Time when interpolation is requested (vector for
 \code{interp.extrap.conc()}, scalar otherwise)}
 
-\item{lambda.z}{The elimination rate constant.  \code{NA} will prevent
-extrapolation.}
+\item{lambda.z}{The elimination rate (in units of inverse time) for
+extrapolation}
 
 \item{clast}{The last observed concentration above the limit of
 quantification.  If not given, \code{clast} is calculated from
@@ -133,6 +133,9 @@ concentration. Of note, these functions will not extrapolate prior to the
 first point.
 }
 \details{
+An `NA` value for the `lambda.z` parameter will prevent extrapolation.
+
+
 \describe{
   \item{extrap.method}{
     \describe{

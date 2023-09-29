@@ -161,8 +161,7 @@ element_find <- function(x) {
 #' Confirm that a value is greater than another value
 #'
 #' @inheritParams checkmate::assert_number
-#' @return `x`
-#' @noRd
+#' @return `x` or an informative error
 assert_number_between <- function(x, ..., na.ok = FALSE, len = 1, .var.name = checkmate::vname(x)) {
   assert_numeric_between(x, len = 1, .var.name = .var.name, ..., any.missing = na.ok)
 }
@@ -174,4 +173,15 @@ assert_number_between <- function(x, ..., na.ok = FALSE, len = 1, .var.name = ch
 #' @export
 assert_dosetau <- function(tau) {
   assert_number_between(x = tau, lower = 0, .var.name = checkmate::vname(tau), finite = TRUE)
+}
+
+#' Assert that a lambda.z value is valid
+#'
+#' @inheritParams assert_numeric_between
+#' @param lambda.z The elimination rate (in units of inverse time) for
+#'   extrapolation
+#' @return `lambda.z` or an informative error
+#' @export
+assert_lambdaz <- function(lambda.z, any.missing = TRUE, .var.name = checkmate::vname(lambda.z)) {
+  assert_numeric_between(x = lambda.z, lower = 0, any.missing = any.missing, .var.name = .var.name, finite = TRUE)
 }

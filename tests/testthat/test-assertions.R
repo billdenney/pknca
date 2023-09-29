@@ -85,4 +85,16 @@ test_that("assert_conc_time", {
   )
 })
 
-
+test_that("assert_lambdaz", {
+  expect_equal(assert_lambdaz(1), 1)
+  expect_equal(assert_lambdaz(NA), NA) # NA is allowed by default
+  expect_error(
+    assert_lambdaz(NA, any.missing = FALSE),
+    regexp = "Assertion on 'NA' failed: Contains missing values (element 1).",
+    fixed = TRUE
+  )
+  expect_error(
+    assert_lambdaz(-1),
+    regexp = "Assertion on '-1' failed: Element 1 is not > 0"
+  )
+})

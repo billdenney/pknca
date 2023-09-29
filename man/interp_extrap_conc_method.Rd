@@ -22,7 +22,8 @@ extrapolate_conc_lambdaz(clast, lambda.z, tlast, time_out)
 
 \item{clast}{The concentration at the last time above the lower LOQ}
 
-\item{lambda.z}{The elimination rate}
+\item{lambda.z}{The elimination rate (in units of inverse time) for
+extrapolation}
 
 \item{tlast}{The time of the last concentration above the lower limit of
 quantification (LOQ)}
