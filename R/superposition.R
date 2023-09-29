@@ -91,7 +91,6 @@ superposition.numeric <- function(conc, time, dose.input = NULL,
   assert_number_between(dose.input, na.ok = FALSE, null.ok = TRUE, lower = 0)
   assert_dosetau(tau)
   assert_numeric_between(x = dose.times, lower_eq = 0, min.len = 1, upper = tau)
-  # TODO: convert to checkmate
   # dose.amount
   if (!missing(dose.amount)) {
     if (missing(dose.input)) {

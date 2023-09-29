@@ -122,7 +122,7 @@ assert_numeric_between <- function(x, any.missing = FALSE, null.ok = FALSE, lowe
     mask_na <- is.na(x)
     mask_lower <- !mask_na & !is.infinite(lower) & x <= lower
     mask_upper <- !mask_na & !is.infinite(upper) & x >= upper
-    msg <- c()
+    msg <- NULL
     if (any(mask_lower)) {
       msg <-
         c(
