@@ -15,8 +15,6 @@
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
 #' @inheritParams choose_interval_method
-#' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
-#'   and 'AUCall'.
 #' @param clast,clast.obs,clast.pred The last concentration above the limit of
 #'   quantification; this is used for AUCinf calculations.  If provided as
 #'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
