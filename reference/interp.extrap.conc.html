@@ -167,8 +167,8 @@ first point.</p>
 
 
 <dt>lambda.z</dt>
-<dd><p>The elimination rate constant.  <code>NA</code> will prevent
-extrapolation.</p></dd>
+<dd><p>The elimination rate (in units of inverse time) for
+extrapolation</p></dd>
 
 
 <dt>clast</dt>
@@ -249,7 +249,8 @@ the instant of an IV bolus dose.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    
+    <p>An `NA` value for the `lambda.z` parameter will prevent extrapolation.</p>
+
 <dl><dt>extrap.method</dt>
 <dd><p></p><dl><dt>'AUCinf'</dt>
 <dd><p>Use lambda.z to extrapolate beyond the last point with the half-life.</p></dd>
