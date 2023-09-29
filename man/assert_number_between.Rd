@@ -16,8 +16,12 @@ assert_number_between(
 \item{x}{[any]\cr
 Object to check.}
 
+\item{...}{Passed to `assert_numeric_between()`}
+
 \item{na.ok}{[\code{logical(1)}]\cr
 Are missing values allowed? Default is \code{FALSE}.}
+
+\item{len}{Ignored (must be 1)}
 
 \item{.var.name}{[\code{character(1)}]\cr
 Name of the checked object to print in assertions. Defaults to

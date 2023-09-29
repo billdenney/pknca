@@ -4,14 +4,18 @@
 \alias{assert_lambdaz}
 \title{Assert that a lambda.z value is valid}
 \usage{
-assert_lambdaz(lambda.z, na.ok = TRUE, .var.name = checkmate::vname(lambda.z))
+assert_lambdaz(
+  lambda.z,
+  any.missing = TRUE,
+  .var.name = checkmate::vname(lambda.z)
+)
 }
 \arguments{
 \item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}
 
-\item{na.ok}{[\code{logical(1)}]\cr
-Are missing values allowed? Default is \code{FALSE}.}
+\item{any.missing}{[\code{logical(1)}]\cr
+Are vectors with missing values allowed? Default is \code{TRUE}.}
 
 \item{.var.name}{[\code{character(1)}]\cr
 Name of the checked object to print in assertions. Defaults to
