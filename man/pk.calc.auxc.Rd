@@ -76,11 +76,11 @@ extrapolation}
 \item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.}
 
-\item{options}{List of changes to the default \code{\link{PKNCA.options}} for
-calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
-\item{method}{The method for integration (either 'lin up/log down' or
-'linear')}
+\item{method}{The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')}
 
 \item{conc.blq}{How to handle BLQ values in between the first and last above
 LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage

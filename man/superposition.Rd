@@ -55,8 +55,8 @@ dose.amount must be either 1 or matching the length of \code{dose.times}.}
 \item{n.tau}{The number of tau dosing intervals to simulate or \code{Inf} for
 steady-state.}
 
-\item{options}{The PKNCA.options to use for the calculation (passed on to
-subsequent functions like \code{pk.calc.half.life}).}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}

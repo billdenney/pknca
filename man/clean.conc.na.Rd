@@ -14,8 +14,8 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 
 \item{\dots}{Additional items to add to the data frame}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}

@@ -16,12 +16,11 @@
 #' @inheritParams assert_intervaltime_single
 #' @inheritParams choose_interval_method
 #' @inheritParams assert_lambdaz
+#' @inheritParams PKNCA.choose.option
 #' @param clast,clast.obs,clast.pred The last concentration above the limit of
 #'   quantification; this is used for AUCinf calculations.  If provided as
 #'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
 #'   provided as clast.pred, AUCinf is AUCinf,pred.
-#' @param options List of changes to the default \code{\link{PKNCA.options}} for
-#'   calculations.
 #' @param conc.blq How to handle BLQ values in between the first and last above
 #'   LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
 #'   instructions.)
@@ -172,7 +171,7 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
     # still true)
     stop("Unknown error with NA tlast but non-BLQ concentrations") # nocov
   } else {
-    interval_method <- choose_interval_method(conc = data$conc, time = data$time, tlast = tlast, method = method, auc.type = auc.type)
+    interval_method <- choose_interval_method(conc = data$conc, time = data$time, tlast = tlast, method = method, auc.type = auc.type, options = options)
     ret <-
       auc_integrate(
         conc = data$conc, time = data$time,

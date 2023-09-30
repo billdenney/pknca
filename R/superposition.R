@@ -2,6 +2,7 @@
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_lambdaz
+#' @inheritParams PKNCA.choose.option
 #' @param dose.input The dose given to generate the \code{conc} and \code{time}
 #'   inputs.  If missing, output doses will be assumed to be equal to the input
 #'   dose.
@@ -14,8 +15,6 @@
 #'   dose.amount must be either 1 or matching the length of \code{dose.times}.
 #' @param n.tau The number of tau dosing intervals to simulate or \code{Inf} for
 #'   steady-state.
-#' @param options The PKNCA.options to use for the calculation (passed on to
-#'   subsequent functions like \code{pk.calc.half.life}).
 #' @param clast.pred To use predicted as opposed to observed Clast, either give
 #'   the value for clast.pred here or set it to true (for automatic calculation
 #'   from the half-life).

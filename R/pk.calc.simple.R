@@ -94,8 +94,7 @@ PKNCA.set.summary(
 #' }
 #'
 #' @inheritParams assert_conc_time
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
+#' @inheritParams PKNCA.choose.option
 #' @param first.tmax If there is more than time that matches the
 #' maximum concentration, should the first be considered as Tmax?  If
 #' not, then the last is considered Tmax.

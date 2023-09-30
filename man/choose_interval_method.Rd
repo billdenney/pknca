@@ -5,7 +5,7 @@
 \title{Choose how to interpolate, extrapolate, or integrate data in each
 concentration interval}
 \usage{
-choose_interval_method(conc, time, tlast, method, auc.type)
+choose_interval_method(conc, time, tlast, method, auc.type, options)
 }
 \arguments{
 \item{conc}{Measured concentrations}
@@ -15,11 +15,14 @@ choose_interval_method(conc, time, tlast, method, auc.type)
 \item{tlast}{Time of last concentration above the limit of quantification
 (will be calculated, if not provided)}
 
-\item{method}{The method for integration (either 'lin up/log down' or
-'linear')}
+\item{method}{The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')}
 
 \item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.}
+
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \value{
 A character vector of methods for interpolation/extrapolation methods

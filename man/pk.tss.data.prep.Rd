@@ -24,18 +24,17 @@ pk.tss.data.prep(
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{subject}{Subject identifiers (used as a random effect in the
-model)}
+\item{subject}{Subject identifiers (used as a random effect in the model)}
 
-\item{treatment}{Treatment description (if missing, all subjects
-are assumed to be on the same treatment)}
+\item{treatment}{Treatment description (if missing, all subjects are assumed
+to be on the same treatment)}
 
 \item{subject.dosing}{Subject number for dosing}
 
 \item{time.dosing}{Time of dosing}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{conc.blq}{See \code{\link{clean.conc.blq}}}
 
@@ -43,8 +42,7 @@ are assumed to be on the same treatment)}
 
 \item{check}{Run \code{\link{assert_conc_time}}?}
 
-\item{\dots}{Discarded inputs to allow generic calls between tss
-methods.}
+\item{\dots}{Discarded inputs to allow generic calls between tss methods.}
 }
 \value{
 a data frame with columns for \code{conc}entration,

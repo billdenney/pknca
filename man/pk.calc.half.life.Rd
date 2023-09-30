@@ -38,8 +38,8 @@ frame if not given)}
 \code{TRUE}, this option causes the options of \code{adj.r.squared.factor},
 \code{min.hl.points}, and \code{allow.tmax.in.half.life} to be ignored.}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{min.hl.points}{The minimum number of points that must be
 included to calculate the half-life}
@@ -90,7 +90,7 @@ methods used.
 
 If \code{manually.selected.points} is \code{FALSE} (default), the
 half-life is calculated by computing the best fit line for all points at or
-after tmax (based on the value of \code{allow.tmax.in.half.life}.  The best
+after tmax (based on the value of \code{allow.tmax.in.half.life}).  The best
 half-life is chosen by the following rules in order:
 
 \itemize{

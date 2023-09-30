@@ -314,6 +314,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #' function is the \code{conc}entration and \code{time}.
 #'
 #' @inheritParams assert_conc_time
+#' @inheritParams PKNCA.choose.option
 #' @param conc.group All concentrations measured for the group
 #' @param time.group Time of all concentrations measured for the group
 #' @param volume,volume.group The volume (or mass) of the concentration
@@ -346,8 +347,6 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #' @param subject Subject identifiers (used for sparse calculations)
 #' @param sparse Should only sparse calculations be performed (TRUE) or only
 #'   dense calculations (FALSE)?
-#' @param options List of changes to the default
-#'   \code{\link{PKNCA.options}} for calculations.
 #' @return A data frame with the start and end time along with all PK
 #'   parameters for the \code{interval}
 #'

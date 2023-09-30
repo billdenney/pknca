@@ -399,12 +399,13 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE, name, value) {
 #' @param name The option name requested.
 #' @param value A value to check for the option (\code{NULL} to choose not to
 #'   check the value).
-#' @param options The non-default options to choose from.
+#' @param options List of changes to the default PKNCA options (see
+#'   `PKNCA.options()`)
 #' @return The value of the option first from the \code{options} list and if it
 #'   is not there then from the current settings.
 #' @family PKNCA calculation and summary settings
 #' @export
-PKNCA.choose.option <- function(name, value=NULL, options=list())
+PKNCA.choose.option <- function(name, value=NULL, options=list()) {
   if (!is.null(value)) {
     PKNCA.options(name=name, value=value, check=TRUE)
   } else if (name %in% names(options)) {
@@ -412,6 +413,7 @@ PKNCA.choose.option <- function(name, value=NULL, options=list())
   } else {
     PKNCA.options(name)
   }
+}
 
 #' Describe a PKNCA.options option by name.
 #'

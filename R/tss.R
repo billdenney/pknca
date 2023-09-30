@@ -2,19 +2,16 @@
 #' frame for use by the tss calculators.
 #'
 #' @inheritParams assert_conc_time
-#' @param subject Subject identifiers (used as a random effect in the
-#' model)
-#' @param treatment Treatment description (if missing, all subjects
-#' are assumed to be on the same treatment)
+#' @inheritParams PKNCA.choose.option
+#' @param subject Subject identifiers (used as a random effect in the model)
+#' @param treatment Treatment description (if missing, all subjects are assumed
+#'   to be on the same treatment)
 #' @param subject.dosing Subject number for dosing
 #' @param time.dosing Time of dosing
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
 #' @param conc.blq See \code{\link{clean.conc.blq}}
 #' @param conc.na See \code{\link{clean.conc.na}}
 #' @param check Run \code{\link{assert_conc_time}}?
-#' @param \dots Discarded inputs to allow generic calls between tss
-#' methods.
+#' @param \dots Discarded inputs to allow generic calls between tss methods.
 #' @return a data frame with columns for \code{conc}entration,
 #' \code{time}, \code{subject}, and \code{treatment}.
 pk.tss.data.prep <- function(conc, time, subject, treatment,

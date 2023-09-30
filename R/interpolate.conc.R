@@ -13,6 +13,7 @@
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_lambdaz
+#' @inheritParams PKNCA.choose.option
 #' @param time.dose Time of the dose
 #' @param time.out Time when interpolation is requested (vector for
 #'   \code{interp.extrap.conc()}, scalar otherwise)
@@ -23,8 +24,6 @@
 #'   \code{conc.origin} is typically used to set predose values to zero
 #'   (default), set a predose concentration for endogenous compounds, or set
 #'   predose concentrations to \code{NA} if otherwise unknown.
-#' @param options List of changes to the default \code{\link{PKNCA.options}()}
-#'   for calculations.
 #' @param interp.method The method for interpolation (either "lin up/log down"
 #'   or "linear")
 #' @param extrap.method The method for extrapolation: "AUCinf", "AUClast", or
@@ -196,11 +195,12 @@ interpolate.conc <- function(conc, time, time.out,
   } else {
     interp_methods_all <-
       choose_interval_method(
-        conc=data$conc,
-        time=data$time,
-        method=interp.method,
+        conc = data$conc,
+        time = data$time,
+        method = interp.method,
         # AUClast because it doesn't affect the output for interpolation
-        auc.type="AUClast"
+        auc.type = "AUClast",
+        options = options
       )
     # Find the last time before and the first time after the output
     # time, then interpolate.

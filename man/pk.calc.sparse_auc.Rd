@@ -24,8 +24,8 @@ pk.calc.sparse_auclast(conc, time, subject, ..., options = list())
 
 \item{subject}{Subject identifiers (may be any class; may not be null)}
 
-\item{method}{The method for integration (either 'lin up/log down' or
-'linear')}
+\item{method}{The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')}
 
 \item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.}
@@ -33,8 +33,8 @@ and 'AUCall'.}
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are
 passed to \code{pk.calc.auxc}}
 
-\item{options}{List of changes to the default \code{\link{PKNCA.options}} for
-calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \description{
 The AUC is calculated as:
