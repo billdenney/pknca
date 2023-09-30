@@ -13,7 +13,8 @@ PKNCA.choose.option(name, value = NULL, options = list())
 \item{value}{A value to check for the option (\code{NULL} to choose not to
 check the value).}
 
-\item{options}{The non-default options to choose from.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \value{
 The value of the option first from the \code{options} list and if it

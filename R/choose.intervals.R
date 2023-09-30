@@ -13,11 +13,10 @@
 #'   \item If there are samples \eqn{> \tau} after the last dose,
 #'         calculate the half life after the last dose.
 #'  }
-#' 
+#'
+#' @inheritParams PKNCA.choose.option
 #' @param time.conc Time of concentration measurement
 #' @param time.dosing Time of dosing
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
 #' @param single.dose.aucs The AUC specification for single dosing.
 #' @return A data frame with columns for \code{start}, \code{end},
 #' \code{auc.type}, and \code{half.life}.  See
@@ -123,14 +122,12 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 #' This is intended to find the interval over which x repeats by the
 #' rule unique(mod(x, interval)) is minimized.
 #'
+#' @inheritParams PKNCA.choose.option
 #' @param x the vector to find the interval within
 #' @param na.action What to do with NAs in \code{x}
-#' @param tau.choices the intervals to look for if the doses are not
-#' all equally spaced.
-#' @param options List of changes to the default
-#' \code{\link{PKNCA.options}} for calculations.
-#' @return A scalar indicating the repeating interval with the most
-#' repetition.
+#' @param tau.choices the intervals to look for if the doses are not all equally
+#'   spaced.
+#' @return A scalar indicating the repeating interval with the most repetition.
 #' \enumerate{
 #'   \item If all values are \code{NA} then NA is returned.
 #'   \item If all values are the same, then 0 is returned.

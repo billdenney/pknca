@@ -16,8 +16,8 @@ pk.calc.aucabove(conc, time, conc_above = NA_real_, ..., options = list())
 \item{...}{Extra arguments.  Currently, the only extra argument that is used
 is \code{method} as described in the details section.}
 
-\item{options}{List of changes to the default \code{\link{PKNCA.options}} for
-calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \value{
 The AUC of the concentration above the limit

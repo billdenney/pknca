@@ -57,8 +57,8 @@ this will be automatically chosen by
 \item{units}{A data.frame of unit assignments and conversions as created by
 \code{\link{pknca_units_table}()}}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \value{
 A PKNCAdata object with concentration, dose, interval, and

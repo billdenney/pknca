@@ -5,9 +5,8 @@
 #' the BLQ values in the middle
 #'
 #' @inheritParams assert_conc_time
+#' @inheritParams PKNCA.choose.option
 #' @param \dots Additional items to add to the data frame
-#' @param options List of changes to the default
-#'   \code{\link{PKNCA.options}} for calculations.
 #' @param conc.na How to handle NA concentrations?  Either 'drop' or a
 #'   number to impute.
 #' @param check Run \code{\link{assert_conc_time}}?
@@ -41,9 +40,8 @@ clean.conc.na <- function(conc, time, ...,
 #' the user.
 #'
 #' @inheritParams assert_conc_time
+#' @inheritParams PKNCA.choose.option
 #' @param \dots Additional arguments passed to clean.conc.na
-#' @param options List of changes to the default
-#'   \code{\link{PKNCA.options}} for calculations.
 #' @param conc.blq How to handle a BLQ value that is between above LOQ
 #'   values?  See details for description.
 #' @param conc.na How to handle NA concentrations.  (See

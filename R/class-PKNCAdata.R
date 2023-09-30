@@ -3,6 +3,7 @@
 #' \code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and
 #' adds in the intervals for PK calculations.
 #'
+#' @inheritParams PKNCA.choose.option
 #' @param data.conc Concentration data as a \code{PKNCAconc} object or a
 #'   data frame
 #' @param data.dose Dosing data as a \code{PKNCAdose} object (see
@@ -25,8 +26,6 @@
 #'   \code{\link{choose.auc.intervals}}. (see details)
 #' @param units A data.frame of unit assignments and conversions as created by
 #'   \code{\link{pknca_units_table}()}
-#' @param options List of changes to the default
-#'   \code{\link{PKNCA.options}} for calculations.
 #' @param ... arguments passed to \code{PKNCAdata.default}
 #' @return A PKNCAdata object with concentration, dose, interval, and
 #'   calculation options stored (note that PKNCAdata objects can also

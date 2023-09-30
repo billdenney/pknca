@@ -16,8 +16,8 @@ choose.auc.intervals(
 
 \item{time.dosing}{Time of dosing}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{single.dose.aucs}{The AUC specification for single dosing.}
 }

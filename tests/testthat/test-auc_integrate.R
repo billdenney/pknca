@@ -120,6 +120,10 @@ test_that("choose_interval_method", {
     choose_interval_method(conc = c(0, 0, 1:2, 0, 2:1, 0, 0), time = 1:9, method = "lin up/log down", auc.type = "AUCinf"),
     c("zero", "linear", "linear", "linear", "linear", "log", "zero", "zero", "extrap_log")
   )
+  expect_equal(
+    choose_interval_method(conc = c(0, 0, 1:2, 0, 2:1, 0, 0), time = 1:9, method = "lin-log", auc.type = "AUCinf", options = list()),
+    c("zero", "linear", "linear", "linear", "linear", "log", "zero", "zero", "extrap_log")
+  )
   # Increasing and decreasing, two initial zeros, one middle zero, two final zeros, AUCall ####
   expect_equal(
     choose_interval_method(conc = c(0, 0, 1:2, 0, 2:1, 0, 0), time = 1:9, method = "linear", auc.type = "AUCall"),
@@ -137,6 +141,105 @@ test_that("choose_interval_method", {
   expect_equal(
     choose_interval_method(conc = c(0, 0, 1:2, 0, 2:1, 0, 0), time = 1:9, method = "lin up/log down", auc.type = "AUClast"),
     c("zero", "linear", "linear", "linear", "linear", "log", "zero", "zero", "zero")
+  )
+  # Increasing and decreasing before and after Tmax, two initial zeros, two middle zeros, two final zeros, AUClast ####
+  expect_equal(
+    choose_interval_method(
+      conc = c(0, 0,   1,   1.5,
+               1, 2.5, 0,   0,
+               2, 1,   1.5, 0,
+               0),
+      time = 1:13, method = "linear", auc.type = "AUClast"
+    ),
+    c(
+      "zero", "linear", "linear",
+      "linear",
+      "linear", "linear", "zero",
+      "linear",
+      "linear", "linear", "zero",
+      "zero",
+      "zero"
+    )
+  )
+  expect_equal(
+    choose_interval_method(
+      conc = c(0, 0,   1,   1.5,
+               1, 2.5, 0,   0,
+               2, 1,   1.5, 0,
+               0),
+      time = 1:13,
+      method = "lin up/log down", auc.type = "AUClast"
+    ),
+    c(
+      "zero", "linear", "linear",
+      "log",
+      "linear", "linear", "zero",
+      "linear",
+      "log", "linear", "zero",
+      "zero",
+      "zero"
+    )
+  )
+  expect_equal(
+    choose_interval_method(
+      conc = c(0, 0,   1,   1.5,
+               1, 2.5, 0,   0,
+               2, 1,   1.5, 0,
+               0),
+      time = 1:13,
+      method = "lin-log", auc.type = "AUClast",
+      options = list()
+    ),
+    c(
+      "zero", "linear", "linear",
+      "linear",
+      "linear", "linear", "zero",
+      "linear",
+      "log", "log", "zero",
+      "zero",
+      "zero"
+    )
+  )
+  # lin-log respects Tmax options; increasing and decreasing before and after Tmax, two initial zeros, two middle zeros, two final zeros, AUClast ####
+  expect_equal(
+    choose_interval_method(
+      conc = c(0, 0,   1,   2.5,
+               1, 2.5, 0,   0,
+               2, 1,   1.5, 0,
+               0),
+      time = 1:13,
+      method = "lin-log", auc.type = "AUClast",
+      options = list(first.tmax = TRUE)
+    ),
+    c(
+      "zero", "linear", "linear",
+      "log",
+      "log", "linear", "zero",
+      "linear",
+      "log", "log", "zero",
+      "zero",
+      "zero"
+    )
+  )
+  expect_equal(
+    choose_interval_method(
+      conc = c(0, 0,   1,   2.5,
+               1, 2.5, 0,   0,
+               2, 1,   1.5, 0,
+               0),
+      time = 1:13,
+      method = "lin-log", auc.type = "AUClast",
+      options = list(first.tmax = FALSE)
+    ),
+    c(
+      "zero", "linear", "linear",
+      "linear",
+      "linear", "linear", "zero",
+      "linear",
+      "log", "log", "zero",
+      "zero",
+      "zero"
+    )
   )
 })
 

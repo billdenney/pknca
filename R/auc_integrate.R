@@ -61,8 +61,9 @@ extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
 #' concentration interval
 #'
 #' @inheritParams assert_conc_time
-#' @param method The method for integration (either 'lin up/log down' or
-#'   'linear')
+#' @inheritParams PKNCA.choose.option
+#' @param method The method for integration (one of 'lin up/log down',
+#'   'lin-log', or 'linear')
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.
 #' @param tlast Time of last concentration above the limit of quantification
@@ -74,7 +75,7 @@ extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
 #'   value in the vector) and how to extrapolate after `tlast` (the last item in
 #'   the vector).  Possible values in the vector are: 'zero', 'linear', 'log',
 #'   and 'extrap_log'
-choose_interval_method <- function(conc, time, tlast, method, auc.type) {
+choose_interval_method <- function(conc, time, tlast, method, auc.type, options) {
   # Input checking
   stopifnot(is.numeric(conc))
   stopifnot(is.numeric(time))
@@ -82,7 +83,7 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type) {
   stopifnot(!any(is.na(conc)))
   stopifnot(length(conc) == length(time))
   stopifnot(length(method) == 1)
-  stopifnot(method %in% c("lin up/log down", "linear"))
+  stopifnot(method %in% c("lin up/log down", "linear", "lin-log"))
   stopifnot(length(auc.type) == 1)
   stopifnot(auc.type %in% c("AUCinf", "AUClast", "AUCall"))
 
@@ -112,6 +113,18 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type) {
     mask_up <- !(mask_down | mask_zero)
     ret[c(mask_down, FALSE)] <- "log"
     ret[c(mask_up, FALSE)] <- "linear"
+  } else if (method == "lin-log") {
+    # We only need tmax for lin-log, and it is always recalculated to prevent
+    # potential issues where tmax may be relative to the start of an interval vs
+    # relative to absolute time.
+    tmax <- pk.calc.tmax(conc = conc, time = time, options = options)
+    mask_pre_tmax <- time[idx_2] <= tmax
+    mask_post_tmax <- !mask_pre_tmax
+    mask_zero_start_end <- conc[idx_1] %in% 0 | conc[idx_2] %in% 0
+    mask_linear <- mask_pre_tmax | mask_zero_start_end
+    mask_log <- mask_post_tmax & !mask_zero_start_end
+    ret[c(mask_linear, FALSE)] <- "linear"
+    ret[c(mask_log, FALSE)] <- "log"
   } else {
     stop("Unknown integration method, please report a bug: ", method) # nocov
   }

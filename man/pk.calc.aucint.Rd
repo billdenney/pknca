@@ -101,8 +101,8 @@ extrapolation of concentration data (see
 \code{\link{interp.extrap.conc}} will be used instead (assuming
 that no doses affecting concentrations are in the interval).}
 
-\item{method}{The method for integration (either 'lin up/log down' or
-'linear')}
+\item{method}{The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')}
 
 \item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.}
@@ -120,8 +120,8 @@ and \code{\link{clean.conc.na}}?}
 \item{...}{Additional arguments passed to \code{pk.calc.auxc} and
 \code{interp.extrap.conc}}
 
-\item{options}{List of changes to the default \code{\link{PKNCA.options}} for
-calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \description{
 Calculate the AUC over an interval with interpolation and/or

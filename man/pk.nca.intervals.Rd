@@ -27,8 +27,8 @@ as output from \code{prepare_PKNCAintervals()}}
 \item{sparse}{Should only sparse calculations be performed (TRUE) or only
 dense calculations (FALSE)?}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{impute}{The column name in \code{data_intervals} to use for imputation}
 

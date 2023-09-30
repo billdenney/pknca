@@ -11,8 +11,8 @@ pk.calc.tmax(conc, time, options = list(), first.tmax = NULL, check = TRUE)
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{first.tmax}{If there is more than time that matches the
 maximum concentration, should the first be considered as Tmax?  If

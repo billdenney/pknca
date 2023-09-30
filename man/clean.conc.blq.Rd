@@ -22,8 +22,8 @@ clean.conc.blq(
 
 \item{\dots}{Additional arguments passed to clean.conc.na}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{conc.blq}{How to handle a BLQ value that is between above LOQ
 values?  See details for description.}

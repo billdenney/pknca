@@ -80,8 +80,8 @@ extrapolation}
 quantification.  If not given, \code{clast} is calculated from
 \code{\link{pk.calc.clast.obs}()}}
 
-\item{options}{List of changes to the default \code{\link{PKNCA.options}()}
-for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 
 \item{interp.method}{The method for interpolation (either "lin up/log down"
 or "linear")}

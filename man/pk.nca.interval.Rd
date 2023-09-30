@@ -81,8 +81,8 @@ dense calculations (FALSE)?}
 \code{\link{check.interval.specification}} for how to define the
 interval.}
 
-\item{options}{List of changes to the default
-\code{\link{PKNCA.options}} for calculations.}
+\item{options}{List of changes to the default PKNCA options (see
+`PKNCA.options()`)}
 }
 \value{
 A data frame with the start and end time along with all PK

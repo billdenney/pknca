@@ -10,7 +10,7 @@
 #'
 #' @details If \code{manually.selected.points} is \code{FALSE} (default), the
 #' half-life is calculated by computing the best fit line for all points at or
-#' after tmax (based on the value of \code{allow.tmax.in.half.life}.  The best
+#' after tmax (based on the value of \code{allow.tmax.in.half.life}).  The best
 #' half-life is chosen by the following rules in order:
 #'
 #' \itemize{
@@ -25,8 +25,8 @@
 #' the best-fit half-life.
 #'
 #' @inheritParams assert_conc_time
-#' @param tmax Time of maximum concentration (will be calculated and
-#'   included in the return data frame if not given)
+#' @inheritParams choose_interval_method
+#' @inheritParams PKNCA.choose.option
 #' @param tlast Time of last concentration above the limit of
 #'   quantification (will be calculated and included in the return data
 #'   frame if not given)
@@ -35,8 +35,6 @@
 #'   \code{TRUE} is that no selection for the best points will be done.  When
 #'   \code{TRUE}, this option causes the options of \code{adj.r.squared.factor},
 #'   \code{min.hl.points}, and \code{allow.tmax.in.half.life} to be ignored.
-#' @param options List of changes to the default
-#'   \code{\link{PKNCA.options}} for calculations.
 #' @param min.hl.points The minimum number of points that must be
 #'   included to calculate the half-life
 #' @param adj.r.squared.factor The allowance in adjusted r-squared for
