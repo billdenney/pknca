@@ -14,11 +14,12 @@ articles:
   v20-superposition: v20-superposition.html
   v21-methods-for-dose-aware-interpolation-and-extrapolation: v21-methods-for-dose-aware-interpolation-and-extrapolation.html
   v22-time-to-steady-state: v22-time-to-steady-state.html
+  v23-auc-integration-methods: v23-auc-integration-methods.html
   v30-training-session: v30-training-session.html
   v40-options-for-controlling-PKNCA: v40-options-for-controlling-PKNCA.html
   v60-PKNCA-validation: v60-PKNCA-validation.html
   v80-writing-parameter-functions: v80-writing-parameter-functions.html
-last_built: 2023-09-30T15:48Z
+last_built: 2023-09-30T17:15Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles

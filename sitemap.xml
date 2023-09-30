@@ -55,6 +55,9 @@
     <loc>http://billdenney.github.io/pknca/articles/v22-time-to-steady-state.html</loc>
   </url>
   <url>
+    <loc>http://billdenney.github.io/pknca/articles/v23-auc-integration-methods.html</loc>
+  </url>
+  <url>
     <loc>http://billdenney.github.io/pknca/articles/v30-training-session.html</loc>
   </url>
   <url>
@@ -128,6 +131,9 @@
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/as_sparse_pk.html</loc>
+  </url>
+  <url>
+    <loc>http://billdenney.github.io/pknca/reference/assert_aucmethod.html</loc>
   </url>
   <url>
     <loc>http://billdenney.github.io/pknca/reference/assert_conc_time.html</loc>
