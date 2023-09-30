@@ -21,13 +21,14 @@ the dosing including dose amount and route.
   style of the `checkmate` library.
 * Interpolation of zero concentrations in the middle of a set of concentrations
   is now more extensively supported.
-  
 
 ## Bugs fixed
 
 * `superpostion()` and the `interp.extrap.conc()` family of functions now
   respect the interpolation and extrapolation types requested rather than using
   default.
+* Concentration extrapolation with `extrapolate.conc()` using the "AUCall"
+  method now has decreasing instead of increasing concentrations (#249).
 
 ## Breaking changes
 

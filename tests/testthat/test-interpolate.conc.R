@@ -708,6 +708,18 @@ test_that("extrapolate.conc", {
   }
 })
 
+test_that("extrapolate.conc with AUCall goes down over time (#249)", {
+  expect_equal(
+    extrapolate.conc(
+      conc = c(1, 0), time = 0:1,
+      time.out = 0.75,
+      clast = 1,
+      auc.type = "AUCall"
+    ),
+    0.25
+  )
+})
+
 # interp.extrap.conc ####
 
 test_that("interp.extrap.conc", {

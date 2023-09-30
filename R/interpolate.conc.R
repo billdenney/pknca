@@ -306,7 +306,12 @@ extrapolate.conc <- function(conc, time, time.out,
         # If we are not already BLQ, then we have confirmed that we
         # are in the triangle extrapolation region and need to draw
         # a line.
-        ret <- (time.out - time_prev)/(time_next - time_prev)*conc_prev
+        ret <-
+          interpolate_conc_linear(
+            conc_1 = conc_prev, conc_2 = 0,
+            time_1 = time_prev, time_2 = time_next,
+            time_out = time.out
+          )
       }
     } else {
       stop("Invalid auc.type caught too late (seeing this error indicates a software bug)") # nocov
