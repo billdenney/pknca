@@ -89,21 +89,20 @@ rule unique(mod(x, interval)) is minimized.</p>
 
 
 <dt>options</dt>
-<dd><p>List of changes to the default
-<code><a href="PKNCA.options.html">PKNCA.options</a></code> for calculations.</p></dd>
+<dd><p>List of changes to the default PKNCA options (see
+`PKNCA.options()`)</p></dd>
 
 
 <dt>tau.choices</dt>
-<dd><p>the intervals to look for if the doses are not
-all equally spaced.</p></dd>
+<dd><p>the intervals to look for if the doses are not all equally
+spaced.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A scalar indicating the repeating interval with the most
-repetition.</p><ol><li><p>If all values are <code>NA</code> then NA is returned.</p></li>
+<p>A scalar indicating the repeating interval with the most repetition.</p><ol><li><p>If all values are <code>NA</code> then NA is returned.</p></li>
 <li><p>If all values are the same, then 0 is returned.</p></li>
 <li><p>If all values are equally spaced, then that spacing is
         returned.</p></li>

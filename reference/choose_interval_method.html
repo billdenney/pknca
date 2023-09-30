@@ -78,7 +78,7 @@ concentration interval</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">choose_interval_method</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">tlast</span>, <span class="va">method</span>, <span class="va">auc.type</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">choose_interval_method</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">tlast</span>, <span class="va">method</span>, <span class="va">auc.type</span>, <span class="va">options</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -97,13 +97,18 @@ concentration interval</p>
 
 
 <dt>method</dt>
-<dd><p>The method for integration (either 'lin up/log down' or
-'linear')</p></dd>
+<dd><p>The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')</p></dd>
 
 
 <dt>auc.type</dt>
 <dd><p>The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.</p></dd>
+
+
+<dt>options</dt>
+<dd><p>List of changes to the default PKNCA options (see
+`PKNCA.options()`)</p></dd>
 
 </dl></div>
     <div class="section level2">
