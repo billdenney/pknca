@@ -142,7 +142,7 @@ examples <-
   )
 ```
 
-```{r example-figures, fig.cap = caption}
+```{r example-figures, fig.cap = caption, warning=FALSE}
 caption <- character()
 for (current_example_nm in names(examples)) {
   for (current_method in auc_methods) {
