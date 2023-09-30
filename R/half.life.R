@@ -27,6 +27,8 @@
 #' @inheritParams assert_conc_time
 #' @inheritParams choose_interval_method
 #' @inheritParams PKNCA.choose.option
+#' @param tmax Time of maximum concentration (will be calculated and
+#'   included in the return data frame if not given)
 #' @param tlast Time of last concentration above the limit of
 #'   quantification (will be calculated and included in the return data
 #'   frame if not given)
