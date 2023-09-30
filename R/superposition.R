@@ -3,6 +3,7 @@
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_lambdaz
 #' @inheritParams PKNCA.choose.option
+#' @inheritParams choose_interval_method
 #' @param dose.input The dose given to generate the \code{conc} and \code{time}
 #'   inputs.  If missing, output doses will be assumed to be equal to the input
 #'   dose.
@@ -25,8 +26,6 @@
 #'   >= 0, and the \code{max(additional.times)} must be <= \code{tau}.
 #' @param check.blq Must the first concentration measurement be below the limit
 #'   of quantification?
-#' @param interp.method See \code{\link{interp.extrap.conc}}
-#' @param extrap.method See \code{\link{interp.extrap.conc}}
 #' @param steady.state.tol The tolerance for assessing if steady-state has been
 #'   achieved (between 0 and 1, exclusive).
 #' @param ... Additional arguments passed to the \code{half.life} function if
@@ -41,8 +40,9 @@
 #' @seealso \code{\link{interp.extrap.conc}}
 #'
 #' @export
-superposition <- function(conc, ...)
+superposition <- function(conc, ...) {
   UseMethod("superposition", conc)
+}
 
 #' @rdname superposition
 #' @export
@@ -74,11 +74,10 @@ superposition.numeric <- function(conc, time, dose.input = NULL,
                                   lambda.z, clast.pred=FALSE, tlast,
                                   additional.times=numeric(),
                                   check.blq=TRUE,
-                                  interp.method=NULL,
-                                  extrap.method="AUCinf",
+                                  method = NULL,
+                                  auc.type = "AUCinf",
                                   steady.state.tol=1e-3, ...) {
   # Check the inputs
-  interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
   # Concentration and time
   assert_conc_time(conc = conc, time = time)
   if (check.blq) {
@@ -221,9 +220,14 @@ superposition.numeric <- function(conc, time, dose.input = NULL,
         ret$conc[mask.time] <-
           (ret$conc[mask.time] +
            dose.scaling[i]*
-           interp.extrap.conc(conc, time, time.out=tmp.time[mask.time],
-                              lambda.z=lambda.z, clast=clast,
-                              options=options, check=FALSE))
+           interp.extrap.conc(
+             conc = conc, time = time,
+             time.out=tmp.time[mask.time],
+             lambda.z=lambda.z, clast=clast,
+             options=options, check=FALSE,
+             method = method, auc.type = auc.type
+           )
+          )
       }
       tau.count <- tau.count + 1
       if (any(ret$conc %in% 0)) {

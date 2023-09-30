@@ -24,8 +24,8 @@ superposition(conc, ...)
   tlast,
   additional.times = numeric(),
   check.blq = TRUE,
-  interp.method = NULL,
-  extrap.method = "AUCinf",
+  method = NULL,
+  auc.type = "AUCinf",
   steady.state.tol = 0.001,
   ...
 )
@@ -75,9 +75,11 @@ the standard times (see details).  All \code{min(additional.times)} must be
 \item{check.blq}{Must the first concentration measurement be below the limit
 of quantification?}
 
-\item{interp.method}{See \code{\link{interp.extrap.conc}}}
+\item{method}{The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')}
 
-\item{extrap.method}{See \code{\link{interp.extrap.conc}}}
+\item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
+and 'AUCall'.}
 
 \item{steady.state.tol}{The tolerance for assessing if steady-state has been
 achieved (between 0 and 1, exclusive).}

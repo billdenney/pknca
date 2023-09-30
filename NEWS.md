@@ -22,8 +22,18 @@ the dosing including dose amount and route.
 * Interpolation of zero concentrations in the middle of a set of concentrations
   is now more extensively supported.
   
+
+## Bugs fixed
+
+* `superpostion()` and the `interp.extrap.conc()` family of functions now
+  respect the interpolation and extrapolation types requested rather than using
+  default.
+
 ## Breaking changes
 
+* The arguments `interp.method` and `extrap.method` have been replaced with
+  `method` and `auc.type` in the `interp.extrap.conc()` family of functions for
+  consistency with the rest of PKNCA (fix #244)
 * The AIC.list() function is no longer exported (it was never intended to be an
   external function).
 * The `depends` argument to `add.interval.col()` must either be NULL or a

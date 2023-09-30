@@ -15,8 +15,10 @@ interp.extrap.conc(
   lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time),
   options = list(),
-  interp.method = NULL,
-  extrap.method = "AUCinf",
+  method = NULL,
+  auc.type = "AUCinf",
+  interp.method,
+  extrap.method,
   ...,
   conc.blq = NULL,
   conc.na = NULL,
@@ -28,7 +30,8 @@ interpolate.conc(
   time,
   time.out,
   options = list(),
-  interp.method = NULL,
+  method = NULL,
+  interp.method,
   conc.blq = NULL,
   conc.na = NULL,
   conc.origin = 0,
@@ -42,7 +45,8 @@ extrapolate.conc(
   time.out,
   lambda.z = NA,
   clast = pk.calc.clast.obs(conc, time),
-  extrap.method = "AUCinf",
+  auc.type = "AUCinf",
+  extrap.method,
   options = list(),
   conc.na = NULL,
   conc.blq = NULL,
@@ -83,11 +87,13 @@ quantification.  If not given, \code{clast} is calculated from
 \item{options}{List of changes to the default PKNCA options (see
 `PKNCA.options()`)}
 
-\item{interp.method}{The method for interpolation (either "lin up/log down"
-or "linear")}
+\item{method}{The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')}
 
-\item{extrap.method}{The method for extrapolation: "AUCinf", "AUClast", or
-"AUCall".  See details for usage.}
+\item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
+and 'AUCall'.}
+
+\item{interp.method, extrap.method}{deprecated in favor of method and auc.type}
 
 \item{...}{Additional arguments passed to \code{interpolate.conc()} or
 \code{extrapolate.conc()}.}

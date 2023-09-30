@@ -198,8 +198,8 @@ for (current_example_nm in names(examples)) {
           time = current_example$time,
           time.out = current_example_interpolate$time,
           lambda.z = half_life$lambda.z,
-          interp.method = current_method,
-          extrap.method = current_type,
+          method = current_method,
+          auc.type = current_type,
           conc.blq = "keep"
         )
       current_example_before_tlast <- current_example[current_example$time <= tlast, ]
