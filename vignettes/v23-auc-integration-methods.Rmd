@@ -41,6 +41,7 @@ calculating AUC (such as AUC~tau~ and AUC~int~) are made with variants of these.
 # Definitions and abbreviations
 
 * AUC: Area under the concentration-time curve
+* BLQ: Below the lower limit of quantification
 * LLOQ: lower limit of quantification
 * NCA: Noncompartmental analysis
 * Profile: A set of concentration-time points for calculation
@@ -150,11 +151,19 @@ for (current_example_nm in names(examples)) {
         c(
           caption,
           sprintf(
-            "Example PK where %s; %s interpolation method; %s extrapolation method (AUC type)",
+            "Example PK where %s; %s interpolation method; %s extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)",
             current_example_nm, current_method, current_type
           )
         )
       current_example <- examples[[current_example_nm]]
+
+      # Handle BLQ
+      current_example_noblq <- clean.conc.blq(conc = current_example$conc, time = current_example$time)
+      current_example_noblq$BLQ <- "Above LLOQ"
+      current_example_points <-
+        merge(current_example, current_example_noblq, all = TRUE)
+      current_example_points$BLQ[is.na(current_example_points$BLQ)] <- "Below LLOQ"
+      
       # Calculate some NCA parameters required for interpolation and extrapolation
       tlast <- pk.calc.tlast(conc = current_example$conc, time = current_example$time)
       half_life <- pk.calc.half.life(conc = current_example$conc, time = current_example$time)
@@ -175,7 +184,13 @@ for (current_example_nm in names(examples)) {
       stopifnot(!any(is.na(current_example$method)))
       current_example_interpolate <-
         data.frame(
-          time = seq(min(current_example$time), max(current_example$time) + diff(current_example$time)[1], length.out = 200)
+          time =
+            sort(c(
+              # make lines almost directly down at the transition after Tlast to
+              # zero, where applicable
+              current_example$time + sqrt(.Machine$double.eps),
+              seq(min(current_example$time), max(current_example$time) + diff(current_example$time)[1], length.out = 200)
+            ))
         )
       current_example_interpolate$conc <-
         interp.extrap.conc(
@@ -184,17 +199,18 @@ for (current_example_nm in names(examples)) {
           time.out = current_example_interpolate$time,
           lambda.z = half_life$lambda.z,
           method = current_method,
-          auc.type = current_type
+          auc.type = current_type,
+          conc.blq = "keep"
         )
       current_example_before_tlast <- current_example[current_example$time <= tlast, ]
       current_example_before_tlast$time_after <- c(current_example_before_tlast$time[-1], NA)
       current_example_after_tlast <- current_example[current_example$time >= tlast, ][1,]
       current_example_after_tlast$method <- current_example$method[nrow(current_example)]
       print(
-        ggplot(current_example, aes(x = time, y = conc)) +
+        ggplot(current_example_points, aes(x = time, y = conc)) +
           geom_rect(data = current_example_before_tlast, aes(xmin = time, xmax = time_after, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
           geom_rect(data = current_example_after_tlast, aes(xmin = time, xmax = Inf, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
-          geom_point() +
+          geom_point(aes(shape = BLQ)) +
           geom_line(data = current_example_interpolate) +
           scale_colour_hue(drop = FALSE)
       )

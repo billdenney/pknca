@@ -512,6 +512,16 @@ test_that("interpolate.conc", {
     ),
     1
   )
+  # interpolation works with the "zero" method of interpolation
+  expect_equal(
+    interpolate.conc(
+      conc=c(0, 1, 2, 0, 0, 1, 0),
+      time=0:6,
+      time.out=3.5,
+      conc.blq=0
+    ),
+    0
+  )
 })
 
 # extrapolate.conc ####

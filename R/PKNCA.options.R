@@ -40,13 +40,16 @@
     x
   },
   auc.method=function(x, default=FALSE, description=FALSE) {
+    choices <- eval(formals(assert_aucmethod)$method)
     if (description)
       return(paste(
         "The method used to calculate the AUC and related statistics.",
-        "Options are 'lin up/log down' and 'linear'."))
+        "Options are:",
+        paste0('"', choices, '"', collapse = ", ")
+      ))
     if (default)
-      return("lin up/log down")
-    match.arg(x, c("lin up/log down", "linear"))
+      return(choices[1])
+    assert_aucmethod(x)
   },
   conc.na=function(x, default=FALSE, description=FALSE) {
     if (description)

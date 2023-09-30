@@ -229,11 +229,7 @@ interpolate.conc <- function(conc, time, time.out,
       } else if (interp_method == "log") {
         interpolate_conc_log(conc_1=conc_1, conc_2=conc_2, time_1=time_1, time_2=time_2, time_out=time.out)
       } else if (interp_method == "zero") {
-        # interp_method == "zero" would not happen in practice because
-        # interpolation does not occur after tlast and linear interpolation
-        # would be used.  But, the rationale is sound in case that changes.
-        stop("The zero method of interpolation should not be used, please report a bug") # nocov
-        0 # nocov
+        0
       } else {
         stop("Please report a bug: invalid interp_method") # nocov
       }
