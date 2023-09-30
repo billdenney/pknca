@@ -167,7 +167,8 @@ for (current_example_nm in names(examples)) {
             time = current_example$time,
             tlast = tlast,
             method = current_method,
-            auc.type = current_type
+            auc.type = current_type,
+            options = list()
           ),
           levels = c("zero", "linear", "log", "extrap_log")
         )
