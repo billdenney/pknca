@@ -25,6 +25,9 @@ pk.calc.half.life(
 
 \item{time}{Time of the measurement of the concentrations}
 
+\item{tmax}{Time of maximum concentration (will be calculated and
+included in the return data frame if not given)}
+
 \item{tlast}{Time of last concentration above the limit of
 quantification (will be calculated and included in the return data
 frame if not given)}
