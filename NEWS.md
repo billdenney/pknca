@@ -19,6 +19,8 @@ the dosing including dose amount and route.
   an error (fix #238)
 * Many new `assert_*` functions were added to standardize input checking in the
   style of the `checkmate` library.
+* Interpolation of zero concentrations in the middle of a set of concentrations
+  is now more extensively supported.
   
 ## Breaking changes
 
