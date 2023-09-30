@@ -22,8 +22,9 @@ the dosing including dose amount and route.
 
 ## Bugs fixed
 
-* `superpostion()` now respects the interpolation and extrapolation types rather
-  than using default
+* `superpostion()` and the `interp.extrap.conc()` family of functions now
+  respect the interpolation and extrapolation types requested rather than using
+  default.
 
 ## Breaking changes
 
