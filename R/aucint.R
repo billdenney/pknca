@@ -80,28 +80,29 @@ pk.calc.aucint <- function(conc, time,
     if (is.null(time.dose)) {
       missing_conc <-
         interp.extrap.conc(
-          conc=data$conc, time=data$time,
-          time.out=missing_times,
-          interp.method=method,
-          extrap.method=auc.type,
-          clast=clast, lambda.z=lambda.z,
-          options=options,
+          conc = data$conc, time = data$time,
+          time.out = missing_times,
+          method = method,
+          auc.type = auc.type,
+          clast = clast,
+          lambda.z = lambda.z,
+          options = options,
           ...
         )
     } else {
       missing_conc <-
         interp.extrap.conc.dose(
-          conc=data$conc, time=data$time,
-          time.out=missing_times,
-          interp.method=method,
-          extrap.method=auc.type,
-          clast=clast, lambda.z=lambda.z,
-          options=options,
+          conc = data$conc, time = data$time,
+          time.out = missing_times,
+          method = method,
+          auc.type = auc.type,
+          clast = clast, lambda.z = lambda.z,
+          options = options,
           # arguments specific to interp.extrap.conc.dose
-          time.dose=time.dose,
-          route.dose=route,
-          duration.dose=duration.dose,
-          out.after=FALSE,
+          time.dose = time.dose,
+          route.dose = route,
+          duration.dose = duration.dose,
+          out.after = FALSE,
           ...
         )
     }

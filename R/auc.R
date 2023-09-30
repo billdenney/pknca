@@ -130,12 +130,14 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   # need to make sure that we have our starting point. Interpolation ensures
   # that (and will give the same answer if it already exists in the right form).
   conc_start <-
-    interp.extrap.conc(data$conc, data$time,
-                       time.out=interval_start,
-                       lambda.z=lambda.z,
-                       interp.method=method,
-                       extrap.method=auc.type,
-                       check=FALSE)
+    interp.extrap.conc(
+      data$conc, data$time,
+      time.out = interval_start,
+      lambda.z = lambda.z,
+      method = method,
+      auc.type = auc.type,
+      check = FALSE
+    )
   # Add that concentration and time to the vectors removing the
   # original version if it was there.
   data <- rbind(data.frame(conc=conc_start,
@@ -144,11 +146,13 @@ pk.calc.auxc <- function(conc, time, interval=c(0, Inf),
   # * either have our ending point or the ending point is Inf
   if (is.finite(interval_end)) {
     conc_end <-
-      interp.extrap.conc(data$conc, data$time,
-                         interval_end,
-                         interp.method=method,
-                         extrap.method=auc.type,
-                         check=FALSE)
+      interp.extrap.conc(
+        data$conc, data$time,
+        interval_end,
+        method = method,
+        auc.type = auc.type,
+        check = FALSE
+      )
     # !mask.end because we may be replacing an entry that is a 0.
     if (!is.na(conc_end)) {
       data <-

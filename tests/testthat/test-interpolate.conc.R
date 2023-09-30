@@ -9,7 +9,7 @@ test_that("interpolate.conc expected errors", {
       conc=c(0, 1, 0.5, 1, 0),
       time=0:4,
       time.out=5,
-      interp.method="lin up/log down"
+      method="lin up/log down"
     ),
     regexp="`interpolate.conc()` does not extrapolate, use `interp.extrap.conc()`",
     fixed=TRUE
@@ -23,13 +23,13 @@ test_that("interpolate.conc expected errors", {
     ),
     regexp="Assertion on 'time.out' failed: Must have length 1."
   )
-  
+
   expect_error(
     interpolate.conc(
       conc=0:1,
       time=0:1,
       time.out=0.5,
-      interp.method="this doesn't work"
+      method="this doesn't work"
     ),
     regexp=tryCatch(expr={
       match.arg("foo", choices=c("lin up/log down", "linear"))
@@ -38,7 +38,7 @@ test_that("interpolate.conc expected errors", {
     fixed=TRUE,
     info="Confirm that invalid interpolation methods are an error."
   )
-  
+
   expect_error(
     interpolate.conc(
       conc=0:1,
@@ -66,7 +66,7 @@ test_that("interpolate.conc expected errors", {
     ),
     regexp="Assertion on 'conc.origin' failed: Must be of type 'number', not 'factor'."
   )
-  
+
   expect_error(
     interpolate.conc(
       conc=c(NA, 1),
@@ -76,7 +76,7 @@ test_that("interpolate.conc expected errors", {
     )
   )
 
-  # When tlast is before the end of the data, do not extrapolate  
+  # When tlast is before the end of the data, do not extrapolate
   expect_error(
     interpolate.conc(
       conc=c(1, 2, 0),
@@ -91,24 +91,24 @@ test_that("interpolate.conc expected errors", {
 ## extrapolate.conc expected errors ####
 
 test_that("extrapolate.conc expected errors", {
-  # Confirm that the extrap.method must be AUCinf, AUClast, AUCall
+  # Confirm that the auc.type must be AUCinf, AUClast, AUCall
   expect_error(
     extrapolate.conc(
       conc=1,
       time=1,
       time.out=2,
-      extrap.method="wrong"
+      auc.type="wrong"
     ),
-    regexp="extrap.method must be one of 'AUCinf', 'AUClast', or 'AUCall'"
+    regexp="`auc.type` must be one of 'AUCinf', 'AUClast', or 'AUCall'"
   )
-  
+
   # Confirm that time.out may only be a scalar
   expect_error(
     extrapolate.conc(
       conc=1,
       time=1,
       time.out=c(2, 3),
-      extrap.method="AUCinf"
+      auc.type="AUCinf"
     ),
     regexp="Only one time.out value may be estimated at once."
   )
@@ -118,7 +118,7 @@ test_that("extrapolate.conc expected errors", {
       conc=1,
       time=1,
       time.out=0.5,
-      extrap.method="AUCinf"
+      auc.type="AUCinf"
     ),
     regexp="extrapolate.conc can only work beyond Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation."
   )
@@ -127,7 +127,7 @@ test_that("extrapolate.conc expected errors", {
       conc=1,
       time=1,
       time.out=1,
-      extrap.method="AUCinf"
+      auc.type="AUCinf"
     ),
     regexp="extrapolate.conc can only work beyond Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation."
   )
@@ -142,7 +142,7 @@ test_that("interp.extrap.conc expected errors", {
       conc=c(0, 1, 0.5, 1, 0),
       time=0:4,
       time.out=numeric(),
-      interp.method="lin up/log down"
+      method="lin up/log down"
     ),
     regexp="time.out must be a vector with at least one element"
   )
@@ -243,13 +243,13 @@ test_that("interpolate.conc", {
         conc=c(0, 0),
         time=0:1,
         time.out=0,
-        interp.method=n
+        method=n
       ),
       0,
       info=paste("all zero", n)
     )
   }
-  
+
   # Confirm that interpolating to a given point results in the point itself
   interpolations <-
     list(
@@ -262,13 +262,13 @@ test_that("interpolate.conc", {
         conc=c(0, 1),
         time=0:1,
         time.out=0,
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   interpolations <-
     list(
       linear=1,
@@ -280,13 +280,13 @@ test_that("interpolate.conc", {
         conc=c(0, 1),
         time=0:1,
         time.out=1,
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   # Confirm that interpolating to a given point when that point is NA gives a
   # interpolates as expected.
   interpolations <-
@@ -300,13 +300,13 @@ test_that("interpolate.conc", {
         conc=c(0, 1, NA, 1),
         time=0:3,
         time.out=2,
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   # Slightly less trivial tests
   interpolations <-
     list(
@@ -319,13 +319,13 @@ test_that("interpolate.conc", {
         conc=c(0, 1, 0),
         time=0:2,
         time.out=0.5,
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   interpolations <-
     list(
       linear=1.75,
@@ -337,7 +337,7 @@ test_that("interpolate.conc", {
         conc=c(0, 2, 1),
         time=0:2,
         time.out=1.25,
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
@@ -356,7 +356,7 @@ test_that("interpolate.conc", {
         conc=c(0, 2, 1),
         time=seq(-10, -8, by=1),
         time.out=-8.75,
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
@@ -376,13 +376,13 @@ test_that("interpolate.conc", {
         time=0:4,
         time.out=2.25,
         conc.blq="keep",
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   # Ensure that interpolation with linear works with a BLQ in the middle: going
   # down and up from that BLQ
   interpolations <-
@@ -397,13 +397,13 @@ test_that("interpolate.conc", {
         time=0:4,
         time.out=1.5,
         conc.blq="keep",
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   interpolations <-
     list(
       linear=0.5,
@@ -416,13 +416,13 @@ test_that("interpolate.conc", {
         time=0:4,
         time.out=2.5,
         conc.blq="keep",
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
     )
   }
-  
+
   # Ensure that conc.blq is appropriately observed
   interpolations <-
     list(
@@ -436,7 +436,7 @@ test_that("interpolate.conc", {
         time=0:4,
         time.out=2.25,
         conc.blq="drop",
-        interp.method=n
+        method=n
       ),
       interpolations[[n]],
       info=n
@@ -448,10 +448,10 @@ test_that("interpolate.conc", {
       conc=c(0, 1, 0.5, 1, 0),
       time=0:4,
       time.out=1.5,
-      interp.method="lin up/log down"),
+      method="lin up/log down"),
     exp(mean(log(c(1, 0.5))))
   )
-  
+
   # Confirm that extrapolating before the first time uses conc.origin
   expect_equal(
     interpolate.conc(
@@ -480,7 +480,7 @@ test_that("interpolate.conc", {
     5,
     info="conc.origin is honored as a number"
   )
-  
+
   # expect_equal(
   #   interpolate.conc(
   #     conc=c(NA, 1, 2),
@@ -491,7 +491,7 @@ test_that("interpolate.conc", {
   #   1.5,
   #   info="Skipping the checks with an NA, but not bounding the interpolation gives the expected value."
   # )
-  
+
   # by default, zeros in the middle are omitted
   expect_equal(
     interpolate.conc(
@@ -524,7 +524,7 @@ test_that("extrapolate.conc", {
         conc=NA,
         time=1,
         time.out=2,
-        extrap.method="AUCinf"
+        auc.type="AUCinf"
       ),
     regexp="All concentration data are missing"
   )
@@ -536,7 +536,7 @@ test_that("extrapolate.conc", {
       conc=c(0, 1, 0),
       time=1:3,
       time.out=4,
-      extrap.method="AUClast"
+      auc.type="AUClast"
       ),
     0
   )
@@ -545,18 +545,18 @@ test_that("extrapolate.conc", {
       conc=c(0, 1, 0),
       time=1:3,
       time.out=2.5,
-      extrap.method="AUClast"
+      auc.type="AUClast"
     ),
     0
   )
-  
+
   # Extrapolating AUCall after the last value and it is 0 is 0
   expect_equal(
     extrapolate.conc(
       conc=c(0, 1, 0),
       time=1:3,
       time.out=4,
-      extrap.method="AUCall"
+      auc.type="AUCall"
     ),
     0
   )
@@ -568,7 +568,7 @@ test_that("extrapolate.conc", {
       time=1:3,
       time.out=4,
       lambda.z=2,
-      extrap.method="AUCall"
+      auc.type="AUCall"
     ),
     0
   )
@@ -580,7 +580,7 @@ test_that("extrapolate.conc", {
       conc=c(0, 1, 0),
       time=1:3,
       time.out=2.5,
-      extrap.method="AUCall"
+      auc.type="AUCall"
     ),
     0.5
   )
@@ -593,7 +593,7 @@ test_that("extrapolate.conc", {
       time=1:3,
       time.out=2.5,
       lambda.z=1,
-      extrap.method="AUCinf"
+      auc.type="AUCinf"
     ),
     1*exp(-1*0.5)
   )
@@ -605,7 +605,7 @@ test_that("extrapolate.conc", {
       time=1:3,
       time.out=2.5,
       lambda.z=3,
-      extrap.method="AUCinf"
+      auc.type="AUCinf"
     ),
     5*exp(-3*0.5)
   )
@@ -617,7 +617,7 @@ test_that("extrapolate.conc", {
       time=1:3,
       time.out=2.5,
       lambda.z=NA,
-      extrap.method="AUCinf"
+      auc.type="AUCinf"
     ),
     as.numeric(NA)
   )
@@ -630,7 +630,7 @@ test_that("extrapolate.conc", {
         time=1:3,
         time.out=2.5,
         lambda.z=NA,
-        extrap.method="AUCinf"
+        auc.type="AUCinf"
       ),
       NA
     ),
@@ -650,7 +650,7 @@ test_that("extrapolate.conc", {
         conc=c(0, 1, 0.5, 1, 0),
         time=0:4, 5,
         lambda.z=1,
-        extrap.method=n
+        auc.type=n
       ),
       extrapolations[[n]],
       info=n
@@ -670,7 +670,7 @@ test_that("extrapolate.conc", {
         conc=c(0, 1, 0.5, 1, 0),
         time=0:4, 4,
         lambda.z=1,
-        extrap.method=n
+        auc.type=n
       ),
       extrapolations[[n]],
       info=n
@@ -690,7 +690,7 @@ test_that("extrapolate.conc", {
         conc=c(0, 1, 0.5, 1, 0),
         time=0:4, 3.5,
         lambda.z=1,
-        extrap.method=n
+        auc.type=n
       ),
       extrapolations[[n]],
       info=n
@@ -707,18 +707,18 @@ test_that("interp.extrap.conc", {
       conc=c(0, 0, 0),
       time=0:2,
       time.out=c(0, 0.5, 2.5),
-      interp.method="lin up/log down"
+      method="lin up/log down"
     ),
     rep(0, 3)
   )
-  
+
   # Ensure that data checking works correctly
   expect_equal(
     interp.extrap.conc(
       conc=c(0, 1, 0.5, 1, 0),
       time=0:4,
       time.out=1.5,
-      interp.method="lin up/log down"
+      method="lin up/log down"
     ),
     exp(mean(log(c(1, 0.5))))
   )
@@ -730,7 +730,7 @@ test_that("interp.extrap.conc", {
         conc=c(0, 1, 0.5, 1, 0),
         time=0:4,
         time.out=c(1.5, NA),
-        interp.method="lin up/log down"
+        method="lin up/log down"
       ),
       c(exp(mean(log(c(1, 0.5)))), NA)
     )
@@ -742,7 +742,7 @@ test_that("interp.extrap.conc", {
       conc=c(0, 1, 0.5, 1, 0),
       time=0:4,
       time.out=c(1.5, NA),
-      interp.method="lin up/log down"
+      method="lin up/log down"
     ),
     regexp="An interpolation/extrapolation time is NA"
   )
@@ -834,7 +834,7 @@ test_that("interp.extrap.conc.dose", {
     structure(0, Method="Observed concentration"),
     info="When there is a concentration measurement at a time point, it is returned."
   )
-  
+
   expect_equal(
     interp.extrap.conc.dose(
       conc=c(0, 1, 2, 1, 0.5, 0.25),
@@ -936,10 +936,10 @@ test_that("interp.extrap.conc.dose", {
       time.out=2.5,
       method="linear"
     ),
-    structure(sqrt(2), Method="Interpolation"),
+    structure(1.5, Method="Interpolation"),
     info="Interpolation respects method"
   )
-  
+
   expect_equal(
     interp.extrap.conc.dose(
       conc=0:2,
@@ -1007,7 +1007,7 @@ test_that("interp.extrap.conc.dose", {
     structure(2, Method="After an IV bolus with a concentration next"),
     info="After IV bolus, one concentration"
   )
-  
+
   expect_equal(
     interp.extrap.conc.dose(
       conc=c(0, 1, 2, 1, 0.5, 0.25),
@@ -1021,7 +1021,7 @@ test_that("interp.extrap.conc.dose", {
     ),
     info="Outputs are in the same order as inputs (initially sorted)"
   )
-  
+
   expect_equal(
     interp.extrap.conc.dose(
       conc=c(0, 1, 2, 1, 0.5, 0.25),

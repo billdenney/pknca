@@ -14,6 +14,8 @@
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_lambdaz
 #' @inheritParams PKNCA.choose.option
+#' @inheritParams choose_interval_method
+#' @param interp.method,extrap.method deprecated in favor of method and auc.type
 #' @param time.dose Time of the dose
 #' @param time.out Time when interpolation is requested (vector for
 #'   \code{interp.extrap.conc()}, scalar otherwise)
@@ -24,10 +26,6 @@
 #'   \code{conc.origin} is typically used to set predose values to zero
 #'   (default), set a predose concentration for endogenous compounds, or set
 #'   predose concentrations to \code{NA} if otherwise unknown.
-#' @param interp.method The method for interpolation (either "lin up/log down"
-#'   or "linear")
-#' @param extrap.method The method for extrapolation: "AUCinf", "AUClast", or
-#'   "AUCall".  See details for usage.
 #' @param conc.blq How to handle BLQ values. (See \code{\link{clean.conc.blq}()}
 #'   for usage instructions.)
 #' @param conc.na How to handle NA concentrations.  (See
@@ -83,14 +81,23 @@ interp.extrap.conc <- function(conc, time, time.out,
                                lambda.z=NA,
                                clast=pk.calc.clast.obs(conc, time),
                                options=list(),
-                               interp.method=NULL,
-                               extrap.method="AUCinf",
+                               method = NULL,
+                               auc.type = "AUCinf",
+                               interp.method,
+                               extrap.method,
                                ...,
                                conc.blq=NULL,
                                conc.na=NULL,
                                check=TRUE) {
+  # Defunct inputs
+  if (!missing(interp.method)) {
+    .Defunct(msg = "the `interp.method` has been replaced by the `method` argument for consistency with the rest of PKNCA") # nocov
+  } else if (!missing(extrap.method)) {
+    .Defunct(msg = "the `extrap.method` has been replaced by the `auc.type` argument for consistency with the rest of PKNCA") # nocov
+  }
+
   # Check inputs
-  interp.method <- PKNCA.choose.option(name="auc.method", value=interp.method, options=options)
+  method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
@@ -125,7 +132,7 @@ interp.extrap.conc <- function(conc, time, time.out,
           interpolate.conc(
             conc=data$conc, time=data$time,
             time.out=time.out[i],
-            interp.method=interp.method,
+            method=method,
             conc.blq=conc.blq,
             conc.na=conc.na,
             check=FALSE
@@ -137,7 +144,7 @@ interp.extrap.conc <- function(conc, time, time.out,
             time.out=time.out[i],
             lambda.z=lambda.z,
             clast=clast,
-            extrap.method=extrap.method,
+            auc.type=auc.type,
             check=FALSE
           )
       }
@@ -149,16 +156,21 @@ interp.extrap.conc <- function(conc, time, time.out,
 #' @export
 interpolate.conc <- function(conc, time, time.out,
                              options=list(),
-                             interp.method=NULL,
+                             method = NULL,
+                             interp.method,
                              conc.blq=NULL,
                              conc.na=NULL,
                              conc.origin=0,
                              ...,
                              check=TRUE) {
+  # Defunct inputs
+  if (!missing(interp.method)) {
+    .Defunct(msg = "the `interp.method` has been replaced by the `method` argument for consistency with the rest of PKNCA") # nocov
+  }
   # Check the inputs
-  interp.method <-
+  method <-
     tolower(PKNCA.choose.option(
-      name="auc.method", value=interp.method, options=options
+      name="auc.method", value=method, options=options
     ))
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
@@ -197,7 +209,7 @@ interpolate.conc <- function(conc, time, time.out,
       choose_interval_method(
         conc = data$conc,
         time = data$time,
-        method = interp.method,
+        method = method,
         # AUClast because it doesn't affect the output for interpolation
         auc.type = "AUClast",
         options = options
@@ -233,12 +245,16 @@ interpolate.conc <- function(conc, time, time.out,
 #' @export
 extrapolate.conc <- function(conc, time, time.out,
                              lambda.z=NA, clast=pk.calc.clast.obs(conc, time),
-                             extrap.method="AUCinf",
+                             auc.type = "AUCinf",
+                             extrap.method,
                              options=list(),
                              conc.na=NULL,
                              conc.blq=NULL,
                              ...,
                              check=TRUE) {
+  if (!missing(extrap.method)) {
+    .Defunct(msg = "the `extrap.method` has been replaced by the `auc.type` argument for consistency with the rest of PKNCA") # nocov
+  }
   assert_lambdaz(lambda.z)
   conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
@@ -253,9 +269,9 @@ extrapolate.conc <- function(conc, time, time.out,
   } else {
     data <- data.frame(conc, time)
   }
-  extrap.method <- tolower(extrap.method)
-  if (!(extrap.method %in% c("aucinf", "aucall", "auclast")))
-    stop("extrap.method must be one of 'AUCinf', 'AUClast', or 'AUCall'")
+  auc.type <- tolower(auc.type)
+  if (!(auc.type %in% c("aucinf", "aucall", "auclast")))
+    stop("`auc.type` must be one of 'AUCinf', 'AUClast', or 'AUCall'")
   if (length(time.out) != 1)
     stop("Only one time.out value may be estimated at once.")
   tlast <- pk.calc.tlast(conc=data$conc, time=data$time, check=FALSE)
@@ -266,17 +282,17 @@ extrapolate.conc <- function(conc, time, time.out,
     stop("extrapolate.conc can only work beyond Tlast, please use interp.extrap.conc to combine both interpolation and extrapolation.")
   } else {
     # Start the interpolation
-    if (extrap.method %in% "aucinf") {
+    if (auc.type %in% "aucinf") {
       # If AUCinf is requested, extrapolate using the half-life
       ret <- extrapolate_conc_lambdaz(clast=clast, lambda.z=lambda.z, tlast=tlast, time_out=time.out)
-    } else if (extrap.method %in% "auclast" |
-                 (extrap.method %in% "aucall" &
+    } else if (auc.type %in% "auclast" |
+                 (auc.type %in% "aucall" &
                     tlast == max(data$time))) {
       # If AUClast is requested or AUCall is requested and there are
       # no BLQ at the end, we are already certain that we are after
       # Tlast, so the answer is 0.
       ret <- 0
-    } else if (extrap.method %in% "aucall") {
+    } else if (auc.type %in% "aucall") {
       # If the last non-missing concentration is below the limit of
       # quantification, extrapolate with the triangle method of
       # AUCall.
@@ -297,7 +313,7 @@ extrapolate.conc <- function(conc, time, time.out,
         ret <- (time.out - time_prev)/(time_next - time_prev)*conc_prev
       }
     } else {
-      stop("Invalid extrap.method caught too late (seeing this error indicates a software bug)") # nocov
+      stop("Invalid auc.type caught too late (seeing this error indicates a software bug)") # nocov
     }
   }
   ret
