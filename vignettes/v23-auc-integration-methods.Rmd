@@ -184,7 +184,13 @@ for (current_example_nm in names(examples)) {
       stopifnot(!any(is.na(current_example$method)))
       current_example_interpolate <-
         data.frame(
-          time = seq(min(current_example$time), max(current_example$time) + diff(current_example$time)[1], length.out = 200)
+          time =
+            sort(c(
+              # make lines almost directly down at the transition after Tlast to
+              # zero, where applicable
+              current_example$time + sqrt(.Machine$double.eps),
+              seq(min(current_example$time), max(current_example$time) + diff(current_example$time)[1], length.out = 200)
+            ))
         )
       current_example_interpolate$conc <-
         interp.extrap.conc(
