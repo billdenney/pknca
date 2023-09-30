@@ -62,8 +62,7 @@ extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams PKNCA.choose.option
-#' @param method The method for integration (one of 'lin up/log down',
-#'   'lin-log', or 'linear')
+#' @inheritParams assert_aucmethod
 #' @param auc.type The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 #'   and 'AUCall'.
 #' @param tlast Time of last concentration above the limit of quantification
@@ -82,8 +81,7 @@ choose_interval_method <- function(conc, time, tlast, method, auc.type, options)
   stopifnot(!any(is.na(time)))
   stopifnot(!any(is.na(conc)))
   stopifnot(length(conc) == length(time))
-  stopifnot(length(method) == 1)
-  stopifnot(method %in% c("lin up/log down", "linear", "lin-log"))
+  assert_aucmethod(method)
   stopifnot(length(auc.type) == 1)
   stopifnot(auc.type %in% c("AUCinf", "AUClast", "AUCall"))
 

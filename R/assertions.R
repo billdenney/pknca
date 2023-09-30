@@ -188,3 +188,13 @@ assert_dosetau <- function(tau) {
 assert_lambdaz <- function(lambda.z, any.missing = TRUE, .var.name = checkmate::vname(lambda.z)) {
   assert_numeric_between(x = lambda.z, lower = 0, any.missing = any.missing, .var.name = .var.name, finite = TRUE)
 }
+
+#' Assert that a value is a valid AUC method
+#'
+#' @param method The method for integration (one of 'lin up/log down',
+#'   'lin-log', or 'linear')
+#' @return `method` or an informative error
+#' @export
+assert_aucmethod <- function(method = c("lin up/log down", "linear", "lin-log")) {
+  match.arg(method)
+}

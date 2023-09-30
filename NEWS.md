@@ -6,6 +6,9 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
+* A new AUC integration method, "lin-log", has been added using the linear
+  method through tmax and log after tmax, with required exceptions for zeros
+  (fix #23)
 * The parameter `vd` was removed (it was not specific like `vz` or `vss`, and it
   was effectively a duplicate of `vz`).  Use `vz`, instead.
 * The `count_conc` NCA parameter was added to assist in data quality checking.
@@ -16,6 +19,8 @@ the dosing including dose amount and route.
   an error (fix #238)
 * Many new `assert_*` functions were added to standardize input checking in the
   style of the `checkmate` library.
+* Interpolation of zero concentrations in the middle of a set of concentrations
+  is now more extensively supported.
   
 ## Breaking changes
 

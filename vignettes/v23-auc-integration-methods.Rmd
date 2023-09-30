@@ -1,0 +1,220 @@
+---
+title: "AUC integration methods"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AUC integration methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r knitr-setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(PKNCA)
+library(ggplot2)
+auc_methods <- c("lin up/log down", "linear", "lin-log")
+auc_types <- c("AUCinf", "AUClast", "AUCall")
+
+comma_and <- function(x) {
+  paste(
+    paste(x[-length(x)], collapse = ", "),
+    ngettext(length(x) - 1, ", and", "and"),
+    x[length(x)]
+  )
+}
+```
+
+# Integration methods for Area Under the Concentration-Time curve (AUC)
+
+There are `r length(auc_methods)` methods for choosing how to integrate the AUC
+between two concentration measurements in `PKNCA`.  They are
+`r comma_and(auc_methods)`.  Additionally, there are `r length(auc_types)`
+methods for extrapolating after the last concentration above the limit of
+quantification.  They are `r comma_and(auc_types)`.  Other methods of
+calculating AUC (such as AUC~tau~ and AUC~int~) are made with variants of these.
+
+# Definitions and abbreviations
+
+* AUC: Area under the concentration-time curve
+* BLQ: Below the lower limit of quantification
+* LLOQ: lower limit of quantification
+* NCA: Noncompartmental analysis
+* Profile: A set of concentration-time points for calculation
+* T~last~: The last concentration above the limit of quantification within a profile
+* T~max~: The time of the maximum concentration
+
+# Description of methods of integrating between two concentrations before T~last~
+
+Note that other NCA tools may not describe interpolation as zero.  The
+zero-interpolation rules are used by PKNCA to assist with other methods used
+across the suite of tools for interpolation and data cleaning within PKNCA.  The
+zero-interpolation rules could be swapped for linear trapezoidal rules with the
+same effects here.
+
+## Linear up/logarithmic down (`"lin up/log down"`) interpolation
+
+Linear up/logarithmic down interpolation is the most commonly used method for
+PK, and it is the default for `PKNCA`.
+
+Linear up/logarithmic down interpolation is often used when an exogenous
+substance is dosed and measured, and when the elimination likely occurs by
+first-order elimination from the body.
+
+Linear up/logarithmic down interpolation uses the following rules in order for
+each pair of concentrations through T~last~:
+
+1. If concentrations are both zero, interpolate as zero;
+2. If concentrations are decreasing and the second concentration is not zero,
+   use logarithmic interpolation; and
+3. If concentrations are decreasing before T~last~ or increasing ever, use
+   linear interpolation.
+
+## Linear trapezoidal (`"linear"`) interpolation
+
+Linear trapezoidal interpolation is often used when an endogenous substance is
+measured (and possibly dosed), and when the elimination may not occur by
+first-order elimination processes.
+
+Linear trapezoidal interpolation uses the following rules in order for each pair
+of concentrations through T~last~:
+
+1. If concentrations are both zero, interpolate as zero; and
+2. Use linear interpolation for all other times (this could be the only rule).
+
+## Linear to T~max~/logarithmic after T~max~ (`"lin-log"`) interpolation
+
+Linear to T~max~/logarithmic after T~max~ interpolation is infrequently used.
+It uses the following rules in order for each pair of concentrations through
+T~last~:
+
+1. If concentrations are both zero, interpolate as zero;
+2. If concentrations are before T~max~, use linear interpolation;
+3. If concentrations are after T~max~ (and before T~last~) and either concentration is zero, use linear interpolation; and
+4. If concentrations are after T~max~ and neither is zero, use logarithmic interpolation.
+
+# Description of methods of integrating between two concentrations after T~last~
+
+## `"AUClast"` extrapolation
+
+AUClast extrapolation after T~last~ is the simplest.  It is no extrapolation;
+the extrapolated AUC integral is zero.
+
+## `"AUCall"` extrapolation
+
+AUCall extrapolation after T~last~ has two rules:
+
+1. If the last concentration measured is above the limit of quantification (in
+   other words, the last time is T~last~), then no extrapolation is done; otherwise
+2. Integrate linearly the triangle between T~last~ and the time of zero
+   concentration after T~last~.
+
+## `"AUCinf"` extrapolation
+
+AUCinf extrapolation requires estimation of a half-life.  It extrapolates using the equation
+
+$Extrap = \frac{C_{last}}{\lambda_z}$
+
+# Examples
+
+```{r setup-example, include=FALSE}
+examples <-
+  list(
+    "Clast is above the LLOQ" =
+      data.frame(
+        conc = c(0, 1.8, 3, 2, 1, 0.5, 0.25),
+        time = 0:6
+      ),
+    "Clast is below the LLOQ" =
+      data.frame(
+        conc = c(0, 1.8, 3, 2, 1, 0.5, 0),
+        time = 0:6
+      ),
+    "Concentrations increase and decrease after T~max~ with zeros in the middle" =
+      data.frame(
+        conc = c(0, 1.8, 0, 0, 3, 2, 2.5, 0, 0, 2.5, 1, 0.5, 0),
+        time = 0:12
+      )
+  )
+```
+
+```{r example-figures, fig.cap = caption}
+caption <- character()
+for (current_example_nm in names(examples)) {
+  for (current_method in auc_methods) {
+    for (current_type in auc_types) {
+      caption <-
+        c(
+          caption,
+          sprintf(
+            "Example PK where %s; %s interpolation method; %s extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)",
+            current_example_nm, current_method, current_type
+          )
+        )
+      current_example <- examples[[current_example_nm]]
+
+      # Handle BLQ
+      current_example_noblq <- clean.conc.blq(conc = current_example$conc, time = current_example$time)
+      current_example_noblq$BLQ <- "Above LLOQ"
+      current_example_points <-
+        merge(current_example, current_example_noblq, all = TRUE)
+      current_example_points$BLQ[is.na(current_example_points$BLQ)] <- "Below LLOQ"
+      
+      # Calculate some NCA parameters required for interpolation and extrapolation
+      tlast <- pk.calc.tlast(conc = current_example$conc, time = current_example$time)
+      half_life <- pk.calc.half.life(conc = current_example$conc, time = current_example$time)
+      
+      # Define the methods used for interpolation and extrapolation
+      current_example$method <-
+        factor(
+          PKNCA:::choose_interval_method(
+            conc = current_example$conc,
+            time = current_example$time,
+            tlast = tlast,
+            method = current_method,
+            auc.type = current_type,
+            options = list()
+          ),
+          levels = c("zero", "linear", "log", "extrap_log")
+        )
+      stopifnot(!any(is.na(current_example$method)))
+      current_example_interpolate <-
+        data.frame(
+          time =
+            sort(c(
+              # make lines almost directly down at the transition after Tlast to
+              # zero, where applicable
+              current_example$time + sqrt(.Machine$double.eps),
+              seq(min(current_example$time), max(current_example$time) + diff(current_example$time)[1], length.out = 200)
+            ))
+        )
+      current_example_interpolate$conc <-
+        interp.extrap.conc(
+          conc = current_example$conc,
+          time = current_example$time,
+          time.out = current_example_interpolate$time,
+          lambda.z = half_life$lambda.z,
+          interp.method = current_method,
+          extrap.method = current_type,
+          conc.blq = "keep"
+        )
+      current_example_before_tlast <- current_example[current_example$time <= tlast, ]
+      current_example_before_tlast$time_after <- c(current_example_before_tlast$time[-1], NA)
+      current_example_after_tlast <- current_example[current_example$time >= tlast, ][1,]
+      current_example_after_tlast$method <- current_example$method[nrow(current_example)]
+      print(
+        ggplot(current_example_points, aes(x = time, y = conc)) +
+          geom_rect(data = current_example_before_tlast, aes(xmin = time, xmax = time_after, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
+          geom_rect(data = current_example_after_tlast, aes(xmin = time, xmax = Inf, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
+          geom_point(aes(shape = BLQ)) +
+          geom_line(data = current_example_interpolate) +
+          scale_colour_hue(drop = FALSE)
+      )
+    }
+  }
+}
+```
