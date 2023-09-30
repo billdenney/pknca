@@ -93,8 +93,8 @@
 <span>  <span class="va">tlast</span>,</span>
 <span>  additional.times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  check.blq <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  interp.method <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  extrap.method <span class="op">=</span> <span class="st">"AUCinf"</span>,</span>
+<span>  method <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  auc.type <span class="op">=</span> <span class="st">"AUCinf"</span>,</span>
 <span>  steady.state.tol <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -174,12 +174,14 @@ the standard times (see details).  All <code>min(additional.times)</code> must b
 of quantification?</p></dd>
 
 
-<dt>interp.method</dt>
-<dd><p>See <code><a href="interp.extrap.conc.html">interp.extrap.conc</a></code></p></dd>
+<dt>method</dt>
+<dd><p>The method for integration (one of 'lin up/log down',
+'lin-log', or 'linear')</p></dd>
 
 
-<dt>extrap.method</dt>
-<dd><p>See <code><a href="interp.extrap.conc.html">interp.extrap.conc</a></code></p></dd>
+<dt>auc.type</dt>
+<dd><p>The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
+and 'AUCall'.</p></dd>
 
 
 <dt>steady.state.tol</dt>
