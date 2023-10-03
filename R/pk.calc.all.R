@@ -230,7 +230,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
       dose_data_interval <- NA_data_dose_
     }
     # Setup for detailed error reporting in case it's needed
-    error.preamble <-
+    error_preamble <-
       paste(
         "Error with interval",
         paste(
@@ -239,7 +239,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
           sep="=", collapse=", ")
       )
     if (nrow(conc_data_interval) == 0) {
-      warning(paste(error.preamble, "No data for interval", sep=": "))
+      warning(paste(error_preamble, "No data for interval", sep=": "))
     } else if (!has_calc_sparse_dense) {
       if (verbose) message("No ", ifelse(sparse, "sparse", "dense"), " calculations requested for an interval")
     } else {
@@ -283,7 +283,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         args$exclude_half.life <- conc_data_interval$exclude_half.life
       }
       # Try the calculation
-      calculated.interval <-
+      calculated_interval <-
         tryCatch(
           do.call(pk.nca.interval, args),
           error=function(e) {
@@ -297,7 +297,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
           ret,
           cbind(
             current_interval[, c("start", "end")],
-            calculated.interval,
+            calculated_interval,
             row.names=NULL
           )
         )
@@ -399,8 +399,6 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       interval[all_intervals[[n]]$depends] <- TRUE
     }
   }
-  # Check if units will be used
-  #uses_units <- inherits(time, "units")
   # Do the calculations
   for (n in names(all_intervals)) {
     request_to_calculate <- as.logical(interval[[n]])
