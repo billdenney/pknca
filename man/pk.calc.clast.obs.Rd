@@ -18,8 +18,10 @@ pk.calc.clast.obs(conc, time, check = TRUE)
 The last observed concentration above the LOQ
 }
 \description{
-If Tlast is NA (due to no non-missing above LOQ measurements), this
-will return NA.
+If all concentrations are missing, `NA_real_` is returned.  If all
+concentrations are zero (below the limit of quantification) or missing, zero
+is returned.  If Tlast is NA (due to no non-missing above LOQ measurements),
+this will return `NA_real_`.
 }
 \seealso{
 Other NCA parameters for concentrations during the intervals: 
