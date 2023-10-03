@@ -30,7 +30,7 @@ the dosing including dose amount and route.
 * Concentration extrapolation with `extrapolate.conc()` using the "AUCall"
   method now has decreasing instead of increasing concentrations (#249).
 * The aucint.inf.obs parameter when calculated with all zero concentrations
-  returns zero (#253).
+  returns zero and aucint.inf.pred returns `NA_real_` (#253)
 
 ## Breaking changes
 

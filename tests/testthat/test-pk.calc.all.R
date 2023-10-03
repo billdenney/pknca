@@ -610,6 +610,7 @@ test_that("Unexpected interval columns do not cause an error (#238)", {
 })
 
 test_that("aucint works within pk.calc.all for all zero concentrations with interpolated or extrapolated concentrations", {
+  # AUCint.inf.obs
   d_interval <- data.frame(start = 0, end = 4, aucint.inf.obs = TRUE)
   d_conctime <- data.frame(conc = c(0, 0, 0, 0), time = 0:3)
   o_conc <- PKNCAconc(d_conctime, conc~time)
@@ -627,5 +628,18 @@ test_that("aucint works within pk.calc.all for all zero concentrations with inte
   expect_equal(
     results[na_names],
     setNames(rep(NA_real_, length(na_names)), na_names)
+  )
+
+  # AUCint.inf.pred
+  d_interval <- data.frame(start = 0, end = 4, aucint.inf.pred = TRUE)
+  d_conctime <- data.frame(conc = c(0, 0, 0, 0), time = 0:3)
+  o_conc <- PKNCAconc(d_conctime, conc~time)
+  o_data <- PKNCAdata(o_conc, intervals = d_interval)
+  suppressWarnings(suppressMessages(
+    o_nca <- pk.nca(o_data)
+  ))
+  expect_equal(
+    as.data.frame(o_nca)$PPORRES,
+    rep(NA_real_, 11)
   )
 })
