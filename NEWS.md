@@ -29,6 +29,8 @@ the dosing including dose amount and route.
   default.
 * Concentration extrapolation with `extrapolate.conc()` using the "AUCall"
   method now has decreasing instead of increasing concentrations (#249).
+* The aucint.inf.obs parameter when calculated with all zero concentrations
+  returns zero (#253).
 
 ## Breaking changes
 
@@ -46,6 +48,8 @@ the dosing including dose amount and route.
 * `check.conc.time()` is defunct (it was never intended to be an external
   function).  It has been replaced by `assert_conc()`, `assert_time()` and
   `assert_conc_time()`.
+* The clast.obs parameter is now zero when all concentrations are zero (see #253
+  for part of the reason).
 
 ## Changes under the hood
 

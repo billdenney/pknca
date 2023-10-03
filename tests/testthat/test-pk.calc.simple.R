@@ -152,11 +152,11 @@ test_that("pk.calc.clast.obs", {
     v1 <- pk.calc.clast.obs(c1, t1),
     class = "pknca_conc_all_missing"
   )
-  expect_equal(v1, NA)
+  expect_equal(v1, NA_real_)
 
   c1 <- rep(0, 4)
   t1 <- c(0, 1, 2, 3)
-  expect_equal(pk.calc.clast.obs(c1, t1), NA)
+  expect_equal(pk.calc.clast.obs(c1, t1), 0)
 })
 
 test_that("pk.calc.thalf.eff", {

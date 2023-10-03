@@ -367,3 +367,14 @@ test_that("aucint respects the check argument", {
     pk.calc.aucint.last(conc = baddata$conc, time = baddata$time, start = 0, end = Inf, check = FALSE)
   )
 })
+
+test_that("aucint works for all zero concentrations with interpolated or extrapolated concentrations", {
+  expect_equal(
+    pk.calc.aucint(conc = c(0, 0, 0, 0), time = 0:3, interval = c(0, 4)),
+    structure(0, exclude = "DO NOT EXCLUDE")
+  )
+  expect_equal(
+    pk.calc.aucint(conc = c(0, 0, 0, 0), time = 0:3, interval = c(0, 2.5)),
+    structure(0, exclude = "DO NOT EXCLUDE")
+  )
+})
