@@ -608,3 +608,38 @@ test_that("Unexpected interval columns do not cause an error (#238)", {
   o_data <- PKNCAdata(o_conc, o_dose, intervals = d_intervals)
   expect_s3_class(pk.nca(o_data), "PKNCAresults")
 })
+
+test_that("aucint works within pk.calc.all for all zero concentrations with interpolated or extrapolated concentrations", {
+  # AUCint.inf.obs
+  d_interval <- data.frame(start = 0, end = 4, aucint.inf.obs = TRUE)
+  d_conctime <- data.frame(conc = c(0, 0, 0, 0), time = 0:3)
+  o_conc <- PKNCAconc(d_conctime, conc~time)
+  o_data <- PKNCAdata(o_conc, intervals = d_interval)
+  suppressWarnings(suppressMessages(
+    o_nca <- pk.nca(o_data)
+  ))
+  results <- setNames(as.data.frame(o_nca)$PPORRES, nm = as.data.frame(o_nca)$PPTESTCD)
+  zero_names <- c("clast.obs", "aucint.inf.obs")
+  na_names <- setdiff(names(results), zero_names)
+  expect_equal(
+    results[zero_names],
+    setNames(rep(0, length(zero_names)), zero_names)
+  )
+  expect_equal(
+    results[na_names],
+    setNames(rep(NA_real_, length(na_names)), na_names)
+  )
+
+  # AUCint.inf.pred
+  d_interval <- data.frame(start = 0, end = 4, aucint.inf.pred = TRUE)
+  d_conctime <- data.frame(conc = c(0, 0, 0, 0), time = 0:3)
+  o_conc <- PKNCAconc(d_conctime, conc~time)
+  o_data <- PKNCAdata(o_conc, intervals = d_interval)
+  suppressWarnings(suppressMessages(
+    o_nca <- pk.nca(o_data)
+  ))
+  expect_equal(
+    as.data.frame(o_nca)$PPORRES,
+    rep(NA_real_, 11)
+  )
+})

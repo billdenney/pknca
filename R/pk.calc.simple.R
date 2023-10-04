@@ -200,8 +200,10 @@ PKNCA.set.summary(
 #' Determine the last observed concentration above the limit of
 #' quantification (LOQ).
 #'
-#' If Tlast is NA (due to no non-missing above LOQ measurements), this
-#' will return NA.
+#' If all concentrations are missing, `NA_real_` is returned.  If all
+#' concentrations are zero (below the limit of quantification) or missing, zero
+#' is returned.  If Tlast is NA (due to no non-missing above LOQ measurements),
+#' this will return `NA_real_`.
 #'
 #' @inheritParams assert_conc_time
 #' @param check Run \code{\link{assert_conc_time}}?
@@ -212,11 +214,17 @@ pk.calc.clast.obs <- function(conc, time, check=TRUE) {
   if (check) {
     assert_conc_time(conc = conc, time = time)
   }
-  tlast <- pk.calc.tlast(conc, time, check = FALSE)
-  if (!is.na(tlast)) {
-    conc[time %in% tlast]
+  if (all(is.na(conc))) {
+    NA_real_
+  } else if (all(conc %in% c(0, NA))) {
+    0
   } else {
-    NA
+    tlast <- pk.calc.tlast(conc, time, check = FALSE)
+    if (!is.na(tlast)) {
+      conc[time %in% tlast]
+    } else {
+      NA_real_
+    }
   }
 }
 # Add the column to the interval specification
