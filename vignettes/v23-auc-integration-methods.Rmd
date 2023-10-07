@@ -10,6 +10,7 @@ vignette: >
 ```{r knitr-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  warning = FALSE,
   comment = "#>"
 )
 ```
@@ -142,7 +143,7 @@ examples <-
   )
 ```
 
-```{r example-figures, fig.cap = caption}
+```{r example-figures, fig.cap = caption, echo = FALSE}
 caption <- character()
 for (current_example_nm in names(examples)) {
   for (current_method in auc_methods) {
@@ -202,14 +203,23 @@ for (current_example_nm in names(examples)) {
           auc.type = current_type,
           conc.blq = "keep"
         )
-      current_example_before_tlast <- current_example[current_example$time <= tlast, ]
-      current_example_before_tlast$time_after <- c(current_example_before_tlast$time[-1], NA)
-      current_example_after_tlast <- current_example[current_example$time >= tlast, ][1,]
-      current_example_after_tlast$method <- current_example$method[nrow(current_example)]
+      current_example$time_after <- c(current_example$time[-1], Inf)
+      if (current_example$method[nrow(current_example)] == "zero") {
+        current_example_plot <- current_example
+      } else {
+        current_example_before_tlast <- current_example[current_example$time < tlast, ]
+        current_example_after_tlast <- current_example[current_example$time >= tlast, ][1, ]
+        current_example_after_tlast$method <- current_example$method[nrow(current_example)]
+        current_example_after_tlast$time_after <- Inf
+        current_example_plot <-
+          dplyr::bind_rows(
+            current_example_before_tlast,
+            current_example_after_tlast
+          )
+      }
       print(
         ggplot(current_example_points, aes(x = time, y = conc)) +
-          geom_rect(data = current_example_before_tlast, aes(xmin = time, xmax = time_after, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
-          geom_rect(data = current_example_after_tlast, aes(xmin = time, xmax = Inf, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
+          geom_rect(data = current_example_plot, aes(xmin = time, xmax = time_after, ymin = -Inf, ymax = Inf, fill = method), alpha = 0.2) +
           geom_point(aes(shape = BLQ)) +
           geom_line(data = current_example_interpolate) +
           scale_colour_hue(drop = FALSE)
