@@ -220,82 +220,6 @@ extrapolates using the equation</p>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">caption</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">current_example_nm</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">examples</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">current_method</span> <span class="kw">in</span> <span class="va">auc_methods</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">current_type</span> <span class="kw">in</span> <span class="va">auc_types</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">caption</span> <span class="op">&lt;-</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>          <span class="va">caption</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
-<span>            <span class="st">"Example PK where %s; %s interpolation method; %s extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)"</span>,</span>
-<span>            <span class="va">current_example_nm</span>, <span class="va">current_method</span>, <span class="va">current_type</span></span>
-<span>          <span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="va">current_example</span> <span class="op">&lt;-</span> <span class="va">examples</span><span class="op">[[</span><span class="va">current_example_nm</span><span class="op">]</span><span class="op">]</span></span>
-<span></span>
-<span>      <span class="co"># Handle BLQ</span></span>
-<span>      <span class="va">current_example_noblq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean.conc.blq.html">clean.conc.blq</a></span><span class="op">(</span>conc <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">conc</span>, time <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">time</span><span class="op">)</span></span>
-<span>      <span class="va">current_example_noblq</span><span class="op">$</span><span class="va">BLQ</span> <span class="op">&lt;-</span> <span class="st">"Above LLOQ"</span></span>
-<span>      <span class="va">current_example_points</span> <span class="op">&lt;-</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">current_example</span>, <span class="va">current_example_noblq</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>      <span class="va">current_example_points</span><span class="op">$</span><span class="va">BLQ</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">current_example_points</span><span class="op">$</span><span class="va">BLQ</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Below LLOQ"</span></span>
-<span>      </span>
-<span>      <span class="co"># Calculate some NCA parameters required for interpolation and extrapolation</span></span>
-<span>      <span class="va">tlast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.calc.tlast.html">pk.calc.tlast</a></span><span class="op">(</span>conc <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">conc</span>, time <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">time</span><span class="op">)</span></span>
-<span>      <span class="va">half_life</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.calc.half.life.html">pk.calc.half.life</a></span><span class="op">(</span>conc <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">conc</span>, time <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">time</span><span class="op">)</span></span>
-<span>      </span>
-<span>      <span class="co"># Define the methods used for interpolation and extrapolation</span></span>
-<span>      <span class="va">current_example</span><span class="op">$</span><span class="va">method</span> <span class="op">&lt;-</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
-<span>          <span class="fu">PKNCA</span><span class="fu">:::</span><span class="fu"><a href="../reference/choose_interval_method.html">choose_interval_method</a></span><span class="op">(</span></span>
-<span>            conc <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">conc</span>,</span>
-<span>            time <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">time</span>,</span>
-<span>            tlast <span class="op">=</span> <span class="va">tlast</span>,</span>
-<span>            method <span class="op">=</span> <span class="va">current_method</span>,</span>
-<span>            auc.type <span class="op">=</span> <span class="va">current_type</span>,</span>
-<span>            options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>          levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"zero"</span>, <span class="st">"linear"</span>, <span class="st">"log"</span>, <span class="st">"extrap_log"</span><span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">current_example</span><span class="op">$</span><span class="va">method</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>      <span class="va">current_example_interpolate</span> <span class="op">&lt;-</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>          time <span class="op">=</span></span>
-<span>            <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>              <span class="co"># make lines almost directly down at the transition after Tlast to</span></span>
-<span>              <span class="co"># zero, where applicable</span></span>
-<span>              <span class="va">current_example</span><span class="op">$</span><span class="va">time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">)</span>,</span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">current_example</span><span class="op">$</span><span class="va">time</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">current_example</span><span class="op">$</span><span class="va">time</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="va">current_example</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, length.out <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span>            <span class="op">)</span><span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="va">current_example_interpolate</span><span class="op">$</span><span class="va">conc</span> <span class="op">&lt;-</span></span>
-<span>        <span class="fu"><a href="../reference/interp.extrap.conc.html">interp.extrap.conc</a></span><span class="op">(</span></span>
-<span>          conc <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">conc</span>,</span>
-<span>          time <span class="op">=</span> <span class="va">current_example</span><span class="op">$</span><span class="va">time</span>,</span>
-<span>          time.out <span class="op">=</span> <span class="va">current_example_interpolate</span><span class="op">$</span><span class="va">time</span>,</span>
-<span>          lambda.z <span class="op">=</span> <span class="va">half_life</span><span class="op">$</span><span class="va">lambda.z</span>,</span>
-<span>          method <span class="op">=</span> <span class="va">current_method</span>,</span>
-<span>          auc.type <span class="op">=</span> <span class="va">current_type</span>,</span>
-<span>          conc.blq <span class="op">=</span> <span class="st">"keep"</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="va">current_example_before_tlast</span> <span class="op">&lt;-</span> <span class="va">current_example</span><span class="op">[</span><span class="va">current_example</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;=</span> <span class="va">tlast</span>, <span class="op">]</span></span>
-<span>      <span class="va">current_example_before_tlast</span><span class="op">$</span><span class="va">time_after</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">current_example_before_tlast</span><span class="op">$</span><span class="va">time</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="cn">NA</span><span class="op">)</span></span>
-<span>      <span class="va">current_example_after_tlast</span> <span class="op">&lt;-</span> <span class="va">current_example</span><span class="op">[</span><span class="va">current_example</span><span class="op">$</span><span class="va">time</span> <span class="op">&gt;=</span> <span class="va">tlast</span>, <span class="op">]</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span>      <span class="va">current_example_after_tlast</span><span class="op">$</span><span class="va">method</span> <span class="op">&lt;-</span> <span class="va">current_example</span><span class="op">$</span><span class="va">method</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">current_example</span><span class="op">)</span><span class="op">]</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">current_example_points</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">conc</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">current_example_before_tlast</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">time</span>, xmax <span class="op">=</span> <span class="va">time_after</span>, ymin <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>, ymax <span class="op">=</span> <span class="cn">Inf</span>, fill <span class="op">=</span> <span class="va">method</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">current_example_after_tlast</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">time</span>, xmax <span class="op">=</span> <span class="cn">Inf</span>, ymin <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>, ymax <span class="op">=</span> <span class="cn">Inf</span>, fill <span class="op">=</span> <span class="va">method</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="va">BLQ</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">current_example_interpolate</span><span class="op">)</span> <span class="op">+</span></span>
-<span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html" class="external-link">scale_colour_hue</a></span><span class="op">(</span>drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre></div>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-1.png" alt="Example PK where Clast is above the LLOQ; lin up/log down interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; lin up/log down interpolation
@@ -303,7 +227,6 @@ method; AUCinf extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-2.png" alt="Example PK where Clast is above the LLOQ; lin up/log down interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; lin up/log down interpolation
@@ -311,7 +234,6 @@ method; AUClast extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-3.png" alt="Example PK where Clast is above the LLOQ; lin up/log down interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; lin up/log down interpolation
@@ -319,7 +241,6 @@ method; AUCall extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-4.png" alt="Example PK where Clast is above the LLOQ; linear interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; linear interpolation method;
@@ -327,7 +248,6 @@ AUCinf extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-5.png" alt="Example PK where Clast is above the LLOQ; linear interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; linear interpolation method;
@@ -335,7 +255,6 @@ AUClast extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-6.png" alt="Example PK where Clast is above the LLOQ; linear interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; linear interpolation method;
@@ -343,7 +262,6 @@ AUCall extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-7.png" alt="Example PK where Clast is above the LLOQ; lin-log interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; lin-log interpolation method;
@@ -351,7 +269,6 @@ AUCinf extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-8.png" alt="Example PK where Clast is above the LLOQ; lin-log interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; lin-log interpolation method;
@@ -359,7 +276,6 @@ AUClast extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-9.png" alt="Example PK where Clast is above the LLOQ; lin-log interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is above the LLOQ; lin-log interpolation method;
@@ -367,7 +283,6 @@ AUCall extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-10.png" alt="Example PK where Clast is below the LLOQ; lin up/log down interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; lin up/log down interpolation
@@ -375,7 +290,6 @@ method; AUCinf extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-11.png" alt="Example PK where Clast is below the LLOQ; lin up/log down interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; lin up/log down interpolation
@@ -383,7 +297,6 @@ method; AUClast extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-12.png" alt="Example PK where Clast is below the LLOQ; lin up/log down interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; lin up/log down interpolation
@@ -391,7 +304,6 @@ method; AUCall extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-13.png" alt="Example PK where Clast is below the LLOQ; linear interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; linear interpolation method;
@@ -399,7 +311,6 @@ AUCinf extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-14.png" alt="Example PK where Clast is below the LLOQ; linear interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; linear interpolation method;
@@ -407,7 +318,6 @@ AUClast extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-15.png" alt="Example PK where Clast is below the LLOQ; linear interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; linear interpolation method;
@@ -415,7 +325,6 @@ AUCall extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-16.png" alt="Example PK where Clast is below the LLOQ; lin-log interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; lin-log interpolation method;
@@ -423,7 +332,6 @@ AUCinf extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-17.png" alt="Example PK where Clast is below the LLOQ; lin-log interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; lin-log interpolation method;
@@ -431,7 +339,6 @@ AUClast extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-18.png" alt="Example PK where Clast is below the LLOQ; lin-log interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Clast is below the LLOQ; lin-log interpolation method;
@@ -439,7 +346,6 @@ AUCall extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-19.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; lin up/log down interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -448,7 +354,6 @@ method; AUCinf extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-20.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; lin up/log down interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -457,7 +362,6 @@ method; AUClast extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-21.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; lin up/log down interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -466,7 +370,6 @@ method; AUCall extrapolation method (AUC type); and keeping all BLQ
 values (not default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-22.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; linear interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -475,7 +378,6 @@ AUCinf extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-23.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; linear interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -484,7 +386,6 @@ AUClast extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-24.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; linear interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -493,7 +394,6 @@ AUCall extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-25.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; lin-log interpolation method; AUCinf extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -502,7 +402,6 @@ AUCinf extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-26.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; lin-log interpolation method; AUClast extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
@@ -511,7 +410,6 @@ AUClast extrapolation method (AUC type); and keeping all BLQ values (not
 default BLQ handling)
 </p>
 </div>
-<pre><code><span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_rect()`).</span></span></code></pre>
 <div class="figure">
 <img src="v23-auc-integration-methods_files/figure-html/example-figures-27.png" alt="Example PK where Concentrations increase and decrease after T~max~ with zeros in the middle; lin-log interpolation method; AUCall extrapolation method (AUC type); and keeping all BLQ values (not default BLQ handling)" width="700"><p class="caption">
 Example PK where Concentrations increase and decrease after
