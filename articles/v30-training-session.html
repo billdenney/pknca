@@ -91,7 +91,7 @@
                         <h4 data-toc-skip class="author">William
 Denney</h4>
             
-            <h4 data-toc-skip class="date">19 November 2021</h4>
+            <h4 data-toc-skip class="date">18 October 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v30-training-session.Rmd" class="external-link"><code>vignettes/v30-training-session.Rmd</code></a></small>
       <div class="d-none name"><code>v30-training-session.Rmd</code></div>
@@ -261,8 +261,8 @@ Denney</h4>
 <div class="section level2">
 <h2 id="introduction-to-pknca-and-basics-of-its-use">Introduction to PKNCA and Basics of Its Use<a class="anchor" aria-label="anchor" href="#introduction-to-pknca-and-basics-of-its-use"></a>
 </h2>
-<p>Creation of these materials were supported by funding from the Metrum
-Research Group.</p>
+<p>Creation of these materials were partially supported by funding from
+the Metrum Research Group.</p>
 <div class="section level3">
 <h3 class="build smaller" id="introduction-to-pknca">Introduction to PKNCA<a class="anchor" aria-label="anchor" href="#introduction-to-pknca"></a>
 </h3>
@@ -355,7 +355,7 @@ output)</li>
 <div class="section level3">
 <h3 id="dataset-basics-minimum-data">Dataset Basics: Minimum data<a class="anchor" aria-label="anchor" href="#dataset-basics-minimum-data"></a>
 </h3>
-<p>PKNCA requires at minimum concentration, time, and what you want to
+<p>PKNCA requires at least the concentration, time, and what you want to
 calculate.</p>
 <p><img src="v30-training-session_files/figure-html/unnamed-chunk-1-1.png" width="576"></p>
 </div>
@@ -618,7 +618,8 @@ for each group.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Subject</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span>, data<span class="op">=</span><span class="va">d_conc</span><span class="op">)</span></span>
 <span><span class="co"># Setup intervals for calculation</span></span>
-<span><span class="va">d_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fl">24</span>, cmax<span class="op">=</span><span class="cn">TRUE</span>, tmax<span class="op">=</span><span class="cn">TRUE</span>, auclast<span class="op">=</span><span class="cn">TRUE</span>, aucint.inf.obs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">d_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fl">24</span>, cmax<span class="op">=</span><span class="cn">TRUE</span>, tmax<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                          auclast<span class="op">=</span><span class="cn">TRUE</span>, aucint.inf.obs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># Combine concentration and dose</span></span>
 <span><span class="va">o_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span>, intervals<span class="op">=</span><span class="va">d_intervals</span><span class="op">)</span></span>
 <span><span class="co"># Calculate the results (suppressMessages() hides a message that isn't needed now)</span></span>
@@ -855,6 +856,14 @@ mean and standard deviation</caption>
 <h3 class="smaller" id="how-do-i-do-a-simple-calculation-get-individual-results">How do I do a simple calculation? Get individual
 results<a class="anchor" aria-label="anchor" href="#how-do-i-do-a-simple-calculation-get-individual-results"></a>
 </h3>
+<p>Use <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> to get the individual NCA parameter
+results.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Look at individual results</span></span>
+<span><span class="fu">pander</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pander/man/pander.html" class="external-link">pander</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">o_result</span><span class="op">)</span>,</span>
+<span>  n<span class="op">=</span><span class="fl">3</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table style="width:62%;" class="table">
 <colgroup>
 <col width="11%">
@@ -1114,7 +1123,7 @@ aucinf.obs</li>
 <div class="section level3">
 <h3 id="prepare-your-data-for-calculation">Prepare your data for calculation<a class="anchor" aria-label="anchor" href="#prepare-your-data-for-calculation"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_conc</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
@@ -1134,7 +1143,7 @@ aucinf.obs</li>
 <div class="section level3">
 <h3 class="build" id="calculate-without-dosing-data">Calculate without dosing data<a class="anchor" aria-label="anchor" href="#calculate-without-dosing-data"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Treatment</span><span class="op">+</span><span class="va">Subject</span>, data<span class="op">=</span><span class="va">d_conc</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="va">o_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span><span class="op">)</span></span>
@@ -1147,9 +1156,10 @@ aucinf.obs</li>
 <div class="section level3">
 <h3 id="calculate-without-dosing-data-try-2">Calculate without dosing data, try 2<a class="anchor" aria-label="anchor" href="#calculate-without-dosing-data-try-2"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Treatment</span><span class="op">+</span><span class="va">Subject</span>, data<span class="op">=</span><span class="va">d_conc</span><span class="op">)</span></span>
-<span><span class="va">d_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>, cmax<span class="op">=</span><span class="cn">TRUE</span>, tmax<span class="op">=</span><span class="cn">TRUE</span>, half.life<span class="op">=</span><span class="cn">TRUE</span>, aucinf.obs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">d_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>, cmax<span class="op">=</span><span class="cn">TRUE</span>, tmax<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>                          half.life<span class="op">=</span><span class="cn">TRUE</span>, aucinf.obs<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">o_data_manual_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span>, intervals<span class="op">=</span><span class="va">d_intervals</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data_manual_intervals</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## No dose information provided, calculations requiring dose will return NA.</span></span></code></pre>
@@ -1162,7 +1172,7 @@ aucinf.obs</li>
 <div class="section level3">
 <h3 id="dosing-data-helps-with-interval-setup">Dosing data helps with interval setup<a class="anchor" aria-label="anchor" href="#dosing-data-helps-with-interval-setup"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Treatment</span><span class="op">+</span><span class="va">Subject</span>, data<span class="op">=</span><span class="va">d_conc</span><span class="op">)</span></span>
 <span><span class="va">o_dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="va">Dose</span><span class="op">~</span><span class="va">dose_time</span><span class="op">|</span><span class="va">Treatment</span><span class="op">+</span><span class="va">Subject</span>, data<span class="op">=</span><span class="va">d_dose</span><span class="op">)</span></span>
 <span><span class="va">o_data_auto_intervals</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span>, <span class="va">o_dose</span><span class="op">)</span></span>
@@ -1253,7 +1263,7 @@ whale and a beluga whale. (DOI: 10.1638/03-078)</p>
 <div class="section level3">
 <h3 id="steady-state-intramuscular-administration-1">Steady-state intramuscular administration<a class="anchor" aria-label="anchor" href="#steady-state-intramuscular-administration-1"></a>
 </h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">d_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"c:/tmp/whale_conc.csv"</span><span class="op">)</span></span>
@@ -1299,23 +1309,23 @@ string (<code>""</code>) to indicate “no” or any other text to indicate
 <code><a href="../reference/PKNCAdose.html">PKNCAdose()</a></code>.</p>
 <p>When you use <code>exclude</code>, this is how you give your data to
 PKNCA:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_before_exclude</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>    time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span>,</span>
-<span>    conc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span><span class="op">)</span>,</span>
-<span>    not_this<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"Not this"</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span>,</span>
+<span>  conc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span><span class="op">)</span>,</span>
+<span>  not_this<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"Not this"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span> <span class="op">)</span></span>
 <span><span class="va">o_conc</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span></span>
-<span>    data<span class="op">=</span><span class="va">d_before_exclude</span>,</span>
-<span>    <span class="va">conc</span><span class="op">~</span><span class="va">time</span>,</span>
-<span>    exclude<span class="op">=</span><span class="st">"not_this"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span></span>
+<span>  data<span class="op">=</span><span class="va">d_before_exclude</span>,</span>
+<span>  <span class="va">conc</span><span class="op">~</span><span class="va">time</span>,</span>
+<span>  exclude<span class="op">=</span><span class="st">"not_this"</span></span>
+<span> <span class="op">)</span></span></code></pre></div>
 <p class="forceBreak">
 </p>
 <p>And, this is how PKNCA thinks about it:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pander</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pander/man/pander.html" class="external-link">pander</a></span><span class="op">(</span></span>
 <span>  <span class="va">d_before_exclude</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">not_this</span><span class="op">)</span><span class="op">)</span></span>
@@ -1358,7 +1368,7 @@ PKNCA:</p>
 <div class="section level3">
 <h3 id="exclude-data-points-overall-1">Exclude data points overall<a class="anchor" aria-label="anchor" href="#exclude-data-points-overall-1"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">d_before_exclude</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span>, exclude<span class="op">=</span><span class="st">"not_this"</span><span class="op">)</span></span></code></pre></div>
 <div class="imessage">
 <div class="yours messages">
@@ -1437,7 +1447,7 @@ included.</p>
 <div class="section level3">
 <h3 id="urine-calculations">Urine calculations<a class="anchor" aria-label="anchor" href="#urine-calculations"></a>
 </h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_urine</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    conc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
@@ -1479,7 +1489,7 @@ interval and therefore to be omitted from calculations.</li>
 <p>If you don’t need a parameter, PKNCA won’t calculate it.</p>
 <p>For example, if all you need is <code>cmax</code>, all you’ll get is
 <code>cmax</code>.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>conc<span class="op">=</span><span class="fl">2</span><span class="op">^</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, time<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="va">o_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span>, intervals<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="cn">Inf</span>, cmax<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">o_nca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data</span><span class="op">)</span><span class="op">)</span></span>
@@ -1495,7 +1505,7 @@ not every possible parameter (2 of 2)<a class="anchor" aria-label="anchor" href=
 </h3>
 <p>If you need AUC<sub>0-</sub>, PKNCA will calculate other required
 parameters behind the scenes.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_data</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span></span>
 <span>    <span class="va">o_conc</span>,</span>
@@ -1508,7 +1518,7 @@ parameters behind the scenes.</p>
 <span><span class="va">o_nca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p class="forceBreak">
 </p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 12 × 5</span></span></span>
 <span><span class="co">##    start   end PPTESTCD            PPORRES exclude</span></span>
@@ -1563,7 +1573,7 @@ at 24 hours but the prior sample is around 12 and the next is around
 </h3>
 <p>A simple way to exclude a value from results is to convert the
 results to a data.frame and then drop the rows you don’t want:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PPTESTCD</span> <span class="op">!=</span> <span class="st">"half.life"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 11 × 5</span></span></span>
@@ -1587,7 +1597,7 @@ results to a data.frame and then drop the rows you don’t want:</p>
 </h3>
 <p>When you use the <code><a href="../reference/exclude.html">exclude()</a></code> function, parameters that are
 dependent on an excluded parameter will be excluded.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_nca_excluded</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">o_nca</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/exclude.html">exclude</a></span><span class="op">(</span>FUN<span class="op">=</span><span class="fu"><a href="../reference/exclude_nca.html">exclude_nca_span.ratio</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
@@ -1613,13 +1623,13 @@ dependent on an excluded parameter will be excluded.</p>
 </h3>
 <p>Now, everything dependent on the half-life is excluded in
 summaries.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end aucinf.obs</span></span>
 <span><span class="co">##      0 Inf 0.721 [NC]</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Caption: aucinf.obs: geometric mean and geometric coefficient of variation</span></span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca_excluded</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end aucinf.obs</span></span>
 <span><span class="co">##      0 Inf         NC</span></span>
@@ -1635,7 +1645,7 @@ summaries.</p>
 </h3>
 <p>Superposition assumes linear kinetics and can convert a single-dose
 profile to multi-dose.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subject 2 is selected for a BLQ time=0 concentration</span></span>
 <span><span class="va">d_prep</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -1658,7 +1668,7 @@ profile to multi-dose.</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p class="forceBreak">
 </p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Want the profile for the first two doses</span></span>
 <span><span class="co"># together?</span></span>
 <span><span class="va">d_first_two</span> <span class="op">&lt;-</span></span>
@@ -1679,7 +1689,7 @@ a subject is at steady-state. PKNCA can calculate tss using trough
 concentrations either with a monoexponential increase toward
 steady-state (preferred) or a linear trend back from the final
 point.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dose_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">96</span><span class="op">-</span><span class="fl">1</span>, by<span class="op">=</span><span class="fl">6</span><span class="op">)</span></span>
 <span><span class="va">d_multidose</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/superposition.html">superposition</a></span><span class="op">(</span></span>
@@ -1707,7 +1717,7 @@ tricks that can help…<a class="anchor" aria-label="anchor" href="#graphics-are
 </h3>
 <p>Generate all individual profiles using the groups that you
 defined:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span><span class="va">conc</span><span class="op">~</span><span class="va">Time</span><span class="op">|</span><span class="va">Subject</span>, data<span class="op">=</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span><span class="op">)</span></span>
 <span><span class="va">d_plot</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/grouped_df.html" class="external-link">grouped_df</a></span><span class="op">(</span>data<span class="op">=</span><span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span>, vars<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/getGroups.html" class="external-link">getGroups</a></span><span class="op">(</span><span class="va">o_conc</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -1715,11 +1725,7 @@ defined:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    figure<span class="op">=</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://purrr.tidyverse.org/reference/pmap.html" class="external-link">pmap</a></span><span class="op">(</span></span>
-<span>          .l<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">)</span>,</span>
-<span>          .f<span class="op">=</span><span class="va">ggplot</span>,</span>
-<span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time</span>, y<span class="op">=</span><span class="va">conc</span><span class="op">)</span></span>
-<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://purrr.tidyverse.org/reference/pmap.html" class="external-link">pmap</a></span><span class="op">(</span>.l<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span><span class="op">)</span>, .f<span class="op">=</span><span class="va">ggplot</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time</span>, y<span class="op">=</span><span class="va">conc</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>        FUN<span class="op">=</span><span class="st">"+"</span>,</span>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
@@ -1732,7 +1738,7 @@ defined:</p>
 <p>Make summary tables using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function on the
 NCA results, and use <code><a href="https://rdrr.io/pkg/pander/man/pander.html" class="external-link">pander::pander()</a></code> to make a pretty
 table with captions.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pander</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pander/man/pander.html" class="external-link">pander</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table style="width:38%;" class="table">
 <caption>aucinf.obs: geometric mean and geometric coefficient of
@@ -1755,17 +1761,17 @@ variation</caption>
 </table>
 <p>Make an NCA data listing using the <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code>
 function on the NCA results.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pander</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pander/man/pander.html" class="external-link">pander</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
-</h2>
 <div class="section level3">
 <h3 id="units-especially-clearance">Units (especially clearance)<a class="anchor" aria-label="anchor" href="#units-especially-clearance"></a>
 </h3>
-<p>PKNCA does not (yet) support units. The most common place where that
+<p>PKNCA supports units with the <code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code>
+function. See the <a href="http://billdenney.github.io/pknca/articles/v07-unit-conversion.html">Unit
+Assignment and Conversion with PKNCA</a> vignette for more
+information.</p>
+<p>When units are not specified, The most common place where that
 becomes an issue is with clearance which ends up having unusual units
 like “mg/(hr*ng/mL)” (with units of mg for dosing, hr for time, and
 ng/mL for concentration).</p>
@@ -1785,23 +1791,34 @@ urinary PK calculations.</li>
 <div class="section level3">
 <h3 id="iv-bolus-auc-need-to-add-c0">IV bolus AUC (need to add C0)<a class="anchor" aria-label="anchor" href="#iv-bolus-auc-need-to-add-c0"></a>
 </h3>
-<p>PKNCA does not have an IV-aware AUC calculation (yet). So, C0 must be
-separately imputed.</p>
+<p>Due to the need for back-extrapolation to C<sub>0</sub>, AUCs for IV
+bolus dosing need to use different AUC parameters such as
+<code>"aucivlast"</code> instead of <code>"auclast"</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="combined-multi-subject-data-e-g--sparse-animal-sampling">Combined, multi-subject data (e.g. sparse animal sampling)<a class="anchor" aria-label="anchor" href="#combined-multi-subject-data-e-g--sparse-animal-sampling"></a>
 </h3>
-<p>Averaging the concentration at a time point will allow for the mean
-sparse sampling result. But general sparse sampling methods are not
-(yet) implemented.</p>
+<p>Sparse NCA calculations are supported in PKNCA. See the <a href="http://billdenney.github.io/pknca/articles/v04-sparse.html">Sparse
+NCA Calculations</a> vignette for more information.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
+</h2>
 <div class="section level3">
 <h3 id="secondary-parameters-e-g--bioavailability-and-renal-clearance">Secondary parameters (e.g. bioavailability and renal clearance)<a class="anchor" aria-label="anchor" href="#secondary-parameters-e-g--bioavailability-and-renal-clearance"></a>
 </h3>
 <p>PKNCA does not (yet) have the ability to calculate secondary PK
 parameters that require looking at more than one group/interval at a
-time. (If you have good ideas for how to define the intervals for that,
-please let me know.)</p>
+time.</p>
+</div>
+<div class="section level3">
+<h3 id="validation-of-pknca">Validation of PKNCA<a class="anchor" aria-label="anchor" href="#validation-of-pknca"></a>
+</h3>
+<p>PKNCA has an extensive testing and validation suite built-in. To run
+the testing and validation suite of tests with a full report generated,
+see the <a href="http://billdenney.github.io/pknca/articles/v60-PKNCA-validation.html">PKNCA
+Validation</a> vignette.</p>
 </div>
 </div>
 <div class="section level2">
@@ -1811,7 +1828,7 @@ please let me know.)</p>
 <h3 class="smaller" id="single--and-multiple-dose-single-analyte-setup-the-underlying-datasets">Single- and Multiple-dose, single analyte: Setup the
 underlying datasets<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-setup-the-underlying-datasets"></a>
 </h3>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_conc</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">datasets</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/datasets/Theoph.html" class="external-link">Theoph</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>time<span class="op">=</span><span class="va">Time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -1840,7 +1857,7 @@ underlying datasets<a class="anchor" aria-label="anchor" href="#single--and-mult
 <h3 class="smaller" id="single--and-multiple-dose-single-analyte-setup-the-concentration-and-dose-datasets">Single- and Multiple-dose, single analyte: Setup the
 concentration and dose datasets<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-setup-the-concentration-and-dose-datasets"></a>
 </h3>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_single_multi_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">d_singledose_single_analyte</span>, <span class="va">d_multidose_single_analyte</span><span class="op">)</span></span>
 <span><span class="va">d_single_multi_dose</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">d_single_multi_conc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -1853,7 +1870,7 @@ concentration and dose datasets<a class="anchor" aria-label="anchor" href="#sing
 <h3 class="smaller" id="single--and-multiple-dose-single-analyte-perform-basic-analysis">Single- and Multiple-dose, single analyte: Perform
 basic analysis<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-perform-basic-analysis"></a>
 </h3>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAconc.html">PKNCAconc</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">d_single_multi_conc</span>, <span class="va">conc</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">Study_Part</span><span class="op">+</span><span class="va">Subject</span><span class="op">)</span></span>
 <span><span class="va">o_dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">d_single_multi_dose</span>, <span class="va">Dose</span><span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">Study_Part</span><span class="op">+</span><span class="va">Subject</span><span class="op">)</span></span>
 <span><span class="va">o_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">o_conc</span>, <span class="va">o_dose</span><span class="op">)</span></span>
@@ -1948,14 +1965,14 @@ basic analysis<a class="anchor" aria-label="anchor" href="#single--and-multiple-
 <span><span class="co">## 2   FALSE        FALSE         FALSE  FALSE      FALSE     Single</span></span>
 <span><span class="co">## 3   FALSE        FALSE         FALSE  FALSE      FALSE   Multiple</span></span>
 <span><span class="co">## 4   FALSE        FALSE         FALSE  FALSE      FALSE   Multiple</span></span></code></pre>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o_nca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.nca.html">pk.nca</a></span><span class="op">(</span><span class="va">o_data</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 class="smaller" id="single--and-multiple-dose-single-analyte-use-intervals-for-fewer-subjects">Single- and Multiple-dose, single analyte: Use
 intervals for fewer subjects<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-use-intervals-for-fewer-subjects"></a>
 </h3>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_intervals</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    start<span class="op">=</span><span class="fl">0</span>,</span>
@@ -1988,7 +2005,7 @@ intervals for fewer subjects<a class="anchor" aria-label="anchor" href="#single-
 <pre><code><span><span class="co">## Warning: Study_Part=Multiple; Subject=10: No intervals for data</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Study_Part=Multiple; Subject=11: No intervals for data</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Study_Part=Multiple; Subject=12: No intervals for data</span></span></code></pre>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end Study_Part N aucinf.obs</span></span>
 <span><span class="co">##      0  24     Single 2 144 [69.0]</span></span>
@@ -1999,7 +2016,7 @@ intervals for fewer subjects<a class="anchor" aria-label="anchor" href="#single-
 <h3 class="smaller" id="single--and-multiple-dose-single-analyte-use-custom-intervals-per-subjects">Single- and Multiple-dose, single analyte: Use
 custom intervals per subjects<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-single-analyte-use-custom-intervals-per-subjects"></a>
 </h3>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Find the time closest to 12 hours</span></span>
 <span><span class="va">d_intervals_prep</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">d_single_multi_conc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -2031,7 +2048,7 @@ custom intervals per subjects<a class="anchor" aria-label="anchor" href="#single
 <pre><code><span><span class="co">## Warning: Study_Part=Multiple; Subject=10: No intervals for data</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Study_Part=Multiple; Subject=11: No intervals for data</span></span></code></pre>
 <pre><code><span><span class="co">## Warning: Study_Part=Multiple; Subject=12: No intervals for data</span></span></code></pre>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span>, drop.group<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject"</span>, <span class="st">"end"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in summary.PKNCAresults(o_nca, drop.group = c("Subject", "end")):</span></span>
 <span><span class="co">## drop.group including start or end may result in incorrect groupings (such as</span></span>
@@ -2044,7 +2061,7 @@ custom intervals per subjects<a class="anchor" aria-label="anchor" href="#single
 <div class="section level3">
 <h3 id="single--and-multiple-dose-parent-and-metabolite">Single- and Multiple-dose, parent and metabolite<a class="anchor" aria-label="anchor" href="#single--and-multiple-dose-parent-and-metabolite"></a>
 </h3>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_single_multi_conc_multi_analyte</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
 <span>    <span class="va">d_single_multi_conc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Analyte<span class="op">=</span><span class="st">"Parent"</span><span class="op">)</span>,</span>
