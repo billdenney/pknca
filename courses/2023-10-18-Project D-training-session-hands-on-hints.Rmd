@@ -1,0 +1,303 @@
+---
+title: "PKNCA Training Session for Project Dontabhaktuni: Hands-on hints"
+author: "William Denney"
+date: "1 November 2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+requireNamespace("pmxTools")
+library(PKNCA)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
+breaks_hours <- function(n=5, Q=c(1, 6, 4, 12, 2, 24, 168), ...) {
+  n_default <- n
+  Q_default <- Q
+  function(x, n = n_default, Q=Q_default) {
+    x <- x[is.finite(x)]
+    if (length(x) == 0) {
+      return(numeric())
+    }
+    rng <- range(x)
+    labeling::extended(rng[1], rng[2], m=n, Q=Q, ...)
+  }
+}
+
+scale_x_hours <- function(..., breaks=breaks_hours()) {
+  ggplot2::scale_x_continuous(..., breaks=breaks)
+}
+```
+
+<style>
+.forceBreak { -webkit-column-break-after: always; break-after: column; }
+
+<!-- from https://stackoverflow.com/questions/1909648/stacking-divs-on-top-of-each-other -->
+.container {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  background-color: yellow;
+  /* important part */
+  display: grid;
+  place-items: center;
+  grid-template-areas: "inner-div";
+}
+
+.inner {
+  /* important part */
+  grid-area: inner-div;
+}
+
+.bigStrikethroughOuter {
+  <!-- text-decoration: line-through; -->
+  font-size: 8em;
+  text-align: center;
+  color: red;
+  background: 
+  linear-gradient(to top left,
+    transparent 0%,
+    transparent calc(50% - 0.05em),
+    red calc(50% - 0.05em),
+    red 50%,
+    red calc(50% + 0.05em),
+    transparent calc(50% + 0.05em),
+    transparent 100%),
+  linear-gradient(to top right,
+    transparent 0%,
+    transparent calc(50% - 0.05em),
+    red calc(50% - 0.05em),
+    red 50%,
+    red calc(50% + 0.05em),
+    transparent calc(50% + 0.05em),
+    transparent 100%);
+}
+
+.bigStrikethroughInner {
+  color: blue;
+  font-size: 8em;
+}
+
+.autoImageWidth {
+  width: auto !important; /*override the width below*/
+  max-width: 100%;
+  float: left;
+  clear: both;
+  text-align: center;
+}
+
+<!-- imessages -->
+
+.imessage {
+  font-family: helvetica;
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat {
+  width: 300px;
+  border: solid 1px #EEE;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.messages {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.yours {
+  align-items: flex-start;
+}
+
+.yours .message {
+  margin-right: 25%;
+  background-color: #eee;
+  position: relative;
+}
+
+.yours .message.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
+  background: #eee;
+  border-bottom-right-radius: 15px;
+}
+.yours .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 20px;
+  background: white;
+  border-bottom-right-radius: 10px;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+.mine .message {
+  color: white;
+  margin-left: 25%;
+  background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+.mine .message.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  right: -8px;
+  height: 20px;
+  width: 20px;
+  background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+  background-attachment: fixed;
+  border-bottom-left-radius: 15px;
+}
+
+.mine .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 20px;
+  background: white;
+  border-bottom-left-radius: 10px;
+}
+
+</style>
+
+# Hands-on workshops hints
+
+## Hands-on: Steady-state intramuscular administration
+
+The data for the exercise are from a PK study of amikacin in a killer whale and a beluga whale.  (DOI: 10.1638/03-078)
+
+![](https://apps-afsc.fisheries.noaa.gov/Quarterly/amj2005/images/killerwhales.jpg)
+
+(Callback...)
+
+## Hands-on: Steady-state intramuscular administration (assignment)
+
+Load the files from the "Hands-on 1_Whale PK" directory, group the data by the
+"Animal" column, and perform NCA calculations to derive typical parameters such
+as AUClast, Cmax, and Tmax.
+
+```{r eval=FALSE, echo=FALSE}
+library(PKNCA)
+
+d_conc <- read.csv("Hands-on 1_Whale PK/whale_conc.csv")
+d_dose <- read.csv("Hands-on 1_Whale PK/whale_dose.csv")
+head(d_conc)
+head(d_dose)
+
+o_conc <- PKNCAconc(concentration~time|Animal, data=d_conc)
+o_dose <- PKNCAdose(dose~time|Animal, data=d_dose)
+o_data <- PKNCAdata(o_conc, o_dose)
+o_data$intervals
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+summary(o_nca, drop.group=c())
+as.data.frame(o_nca)
+```
+
+## Hands-on: Steady-state intramuscular administration (hint)
+
+```{r eval=FALSE, echo=TRUE}
+# Load PKNCA
+library(PKNCA)
+
+# Load the data (you may have to adjust the file location based on where you
+# saved the files on your computer)
+d_conc <- read.csv("2023-10-18-Project D files/Hands-on 1_Whale PK/whale_conc.csv")
+d_dose <- read.csv("2023-10-18-Project D files/Hands-on 1_Whale PK/whale_dose.csv")
+# Look at the data
+head(d_conc)
+head(d_dose)
+
+# What PKNCAconc() arguments do you need to provide the concentration data to
+# PKNCA?  Fill in between the parentheses with the correct arguments.
+o_conc <- PKNCAconc()
+# What PKNCAdose() arguments do you need to provide the dose data to PKNCA?
+# Fill in between the parentheses with the correct arguments.
+o_dose <- PKNCAdose()
+# What PKNCAdata() arguments do you need to put the prepared PKNCAconc and
+# PKNCAdose objects?  Do you need to add an `intervals` argument? Fill in
+# between the parentheses with the correct arguments.
+o_data <- PKNCAdata()
+# What pk.nca() argument do you need to perform the NCA calculations?
+o_nca <- pk.nca()
+# What command do you use to get a summary of the NCA calculations?
+# What command do you use to get all individual NCA calculations?
+```
+
+## Hands-on: Single- and Multiple-dose, single analyte: Setup the underlying datasets (hint)
+
+Objective: Calculate day 1 and steady-state NCA from a single dataset.
+
+1. Load the data from the "Hands-on 2_Multiple dosing" directory in the
+   "multidose.csv" file.
+2. The columns of interest are "Subject", "time" (time in hours), and "conc"
+   (concentration in mg/L), and "Dose" (the dose in mg/kg).
+3. Generate the dose information with dosing at time 0 and 120 hours from the
+   dataset.
+4. Calculate NCA parameters of AUC~int~, C~max~, and T~max~ on Day 1 and Day 6.
+   And, calculate half-life on Day 6.
+
+```{r eval=FALSE, echo=TRUE}
+# Load PKNCA
+library(tidyverse)
+library(PKNCA)
+
+# Load the data (you may have to adjust the file location based on where you
+# saved the files on your computer)
+d_conc <- read.csv("2023-10-18-Project D files/Hands-on 2_Multiple dosing/multidose.csv")
+# Look at the data
+head(d_conc)
+
+# See what times are available in the data?
+d_conc %>%
+  select(time, Day) %>%
+  unique() %>%
+  arrange(time)
+
+# Use this PKNCAconc command to separate by study day
+o_conc <- PKNCAconc(data = d_conc, conc~time|Subject)
+# What PKNCAdata() arguments do you need to put the prepared PKNCAconc object
+# and what intervals do you need to specify?  Fill in between the parentheses
+# with the correct arguments.
+d_intervals <-
+  data.frame(
+    start =,
+    end =,
+    # insert the parameters to calculate here
+  )
+o_data <- PKNCAdata(o_conc, intervals = d_intervals)
+o_nca <- pk.nca(o_data)
+# Look at your results
+summary(o_nca)
+```
