@@ -209,9 +209,10 @@ as AUClast, Cmax, and Tmax.
 
 ```{r eval=FALSE, echo=FALSE}
 library(PKNCA)
+library(tidyverse)
 
-d_conc <- read.csv("Hands-on 1_Whale PK/whale_conc.csv")
-d_dose <- read.csv("Hands-on 1_Whale PK/whale_dose.csv")
+d_conc <- read.csv("2023-10-18-Project D files/Hands-on 1_Whale PK/whale_conc.csv")
+d_dose <- read.csv("2023-10-18-Project D files/Hands-on 1_Whale PK/whale_dose.csv")
 head(d_conc)
 head(d_dose)
 
@@ -292,9 +293,12 @@ o_conc <- PKNCAconc(data = d_conc, conc~time|Subject)
 # with the correct arguments.
 d_intervals <-
   data.frame(
-    start =,
-    end =,
+    start = c(0, 120),
+    end = c(24, 144),
     # insert the parameters to calculate here
+    aucint.inf.obs = TRUE,
+    cmax = TRUE,
+    tmax = TRUE
   )
 o_data <- PKNCAdata(o_conc, intervals = d_intervals)
 o_nca <- pk.nca(o_data)

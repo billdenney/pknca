@@ -923,7 +923,7 @@ d_multidose_single_analyte <-
 # write_csv(x = d_multidose_single_analyte, file = "2023-10-18-Project D files/Hands-on 2_Multiple dosing/multidose.csv")
 ```
 
-# Backup information
+# Day 2 of training session
 
 # Control your data
 
