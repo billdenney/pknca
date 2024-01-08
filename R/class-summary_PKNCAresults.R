@@ -1,37 +1,3 @@
-#' During the summarization of PKNCAresults, do the rounding of values
-#' based on the instructions given.
-#'
-#' @param x The values to summarize
-#' @param name The NCA parameter name (matching a parameter name in
-#' \code{\link{PKNCA.set.summary}})
-#' @return A string of the rounded value
-#' @export
-roundingSummarize <- function(x, name) {
-  summary_instructions <- PKNCA.set.summary()
-  if (!(name %in% names(summary_instructions))) {
-    stop(name, " is not in the summarization instructions from PKNCA.set.summary")
-  }
-  roundingInstructions <- summary_instructions[[name]]$rounding
-  if (is.function(roundingInstructions)) {
-    ret <- roundingInstructions(x)
-  } else if (is.list(roundingInstructions)) {
-    if (length(roundingInstructions) != 1) {
-      stop("Cannot interpret rounding instructions for ", name, " (please report this as a bug)") # nocov
-    }
-    if ("signif" == names(roundingInstructions)) {
-      ret <- signifString(x, roundingInstructions$signif)
-    } else if ("round" == names(roundingInstructions)) {
-      ret <- roundString(x, roundingInstructions$round)
-    } else {
-      stop("Invalid rounding instruction list name for ", name, " (please report this as a bug)") # nocov
-    }
-  }
-  if (!is.character(ret)) {
-    ret <- as.character(ret)
-  }
-  ret
-}
-
 #' Summarize PKNCA results
 #'
 #' @details Excluded results will not be included in the summary.
@@ -343,4 +309,38 @@ print.summary_PKNCAresults <- function(x, ...) {
   print.data.frame(x, row.names = FALSE, ...)
   cat(paste0("\nCaption: ", attr(x, "caption"), "\n"), fill = TRUE)
   invisible(x)
+}
+
+#' During the summarization of PKNCAresults, do the rounding of values
+#' based on the instructions given.
+#'
+#' @param x The values to summarize
+#' @param name The NCA parameter name (matching a parameter name in
+#' \code{\link{PKNCA.set.summary}})
+#' @return A string of the rounded value
+#' @export
+roundingSummarize <- function(x, name) {
+  summary_instructions <- PKNCA.set.summary()
+  if (!(name %in% names(summary_instructions))) {
+    stop(name, " is not in the summarization instructions from PKNCA.set.summary")
+  }
+  roundingInstructions <- summary_instructions[[name]]$rounding
+  if (is.function(roundingInstructions)) {
+    ret <- roundingInstructions(x)
+  } else if (is.list(roundingInstructions)) {
+    if (length(roundingInstructions) != 1) {
+      stop("Cannot interpret rounding instructions for ", name, " (please report this as a bug)") # nocov
+    }
+    if ("signif" == names(roundingInstructions)) {
+      ret <- signifString(x, roundingInstructions$signif)
+    } else if ("round" == names(roundingInstructions)) {
+      ret <- roundString(x, roundingInstructions$round)
+    } else {
+      stop("Invalid rounding instruction list name for ", name, " (please report this as a bug)") # nocov
+    }
+  }
+  if (!is.character(ret)) {
+    ret <- as.character(ret)
+  }
+  ret
 }
