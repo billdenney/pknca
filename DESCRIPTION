@@ -16,7 +16,8 @@ Imports:
     stats,
     tidyr,
     tibble,
-    utils
+    utils,
+    lifecycle
 Suggests:
     covr,
     cowplot,

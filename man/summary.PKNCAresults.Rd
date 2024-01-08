@@ -7,10 +7,14 @@
 \method{summary}{PKNCAresults}(
   object,
   ...,
-  drop.group = object$data$conc$columns$subject,
-  summarize.n.per.group = NA,
-  not.requested.string = ".",
-  not.calculated.string = "NC",
+  drop_group = object$data$conc$columns$subject,
+  summarize_n = NA,
+  not_requested = ".",
+  not_calculated = "NC",
+  drop.group = deprecated(),
+  summarize.n.per.group = deprecated(),
+  not.requested.string = deprecated(),
+  not.calculated.string = deprecated(),
   pretty_names = NULL
 )
 }
@@ -19,20 +23,23 @@
 
 \item{...}{Ignored.}
 
-\item{drop.group}{Which group(s) should be dropped from the formula?}
+\item{drop_group}{Which group(s) should be dropped from the formula?}
 
-\item{summarize.n.per.group}{Should a column for \code{N} be added
+\item{summarize_n}{Should a column for \code{N} be added
 (\code{TRUE} or \code{FALSE})?  \code{NA} means to automatically detect
 adding \code{N} if the data has a subject column indicated.  Note that
 \code{N} is maximum number of parameter results for any parameter; if no
 parameters are requested for a group, then \code{N} will be \code{NA}.}
 
-\item{not.requested.string}{A character string to use when a parameter
+\item{not_requested}{A character string to use when a parameter
 summary was not requested for a parameter within an interval.}
 
-\item{not.calculated.string}{A character string to use when a parameter
+\item{not_calculated}{A character string to use when a parameter
 summary was requested, but the point estimate AND spread calculations (if
 applicable) returned \code{NA}.}
+
+\item{drop.group, summarize.n.per.group, not.requested.string, not.calculated.string}{Deprecated use `drop_group`, `not_requested`, `not_calculated`, or
+`summarize_n`, instead}
 
 \item{pretty_names}{Should pretty names (easier to understand in a report) be
 used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
@@ -72,7 +79,7 @@ PKNCA.set.summary(
   point = business.median,
   description = "median"
 )
-summary(results_obj_automatic, not.requested.string = "NA")
+summary(results_obj_automatic, not_requested = "NA")
 }
 \seealso{
 \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}

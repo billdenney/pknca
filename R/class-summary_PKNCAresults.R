@@ -3,13 +3,13 @@
 #' @details Excluded results will not be included in the summary.
 #'
 #' @param object The results to summarize
-#' @param drop.group Which group(s) should be dropped from the formula?
-#' @param not.requested.string A character string to use when a parameter
+#' @param drop_group Which group(s) should be dropped from the formula?
+#' @param not_requested A character string to use when a parameter
 #'   summary was not requested for a parameter within an interval.
-#' @param not.calculated.string A character string to use when a parameter
+#' @param not_calculated A character string to use when a parameter
 #'   summary was requested, but the point estimate AND spread calculations (if
 #'   applicable) returned \code{NA}.
-#' @param summarize.n.per.group Should a column for \code{N} be added
+#' @param summarize_n Should a column for \code{N} be added
 #'   (\code{TRUE} or \code{FALSE})?  \code{NA} means to automatically detect
 #'   adding \code{N} if the data has a subject column indicated.  Note that
 #'   \code{N} is maximum number of parameter results for any parameter; if no
@@ -18,6 +18,10 @@
 #'   used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
 #'   units are used an no if units are not used.
 #' @param ... Ignored.
+#' @param
+#'   drop.group,summarize.n.per.group,not.requested.string,not.calculated.string
+#'   Deprecated use `drop_group`, `not_requested`, `not_calculated`, or
+#'   `summarize_n`, instead
 #' @return A data frame of NCA parameter results summarized according to the
 #'   summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
@@ -45,19 +49,56 @@
 #'   point = business.median,
 #'   description = "median"
 #' )
-#' summary(results_obj_automatic, not.requested.string = "NA")
+#' summary(results_obj_automatic, not_requested = "NA")
 #' @export
+#' @importFrom lifecycle deprecated
 summary.PKNCAresults <- function(object, ...,
-                                 drop.group = object$data$conc$columns$subject,
-                                 summarize.n.per.group = NA,
-                                 not.requested.string = ".",
-                                 not.calculated.string = "NC",
+                                 drop_group = object$data$conc$columns$subject,
+                                 summarize_n = NA,
+                                 not_requested = ".",
+                                 not_calculated = "NC",
+
+                                 drop.group = deprecated(),
+                                 summarize.n.per.group = deprecated(),
+                                 not.requested.string = deprecated(),
+                                 not.calculated.string = deprecated(),
                                  pretty_names = NULL) {
-  all_group_cols <- getGroups(object)
-  if (any(c("start", "end") %in% drop.group)) {
-    warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
+  if (lifecycle::is_present(drop.group)) {
+    lifecycle::deprecate_warn(
+      when = "0.10.3",
+      what = "PKNCA::summary.PKNCAresults(drop.group = )",
+      with = "PKNCA::summary.PKNCAresults(drop_group = )"
+    )
+    drop_group <- drop.group
   }
-  group_cols <- unique(setdiff(c("start", "end", names(all_group_cols)), drop.group))
+  if (lifecycle::is_present(summarize.n.per.group)) {
+    lifecycle::deprecate_warn(
+      when = "0.10.3",
+      what = "PKNCA::summary.PKNCAresults(summarize.n.per.group = )",
+      with = "PKNCA::summary.PKNCAresults(summarize_n = )"
+    )
+    summarize_n <- summarize.n.per.group
+  }
+  if (lifecycle::is_present(not.requested.string)) {
+    lifecycle::deprecate_warn(
+      when = "0.10.3",
+      what = "PKNCA::summary.PKNCAresults(not.requested.string = )",
+      with = "PKNCA::summary.PKNCAresults(not_requested = )"
+    )
+    not_requested <- not.requested.string
+  }
+  if (lifecycle::is_present(not.calculated.string)) {
+    lifecycle::deprecate_warn(
+      when = "0.10.3",
+      what = "PKNCA::summary.PKNCAresults(not.calculated.string = )",
+      with = "PKNCA::summary.PKNCAresults(not_calculated = )"
+    )
+    not_calculated <- not.calculated.string
+  }
+
+
+  group_cols <- get_summary_PKNCAresults_drop_group(object = object, drop_group = drop_group)
+
   exclude_col <- object$columns$exclude
   # Ensure that the exclude_col is NA instead of "" for subsequent processing.
   raw_results <- object$result
@@ -100,7 +141,7 @@ summary.PKNCAresults <- function(object, ...,
   result_data_cols <- as.data.frame(result_data_cols_list)
   # If no other value is filled in, then the default is that it was not
   # requested.
-  result_data_cols[, names(result_data_cols)] <- not.requested.string
+  result_data_cols[, names(result_data_cols)] <- not_requested
   # Rows that will have results
   ret_group_cols <- unique(raw_results[, group_cols, drop = FALSE])
   simplified_results <-
@@ -109,13 +150,13 @@ summary.PKNCAresults <- function(object, ...,
 
   subject_col <- object$data$conc$columns$subject
   has_subject_col <- length(subject_col) > 0
-  if (is.na(summarize.n.per.group)) {
-    summarize.n.per.group <- has_subject_col
-  } else if (summarize.n.per.group & !has_subject_col) {
-    warning("summarize.n.per.group was requested, but no subject column exists")
-    summarize.n.per.group <- FALSE
+  if (is.na(summarize_n)) {
+    summarize_n <- has_subject_col
+  } else if (summarize_n & !has_subject_col) {
+    warning("summarize_n was requested, but no subject column exists")
+    summarize_n <- FALSE
   }
-  if (summarize.n.per.group) {
+  if (summarize_n) {
     ret$N <- NA_integer_
   }
 
@@ -148,7 +189,7 @@ summary.PKNCAresults <- function(object, ...,
           # I don't think that a user can get here
           warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
         } else {
-          if (summarize.n.per.group) {
+          if (summarize_n) {
             n_subjects <- length(unique(current_data[[subject_col]]))
             if (n_subjects < nrow(current_data)) {
               warning("Some subjects may have more than one result for ", current_parameter)
@@ -174,7 +215,7 @@ summary.PKNCAresults <- function(object, ...,
             na_spread <- all(is.na(spread))
             if (na_spread) {
               # The spread couldn't be calculated, so show that
-              spread <- not.calculated.string
+              spread <- not_calculated
             } else {
               # Round the spread
               spread <- roundingSummarize(spread, current_parameter)
@@ -186,9 +227,9 @@ summary.PKNCAresults <- function(object, ...,
             current <- paste0(current, spread)
           }
           # Determine if the results were all missing, and if so, give
-          # the not.calculated.string
+          # the not_calculated string
           if (na_point & (na_spread %in% c(NA, TRUE))) {
-            ret[row_idx, current_parameter] <- not.calculated.string
+            ret[row_idx, current_parameter] <- not_calculated
           } else {
             if (use_units) {
               if (length(unit_list[[current_parameter]]) > 1) {
@@ -213,9 +254,9 @@ summary.PKNCAresults <- function(object, ...,
   }
   # If N is requested, but it is not provided, then it should be set to not
   # calculated.
-  if (summarize.n.per.group) {
+  if (summarize_n) {
     if (any(mask.na.N <- is.na(ret$N))) {
-      # ret$N[mask.na.N] <- not.calculated.string
+      # ret$N[mask.na.N] <- not_calculated
       stop("Invalid subject count (please report this as a bug)") # nocov
     }
     ret$N <- as.character(ret$N)
@@ -253,6 +294,35 @@ summary.PKNCAresults <- function(object, ...,
       collapse = "; "
     )
   )
+}
+
+# A helper function for summary.PKNCAresults to find the groups to drop
+get_summary_PKNCAresults_drop_group <- function(object, drop_group) {
+  all_group_cols <- getGroups(object)
+  if (any(c("start", "end") %in% drop_group)) {
+    warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
+  }
+  ret <- unique(setdiff(c("start", "end", names(all_group_cols)), drop_group))
+  ret
+}
+
+# A helper function for summary.PKNCAresults to summarize everything
+summarize_PKNCAresults_object <- function(object) {
+  browser()
+  stop()
+}
+
+# A helper function for summary.PKNCAresults to summarize one group
+summarize_PKNCAresults_group <- function() {
+  browser()
+  stop()
+}
+
+# A helper function for summary.PKNCAresults to summarize one parameter within a
+# group
+summarize_PKNCAresults_parameter <- function() {
+  browser()
+  stop()
 }
 
 rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
