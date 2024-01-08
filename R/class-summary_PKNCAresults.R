@@ -8,14 +8,16 @@
 #' @export
 roundingSummarize <- function(x, name) {
   summary_instructions <- PKNCA.set.summary()
-  if (!(name %in% names(summary_instructions)))
+  if (!(name %in% names(summary_instructions))) {
     stop(name, " is not in the summarization instructions from PKNCA.set.summary")
+  }
   roundingInstructions <- summary_instructions[[name]]$rounding
   if (is.function(roundingInstructions)) {
     ret <- roundingInstructions(x)
   } else if (is.list(roundingInstructions)) {
-    if (length(roundingInstructions) != 1)
+    if (length(roundingInstructions) != 1) {
       stop("Cannot interpret rounding instructions for ", name, " (please report this as a bug)") # nocov
+    }
     if ("signif" == names(roundingInstructions)) {
       ret <- signifString(x, roundingInstructions$signif)
     } else if ("round" == names(roundingInstructions)) {
@@ -24,8 +26,9 @@ roundingSummarize <- function(x, name) {
       stop("Invalid rounding instruction list name for ", name, " (please report this as a bug)") # nocov
     }
   }
-  if (!is.character(ret))
+  if (!is.character(ret)) {
     ret <- as.character(ret)
+  }
   ret
 }
 
@@ -53,10 +56,13 @@ roundingSummarize <- function(x, name) {
 #'   summarization settings.
 #' @seealso \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
 #' @examples
-#' conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
-#' d_dose <- unique(datasets::Theoph[datasets::Theoph$Time == 0,
-#'                                   c("Dose", "Time", "Subject")])
-#' dose_obj <- PKNCAdose(d_dose, Dose~Time|Subject)
+#' conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc ~ Time | Subject)
+#' d_dose <-
+#'   unique(datasets::Theoph[
+#'     datasets::Theoph$Time == 0,
+#'     c("Dose", "Time", "Subject")
+#'   ])
+#' dose_obj <- PKNCAdose(d_dose, Dose ~ Time | Subject)
 #' data_obj_automatic <- PKNCAdata(conc_obj, dose_obj)
 #' results_obj_automatic <- pk.nca(data_obj_automatic)
 #' # To get standard results run summary
@@ -64,23 +70,23 @@ roundingSummarize <- function(x, name) {
 #' # To enable numeric conversion and extraction, do not give a spread function
 #' # and subsequently run as.numeric on the result columns.
 #' PKNCA.set.summary(
-#'   name=c("auclast", "cmax", "half.life", "aucinf.obs"),
-#'   point=business.geomean,
-#'   description="geometric mean"
+#'   name = c("auclast", "cmax", "half.life", "aucinf.obs"),
+#'   point = business.geomean,
+#'   description = "geometric mean"
 #' )
 #' PKNCA.set.summary(
-#'   name=c("tmax"),
-#'   point=business.median,
-#'   description="median"
+#'   name = c("tmax"),
+#'   point = business.median,
+#'   description = "median"
 #' )
-#' summary(results_obj_automatic, not.requested.string="NA")
+#' summary(results_obj_automatic, not.requested.string = "NA")
 #' @export
 summary.PKNCAresults <- function(object, ...,
-                                 drop.group=object$data$conc$columns$subject,
-                                 summarize.n.per.group=NA,
-                                 not.requested.string=".",
-                                 not.calculated.string="NC",
-                                 pretty_names=NULL) {
+                                 drop.group = object$data$conc$columns$subject,
+                                 summarize.n.per.group = NA,
+                                 not.requested.string = ".",
+                                 not.calculated.string = "NC",
+                                 pretty_names = NULL) {
   all_group_cols <- getGroups(object)
   if (any(c("start", "end") %in% drop.group)) {
     warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
@@ -96,14 +102,15 @@ summary.PKNCAresults <- function(object, ...,
     setdiff(
       intersect(
         names(object$data$intervals),
-        names(get.interval.cols())),
+        names(get.interval.cols())
+      ),
       c("start", "end")
     )
   # Columns that will have reported results
   result_data_cols_list <-
     lapply(
-      X=object$data$intervals[, parameter_cols, drop=FALSE],
-      FUN=any
+      X = object$data$intervals[, parameter_cols, drop = FALSE],
+      FUN = any
     )
   result_data_cols_list <- result_data_cols_list[unlist(result_data_cols_list)]
 
@@ -129,10 +136,10 @@ summary.PKNCAresults <- function(object, ...,
   # requested.
   result_data_cols[, names(result_data_cols)] <- not.requested.string
   # Rows that will have results
-  ret_group_cols <- unique(raw_results[, group_cols, drop=FALSE])
+  ret_group_cols <- unique(raw_results[, group_cols, drop = FALSE])
   simplified_results <-
-    raw_results[raw_results$PPTESTCD %in% names(result_data_cols), , drop=FALSE]
-  ret <- unique(raw_results[, group_cols, drop=FALSE])
+    raw_results[raw_results$PPTESTCD %in% names(result_data_cols), , drop = FALSE]
+  ret <- unique(raw_results[, group_cols, drop = FALSE])
 
   subject_col <- object$data$conc$columns$subject
   has_subject_col <- length(subject_col) > 0
@@ -148,23 +155,27 @@ summary.PKNCAresults <- function(object, ...,
 
   ret <- cbind(ret, result_data_cols)
   # Loop over every group that needs summarization
-  for (row_idx in seq_len(nrow(ret)))
+  for (row_idx in seq_len(nrow(ret))) {
     # Loop over every column that needs summarization
     for (current_parameter in names(result_data_cols)) {
       # Select the rows of the intervals that match the current row
       # from the return value.
       current_interval <-
         merge(
-          ret[row_idx, group_cols, drop=FALSE],
+          ret[row_idx, group_cols, drop = FALSE],
           object$data$intervals[,
-                                intersect(names(object$data$intervals),
-                                          c(group_cols, current_parameter)),
-                                drop=FALSE]
+            intersect(
+              names(object$data$intervals),
+              c(group_cols, current_parameter)
+            ),
+            drop = FALSE
+          ]
         )
-      if (any(current_interval[,current_parameter])) {
+      if (any(current_interval[, current_parameter])) {
         current_data <- merge(
-          ret[row_idx, group_cols, drop=FALSE],
-          simplified_results[simplified_results$PPTESTCD %in% current_parameter,,drop=FALSE])
+          ret[row_idx, group_cols, drop = FALSE],
+          simplified_results[simplified_results$PPTESTCD %in% current_parameter, , drop = FALSE]
+        )
         # Exclude value, when required
         current_data[[result_number_col]][!is.na(current_data[[exclude_col]])] <- NA
         if (nrow(current_data) == 0) {
@@ -178,7 +189,7 @@ summary.PKNCAresults <- function(object, ...,
             }
             # max() because the summary table provides the N for the full row, not
             # for a single parameter.
-            ret$N[row_idx] <- max(ret$N[row_idx], n_subjects, na.rm=TRUE)
+            ret$N[row_idx] <- max(ret$N[row_idx], n_subjects, na.rm = TRUE)
           }
           # Calculation is required
           if (is.null(summary_instructions[[current_parameter]])) {
@@ -192,7 +203,8 @@ summary.PKNCAresults <- function(object, ...,
           current <- point
           if ("spread" %in% names(summary_instructions[[current_parameter]])) {
             spread <- summary_instructions[[current_parameter]]$spread(
-              current_data[[result_number_col]])
+              current_data[[result_number_col]]
+            )
             na_spread <- all(is.na(spread))
             if (na_spread) {
               # The spread couldn't be calculated, so show that
@@ -204,7 +216,7 @@ summary.PKNCAresults <- function(object, ...,
             # Collapse the spread into a usable form if it is longer than one
             # (e.g. a range or a confidence interval) and put brackets around
             # it.
-            spread <- paste0(" [", paste(spread, collapse=", "), "]")
+            spread <- paste0(" [", paste(spread, collapse = ", "), "]")
             current <- paste0(current, spread)
           }
           # Determine if the results were all missing, and if so, give
@@ -221,7 +233,7 @@ summary.PKNCAresults <- function(object, ...,
                   stop(
                     "Multiple units cannot be summarized together.  For ",
                     current_parameter, ", trying to combine: ",
-                    paste(units_to_add, collapse=", ")
+                    paste(units_to_add, collapse = ", ")
                   )
                 }
                 current <- paste(current, units_to_add)
@@ -232,11 +244,12 @@ summary.PKNCAresults <- function(object, ...,
         }
       }
     }
+  }
   # If N is requested, but it is not provided, then it should be set to not
   # calculated.
   if (summarize.n.per.group) {
     if (any(mask.na.N <- is.na(ret$N))) {
-      #ret$N[mask.na.N] <- not.calculated.string
+      # ret$N[mask.na.N] <- not.calculated.string
       stop("Invalid subject count (please report this as a bug)") # nocov
     }
     ret$N <- as.character(ret$N)
@@ -245,9 +258,9 @@ summary.PKNCAresults <- function(object, ...,
   summary_descriptions <-
     unlist(
       lapply(
-        X=summary_instructions[names(result_data_cols)],
-        FUN=`[[`,
-        i="description"
+        X = summary_instructions[names(result_data_cols)],
+        FUN = `[[`,
+        i = "description"
       )
     )
   if (pretty_names) {
@@ -261,16 +274,17 @@ summary.PKNCAresults <- function(object, ...,
   for (idx in seq_along(simplified_summary_descriptions)) {
     names(simplified_summary_descriptions)[idx] <-
       paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
-            collapse=", ")
+        collapse = ", "
+      )
   }
-  ret_pretty <- rename_summary_PKNCAresults(data=ret, unit_list=unit_list, pretty_names=pretty_names)
+  ret_pretty <- rename_summary_PKNCAresults(data = ret, unit_list = unit_list, pretty_names = pretty_names)
   as_summary_PKNCAresults(
     ret_pretty,
-    caption=paste(
+    caption = paste(
       names(simplified_summary_descriptions),
       simplified_summary_descriptions,
-      sep=": ",
-      collapse="; "
+      sep = ": ",
+      collapse = "; "
     )
   )
 }
@@ -313,8 +327,8 @@ rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
 as_summary_PKNCAresults <- function(data, caption) {
   structure(
     data,
-    caption=caption,
-    class=c("summary_PKNCAresults", "data.frame")
+    caption = caption,
+    class = c("summary_PKNCAresults", "data.frame")
   )
 }
 
@@ -326,7 +340,7 @@ as_summary_PKNCAresults <- function(data, caption) {
 #' @seealso \code{\link{summary.PKNCAresults}}
 #' @export
 print.summary_PKNCAresults <- function(x, ...) {
-  print.data.frame(x, row.names=FALSE, ...)
-  cat(paste0("\nCaption: ", attr(x, "caption"), "\n"), fill=TRUE)
+  print.data.frame(x, row.names = FALSE, ...)
+  cat(paste0("\nCaption: ", attr(x, "caption"), "\n"), fill = TRUE)
   invisible(x)
 }

@@ -49,10 +49,13 @@ Summarize PKNCA results
 Excluded results will not be included in the summary.
 }
 \examples{
-conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
-d_dose <- unique(datasets::Theoph[datasets::Theoph$Time == 0,
-                                  c("Dose", "Time", "Subject")])
-dose_obj <- PKNCAdose(d_dose, Dose~Time|Subject)
+conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc ~ Time | Subject)
+d_dose <-
+  unique(datasets::Theoph[
+    datasets::Theoph$Time == 0,
+    c("Dose", "Time", "Subject")
+  ])
+dose_obj <- PKNCAdose(d_dose, Dose ~ Time | Subject)
 data_obj_automatic <- PKNCAdata(conc_obj, dose_obj)
 results_obj_automatic <- pk.nca(data_obj_automatic)
 # To get standard results run summary
@@ -60,16 +63,16 @@ summary(results_obj_automatic)
 # To enable numeric conversion and extraction, do not give a spread function
 # and subsequently run as.numeric on the result columns.
 PKNCA.set.summary(
-  name=c("auclast", "cmax", "half.life", "aucinf.obs"),
-  point=business.geomean,
-  description="geometric mean"
+  name = c("auclast", "cmax", "half.life", "aucinf.obs"),
+  point = business.geomean,
+  description = "geometric mean"
 )
 PKNCA.set.summary(
-  name=c("tmax"),
-  point=business.median,
-  description="median"
+  name = c("tmax"),
+  point = business.median,
+  description = "median"
 )
-summary(results_obj_automatic, not.requested.string="NA")
+summary(results_obj_automatic, not.requested.string = "NA")
 }
 \seealso{
 \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
