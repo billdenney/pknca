@@ -189,7 +189,6 @@ summary.PKNCAresults <- function(object, ...,
   # Ensure that the exclude_col is NA instead of "" for subsequent processing.
   raw_results <- object$result
   raw_results[[exclude_col]] <- normalize_exclude(raw_results[[exclude_col]])
-  summary_instructions <- PKNCA.set.summary()
   # Find any parameters that request any summaries
   parameter_cols <-
     setdiff(
@@ -245,9 +244,23 @@ summary.PKNCAresults <- function(object, ...,
     ret$N <- NA_integer_
   }
 
+
+  # FINDME ####
+  browser()
+  stop()
+  ret <-
+    summary_PKNCAresults_helper(
+      data = raw_results,
+      intervals = object$data$intervals,
+      result_template = result_data_cols,
+      df_group = unique(raw_results[, group_cols, drop=FALSE]),
+      subject_col = subject_col,
+      include_n = summarize.n.per.group,
+      not_calculated_string = not.calculated.string
+    )
   ret <- cbind(ret, result_data_cols)
   # Loop over every group that needs summarization
-  for (row_idx in seq_len(nrow(ret)))
+  for (row_idx in seq_len(nrow(ret))) {
     # Loop over every column that needs summarization
     for (current_parameter in names(result_data_cols)) {
       # Select the rows of the intervals that match the current row
@@ -331,6 +344,7 @@ summary.PKNCAresults <- function(object, ...,
         }
       }
     }
+  }
   # If N is requested, but it is not provided, then it should be set to not
   # calculated.
   if (summarize.n.per.group) {
@@ -372,6 +386,145 @@ summary.PKNCAresults <- function(object, ...,
       collapse="; "
     )
   )
+}
+
+# Iterate over all groups to summarize PKNCA results
+summary_PKNCAresults_helper <- function(data, intervals, result_template, df_group, subject_col, include_n, not_calculated_string) {
+  browser()
+  stop()
+  stopifnot(nrow(result_template) == 1)
+  ret <- result_template[rep(1, nrow(df_group)), ]
+  if (include_n) {
+    ret <- cbind(N = NA_integer_, ret)
+  }
+  rownames(ret) <- NULL
+
+  summary_instructions <- PKNCA.set.summary()
+
+  for (group_idx in seq_along(nrow(df_group))) {
+    # Match the interval selection to the group
+    current_interval <-
+      dplyr::inner_join(
+        df_group[group_idx, ],
+        intervals,
+        by = intersect(names(df_group), names(intervals))
+      )
+    # Choose just the columns in the interval that need summarization
+    ## Choose the parameter names
+    current_interval <- current_interval[, intersect(names(current_interval), names(summary_instructions)), drop = FALSE]
+    ## Choose the parameters that should be summarized
+    current_interval <- current_interval[, unlist(current_interval), drop = FALSE]
+
+    # Filter the data to just the data in the current group
+    current_data <-
+      dplyr::inner_join(
+        df_group[group_idx, , drop = FALSE],
+        data,
+        by = intersect(names(df_group), names(data))
+      )
+    # Count N before filtering to parameters of interest and values that were
+    # not excluded so that the count includes all possible subjects
+    if (include_n) {
+      group_n <- length(unique(current_data[[subject_col]]))
+      ret$N[group_idx] <- group_n
+    } else {
+      group_n <- NA_integer_
+    }
+    # Filter the data to just the data for parameters to be summarized
+    mask_param_keep <- current_data$PPTESTCD %in% names(current_interval)
+    current_data <- current_data[mask_param_keep, , drop = FALSE]
+    # Filter to only values to be analyzed
+    current_data <- current_data[is.na(current_data[[exclude_col]]), , drop = FALSE]
+
+    ret[group_idx, ] <-
+      summary_PKNCAresults_helper_group(
+        data = current_data,
+        result_template = result_template,
+        params_to_summarize = names(current_interval),
+        group_n = group_n,
+        subject_col = subject_col,
+        not_calculated_string = not_calculated_string
+      )
+  }
+}
+
+# Iterate over all parameters within a group to summarize PKNCA results
+summary_PKNCAresults_helper_group <- function(data, result_template, params_to_summarize, group_n, subject_col, not_calculated_string) {
+  browser()
+  stop()
+  if (nrow(data) == 0) {
+    # Drop out early if all data have been excluded
+    return(result_template)
+  }
+  stopifnot(all(data$PPTESTCD %in% names(result_template)))
+  ret <- result_template
+  for (current_param in params_to_summarize) {
+    current_data <- data[data$PPTESTCD %in% current_param, ]
+    if (nrow(current_data) == 0) {
+      # There are no data to summarize
+      ret[[current_param]] <- not_calculated_string
+    } else {
+      ret[[current_param]] <- summary_PKNCAresults_helper_param(current_data)
+      # There are data to summarize
+      if (!is.na(group_n)) {
+        param_N <- length(unique(current_data[[subject_col]]))
+        param_n <- nrow(current_data)
+      }
+    }
+  }
+}
+
+summary_PKNCAresults_helper_param <- function(values, param) {
+  # Calculation is required
+  if (is.null(summary_instructions[[current_parameter]])) {
+    stop("No summary function is set for parameter ", current_parameter, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
+  }
+  point <- summary_instructions[[current_parameter]]$point(current_data[[result_number_col]])
+  na_point <- is.na(point)
+  na_spread <- NA
+  # Round the point estimate
+  point <- roundingSummarize(point, current_parameter)
+  current <- point
+  if ("spread" %in% names(summary_instructions[[current_parameter]])) {
+    spread <- summary_instructions[[current_parameter]]$spread(
+      current_data[[result_number_col]])
+    na_spread <- all(is.na(spread))
+    if (na_spread) {
+      # The spread couldn't be calculated, so show that
+      spread <- not.calculated.string
+    } else {
+      # Round the spread
+      spread <- roundingSummarize(spread, current_parameter)
+    }
+    # Collapse the spread into a usable form if it is longer than one
+    # (e.g. a range or a confidence interval) and put brackets around
+    # it.
+    spread <- paste0(" [", paste(spread, collapse=", "), "]")
+    current <- paste0(current, spread)
+  }
+  # Determine if the results were all missing, and if so, give
+  # the not.calculated.string
+  if (na_point & (na_spread %in% c(NA, TRUE))) {
+    ret[row_idx, current_parameter] <- not.calculated.string
+  } else {
+    if (use_units) {
+      if (length(unit_list[[current_parameter]]) > 1) {
+        # Need to choose the correct, current unit, and if more than one
+        # is present, do not summarize.
+        units_to_add <- unique(current_data[[unit_col]])
+        if (length(units_to_add) > 1) {
+          stop(
+            "Multiple units cannot be summarized together.  For ",
+            current_parameter, ", trying to combine: ",
+            paste(units_to_add, collapse=", ")
+          )
+        }
+        current <- paste(current, units_to_add)
+      }
+    }
+    ret[row_idx, current_parameter] <- current
+  }
+
 }
 
 rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {

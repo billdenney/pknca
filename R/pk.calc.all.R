@@ -335,6 +335,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #' @param route,route.group The route of dosing for the current interval
 #'   or all data for the group
 #' @param impute_method The method to use for imputation as a character string
+#'   (or `NA` for no imputation)
 #' @param interval One row of an interval definition (see
 #'   \code{\link{check.interval.specification}} for how to define the
 #'   interval.
