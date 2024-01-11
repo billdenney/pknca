@@ -227,7 +227,7 @@ get_summary_PKNCAresults_result_unit_list <- function(data, unit_col) {
   if (!is.null(unit_col)) {
     all_params <- unique(data$PPTESTCD)
     unit_list <-
-      setNames(
+      stats::setNames(
         as.list(rep(NA_character_, length(all_params))),
         nm = all_params
       )
@@ -361,7 +361,7 @@ summarize_PKNCAresults_group <- function(data, current_group, subject_col, resul
   current_data <- dplyr::inner_join(data, current_group, by = intersect(names(data), names(current_group)))
   if (nrow(current_data) == 0) {
     # I don't think that a user can get here
-    warning("No results to summarize for result row ", row_idx) # nocov
+    warning("No results to summarize for result row, please report a bug") # nocov
     return(ret) # nocov
   }
   current_interval <- dplyr::inner_join(intervals, current_group, by = intersect(names(intervals), names(current_group)))

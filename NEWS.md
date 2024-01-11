@@ -23,7 +23,7 @@ the dosing including dose amount and route.
   is now more extensively supported.
 * PKNCA has begun the process of deprecating dots in favor of underscores in
   function and parameter names.  Functions with dots instead of underscores
-  should continue to work for the forseeable future (until version 1.0) with
+  should continue to work for the foreseeable future (until version 1.0) with
   warnings.
 
 ## Bugs fixed
