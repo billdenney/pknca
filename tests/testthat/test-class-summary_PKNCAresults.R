@@ -26,7 +26,7 @@ test_that("PKNCAresults summary", {
         aucinf.obs = c(".", "20.5 [6.84]"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects"
     ),
     info = "simple summary of PKNCAresults performs as expected"
   )
@@ -53,12 +53,12 @@ test_that("PKNCAresults summary", {
         N = "2",
         auclast = c("13.5 [NC]", "."),
         cmax = c(".", "1.00 [NC]"),
-        tmax = c(".", "4.00 [4.00, 4.00]"),
-        half.life = c(".", "16.1 [NC]"),
+        tmax = c(".", "4.00 [4.00, 4.00], n=1"),
+        half.life = c(".", "16.1 [NC], n=1"),
         aucinf.obs = c(".", "21.5 [NC]"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects; n: number of measurements included in summary"
     ),
     info = "summary of PKNCAresults with some missing values results in NA for spread"
   )
@@ -90,7 +90,7 @@ test_that("PKNCAresults summary", {
         aucinf.obs = c(".", "NC"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects"
     ),
     info = "summary of PKNCAresults without most results gives NC"
   )
@@ -114,7 +114,7 @@ test_that("PKNCAresults summary", {
         aucinf.obs = c("NR", "NoCalc"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects"
     ),
     info = "Summary respects the not.requested.string and not.calculated.string"
   )
@@ -242,7 +242,7 @@ test_that("summary.PKNCAresults manages exclusions as missing not as non-existen
         aucinf.obs = c(".", "20.5 [6.84]"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects"
     ),
     info = "simple summary of PKNCAresults performs as expected"
   )
@@ -254,14 +254,14 @@ test_that("summary.PKNCAresults manages exclusions as missing not as non-existen
         end = c(24, Inf),
         treatment = "Trt 1",
         N = "2",
-        auclast = c("14.0 [NC]", "."),
+        auclast = c("14.0 [NC], n=1", "."),
         cmax = c(".", "0.970 [4.29]"),
         tmax = c(".", "3.00 [2.00, 4.00]"),
         half.life = c(".", "14.2 [2.79]"),
         aucinf.obs = c(".", "20.5 [6.84]"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects; n: number of measurements included in summary"
     ),
     info = "summary of PKNCAresults correctly excludes auclast when requested"
   )
@@ -280,7 +280,7 @@ test_that("summary.PKNCAresults manages exclusions as missing not as non-existen
         aucinf.obs = c(".", "20.5 [6.84]"),
         stringsAsFactors = FALSE
       ),
-      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+      caption = "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects"
     ),
     info = "summary of PKNCAresults correctly excludes all of auclast when requested"
   )
@@ -356,11 +356,11 @@ test_that("summary pretty_name control", {
   # Captions use the pretty_names, if requested
   expect_equal(
     attr(s_plain, "caption"),
-    "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation"
+    "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects"
   )
   expect_equal(
     attr(s_pretty, "caption"),
-    "AUClast, Cmax, AUCinf,obs: geometric mean and geometric coefficient of variation; Tmax: median and range; Half-life: arithmetic mean and standard deviation"
+    "AUClast, Cmax, AUCinf,obs: geometric mean and geometric coefficient of variation; Tmax: median and range; Half-life: arithmetic mean and standard deviation; N: number of subjects"
   )
   # Default for pretty_names are kept
   expect_equal(
@@ -390,5 +390,22 @@ test_that("roundingSummarize", {
     description = "median and range",
     point = business.median,
     spread = business.range
+  )
+})
+
+test_that("PKNCAresults summary counts N and n", {
+  tmpconc <- generate.conc(2, 1, 0:6)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula = conc ~ time | treatment + ID)
+  mydose <- PKNCAdose(tmpdose, formula = dose ~ time | treatment + ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  suppressWarnings(
+    myresult <- pk.nca(mydata)
+  )
+  o_summary <- summary(myresult)
+  expect_equal(o_summary$half.life, c(".", "85.0 [NC], n=1"))
+  expect_equal(
+    attr(o_summary, "caption"),
+    "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects; n: number of measurements included in summary"
   )
 })

@@ -6,6 +6,9 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
+* PKNCA will now indicate the number of observations included in a summary ("n")
+  when it is not the same as the number of subjects included in the summary
+  ("N") and the caption will also indicate the definition of "N" and "n".
 * A new AUC integration method, "lin-log", has been added using the linear
   method through tmax and log after tmax, with required exceptions for zeros
   (fix #23)

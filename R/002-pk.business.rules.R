@@ -32,7 +32,9 @@ pk.business <- function(FUN,
     mask.missing <- is.na(x) | (zero.missing & (x %in% 0))
     if (sum(mask.missing)/length(x) > max.missing)
       return(NA)
-    FUN(x[!mask.missing], ...)
+    ret <- FUN(x[!mask.missing], ...)
+    #attr(ret, "n") <- sum(!mask.missing)
+    ret
   }
 
 #' Compute the geometric mean, sd, and CV
