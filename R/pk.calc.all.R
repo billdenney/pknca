@@ -287,7 +287,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         tryCatch(
           do.call(pk.nca.interval, args),
           error=function(e) {
-            e$message <- paste("Please report a bug.\n", error.preamble, e$message, sep=": ") # nocov
+            e$message <- paste("Please report a bug.\n", error_preamble, e$message, sep=": ") # nocov
             stop(e) # nocov
           }
         )
