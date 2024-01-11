@@ -378,3 +378,51 @@ test_that("aucint works for all zero concentrations with interpolated or extrapo
     structure(0, exclude = "DO NOT EXCLUDE")
   )
 })
+
+test_that("aucint uses log extrapolation regardless of the interpolation method (#203)", {
+  d_conc <-
+    data.frame(
+      conc = c(0, 1, 2, 0.75, 0.5, 0.2),
+      time = c(0, 1, 2, 3, 4, 5)
+    )
+  aucinf_obs5_log <-
+    pk.calc.aucint.inf.obs(
+      conc = d_conc$conc,
+      time = d_conc$time,
+      start = 0, end = 5,
+      clast.obs = d_conc$conc[nrow(d_conc)],
+      lambda.z = 0.661,
+      options = list(auc.method="lin up/log down")
+    )
+  aucinf_obs6_log <-
+    pk.calc.aucint.inf.obs(
+      conc = d_conc$conc,
+      time = d_conc$time,
+      start = 0, end = 6,
+      clast.obs = d_conc$conc[nrow(d_conc)],
+      lambda.z = 0.661,
+      options = list(auc.method="lin up/log down")
+    )
+  aucinf_obs5_lin <-
+    pk.calc.aucint.inf.obs(
+      conc = d_conc$conc,
+      time = d_conc$time,
+      start = 0, end = 5,
+      clast.obs = d_conc$conc[nrow(d_conc)],
+      lambda.z = 0.661,
+      options = list(auc.method="linear")
+    )
+  aucinf_obs6_lin <-
+    pk.calc.aucint.inf.obs(
+      conc = d_conc$conc,
+      time = d_conc$time,
+      start = 0, end = 6,
+      clast.obs = d_conc$conc[nrow(d_conc)],
+      lambda.z = 0.661,
+      options = list(auc.method="linear")
+    )
+  expect_equal(
+    aucinf_obs6_log - aucinf_obs5_log,
+    aucinf_obs6_lin - aucinf_obs5_lin
+  )
+})
