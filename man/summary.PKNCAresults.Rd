@@ -43,7 +43,7 @@ applicable) returned \code{NA}.}
 
 \item{pretty_names}{Should pretty names (easier to understand in a report) be
 used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
-units are used an no if units are not used.}
+units are used and no if units are not used.}
 }
 \value{
 A data frame of NCA parameter results summarized according to the

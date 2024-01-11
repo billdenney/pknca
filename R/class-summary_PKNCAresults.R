@@ -16,7 +16,7 @@
 #'   parameters are requested for a group, then \code{N} will be \code{NA}.
 #' @param pretty_names Should pretty names (easier to understand in a report) be
 #'   used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
-#'   units are used an no if units are not used.
+#'   units are used and no if units are not used.
 #' @param ... Ignored.
 #' @param
 #'   drop.group,summarize.n.per.group,not.requested.string,not.calculated.string
@@ -63,6 +63,9 @@ summary.PKNCAresults <- function(object, ...,
                                  not.requested.string = deprecated(),
                                  not.calculated.string = deprecated(),
                                  pretty_names = NULL) {
+  # Process inputs ####
+
+  ## Deprecated inputs ####
   if (lifecycle::is_present(drop.group)) {
     lifecycle::deprecate_warn(
       when = "0.10.3",
@@ -96,14 +99,22 @@ summary.PKNCAresults <- function(object, ...,
     not_calculated <- not.calculated.string
   }
 
-
+  ## Simple inputs ####
   group_cols <- get_summary_PKNCAresults_drop_group(object = object, drop_group = drop_group)
+  subject_col <- object$data$conc$columns$subject
+  has_subject_col <- length(subject_col) > 0
+  if (is.na(summarize_n)) {
+    summarize_n <- has_subject_col
+  } else if (summarize_n & !has_subject_col) {
+    warning("summarize_n was requested, but no subject column exists")
+    summarize_n <- FALSE
+  }
 
-  exclude_col <- object$columns$exclude
-  # Ensure that the exclude_col is NA instead of "" for subsequent processing.
-  raw_results <- object$result
-  raw_results[[exclude_col]] <- normalize_exclude(raw_results[[exclude_col]])
-  summary_instructions <- PKNCA.set.summary()
+  # Preparation ####
+
+  # Set excluded rows to NA, give the cleaned data.frame
+  raw_results <- summarize_PKNCAresults_clean_exclude(object)
+
   # Find any parameters that request any summaries
   parameter_cols <-
     setdiff(
@@ -113,186 +124,65 @@ summary.PKNCAresults <- function(object, ...,
       ),
       c("start", "end")
     )
-  # Columns that will have reported results
+
+  # Extract columns that have been requested by the user for summary in any
+  # intervals
   result_data_cols_list <-
     lapply(
       X = object$data$intervals[, parameter_cols, drop = FALSE],
       FUN = any
     )
+  # Then, filter them the the onest that have any "TRUE" values
   result_data_cols_list <- result_data_cols_list[unlist(result_data_cols_list)]
 
   # Prepare for unit management
-  use_units <- "PPORRESU" %in% names(object$result)
-  unit_list <- NULL
-  result_number_col <- intersect(c("PPSTRES", "PPORRES"), names(object$result))[1]
-  if (use_units) {
-    # Choose the preferred units column
-    unit_col <- intersect(c("PPSTRESU", "PPORRESU"), names(object$result))[1]
-    unit_list <- result_data_cols_list
-    for (nm in names(unit_list)) {
-      # Get all of the units for a given parameter that will be summarized
-      unit_list[[nm]] <- unique(object$result[[unit_col]][object$result$PPTESTCD %in% nm])
-    }
-  }
+  unit_col <- get_summary_PKNCAresults_result_unit_col(object = object)
+  unit_list <- get_summary_PKNCAresults_result_unit_list(data = raw_results, unit_col = unit_col)
   if (is.null(pretty_names)) {
     pretty_names <- !is.null(unit_list)
   }
 
-  result_data_cols <- as.data.frame(result_data_cols_list)
+  ## Prepare the result data.frame ####
+  # Populate the groups on the left and the results on the right.
+  result_values <- as.data.frame(result_data_cols_list)
   # If no other value is filled in, then the default is that it was not
   # requested.
-  result_data_cols[, names(result_data_cols)] <- not_requested
+  result_values[, names(result_values)] <- not_requested
   # Rows that will have results
-  ret_group_cols <- unique(raw_results[, group_cols, drop = FALSE])
-  simplified_results <-
-    raw_results[raw_results$PPTESTCD %in% names(result_data_cols), , drop = FALSE]
-  ret <- unique(raw_results[, group_cols, drop = FALSE])
-
-  subject_col <- object$data$conc$columns$subject
-  has_subject_col <- length(subject_col) > 0
-  if (is.na(summarize_n)) {
-    summarize_n <- has_subject_col
-  } else if (summarize_n & !has_subject_col) {
-    warning("summarize_n was requested, but no subject column exists")
-    summarize_n <- FALSE
-  }
-  if (summarize_n) {
-    ret$N <- NA_integer_
-  }
-
-  ret <- cbind(ret, result_data_cols)
-  # Loop over every group that needs summarization
-  for (row_idx in seq_len(nrow(ret))) {
-    # Loop over every column that needs summarization
-    for (current_parameter in names(result_data_cols)) {
-      # Select the rows of the intervals that match the current row
-      # from the return value.
-      current_interval <-
-        merge(
-          ret[row_idx, group_cols, drop = FALSE],
-          object$data$intervals[,
-            intersect(
-              names(object$data$intervals),
-              c(group_cols, current_parameter)
-            ),
-            drop = FALSE
-          ]
-        )
-      if (any(current_interval[, current_parameter])) {
-        current_data <- merge(
-          ret[row_idx, group_cols, drop = FALSE],
-          simplified_results[simplified_results$PPTESTCD %in% current_parameter, , drop = FALSE]
-        )
-        # Exclude value, when required
-        current_data[[result_number_col]][!is.na(current_data[[exclude_col]])] <- NA
-        if (nrow(current_data) == 0) {
-          # I don't think that a user can get here
-          warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
-        } else {
-          if (summarize_n) {
-            n_subjects <- length(unique(current_data[[subject_col]]))
-            if (n_subjects < nrow(current_data)) {
-              warning("Some subjects may have more than one result for ", current_parameter)
-            }
-            # max() because the summary table provides the N for the full row, not
-            # for a single parameter.
-            ret$N[row_idx] <- max(ret$N[row_idx], n_subjects, na.rm = TRUE)
-          }
-          # Calculation is required
-          if (is.null(summary_instructions[[current_parameter]])) {
-            stop("No summary function is set for parameter ", current_parameter, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
-          }
-          point <- summary_instructions[[current_parameter]]$point(current_data[[result_number_col]])
-          na_point <- is.na(point)
-          na_spread <- NA
-          # Round the point estimate
-          point <- roundingSummarize(point, current_parameter)
-          current <- point
-          if ("spread" %in% names(summary_instructions[[current_parameter]])) {
-            spread <- summary_instructions[[current_parameter]]$spread(
-              current_data[[result_number_col]]
-            )
-            na_spread <- all(is.na(spread))
-            if (na_spread) {
-              # The spread couldn't be calculated, so show that
-              spread <- not_calculated
-            } else {
-              # Round the spread
-              spread <- roundingSummarize(spread, current_parameter)
-            }
-            # Collapse the spread into a usable form if it is longer than one
-            # (e.g. a range or a confidence interval) and put brackets around
-            # it.
-            spread <- paste0(" [", paste(spread, collapse = ", "), "]")
-            current <- paste0(current, spread)
-          }
-          # Determine if the results were all missing, and if so, give
-          # the not_calculated string
-          if (na_point & (na_spread %in% c(NA, TRUE))) {
-            ret[row_idx, current_parameter] <- not_calculated
-          } else {
-            if (use_units) {
-              if (length(unit_list[[current_parameter]]) > 1) {
-                # Need to choose the correct, current unit, and if more than one
-                # is present, do not summarize.
-                units_to_add <- unique(current_data[[unit_col]])
-                if (length(units_to_add) > 1) {
-                  stop(
-                    "Multiple units cannot be summarized together.  For ",
-                    current_parameter, ", trying to combine: ",
-                    paste(units_to_add, collapse = ", ")
-                  )
-                }
-                current <- paste(current, units_to_add)
-              }
-            }
-            ret[row_idx, current_parameter] <- current
-          }
-        }
-      }
-    }
-  }
-  # If N is requested, but it is not provided, then it should be set to not
-  # calculated.
-  if (summarize_n) {
-    if (any(mask.na.N <- is.na(ret$N))) {
-      # ret$N[mask.na.N] <- not_calculated
-      stop("Invalid subject count (please report this as a bug)") # nocov
-    }
-    ret$N <- as.character(ret$N)
-  }
-  # Extract the summarization descriptions for the caption
-  summary_descriptions <-
-    unlist(
-      lapply(
-        X = summary_instructions[names(result_data_cols)],
-        FUN = `[[`,
-        i = "description"
-      )
+  result_groups <- unique(raw_results[, group_cols, drop = FALSE])
+  # result_n will be the same as result_groups if summarize_n is FALSE and have
+  # an "N" column added if summarize_n is TRUE.
+  result_n <-
+    get_summary_PKNCAresults_count_N(
+      data = raw_results,
+      result_group = result_groups,
+      subject_col = subject_col,
+      summarize_n = summarize_n,
+      not_calculated = not_calculated
     )
-  if (pretty_names) {
-    # Make the caption use pretty names if they're used in the header
-    all_intervals <- get.interval.cols()
-    for (idx in seq_along(summary_descriptions)) {
-      names(summary_descriptions)[idx] <- all_intervals[[names(summary_descriptions)[idx]]]$pretty_name
-    }
-  }
-  simplified_summary_descriptions <- summary_descriptions[!duplicated(summary_descriptions)]
-  for (idx in seq_along(simplified_summary_descriptions)) {
-    names(simplified_summary_descriptions)[idx] <-
-      paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
-        collapse = ", "
-      )
-  }
+
+  # Calculation ####
+  ret <-
+    summarize_PKNCAresults_object(
+      data = raw_results,
+      result_group = result_n,
+      subject_col = subject_col,
+      result_value_template = result_values,
+      result_units = unit_list,
+      intervals = object$data$intervals,
+      not_calculated = not_calculated
+    )
+
+  # Decoration ####
+  caption <-
+    get_summary_PKNCAresults_caption(
+      param_names = names(result_values),
+      pretty_names = pretty_names
+    )
   ret_pretty <- rename_summary_PKNCAresults(data = ret, unit_list = unit_list, pretty_names = pretty_names)
   as_summary_PKNCAresults(
     ret_pretty,
-    caption = paste(
-      names(simplified_summary_descriptions),
-      simplified_summary_descriptions,
-      sep = ": ",
-      collapse = "; "
-    )
+    caption = caption
   )
 }
 
@@ -306,23 +196,264 @@ get_summary_PKNCAresults_drop_group <- function(object, drop_group) {
   ret
 }
 
+# Get the column name with the results to use for summarization
+get_summary_PKNCAresults_result_number_col <- function(object) {
+  if (is.data.frame(object)) {
+    data <- object
+  } else {
+    data <- object$result
+  }
+  intersect(c("PPSTRES", "PPORRES"), names(data))[1]
+}
+
+# Get the column name with the result unitss to use for summarization
+get_summary_PKNCAresults_result_unit_col <- function(object) {
+  if (is.data.frame(object)) {
+    data <- object
+  } else {
+    data <- object$result
+  }
+  # This will return NULL if neither column is present
+  intersect(c("PPSTRESU", "PPORRESU"), names(data))[1]
+}
+
+# Get the list of units for each parameter to use for summarization
+get_summary_PKNCAresults_result_unit_list <- function(data, unit_col) {
+  unit_list <- NULL
+  if (!is.null(unit_col)) {
+    all_params <- unique(data$PPTESTCD)
+    unit_list <-
+      setNames(
+        as.list(rep(NA_character_, length(all_params))),
+        nm = all_params
+      )
+    for (nm in names(unit_list)) {
+      # Get all of the units for a given parameter that will be summarized
+      unit_list[[nm]] <- unique(data[[unit_col]][data$PPTESTCD %in% nm])
+    }
+  }
+  unit_list
+}
+
+# Count the number of subjects in each group, always return a data.frame with
+# the right number of rows so that it can go into cbind
+get_summary_PKNCAresults_count_N <- function(data, result_group, subject_col, summarize_n, not_calculated) {
+  if (summarize_n) {
+    # R CMD Check hack
+    N <- NULL
+    ret <-
+      data |>
+      dplyr::grouped_df(vars = names(result_group)) |>
+      dplyr::summarize(
+        N = length(unique(.data[[subject_col]]))
+      ) |>
+      dplyr::ungroup()
+    # Reorder the return value to be in the same order as the original groups
+    key_col <- paste0(max(names(ret)), "X")
+    # This could fail if there are no groups.  But also, `summarize_n` should be
+    # FALSE in that case.  So, it shouldn't be a problem.
+    group_key <- do.call(paste, result_group)
+    ret[[key_col]] <-
+      factor(
+        do.call(paste, ret[, names(result_group)]),
+        levels = group_key,
+        ordered = TRUE
+      )
+    ret <- ret[order(ret[[key_col]]), ]
+    ret[[key_col]] <- NULL
+
+    ret$N <- as.character(ret$N)
+    if (any(is.na(ret$N))) {
+      # If N is requested, but it is not provided, then it should be set to not
+      # calculated.
+      ret$N[is.na(ret$N)] <- not_calculated
+    }
+  } else {
+    ret <- result_group
+  }
+  ret
+}
+
+# Provide a clean caption for summarized parameters
+get_summary_PKNCAresults_caption <- function(param_names, pretty_names) {
+  # Extract the summarization descriptions for the caption
+  summary_descriptions <-
+    unlist(
+      lapply(
+        X = PKNCA.set.summary()[param_names],
+        FUN = `[[`,
+        i = "description"
+      )
+    )
+
+  if (pretty_names) {
+    # Make the caption use pretty names if they're used in the header
+    all_intervals <- get.interval.cols()
+    for (idx in seq_along(summary_descriptions)) {
+      names(summary_descriptions)[idx] <- all_intervals[[names(summary_descriptions)[idx]]]$pretty_name
+    }
+  }
+  # Remove duplicate descriptions and then find all the ones that are duplicates
+  simplified_summary_descriptions <- summary_descriptions[!duplicated(summary_descriptions)]
+  for (idx in seq_along(simplified_summary_descriptions)) {
+    names(simplified_summary_descriptions)[idx] <-
+      paste(names(summary_descriptions)[summary_descriptions %in% simplified_summary_descriptions[idx]],
+            collapse = ", "
+      )
+  }
+  paste(
+    names(simplified_summary_descriptions),
+    simplified_summary_descriptions,
+    sep = ": ",
+    collapse = "; "
+  )
+}
+
+#' Clean up the exclusions in the object
+#'
+#' @param object The PKNCAresults object to clean
+#' @returns The results data.frame with exclusions set to `NA`
+#' @noRd
+summarize_PKNCAresults_clean_exclude <- function(object) {
+  result_number_col <- get_summary_PKNCAresults_result_number_col(object)
+  exclude_col <- object$columns$exclude
+  # Ensure that the exclude_col is NA instead of "" for subsequent processing.
+  raw_results <- object$result
+  raw_results[[exclude_col]] <- normalize_exclude(raw_results[[exclude_col]])
+  raw_results[[result_number_col]][!is.na(raw_results[[exclude_col]])] <- NA
+  raw_results
+}
+
 # A helper function for summary.PKNCAresults to summarize everything
-summarize_PKNCAresults_object <- function(object) {
-  browser()
-  stop()
+summarize_PKNCAresults_object <- function(data, result_group, subject_col, result_value_template, result_units, intervals, not_calculated) {
+  ret_values_list <- list()
+  for (idx in seq_len(nrow(result_group))) {
+    ret_values_list <-
+      append(
+        ret_values_list,
+        list(summarize_PKNCAresults_group(
+          data = data,
+          current_group = result_group[idx,],
+          subject_col = subject_col,
+          result_value_template = result_value_template,
+          result_units = result_units,
+          intervals = intervals,
+          not_calculated = not_calculated
+        ))
+      )
+  }
+  ret <- cbind(result_group, dplyr::bind_rows(ret_values_list))
+  ret
 }
 
 # A helper function for summary.PKNCAresults to summarize one group
-summarize_PKNCAresults_group <- function() {
-  browser()
-  stop()
+summarize_PKNCAresults_group <- function(data, current_group, subject_col, result_value_template, result_units, intervals, not_calculated) {
+  ret <- result_value_template
+
+  current_data <- dplyr::inner_join(data, current_group, by = intersect(names(data), names(current_group)))
+  if (nrow(current_data) == 0) {
+    # I don't think that a user can get here
+    warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
+    return(ret) # nocov
+  }
+  current_interval <- dplyr::inner_join(intervals, current_group, by = intersect(names(intervals), names(current_group)))
+  current_param_prep <-
+    vapply(
+      X = current_interval[, setdiff(names(get.interval.cols()), c("start", "end"))],
+      FUN = any,
+      FUN.VALUE = TRUE
+    )
+  current_param_all <- names(current_param_prep[current_param_prep])
+
+  for (current_param in current_param_all) {
+    current_summary <-
+      summarize_PKNCAresults_parameter(
+        data = current_data,
+        subject_col = subject_col,
+        parameter = current_param,
+        include_units = length(result_units[[current_param]]) > 1,
+        not_calculated = not_calculated
+      )
+    # summarize N, if requested and there is a value for calculation
+    if (("N" %in% names(current_group)) && (current_summary != not_calculated)) {
+      # browser()
+      # stop()
+    }
+    # use `as.character()` to ensure that the output stays a data.frame rather
+    # than a complicated list.
+    ret[[current_param]] <- as.character(current_summary)
+  }
+  ret
 }
 
 # A helper function for summary.PKNCAresults to summarize one parameter within a
 # group
-summarize_PKNCAresults_parameter <- function() {
-  browser()
-  stop()
+summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, include_units, not_calculated) {
+  current_data <- data[data$PPTESTCD %in% parameter, , drop = FALSE]
+  number_col <- get_summary_PKNCAresults_result_number_col(data)
+  unit_col <- get_summary_PKNCAresults_result_unit_col(data)
+
+  units <- unique(current_data[[unit_col]])
+  if (length(units) > 1) {
+    stop(
+      "Multiple units cannot be summarized together.  For ",
+      current_parameter, ", trying to combine: ",
+      paste(units, collapse = ", ")
+    )
+  }
+
+  N <- length(unique(current_data[[subject_col]]))
+  n <- sum(!is.na(current_data[[number_col]]))
+  if (any(duplicated(current_data[[subject_col]]))) {
+    warning("Some subjects may have more than one result for ", current_parameter)
+  }
+
+  current_summary_instructions <- PKNCA.set.summary()[[parameter]]
+  if (is.null(current_summary_instructions)) {
+    stop("No summary function is set for parameter ", parameter, ".  Please set it with PKNCA.set.summary and report this as a bug in PKNCA.") # nocov
+  }
+
+  point <- current_summary_instructions$point(current_data[[number_col]])
+  point_txt <- roundingSummarize(point, parameter)
+  na_point <- is.na(point)
+  result_txt <- point_txt
+
+  spread <- NULL
+  spread_txt <- NULL
+  na_spread <- TRUE
+  if ("spread" %in% names(current_summary_instructions)) {
+    spread <- current_summary_instructions$spread(current_data[[number_col]])
+    na_spread <- all(is.na(spread))
+    if (na_spread) {
+      # The spread couldn't be calculated, so show that
+      spread_txt <- not_calculated
+    } else {
+      # Round the spread
+      spread_txt <- roundingSummarize(spread, parameter)
+    }
+    # Collapse the spread into a usable form if it is longer than one
+    # (e.g. a range or a confidence interval) and put brackets around
+    # it.
+    spread_txt <- paste0(" [", paste(spread_txt, collapse = ", "), "]")
+    result_txt <- paste0(point_txt, spread_txt)
+  }
+
+  if (na_point & na_spread) {
+    result_txt <- not_calculated
+  } else if (include_units) {
+    current <- paste(current, units_to_add)
+  }
+
+  structure(
+    result_txt,
+    parameter = parameter,
+    point = point,
+    spread = spread,
+    N = N,
+    n = n,
+    units = units,
+    class = "summarize_PKNCAresults_parameter"
+  )
 }
 
 rename_summary_PKNCAresults <- function(data, unit_list, pretty_names) {
