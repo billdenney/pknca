@@ -169,7 +169,7 @@ example to run directly, please see <a href="v02-example-theophylline.html">the 
 <span><span class="co">##      0  24 12 74.6 [24.3]           .                  .           .          .</span></span>
 <span><span class="co">##      0 Inf 12           . 8.65 [17.0] 1.14 [0.630, 3.55] 8.18 [2.12] 115 [28.4]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation</span></span></code></pre>
+<span><span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="data-handling">Data Handling<a class="anchor" aria-label="anchor" href="#data-handling"></a>
@@ -1018,6 +1018,25 @@ intervals, modify them, and put them back.</p>
 <span><span class="va">intervals_manual</span><span class="op">$</span><span class="va">aucinf.obs</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
 <span><span class="va">data_obj</span><span class="op">$</span><span class="va">intervals</span> <span class="op">&lt;-</span> <span class="va">intervals_manual</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="summarizing-results">Summarizing results<a class="anchor" aria-label="anchor" href="#summarizing-results"></a>
+</h2>
+<p>When NCA has been calculated, you can summarize the results with the
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
+<p>By default, it will count the number of unique subjects
+(<code>N</code>) in the summary, and when the number of subjects differs
+from the number of measurements included in a summary (<code>n</code>),
+it will summarize <code>n</code> for the given parameters. Note that
+counting of “n” includes all non-missing values that were not excluded
+from summarization; this will included all zeros that are e.g. excluded
+from geometric statistics.</p>
+<p>Edge cases like two unique subjects where one has an excluded value
+and one has duplicated values (<code>N = 2</code> and <code>n = 2</code>
+even though both measurements come from a single subject) are to be
+handled by the user.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

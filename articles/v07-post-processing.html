@@ -354,20 +354,20 @@ end time; and one column per parameter calculated.</p>
 <span><span class="co">##      0  24 12 74.6 [24.3]           .                  .           .          .</span></span>
 <span><span class="co">##      0 Inf 12           . 8.65 [17.0] 1.14 [0.630, 3.55] 8.18 [2.12] 115 [28.4]</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation</span></span></code></pre>
+<span><span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects</span></span></code></pre>
 <p>When values are excluded as described above, the excluded values are
 not included in the summary (note that half.life and aucinf.obs
 differ).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results_excl_span</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  start end  N     auclast        cmax               tmax    half.life</span></span>
-<span><span class="co">##      0  24 12 74.6 [24.3]           .                  .            .</span></span>
-<span><span class="co">##      0 Inf 12           . 8.65 [17.0] 1.14 [0.630, 3.55] 7.36 [0.742]</span></span>
-<span><span class="co">##  aucinf.obs</span></span>
-<span><span class="co">##           .</span></span>
-<span><span class="co">##  105 [16.4]</span></span>
+<pre><code><span><span class="co">##  start end  N     auclast        cmax               tmax         half.life</span></span>
+<span><span class="co">##      0  24 12 74.6 [24.3]           .                  .                 .</span></span>
+<span><span class="co">##      0 Inf 12           . 8.65 [17.0] 1.14 [0.630, 3.55] 7.36 [0.742], n=9</span></span>
+<span><span class="co">##       aucinf.obs</span></span>
+<span><span class="co">##                .</span></span>
+<span><span class="co">##  105 [16.4], n=9</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation</span></span></code></pre>
+<span><span class="co">## Caption: auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects; n: number of measurements included in summary</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="listing-of-results">Listing of Results<a class="anchor" aria-label="anchor" href="#listing-of-results"></a>
