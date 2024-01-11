@@ -214,7 +214,11 @@ get_summary_PKNCAresults_result_unit_col <- function(object) {
     data <- object$result
   }
   # This will return NULL if neither column is present
-  intersect(c("PPSTRESU", "PPORRESU"), names(data))[1]
+  ret <- intersect(c("PPSTRESU", "PPORRESU"), names(data))[1]
+  if (is.na(ret)) {
+    ret <- NULL
+  }
+  ret
 }
 
 # Get the list of units for each parameter to use for summarization
@@ -238,7 +242,11 @@ get_summary_PKNCAresults_result_unit_list <- function(data, unit_col) {
 # Count the number of subjects in each group, always return a data.frame with
 # the right number of rows so that it can go into cbind
 get_summary_PKNCAresults_count_N <- function(data, result_group, subject_col, summarize_n, not_calculated) {
-  if (summarize_n) {
+  # subject_col %in% names(data) handles sparse data where the subject column
+  # may be imputed rather than present in the data.  And, adding the `any()`
+  # outside that ensures that single-subject data (with no subject column) also
+  # returns FALSE.
+  if (summarize_n && any(subject_col %in% names(data))) {
     # R CMD Check hack
     N <- NULL
     ret <-
@@ -353,7 +361,7 @@ summarize_PKNCAresults_group <- function(data, current_group, subject_col, resul
   current_data <- dplyr::inner_join(data, current_group, by = intersect(names(data), names(current_group)))
   if (nrow(current_data) == 0) {
     # I don't think that a user can get here
-    warning("No results to summarize for ", current_parameter, " in result row ", row_idx) # nocov
+    warning("No results to summarize for result row ", row_idx) # nocov
     return(ret) # nocov
   }
   current_interval <- dplyr::inner_join(intervals, current_group, by = intersect(names(intervals), names(current_group)))
@@ -393,20 +401,27 @@ summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, inclu
   number_col <- get_summary_PKNCAresults_result_number_col(data)
   unit_col <- get_summary_PKNCAresults_result_unit_col(data)
 
-  units <- unique(current_data[[unit_col]])
-  if (length(units) > 1) {
-    stop(
-      "Multiple units cannot be summarized together.  For ",
-      current_parameter, ", trying to combine: ",
-      paste(units, collapse = ", ")
-    )
+  units <- NULL
+  if (!is.null(unit_col)) {
+    units <- unique(current_data[[unit_col]])
+    if (length(units) > 1) {
+      stop(
+        "Multiple units cannot be summarized together.  For ",
+        parameter, ", trying to combine: ",
+        paste(units, collapse = ", ")
+      )
+    }
   }
 
-  N <- length(unique(current_data[[subject_col]]))
-  n <- sum(!is.na(current_data[[number_col]]))
-  if (any(duplicated(current_data[[subject_col]]))) {
-    warning("Some subjects may have more than one result for ", current_parameter)
+  if (length(subject_col) == 1) {
+    N <- length(unique(current_data[[subject_col]]))
+    if (any(duplicated(current_data[[subject_col]]))) {
+      warning("Some subjects may have more than one result for ", parameter)
+    }
+  } else {
+    N <- NULL
   }
+  n <- sum(!is.na(current_data[[number_col]]))
 
   current_summary_instructions <- PKNCA.set.summary()[[parameter]]
   if (is.null(current_summary_instructions)) {
@@ -441,7 +456,7 @@ summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, inclu
   if (na_point & na_spread) {
     result_txt <- not_calculated
   } else if (include_units) {
-    current <- paste(current, units_to_add)
+    result_txt <- paste(result_txt, units)
   }
 
   structure(
