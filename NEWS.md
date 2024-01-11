@@ -6,6 +6,13 @@ the dosing including dose amount and route.
 
 # PKNCA development version
 
+* PKNCA will now indicate the number of observations included in a summary ("n")
+  when it is not the same as the number of subjects included in the summary
+  ("N") and the caption will also indicate the definition of "N" and "n".  Note
+  that counting of "n" includes all non-missing values that were not excluded
+  from summarization; this will included all zeros that are e.g. excluded from
+  geometric statistics.
+  * If `n == 1`, spread statistics are no longer calculated in the summary.
 * A new AUC integration method, "lin-log", has been added using the linear
   method through tmax and log after tmax, with required exceptions for zeros
   (fix #23)
@@ -54,6 +61,9 @@ the dosing including dose amount and route.
   `assert_conc_time()`.
 * The clast.obs parameter is now zero when all concentrations are zero (see #253
   for part of the reason).
+* (This is not likely to be important for most users.)  The `business...`
+  functions (e.g. `business.geomean()`) now include an attribute in non-`NA`
+  results with `n`, the number of values included in the statistic.
 
 ## Changes under the hood
 

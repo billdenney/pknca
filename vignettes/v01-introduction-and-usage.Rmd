@@ -366,3 +366,23 @@ intervals_manual <- data_obj$intervals
 intervals_manual$aucinf.obs[1] <- TRUE
 data_obj$intervals <- intervals_manual
 ```
+
+# Summarizing results
+
+When NCA has been calculated, you can summarize the results with the `summary()`
+function.
+
+```{r eval=FALSE}
+summary(o_nca)
+```
+
+By default, it will count the number of unique subjects (`N`) in the summary, and
+when the number of subjects differs from the number of measurements included in
+a summary (`n`), it will summarize `n` for the given parameters.  Note that
+counting of "n" includes all non-missing values that were not excluded from
+summarization; this will included all zeros that are e.g. excluded from
+geometric statistics.
+
+Edge cases like two unique subjects where one has an excluded value and one has
+duplicated values (`N = 2` and `n = 2` even though both measurements come from a
+single subject) are to be handled by the user.

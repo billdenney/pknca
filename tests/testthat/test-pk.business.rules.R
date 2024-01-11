@@ -30,15 +30,15 @@ test_that("business.mean", {
   PKNCA.options(default=TRUE)
   PKNCA.options(max.missing=0.5)
   # Test a normal mean of a scalar and vector
-  expect_equal(business.mean(1), 1)
-  expect_equal(business.mean(c(1, 2)), 1.5)
+  expect_equal(business.mean(1), structure(1, n = 1))
+  expect_equal(business.mean(c(1, 2)), structure(1.5, n = 2))
   # Ensure that at the max.missing fraction a value is reported and
   # above that, NA is returned.
-  expect_equal(business.mean(c(NA, NA, 1, 2)), 1.5)
+  expect_equal(business.mean(c(NA, NA, 1, 2)), structure(1.5, n = 2))
   expect_equal(business.mean(c(NA, NA, NA, 2)), NA)
   # Ensure that it uses the current value of max.missing
   PKNCA.options(max.missing=0.3)
-  expect_equal(business.mean(c(NA, 1, 2, 3)), 2)
+  expect_equal(business.mean(c(NA, 1, 2, 3)), structure(2, n = 3))
   expect_equal(business.mean(c(NA, NA, 1, 2)), NA)
 })
 
@@ -46,13 +46,13 @@ test_that("pk.business", {
   PKNCA.options(default=TRUE)
   PKNCA.options(max.missing=0.5)
   b.mean <- pk.business(mean)
-  expect_equal(b.mean(c(1, 2)), 1.5)
+  expect_equal(b.mean(c(1, 2)), structure(1.5, n = 2))
   # Right at the border, it still reports
-  expect_equal(b.mean(c(1, NA)), 1)
+  expect_equal(b.mean(c(1, NA)), structure(1, n = 1))
   # When too much data is missing, NA is returned
   expect_equal(b.mean(c(1, NA, NA)), NA)
   # It respects zero.missing
   b.mean.2 <- pk.business(mean, zero.missing=TRUE)
-  expect_equal(b.mean(c(0, 1)), 0.5)
-  expect_equal(b.mean.2(c(0, 1)), 1)
+  expect_equal(b.mean(c(0, 1)), structure(0.5, n = 2))
+  expect_equal(b.mean.2(c(0, 1)), structure(1, n = 1))
 })

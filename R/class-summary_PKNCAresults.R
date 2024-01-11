@@ -177,8 +177,11 @@ summary.PKNCAresults <- function(object, ...,
   caption <-
     get_summary_PKNCAresults_caption(
       param_names = names(result_values),
-      pretty_names = pretty_names
+      pretty_names = pretty_names,
+      footnote_N = "N" %in% names(ret),
+      footnote_n = attr(ret, "footnote_n", exact = TRUE)
     )
+  attr(ret, "footnote_n") <- NULL
   ret_pretty <- rename_summary_PKNCAresults(data = ret, unit_list = unit_list, pretty_names = pretty_names)
   as_summary_PKNCAresults(
     ret_pretty,
@@ -283,7 +286,7 @@ get_summary_PKNCAresults_count_N <- function(data, result_group, subject_col, su
 }
 
 # Provide a clean caption for summarized parameters
-get_summary_PKNCAresults_caption <- function(param_names, pretty_names) {
+get_summary_PKNCAresults_caption <- function(param_names, pretty_names, footnote_N, footnote_n) {
   # Extract the summarization descriptions for the caption
   summary_descriptions <-
     unlist(
@@ -309,12 +312,20 @@ get_summary_PKNCAresults_caption <- function(param_names, pretty_names) {
             collapse = ", "
       )
   }
-  paste(
-    names(simplified_summary_descriptions),
-    simplified_summary_descriptions,
-    sep = ": ",
-    collapse = "; "
-  )
+  ret <-
+    paste(
+      names(simplified_summary_descriptions),
+      simplified_summary_descriptions,
+      sep = ": ",
+      collapse = "; "
+    )
+  if (footnote_N) {
+    ret <- c(ret, "N: number of subjects")
+  }
+  if (footnote_n) {
+    ret <- c(ret, "n: number of measurements included in summary")
+  }
+  paste(ret, collapse = "; ")
 }
 
 #' Clean up the exclusions in the object
@@ -335,22 +346,25 @@ summarize_PKNCAresults_clean_exclude <- function(object) {
 # A helper function for summary.PKNCAresults to summarize everything
 summarize_PKNCAresults_object <- function(data, result_group, subject_col, result_value_template, result_units, intervals, not_calculated) {
   ret_values_list <- list()
+  footnote_n <- FALSE
   for (idx in seq_len(nrow(result_group))) {
-    ret_values_list <-
-      append(
-        ret_values_list,
-        list(summarize_PKNCAresults_group(
-          data = data,
-          current_group = result_group[idx,],
-          subject_col = subject_col,
-          result_value_template = result_value_template,
-          result_units = result_units,
-          intervals = intervals,
-          not_calculated = not_calculated
-        ))
+    ret_idx <-
+      summarize_PKNCAresults_group(
+        data = data,
+        current_group = result_group[idx,],
+        subject_col = subject_col,
+        result_value_template = result_value_template,
+        result_units = result_units,
+        intervals = intervals,
+        not_calculated = not_calculated
       )
+    ret_values_list <- append(ret_values_list, list(ret_idx))
+    if (attr(ret_idx, "footnote_n", exact = TRUE)) {
+      footnote_n <- TRUE
+    }
   }
   ret <- cbind(result_group, dplyr::bind_rows(ret_values_list))
+  attr(ret, "footnote_n") <- footnote_n
   ret
 }
 
@@ -373,6 +387,7 @@ summarize_PKNCAresults_group <- function(data, current_group, subject_col, resul
     )
   current_param_all <- names(current_param_prep[current_param_prep])
 
+  footnote_n <- FALSE
   for (current_param in current_param_all) {
     current_summary <-
       summarize_PKNCAresults_parameter(
@@ -384,13 +399,18 @@ summarize_PKNCAresults_group <- function(data, current_group, subject_col, resul
       )
     # summarize N, if requested and there is a value for calculation
     if (("N" %in% names(current_group)) && (current_summary != not_calculated)) {
-      # browser()
-      # stop()
+      N_group <- as.integer(current_group$N)
+      n_summary <- attr(current_summary, "n", exact = TRUE)
+      if (N_group != n_summary) {
+        current_summary <- sprintf("%s, n=%d", current_summary, n_summary)
+        footnote_n <- TRUE
+      }
     }
     # use `as.character()` to ensure that the output stays a data.frame rather
     # than a complicated list.
     ret[[current_param]] <- as.character(current_summary)
   }
+  attr(ret, "footnote_n") <- footnote_n
   ret
 }
 
@@ -429,6 +449,13 @@ summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, inclu
   }
 
   point <- current_summary_instructions$point(current_data[[number_col]])
+  # We could count only the number of measurements included in the point
+  # estimate which may differ when zeros are excluded, but that would likely be
+  # less clear.  So, we are counting all points with available measurements.
+  # point_n <- attr(point, which = "n", exact = TRUE)
+  # if (!is.null(point_n)) {
+  #   n <- point_n
+  # }
   point_txt <- roundingSummarize(point, parameter)
   na_point <- is.na(point)
   result_txt <- point_txt
@@ -436,7 +463,7 @@ summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, inclu
   spread <- NULL
   spread_txt <- NULL
   na_spread <- TRUE
-  if ("spread" %in% names(current_summary_instructions)) {
+  if ("spread" %in% names(current_summary_instructions) && n > 1) {
     spread <- current_summary_instructions$spread(current_data[[number_col]])
     na_spread <- all(is.na(spread))
     if (na_spread) {

@@ -226,8 +226,7 @@ test_that("exclude.default", {
                info="summary.PKNCAresults respects exclude")
 })
 
-# Issue #55
-test_that("normalize_exclude makes blanks into NA_character_", {
+test_that("normalize_exclude makes blanks into NA_character_ (#55)", {
   my_conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   my_conc$exclude <- c("", rep(NA_character_, nrow(my_conc) - 1))
   obj1 <- PKNCAconc(my_conc,
