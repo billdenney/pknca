@@ -33,7 +33,7 @@ pk.business <- function(FUN,
     if (sum(mask.missing)/length(x) > max.missing)
       return(NA)
     ret <- FUN(x[!mask.missing], ...)
-    #attr(ret, "n") <- sum(!mask.missing)
+    attr(ret, "n") <- sum(!mask.missing)
     ret
   }
 

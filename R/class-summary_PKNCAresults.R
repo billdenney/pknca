@@ -401,7 +401,6 @@ summarize_PKNCAresults_group <- function(data, current_group, subject_col, resul
     if (("N" %in% names(current_group)) && (current_summary != not_calculated)) {
       N_group <- as.integer(current_group$N)
       n_summary <- attr(current_summary, "n", exact = TRUE)
-      browser()
       if (N_group != n_summary) {
         current_summary <- sprintf("%s, n=%d", current_summary, n_summary)
         footnote_n <- TRUE
@@ -450,6 +449,13 @@ summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, inclu
   }
 
   point <- current_summary_instructions$point(current_data[[number_col]])
+  # We could count only the number of measurements included in the point
+  # estimate which may differ when zeros are excluded, but that would likely be
+  # less clear.  So, we are counting all points with available measurements.
+  # point_n <- attr(point, which = "n", exact = TRUE)
+  # if (!is.null(point_n)) {
+  #   n <- point_n
+  # }
   point_txt <- roundingSummarize(point, parameter)
   na_point <- is.na(point)
   result_txt <- point_txt
@@ -457,7 +463,7 @@ summarize_PKNCAresults_parameter <- function(data, parameter, subject_col, inclu
   spread <- NULL
   spread_txt <- NULL
   na_spread <- TRUE
-  if ("spread" %in% names(current_summary_instructions)) {
+  if ("spread" %in% names(current_summary_instructions) && n > 1) {
     spread <- current_summary_instructions$spread(current_data[[number_col]])
     na_spread <- all(is.na(spread))
     if (na_spread) {

@@ -53,8 +53,8 @@ test_that("PKNCAresults summary", {
         N = "2",
         auclast = c("13.5 [NC]", "."),
         cmax = c(".", "1.00 [NC]"),
-        tmax = c(".", "4.00 [4.00, 4.00], n=1"),
-        half.life = c(".", "16.1 [NC], n=1"),
+        tmax = c(".", "4.00, n=1"),
+        half.life = c(".", "16.1, n=1"),
         aucinf.obs = c(".", "21.5 [NC]"),
         stringsAsFactors = FALSE
       ),
@@ -254,7 +254,7 @@ test_that("summary.PKNCAresults manages exclusions as missing not as non-existen
         end = c(24, Inf),
         treatment = "Trt 1",
         N = "2",
-        auclast = c("14.0 [NC], n=1", "."),
+        auclast = c("14.0, n=1", "."),
         cmax = c(".", "0.970 [4.29]"),
         tmax = c(".", "3.00 [2.00, 4.00]"),
         half.life = c(".", "14.2 [2.79]"),
@@ -403,7 +403,7 @@ test_that("PKNCAresults summary counts N and n", {
     myresult <- pk.nca(mydata)
   )
   o_summary <- summary(myresult)
-  expect_equal(o_summary$half.life, c(".", "85.0 [NC], n=1"))
+  expect_equal(o_summary$half.life, c(".", "85.0, n=1"))
   expect_equal(
     attr(o_summary, "caption"),
     "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects; n: number of measurements included in summary"
