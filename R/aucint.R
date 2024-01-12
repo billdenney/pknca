@@ -57,6 +57,9 @@ pk.calc.aucint <- function(conc, time,
   } else {
     data <- data.frame(conc, time)
   }
+  if (all(data$conc %in% 0)) {
+    return(structure(0, exclude = "DO NOT EXCLUDE"))
+  }
   interval <- assert_intervaltime_single(interval = interval, start = start, end = end)
   missing_times <-
     if (is.infinite(interval[2])) {
@@ -79,7 +82,8 @@ pk.calc.aucint <- function(conc, time,
       time_clast <- tlast
     }
   }
-  if (length(missing_times)) {
+  extrap_times <- numeric()
+  if (length(missing_times) > 0) {
     if (is.null(time.dose)) {
       missing_conc <-
         interp.extrap.conc(
@@ -111,6 +115,8 @@ pk.calc.aucint <- function(conc, time,
     }
     new_data <- data.frame(conc=c(data$conc, conc_clast, missing_conc),
                            time=c(data$time, time_clast, missing_times))
+    tlast <- pk.calc.tlast(conc = data$conc, time = data$time, check = FALSE)
+    extrap_times <- missing_times[missing_times > tlast]
     new_data <- new_data[new_data$time >= interval[1] &
                            new_data$time <= interval[2],]
     new_data <- new_data[order(new_data$time),]
@@ -133,8 +139,9 @@ pk.calc.aucint <- function(conc, time,
       return(NA_real_)
     }
   } else {
-    conc_interp <- data$conc
-    time_interp <- data$time
+    mask_time <- data$time >= interval[1] & data$time <= interval[2]
+    conc_interp <- data$conc[mask_time]
+    time_interp <- data$time[mask_time]
   }
   # AUCinf traces an AUClast curve if the interval is finite (because
   # the interval doesn't go to infinity) while AUCall and AUClast trace
@@ -153,16 +160,32 @@ pk.calc.aucint <- function(conc, time,
         AUCinf="AUClast"
       )[[auc.type]]
     }
-  pk.calc.auc(
-    conc=conc_interp, time=time_interp,
-    interval=interval,
-    clast=clast, lambda.z=lambda.z,
-    auc.type=auc.type_map,
-    options=options,
-    method=method,
-    ...,
-    check=FALSE
-  )
+
+  interval_method <-
+    choose_interval_method(
+      conc = conc_interp,
+      time = time_interp,
+      tlast = max(time_interp),
+      method = method,
+      auc.type = auc.type,
+      options = options
+    )
+  if (is.finite(interval[2])) {
+    interval_method[length(interval_method)] <- "zero"
+  }
+  if (length(extrap_times) > 0) {
+    interval_method[which(time_interp == extrap_times) - 1] <- "log"
+  }
+  ret <-
+    auc_integrate(
+      conc = conc_interp, time = time_interp,
+      clast = clast, tlast = tlast, lambda.z = lambda.z,
+      interval_method = interval_method,
+      fun_linear = aucintegrate_linear,
+      fun_log = aucintegrate_log,
+      fun_inf = aucintegrate_inf
+    )
+  ret
 }
 
 #' @describeIn pk.calc.aucint

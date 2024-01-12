@@ -32,6 +32,8 @@ the dosing including dose amount and route.
   function and parameter names.  Functions with dots instead of underscores
   should continue to work for the foreseeable future (until version 1.0) with
   warnings.
+* AUCint will now extrapolate the AUC beyond Tlast using logarithmic
+  extrapolation, regardless of the method used (fix #203).
 
 ## Bugs fixed
 
