@@ -635,6 +635,6 @@ test_that("aucint works within pk.calc.all for all zero concentrations with inte
   ))
   expect_equal(
     as.data.frame(o_nca)$PPORRES,
-    rep(NA_real_, 11)
+    c(rep(NA_real_, 10), 0)
   )
 })
