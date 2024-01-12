@@ -222,3 +222,22 @@ test_that("pk.nca with imputation", {
   expect_true(all(is.na(auclast_manualimpute_24)))
   expect_true(!any(is.na(auclast_manualimpute_24.1)))
 })
+
+test_that("start_conc0 imputation works (fix #257)", {
+  d <- data.frame(time=c(0.08, 1, 2, 3, 4),
+                  conc=c(1, 0.5, 0.4, 0.3, 0.2),
+                  subject=1)
+  myconc <- PKNCAconc(data=d, conc~time|subject)
+  mydata <- PKNCAdata(myconc, intervals=data.frame(start=0, end=5,
+                                                   impute="start_conc0",
+                                                   cmax        = TRUE,
+                                                   tmax        = TRUE,
+                                                   aucinf.obs  = TRUE,
+                                                   aucint.last = TRUE,
+                                                   auclast     = TRUE))
+  suppressMessages(suppressWarnings(
+    myres <- pk.nca(mydata)
+  ))
+  df_myres <- as.data.frame(myres)
+  expect_false(is.na(df_myres$PPORRES[df_myres$PPTESTCD == "auclast"]))
+})
