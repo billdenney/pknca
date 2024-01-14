@@ -14,7 +14,7 @@ pk.calc.ceoi(conc, time, duration.dose = NA, check = TRUE)
 \item{duration.dose}{The duration for the dosing administration
 (typically from IV infusion)}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
 The concentration at the end of the infusion, \code{NA} if

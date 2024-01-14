@@ -23,8 +23,8 @@ pk.calc.auciv_pbext(auc, auciv)
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are
 passed to \code{pk.calc.auxc}}
 
-\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
-and \code{\link{clean.conc.na}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}},
+and \code{\link[=clean.conc.na]{clean.conc.na()}}?}
 
 \item{auciv}{The AUC calculated using \code{c0}}
 }

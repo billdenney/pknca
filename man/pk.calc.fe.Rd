@@ -24,5 +24,5 @@ The units for \code{ae} and \code{dose} should be the same
 so that \code{ae/dose} is a unitless fraction.
 }
 \seealso{
-\code{\link{pk.calc.ae}}, \code{\link{pk.calc.clr}}
+\code{\link[=pk.calc.ae]{pk.calc.ae()}}, \code{\link[=pk.calc.clr]{pk.calc.clr()}}
 }

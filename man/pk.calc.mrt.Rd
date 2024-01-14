@@ -26,8 +26,7 @@ Calculate the mean residence time (MRT) for single-dose data or linear
 multiple-dose data.
 }
 \details{
-mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose =
-  0} for oral administration.
+mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose = 0} for oral administration.
 }
 \section{Functions}{
 \itemize{
@@ -35,5 +34,5 @@ mrt is \code{aumc/auc - duration.dose/2} where \code{duration.dose =
 
 }}
 \seealso{
-\code{\link{pk.calc.mrt.md}}
+\code{\link[=pk.calc.mrt.md]{pk.calc.mrt.md()}}
 }

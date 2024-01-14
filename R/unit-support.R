@@ -1,8 +1,8 @@
 #' Create a unit assignment and conversion table
 #'
-#' This data.frame is typically used for the \code{units} argument for
-#' \code{\link{PKNCAdata}()}.  If a unit is not given, then all of the units
-#' derived from that unit will be \code{NA}.
+#' This data.frame is typically used for the `units` argument for
+#' [PKNCAdata()].  If a unit is not given, then all of the units
+#' derived from that unit will be `NA`.
 #'
 #' @param concu,doseu,amountu,timeu Units for concentration, dose, amount, and
 #'   time
@@ -11,9 +11,9 @@
 #'   standardized units, and a conversion factor to multiply the initial value
 #'   by to get a standardized value.
 #' @return A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if
-#'   \code{conversions} is not given, and adding "PPSTRESU" and
-#'   "conversion_factor" if \code{conversions} is given.
-#' @seealso The \code{units} argument for \code{\link{PKNCAdata}()}
+#'   `conversions` is not given, and adding "PPSTRESU" and
+#'   "conversion_factor" if `conversions` is given.
+#' @seealso The `units` argument for [PKNCAdata()]
 #' @examples
 #' pknca_units_table() # only parameters that are unitless
 #' pknca_units_table(
@@ -280,7 +280,7 @@ pknca_units_table_conc_time_amount <- function(concu, timeu, amountu) {
 
 #' Find NCA parameters with a given unit type
 #'
-#' @param unit_type The type of unit as assigned with \code{add.interval.col}
+#' @param unit_type The type of unit as assigned with `add.interval.col`
 #' @return A character vector of parameters with a given unit type
 #' @keywords Internal
 pknca_find_units_param <- function(unit_type) {

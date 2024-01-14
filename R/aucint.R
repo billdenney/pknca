@@ -19,13 +19,13 @@
 #' @param time.dose,route,duration.dose The time of doses, route of
 #'   administration, and duration of dose used with interpolation and
 #'   extrapolation of concentration data (see
-#'   \code{\link{interp.extrap.conc.dose}}).  If \code{NULL},
-#'   \code{\link{interp.extrap.conc}} will be used instead (assuming
+#'   [interp.extrap.conc.dose()]).  If `NULL`,
+#'   [interp.extrap.conc()] will be used instead (assuming
 #'   that no doses affecting concentrations are in the interval).
-#' @param ... Additional arguments passed to \code{pk.calc.auxc} and
-#'   \code{interp.extrap.conc}
+#' @param ... Additional arguments passed to `pk.calc.auxc` and
+#'   `interp.extrap.conc`
 #' @family AUC calculations
-#' @seealso \code{\link{PKNCA.options}}, \code{\link{interp.extrap.conc.dose}}
+#' @seealso [PKNCA.options()], [interp.extrap.conc.dose()]
 #' @export
 pk.calc.aucint <- function(conc, time,
                            interval=NULL, start=NULL, end=NULL,

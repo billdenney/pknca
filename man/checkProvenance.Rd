@@ -18,5 +18,5 @@ provenance is not present.
 Check the hash of an object to confirm its provenance.
 }
 \seealso{
-\code{\link{addProvenance}}
+\code{\link[=addProvenance]{addProvenance()}}
 }

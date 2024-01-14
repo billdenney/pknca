@@ -1,14 +1,14 @@
 #' Calculate amount excreted (typically in urine or feces)
 #'
-#' @details ae is \code{sum(conc*volume)}.
+#' @details ae is `sum(conc*volume)`.
 #'
 #' @inheritParams assert_conc_time
 #' @param volume The volume (or mass) of the sample
 #' @param check Should the concentration and volume data be checked?
 #' @return The amount excreted during the interval
 #' @details The units for the concentration and volume should match such
-#'   that \code{sum(conc*volume)} has units of mass or moles.
-#' @seealso \code{\link{pk.calc.clr}}, \code{\link{pk.calc.fe}}
+#'   that `sum(conc*volume)` has units of mass or moles.
+#' @seealso [pk.calc.clr()], [pk.calc.fe()]
 #' @export
 pk.calc.ae <- function(conc, volume, check=TRUE) {
   mask_missing_conc <- is.na(conc)
@@ -55,15 +55,15 @@ PKNCA.set.summary(
 
 #' Calculate renal clearance
 #'
-#' @details clr is \code{sum(ae)/auc}.
+#' @details clr is `sum(ae)/auc`.
 #'
 #' @param ae The amount excreted in urine (as a numeric scalar or
 #'   vector)
 #' @param auc The area under the curve (as a numeric scalar or vector)
 #' @return The renal clearance as a number
-#' @details The units for the \code{ae} and \code{auc} should match such
-#'   that \code{ae/auc} has units of volume/time.
-#' @seealso \code{\link{pk.calc.ae}}, \code{\link{pk.calc.fe}}
+#' @details The units for the `ae` and `auc` should match such
+#'   that `ae/auc` has units of volume/time.
+#' @seealso [pk.calc.ae()], [pk.calc.fe()]
 #' @export
 pk.calc.clr <- function(ae, auc) {
   sum(ae)/auc
@@ -110,14 +110,14 @@ PKNCA.set.summary(
 
 #' Calculate fraction excreted (typically in urine or feces)
 #'
-#' @details fe is \code{sum(ae)/dose}
+#' @details fe is `sum(ae)/dose`
 #'
 #' @param ae The amount excreted (as a numeric scalar or vector)
 #' @param dose The dose (as a numeric scalar or vector)
 #' @return The fraction of dose excreted.
-#' @details   The units for \code{ae} and \code{dose} should be the same
-#'   so that \code{ae/dose} is a unitless fraction.
-#' @seealso \code{\link{pk.calc.ae}}, \code{\link{pk.calc.clr}}
+#' @details   The units for `ae` and `dose` should be the same
+#'   so that `ae/dose` is a unitless fraction.
+#' @seealso [pk.calc.ae()], [pk.calc.clr()]
 #' @export
 pk.calc.fe <- function(ae, dose) {
   sum(ae)/dose

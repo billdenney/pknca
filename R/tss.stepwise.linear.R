@@ -3,16 +3,16 @@
 #'
 #' A linear slope is fit through the data to find when it becomes
 #' non-significant.  Note that this is less preferred than the
-#' \code{pk.tss.monoexponential} due to the fact that with more time
+#' `pk.tss.monoexponential` due to the fact that with more time
 #' or more subjects the performance of the test changes (see
 #' reference).
 #'
 #' The model is fit with a different magnitude by treatment (as a factor,
 #' if given) and a random slope by subject (if given).  A minimum of
-#' \code{min.points} is required to fit the model.
+#' `min.points` is required to fit the model.
 #'
-#' @param \dots See \code{\link{pk.tss.data.prep}}
-#' @param check See \code{\link{pk.tss.data.prep}}
+#' @param \dots See [pk.tss.data.prep()]
+#' @param check See [pk.tss.data.prep()]
 #' @param min.points The minimum number of points required for the fit
 #' @param level The confidence level required for assessment of
 #' steady-state
@@ -20,7 +20,7 @@
 #' the model (passed to the nlme function), and additional details
 #' while running.
 #' @return A scalar float for the first time when steady-state is
-#' achieved or \code{NA} if it is not observed.
+#' achieved or `NA` if it is not observed.
 #' @family Time to steady-state calculations
 #' @references
 #' Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for

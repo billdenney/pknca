@@ -8,14 +8,14 @@
 #'   summary was not requested for a parameter within an interval.
 #' @param not_calculated A character string to use when a parameter
 #'   summary was requested, but the point estimate AND spread calculations (if
-#'   applicable) returned \code{NA}.
-#' @param summarize_n Should a column for \code{N} be added
-#'   (\code{TRUE} or \code{FALSE})?  \code{NA} means to automatically detect
-#'   adding \code{N} if the data has a subject column indicated.  Note that
-#'   \code{N} is maximum number of parameter results for any parameter; if no
-#'   parameters are requested for a group, then \code{N} will be \code{NA}.
+#'   applicable) returned `NA`.
+#' @param summarize_n Should a column for `N` be added
+#'   (`TRUE` or `FALSE`)?  `NA` means to automatically detect
+#'   adding `N` if the data has a subject column indicated.  Note that
+#'   `N` is maximum number of parameter results for any parameter; if no
+#'   parameters are requested for a group, then `N` will be `NA`.
 #' @param pretty_names Should pretty names (easier to understand in a report) be
-#'   used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
+#'   used?  `TRUE` is yes, `FALSE` is no, and `NULL` is yes if
 #'   units are used and no if units are not used.
 #' @param ... Ignored.
 #' @param
@@ -24,7 +24,7 @@
 #'   `summarize_n`, instead
 #' @return A data frame of NCA parameter results summarized according to the
 #'   summarization settings.
-#' @seealso \code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
+#' @seealso [PKNCA.set.summary()], [print.summary_PKNCAresults()]
 #' @examples
 #' conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc ~ Time | Subject)
 #' d_dose <-
@@ -543,10 +543,10 @@ as_summary_PKNCAresults <- function(data, caption) {
 
 #' Print the results summary
 #' @param x A summary_PKNCAresults object
-#' @param ... passed to print.data.frame (\code{row.names} is always set to
-#'   \code{FALSE})
-#' @return \code{x} invisibly
-#' @seealso \code{\link{summary.PKNCAresults}}
+#' @param ... passed to print.data.frame (`row.names` is always set to
+#'   `FALSE`)
+#' @return `x` invisibly
+#' @seealso [summary.PKNCAresults()]
 #' @export
 print.summary_PKNCAresults <- function(x, ...) {
   print.data.frame(x, row.names = FALSE, ...)
@@ -559,7 +559,7 @@ print.summary_PKNCAresults <- function(x, ...) {
 #'
 #' @param x The values to summarize
 #' @param name The NCA parameter name (matching a parameter name in
-#' \code{\link{PKNCA.set.summary}})
+#' [PKNCA.set.summary()])
 #' @return A string of the rounded value
 #' @export
 roundingSummarize <- function(x, name) {

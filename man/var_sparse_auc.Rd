@@ -7,7 +7,7 @@
 var_sparse_auc(sparse_pk)
 }
 \arguments{
-\item{sparse_pk}{A sparse_pk object from \code{\link{as_sparse_pk}}}
+\item{sparse_pk}{A sparse_pk object from \code{\link[=as_sparse_pk]{as_sparse_pk()}}}
 }
 \description{
 Equation 7.vii in Nedelman and Jia, 1998 is used for this calculation:

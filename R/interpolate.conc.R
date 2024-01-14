@@ -1,13 +1,12 @@
 #' Interpolate concentrations between measurements or extrapolate concentrations
 #' after the last measurement.
 #'
-#' \code{interpolate.conc()} and \code{extrapolate.conc()} returns an
-#' interpolated (or extrapolated) concentration. \code{interp.extrap.conc()}
-#' will choose whether interpolation or extrapolation is required and will also
-#' operate on many concentrations.  These will typically be used to estimate the
-#' concentration between two measured concentrations or after the last measured
-#' concentration. Of note, these functions will not extrapolate prior to the
-#' first point.
+#' `interpolate.conc()` and `extrapolate.conc()` returns an interpolated (or
+#' extrapolated) concentration. `interp.extrap.conc()` will choose whether
+#' interpolation or extrapolation is required and will also operate on many
+#' concentrations.  These will typically be used to estimate the concentration
+#' between two measured concentrations or after the last measured concentration.
+#' Of note, these functions will not extrapolate prior to the first point.
 #'
 #' An `NA` value for the `lambda.z` parameter will prevent extrapolation.
 #'
@@ -18,32 +17,32 @@
 #' @param interp.method,extrap.method deprecated in favor of method and auc.type
 #' @param time.dose Time of the dose
 #' @param time.out Time when interpolation is requested (vector for
-#'   \code{interp.extrap.conc()}, scalar otherwise)
+#'   `interp.extrap.conc()`, scalar otherwise)
 #' @param clast The last observed concentration above the limit of
-#'   quantification.  If not given, \code{clast} is calculated from
-#'   \code{\link{pk.calc.clast.obs}()}
+#'   quantification.  If not given, `clast` is calculated from
+#'   [pk.calc.clast.obs()]
 #' @param conc.origin The concentration before the first measurement.
-#'   \code{conc.origin} is typically used to set predose values to zero
+#'   `conc.origin` is typically used to set predose values to zero
 #'   (default), set a predose concentration for endogenous compounds, or set
-#'   predose concentrations to \code{NA} if otherwise unknown.
-#' @param conc.blq How to handle BLQ values. (See \code{\link{clean.conc.blq}()}
+#'   predose concentrations to `NA` if otherwise unknown.
+#' @param conc.blq How to handle BLQ values. (See [clean.conc.blq()]
 #'   for usage instructions.)
 #' @param conc.na How to handle NA concentrations.  (See
-#'   \code{\link{clean.conc.na}()})
+#'   [clean.conc.na()])
 #' @param route.dose What is the route of administration ("intravascular" or
 #'   "extravascular").  See the details for how this parameter is used.
 #' @param duration.dose What is the duration of administration? See the details
 #'   for how this parameter is used.
 #' @param out.after Should interpolation occur from the data before
-#'   (\code{FALSE}) or after (\code{TRUE}) the interpolated point?  See the
+#'   (`FALSE`) or after (`TRUE`) the interpolated point?  See the
 #'   details for how this parameter is used.  It only has a meaningful effect at
 #'   the instant of an IV bolus dose.
-#' @param check Run \code{\link{assert_conc_time}()},
-#'   \code{\link{clean.conc.blq}()}, and \code{\link{clean.conc.na}()}?
-#' @param ... Additional arguments passed to \code{interpolate.conc()} or
-#'   \code{extrapolate.conc()}.
+#' @param check Run [assert_conc_time()],
+#'   [clean.conc.blq()], and [clean.conc.na()]?
+#' @param ... Additional arguments passed to `interpolate.conc()` or
+#'   `extrapolate.conc()`.
 #' @return The interpolated or extrapolated concentration value as a scalar
-#'   double (or vector for \code{interp.extrap.conc()}).
+#'   double (or vector for `interp.extrap.conc()`).
 #'
 #' @details
 #' \describe{
@@ -56,26 +55,25 @@
 #'   }
 #' }
 #'
-#' \code{duration.dose} and \code{direction.out} are ignored if \code{route.dose
-#' == "extravascular"}.  \code{direction.out} is ignored if \code{duration.dose
-#' > 0}.
+#' `duration.dose` and `direction.out` are ignored if `route.dose ==
+#' "extravascular"`.  `direction.out` is ignored if `duration.dose > 0`.
 #'
-#' \code{route.dose} and \code{duration.dose} affect how
+#' `route.dose` and `duration.dose` affect how
 #' interpolation/extrapolation of the concentration occurs at the time of
-#' dosing.  If \code{route.dose == "intravascular"} and \code{duration.dose ==
-#' 0} then extrapolation occurs for an IV bolus using \code{\link{pk.calc.c0}()}
-#' with the data after dosing.  Otherwise (either \code{route.dose ==
-#' "extravascular"} or \code{duration.dose > 0}), extrapolation occurs using the
+#' dosing.  If `route.dose == "intravascular"` and `duration.dose ==
+#' 0` then extrapolation occurs for an IV bolus using [pk.calc.c0()]
+#' with the data after dosing.  Otherwise (either `route.dose ==
+#' "extravascular"` or `duration.dose > 0`), extrapolation occurs using the
 #' concentrations before dosing and estimating the half-life (or more precisely,
-#' estimating \code{lambda.z}).  Finally, \code{direction.out} can change the
-#' direction of interpolation in cases with \code{route.dose == "intravascular"}
-#' and \code{duration.dose == 0}.  When \code{direction.out == "before"}
+#' estimating `lambda.z`).  Finally, `direction.out` can change the
+#' direction of interpolation in cases with `route.dose == "intravascular"`
+#' and `duration.dose == 0`.  When `direction.out == "before"`
 #' interpolation occurs only with data before the dose (as is the case for
-#' \code{route.dose == "extravascular"}), but if \code{direction.out == "after"}
+#' `route.dose == "extravascular"`), but if `direction.out == "after"`
 #' interpolation occurs from the data after dosing.
 #'
-#' @seealso \code{\link{pk.calc.clast.obs}()},
-#'   \code{\link{pk.calc.half.life}()}, \code{\link{pk.calc.c0}()}
+#' @seealso [pk.calc.clast.obs()],
+#'   [pk.calc.half.life()], [pk.calc.c0()]
 #' @export
 interp.extrap.conc <- function(conc, time, time.out,
                                lambda.z=NA,

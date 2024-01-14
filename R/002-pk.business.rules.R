@@ -1,18 +1,18 @@
 #' Run any function with a maximum missing fraction of X and 0s possibly
 #' counting as missing.  The maximum fraction missing comes from
-#' \code{PKNCA.options("max.missing")}.
+#' `PKNCA.options("max.missing")`.
 #'
 #' Note that all missing values are removed prior to calling the function.
 #'
-#' @param FUN function to run.  The function is called as \code{FUN(x, ...)}
+#' @param FUN function to run.  The function is called as `FUN(x, ...)`
 #'   with missing values removed.
-#' @param zero.missing Are zeros counted as missing?  If \code{TRUE} then
+#' @param zero.missing Are zeros counted as missing?  If `TRUE` then
 #'   include them in the missing count.
 #' @param max.missing The maximum fraction of the data allowed to be missing (a
 #'   number between 0 and 1, inclusive).
 #' @return A version of FUN that can be called with parameters that are checked
 #'   for missingness (and zeros) with missing (and zeros) removed before the
-#'   call.  If \code{max.missing} is exceeded, then NA is returned.
+#'   call.  If `max.missing` is exceeded, then NA is returned.
 #' @examples
 #' my_mean <- pk.business(FUN=mean)
 #' mean(c(1:3, NA))
@@ -64,7 +64,7 @@ geomean <- function(x, na.rm=FALSE) {
 }
 
 #' @describeIn geomean
-#' Compute the geometric standard deviation, \code{exp(sd(log(x)))}.
+#' Compute the geometric standard deviation, `exp(sd(log(x)))`.
 #' @examples
 #' geosd(1:3)
 #' @export
@@ -73,7 +73,7 @@ geosd <- function(x, na.rm=FALSE)
 
 #' @describeIn geomean
 #' Compute the geometric coefficient of variation,
-#' \code{sqrt(exp(sd(log(x))^2)-1)*100}.
+#' `sqrt(exp(sd(log(x))^2)-1)*100`.
 #' @examples
 #' geocv(1:3)
 #' @export
@@ -88,7 +88,7 @@ geocv <- function(x, na.rm=FALSE)
 #' function.
 #' @return The value of the various functions or NA if too many values
 #' are missing
-#' @seealso \code{\link{pk.business}()}
+#' @seealso [pk.business()]
 #' @export
 business.mean <- pk.business(mean, max.missing=~PKNCA::PKNCA.Options("max.missing"))
 

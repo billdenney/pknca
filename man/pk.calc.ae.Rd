@@ -26,5 +26,5 @@ The units for the concentration and volume should match such
 that \code{sum(conc*volume)} has units of mass or moles.
 }
 \seealso{
-\code{\link{pk.calc.clr}}, \code{\link{pk.calc.fe}}
+\code{\link[=pk.calc.clr]{pk.calc.clr()}}, \code{\link[=pk.calc.fe]{pk.calc.fe()}}
 }

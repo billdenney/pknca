@@ -1,23 +1,23 @@
 #' Compute NCA parameters for each interval for each subject.
 #'
-#' The \code{pk.nca} function computes the NCA parameters from a
-#' \code{PKNCAdata} object.  All options for the calculation and input data are
-#' set in prior functions (\code{PKNCAconc}, \code{PKNCAdose}, and
-#' \code{PKNCAdata}).  Options for calculations are set either in
-#' \code{PKNCAdata} or with the current default options in \code{PKNCA.options}.
+#' The `pk.nca` function computes the NCA parameters from a
+#' `PKNCAdata` object.  All options for the calculation and input data are
+#' set in prior functions (`PKNCAconc`, `PKNCAdose`, and
+#' `PKNCAdata`).  Options for calculations are set either in
+#' `PKNCAdata` or with the current default options in `PKNCA.options`.
 #'
 #' When performing calculations, all time results are relative to the start of
 #' the interval.  For example, if an interval starts at 168 hours, ends at 192
 #' hours, and and the maximum concentration is at 169 hours,
-#' \code{tmax=169-168=1}.
+#' `tmax=169-168=1`.
 #'
 #' @param data A PKNCAdata object
-#' @param verbose Indicate, by \code{message()}, the current state of
+#' @param verbose Indicate, by `message()`, the current state of
 #'   calculation.
-#' @return A \code{PKNCAresults} object.
-#' @seealso \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}},
-#'  \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
-#'  \code{\link{exclude}}
+#' @return A `PKNCAresults` object.
+#' @seealso [PKNCAdata()], [PKNCA.options()],
+#'  [summary.PKNCAresults()], [as.data.frame.PKNCAresults()],
+#'  [exclude()]
 #' @export
 pk.nca <- function(data, verbose=FALSE) {
   assert_PKNCAdata(data)
@@ -156,7 +156,7 @@ filter_interval <- function(data, start, end, include_na=FALSE, include_end=TRUE
 #' @param interval An interval specification
 #' @inheritParams PKNCAconc
 #' @return A logical value indicating if the interval requests any sparse (if
-#'   \code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
+#'   `sparse=TRUE`) or dense (if `sparse=FALSE`) calculations.
 #' @keywords Internal
 any_sparse_dense_in_interval <- function(interval, sparse) {
   all_intervals <- get.interval.cols()
@@ -311,9 +311,9 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #' Compute all PK parameters for a single concentration-time data set
 #'
 #' For one subject/time range, compute all available PK parameters. All
-#' the internal options should be set by \code{\link{PKNCA.options}}
+#' the internal options should be set by [PKNCA.options()]
 #' prior to running.  The only part that changes with a call to this
-#' function is the \code{conc}entration and \code{time}.
+#' function is the `conc`entration and `time`.
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams PKNCA.choose.option
@@ -329,7 +329,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #'   the current interval or all data for the group
 #' @param time.dose,time.dose.group Time of the dose for the current
 #'   interval or all data for the group (must be the same length as
-#'   \code{dose} or \code{dose.group})
+#'   `dose` or `dose.group`)
 #' @param duration.dose,duration.dose.group The duration of the dose
 #'   administration for the current interval or all data for the group
 #'   (typically zero for extravascular and intravascular bolus and
@@ -338,7 +338,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #'   or all data for the group
 #' @param impute_method The method to use for imputation as a character string
 #' @param interval One row of an interval definition (see
-#'   \code{\link{check.interval.specification}} for how to define the
+#'   [check.interval.specification()] for how to define the
 #'   interval.
 #' @param include_half.life An optional boolean vector of the
 #'   concentration measurements to include in the half-life calculation.
@@ -350,9 +350,9 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 #' @param sparse Should only sparse calculations be performed (TRUE) or only
 #'   dense calculations (FALSE)?
 #' @return A data frame with the start and end time along with all PK
-#'   parameters for the \code{interval}
+#'   parameters for the `interval`
 #'
-#' @seealso \code{\link{check.interval.specification}}
+#' @seealso [check.interval.specification()]
 #' @export
 pk.nca.interval <- function(conc, time, volume, duration.conc,
                             dose, time.dose, duration.dose, route,

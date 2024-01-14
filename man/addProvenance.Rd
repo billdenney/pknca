@@ -22,5 +22,5 @@ Add a hash and associated information to enable checking object
 provenance.
 }
 \seealso{
-\code{\link{checkProvenance}}
+\code{\link[=checkProvenance]{checkProvenance()}}
 }

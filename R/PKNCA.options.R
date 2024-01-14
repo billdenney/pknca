@@ -284,36 +284,36 @@
 #'
 #' This function will set the default PKNCA options.  If given no
 #' inputs, it will provide the current option set.  If given name/value
-#' pairs, it will set the option (as in the \code{\link{options}}
+#' pairs, it will set the option (as in the [options()]
 #' function).  If given a name, it will return the value for the
-#' parameter.  If given the \code{default} option as true, it will
+#' parameter.  If given the `default` option as true, it will
 #' provide the default options.
 #'
 #' Options are either for calculation or summary functions. Calculation
 #' options are required for a calculation function to report a result
-#' (otherwise the reported value will be \code{NA}). Summary options are
+#' (otherwise the reported value will be `NA`). Summary options are
 #' used during summarization and are used for assessing what values are
 #' included in the summary.
 #'
 #' See the vignette 'Options for Controlling PKNCA' for a current list
-#' of options (\code{vignette("Options-for-Controlling-PKNCA", package="PKNCA")}).
+#' of options (`vignette("Options-for-Controlling-PKNCA", package="PKNCA")`).
 #'
 #' @param \dots options to set or get the value for
 #' @param default (re)sets all default options
 #' @param check check a single option given, but do not set it (for
 #'   validation of the values when used in another function)
-#' @param name An option name to use with the \code{value}.
-#' @param value An option value (paired with the \code{name}) to set or
-#'   check (if \code{NULL}, ).
+#' @param name An option name to use with the `value`.
+#' @param value An option value (paired with the `name`) to set or
+#'   check (if `NULL`, ).
 #' @return If...
 #' \describe{
 #'   \item{no arguments are given}{returns the current options.}
-#'   \item{a value is set (including the defaults)}{returns \code{NULL}}
+#'   \item{a value is set (including the defaults)}{returns `NULL`}
 #'   \item{a single value is requested}{the current value of that option is returned as a scalar}
 #'   \item{multiple values are requested}{the current values of those options are returned as a list}
 #' }
 #' @family PKNCA calculation and summary settings
-#' @seealso \code{\link{PKNCA.options.describe}}
+#' @seealso [PKNCA.options.describe()]
 #' @examples
 #'
 #' PKNCA.options()
@@ -400,11 +400,11 @@ PKNCA.options <- function(..., default=FALSE, check=FALSE, name, value) {
 #' option.
 #'
 #' @param name The option name requested.
-#' @param value A value to check for the option (\code{NULL} to choose not to
+#' @param value A value to check for the option (`NULL` to choose not to
 #'   check the value).
 #' @param options List of changes to the default PKNCA options (see
 #'   `PKNCA.options()`)
-#' @return The value of the option first from the \code{options} list and if it
+#' @return The value of the option first from the `options` list and if it
 #'   is not there then from the current settings.
 #' @family PKNCA calculation and summary settings
 #' @export
@@ -422,7 +422,7 @@ PKNCA.choose.option <- function(name, value=NULL, options=list()) {
 #'
 #' @param name The option name requested.
 #' @return A character string of the description.
-#' @seealso \code{\link{PKNCA.options}}
+#' @seealso [PKNCA.options()]
 #' @export
 PKNCA.options.describe <- function(name) {
   .PKNCA.option.check[[name]](description=TRUE)
@@ -432,13 +432,13 @@ PKNCA.options.describe <- function(name) {
 #'
 #' @param name The parameter name or a vector of parameter names.  It
 #'   must have already been defined (see
-#'   \code{\link{add.interval.col}}).
+#'   [add.interval.col()]).
 #' @param description A single-line description of the summary
 #' @param point The function to calculate the point estimate for the
-#'   summary.  The function will be called as \code{point(x)} and must
+#'   summary.  The function will be called as `point(x)` and must
 #'   return a scalar value (typically a number, NA, or a string).
 #' @param spread Optional.  The function to calculate the spread (or
-#'   variability).  The function will be called as \code{spread(x)} and
+#'   variability).  The function will be called as `spread(x)` and
 #'   must return a scalar or two-long vector (typically a number, NA, or
 #'   a string).
 #' @param rounding Instructions for how to round the value of point and
@@ -450,7 +450,7 @@ PKNCA.options.describe <- function(name) {
 #'   vector.
 #' @param reset Reset all the summary instructions
 #' @return All current summary settings (invisibly)
-#' @seealso \code{\link{summary.PKNCAresults}}
+#' @seealso [summary.PKNCAresults()]
 #' @family PKNCA calculation and summary settings
 #' @examples
 #' \dontrun{

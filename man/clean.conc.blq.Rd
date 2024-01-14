@@ -29,9 +29,9 @@ clean.conc.blq(
 values?  See details for description.}
 
 \item{conc.na}{How to handle NA concentrations.  (See
-\code{\link{clean.conc.na}})}
+\code{\link[=clean.conc.na]{clean.conc.na()}})}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
 The concentration and time measurements (data frame) filtered
@@ -43,7 +43,7 @@ the user.
 }
 \details{
 NA concentrations (and their associated times) will be
-handled as described in \code{\link{clean.conc.na}} before working
+handled as described in \code{\link[=clean.conc.na]{clean.conc.na()}} before working
 with the BLQ values.  The method for handling NA concentrations can
 affect the output of which points are considered BLQ and which are
 considered "middle".  Values are considered BLQ if they are 0.

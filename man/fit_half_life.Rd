@@ -28,5 +28,5 @@ the data without any validation.  No selection of points or any other
 components are done.
 }
 \seealso{
-\code{\link{pk.calc.half.life}}
+\code{\link[=pk.calc.half.life]{pk.calc.half.life()}}
 }

@@ -97,8 +97,8 @@ extrapolation}
 \item{time.dose, route, duration.dose}{The time of doses, route of
 administration, and duration of dose used with interpolation and
 extrapolation of concentration data (see
-\code{\link{interp.extrap.conc.dose}}).  If \code{NULL},
-\code{\link{interp.extrap.conc}} will be used instead (assuming
+\code{\link[=interp.extrap.conc.dose]{interp.extrap.conc.dose()}}).  If \code{NULL},
+\code{\link[=interp.extrap.conc]{interp.extrap.conc()}} will be used instead (assuming
 that no doses affecting concentrations are in the interval).}
 
 \item{method}{The method for integration (one of 'lin up/log down',
@@ -108,14 +108,14 @@ that no doses affecting concentrations are in the interval).}
 and 'AUCall'.}
 
 \item{conc.blq}{How to handle BLQ values in between the first and last above
-LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
+LOQ concentrations. (See \code{\link[=clean.conc.blq]{clean.conc.blq()}} for usage
 instructions.)}
 
 \item{conc.na}{How to handle missing concentration values.  (See
-\code{\link{clean.conc.na}} for usage instructions.)}
+\code{\link[=clean.conc.na]{clean.conc.na()}} for usage instructions.)}
 
-\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
-and \code{\link{clean.conc.na}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}},
+and \code{\link[=clean.conc.na]{clean.conc.na()}}?}
 
 \item{...}{Additional arguments passed to \code{pk.calc.auxc} and
 \code{interp.extrap.conc}}
@@ -146,7 +146,7 @@ extrapolation.
 
 }}
 \seealso{
-\code{\link{PKNCA.options}}, \code{\link{interp.extrap.conc.dose}}
+\code{\link[=PKNCA.options]{PKNCA.options()}}, \code{\link[=interp.extrap.conc.dose]{interp.extrap.conc.dose()}}
 
 Other AUC calculations: 
 \code{\link{pk.calc.auxc}()}

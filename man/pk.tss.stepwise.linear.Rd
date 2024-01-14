@@ -14,7 +14,7 @@ pk.tss.stepwise.linear(
 )
 }
 \arguments{
-\item{\dots}{See \code{\link{pk.tss.data.prep}}}
+\item{\dots}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}}
 
 \item{min.points}{The minimum number of points required for the fit}
 
@@ -25,7 +25,7 @@ steady-state}
 the model (passed to the nlme function), and additional details
 while running.}
 
-\item{check}{See \code{\link{pk.tss.data.prep}}}
+\item{check}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}}
 }
 \value{
 A scalar float for the first time when steady-state is

@@ -47,17 +47,17 @@ included to calculate the half-life}
 \item{adj.r.squared.factor}{The allowance in adjusted r-squared for
 adding another point.}
 
-\item{conc.blq}{See \code{\link{clean.conc.blq}}}
+\item{conc.blq}{See \code{\link[=clean.conc.blq]{clean.conc.blq()}}}
 
-\item{conc.na}{See \code{\link{clean.conc.na}}}
+\item{conc.na}{See \code{\link[=clean.conc.na]{clean.conc.na()}}}
 
-\item{first.tmax}{See \code{\link{pk.calc.tmax}}.}
+\item{first.tmax}{See \code{\link[=pk.calc.tmax]{pk.calc.tmax()}}.}
 
 \item{allow.tmax.in.half.life}{Allow the concentration point for tmax
 to be included in the half-life slope calculation.}
 
-\item{check}{Run \code{\link{assert_conc_time}},
-\code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}},
+\code{\link[=clean.conc.blq]{clean.conc.blq()}}, and \code{\link[=clean.conc.na]{clean.conc.na()}}?}
 }
 \value{
 A data frame with one row and columns for

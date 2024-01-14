@@ -18,7 +18,7 @@ pk.calc.tmax(conc, time, options = list(), first.tmax = NULL, check = TRUE)
 maximum concentration, should the first be considered as Tmax?  If
 not, then the last is considered Tmax.}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
 the time of the maximum concentration

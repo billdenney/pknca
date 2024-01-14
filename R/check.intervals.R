@@ -5,8 +5,8 @@
 #' parameters which are not requested may be calculated if it is required for
 #' (or computed at the same time as) a requested parameter.
 #'
-#' \code{start} and \code{end} time must always be given as columns, and the
-#' \code{start} must be before the \code{end}.  Other columns define the
+#' `start` and `end` time must always be given as columns, and the
+#' `start` must be before the `end`.  Other columns define the
 #' parameters to be calculated and the groupings to apply the intervals to.
 #'
 #' @param x The data frame specifying what to calculate during each time
@@ -166,7 +166,7 @@ get.parameter.deps_helper_searchdeps <- function(current, funmap, all_intervals)
 #'
 #' @param x The parameter name (as a character string)
 #' @return A character vector of parameter names that depend on the
-#'   parameter \code{x}.  If none depend on \code{x}, then the result
+#'   parameter `x`.  If none depend on `x`, then the result
 #'   will be an empty vector.
 #' @family Interval specifications
 #' @export

@@ -82,7 +82,7 @@ extrapolation}
 
 \item{clast}{The last observed concentration above the limit of
 quantification.  If not given, \code{clast} is calculated from
-\code{\link{pk.calc.clast.obs}()}}
+\code{\link[=pk.calc.clast.obs]{pk.calc.clast.obs()}}}
 
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}
@@ -98,14 +98,14 @@ and 'AUCall'.}
 \item{...}{Additional arguments passed to \code{interpolate.conc()} or
 \code{extrapolate.conc()}.}
 
-\item{conc.blq}{How to handle BLQ values. (See \code{\link{clean.conc.blq}()}
+\item{conc.blq}{How to handle BLQ values. (See \code{\link[=clean.conc.blq]{clean.conc.blq()}}
 for usage instructions.)}
 
 \item{conc.na}{How to handle NA concentrations.  (See
-\code{\link{clean.conc.na}()})}
+\code{\link[=clean.conc.na]{clean.conc.na()}})}
 
-\item{check}{Run \code{\link{assert_conc_time}()},
-\code{\link{clean.conc.blq}()}, and \code{\link{clean.conc.na}()}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}},
+\code{\link[=clean.conc.blq]{clean.conc.blq()}}, and \code{\link[=clean.conc.na]{clean.conc.na()}}?}
 
 \item{conc.origin}{The concentration before the first measurement.
 \code{conc.origin} is typically used to set predose values to zero
@@ -130,13 +130,12 @@ The interpolated or extrapolated concentration value as a scalar
 double (or vector for \code{interp.extrap.conc()}).
 }
 \description{
-\code{interpolate.conc()} and \code{extrapolate.conc()} returns an
-interpolated (or extrapolated) concentration. \code{interp.extrap.conc()}
-will choose whether interpolation or extrapolation is required and will also
-operate on many concentrations.  These will typically be used to estimate the
-concentration between two measured concentrations or after the last measured
-concentration. Of note, these functions will not extrapolate prior to the
-first point.
+\code{interpolate.conc()} and \code{extrapolate.conc()} returns an interpolated (or
+extrapolated) concentration. \code{interp.extrap.conc()} will choose whether
+interpolation or extrapolation is required and will also operate on many
+concentrations.  These will typically be used to estimate the concentration
+between two measured concentrations or after the last measured concentration.
+Of note, these functions will not extrapolate prior to the first point.
 }
 \details{
 An \code{NA} value for the \code{lambda.z} parameter will prevent extrapolation.
@@ -151,16 +150,12 @@ An \code{NA} value for the \code{lambda.z} parameter will prevent extrapolation.
 }
 }
 
-\code{duration.dose} and \code{direction.out} are ignored if \code{route.dose
-== "extravascular"}.  \code{direction.out} is ignored if \code{duration.dose
-> 0}.
+\code{duration.dose} and \code{direction.out} are ignored if \code{route.dose == "extravascular"}.  \code{direction.out} is ignored if \code{duration.dose > 0}.
 
 \code{route.dose} and \code{duration.dose} affect how
 interpolation/extrapolation of the concentration occurs at the time of
-dosing.  If \code{route.dose == "intravascular"} and \code{duration.dose ==
-0} then extrapolation occurs for an IV bolus using \code{\link{pk.calc.c0}()}
-with the data after dosing.  Otherwise (either \code{route.dose ==
-"extravascular"} or \code{duration.dose > 0}), extrapolation occurs using the
+dosing.  If \code{route.dose == "intravascular"} and \code{duration.dose == 0} then extrapolation occurs for an IV bolus using \code{\link[=pk.calc.c0]{pk.calc.c0()}}
+with the data after dosing.  Otherwise (either \code{route.dose == "extravascular"} or \code{duration.dose > 0}), extrapolation occurs using the
 concentrations before dosing and estimating the half-life (or more precisely,
 estimating \code{lambda.z}).  Finally, \code{direction.out} can change the
 direction of interpolation in cases with \code{route.dose == "intravascular"}
@@ -180,6 +175,6 @@ concentrations without interpolating or extrapolating beyond doses.
 
 }}
 \seealso{
-\code{\link{pk.calc.clast.obs}()},
-\code{\link{pk.calc.half.life}()}, \code{\link{pk.calc.c0}()}
+\code{\link[=pk.calc.clast.obs]{pk.calc.clast.obs()}},
+\code{\link[=pk.calc.half.life]{pk.calc.half.life()}}, \code{\link[=pk.calc.c0]{pk.calc.c0()}}
 }

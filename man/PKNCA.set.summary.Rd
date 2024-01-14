@@ -16,7 +16,7 @@ PKNCA.set.summary(
 \arguments{
 \item{name}{The parameter name or a vector of parameter names.  It
 must have already been defined (see
-\code{\link{add.interval.col}}).}
+\code{\link[=add.interval.col]{add.interval.col()}}).}
 
 \item{description}{A single-line description of the summary}
 
@@ -57,7 +57,7 @@ PKNCA.set.summary(
 }
 }
 \seealso{
-\code{\link{summary.PKNCAresults}}
+\code{\link[=summary.PKNCAresults]{summary.PKNCAresults()}}
 
 Other PKNCA calculation and summary settings: 
 \code{\link{PKNCA.choose.option}()},

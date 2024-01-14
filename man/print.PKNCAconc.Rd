@@ -19,7 +19,7 @@
 \item{x}{The object to print}
 
 \item{n}{The number of rows of data to show (see
-\code{\link{head}})}
+\code{\link[=head]{head()}})}
 
 \item{summarize}{Summarize the nested number of groups}
 

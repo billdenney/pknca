@@ -9,7 +9,7 @@
 #' @param data The PKNCAdata used to generate the result
 #' @param exclude (optional) The name of a column with concentrations to
 #'   exclude from calculations and summarization.  If given, the column
-#'   should have values of \code{NA} or \code{""} for concentrations to
+#'   should have values of `NA` or `""` for concentrations to
 #'   include and non-empty text for concentrations to exclude.
 #' @return A PKNCAresults object with each of the above within.
 #' @family PKNCA objects
@@ -33,7 +33,7 @@ PKNCAresults <- function(result, data, exclude) {
 #'
 #' @param x The object to extract results from
 #' @param ... Ignored (for compatibility with generic
-#' \code{\link{as.data.frame}})
+#' [as.data.frame()])
 #' @param out.format Should the output be 'long' (default) or 'wide'?
 #' @return A data frame of results
 #' @export

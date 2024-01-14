@@ -11,7 +11,7 @@ sparse_mean(
 )
 }
 \arguments{
-\item{sparse_pk}{A sparse_pk object from \code{\link{as_sparse_pk}}}
+\item{sparse_pk}{A sparse_pk object from \code{\link[=as_sparse_pk]{as_sparse_pk()}}}
 
 \item{sparse_mean_method}{The method used to calculate the sparse mean (see
 details)}

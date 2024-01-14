@@ -22,7 +22,7 @@ A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if
 }
 \description{
 This data.frame is typically used for the \code{units} argument for
-\code{\link{PKNCAdata}()}.  If a unit is not given, then all of the units
+\code{\link[=PKNCAdata]{PKNCAdata()}}.  If a unit is not given, then all of the units
 derived from that unit will be \code{NA}.
 }
 \examples{
@@ -52,5 +52,5 @@ pknca_units_table(
 )
 }
 \seealso{
-The \code{units} argument for \code{\link{PKNCAdata}()}
+The \code{units} argument for \code{\link[=PKNCAdata]{PKNCAdata()}}
 }

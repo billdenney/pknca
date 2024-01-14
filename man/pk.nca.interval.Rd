@@ -78,7 +78,7 @@ calculation.}
 dense calculations (FALSE)?}
 
 \item{interval}{One row of an interval definition (see
-\code{\link{check.interval.specification}} for how to define the
+\code{\link[=check.interval.specification]{check.interval.specification()}} for how to define the
 interval.}
 
 \item{options}{List of changes to the default PKNCA options (see
@@ -90,10 +90,10 @@ parameters for the \code{interval}
 }
 \description{
 For one subject/time range, compute all available PK parameters. All
-the internal options should be set by \code{\link{PKNCA.options}}
+the internal options should be set by \code{\link[=PKNCA.options]{PKNCA.options()}}
 prior to running.  The only part that changes with a call to this
 function is the \code{conc}entration and \code{time}.
 }
 \seealso{
-\code{\link{check.interval.specification}}
+\code{\link[=check.interval.specification]{check.interval.specification()}}
 }

@@ -19,5 +19,5 @@
 Print the results summary
 }
 \seealso{
-\code{\link{summary.PKNCAresults}}
+\code{\link[=summary.PKNCAresults]{summary.PKNCAresults()}}
 }

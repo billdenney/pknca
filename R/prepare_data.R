@@ -1,13 +1,13 @@
 #' Combine PKNCAconc and PKNCAdose objects
 #'
-#' The function is inspired by \code{dplyr::full_join}, but it has different
+#' The function is inspired by `dplyr::full_join`, but it has different
 #' semantics.
 #'
 #' @param o_conc a PKNCAconc object
-#' @param o_dose a PKNCAdose object or \code{NA}
+#' @param o_dose a PKNCAdose object or `NA`
 #' @return A tibble with columns for the groups, "data_conc" (the concentration
-#'   data), and "data_dose" (the dosing data).  If \code{is.na(o_dose)},
-#'   "data_dose" will be \code{NA}.
+#'   data), and "data_dose" (the dosing data).  If `is.na(o_dose)`,
+#'   "data_dose" will be `NA`.
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
@@ -31,7 +31,7 @@ full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose) {
 
 #' Convert a PKNCAdata object into a data.frame for analysis
 #'
-#' The function is inspired by \code{dplyr::full_join}, but it has different
+#' The function is inspired by `dplyr::full_join`, but it has different
 #' semantics.
 #'
 #' @param x The PKNCAdata object

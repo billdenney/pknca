@@ -20,7 +20,7 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 \item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
 The concentration and time measurements (data frame) filtered

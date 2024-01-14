@@ -65,5 +65,5 @@ the business rules.
 
 }}
 \seealso{
-\code{\link{pk.business}()}
+\code{\link[=pk.business]{pk.business()}}
 }

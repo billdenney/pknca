@@ -4,9 +4,9 @@
 #' @param object The object to add provenance
 #' @param replace Replace provenance if the object already has a
 #'   provenance attribute.  (If the object already has provenance and
-#'   \code{replace} is \code{FALSE}, then an error will be raised.)
+#'   `replace` is `FALSE`, then an error will be raised.)
 #' @return The object with provenance as an added item
-#' @seealso \code{\link{checkProvenance}}
+#' @seealso [checkProvenance()]
 #' @export
 addProvenance <- function(object, replace=FALSE) {
   if (replace) {
@@ -32,10 +32,10 @@ addProvenance <- function(object, replace=FALSE) {
 #' Check the hash of an object to confirm its provenance.
 #'
 #' @param object The object to check provenance for
-#' @return \code{TRUE} if the provenance is confirmed to be consistent,
-#'   \code{FALSE} if the provenance is not consistent, or \code{NA} if
+#' @return `TRUE` if the provenance is confirmed to be consistent,
+#'   `FALSE` if the provenance is not consistent, or `NA` if
 #'   provenance is not present.
-#' @seealso \code{\link{addProvenance}}
+#' @seealso [addProvenance()]
 #' @export
 checkProvenance <- function(object) {
   tmp.prov <- attr(object, "provenance", exact=TRUE)

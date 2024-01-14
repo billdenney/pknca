@@ -82,5 +82,5 @@ PKNCA.set.summary(
 summary(results_obj_automatic, not_requested = "NA")
 }
 \seealso{
-\code{\link{PKNCA.set.summary}}, \code{\link{print.summary_PKNCAresults}}
+\code{\link[=PKNCA.set.summary]{PKNCA.set.summary()}}, \code{\link[=print.summary_PKNCAresults]{print.summary_PKNCAresults()}}
 }

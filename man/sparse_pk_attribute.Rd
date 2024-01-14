@@ -7,7 +7,7 @@
 sparse_pk_attribute(sparse_pk, ...)
 }
 \arguments{
-\item{sparse_pk}{A sparse_pk object from \code{\link{as_sparse_pk}}}
+\item{sparse_pk}{A sparse_pk object from \code{\link[=as_sparse_pk]{as_sparse_pk()}}}
 
 \item{...}{Either a character string (to get that value) or a named vector
 the same length as \code{sparse_pk} to set the value.}

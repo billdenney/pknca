@@ -1,29 +1,29 @@
 #' Create a PKNCAconc object
 #'
 #' @param data A data frame with concentration (or amount for
-#'   urine/feces), time, and the groups defined in \code{formula}.
+#'   urine/feces), time, and the groups defined in `formula`.
 #' @param formula The formula defining the
-#'   \code{concentration~time|groups} or \code{amount~time|groups} for
+#'   `concentration~time|groups` or `amount~time|groups` for
 #'   urine/feces (In the remainder of the documentation, "concentration" will be
 #'   used to describe concentration or amount.)  One special aspect of the
-#'   \code{groups} part of the formula is that the last group is typically
-#'   assumed to be the \code{subject}; see the documentation for the
-#'   \code{subject} argument for exceptions to this assumption.
+#'   `groups` part of the formula is that the last group is typically
+#'   assumed to be the `subject`; see the documentation for the
+#'   `subject` argument for exceptions to this assumption.
 #' @param subject The column indicating the subject number.  If not provided,
 #'   this defaults to the beginning of the inner groups: For example with
-#'   \code{concentration~time|Study+Subject/Analyte}, the inner groups start
-#'   with the first grouping variable before a \code{/}, \code{Subject}.  If
+#'   `concentration~time|Study+Subject/Analyte`, the inner groups start
+#'   with the first grouping variable before a `/`, `Subject`.  If
 #'   there is only one grouping variable, it is assumed to be the subject (e.g.
-#'   \code{concentration~time|Subject}), and if there are multiple grouping
-#'   variables without a \code{/}, subject is assumed to be the last one.  For
-#'   single-subject data, it is assigned as \code{NULL}.
+#'   `concentration~time|Subject`), and if there are multiple grouping
+#'   variables without a `/`, subject is assumed to be the last one.  For
+#'   single-subject data, it is assigned as `NULL`.
 #' @param time.nominal (optional) The name of the nominal time column
-#'   (if the main time variable is actual time.  The \code{time.nominal}
+#'   (if the main time variable is actual time.  The `time.nominal`
 #'   is not used during calculations; it is available to assist with
 #'   data summary and checking.
 #' @param exclude (optional) The name of a column with concentrations to
 #'   exclude from calculations and summarization.  If given, the column
-#'   should have values of \code{NA} or \code{""} for concentrations to
+#'   should have values of `NA` or `""` for concentrations to
 #'   include and non-empty text for concentrations to exclude.
 #' @param volume (optional) The volume (or mass) of collection as is
 #'   typically used for urine or feces measurements.
@@ -196,7 +196,7 @@ formula.PKNCAconc <- function(x, ...) {
 #' Extract the columns used in the formula (in order) from a PKNCAconc
 #' or PKNCAdose object.
 #'
-#' @param formula The object to use (parameter name is \code{formula}
+#' @param formula The object to use (parameter name is `formula`
 #' to use the generic function)
 #' @param \dots Unused
 #' @return A data frame with the columns from the object in formula
@@ -218,19 +218,19 @@ getIndepVar.PKNCAconc <- function(x, ...) {
   x$data[, x$columns$time]
 }
 
-#' Get the groups (right hand side after the \code{|} from a PKNCA
+#' Get the groups (right hand side after the `|` from a PKNCA
 #' object).
 #'
 #' @param object The object to extract the data from
 #' @param form The formula to extract the data from (defaults to the
-#'   formula from \code{object})
+#'   formula from `object`)
 #' @param level optional.  If included, this specifies the level(s) of
 #'   the groups to include.  If a numeric scalar, include the first
-#'   \code{level} number of groups.  If a numeric vector, include each
+#'   `level` number of groups.  If a numeric vector, include each
 #'   of the groups specified by the number.  If a character vector,
 #'   include the named group levels.
 #' @param data The data to extract the groups from (defaults to the data
-#'   from \code{object})
+#'   from `object`)
 #' @param sep Unused (kept for compatibility with the nlme package)
 #' @param ... Arguments passed to other getGroups functions
 #' @return A data frame with the (selected) group columns.
@@ -307,10 +307,10 @@ setDuration.PKNCAconc <- function(object, duration, ...) {
 #' @param x The object to print
 #' @param object The object to summarize
 #' @param n The number of rows of data to show (see
-#' \code{\link{head}})
+#' [head()])
 #' @param summarize Summarize the nested number of groups
-#' @param \dots Arguments passed to \code{print.formula} and
-#' \code{print.data.frame}
+#' @param \dots Arguments passed to `print.formula` and
+#' `print.data.frame`
 #' @export
 print.PKNCAconc <- function(x, n=6, summarize=FALSE, ...) {
   cat(sprintf("Formula for concentration:\n "))

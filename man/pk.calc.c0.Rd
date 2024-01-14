@@ -62,8 +62,7 @@ has its own specific function.
 after time.dose.  This method will return \code{NA} if the second
 \code{conc} after \code{time.dose} is 0 or greater than the first.
 
-\item \code{pk.calc.c0.method.c0()}: Use \code{C0} = \code{conc[time %in%
-time.dose]} if it is nonzero.
+\item \code{pk.calc.c0.method.c0()}: Use \code{C0} = \code{conc[time \%in\% time.dose]} if it is nonzero.
 
 \item \code{pk.calc.c0.method.c1()}: Use \code{C0} = \code{C1}.
 

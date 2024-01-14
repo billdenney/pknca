@@ -44,5 +44,5 @@ Add an attribute to an object where the attribute is added as a name
 to the names of the object.
 }
 \seealso{
-\code{\link{getAttributeColumn}}
+\code{\link[=getAttributeColumn]{getAttributeColumn()}}
 }

@@ -8,7 +8,7 @@ rule}
 sparse_auc_weight_linear(sparse_pk)
 }
 \arguments{
-\item{sparse_pk}{A sparse_pk object from \code{\link{as_sparse_pk}}}
+\item{sparse_pk}{A sparse_pk object from \code{\link[=as_sparse_pk]{as_sparse_pk()}}}
 }
 \value{
 A numeric vector of weights for sparse AUC calculations the same
@@ -16,7 +16,7 @@ length as \code{sparse_pk}
 }
 \description{
 The weight is used as the \eqn{w_i}{w_i} parameter in
-\code{\link{pk.calc.sparse_auc}}
+\code{\link[=pk.calc.sparse_auc]{pk.calc.sparse_auc()}}
 }
 \details{
 \deqn{w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}}{2}}{w_i = (d_time[i-1,i] + d_time[i,i+1])/2}

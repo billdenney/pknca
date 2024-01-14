@@ -29,7 +29,7 @@ hours, and and the maximum concentration is at 169 hours,
 \code{tmax=169-168=1}.
 }
 \seealso{
-\code{\link{PKNCAdata}}, \code{\link{PKNCA.options}},
-\code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
-\code{\link{exclude}}
+\code{\link[=PKNCAdata]{PKNCAdata()}}, \code{\link[=PKNCA.options]{PKNCA.options()}},
+\code{\link[=summary.PKNCAresults]{summary.PKNCAresults()}}, \code{\link[=as.data.frame.PKNCAresults]{as.data.frame.PKNCAresults()}},
+\code{\link[=exclude]{exclude()}}
 }

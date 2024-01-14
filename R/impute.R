@@ -70,7 +70,7 @@ PKNCA_impute_method_start_cmin <- function(conc, time, start, end, ..., options 
 #' @describeIn PKNCA_impute_method Shift a predose concentration to become the
 #'   time zero concentration (only if a time zero concentration does not exist)
 #' @param max_shift The maximum amount of time to shift a concentration forward
-#'   (defaults to 5\% of the interval duration, i.e. \code{0.05*(end - start)})
+#'   (defaults to 5\% of the interval duration, i.e. `0.05*(end - start)`)
 #' @export
 PKNCA_impute_method_start_predose <- function(conc, time, start, end, ..., max_shift = NA_real_, options = list()) {
   ret <- data.frame(conc = conc, time = time)
@@ -98,7 +98,7 @@ PKNCA_impute_method_start_predose <- function(conc, time, start, end, ..., max_s
 #' This function is not for use by users of PKNCA.
 #'
 #' @param x The character vector of PKNCA imputation method functions (without
-#'   the \code{PKNCA_impute_method_} part)
+#'   the `PKNCA_impute_method_` part)
 #' @return A list of character vectors of functions to run.
 #' @keywords Internal
 PKNCA_impute_fun_list <- function(x) {

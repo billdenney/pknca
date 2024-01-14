@@ -17,7 +17,7 @@ Get the columns that can be used in an interval specification
 get.interval.cols()
 }
 \seealso{
-\code{\link{check.interval.specification}()} and the vignette
+\code{\link[=check.interval.specification]{check.interval.specification()}} and the vignette
 "Selection of Calculation Intervals"
 
 Other Interval specifications: 

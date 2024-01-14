@@ -14,7 +14,7 @@ pk.tss.monoexponential(
 )
 }
 \arguments{
-\item{\dots}{See \code{\link{pk.tss.data.prep}}}
+\item{\dots}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}}
 
 \item{tss.fraction}{The fraction of steady-state required for calling
 steady-state}
@@ -27,7 +27,7 @@ individual separately with a gnls model (requires more than one
 individual; use \code{single} for one individual), and
 \code{single} fits all the data to a single gnls model.}
 
-\item{check}{See \code{\link{pk.tss.data.prep}}.}
+\item{check}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}.}
 
 \item{verbose}{Describe models as they are run, show convergence of
 the model (passed to the nlme function), and additional details

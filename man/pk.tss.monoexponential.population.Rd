@@ -13,7 +13,7 @@ pk.tss.monoexponential.population(
 }
 \arguments{
 \item{data}{a data frame as prepared by
-\code{\link{pk.tss.data.prep}}.  It must contain at least columns
+\code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}.  It must contain at least columns
 for \code{subject}, \code{time}, \code{conc}, and
 \code{tss.constant}.}
 

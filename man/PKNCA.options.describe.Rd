@@ -16,5 +16,5 @@ A character string of the description.
 Describe a PKNCA.options option by name.
 }
 \seealso{
-\code{\link{PKNCA.options}}
+\code{\link[=PKNCA.options]{PKNCA.options()}}
 }

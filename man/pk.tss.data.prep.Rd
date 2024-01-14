@@ -36,11 +36,11 @@ to be on the same treatment)}
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}
 
-\item{conc.blq}{See \code{\link{clean.conc.blq}}}
+\item{conc.blq}{See \code{\link[=clean.conc.blq]{clean.conc.blq()}}}
 
-\item{conc.na}{See \code{\link{clean.conc.na}}}
+\item{conc.na}{See \code{\link[=clean.conc.na]{clean.conc.na()}}}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 
 \item{\dots}{Discarded inputs to allow generic calls between tss methods.}
 }

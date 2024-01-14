@@ -11,7 +11,7 @@ as a data frame.}
 \item{x}{The object to extract results from}
 
 \item{...}{Ignored (for compatibility with generic
-\code{\link{as.data.frame}})}
+\code{\link[=as.data.frame]{as.data.frame()}})}
 
 \item{out.format}{Should the output be 'long' (default) or 'wide'?}
 }

@@ -32,5 +32,5 @@ assumption with linear kinetics), the equation becomes the same as
 the single-dose MRT.
 }
 \seealso{
-\code{\link{pk.calc.mrt}}
+\code{\link[=pk.calc.mrt]{pk.calc.mrt()}}
 }

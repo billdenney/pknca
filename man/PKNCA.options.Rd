@@ -31,7 +31,7 @@ If...
 \description{
 This function will set the default PKNCA options.  If given no
 inputs, it will provide the current option set.  If given name/value
-pairs, it will set the option (as in the \code{\link{options}}
+pairs, it will set the option (as in the \code{\link[=options]{options()}}
 function).  If given a name, it will return the value for the
 parameter.  If given the \code{default} option as true, it will
 provide the default options.
@@ -55,7 +55,7 @@ PKNCA.options(name="auc.method")
 PKNCA.options(auc.method="lin up/log down", min.hl.points=3)
 }
 \seealso{
-\code{\link{PKNCA.options.describe}}
+\code{\link[=PKNCA.options.describe]{PKNCA.options.describe()}}
 
 Other PKNCA calculation and summary settings: 
 \code{\link{PKNCA.choose.option}()},

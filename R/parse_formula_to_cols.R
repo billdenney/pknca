@@ -2,8 +2,8 @@
 #' the left, right, or both sides of the operator.
 #'
 #' @param x The formula to parse
-#' @param op The operator to search for (e.g. \code{+}, \code{-},
-#' \code{*}, \code{/}, ...)
+#' @param op The operator to search for (e.g. `+`, `-`,
+#' `*`, `/`, ...)
 #' @param side Which side of the operator would you like to see:
 #' 'left', 'right', or 'both'.
 #' @return The side of the operator requested, NA if requesting the

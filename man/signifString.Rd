@@ -43,5 +43,5 @@ Values that are not standard numbers like \code{Inf}, \code{NA}, and
 \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 }
 \seealso{
-\code{\link{signif}}, \code{\link{roundString}}
+\code{\link[=signif]{signif()}}, \code{\link[=roundString]{roundString()}}
 }
