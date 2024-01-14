@@ -11,9 +11,9 @@ cov_holder(sparse_pk)
 }
 \value{
 A matrix with one row and one column for each element of
-  \code{sparse_pk_attribute}.  The covariances are on the off diagonals, and
-  for simplicity of use, it also calculates the variance on the diagonal
-  elements.
+\code{sparse_pk_attribute}.  The covariances are on the off diagonals, and
+for simplicity of use, it also calculates the variance on the diagonal
+elements.
 }
 \description{
 The calculation follows equation A3 in Holder 2001 (see references below):
@@ -26,11 +26,11 @@ defined as zero (rather than dividing by zero).
 
 Where:
 \itemize{
-  \item{\eqn{\hat{\sigma}_{ij}}{sigma_ij}}{The covariance of times i and j}
-  \item{\eqn{r_i}{r_i} and \eqn{r_j}{r_j}}{The number of subjects (usually animals) at times i and j, respectively}
-  \item{\eqn{r_{ij}{r_ij}}}{The number of subjects (usually animals) at both times i and j}
-  \item{\eqn{x_{ik}}{x_ik} and \eqn{x_{jk}}{x_jk}}{The concentration measured for animal k at times i and j, respectively}
-  \item{\eqn{\bar{x}_i}{xbar_i} and \eqn{\bar{x}_j}{xbar_j}}{The mean of the concentrations at times i and j, respectively}
+\item{\eqn{\hat{\sigma}_{ij}}{sigma_ij}}{The covariance of times i and j}
+\item{\eqn{r_i}{r_i} and \eqn{r_j}{r_j}}{The number of subjects (usually animals) at times i and j, respectively}
+\item{\eqn{r_{ij}{r_ij}}}{The number of subjects (usually animals) at both times i and j}
+\item{\eqn{x_{ik}}{x_ik} and \eqn{x_{jk}}{x_jk}}{The concentration measured for animal k at times i and j, respectively}
+\item{\eqn{\bar{x}_i}{xbar_i} and \eqn{\bar{x}_j}{xbar_j}}{The mean of the concentrations at times i and j, respectively}
 }
 
 The Cauchy-Schwartz inequality is enforced for covariances to keep

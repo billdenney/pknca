@@ -18,7 +18,7 @@ pk.calc.ceoi(conc, time, duration.dose = NA, check = TRUE)
 }
 \value{
 The concentration at the end of the infusion, \code{NA} if
-  duration.dose is \code{NA}, or \code{NA} if all \code{time != duration.dose}
+duration.dose is \code{NA}, or \code{NA} if all \code{time != duration.dose}
 }
 \description{
 Determine the concentration at the end of infusion

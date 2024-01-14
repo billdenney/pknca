@@ -16,7 +16,7 @@ assert_number_between(
 \item{x}{[any]\cr
 Object to check.}
 
-\item{...}{Passed to `assert_numeric_between()`}
+\item{...}{Passed to \code{assert_numeric_between()}}
 
 \item{na.ok}{[\code{logical(1)}]\cr
 Are missing values allowed? Default is \code{FALSE}.}
@@ -28,7 +28,7 @@ Name of the checked object to print in assertions. Defaults to
 the heuristic implemented in \code{\link[checkmate]{vname}}.}
 }
 \value{
-`x` or an informative error
+\code{x} or an informative error
 }
 \description{
 Confirm that a value is greater than another value

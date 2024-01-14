@@ -11,8 +11,8 @@ get.parameter.deps(x)
 }
 \value{
 A character vector of parameter names that depend on the
-  parameter \code{x}.  If none depend on \code{x}, then the result
-  will be an empty vector.
+parameter \code{x}.  If none depend on \code{x}, then the result
+will be an empty vector.
 }
 \description{
 Get all columns that depend on a parameter

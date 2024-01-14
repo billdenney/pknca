@@ -19,8 +19,8 @@ of quantification.}
 }
 \value{
 A data.frame with one row and columns named "r.squared",
-  "adj.r.squared", "PROB", "lambda.z", "clast.pred",
-  "lambda.z.n.points", "half.life", "span.ratio"
+"adj.r.squared", "PROB", "lambda.z", "clast.pred",
+"lambda.z.n.points", "half.life", "span.ratio"
 }
 \description{
 Perform the half-life fit given the data.  The function simply fits

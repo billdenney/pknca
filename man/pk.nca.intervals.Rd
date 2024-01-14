@@ -28,7 +28,7 @@ as output from \code{prepare_PKNCAintervals()}}
 dense calculations (FALSE)?}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{impute}{The column name in \code{data_intervals} to use for imputation}
 

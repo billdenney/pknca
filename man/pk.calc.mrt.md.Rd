@@ -28,8 +28,8 @@ mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and
 should only be used for multiple dosing with equal intervals between doses.
 
 Note that if \code{aucinf == auctau} (as would be the
-  assumption with linear kinetics), the equation becomes the same as
-  the single-dose MRT.
+assumption with linear kinetics), the equation becomes the same as
+the single-dose MRT.
 }
 \seealso{
 \code{\link{pk.calc.mrt}}

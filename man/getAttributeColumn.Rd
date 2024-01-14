@@ -17,7 +17,7 @@ missing.  Character vector with zero, one, or both of "attr" and
 }
 \value{
 The value of the attribute (or \code{NULL} if the attribute
-  is not set or the column does not exist)
+is not set or the column does not exist)
 }
 \description{
 Retrieve the value of an attribute column.

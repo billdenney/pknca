@@ -22,10 +22,10 @@ check (if \code{NULL}, ).}
 \value{
 If...
 \describe{
-  \item{no arguments are given}{returns the current options.}
-  \item{a value is set (including the defaults)}{returns \code{NULL}}
-  \item{a single value is requested}{the current value of that option is returned as a scalar}
-  \item{multiple values are requested}{the current values of those options are returned as a list}
+\item{no arguments are given}{returns the current options.}
+\item{a value is set (including the defaults)}{returns \code{NULL}}
+\item{a single value is requested}{the current value of that option is returned as a scalar}
+\item{multiple values are requested}{the current values of those options are returned as a list}
 }
 }
 \description{

@@ -85,7 +85,7 @@ quantification.  If not given, \code{clast} is calculated from
 \code{\link{pk.calc.clast.obs}()}}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{method}{The method for integration (one of 'lin up/log down',
 'lin-log', or 'linear')}
@@ -127,7 +127,7 @@ the instant of an IV bolus dose.}
 }
 \value{
 The interpolated or extrapolated concentration value as a scalar
-  double (or vector for \code{interp.extrap.conc()}).
+double (or vector for \code{interp.extrap.conc()}).
 }
 \description{
 \code{interpolate.conc()} and \code{extrapolate.conc()} returns an
@@ -139,17 +139,16 @@ concentration. Of note, these functions will not extrapolate prior to the
 first point.
 }
 \details{
-An `NA` value for the `lambda.z` parameter will prevent extrapolation.
-
+An \code{NA} value for the \code{lambda.z} parameter will prevent extrapolation.
 
 \describe{
-  \item{extrap.method}{
-    \describe{
-      \item{'AUCinf'}{Use lambda.z to extrapolate beyond the last point with the half-life.}
-      \item{'AUCall'}{If the last point is above the limit of quantification or missing, this is identical to 'AUCinf'. If the last point is below the limit of quantification, then linear interpolation between the Clast and the next BLQ is used for that  interval and all additional points are extrapolated as 0.}
-      \item{'AUClast'}{Extrapolates all points after the last above the  limit of quantification as 0.}
-    }
-  }
+\item{extrap.method}{
+\describe{
+\item{'AUCinf'}{Use lambda.z to extrapolate beyond the last point with the half-life.}
+\item{'AUCall'}{If the last point is above the limit of quantification or missing, this is identical to 'AUCinf'. If the last point is below the limit of quantification, then linear interpolation between the Clast and the next BLQ is used for that  interval and all additional points are extrapolated as 0.}
+\item{'AUClast'}{Extrapolates all points after the last above the  limit of quantification as 0.}
+}
+}
 }
 
 \code{duration.dose} and \code{direction.out} are ignored if \code{route.dose
@@ -182,5 +181,5 @@ concentrations without interpolating or extrapolating beyond doses.
 }}
 \seealso{
 \code{\link{pk.calc.clast.obs}()},
-  \code{\link{pk.calc.half.life}()}, \code{\link{pk.calc.c0}()}
+\code{\link{pk.calc.half.life}()}, \code{\link{pk.calc.c0}()}
 }

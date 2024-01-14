@@ -23,7 +23,7 @@ Calculate amount excreted (typically in urine or feces)
 ae is \code{sum(conc*volume)}.
 
 The units for the concentration and volume should match such
-  that \code{sum(conc*volume)} has units of mass or moles.
+that \code{sum(conc*volume)} has units of mass or moles.
 }
 \seealso{
 \code{\link{pk.calc.clr}}, \code{\link{pk.calc.fe}}

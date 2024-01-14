@@ -15,9 +15,9 @@ as_sparse_pk(conc, time, subject)
 }
 \value{
 A sparse_pk object which is a list of lists.  The inner lists have
-  elements named: "time", The time of measurement; "conc", The concentration
-  measured; "subject", The subject identifiers.  The object will usually be
-  modified by future functions to add more named elements to the inner list.
+elements named: "time", The time of measurement; "conc", The concentration
+measured; "subject", The subject identifiers.  The object will usually be
+modified by future functions to add more named elements to the inner list.
 }
 \description{
 Generate a sparse_pk object

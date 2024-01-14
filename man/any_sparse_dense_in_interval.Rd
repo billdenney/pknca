@@ -15,7 +15,7 @@ PK (commonly used in clinical studies or larger nonclinical species)?}
 }
 \value{
 A logical value indicating if the interval requests any sparse (if
-  \code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
+\code{sparse=TRUE}) or dense (if \code{sparse=FALSE}) calculations.
 }
 \description{
 Determine if there are any sparse or dense calculations requested within an interval

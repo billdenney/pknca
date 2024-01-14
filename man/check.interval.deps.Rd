@@ -13,7 +13,7 @@ check.interval.deps(x)
 }
 \value{
 The interval specification with additional calculations added where
-  requested outputs require them.
+requested outputs require them.
 }
 \description{
 Take in a single row of an interval specification and return that

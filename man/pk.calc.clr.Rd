@@ -22,7 +22,7 @@ Calculate renal clearance
 clr is \code{sum(ae)/auc}.
 
 The units for the \code{ae} and \code{auc} should match such
-  that \code{ae/auc} has units of volume/time.
+that \code{ae/auc} has units of volume/time.
 }
 \seealso{
 \code{\link{pk.calc.ae}}, \code{\link{pk.calc.fe}}

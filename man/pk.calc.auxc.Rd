@@ -77,7 +77,7 @@ extrapolation}
 and 'AUCall'.}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{method}{The method for integration (one of 'lin up/log down',
 'lin-log', or 'linear')}

@@ -87,12 +87,12 @@ sparse_auc_weight_linear <- function(sparse_pk) {
 #' Calculate the mean concentration at all time points for use in sparse NCA
 #' calculations
 #'
-#' Choices for the method of calculation (the argument
-#' \code{sparse_mean_method}) are:
+#' Choices for the method of calculation (the argument `sparse_mean_method`)
+#' are:
 #'
 #' \itemize{
 #'   \item{"arithmetic mean"}{Arithmetic mean (ignoring number of BLQ samples)}
-#'   \item{"arithmetic mean, <=50\% BLQ"}{If >= 50\% of the measurements are BLQ, zero.  Otherwise, the arithmetic mean of all samples (including the BLQ as zero).}
+#'   \item{"arithmetic mean, <=50% BLQ"}{If >= 50% of the measurements are BLQ, zero.  Otherwise, the arithmetic mean of all samples (including the BLQ as zero).}
 #' }
 #'
 #' @inheritParams sparse_pk_attribute

@@ -34,7 +34,7 @@ to be on the same treatment)}
 \item{time.dosing}{Time of dosing}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{conc.blq}{See \code{\link{clean.conc.blq}}}
 

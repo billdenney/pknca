@@ -17,7 +17,7 @@ pk.calc.aucabove(conc, time, conc_above = NA_real_, ..., options = list())
 is \code{method} as described in the details section.}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 }
 \value{
 The AUC of the concentration above the limit

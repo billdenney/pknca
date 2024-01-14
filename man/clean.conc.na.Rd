@@ -15,7 +15,7 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 \item{\dots}{Additional items to add to the data frame}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
 number to impute.}
@@ -24,7 +24,7 @@ number to impute.}
 }
 \value{
 The concentration and time measurements (data frame) filtered
-  and cleaned as requested relative to NA in the concentration.
+and cleaned as requested relative to NA in the concentration.
 }
 \description{
 NA concentrations (and their associated times) will be removed then

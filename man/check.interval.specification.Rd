@@ -12,7 +12,7 @@ interval}
 }
 \value{
 x The potentially updated data frame with the interval calculation
-  specification.
+specification.
 }
 \description{
 Calculation interval specifications are data frames defining what

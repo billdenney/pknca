@@ -15,7 +15,7 @@ pk.calc.cstart(conc, time, start)
 }
 \value{
 The concentration when \code{time == end}.  If none
-  match, then \code{NA}
+match, then \code{NA}
 }
 \description{
 Determine the concentration at the beginning of the interval

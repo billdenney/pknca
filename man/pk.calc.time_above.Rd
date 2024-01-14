@@ -17,7 +17,7 @@ pk.calc.time_above(conc, time, conc_above, ..., options = list(), check = TRUE)
 is \code{method} as described in the details section.}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
 and \code{\link{clean.conc.na}}?}

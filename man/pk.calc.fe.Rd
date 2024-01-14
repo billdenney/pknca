@@ -21,7 +21,7 @@ Calculate fraction excreted (typically in urine or feces)
 fe is \code{sum(ae)/dose}
 
 The units for \code{ae} and \code{dose} should be the same
-  so that \code{ae/dose} is a unitless fraction.
+so that \code{ae/dose} is a unitless fraction.
 }
 \seealso{
 \code{\link{pk.calc.ae}}, \code{\link{pk.calc.clr}}

@@ -21,8 +21,8 @@ it will be prepended to the maximum column name if not.)}
 }
 \value{
 A list with elements named "data", "name" giving the
-  \code{data} with a column named "name" with the value in that
-  column.
+\code{data} with a column named "name" with the value in that
+column.
 }
 \description{
 Get the value from a column in a data frame if the value is a column

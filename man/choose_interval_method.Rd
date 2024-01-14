@@ -22,15 +22,15 @@ choose_interval_method(conc, time, tlast, method, auc.type, options)
 and 'AUCall'.}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 }
 \value{
 A character vector of methods for interpolation/extrapolation methods
-  that is the same length as `conc` which indicates how to
-  interpolate/integrate between each of the concentrations (all but the last
-  value in the vector) and how to extrapolate after `tlast` (the last item in
-  the vector).  Possible values in the vector are: 'zero', 'linear', 'log',
-  and 'extrap_log'
+that is the same length as \code{conc} which indicates how to
+interpolate/integrate between each of the concentrations (all but the last
+value in the vector) and how to extrapolate after \code{tlast} (the last item in
+the vector).  Possible values in the vector are: 'zero', 'linear', 'log',
+and 'extrap_log'
 }
 \description{
 Choose how to interpolate, extrapolate, or integrate data in each

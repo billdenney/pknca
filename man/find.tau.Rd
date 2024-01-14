@@ -12,7 +12,7 @@ find.tau(x, na.action = stats::na.omit, options = list(), tau.choices = NULL)
 \item{na.action}{What to do with NAs in \code{x}}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{tau.choices}{the intervals to look for if the doses are not all equally
 spaced.}
@@ -20,14 +20,14 @@ spaced.}
 \value{
 A scalar indicating the repeating interval with the most repetition.
 \enumerate{
-  \item If all values are \code{NA} then NA is returned.
-  \item If all values are the same, then 0 is returned.
-  \item If all values are equally spaced, then that spacing is
-        returned.
-  \item If one of the \code{choices} can minimize the number of
-        unique values, then that is returned.
-  \item If none of the \code{choices} can minimize the number of
-        unique values, then -1 is returned.
+\item If all values are \code{NA} then NA is returned.
+\item If all values are the same, then 0 is returned.
+\item If all values are equally spaced, then that spacing is
+returned.
+\item If one of the \code{choices} can minimize the number of
+unique values, then that is returned.
+\item If none of the \code{choices} can minimize the number of
+unique values, then -1 is returned.
 }
 }
 \description{

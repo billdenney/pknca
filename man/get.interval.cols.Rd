@@ -8,7 +8,7 @@ get.interval.cols()
 }
 \value{
 A list with named elements for each parameter.  Each list element
-  contains the parameter definition.
+contains the parameter definition.
 }
 \description{
 Get the columns that can be used in an interval specification
@@ -18,7 +18,7 @@ get.interval.cols()
 }
 \seealso{
 \code{\link{check.interval.specification}()} and the vignette
-  "Selection of Calculation Intervals"
+"Selection of Calculation Intervals"
 
 Other Interval specifications: 
 \code{\link{add.interval.col}()},

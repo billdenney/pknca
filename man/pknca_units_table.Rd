@@ -17,8 +17,8 @@ by to get a standardized value.}
 }
 \value{
 A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if
-  \code{conversions} is not given, and adding "PPSTRESU" and
-  "conversion_factor" if \code{conversions} is given.
+\code{conversions} is not given, and adding "PPSTRESU" and
+"conversion_factor" if \code{conversions} is given.
 }
 \description{
 This data.frame is typically used for the \code{units} argument for

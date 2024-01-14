@@ -30,6 +30,6 @@ hours, and and the maximum concentration is at 169 hours,
 }
 \seealso{
 \code{\link{PKNCAdata}}, \code{\link{PKNCA.options}},
- \code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
- \code{\link{exclude}}
+\code{\link{summary.PKNCAresults}}, \code{\link{as.data.frame.PKNCAresults}},
+\code{\link{exclude}}
 }

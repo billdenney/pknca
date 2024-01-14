@@ -35,7 +35,7 @@ while running.}
 }
 \value{
 A scalar float for the first time when steady-state is
-  achieved or \code{NA} if it is not observed.
+achieved or \code{NA} if it is not observed.
 }
 \description{
 Trough concentrations are selected as concentrations at the time of

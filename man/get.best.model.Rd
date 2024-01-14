@@ -13,7 +13,7 @@ get.best.model(object, ...)
 }
 \value{
 The model which is assessed as best.  If more than one are equal, the
-  first is chosen.
+first is chosen.
 }
 \description{
 Extract the best model from a list of models using the AIC.

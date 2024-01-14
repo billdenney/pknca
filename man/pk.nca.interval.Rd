@@ -82,11 +82,11 @@ dense calculations (FALSE)?}
 interval.}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 }
 \value{
 A data frame with the start and end time along with all PK
-  parameters for the \code{interval}
+parameters for the \code{interval}
 }
 \description{
 For one subject/time range, compute all available PK parameters. All

@@ -38,8 +38,8 @@ summary was not requested for a parameter within an interval.}
 summary was requested, but the point estimate AND spread calculations (if
 applicable) returned \code{NA}.}
 
-\item{drop.group, summarize.n.per.group, not.requested.string, not.calculated.string}{Deprecated use `drop_group`, `not_requested`, `not_calculated`, or
-`summarize_n`, instead}
+\item{drop.group, summarize.n.per.group, not.requested.string, not.calculated.string}{Deprecated use \code{drop_group}, \code{not_requested}, \code{not_calculated}, or
+\code{summarize_n}, instead}
 
 \item{pretty_names}{Should pretty names (easier to understand in a report) be
 used?  \code{TRUE} is yes, \code{FALSE} is no, and \code{NULL} is yes if
@@ -47,7 +47,7 @@ units are used and no if units are not used.}
 }
 \value{
 A data frame of NCA parameter results summarized according to the
-  summarization settings.
+summarization settings.
 }
 \description{
 Summarize PKNCA results

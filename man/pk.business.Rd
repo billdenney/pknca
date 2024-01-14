@@ -20,8 +20,8 @@ number between 0 and 1, inclusive).}
 }
 \value{
 A version of FUN that can be called with parameters that are checked
-  for missingness (and zeros) with missing (and zeros) removed before the
-  call.  If \code{max.missing} is exceeded, then NA is returned.
+for missingness (and zeros) with missing (and zeros) removed before the
+call.  If \code{max.missing} is exceeded, then NA is returned.
 }
 \description{
 Note that all missing values are removed prior to calling the function.

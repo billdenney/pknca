@@ -11,21 +11,21 @@ time_calc(time_event, time_obs, units = NULL)
 
 \item{time_obs}{A vector of times for observations}
 
-\item{units}{Passed to `base::as.numeric.difftime()`}
+\item{units}{Passed to \code{base::as.numeric.difftime()}}
 }
 \value{
 A data.frame with columns for:
 \itemize{
-  \item{event_number_before}{The index of `time_event` that is the last one before `time_obs` or `NA` if none are before.}
-  \item{event_number_after}{The index of `time_event` that is the first one after `time_obs` or `NA` if none are after.}
-  \item{time_before}{The minimum time that the current `time_obs` is before a `time_event`, 0 if at least one `time_obs == time_event`.}
-  \item{time_after}{The minimum time that the current `time_obs` is after a `time_event`, 0 if at least one `time_obs == time_event`.}
-  \item{time_after_first}{The time after the first event (may be negative or positive).}
+\item{event_number_before}{The index of \code{time_event} that is the last one before \code{time_obs} or \code{NA} if none are before.}
+\item{event_number_after}{The index of \code{time_event} that is the first one after \code{time_obs} or \code{NA} if none are after.}
+\item{time_before}{The minimum time that the current \code{time_obs} is before a \code{time_event}, 0 if at least one \code{time_obs == time_event}.}
+\item{time_after}{The minimum time that the current \code{time_obs} is after a \code{time_event}, 0 if at least one \code{time_obs == time_event}.}
+\item{time_after_first}{The time after the first event (may be negative or positive).}
 }
 
-`time_after` and `time_before` are calculated if they are at the same time as
+\code{time_after} and \code{time_before} are calculated if they are at the same time as
 a dose, they equal zero, and otherwise, they are calculated relative to the
-dose number in the `event_number_*` columns.
+dose number in the \verb{event_number_*} columns.
 }
 \description{
 Times relative to an event (typically dosing)

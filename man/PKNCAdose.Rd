@@ -59,19 +59,19 @@ Create a PKNCAdose object
 }
 \details{
 The \code{formula} for a \code{PKNCAdose} object can be
-  given three ways: one-sided (missing left side), one-sided (missing
-  right side), or two-sided.  Each of the three ways can be given
-  with or without groups.  When given one-sided missing the left
-  side, the left side can either be omitted or can be given as a
-  period (\code{.}): \code{~time|treatment+subject} and
-  \code{.~time|treatment+subject} are identical, and dose-related NCA
-  parameters will all be reported as not calculable (for example,
-  clearance).  When given one-sided missing the right side, the right
-  side must be specified as a period (\code{.}):
-  \code{dose~.|treatment+subject}, and only a single row may be given
-  per group.  When the right side is missing, PKNCA assumes that the
-  same dose is given in every interval.  When given as a two-sided
-  formula
+given three ways: one-sided (missing left side), one-sided (missing
+right side), or two-sided.  Each of the three ways can be given
+with or without groups.  When given one-sided missing the left
+side, the left side can either be omitted or can be given as a
+period (\code{.}): \code{~time|treatment+subject} and
+\code{.~time|treatment+subject} are identical, and dose-related NCA
+parameters will all be reported as not calculable (for example,
+clearance).  When given one-sided missing the right side, the right
+side must be specified as a period (\code{.}):
+\code{dose~.|treatment+subject}, and only a single row may be given
+per group.  When the right side is missing, PKNCA assumes that the
+same dose is given in every interval.  When given as a two-sided
+formula
 }
 \seealso{
 Other PKNCA objects: 

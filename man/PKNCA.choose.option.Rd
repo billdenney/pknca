@@ -14,11 +14,11 @@ PKNCA.choose.option(name, value = NULL, options = list())
 check the value).}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 }
 \value{
 The value of the option first from the \code{options} list and if it
-  is not there then from the current settings.
+is not there then from the current settings.
 }
 \description{
 Choose either the value from an option list or the current set value for an

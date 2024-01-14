@@ -25,7 +25,7 @@ getDataName(object)
 }
 \value{
 A character scalar with the name of the data object (or NULL
-  if the method does not apply).
+if the method does not apply).
 }
 \description{
 Get the name of the element containing the data for the current

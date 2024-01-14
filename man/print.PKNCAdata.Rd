@@ -9,8 +9,7 @@
 \arguments{
 \item{x}{The object to print}
 
-\item{...}{Arguments passed on to \code{\link{print.PKNCAconc}} and
-\code{\link{print.PKNCAdose}}}
+\item{...}{Arguments passed on to \code{\link[=print.PKNCAconc]{print.PKNCAconc()}} and \code{\link[=print.PKNCAdose]{print.PKNCAdose()}}}
 }
 \description{
 Print a PKNCAdata object

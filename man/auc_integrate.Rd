@@ -29,7 +29,7 @@ auc_integrate(
 \item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}
 
-\item{interval_method}{The method for integrating each interval of `conc`}
+\item{interval_method}{The method for integrating each interval of \code{conc}}
 
 \item{fun_linear}{The function to use for integration of the linear part of
 the curve (not required for AUC or AUMC functions)}

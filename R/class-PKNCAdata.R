@@ -1,41 +1,35 @@
 #' Create a PKNCAdata object.
 #'
-#' \code{PKNCAdata} combines \code{PKNCAconc} and \code{PKNCAdose} and
-#' adds in the intervals for PK calculations.
+#' `PKNCAdata()` combines `PKNCAconc` and `PKNCAdose` objects and adds in the
+#' intervals for PK calculations.
 #'
 #' @inheritParams PKNCA.choose.option
-#' @param data.conc Concentration data as a \code{PKNCAconc} object or a
-#'   data frame
-#' @param data.dose Dosing data as a \code{PKNCAdose} object (see
-#'   details)
-#' @param impute Methods for imputation.  \code{NA} for no imputation, a
-#'   comma-or space-separated list of names, or the name of a column in the
-#'   \code{intervals} data.frame.  See
-#'   \code{vignette("v08-data-imputation", package="PKNCA")} for more details.
-#' @param formula.conc Formula for making a \code{PKNCAconc} object with
-#'   \code{data.conc}.  This must be given if \code{data.conc} is a
-#'   data.frame, and it must not be given if \code{data.conc} is a
-#'   \code{PKNCAconc} object.
-#' @param formula.dose Formula for making a \code{PKNCAdose} object with
-#'   \code{data.dose}.  This must be given if \code{data.dose} is a
-#'   data.frame, and it must not be given if \code{data.dose} is a
-#'   \code{PKNCAdose} object.
-#' @param intervals A data frame with the AUC interval specifications as
-#'   defined in \code{\link{check.interval.specification}}.  If missing,
-#'   this will be automatically chosen by
-#'   \code{\link{choose.auc.intervals}}. (see details)
+#' @param data.conc Concentration data as a `PKNCAconc` object or a data frame
+#' @param data.dose Dosing data as a `PKNCAdose` object (see details)
+#' @param impute Methods for imputation.  `NA` for no imputation, a comma-or
+#'   space-separated list of names, or the name of a column in the `intervals`
+#'   data.frame.  See `vignette("v08-data-imputation", package="PKNCA")` for
+#'   more details.
+#' @param formula.conc Formula for making a `PKNCAconc` object with `data.conc`.
+#'   This must be given if `data.conc` is a data.frame, and it must not be given
+#'   if `data.conc` is a `PKNCAconc` object.
+#' @param formula.dose Formula for making a `PKNCAdose` object with `data.dose`.
+#'   This must be given if `data.dose` is a data.frame, and it must not be given
+#'   if `data.dose` is a `PKNCAdose` object.
+#' @param intervals A data frame with the AUC interval specifications as defined
+#'   in [check.interval.specification()].  If missing, this will be
+#'   automatically chosen by [choose.auc.intervals()]. (see details)
 #' @param units A data.frame of unit assignments and conversions as created by
-#'   \code{\link{pknca_units_table}()}
-#' @param ... arguments passed to \code{PKNCAdata.default}
+#'   [pknca_units_table()]
+#' @param ... arguments passed to `PKNCAdata.default`
 #' @return A PKNCAdata object with concentration, dose, interval, and
 #'   calculation options stored (note that PKNCAdata objects can also
 #'   have results after a NCA calculations are done to the data).
-#' @details If \code{data.dose} is not given or is \code{NA}, then the
-#'   \code{intervals} must be given.  At least one of \code{data.dose}
-#'   and \code{intervals} must be given.
+#' @details If `data.dose` is not given or is `NA`, then the
+#'   `intervals` must be given.  At least one of `data.dose`
+#'   and `intervals` must be given.
 #' @family PKNCA objects
-#' @seealso \code{\link{choose.auc.intervals}}, \code{\link{pk.nca}},
-#'   \code{\link{pknca_units_table}()}
+#' @seealso [choose.auc.intervals()], [pk.nca()], [pknca_units_table()]
 #' @export
 PKNCAdata <- function(data.conc, data.dose, ...) {
   UseMethod("PKNCAdata", data.conc)
@@ -199,8 +193,7 @@ is_sparse_pk.PKNCAdata <- function(object) {
 
 #' Print a PKNCAdata object
 #' @param x The object to print
-#' @param ... Arguments passed on to \code{\link{print.PKNCAconc}} and
-#' \code{\link{print.PKNCAdose}}
+#' @param ... Arguments passed on to [print.PKNCAconc()] and [print.PKNCAdose()]
 #' @export
 print.PKNCAdata <- function(x, ...) {
   print.PKNCAconc(x$conc, ...)
@@ -228,7 +221,7 @@ print.PKNCAdata <- function(x, ...) {
 #' Summarize a PKNCAdata object showing important details about the
 #' concentration, dosing, and interval information.
 #' @param object The PKNCAdata object to summarize.
-#' @param ... arguments passed on to \code{\link{print.PKNCAdata}}
+#' @param ... arguments passed on to [print.PKNCAdata()]
 #' @export
 summary.PKNCAdata <- function(object, ...) {
   print.PKNCAdata(object, summarize=TRUE, ...)

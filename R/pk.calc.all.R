@@ -20,18 +20,16 @@
 #'  \code{\link{exclude}}
 #' @export
 pk.nca <- function(data, verbose=FALSE) {
-  if (nrow(data$intervals) == 0) {
-    warning("No intervals given; no calculations done.")
-    results <- data.frame()
-  } else {
+  assert_PKNCAdata(data)
+  browser()
+  stop()
+  results <- data.frame()
+  if (nrow(data$intervals) > 0) {
     if (verbose) message("Setting up options")
     # Merge the options into the default options.
     tmp_options <- PKNCA.options()
     tmp_options[names(data$options)] <- data$options
     data$options <- tmp_options
-    if (!is.na(data$impute)) {
-      data <- add_impute_to_intervals(data)
-    }
     splitdata <- full_join_PKNCAdata(data)
     group_info <-
       splitdata[
@@ -183,18 +181,20 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #' Compute NCA for multiple intervals
 #'
 #' @param data_conc A data.frame or tibble with standardized column names as
-#'   output from \code{prepare_PKNCAconc()}
+#'   output from `prepare_PKNCAconc()`
 #' @param data_dose A data.frame or tibble with standardized column names as
-#'   output from \code{prepare_PKNCAdose()}
+#'   output from `prepare_PKNCAdose()`
 #' @param data_intervals A data.frame or tibble with standardized column names
-#'   as output from \code{prepare_PKNCAintervals()}
-#' @param impute The column name in \code{data_intervals} to use for imputation
+#'   as output from `prepare_PKNCAintervals()`
+#' @param impute The column name in `data_intervals` to use for imputation
 #' @inheritParams PKNCAdata
 #' @inheritParams pk.nca
 #' @inheritParams pk.nca.interval
 #' @return A data.frame with all NCA results
 pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
                              options, impute, verbose=FALSE) {
+  browser()
+  stop()
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
     # No concentration data; potentially placebo data
     return(rlang::warning_cnd(class="pknca_no_conc_data", message="No concentration data"))
@@ -243,6 +243,8 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
     } else if (!has_calc_sparse_dense) {
       if (verbose) message("No ", ifelse(sparse, "sparse", "dense"), " calculations requested for an interval")
     } else {
+      browser()
+      stop()
       impute_method <-
         if (is.na(impute)) {
           NA_character_
@@ -359,6 +361,8 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                             impute_method=NA_character_,
                             include_half.life=NULL, exclude_half.life=NULL,
                             subject, sparse, interval, options=list()) {
+  browser()
+  stop()
   if (!is.data.frame(interval)) {
     stop("Please report a bug.  Interval must be a data.frame")
   }

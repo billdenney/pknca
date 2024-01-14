@@ -11,7 +11,7 @@ normalize_exclude(object)
 }
 \value{
 The exclude vector where \code{NA} indicates not to exclude
-  and anything else indicates to exclude.
+and anything else indicates to exclude.
 }
 \description{
 Normalize the exclude column by setting blanks to NA

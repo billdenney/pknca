@@ -12,7 +12,7 @@ sparse_auc_weight_linear(sparse_pk)
 }
 \value{
 A numeric vector of weights for sparse AUC calculations the same
-  length as \code{sparse_pk}
+length as \code{sparse_pk}
 }
 \description{
 The weight is used as the \eqn{w_i}{w_i} parameter in
@@ -25,9 +25,9 @@ The weight is used as the \eqn{w_i}{w_i} parameter in
 Where:
 
 \itemize{
-  \item{\eqn{w_i}{w_i}}{is the weight at time i}
-  \item{\eqn{\delta_{time,i-1,i}}{d_time[i-1,i]} and \eqn{\delta_{time,i,i+1}}{d_time[i,i+1]}}{are the changes between time i-1 and i or i and i+1 (zero outside of the time range)}
-  \item{\eqn{t_i}{t_i}}{is the time at time i}
+\item{\eqn{w_i}{w_i}}{is the weight at time i}
+\item{\eqn{\delta_{time,i-1,i}}{d_time[i-1,i]} and \eqn{\delta_{time,i,i+1}}{d_time[i,i+1]}}{are the changes between time i-1 and i or i and i+1 (zero outside of the time range)}
+\item{\eqn{t_i}{t_i}}{is the time at time i}
 }
 }
 \seealso{

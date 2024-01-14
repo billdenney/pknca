@@ -15,7 +15,7 @@ integration}
 \item{end}{The end time of the interval}
 }
 \value{
-`interval` (or `c(start, end)`)
+\code{interval} (or \code{c(start, end)})
 }
 \description{
 Assert that an interval is accurately defined as an interval, and return the interval

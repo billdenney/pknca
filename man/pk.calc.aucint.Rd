@@ -121,7 +121,7 @@ and \code{\link{clean.conc.na}}?}
 \code{interp.extrap.conc}}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 }
 \description{
 Calculate the AUC over an interval with interpolation and/or
@@ -129,7 +129,7 @@ extrapolation of concentrations for the beginning and end of the
 interval.
 }
 \details{
-When `pk.calc.aucint()` needs to extrapolate using `lambda.z` (in other
+When \code{pk.calc.aucint()} needs to extrapolate using \code{lambda.z} (in other
 words, using the half-life), it will always extrapolate using the logarithmic
 trapezoidal rule to align with using a half-life calculation for the
 extrapolation.
