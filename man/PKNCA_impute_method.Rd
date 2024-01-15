@@ -16,6 +16,8 @@ PKNCA_impute_method_start_predose(
   time,
   start,
   end,
+  conc.group,
+  time.group,
   ...,
   max_shift = NA_real_,
   options = list()
@@ -35,8 +37,14 @@ PKNCA_impute_method_start_predose(
 
 \item{end}{The end time of the interval}
 
+\item{conc.group}{All concentrations measured for the group}
+
+\item{time.group}{Time of all concentrations measured for the group}
+
 \item{max_shift}{The maximum amount of time to shift a concentration forward
-(defaults to 5\% of the interval duration, i.e. \code{0.05*(end - start)})}
+(defaults to 5\% of the interval duration, i.e. \code{0.05*(end - start)}, if
+\code{is.finite(end)}, and when \code{is.infinite(end)}, defaults to 5\% of the time
+from start to \code{max(time)})}
 }
 \value{
 A data.frame with one column named conc with imputed concentrations

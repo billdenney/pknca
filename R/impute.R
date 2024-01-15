@@ -89,21 +89,31 @@ PKNCA_impute_method_start_cmin <- function(conc, time, start, end, ..., options 
 #' @describeIn PKNCA_impute_method Shift a predose concentration to become the
 #'   time zero concentration (only if a time zero concentration does not exist)
 #' @param max_shift The maximum amount of time to shift a concentration forward
-#'   (defaults to 5% of the interval duration, i.e. `0.05*(end - start)`)
+#'   (defaults to 5% of the interval duration, i.e. `0.05*(end - start)`, if
+#'   `is.finite(end)`, and when `is.infinite(end)`, defaults to 5% of the time
+#'   from start to `max(time)`)
+#' @inheritParams pk.nca.interval
 #' @export
-PKNCA_impute_method_start_predose <- function(conc, time, start, end, ..., max_shift = NA_real_, options = list()) {
+PKNCA_impute_method_start_predose <- function(conc, time, start, end, conc.group, time.group, ..., max_shift = NA_real_, options = list()) {
   ret <- data.frame(conc = conc, time = time)
   if (is.na(max_shift)) {
-    max_shift <- 0.05 * (end - start)
+    if (is.infinite(end)) {
+      shift_end <- max(time)
+    } else {
+      shift_end <- end
+    }
+    max_shift <- 0.05 * (shift_end - start)
   }
-  mask_zero <- time %in% start
-  if (!any(mask_zero)) {
-    mask_predose <- time < start
+  # determine if the start time is already in the
+  mask_start <- time %in% start
+  if (!any(mask_start)) {
+    mask_predose <- time.group < start
     if (any(mask_predose)) {
-      time_predose <- max(time[mask_predose])
+      time_predose <- max(time.group[mask_predose])
       if ((-time_predose) <= max_shift) {
-        mask_predose_change <- time == time_predose
-        ret$time[mask_predose_change] <- start
+        mask_predose_change <- time.group == time_predose
+        ret_predose <- data.frame(conc = conc.group[mask_predose_change], time = start)
+        ret <- dplyr::bind_rows(ret_predose, ret)
       }
     }
   }

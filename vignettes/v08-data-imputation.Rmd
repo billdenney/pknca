@@ -137,5 +137,8 @@ create an imputation function requires the following steps:
 3. The function should return a single data.frame with two columns named `conc`
    and `time`.  The rows in the data.frame must be sorted by `time`.
 
-In addition to the above, the function may take named arguments of `start` and
-`end` to indicate the start and end time of the interval.
+In addition to the above, the function may take named arguments of:
+
+* `start` and `end` to indicate the start and end time of the interval, and
+* `conc.group` and `time.group` to indicate the concentrations and times that
+  have not been filtered for the interval.
