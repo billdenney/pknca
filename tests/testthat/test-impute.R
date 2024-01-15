@@ -254,8 +254,8 @@ test_that("start_conc0 imputation works (fix #257)", {
           tmax        = TRUE,
           aucinf.obs  = TRUE,
           aucint.last = TRUE,
-          auclast     = TRUE),
-      impute = "impute"
+          auclast     = TRUE
+        )
     )
   suppressMessages(suppressWarnings(
     myres <- pk.nca(mydata)

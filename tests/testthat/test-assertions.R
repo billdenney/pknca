@@ -98,3 +98,10 @@ test_that("assert_lambdaz", {
     regexp = "Assertion on '-1' failed: Element 1 is not > 0"
   )
 })
+
+test_that("assert_PKNCAdata", {
+  expect_error(
+    assert_PKNCAdata("A"),
+    regexp = "Must be a PKNCAdata object"
+  )
+})

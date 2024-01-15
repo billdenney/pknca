@@ -196,14 +196,6 @@ assert_aucmethod <- function(method = c("lin up/log down", "linear", "lin-log"))
   match.arg(method)
 }
 
-#' Assert that a vector is made of valid PKNCA imputation functions
-#'
-#' @param impute_fun The character vector of imputation functions
-#' @returns The vector of confirmed functions
-assert_impute_fun <- function(impute_fun) {
-  char_funs <- strsplit(impute_fun, split = "[ ,]")
-}
-
 #' Assert that an object is a PKNCAdata object
 #' @param object The PKNCAdata object
 #' @returns The PKNCAdata object (confirmed to be usable)
