@@ -56,6 +56,15 @@ test_that("PKNCA_impute_method_start_predose", {
     PKNCA_impute_method_start_predose(conc = 2:3, time = 1:2, conc.group = 1:3, time.group = c(-3, 1:2), max_shift = 3, start = 0, end = 24),
     data.frame(conc = 1:3, time = 0:2)
   )
+  # shift automation works reasonably even when the end is infinite
+  expect_equal(
+    PKNCA_impute_method_start_predose(conc = 2:4, time = c(1:2, 24), conc.group = 1:4, time.group = c(-1.25, 1:2, 24), start = 0, end = Inf),
+    data.frame(conc = 2:4, time = c(1:2, 24))
+  )
+  expect_equal(
+    PKNCA_impute_method_start_predose(conc = 2:4, time = c(1:2, 24), conc.group = 1:4, time.group = c(-1.2, 1:2, 24), start = 0, end = Inf),
+    data.frame(conc = 1:4, time = c(0:2, 24))
+  )
 })
 
 test_that("PKNCA_impute_method_start_cmin", {

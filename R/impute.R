@@ -89,13 +89,20 @@ PKNCA_impute_method_start_cmin <- function(conc, time, start, end, ..., options 
 #' @describeIn PKNCA_impute_method Shift a predose concentration to become the
 #'   time zero concentration (only if a time zero concentration does not exist)
 #' @param max_shift The maximum amount of time to shift a concentration forward
-#'   (defaults to 5% of the interval duration, i.e. `0.05*(end - start)`)
+#'   (defaults to 5% of the interval duration, i.e. `0.05*(end - start)`, if
+#'   `is.finite(end)`, and when `is.infinite(end)`, defaults to 5% of the time
+#'   from start to `max(time)`)
 #' @inheritParams pk.nca.interval
 #' @export
 PKNCA_impute_method_start_predose <- function(conc, time, start, end, conc.group, time.group, ..., max_shift = NA_real_, options = list()) {
   ret <- data.frame(conc = conc, time = time)
   if (is.na(max_shift)) {
-    max_shift <- 0.05 * (end - start)
+    if (is.infinite(end)) {
+      shift_end <- max(time)
+    } else {
+      shift_end <- end
+    }
+    max_shift <- 0.05 * (shift_end - start)
   }
   # determine if the start time is already in the
   mask_start <- time %in% start

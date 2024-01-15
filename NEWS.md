@@ -38,7 +38,9 @@ the dosing including dose amount and route.
   interval definition (fix #257).
 * Imputation now can look outside the concentration-time of the interval to the
   full concentration-time profile for the group with the `conc.group` and
-  `time.group` arguments to the imputation functions.
+  `time.group` arguments to the imputation functions.  And,
+  `PKNCA_impute_method_start_predose()` imputation performs more reasonably when
+  the end of the interval is infinite.
 
 ## Bugs fixed
 
