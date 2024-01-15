@@ -90,6 +90,7 @@ PKNCA_impute_method_start_cmin <- function(conc, time, start, end, ..., options 
 #'   time zero concentration (only if a time zero concentration does not exist)
 #' @param max_shift The maximum amount of time to shift a concentration forward
 #'   (defaults to 5% of the interval duration, i.e. `0.05*(end - start)`)
+#' @inheritParams pk.nca.interval
 #' @export
 PKNCA_impute_method_start_predose <- function(conc, time, start, end, conc.group, time.group, ..., max_shift = NA_real_, options = list()) {
   ret <- data.frame(conc = conc, time = time)
