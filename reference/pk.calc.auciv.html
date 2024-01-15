@@ -94,18 +94,18 @@
 
 
 <dt>auc</dt>
-<dd><p>The AUC calculated using <code>conc</code> and <code>time</code> without
-<code>c0</code> (it may be calculated using any method)</p></dd>
+<dd><p>The AUC calculated using <code>conc</code> and <code>time</code> without <code>c0</code> (it may be
+calculated using any method)</p></dd>
 
 
 <dt>...</dt>
-<dd><p>For functions other than <code>pk.calc.auxc</code>, these values are
-passed to <code>pk.calc.auxc</code></p></dd>
+<dd><p>For functions other than <code>pk.calc.auxc</code>, these values are passed
+to <code>pk.calc.auxc</code></p></dd>
 
 
 <dt>check</dt>
-<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq</a></code>,
-and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
+<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time()</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq()</a></code>, and
+<code><a href="clean.conc.na.html">clean.conc.na()</a></code>?</p></dd>
 
 
 <dt>auciv</dt>
@@ -125,8 +125,8 @@ and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The AUC for intravenous (IV) dosing extrapolates the AUC back from
-  the first measurement to time 0 using c0 and the AUC calculated by another
-  method (for example the auclast).</p>
+the first measurement to time 0 using c0 and the AUC calculated by another
+method (for example the auclast).</p>
 <p>The calculation method takes the following steps:</p>
 <ul><li><p><code>time = 0</code> must be present in the data with a measured concentration.</p></li>
 <li><p>The AUC between <code>time = 0</code> and the next time point is calculated (<code>auc_first</code>).</p></li>
@@ -137,7 +137,8 @@ and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>pk.calc.auciv_pbext()</code>: Calculate the percent back-extrapolated AUC for IV administration</p></li>
+<ul><li><p><code>pk.calc.auciv_pbext()</code>: Calculate the percent back-extrapolated AUC for IV
+administration</p></li>
 </ul></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

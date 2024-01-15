@@ -79,8 +79,8 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>auclast</dt>
-<dd><p>the area under the curve from time 0 to the last
-measurement above the limit of quantification</p></dd>
+<dd><p>the area under the curve from time 0 to the last measurement
+above the limit of quantification</p></dd>
 
 
 <dt>aucinf</dt>
@@ -91,12 +91,9 @@ measurement above the limit of quantification</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The numeric value of the AUC percent extrapolated or</p>
-<p></p>
-<p><code>NA_real_</code> if any of the following are true</p>
-<p></p>
-<p><code>is.na(aucinf)</code>, <code>is.na(auclast)</code>, <code>aucinf &lt;= 0</code>,
-  or <code>auclast &lt;= 0</code>.</p>
+<p>The numeric value of the AUC percent extrapolated or <code>NA_real_</code> if
+any of the following are true <code>is.na(aucinf)</code>, <code>is.na(auclast)</code>,
+<code>aucinf &lt;= 0</code>, or <code>auclast &lt;= 0</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

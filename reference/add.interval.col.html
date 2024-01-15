@@ -141,78 +141,78 @@ to NCA parameter names.  See the details for information on use of
     
 
 <p>NULL (Calling this function has a side effect of changing the
-  available intervals for calculations)</p>
+available intervals for calculations)</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <code>formalsmap</code> argument enables mapping some alternate formal argument
-names to parameters.  It is used to generalize functions that may use
-multiple similar arguments (such as the variants of mean residence time). The
-names of the list should correspond to function formal parameter names and
-the values should be one of the following:</p>
+    <p>The <code>formalsmap</code> argument enables mapping some alternate formal
+argument names to parameters.  It is used to generalize functions that may
+use multiple similar arguments (such as the variants of mean residence time).
+The names of the list should correspond to function formal parameter names
+and the values should be one of the following:</p>
 <ul><li><p>For the current interval:</p><dl><dt>character strings of NCA parameter name</dt>
 <dd><p>The value of the parameter calculated for the current interval.</p></dd>
 
-    <dt>"conc"</dt>
+<dt>"conc"</dt>
 <dd><p>Concentration measurements for the current interval.</p></dd>
 
-    <dt>"time"</dt>
+<dt>"time"</dt>
 <dd><p>Times associated with concentration measurements for the current interval (values start at 0 at the beginning of the current interval).</p></dd>
 
-    <dt>"volume"</dt>
+<dt>"volume"</dt>
 <dd><p>Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).</p></dd>
 
-    <dt>"duration.conc"</dt>
+<dt>"duration.conc"</dt>
 <dd><p>Durations associated with concentration measurements for the current interval.</p></dd>
 
-    <dt>"dose"</dt>
+<dt>"dose"</dt>
 <dd><p>Dose amounts assocuated with the current interval.</p></dd>
 
-    <dt>"time.dose"</dt>
+<dt>"time.dose"</dt>
 <dd><p>Time of dose start associated with the current interval (values start at 0 at the beginning of the current interval).</p></dd>
 
-    <dt>"duration.dose"</dt>
+<dt>"duration.dose"</dt>
 <dd><p>Duration of dose (typically infusion duration) for doses in the current interval.</p></dd>
 
-    <dt>"route"</dt>
+<dt>"route"</dt>
 <dd><p>Route of dosing for the current interval.</p></dd>
 
-    <dt>"start"</dt>
+<dt>"start"</dt>
 <dd><p>Time of interval start.</p></dd>
 
-    <dt>"end"</dt>
+<dt>"end"</dt>
 <dd><p>Time of interval end.</p></dd>
 
-    <dt>"options"</dt>
+<dt>"options"</dt>
 <dd><p>PKNCA.options governing calculations.</p></dd>
 
-  
+
 </dl></li>
 <li><p>For the current group:</p><dl><dt>"conc.group"</dt>
 <dd><p>Concentration measurements for the current group.</p></dd>
 
-    <dt>"time.group"</dt>
+<dt>"time.group"</dt>
 <dd><p>Times associated with concentration measurements for the current group (values start at 0 at the beginning of the current interval).</p></dd>
 
-    <dt>"volume.group"</dt>
+<dt>"volume.group"</dt>
 <dd><p>Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).</p></dd>
 
-    <dt>"duration.conc.group"</dt>
+<dt>"duration.conc.group"</dt>
 <dd><p>Durations assocuated with concentration measurements for the current group.</p></dd>
 
-    <dt>"dose.group"</dt>
+<dt>"dose.group"</dt>
 <dd><p>Dose amounts assocuated with the current group.</p></dd>
 
-    <dt>"time.dose.group"</dt>
+<dt>"time.dose.group"</dt>
 <dd><p>Time of dose start associated with the current group (values start at 0 at the beginning of the current interval).</p></dd>
 
-    <dt>"duration.dose.group"</dt>
+<dt>"duration.dose.group"</dt>
 <dd><p>Duration of dose (typically infusion duration) for doses in the current group.</p></dd>
 
-    <dt>"route.group"</dt>
+<dt>"route.group"</dt>
 <dd><p>Route of dosing for the current group.</p></dd>
 
-  
+
 </dl></li>
 </ul></div>
     <div class="section level2">

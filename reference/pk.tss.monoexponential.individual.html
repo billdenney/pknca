@@ -89,10 +89,8 @@ monoexponential time to steady-state.</h1>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>a data frame as prepared by
-<code><a href="pk.tss.data.prep.html">pk.tss.data.prep</a></code>.  It must contain at least columns
-for <code>subject</code>, <code>time</code>, <code>conc</code>, and
-<code>tss.constant</code>.</p></dd>
+<dd><p>a data frame as prepared by <code><a href="pk.tss.data.prep.html">pk.tss.data.prep()</a></code>.  It must
+contain at least columns for <code>subject</code>, <code>time</code>, <code>conc</code>, and <code>tss.constant</code>.</p></dd>
 
 
 <dt>output</dt>
@@ -107,19 +105,15 @@ for <code>subject</code>, <code>time</code>, <code>conc</code>, and
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data frame with either one row (if <code>population</code></p>
-
-
-<p>output is provided) or one row per subject (if <code>popind</code> is
-provided).  The columns will be named
-<code>tss.monoexponential.population</code> and/or
+<p>A data frame with either one row (if <code>population</code> output is
+provided) or one row per subject (if <code>popind</code> is provided).  The columns
+will be named <code>tss.monoexponential.population</code> and/or
 <code>tss.monoexponential.popind</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If no model converges, then the <code>tss.monoexponential.single</code>
-and/or <code>tss.monoexponential.individual</code> column will be set to
-NA.</p>
+    <p>If no model converges, then the <code>tss.monoexponential.single</code> and/or
+<code>tss.monoexponential.individual</code> column will be set to NA.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

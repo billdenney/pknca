@@ -87,21 +87,21 @@
 
 
 <dt>units</dt>
-<dd><p>Passed to `base::as.numeric.difftime()`</p></dd>
+<dd><p>Passed to <code>base::as.numeric.difftime()</code></p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data.frame with columns for:</p><ul><li><p>event_number_beforeThe index of `time_event` that is the last one before `time_obs` or `NA` if none are before.</p></li>
-<li><p>event_number_afterThe index of `time_event` that is the first one after `time_obs` or `NA` if none are after.</p></li>
-<li><p>time_beforeThe minimum time that the current `time_obs` is before a `time_event`, 0 if at least one `time_obs == time_event`.</p></li>
-<li><p>time_afterThe minimum time that the current `time_obs` is after a `time_event`, 0 if at least one `time_obs == time_event`.</p></li>
+<p>A data.frame with columns for:</p><ul><li><p>event_number_beforeThe index of <code>time_event</code> that is the last one before <code>time_obs</code> or <code>NA</code> if none are before.</p></li>
+<li><p>event_number_afterThe index of <code>time_event</code> that is the first one after <code>time_obs</code> or <code>NA</code> if none are after.</p></li>
+<li><p>time_beforeThe minimum time that the current <code>time_obs</code> is before a <code>time_event</code>, 0 if at least one <code>time_obs == time_event</code>.</p></li>
+<li><p>time_afterThe minimum time that the current <code>time_obs</code> is after a <code>time_event</code>, 0 if at least one <code>time_obs == time_event</code>.</p></li>
 <li><p>time_after_firstThe time after the first event (may be negative or positive).</p></li>
-</ul><p>`time_after` and `time_before` are calculated if they are at the same time as
+</ul><p><code>time_after</code> and <code>time_before</code> are calculated if they are at the same time as
 a dose, they equal zero, and otherwise, they are calculated relative to the
-dose number in the `event_number_*` columns.</p>
+dose number in the <code>event_number_*</code> columns.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

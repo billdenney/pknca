@@ -100,8 +100,8 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A data frame with concentration (or amount for
-urine/feces), time, and the groups defined in <code>formula</code>.</p></dd>
+<dd><p>A data frame with concentration (or amount for urine/feces),
+time, and the groups defined in <code>formula</code>.</p></dd>
 
 
 <dt>...</dt>
@@ -109,48 +109,46 @@ urine/feces), time, and the groups defined in <code>formula</code>.</p></dd>
 
 
 <dt>formula</dt>
-<dd><p>The formula defining the
-<code>concentration~time|groups</code> or <code>amount~time|groups</code> for
-urine/feces (In the remainder of the documentation, "concentration" will be
-used to describe concentration or amount.)  One special aspect of the
-<code>groups</code> part of the formula is that the last group is typically
-assumed to be the <code>subject</code>; see the documentation for the
-<code>subject</code> argument for exceptions to this assumption.</p></dd>
+<dd><p>The formula defining the <code>concentration~time|groups</code> or
+<code>amount~time|groups</code> for urine/feces (In the remainder of the
+documentation, "concentration" will be used to describe concentration or
+amount.)  One special aspect of the <code>groups</code> part of the formula is that
+the last group is typically assumed to be the <code>subject</code>; see the
+documentation for the <code>subject</code> argument for exceptions to this assumption.</p></dd>
 
 
 <dt>subject</dt>
 <dd><p>The column indicating the subject number.  If not provided,
 this defaults to the beginning of the inner groups: For example with
-<code>concentration~time|Study+Subject/Analyte</code>, the inner groups start
-with the first grouping variable before a <code>/</code>, <code>Subject</code>.  If
-there is only one grouping variable, it is assumed to be the subject (e.g.
-<code>concentration~time|Subject</code>), and if there are multiple grouping
-variables without a <code>/</code>, subject is assumed to be the last one.  For
-single-subject data, it is assigned as <code>NULL</code>.</p></dd>
+<code>concentration~time|Study+Subject/Analyte</code>, the inner groups start with the
+first grouping variable before a <code>/</code>, <code>Subject</code>.  If there is only one
+grouping variable, it is assumed to be the subject (e.g.
+<code>concentration~time|Subject</code>), and if there are multiple grouping variables
+without a <code>/</code>, subject is assumed to be the last one.  For single-subject
+data, it is assigned as <code>NULL</code>.</p></dd>
 
 
 <dt>time.nominal</dt>
-<dd><p>(optional) The name of the nominal time column
-(if the main time variable is actual time.  The <code>time.nominal</code>
-is not used during calculations; it is available to assist with
-data summary and checking.</p></dd>
+<dd><p>(optional) The name of the nominal time column (if the
+main time variable is actual time.  The <code>time.nominal</code> is not used during
+calculations; it is available to assist with data summary and checking.</p></dd>
 
 
 <dt>exclude</dt>
-<dd><p>(optional) The name of a column with concentrations to
-exclude from calculations and summarization.  If given, the column
-should have values of <code>NA</code> or <code>""</code> for concentrations to
-include and non-empty text for concentrations to exclude.</p></dd>
+<dd><p>(optional) The name of a column with concentrations to exclude
+from calculations and summarization.  If given, the column should have
+values of <code>NA</code> or <code>""</code> for concentrations to include and non-empty text for
+concentrations to exclude.</p></dd>
 
 
 <dt>duration</dt>
-<dd><p>(optional) The duration of collection as is typically
-used for concentration measurements in urine or feces.</p></dd>
+<dd><p>(optional) The duration of collection as is typically used
+for concentration measurements in urine or feces.</p></dd>
 
 
 <dt>volume</dt>
-<dd><p>(optional) The volume (or mass) of collection as is
-typically used for urine or feces measurements.</p></dd>
+<dd><p>(optional) The volume (or mass) of collection as is typically
+used for urine or feces measurements.</p></dd>
 
 
 <dt>exclude_half.life, include_half.life</dt>

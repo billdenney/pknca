@@ -86,9 +86,8 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>name</dt>
-<dd><p>The parameter name or a vector of parameter names.  It
-must have already been defined (see
-<code><a href="add.interval.col.html">add.interval.col</a></code>).</p></dd>
+<dd><p>The parameter name or a vector of parameter names.  It must have
+already been defined (see <code><a href="add.interval.col.html">add.interval.col()</a></code>).</p></dd>
 
 
 <dt>description</dt>
@@ -96,26 +95,24 @@ must have already been defined (see
 
 
 <dt>point</dt>
-<dd><p>The function to calculate the point estimate for the
-summary.  The function will be called as <code>point(x)</code> and must
-return a scalar value (typically a number, NA, or a string).</p></dd>
+<dd><p>The function to calculate the point estimate for the summary.
+The function will be called as <code>point(x)</code> and must return a scalar value
+(typically a number, NA, or a string).</p></dd>
 
 
 <dt>spread</dt>
 <dd><p>Optional.  The function to calculate the spread (or
-variability).  The function will be called as <code>spread(x)</code> and
-must return a scalar or two-long vector (typically a number, NA, or
-a string).</p></dd>
+variability).  The function will be called as <code>spread(x)</code> and must return a
+scalar or two-long vector (typically a number, NA, or a string).</p></dd>
 
 
 <dt>rounding</dt>
-<dd><p>Instructions for how to round the value of point and
-spread.  It may either be a list or a function.  If it is a list,
-then it must have a single entry with a name of either "signif" or
-"round" and a value of the digits to round.  If a function, it is
-expected to return a scalar number or character string with the
-correct results for an input of either a scalar or a two-long
-vector.</p></dd>
+<dd><p>Instructions for how to round the value of point and spread.
+It may either be a list or a function.  If it is a list, then it must have
+a single entry with a name of either "signif" or "round" and a value of the
+digits to round.  If a function, it is expected to return a scalar number
+or character string with the correct results for an input of either a
+scalar or a two-long vector.</p></dd>
 
 
 <dt>reset</dt>
@@ -130,7 +127,7 @@ vector.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="summary.PKNCAresults.html">summary.PKNCAresults</a></code></p>
+    <div class="dont-index"><p><code><a href="summary.PKNCAresults.html">summary.PKNCAresults()</a></code></p>
 <p>Other PKNCA calculation and summary settings: 
 <code><a href="PKNCA.choose.option.html">PKNCA.choose.option</a>()</code>,
 <code><a href="PKNCA.options.html">PKNCA.options</a>()</code></p></div>

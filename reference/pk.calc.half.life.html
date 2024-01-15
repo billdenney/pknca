@@ -130,7 +130,7 @@ frame if not given)</p></dd>
 
 <dt>options</dt>
 <dd><p>List of changes to the default PKNCA options (see
-`PKNCA.options()`)</p></dd>
+<code><a href="PKNCA.options.html">PKNCA.options()</a></code>)</p></dd>
 
 
 <dt>min.hl.points</dt>
@@ -144,15 +144,15 @@ adding another point.</p></dd>
 
 
 <dt>conc.blq</dt>
-<dd><p>See <code><a href="clean.conc.blq.html">clean.conc.blq</a></code></p></dd>
+<dd><p>See <code><a href="clean.conc.blq.html">clean.conc.blq()</a></code></p></dd>
 
 
 <dt>conc.na</dt>
-<dd><p>See <code><a href="clean.conc.na.html">clean.conc.na</a></code></p></dd>
+<dd><p>See <code><a href="clean.conc.na.html">clean.conc.na()</a></code></p></dd>
 
 
 <dt>first.tmax</dt>
-<dd><p>See <code><a href="pk.calc.tmax.html">pk.calc.tmax</a></code>.</p></dd>
+<dd><p>See <code><a href="pk.calc.tmax.html">pk.calc.tmax()</a></code>.</p></dd>
 
 
 <dt>allow.tmax.in.half.life</dt>
@@ -161,51 +161,49 @@ to be included in the half-life slope calculation.</p></dd>
 
 
 <dt>check</dt>
-<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time</a></code>,
-<code><a href="clean.conc.blq.html">clean.conc.blq</a></code>, and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
+<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time()</a></code>,
+<code><a href="clean.conc.blq.html">clean.conc.blq()</a></code>, and <code><a href="clean.conc.na.html">clean.conc.na()</a></code>?</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data frame with one row and columns for</p>
-<p></p>
-<dl><dt>tmax</dt>
+<p>A data frame with one row and columns for</p><dl><dt>tmax</dt>
 <dd><p>Time of maximum observed concentration (only included
-    if not given as an input)</p></dd>
+if not given as an input)</p></dd>
 
-  <dt>tlast</dt>
+<dt>tlast</dt>
 <dd><p>Time of last observed concentration above the LOQ (only
-    included if not given as an input)</p></dd>
+included if not given as an input)</p></dd>
 
-  <dt>r.squared</dt>
+<dt>r.squared</dt>
 <dd><p>coefficient of determination</p></dd>
 
-  <dt>adj.r.squared</dt>
+<dt>adj.r.squared</dt>
 <dd><p>adjusted coefficient of determination</p></dd>
 
-  <dt>lambda.z</dt>
+<dt>lambda.z</dt>
 <dd><p>elimination rate</p></dd>
 
-  <dt>lambda.z.time.first</dt>
+<dt>lambda.z.time.first</dt>
 <dd><p>first time for half-life calculation</p></dd>
 
-  <dt>lambda.z.n.points</dt>
+<dt>lambda.z.n.points</dt>
 <dd><p>number of points in half-life calculation</p></dd>
 
-  <dt>clast.pred</dt>
+<dt>clast.pred</dt>
 <dd><p>Concentration at tlast as predicted by the half-life
-    line</p></dd>
+line</p></dd>
 
-  <dt>half.life</dt>
+<dt>half.life</dt>
 <dd><p>half-life</p></dd>
 
-  <dt>span.ratio</dt>
+<dt>span.ratio</dt>
 <dd><p>span ratio [ratio of half-life to time used for
-    half-life calculation</p></dd>
+half-life calculation</p></dd>
 
- 
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -217,7 +215,7 @@ after tmax (based on the value of <code>allow.tmax.in.half.life</code>).  The be
 half-life is chosen by the following rules in order:</p>
 <ul><li><p>At least <code>min.hl.points</code> points included</p></li>
 <li><p>A <code>lambda.z</code> &gt; 0 and at the same time the best adjusted r-squared
- (within <code>adj.r.squared.factor</code>)</p></li>
+(within <code>adj.r.squared.factor</code>)</p></li>
 <li><p>The one with the most points included</p></li>
 </ul><p>If <code>manually.selected.points</code> is <code>TRUE</code>, the <code>conc</code>
 and <code>time</code> data are used as-is without any form of selection for

@@ -85,18 +85,16 @@ kinetics.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>auctau</dt>
-<dd><p>the AUC from time 0 to the end of the dosing interval
-(tau).</p></dd>
+<dd><p>the AUC from time 0 to the end of the dosing interval (tau).</p></dd>
 
 
 <dt>aumctau</dt>
-<dd><p>the AUMC from time 0 to the end of the dosing interval
-(tau).</p></dd>
+<dd><p>the AUMC from time 0 to the end of the dosing interval (tau).</p></dd>
 
 
 <dt>aucinf</dt>
-<dd><p>the AUC from time 0 to infinity (typically using
-single-dose data)</p></dd>
+<dd><p>the AUC from time 0 to infinity (typically using single-dose
+data)</p></dd>
 
 
 <dt>tau</dt>
@@ -105,15 +103,14 @@ single-dose data)</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>mrt.md is <code>aumctau/auctau + tau*(aucinf-auctau)/auctau</code> and
-should only be used for multiple dosing with equal intervals between doses.</p>
-<p>Note that if <code>aucinf == auctau</code> (as would be the
-  assumption with linear kinetics), the equation becomes the same as
-  the single-dose MRT.</p>
+    <p>mrt.md is <code>aumctau/auctau + tau*(aucinf-auctau)/auctau</code> and should
+only be used for multiple dosing with equal intervals between doses.</p>
+<p>Note that if <code>aucinf == auctau</code> (as would be the assumption with
+linear kinetics), the equation becomes the same as the single-dose MRT.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="pk.calc.mrt.html">pk.calc.mrt</a></code></p></div>
+    <div class="dont-index"><p><code><a href="pk.calc.mrt.html">pk.calc.mrt()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

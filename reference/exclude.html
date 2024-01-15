@@ -90,37 +90,34 @@
 
 
 <dt>mask</dt>
-<dd><p>A logical vector or numeric index of values to exclude
-(see details).</p></dd>
+<dd><p>A logical vector or numeric index of values to exclude (see
+details).</p></dd>
 
 
 <dt>FUN</dt>
-<dd><p>A function to operate on the data (one group at a time) to
-select reasons for exclusions (see details).</p></dd>
+<dd><p>A function to operate on the data (one group at a time) to select
+reasons for exclusions (see details).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The object with updated information in the exclude column.
-  The exclude column will contain the <code>reason</code> if <code>mask</code> or</p>
-<p></p>
-<p><code>FUN</code> indicate.  If a previous reason for exclusion was given,
-  then subsequent reasons for exclusion will be added to the first
-  with a semicolon space ("; ") separator.</p>
+<p>The object with updated information in the exclude column. The
+exclude column will contain the <code>reason</code> if <code>mask</code> or <code>FUN</code> indicate.  If a
+previous reason for exclusion was given, then subsequent reasons for
+exclusion will be added to the first with a semicolon space ("; ")
+separator.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Only one of <code>mask</code> or <code>FUN</code> may be given.  If
-  <code>FUN</code> is given, it will be called with two arguments:  a
-  data.frame (or similar object) that consists of a single group of
-  the data and the full object (e.g. the PKNCAconc object),
-  <code>FUN(current_group, object)</code>, and it must return a logical
-  vector equivalent to <code>mask</code> or a character vector with the
-  reason text given when data should be excluded or
-  <code>NA_character_</code> when the data should be included (for the
-  current exclusion test).</p>
+    <p>Only one of <code>mask</code> or <code>FUN</code> may be given.  If <code>FUN</code> is given, it
+will be called with two arguments:  a data.frame (or similar object) that
+consists of a single group of the data and the full object (e.g. the
+PKNCAconc object), <code>FUN(current_group, object)</code>, and it must return a
+logical vector equivalent to <code>mask</code> or a character vector with the reason
+text given when data should be excluded or <code>NA_character_</code> when the data
+should be included (for the current exclusion test).</p>
     </div>
     <div class="section level2">
     <h2 id="methods-by-class-">Methods (by class)<a class="anchor" aria-label="anchor" href="#methods-by-class-"></a></h2>
@@ -144,7 +141,7 @@ select reasons for exclusions (see details).</p></dd>
 <span class="r-in"><span>        mask<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Formula for concentration:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  conc ~ time | subject</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55cd6bd84710&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55834d3aa540&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data are dense PK.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> With 1 subjects defined in the 'subject' column.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nominal time column is not specified.</span>

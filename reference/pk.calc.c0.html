@@ -127,16 +127,16 @@ has its own specific function.</p>
 <dl><dt><code>c0</code></dt>
 <dd><p>If the observed <code>conc</code> at <code>time.dose</code> is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.</p></dd>
 
-  <dt><code>logslope</code></dt>
+<dt><code>logslope</code></dt>
 <dd><p>Compute the semilog line between the first two measured times, and use that line to extrapolate backward to <code>time.dose</code></p></dd>
 
-  <dt><code>c1</code></dt>
+<dt><code>c1</code></dt>
 <dd><p>Use the first point after <code>time.dose</code></p></dd>
 
-  <dt><code>cmin</code></dt>
+<dt><code>cmin</code></dt>
 <dd><p>Set c0 to cmin during the interval.  This method should usually be used for multiple-dose oral data and IV infusion data.</p></dd>
 
-  <dt><code>set0</code></dt>
+<dt><code>set0</code></dt>
 <dd><p>Set c0 to zero (regardless of any other data).  This method should usually be used first for single-dose oral data.</p></dd>
 
 
@@ -147,13 +147,13 @@ has its own specific function.</p>
 <ul><li><p><code>pk.calc.c0.method.logslope()</code>: Semilog regress the first and second points
 after time.dose.  This method will return <code>NA</code> if the second
 <code>conc</code> after <code>time.dose</code> is 0 or greater than the first.</p></li>
-<li><p><code>pk.calc.c0.method.c0()</code>: Use <code>C0</code> = <code>conc[time <!-- %in% -->
-time.dose]</code> if it is nonzero.</p></li>
+<li><p><code>pk.calc.c0.method.c0()</code>: Use <code>C0</code> = <code>conc[time %in% time.dose]</code> if it is
+nonzero.</p></li>
 <li><p><code>pk.calc.c0.method.c1()</code>: Use <code>C0</code> = <code>C1</code>.</p></li>
-<li><p><code>pk.calc.c0.method.set0()</code>: Use <code>C0</code> = 0 (typically used for single
-dose oral and IV infusion)</p></li>
-<li><p><code>pk.calc.c0.method.cmin()</code>: Use <code>C0</code> = Cmin (typically used for
-multiple dose oral and IV infusion but not IV bolus)</p></li>
+<li><p><code>pk.calc.c0.method.set0()</code>: Use <code>C0</code> = 0 (typically used for single dose oral and
+IV infusion)</p></li>
+<li><p><code>pk.calc.c0.method.cmin()</code>: Use <code>C0</code> = Cmin (typically used for multiple dose oral
+and IV infusion but not IV bolus)</p></li>
 </ul></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

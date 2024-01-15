@@ -174,10 +174,10 @@ integration</p></dd>
 
 
 <dt>clast, clast.obs, clast.pred</dt>
-<dd><p>The last concentration above the
-limit of quantification; this is used for AUCinf calculations.  If
-provided as clast.obs (observed clast value, default), AUCinf is
-AUCinf,obs. If provided as clast.pred, AUCinf is AUCinf,pred.</p></dd>
+<dd><p>The last concentration above the limit of
+quantification; this is used for AUCinf calculations.  If provided as
+clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
+provided as clast.pred, AUCinf is AUCinf,pred.</p></dd>
 
 
 <dt>lambda.z</dt>
@@ -188,10 +188,9 @@ extrapolation</p></dd>
 <dt>time.dose, route, duration.dose</dt>
 <dd><p>The time of doses, route of
 administration, and duration of dose used with interpolation and
-extrapolation of concentration data (see
-<code><a href="interp.extrap.conc.html">interp.extrap.conc.dose</a></code>).  If <code>NULL</code>,
-<code><a href="interp.extrap.conc.html">interp.extrap.conc</a></code> will be used instead (assuming
-that no doses affecting concentrations are in the interval).</p></dd>
+extrapolation of concentration data (see <code><a href="interp.extrap.conc.html">interp.extrap.conc.dose()</a></code>).  If
+<code>NULL</code>, <code><a href="interp.extrap.conc.html">interp.extrap.conc()</a></code> will be used instead (assuming that no doses
+affecting concentrations are in the interval).</p></dd>
 
 
 <dt>method</dt>
@@ -206,18 +205,17 @@ and 'AUCall'.</p></dd>
 
 <dt>conc.blq</dt>
 <dd><p>How to handle BLQ values in between the first and last above
-LOQ concentrations. (See <code><a href="clean.conc.blq.html">clean.conc.blq</a></code> for usage
-instructions.)</p></dd>
+LOQ concentrations. (See <code><a href="clean.conc.blq.html">clean.conc.blq()</a></code> for usage instructions.)</p></dd>
 
 
 <dt>conc.na</dt>
 <dd><p>How to handle missing concentration values.  (See
-<code><a href="clean.conc.na.html">clean.conc.na</a></code> for usage instructions.)</p></dd>
+<code><a href="clean.conc.na.html">clean.conc.na()</a></code> for usage instructions.)</p></dd>
 
 
 <dt>check</dt>
-<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq</a></code>,
-and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
+<dd><p>Run <code><a href="assert_conc_time.html">assert_conc_time()</a></code>, <code><a href="clean.conc.blq.html">clean.conc.blq()</a></code>, and
+<code><a href="clean.conc.na.html">clean.conc.na()</a></code>?</p></dd>
 
 
 <dt>...</dt>
@@ -227,12 +225,18 @@ and <code><a href="clean.conc.na.html">clean.conc.na</a></code>?</p></dd>
 
 <dt>options</dt>
 <dd><p>List of changes to the default PKNCA options (see
-`PKNCA.options()`)</p></dd>
+<code><a href="PKNCA.options.html">PKNCA.options()</a></code>)</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>The AUC for an interval of time as a number</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>When `pk.calc.aucint()` needs to extrapolate using `lambda.z` (in other
+    <p>When <code>pk.calc.aucint()</code> needs to extrapolate using <code>lambda.z</code> (in other
 words, using the half-life), it will always extrapolate using the logarithmic
 trapezoidal rule to align with using a half-life calculation for the
 extrapolation.</p>
@@ -240,14 +244,18 @@ extrapolation.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>pk.calc.aucint.last()</code>: Interpolate or extrapolate concentrations for AUClast</p></li>
-<li><p><code>pk.calc.aucint.all()</code>: Interpolate or extrapolate concentrations for AUCall</p></li>
-<li><p><code>pk.calc.aucint.inf.obs()</code>: Interpolate or extrapolate concentrations for AUCinf.obs</p></li>
-<li><p><code>pk.calc.aucint.inf.pred()</code>: Interpolate or extrapolate concentrations for AUCinf.pred</p></li>
+<ul><li><p><code>pk.calc.aucint.last()</code>: Interpolate or extrapolate concentrations for
+AUClast</p></li>
+<li><p><code>pk.calc.aucint.all()</code>: Interpolate or extrapolate concentrations for
+AUCall</p></li>
+<li><p><code>pk.calc.aucint.inf.obs()</code>: Interpolate or extrapolate concentrations for
+AUCinf.obs</p></li>
+<li><p><code>pk.calc.aucint.inf.pred()</code>: Interpolate or extrapolate concentrations for
+AUCinf.pred</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="PKNCA.options.html">PKNCA.options</a></code>, <code><a href="interp.extrap.conc.html">interp.extrap.conc.dose</a></code></p>
+    <div class="dont-index"><p><code><a href="PKNCA.options.html">PKNCA.options()</a></code>, <code><a href="interp.extrap.conc.html">interp.extrap.conc.dose()</a></code></p>
 <p>Other AUC calculations: 
 <code><a href="pk.calc.auxc.html">pk.calc.auxc</a>()</code></p></div>
     </div>
