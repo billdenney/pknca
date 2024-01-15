@@ -32,8 +32,7 @@ dense calculations (FALSE)?}
 
 \item{impute}{The column name in \code{data_intervals} to use for imputation}
 
-\item{verbose}{Indicate, by \code{message()}, the current state of
-calculation.}
+\item{verbose}{Indicate, by \code{message()}, the current state of calculation.}
 }
 \value{
 A data.frame with all NCA results

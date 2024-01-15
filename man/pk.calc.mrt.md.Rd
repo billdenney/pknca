@@ -8,14 +8,12 @@ kinetics.}
 pk.calc.mrt.md(auctau, aumctau, aucinf, tau)
 }
 \arguments{
-\item{auctau}{the AUC from time 0 to the end of the dosing interval
-(tau).}
+\item{auctau}{the AUC from time 0 to the end of the dosing interval (tau).}
 
-\item{aumctau}{the AUMC from time 0 to the end of the dosing interval
-(tau).}
+\item{aumctau}{the AUMC from time 0 to the end of the dosing interval (tau).}
 
-\item{aucinf}{the AUC from time 0 to infinity (typically using
-single-dose data)}
+\item{aucinf}{the AUC from time 0 to infinity (typically using single-dose
+data)}
 
 \item{tau}{The dosing interval}
 }
@@ -24,12 +22,11 @@ Calculate the mean residence time (MRT) for multiple-dose data with nonlinear
 kinetics.
 }
 \details{
-mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and
-should only be used for multiple dosing with equal intervals between doses.
+mrt.md is \code{aumctau/auctau + tau*(aucinf-auctau)/auctau} and should
+only be used for multiple dosing with equal intervals between doses.
 
-Note that if \code{aucinf == auctau} (as would be the
-assumption with linear kinetics), the equation becomes the same as
-the single-dose MRT.
+Note that if \code{aucinf == auctau} (as would be the assumption with
+linear kinetics), the equation becomes the same as the single-dose MRT.
 }
 \seealso{
 \code{\link[=pk.calc.mrt]{pk.calc.mrt()}}

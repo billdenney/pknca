@@ -36,27 +36,26 @@ pk.nca.interval(
 \item{time}{Time of the measurement of the concentrations}
 
 \item{volume, volume.group}{The volume (or mass) of the concentration
-measurement for the current interval or all data for the group
-(typically for urine and fecal measurements)}
+measurement for the current interval or all data for the group (typically
+for urine and fecal measurements)}
 
-\item{duration.conc, duration.conc.group}{The duration of the
-concentration measurement for the current interval or all data for
-the group (typically for urine and fecal measurements)}
+\item{duration.conc, duration.conc.group}{The duration of the concentration
+measurement for the current interval or all data for the group (typically
+for urine and fecal measurements)}
 
-\item{dose, dose.group}{Dose amount (may be a scalar or vector) for
-the current interval or all data for the group}
+\item{dose, dose.group}{Dose amount (may be a scalar or vector) for the
+current interval or all data for the group}
 
-\item{time.dose, time.dose.group}{Time of the dose for the current
-interval or all data for the group (must be the same length as
-\code{dose} or \code{dose.group})}
+\item{time.dose, time.dose.group}{Time of the dose for the current interval or
+all data for the group (must be the same length as \code{dose} or \code{dose.group})}
 
 \item{duration.dose, duration.dose.group}{The duration of the dose
 administration for the current interval or all data for the group
-(typically zero for extravascular and intravascular bolus and
-nonzero for intravascular infusion)}
+(typically zero for extravascular and intravascular bolus and nonzero for
+intravascular infusion)}
 
-\item{route, route.group}{The route of dosing for the current interval
-or all data for the group}
+\item{route, route.group}{The route of dosing for the current interval or all
+data for the group}
 
 \item{conc.group}{All concentrations measured for the group}
 
@@ -64,13 +63,12 @@ or all data for the group}
 
 \item{impute_method}{The method to use for imputation as a character string}
 
-\item{include_half.life}{An optional boolean vector of the
-concentration measurements to include in the half-life calculation.
-If given, no half-life point selection will occur.}
+\item{include_half.life}{An optional boolean vector of the concentration
+measurements to include in the half-life calculation. If given, no
+half-life point selection will occur.}
 
-\item{exclude_half.life}{An optional boolean vector of the
-concentration measurements to exclude from the half-life
-calculation.}
+\item{exclude_half.life}{An optional boolean vector of the concentration
+measurements to exclude from the half-life calculation.}
 
 \item{subject}{Subject identifiers (used for sparse calculations)}
 
@@ -78,8 +76,7 @@ calculation.}
 dense calculations (FALSE)?}
 
 \item{interval}{One row of an interval definition (see
-\code{\link[=check.interval.specification]{check.interval.specification()}} for how to define the
-interval.}
+\code{\link[=check.interval.specification]{check.interval.specification()}} for how to define the interval.}
 
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}
@@ -89,10 +86,10 @@ A data frame with the start and end time along with all PK
 parameters for the \code{interval}
 }
 \description{
-For one subject/time range, compute all available PK parameters. All
-the internal options should be set by \code{\link[=PKNCA.options]{PKNCA.options()}}
-prior to running.  The only part that changes with a call to this
-function is the \code{conc}entration and \code{time}.
+For one subject/time range, compute all available PK parameters. All the
+internal options should be set by \code{\link[=PKNCA.options]{PKNCA.options()}} prior to running.  The
+only part that changes with a call to this function is the \code{conc}entration
+and \code{time}.
 }
 \seealso{
 \code{\link[=check.interval.specification]{check.interval.specification()}}

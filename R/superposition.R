@@ -4,8 +4,8 @@
 #' @inheritParams assert_lambdaz
 #' @inheritParams PKNCA.choose.option
 #' @inheritParams choose_interval_method
-#' @param dose.input The dose given to generate the `conc` and `time` inputs.
-#'   If missing, output doses will be assumed to be equal to the input dose.
+#' @param dose.input The dose given to generate the `conc` and `time` inputs. If
+#'   missing, output doses will be assumed to be equal to the input dose.
 #' @inheritParams assert_dosetau
 #' @param dose.times The time of dosing within the dosing interval. The
 #'   `min(dose.times)` must be >= 0, and the `max(dose.times)` must be < `tau`.
@@ -29,15 +29,13 @@
 #'   achieved (between 0 and 1, exclusive).
 #' @param ... Additional arguments passed to the `half.life` function if
 #'   required to compute `lambda.z`.
-#' @return A data frame with columns named "conc" and "time".
+#' @returns A data frame with columns named "conc" and "time".
 #'
-#' @details
-#' The returned superposition times will include all of the following times: 0
-#' (zero), `dose.times`, `time modulo tau` (shifting `time` for
-#' each dose time as well), `additional.times`, and `tau`.
+#' @details The returned superposition times will include all of the following
+#' times: 0 (zero), `dose.times`, `time modulo tau` (shifting `time` for each
+#' dose time as well), `additional.times`, and `tau`.
 #'
 #' @seealso [interp.extrap.conc()]
-#'
 #' @export
 superposition <- function(conc, ...) {
   UseMethod("superposition", conc)

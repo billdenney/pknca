@@ -16,14 +16,14 @@ standardized units, and a conversion factor to multiply the initial value
 by to get a standardized value.}
 }
 \value{
-A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if
-\code{conversions} is not given, and adding "PPSTRESU" and
+A unit conversion table with columns for "PPTESTCD" and "PPORRESU"
+if \code{conversions} is not given, and adding "PPSTRESU" and
 "conversion_factor" if \code{conversions} is given.
 }
 \description{
-This data.frame is typically used for the \code{units} argument for
-\code{\link[=PKNCAdata]{PKNCAdata()}}.  If a unit is not given, then all of the units
-derived from that unit will be \code{NA}.
+This data.frame is typically used for the \code{units} argument for \code{\link[=PKNCAdata]{PKNCAdata()}}.
+If a unit is not given, then all of the units derived from that unit will be
+\code{NA}.
 }
 \examples{
 pknca_units_table() # only parameters that are unitless

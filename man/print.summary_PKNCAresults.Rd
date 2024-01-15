@@ -9,8 +9,7 @@
 \arguments{
 \item{x}{A summary_PKNCAresults object}
 
-\item{...}{passed to print.data.frame (\code{row.names} is always set to
-\code{FALSE})}
+\item{...}{passed to print.data.frame (\code{row.names} is always set to \code{FALSE})}
 }
 \value{
 \code{x} invisibly

@@ -6,8 +6,8 @@
 #' @param volume The volume (or mass) of the sample
 #' @param check Should the concentration and volume data be checked?
 #' @return The amount excreted during the interval
-#' @details The units for the concentration and volume should match such
-#'   that `sum(conc*volume)` has units of mass or moles.
+#' @details The units for the concentration and volume should match such that
+#'   `sum(conc*volume)` has units of mass or moles.
 #' @seealso [pk.calc.clr()], [pk.calc.fe()]
 #' @export
 pk.calc.ae <- function(conc, volume, check=TRUE) {
@@ -57,12 +57,11 @@ PKNCA.set.summary(
 #'
 #' @details clr is `sum(ae)/auc`.
 #'
-#' @param ae The amount excreted in urine (as a numeric scalar or
-#'   vector)
+#' @param ae The amount excreted in urine (as a numeric scalar or vector)
 #' @param auc The area under the curve (as a numeric scalar or vector)
-#' @return The renal clearance as a number
-#' @details The units for the `ae` and `auc` should match such
-#'   that `ae/auc` has units of volume/time.
+#' @returns The renal clearance as a number
+#' @details The units for the `ae` and `auc` should match such that `ae/auc` has
+#'   units of volume/time.
 #' @seealso [pk.calc.ae()], [pk.calc.fe()]
 #' @export
 pk.calc.clr <- function(ae, auc) {
@@ -114,9 +113,9 @@ PKNCA.set.summary(
 #'
 #' @param ae The amount excreted (as a numeric scalar or vector)
 #' @param dose The dose (as a numeric scalar or vector)
-#' @return The fraction of dose excreted.
-#' @details   The units for `ae` and `dose` should be the same
-#'   so that `ae/dose` is a unitless fraction.
+#' @returns The fraction of dose excreted
+#' @details   The units for `ae` and `dose` should be the same so that `ae/dose`
+#'   is a unitless fraction.
 #' @seealso [pk.calc.ae()], [pk.calc.clr()]
 #' @export
 pk.calc.fe <- function(ae, dose) {

@@ -16,40 +16,35 @@ PKNCAdose(data, ...)
 \method{PKNCAdose}{data.frame}(data, formula, route, rate, duration, time.nominal, exclude, ...)
 }
 \arguments{
-\item{data}{A data frame with time and the groups defined in
-\code{formula}.}
+\item{data}{A data frame with time and the groups defined in \code{formula}.}
 
 \item{...}{Ignored.}
 
-\item{formula}{The formula defining the
-\code{dose.amount~time|groups} where \code{time} is the time of the
-dosing and \code{dose.amount} is the amount administered at that
-time (see Details).}
+\item{formula}{The formula defining the \code{dose.amount~time|groups} where
+\code{time} is the time of the dosing and \code{dose.amount} is the amount
+administered at that time (see Details).}
 
-\item{route}{Define the route of administration.  The value may be
-either a column name from the \code{data} (checked first) or a
-character string of either \code{"extravascular"} or
-\code{"intravascular"} (checked second).  If given as a column
-name, then every value of the column must be either
+\item{route}{Define the route of administration.  The value may be either a
+column name from the \code{data} (checked first) or a character string of either
+\code{"extravascular"} or \code{"intravascular"} (checked second).  If given as a
+column name, then every value of the column must be either
 \code{"extravascular"} or \code{"intravascular"}.}
 
-\item{rate, duration}{(optional) for \code{"intravascular"} dosing,
-the rate or duration of dosing.  If given as a character string, it
-is the name of a column from the \code{data}, and if given as a
-number, it is the value for all doses.  Only one may be given, and
-if neither is given, then the dose is assumed to be a bolus
-(\code{duration=0}).  If \code{rate} is given, then the dose amount
-must be given (the left hand side of the \code{formula}).}
+\item{rate, duration}{(optional) for \code{"intravascular"} dosing, the rate or
+duration of dosing.  If given as a character string, it is the name of a
+column from the \code{data}, and if given as a number, it is the value for all
+doses.  Only one may be given, and if neither is given, then the dose is
+assumed to be a bolus (\code{duration=0}).  If \code{rate} is given, then the dose
+amount must be given (the left hand side of the \code{formula}).}
 
-\item{time.nominal}{(optional) The name of the nominal time column
-(if the main time variable is actual time.  The \code{time.nominal}
-is not used during calculations; it is available to assist with
-data summary and checking.}
+\item{time.nominal}{(optional) The name of the nominal time column (if the
+main time variable is actual time.  The \code{time.nominal} is not used during
+calculations; it is available to assist with data summary and checking.}
 
-\item{exclude}{(optional) The name of a column with concentrations to
-exclude from calculations and summarization.  If given, the column
-should have values of \code{NA} or \code{""} for concentrations to
-include and non-empty text for concentrations to exclude.}
+\item{exclude}{(optional) The name of a column with concentrations to exclude
+from calculations and summarization.  If given, the column should have
+values of \code{NA} or \code{""} for concentrations to include and non-empty text for
+concentrations to exclude.}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

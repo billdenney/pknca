@@ -1,34 +1,32 @@
 #' Create a PKNCAconc object
 #'
-#' @param data A data frame with concentration (or amount for
-#'   urine/feces), time, and the groups defined in `formula`.
-#' @param formula The formula defining the
-#'   `concentration~time|groups` or `amount~time|groups` for
-#'   urine/feces (In the remainder of the documentation, "concentration" will be
-#'   used to describe concentration or amount.)  One special aspect of the
-#'   `groups` part of the formula is that the last group is typically
-#'   assumed to be the `subject`; see the documentation for the
-#'   `subject` argument for exceptions to this assumption.
+#' @param data A data frame with concentration (or amount for urine/feces),
+#'   time, and the groups defined in `formula`.
+#' @param formula The formula defining the `concentration~time|groups` or
+#'   `amount~time|groups` for urine/feces (In the remainder of the
+#'   documentation, "concentration" will be used to describe concentration or
+#'   amount.)  One special aspect of the `groups` part of the formula is that
+#'   the last group is typically assumed to be the `subject`; see the
+#'   documentation for the `subject` argument for exceptions to this assumption.
 #' @param subject The column indicating the subject number.  If not provided,
 #'   this defaults to the beginning of the inner groups: For example with
-#'   `concentration~time|Study+Subject/Analyte`, the inner groups start
-#'   with the first grouping variable before a `/`, `Subject`.  If
-#'   there is only one grouping variable, it is assumed to be the subject (e.g.
-#'   `concentration~time|Subject`), and if there are multiple grouping
-#'   variables without a `/`, subject is assumed to be the last one.  For
-#'   single-subject data, it is assigned as `NULL`.
-#' @param time.nominal (optional) The name of the nominal time column
-#'   (if the main time variable is actual time.  The `time.nominal`
-#'   is not used during calculations; it is available to assist with
-#'   data summary and checking.
-#' @param exclude (optional) The name of a column with concentrations to
-#'   exclude from calculations and summarization.  If given, the column
-#'   should have values of `NA` or `""` for concentrations to
-#'   include and non-empty text for concentrations to exclude.
-#' @param volume (optional) The volume (or mass) of collection as is
-#'   typically used for urine or feces measurements.
-#' @param duration (optional) The duration of collection as is typically
-#'   used for concentration measurements in urine or feces.
+#'   `concentration~time|Study+Subject/Analyte`, the inner groups start with the
+#'   first grouping variable before a `/`, `Subject`.  If there is only one
+#'   grouping variable, it is assumed to be the subject (e.g.
+#'   `concentration~time|Subject`), and if there are multiple grouping variables
+#'   without a `/`, subject is assumed to be the last one.  For single-subject
+#'   data, it is assigned as `NULL`.
+#' @param time.nominal (optional) The name of the nominal time column (if the
+#'   main time variable is actual time.  The `time.nominal` is not used during
+#'   calculations; it is available to assist with data summary and checking.
+#' @param exclude (optional) The name of a column with concentrations to exclude
+#'   from calculations and summarization.  If given, the column should have
+#'   values of `NA` or `""` for concentrations to include and non-empty text for
+#'   concentrations to exclude.
+#' @param volume (optional) The volume (or mass) of collection as is typically
+#'   used for urine or feces measurements.
+#' @param duration (optional) The duration of collection as is typically used
+#'   for concentration measurements in urine or feces.
 #' @param exclude_half.life,include_half.life A character scalar for the column
 #'   name in the dataset of the points to exclude from the half-life calculation
 #'   (still using normal curve-stripping selection rules for the other points)
@@ -39,7 +37,7 @@
 #'   small nonclinical species or with terminal or difficult sampling) or dense
 #'   PK (commonly used in clinical studies or larger nonclinical species)?
 #' @param ... Ignored.
-#' @return A PKNCAconc object that can be used for automated NCA.
+#' @returns A PKNCAconc object that can be used for automated NCA.
 #' @family PKNCA objects
 #' @export
 PKNCAconc <- function(data, ...) {
@@ -196,11 +194,10 @@ formula.PKNCAconc <- function(x, ...) {
 #' Extract the columns used in the formula (in order) from a PKNCAconc
 #' or PKNCAdose object.
 #'
-#' @param formula The object to use (parameter name is `formula`
-#' to use the generic function)
+#' @param formula The object to use (parameter name is `formula` to use the
+#'   generic function)
 #' @param \dots Unused
-#' @return A data frame with the columns from the object in formula
-#' order.
+#' @returns A data frame with the columns from the object in formula order.
 #' @export
 #' @importFrom stats model.frame
 #' @method model.frame PKNCAconc
@@ -222,18 +219,17 @@ getIndepVar.PKNCAconc <- function(x, ...) {
 #' object).
 #'
 #' @param object The object to extract the data from
-#' @param form The formula to extract the data from (defaults to the
-#'   formula from `object`)
-#' @param level optional.  If included, this specifies the level(s) of
-#'   the groups to include.  If a numeric scalar, include the first
-#'   `level` number of groups.  If a numeric vector, include each
-#'   of the groups specified by the number.  If a character vector,
-#'   include the named group levels.
-#' @param data The data to extract the groups from (defaults to the data
+#' @param form The formula to extract the data from (defaults to the formula
 #'   from `object`)
+#' @param level optional.  If included, this specifies the level(s) of the
+#'   groups to include.  If a numeric scalar, include the first `level` number
+#'   of groups.  If a numeric vector, include each of the groups specified by
+#'   the number.  If a character vector, include the named group levels.
+#' @param data The data to extract the groups from (defaults to the data from
+#'   `object`)
 #' @param sep Unused (kept for compatibility with the nlme package)
 #' @param ... Arguments passed to other getGroups functions
-#' @return A data frame with the (selected) group columns.
+#' @returns A data frame with the (selected) group columns.
 #' @export
 getGroups.PKNCAconc <- function(object, form=stats::formula(object), level,
                                 data=as.data.frame(object), sep) {
@@ -259,7 +255,7 @@ getGroups.PKNCAconc <- function(object, form=stats::formula(object), level,
 #' Get grouping variables for a PKNCA object
 #'
 #' @param x The PKNCA object
-#' @return A character vector (possibly empty) of the grouping variables
+#' @returns A character vector (possibly empty) of the grouping variables
 #' @exportS3Method dplyr::group_vars
 group_vars.PKNCAconc <- function(x) {
   unname(unlist(x$columns$groups))

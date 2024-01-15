@@ -1,5 +1,5 @@
-#' Clean up the time to steady-state parameters and return a data
-#' frame for use by the tss calculators.
+#' Clean up the time to steady-state parameters and return a data frame for use
+#' by the tss calculators.
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams PKNCA.choose.option
@@ -12,8 +12,8 @@
 #' @param conc.na See [clean.conc.na()]
 #' @param check Run [assert_conc_time()]?
 #' @param \dots Discarded inputs to allow generic calls between tss methods.
-#' @return a data frame with columns for `conc`entration,
-#' `time`, `subject`, and `treatment`.
+#' @returns a data frame with columns for `conc`entration, `time`, `subject`,
+#'   and `treatment`.
 pk.tss.data.prep <- function(conc, time, subject, treatment,
                              subject.dosing, time.dosing,
                              options=list(),
@@ -94,12 +94,12 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
 #' Compute the time to steady-state (tss)
 #'
 #' @param \dots Passed to [pk.tss.monoexponential()] or
-#' [pk.tss.stepwise.linear()].
+#'   [pk.tss.stepwise.linear()].
 #' @param check See [pk.tss.data.prep()]
-#' @param type The type of Tss to calculate, either
-#' `stepwise.linear` or `monoexponential`
-#' @return A data frame with columns as defined from
-#' `pk.tss.monoexponential` and/or `pk.tss.stepwise.linear`.
+#' @param type The type of Tss to calculate, either `stepwise.linear` or
+#'   `monoexponential`
+#' @returns A data frame with columns as defined from `pk.tss.monoexponential`
+#'   and/or `pk.tss.stepwise.linear`.
 #' @family Time to steady-state calculations
 #' @export
 pk.tss <- function(...,

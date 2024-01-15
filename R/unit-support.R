@@ -1,8 +1,8 @@
 #' Create a unit assignment and conversion table
 #'
-#' This data.frame is typically used for the `units` argument for
-#' [PKNCAdata()].  If a unit is not given, then all of the units
-#' derived from that unit will be `NA`.
+#' This data.frame is typically used for the `units` argument for [PKNCAdata()].
+#' If a unit is not given, then all of the units derived from that unit will be
+#' `NA`.
 #'
 #' @param concu,doseu,amountu,timeu Units for concentration, dose, amount, and
 #'   time
@@ -10,8 +10,8 @@
 #'   "PPSTRESU", "conversion_factor") for the original calculation units, the
 #'   standardized units, and a conversion factor to multiply the initial value
 #'   by to get a standardized value.
-#' @return A unit conversion table with columns for "PPTESTCD" and "PPORRESU" if
-#'   `conversions` is not given, and adding "PPSTRESU" and
+#' @returns A unit conversion table with columns for "PPTESTCD" and "PPORRESU"
+#'   if `conversions` is not given, and adding "PPSTRESU" and
 #'   "conversion_factor" if `conversions` is given.
 #' @seealso The `units` argument for [PKNCAdata()]
 #' @examples
@@ -281,7 +281,7 @@ pknca_units_table_conc_time_amount <- function(concu, timeu, amountu) {
 #' Find NCA parameters with a given unit type
 #'
 #' @param unit_type The type of unit as assigned with `add.interval.col`
-#' @return A character vector of parameters with a given unit type
+#' @returns A character vector of parameters with a given unit type
 #' @keywords Internal
 pknca_find_units_param <- function(unit_type) {
   stopifnot(length(unit_type) == 1)
@@ -302,7 +302,7 @@ pknca_find_units_param <- function(unit_type) {
 #' Add parentheses to a unit value, if needed
 #'
 #' @param unit The text of the unit
-#' @return The unit with parentheses around it, if needed
+#' @returns The unit with parentheses around it, if needed
 #' @keywords Internal
 pknca_units_add_paren <- function(unit) {
   mask_paren <- grepl(x=unit, pattern="[*/]")
@@ -313,7 +313,7 @@ pknca_units_add_paren <- function(unit) {
 #'
 #' @param result The results data.frame
 #' @param units The unit conversion table
-#' @return The result table with units converted
+#' @returns The result table with units converted
 #' @keywords Internal
 pknca_unit_conversion <- function(result, units) {
   ret <- result

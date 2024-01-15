@@ -15,8 +15,8 @@
 #' @inheritParams pk.calc.auxc
 #' @param c0 The concentration at time 0, typically calculated using
 #'   `pk.calc.c0()`
-#' @param auc The AUC calculated using `conc` and `time` without
-#'   `c0` (it may be calculated using any method)
+#' @param auc The AUC calculated using `conc` and `time` without `c0` (it may be
+#'   calculated using any method)
 #' @return `pk.calc.auciv`: The AUC calculated using `c0`
 #' @export
 pk.calc.auciv <- function(conc, time, c0, auc, ..., check=TRUE) {
@@ -106,10 +106,11 @@ PKNCA.set.summary(
   spread=business.geocv
 )
 
-#' @describeIn pk.calc.auciv Calculate the percent back-extrapolated AUC for IV administration
+#' @describeIn pk.calc.auciv Calculate the percent back-extrapolated AUC for IV
+#'   administration
 #' @details The calculation for back-extrapolation is `100*(1 - auc/auciv)`.
 #' @param auciv The AUC calculated using `c0`
-#' @return `pk.calc.auciv_pctbackextrap`: The AUC percent back-extrapolated
+#' @returns `pk.calc.auciv_pctbackextrap`: The AUC percent back-extrapolated
 #' @export
 pk.calc.auciv_pbext <- function(auc, auciv) {
   100*(1 - auc/auciv)

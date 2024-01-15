@@ -2,8 +2,7 @@
 % Please edit documentation in R/cleaners.R
 \name{clean.conc.na}
 \alias{clean.conc.na}
-\title{Handle NA values in the concentration measurements as requested by
-the user.}
+\title{Handle NA values in the concentration measurements as requested by the user.}
 \usage{
 clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 }
@@ -17,8 +16,8 @@ clean.conc.na(conc, time, ..., options = list(), conc.na = NULL, check = TRUE)
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}
 
-\item{conc.na}{How to handle NA concentrations?  Either 'drop' or a
-number to impute.}
+\item{conc.na}{How to handle NA concentrations?  Either 'drop' or a number to
+impute.}
 
 \item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
@@ -27,8 +26,8 @@ The concentration and time measurements (data frame) filtered
 and cleaned as requested relative to NA in the concentration.
 }
 \description{
-NA concentrations (and their associated times) will be removed then
-the BLQ values in the middle
+NA concentrations (and their associated times) will be removed then the BLQ
+values in the middle
 }
 \seealso{
 Other Data cleaners: 

@@ -15,8 +15,8 @@ pk.calc.mrt.iv(auc, aumc, duration.dose)
 
 \item{aumc}{the AUMC from 0 to infinity or 0 to tau}
 
-\item{duration.dose}{The duration of the dose (usually an infusion
-duration for an IV infusion)}
+\item{duration.dose}{The duration of the dose (usually an infusion duration
+for an IV infusion)}
 }
 \value{
 the numeric value of the mean residence time

@@ -30,8 +30,8 @@ pk.calc.sparse_auclast(conc, time, subject, ..., options = list())
 \item{auc.type}{The type of AUC to compute.  Choices are 'AUCinf', 'AUClast',
 and 'AUCall'.}
 
-\item{...}{For functions other than \code{pk.calc.auxc}, these values are
-passed to \code{pk.calc.auxc}}
+\item{...}{For functions other than \code{pk.calc.auxc}, these values are passed
+to \code{pk.calc.auxc}}
 
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}

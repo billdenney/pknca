@@ -11,14 +11,14 @@ pk.calc.ceoi(conc, time, duration.dose = NA, check = TRUE)
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{duration.dose}{The duration for the dosing administration
-(typically from IV infusion)}
+\item{duration.dose}{The duration for the dosing administration (typically
+from IV infusion)}
 
 \item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
 The concentration at the end of the infusion, \code{NA} if
-duration.dose is \code{NA}, or \code{NA} if all \code{time != duration.dose}
+\code{duration.dose} is \code{NA}, or \code{NA} if all \code{time != duration.dose}
 }
 \description{
 Determine the concentration at the end of infusion

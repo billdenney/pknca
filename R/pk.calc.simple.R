@@ -22,8 +22,8 @@ adj.r.squared <- function(r.sq, n) {
 #'
 #' @inheritParams assert_conc_time
 #' @param check Run [assert_conc()]?
-#' @return a number for the maximum concentration or NA if all
-#' concentrations are missing
+#' @return a number for the maximum concentration or NA if all concentrations
+#'   are missing
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cmax <- function(conc, check=TRUE) {
@@ -95,11 +95,11 @@ PKNCA.set.summary(
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams PKNCA.choose.option
-#' @param first.tmax If there is more than time that matches the
-#' maximum concentration, should the first be considered as Tmax?  If
-#' not, then the last is considered Tmax.
+#' @param first.tmax If there is more than time that matches the maximum
+#'   concentration, should the first be considered as Tmax?  If not, then the
+#'   last is considered Tmax.
 #' @param check Run [assert_conc_time()]?
-#' @return the time of the maximum concentration
+#' @returns The time of the maximum concentration
 #' @export
 pk.calc.tmax <- function(conc, time,
                          options=list(),
@@ -142,7 +142,7 @@ PKNCA.set.summary(
 #'
 #' @inheritParams assert_conc_time
 #' @param check Run [assert_conc_time()]?
-#' @return The time of the last observed concentration measurement
+#' @returns The time of the last observed concentration measurement
 #' @export
 pk.calc.tlast <- function(conc, time, check=TRUE) {
   if (check) {
@@ -197,8 +197,8 @@ PKNCA.set.summary(
   spread=business.range
 )
 
-#' Determine the last observed concentration above the limit of
-#' quantification (LOQ).
+#' Determine the last observed concentration above the limit of quantification
+#' (LOQ).
 #'
 #' If all concentrations are missing, `NA_real_` is returned.  If all
 #' concentrations are zero (below the limit of quantification) or missing, zero
@@ -207,7 +207,7 @@ PKNCA.set.summary(
 #'
 #' @inheritParams assert_conc_time
 #' @param check Run [assert_conc_time()]?
-#' @return The last observed concentration above the LOQ
+#' @returns The last observed concentration above the LOQ
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.clast.obs <- function(conc, time, check=TRUE) {
@@ -249,8 +249,9 @@ PKNCA.set.summary(
 #' @param mrt the mean residence time to infinity
 #' @return the numeric value of the effective half-life
 #' @export
-pk.calc.thalf.eff <- function(mrt)
+pk.calc.thalf.eff <- function(mrt) {
   log(2)*mrt
+}
 # Add the columns to the interval specification
 add.interval.col("thalf.eff.obs",
                  FUN="pk.calc.thalf.eff",
@@ -341,13 +342,12 @@ PKNCA.set.summary(
 #'
 #' @details aucpext is `100*(1-auclast/aucinf)`.
 #'
-#' @param auclast the area under the curve from time 0 to the last
-#'   measurement above the limit of quantification
+#' @param auclast the area under the curve from time 0 to the last measurement
+#'   above the limit of quantification
 #' @param aucinf the area under the curve from time 0 to infinity
-#' @return The numeric value of the AUC percent extrapolated or
-#'   `NA_real_` if any of the following are true
-#'   `is.na(aucinf)`, `is.na(auclast)`, `aucinf <= 0`,
-#'   or `auclast <= 0`.
+#' @returns The numeric value of the AUC percent extrapolated or `NA_real_` if
+#'   any of the following are true `is.na(aucinf)`, `is.na(auclast)`,
+#'   `aucinf <= 0`, or `auclast <= 0`.
 #' @export
 pk.calc.aucpext <- function(auclast, aucinf) {
   scalar_auclast <- length(auclast) == 1
@@ -420,10 +420,11 @@ PKNCA.set.summary(
 #' @param kel is `1/mrt`, not to be confused with lambda.z.
 #'
 #' @param mrt the mean residence time
-#' @return the numeric value of the elimination rate
+#' @returns the numeric value of the elimination rate
 #' @export
-pk.calc.kel <- function(mrt)
+pk.calc.kel <- function(mrt) {
   1/mrt
+}
 # Add the columns to the interval specification
 add.interval.col("kel.obs",
                  FUN="pk.calc.kel",
@@ -516,13 +517,14 @@ PKNCA.set.summary(
 #'
 #' @param dose the dose administered
 #' @param auc The area under the concentration-time curve.
-#' @return the numeric value of the total (CL) or observed oral clearance (CL/F)
-#' @details If `dose` is the same length as the other inputs, then the
-#'   output will be the same length as all of the inputs; the function assumes
-#'   that you are calculating for multiple intervals simultaneously.  If the
-#'   inputs other than `dose` are scalars and `dose` is a vector, then
-#'   the function assumes multiple doses were given in a single interval, and
-#'   the sum of the `dose`s will be used for the calculation.
+#' @returns the numeric value of the total (CL) or observed oral clearance
+#'   (CL/F)
+#' @details If `dose` is the same length as the other inputs, then the output
+#'   will be the same length as all of the inputs; the function assumes that you
+#'   are calculating for multiple intervals simultaneously.  If the inputs other
+#'   than `dose` are scalars and `dose` is a vector, then the function assumes
+#'   multiple doses were given in a single interval, and the sum of the `dose`s
+#'   will be used for the calculation.
 #' @references Gabrielsson J, Weiner D. "Section 2.5.1 Derivation of clearance."
 #'   Pharmacokinetic & Pharmacodynamic Data Analysis: Concepts and Applications,
 #'   4th Edition.  Stockholm, Sweden: Swedish Pharmaceutical Press, 2000. 86-7.
@@ -603,10 +605,10 @@ PKNCA.set.summary(
 #'
 #' @param dose1 The dose administered in route or method 1
 #' @param dose2 The dose administered in route or method 2
-#' @param auc1 The AUC from 0 to infinity or 0 to tau administered in
-#'   route or method 1
-#' @param auc2 The AUC from 0 to infinity or 0 to tau administered in
-#'   route or method 2
+#' @param auc1 The AUC from 0 to infinity or 0 to tau administered in route or
+#'   method 1
+#' @param auc2 The AUC from 0 to infinity or 0 to tau administered in route or
+#'   method 2
 #' @export
 pk.calc.f <- function(dose1, auc1, dose2, auc2) {
   ret <- (auc2/dose2)/(auc1/dose1)
@@ -641,9 +643,9 @@ PKNCA.set.summary(
 #'
 #' @param auc the AUC from 0 to infinity or 0 to tau
 #' @param aumc the AUMC from 0 to infinity or 0 to tau
-#' @param duration.dose The duration of the dose (usually an infusion
-#'   duration for an IV infusion)
-#' @return the numeric value of the mean residence time
+#' @param duration.dose The duration of the dose (usually an infusion duration
+#'   for an IV infusion)
+#' @returns the numeric value of the mean residence time
 #' @seealso [pk.calc.mrt.md()]
 #' @export
 pk.calc.mrt <- function(auc, aumc) {
@@ -750,19 +752,16 @@ PKNCA.set.summary(
 #' Calculate the mean residence time (MRT) for multiple-dose data with nonlinear
 #' kinetics.
 #'
-#' @details mrt.md is `aumctau/auctau + tau*(aucinf-auctau)/auctau` and
-#' should only be used for multiple dosing with equal intervals between doses.
+#' @details mrt.md is `aumctau/auctau + tau*(aucinf-auctau)/auctau` and should
+#'   only be used for multiple dosing with equal intervals between doses.
 #'
-#' @param auctau the AUC from time 0 to the end of the dosing interval
-#'   (tau).
-#' @param aumctau the AUMC from time 0 to the end of the dosing interval
-#'   (tau).
-#' @param aucinf the AUC from time 0 to infinity (typically using
-#'   single-dose data)
+#' @param auctau the AUC from time 0 to the end of the dosing interval (tau).
+#' @param aumctau the AUMC from time 0 to the end of the dosing interval (tau).
+#' @param aucinf the AUC from time 0 to infinity (typically using single-dose
+#'   data)
 #' @inheritParams assert_dosetau
-#' @details Note that if `aucinf == auctau` (as would be the
-#'   assumption with linear kinetics), the equation becomes the same as
-#'   the single-dose MRT.
+#' @details Note that if `aucinf == auctau` (as would be the assumption with
+#'   linear kinetics), the equation becomes the same as the single-dose MRT.
 #' @seealso [pk.calc.mrt()]
 #' @export
 pk.calc.mrt.md <- function(auctau, aumctau, aucinf, tau) {
@@ -980,7 +979,7 @@ PKNCA.set.summary(
 #'
 #' @param auclast The area under the curve during the interval
 #' @inheritParams assert_intervaltime_single
-#' @return The Cav (average concentration during the interval)
+#' @returns The Cav (average concentration during the interval)
 #' @export
 pk.calc.cav <- function(auclast, start, end) {
   ret <- auclast/(end-start)
@@ -1008,8 +1007,7 @@ PKNCA.set.summary(
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
-#' @return The concentration when `time == end`.  If none
-#'   match, then `NA`
+#' @returns The concentration when `time == end`.  If none match, then `NA`
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.ctrough <- function(conc, time, end) {
@@ -1043,8 +1041,7 @@ PKNCA.set.summary(
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
-#' @return The concentration when `time == end`.  If none
-#'   match, then `NA`
+#' @return The concentration when `time == end`.  If none match, then `NA`
 #' @family NCA parameters for concentrations during the intervals
 #' @export
 pk.calc.cstart <- function(conc, time, start) {
@@ -1106,7 +1103,7 @@ PKNCA.set.summary(
 #' concentration in the interval)
 #'
 #' @inheritParams assert_conc_time
-#' @return The time associated with the first increasing concentration
+#' @returns The time associated with the first increasing concentration
 #' @export
 pk.calc.tlag <- function(conc, time) {
   assert_conc_time(conc = conc, time = time)
@@ -1138,7 +1135,7 @@ PKNCA.set.summary(
 #' @param cmax The maximum observed concentration
 #' @param cmin The minimum observed concentration
 #' @param cav The average concentration in the interval
-#' @return The degree of fluctuation around the average concentration.
+#' @returns The degree of fluctuation around the average concentration.
 #' @export
 pk.calc.deg.fluc <- function(cmax, cmin, cav) {
   ret <- 100*(cmax - cmin)/cav
@@ -1167,8 +1164,8 @@ PKNCA.set.summary(
 #'
 #' @param cmax The maximum observed concentration
 #' @param cmin The minimum observed concentration
-#' @return The swing above the minimum concentration.  If `cmin` is zero,
-#'   then the result is infinity.
+#' @returns The swing above the minimum concentration.  If `cmin` is zero, then
+#'   the result is infinity.
 #' @export
 pk.calc.swing <- function(cmax, cmin) {
   if (cmin > 0) {
@@ -1193,11 +1190,11 @@ PKNCA.set.summary(
 #' Determine the concentration at the end of infusion
 #'
 #' @inheritParams assert_conc_time
-#' @param duration.dose The duration for the dosing administration
-#'   (typically from IV infusion)
+#' @param duration.dose The duration for the dosing administration (typically
+#'   from IV infusion)
 #' @param check Run [assert_conc_time()]?
-#' @return The concentration at the end of the infusion, `NA` if
-#'   duration.dose is `NA`, or `NA` if all `time != duration.dose`
+#' @returns The concentration at the end of the infusion, `NA` if
+#'   `duration.dose` is `NA`, or `NA` if all `time != duration.dose`
 #' @export
 pk.calc.ceoi <- function(conc, time, duration.dose=NA, check=TRUE) {
   if (check) {
@@ -1229,7 +1226,7 @@ PKNCA.set.summary(
 #' Concentrations below the given concentration (`conc_above`) will be set
 #' to zero.
 #' @inheritParams pk.calc.time_above
-#' @return The AUC of the concentration above the limit
+#' @returns The AUC of the concentration above the limit
 #' @export
 pk.calc.aucabove <- function(conc, time, conc_above = NA_real_, ..., options=list()) {
   stopifnot(length(conc_above) == 1)
@@ -1284,7 +1281,7 @@ PKNCA.set.summary(
 #' ensure that data are consistent between individuals.
 #'
 #' @inheritParams pk.calc.cmax
-#' @return a count of the non-missing concentrations (0 if all concentrations
+#' @returns a count of the non-missing concentrations (0 if all concentrations
 #'   are missing)
 #' @family NCA parameters for concentrations during the intervals
 #' @export

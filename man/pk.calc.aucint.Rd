@@ -86,20 +86,19 @@ integration}
 
 \item{end}{The end time of the interval}
 
-\item{clast, clast.obs, clast.pred}{The last concentration above the
-limit of quantification; this is used for AUCinf calculations.  If
-provided as clast.obs (observed clast value, default), AUCinf is
-AUCinf,obs. If provided as clast.pred, AUCinf is AUCinf,pred.}
+\item{clast, clast.obs, clast.pred}{The last concentration above the limit of
+quantification; this is used for AUCinf calculations.  If provided as
+clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
+provided as clast.pred, AUCinf is AUCinf,pred.}
 
 \item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}
 
 \item{time.dose, route, duration.dose}{The time of doses, route of
 administration, and duration of dose used with interpolation and
-extrapolation of concentration data (see
-\code{\link[=interp.extrap.conc.dose]{interp.extrap.conc.dose()}}).  If \code{NULL},
-\code{\link[=interp.extrap.conc]{interp.extrap.conc()}} will be used instead (assuming
-that no doses affecting concentrations are in the interval).}
+extrapolation of concentration data (see \code{\link[=interp.extrap.conc.dose]{interp.extrap.conc.dose()}}).  If
+\code{NULL}, \code{\link[=interp.extrap.conc]{interp.extrap.conc()}} will be used instead (assuming that no doses
+affecting concentrations are in the interval).}
 
 \item{method}{The method for integration (one of 'lin up/log down',
 'lin-log', or 'linear')}
@@ -108,20 +107,22 @@ that no doses affecting concentrations are in the interval).}
 and 'AUCall'.}
 
 \item{conc.blq}{How to handle BLQ values in between the first and last above
-LOQ concentrations. (See \code{\link[=clean.conc.blq]{clean.conc.blq()}} for usage
-instructions.)}
+LOQ concentrations. (See \code{\link[=clean.conc.blq]{clean.conc.blq()}} for usage instructions.)}
 
 \item{conc.na}{How to handle missing concentration values.  (See
 \code{\link[=clean.conc.na]{clean.conc.na()}} for usage instructions.)}
 
-\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}},
-and \code{\link[=clean.conc.na]{clean.conc.na()}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}}, and
+\code{\link[=clean.conc.na]{clean.conc.na()}}?}
 
 \item{...}{Additional arguments passed to \code{pk.calc.auxc} and
 \code{interp.extrap.conc}}
 
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}
+}
+\value{
+The AUC for an interval of time as a number
 }
 \description{
 Calculate the AUC over an interval with interpolation and/or
@@ -136,13 +137,17 @@ extrapolation.
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.aucint.last()}: Interpolate or extrapolate concentrations for AUClast
+\item \code{pk.calc.aucint.last()}: Interpolate or extrapolate concentrations for
+AUClast
 
-\item \code{pk.calc.aucint.all()}: Interpolate or extrapolate concentrations for AUCall
+\item \code{pk.calc.aucint.all()}: Interpolate or extrapolate concentrations for
+AUCall
 
-\item \code{pk.calc.aucint.inf.obs()}: Interpolate or extrapolate concentrations for AUCinf.obs
+\item \code{pk.calc.aucint.inf.obs()}: Interpolate or extrapolate concentrations for
+AUCinf.obs
 
-\item \code{pk.calc.aucint.inf.pred()}: Interpolate or extrapolate concentrations for AUCinf.pred
+\item \code{pk.calc.aucint.inf.pred()}: Interpolate or extrapolate concentrations for
+AUCinf.pred
 
 }}
 \seealso{

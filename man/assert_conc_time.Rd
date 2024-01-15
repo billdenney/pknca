@@ -19,8 +19,7 @@ assert_conc_time(conc, time, any_missing_conc = TRUE, sorted_time = TRUE)
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{sorted_time}{Must the time be unique and monotonically
-increasing?}
+\item{sorted_time}{Must the time be unique and monotonically increasing?}
 }
 \value{
 \code{conc} or give an informative error

@@ -18,14 +18,13 @@
 #' @param time.conc Time of concentration measurement
 #' @param time.dosing Time of dosing
 #' @param single.dose.aucs The AUC specification for single dosing.
-#' @return A data frame with columns for `start`, `end`,
-#' `auc.type`, and `half.life`.  See
-#' [check.interval.specification()] for column definitions.
+#' @returns A data frame with columns for `start`, `end`, `auc.type`, and
+#'   `half.life`.  See [check.interval.specification()] for column definitions.
 #' The data frame may have zero rows if no intervals could be found.
 #' @family Interval specifications
 #' @family Interval determination
-#' @seealso [pk.calc.auc()], [pk.calc.aumc()],
-#' [pk.calc.half.life()], [PKNCA.options()]
+#' @seealso [pk.calc.auc()], [pk.calc.aumc()], [pk.calc.half.life()],
+#'   [PKNCA.options()]
 #' @export
 choose.auc.intervals <- function(time.conc, time.dosing,
                                  options=list(),
@@ -119,15 +118,15 @@ choose.auc.intervals <- function(time.conc, time.dosing,
 
 #' Find the repeating interval within a vector of doses
 #'
-#' This is intended to find the interval over which x repeats by the
-#' rule unique(mod(x, interval)) is minimized.
+#' This is intended to find the interval over which x repeats by the rule
+#' `unique(mod(x, interval))` is minimized.
 #'
 #' @inheritParams PKNCA.choose.option
 #' @param x the vector to find the interval within
 #' @param na.action What to do with NAs in `x`
 #' @param tau.choices the intervals to look for if the doses are not all equally
 #'   spaced.
-#' @return A scalar indicating the repeating interval with the most repetition.
+#' @returns A scalar indicating the repeating interval with the most repetition.
 #' \enumerate{
 #'   \item If all values are `NA` then NA is returned.
 #'   \item If all values are the same, then 0 is returned.

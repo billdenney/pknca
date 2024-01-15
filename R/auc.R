@@ -22,12 +22,11 @@
 #'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
 #'   provided as clast.pred, AUCinf is AUCinf,pred.
 #' @param conc.blq How to handle BLQ values in between the first and last above
-#'   LOQ concentrations. (See [clean.conc.blq()] for usage
-#'   instructions.)
+#'   LOQ concentrations. (See [clean.conc.blq()] for usage instructions.)
 #' @param conc.na How to handle missing concentration values.  (See
 #'   [clean.conc.na()] for usage instructions.)
-#' @param check Run [assert_conc_time()], [clean.conc.blq()],
-#'   and [clean.conc.na()]?
+#' @param check Run [assert_conc_time()], [clean.conc.blq()], and
+#'   [clean.conc.na()]?
 #' @param fun_linear The function to use for integration of the linear part of
 #'   the curve (not required for AUC or AUMC functions)
 #' @param fun_log The function to use for integration of the logarithmic part of
@@ -35,9 +34,9 @@
 #'   functions)
 #' @param fun_inf The function to use for extrapolation from the final
 #'   measurement to infinite time (not required for AUC or AUMC functions.
-#' @param ... For functions other than `pk.calc.auxc`, these values are
-#'   passed to `pk.calc.auxc`
-#' @return A numeric value for the AU(M)C.
+#' @param ... For functions other than `pk.calc.auxc`, these values are passed
+#'   to `pk.calc.auxc`
+#' @returns A numeric value for the AU(M)C.
 #' @aliases pk.calc.auc pk.calc.aumc pk.calc.auc.last
 #' @family AUC calculations
 #' @seealso [clean.conc.blq()]

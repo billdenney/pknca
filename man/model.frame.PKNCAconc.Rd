@@ -11,14 +11,13 @@ or PKNCAdose object.}
 \method{model.frame}{PKNCAdose}(formula, ...)
 }
 \arguments{
-\item{formula}{The object to use (parameter name is \code{formula}
-to use the generic function)}
+\item{formula}{The object to use (parameter name is \code{formula} to use the
+generic function)}
 
 \item{\dots}{Unused}
 }
 \value{
-A data frame with the columns from the object in formula
-order.
+A data frame with the columns from the object in formula order.
 }
 \description{
 Extract the columns used in the formula (in order) from a PKNCAconc

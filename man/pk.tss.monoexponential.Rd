@@ -2,8 +2,8 @@
 % Please edit documentation in R/tss.monoexponential.R
 \name{pk.tss.monoexponential}
 \alias{pk.tss.monoexponential}
-\title{Compute the time to steady state using nonlinear, mixed-effects
-modeling of trough concentrations.}
+\title{Compute the time to steady state using nonlinear, mixed-effects modeling of
+trough concentrations.}
 \usage{
 pk.tss.monoexponential(
   ...,
@@ -19,30 +19,27 @@ pk.tss.monoexponential(
 \item{tss.fraction}{The fraction of steady-state required for calling
 steady-state}
 
-\item{output}{Which types of outputs should be produced?
-\code{population} is the population estimate for time to
-steady-state (from an nlme model), \code{popind} is the individual
-estimate (from an nlme model), \code{individual} fits each
-individual separately with a gnls model (requires more than one
-individual; use \code{single} for one individual), and
-\code{single} fits all the data to a single gnls model.}
+\item{output}{Which types of outputs should be produced? \code{population} is the
+population estimate for time to steady-state (from an nlme model), \code{popind}
+is the individual estimate (from an nlme model), \code{individual} fits each
+individual separately with a gnls model (requires more than one individual;
+use \code{single} for one individual), and \code{single} fits all the data to a
+single gnls model.}
 
 \item{check}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}.}
 
-\item{verbose}{Describe models as they are run, show convergence of
-the model (passed to the nlme function), and additional details
-while running.}
+\item{verbose}{Describe models as they are run, show convergence of the model
+(passed to the nlme function), and additional details while running.}
 }
 \value{
-A scalar float for the first time when steady-state is
-achieved or \code{NA} if it is not observed.
+A scalar float for the first time when steady-state is achieved or
+\code{NA} if it is not observed.
 }
 \description{
-Trough concentrations are selected as concentrations at the time of
-dosing.  An exponential curve is then fit through the data with a
-different magnitude by treatment (as a factor) and a random
-steady-state concentration and time to stead-state by subject (see
-\code{random.effects} argument).
+Trough concentrations are selected as concentrations at the time of dosing.
+An exponential curve is then fit through the data with a different magnitude
+by treatment (as a factor) and a random steady-state concentration and time
+to stead-state by subject (see \code{random.effects} argument).
 }
 \references{
 Maganti, L., Panebianco, D.L. & Maes, A.L. Evaluation of Methods for

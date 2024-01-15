@@ -5,9 +5,9 @@
 #'
 #' @param o_conc a PKNCAconc object
 #' @param o_dose a PKNCAdose object or `NA`
-#' @return A tibble with columns for the groups, "data_conc" (the concentration
-#'   data), and "data_dose" (the dosing data).  If `is.na(o_dose)`,
-#'   "data_dose" will be `NA`.
+#' @returns A tibble with columns for the groups, "data_conc" (the concentration
+#'   data), and "data_dose" (the dosing data).  If `is.na(o_dose)`, "data_dose"
+#'   will be `NA`.
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
@@ -35,7 +35,7 @@ full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose) {
 #' semantics.
 #'
 #' @param x The PKNCAdata object
-#' @return A tibble with columns the grouping variables, "data_conc" for
+#' @returns A tibble with columns the grouping variables, "data_conc" for
 #'   concentration data, "data_dose" for dosing data, and "data_intervals" for
 #'   intervals data.
 #' @family Combine PKNCA objects
@@ -61,7 +61,8 @@ full_join_PKNCAdata <- function(x) {
 #'
 #' @param .dat The PKNCA object to prepare as a nested tibble
 #' @param ...,.names_sep,.key Ignored
-#' @return A nested tibble with a column named "data_conc" containing the concentration data and a column
+#' @return A nested tibble with a column named "data_conc" containing the
+#'   concentration data and a column
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
@@ -280,11 +281,14 @@ check_reserved_column_names <- function(x) {
   }
 }
 
-#' Standardize column names and drop unnecessary columns from a data.frame or tibble
+#' Standardize column names and drop unnecessary columns from a data.frame or
+#' tibble
 #'
 #' @param x The data.frame or tibble
-#' @param cols A named list where the names are the standardized column names and the values are the original column names
-#' @return A data.frame or tibble with columns cleaned of unlisted columns and with names set to the expected names.
+#' @param cols A named list where the names are the standardized column names
+#'   and the values are the original column names
+#' @returns A data.frame or tibble with columns cleaned of unlisted columns and
+#'   with names set to the expected names.
 #' @noRd
 #' @keywords Internal
 standardize_column_names <- function(x, cols, group_cols=NULL, insert_if_missing=list()) {

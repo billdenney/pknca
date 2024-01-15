@@ -31,8 +31,8 @@ unique values, then -1 is returned.
 }
 }
 \description{
-This is intended to find the interval over which x repeats by the
-rule unique(mod(x, interval)) is minimized.
+This is intended to find the interval over which x repeats by the rule
+\code{unique(mod(x, interval))} is minimized.
 }
 \seealso{
 Other Interval determination: 

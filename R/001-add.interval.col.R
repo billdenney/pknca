@@ -23,15 +23,14 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #'   to NCA parameter names.  See the details for information on use of
 #'   `formalsmap`.
 #' @param datatype The type of data used for the calculation
-#' @return NULL (Calling this function has a side effect of changing the
+#' @returns NULL (Calling this function has a side effect of changing the
 #'   available intervals for calculations)
 #'
-#' @details
-#' The `formalsmap` argument enables mapping some alternate formal argument
-#' names to parameters.  It is used to generalize functions that may use
-#' multiple similar arguments (such as the variants of mean residence time). The
-#' names of the list should correspond to function formal parameter names and
-#' the values should be one of the following:
+#' @details The `formalsmap` argument enables mapping some alternate formal
+#' argument names to parameters.  It is used to generalize functions that may
+#' use multiple similar arguments (such as the variants of mean residence time).
+#' The names of the list should correspond to function formal parameter names
+#' and the values should be one of the following:
 #'
 #' \itemize{
 #'   \item{For the current interval:}
@@ -222,10 +221,11 @@ sort.interval.cols <- function() {
 }
 
 #' Get the columns that can be used in an interval specification
-#' @return A list with named elements for each parameter.  Each list element
+#'
+#' @returns A list with named elements for each parameter.  Each list element
 #'   contains the parameter definition.
-#' @seealso [check.interval.specification()] and the vignette
-#'   "Selection of Calculation Intervals"
+#' @seealso [check.interval.specification()] and the vignette "Selection of
+#'   Calculation Intervals"
 #' @examples
 #' get.interval.cols()
 #' @family Interval specifications

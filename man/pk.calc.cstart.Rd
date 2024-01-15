@@ -14,8 +14,7 @@ pk.calc.cstart(conc, time, start)
 \item{start}{The start time of the interval}
 }
 \value{
-The concentration when \code{time == end}.  If none
-match, then \code{NA}
+The concentration when \code{time == end}.  If none match, then \code{NA}
 }
 \description{
 Determine the concentration at the beginning of the interval

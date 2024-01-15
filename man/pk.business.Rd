@@ -9,11 +9,11 @@ counting as missing.  The maximum fraction missing comes from
 pk.business(FUN, zero.missing = FALSE, max.missing)
 }
 \arguments{
-\item{FUN}{function to run.  The function is called as \code{FUN(x, ...)}
-with missing values removed.}
+\item{FUN}{function to run.  The function is called as \code{FUN(x, ...)} with
+missing values removed.}
 
-\item{zero.missing}{Are zeros counted as missing?  If \code{TRUE} then
-include them in the missing count.}
+\item{zero.missing}{Are zeros counted as missing?  If \code{TRUE} then include
+them in the missing count.}
 
 \item{max.missing}{The maximum fraction of the data allowed to be missing (a
 number between 0 and 1, inclusive).}

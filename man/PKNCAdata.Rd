@@ -57,17 +57,16 @@ automatically chosen by \code{\link[=choose.auc.intervals]{choose.auc.intervals(
 }
 \value{
 A PKNCAdata object with concentration, dose, interval, and
-calculation options stored (note that PKNCAdata objects can also
-have results after a NCA calculations are done to the data).
+calculation options stored (note that PKNCAdata objects can also have
+results after a NCA calculations are done to the data).
 }
 \description{
 \code{PKNCAdata()} combines \code{PKNCAconc} and \code{PKNCAdose} objects and adds in the
 intervals for PK calculations.
 }
 \details{
-If \code{data.dose} is not given or is \code{NA}, then the
-\code{intervals} must be given.  At least one of \code{data.dose}
-and \code{intervals} must be given.
+If \code{data.dose} is not given or is \code{NA}, then the \code{intervals} must be
+given.  At least one of \code{data.dose} and \code{intervals} must be given.
 }
 \seealso{
 \code{\link[=choose.auc.intervals]{choose.auc.intervals()}}, \code{\link[=pk.nca]{pk.nca()}}, \code{\link[=pknca_units_table]{pknca_units_table()}}

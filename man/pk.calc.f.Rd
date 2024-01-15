@@ -9,13 +9,13 @@ pk.calc.f(dose1, auc1, dose2, auc2)
 \arguments{
 \item{dose1}{The dose administered in route or method 1}
 
-\item{auc1}{The AUC from 0 to infinity or 0 to tau administered in
-route or method 1}
+\item{auc1}{The AUC from 0 to infinity or 0 to tau administered in route or
+method 1}
 
 \item{dose2}{The dose administered in route or method 2}
 
-\item{auc2}{The AUC from 0 to infinity or 0 to tau administered in
-route or method 2}
+\item{auc2}{The AUC from 0 to infinity or 0 to tau administered in route or
+method 2}
 }
 \description{
 Calculate the absolute (or relative) bioavailability

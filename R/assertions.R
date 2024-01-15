@@ -1,10 +1,11 @@
-#' Assert that an interval is accurately defined as an interval, and return the interval
+#' Assert that an interval is accurately defined as an interval, and return the
+#' interval
 #'
 #' @param interval Numeric vector of two numbers for the start and end time of
 #'   integration
 #' @param start The start time of the interval
 #' @param end The end time of the interval
-#' @return `interval` (or `c(start, end)`)
+#' @returns `interval` (or `c(start, end)`)
 #' @keywords Internal
 assert_intervaltime_single <- function(interval = NULL, start = NULL, end = NULL) {
   if (is.null(interval) & is.null(start) & is.null(end)) {
@@ -39,7 +40,7 @@ assert_intervaltime_single <- function(interval = NULL, start = NULL, end = NULL
 #'
 #' @param conc Measured concentrations
 #' @param any_missing_conc Are any concentration values allowed to be `NA`?
-#' @return `conc` or give an informative error
+#' @returns `conc` or give an informative error
 #' @rdname assert_conc_time
 assert_conc <- function(conc, any_missing_conc = TRUE) {
   if (length(conc) == 0) {
@@ -65,9 +66,8 @@ assert_conc <- function(conc, any_missing_conc = TRUE) {
 #' Verify that time values are valid
 #'
 #' @param time Time of the measurement of the concentrations
-#' @param sorted_time Must the time be unique and monotonically
-#'   increasing?
-#' @return `time` or give an informative error
+#' @param sorted_time Must the time be unique and monotonically increasing?
+#' @returns `time` or give an informative error
 #' @rdname assert_conc_time
 assert_time <- function(time, sorted_time = TRUE) {
   if (length(time) == 0) {
@@ -99,7 +99,7 @@ assert_time <- function(time, sorted_time = TRUE) {
 #'     error; it will generate a warning.
 #' }
 #'
-#' @return A data.frame with columns named "conc" and "time" or an informative
+#' @returns A data.frame with columns named "conc" and "time" or an informative
 #'   error
 assert_conc_time <- function(conc, time, any_missing_conc = TRUE, sorted_time = TRUE) {
   assert_conc(conc, any_missing_conc = any_missing_conc)
@@ -113,7 +113,7 @@ assert_conc_time <- function(conc, time, any_missing_conc = TRUE, sorted_time = 
 #' @inheritParams checkmate::assert_numeric
 #' @param lower_eq,upper_eq Values where equality is not allowed
 #' @param ... Passed to `checkmate::assert_numeric()`
-#' @return `x`
+#' @returns `x`
 assert_numeric_between <- function(x, any.missing = FALSE, null.ok = FALSE, lower_eq = -Inf, lower = -Inf, upper = Inf, upper_eq = Inf, ..., .var.name = checkmate::vname(x)) {
   checkmate::assert_numeric(x, any.missing = any.missing, null.ok = null.ok, lower = lower_eq, upper = upper_eq, ..., .var.name = .var.name)
   if (is.null(x) & null.ok) {
@@ -164,7 +164,7 @@ element_find <- function(x) {
 #' @inheritParams checkmate::assert_number
 #' @param len Ignored (must be 1)
 #' @param ... Passed to `assert_numeric_between()`
-#' @return `x` or an informative error
+#' @returns `x` or an informative error
 assert_number_between <- function(x, ..., na.ok = FALSE, len = 1, .var.name = checkmate::vname(x)) {
   assert_numeric_between(x, len = 1, .var.name = .var.name, ..., any.missing = na.ok)
 }
@@ -172,8 +172,7 @@ assert_number_between <- function(x, ..., na.ok = FALSE, len = 1, .var.name = ch
 #' Assert that a value is a dosing interval
 #'
 #' @param tau The dosing interval
-#' @return `tau` or an informative error
-#' @export
+#' @returns `tau` or an informative error
 assert_dosetau <- function(tau) {
   assert_number_between(x = tau, lower = 0, .var.name = checkmate::vname(tau), finite = TRUE)
 }
@@ -183,8 +182,7 @@ assert_dosetau <- function(tau) {
 #' @inheritParams assert_numeric_between
 #' @param lambda.z The elimination rate (in units of inverse time) for
 #'   extrapolation
-#' @return `lambda.z` or an informative error
-#' @export
+#' @returns `lambda.z` or an informative error
 assert_lambdaz <- function(lambda.z, any.missing = TRUE, .var.name = checkmate::vname(lambda.z)) {
   assert_numeric_between(x = lambda.z, lower = 0, any.missing = any.missing, .var.name = .var.name, finite = TRUE)
 }
@@ -193,8 +191,7 @@ assert_lambdaz <- function(lambda.z, any.missing = TRUE, .var.name = checkmate::
 #'
 #' @param method The method for integration (one of 'lin up/log down',
 #'   'lin-log', or 'linear')
-#' @return `method` or an informative error
-#' @export
+#' @returns `method` or an informative error
 assert_aucmethod <- function(method = c("lin up/log down", "linear", "lin-log")) {
   match.arg(method)
 }
@@ -203,7 +200,6 @@ assert_aucmethod <- function(method = c("lin up/log down", "linear", "lin-log"))
 #'
 #' @param impute_fun The character vector of imputation functions
 #' @returns The vector of confirmed functions
-#' @export
 assert_impute_fun <- function(impute_fun) {
   char_funs <- strsplit(impute_fun, split = "[ ,]")
 }

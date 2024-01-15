@@ -11,8 +11,8 @@ cov_holder(sparse_pk)
 }
 \value{
 A matrix with one row and one column for each element of
-\code{sparse_pk_attribute}.  The covariances are on the off diagonals, and
-for simplicity of use, it also calculates the variance on the diagonal
+\code{sparse_pk_attribute}.  The covariances are on the off diagonals, and for
+simplicity of use, it also calculates the variance on the diagonal
 elements.
 }
 \description{

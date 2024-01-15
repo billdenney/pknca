@@ -2,8 +2,8 @@
 % Please edit documentation in R/tss.R
 \name{pk.tss.data.prep}
 \alias{pk.tss.data.prep}
-\title{Clean up the time to steady-state parameters and return a data
-frame for use by the tss calculators.}
+\title{Clean up the time to steady-state parameters and return a data frame for use
+by the tss calculators.}
 \usage{
 pk.tss.data.prep(
   conc,
@@ -45,10 +45,10 @@ to be on the same treatment)}
 \item{\dots}{Discarded inputs to allow generic calls between tss methods.}
 }
 \value{
-a data frame with columns for \code{conc}entration,
-\code{time}, \code{subject}, and \code{treatment}.
+a data frame with columns for \code{conc}entration, \code{time}, \code{subject},
+and \code{treatment}.
 }
 \description{
-Clean up the time to steady-state parameters and return a data
-frame for use by the tss calculators.
+Clean up the time to steady-state parameters and return a data frame for use
+by the tss calculators.
 }

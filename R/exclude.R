@@ -2,25 +2,23 @@
 #'
 #' @param object The object to exclude data from.
 #' @param reason The reason to add as a reason for exclusion.
-#' @param mask A logical vector or numeric index of values to exclude
-#'   (see details).
-#' @param FUN A function to operate on the data (one group at a time) to
-#'   select reasons for exclusions (see details).
-#' @return The object with updated information in the exclude column.
-#'   The exclude column will contain the `reason` if `mask` or
-#'   `FUN` indicate.  If a previous reason for exclusion was given,
-#'   then subsequent reasons for exclusion will be added to the first
-#'   with a semicolon space ("; ") separator.
+#' @param mask A logical vector or numeric index of values to exclude (see
+#'   details).
+#' @param FUN A function to operate on the data (one group at a time) to select
+#'   reasons for exclusions (see details).
+#' @returns The object with updated information in the exclude column. The
+#'   exclude column will contain the `reason` if `mask` or `FUN` indicate.  If a
+#'   previous reason for exclusion was given, then subsequent reasons for
+#'   exclusion will be added to the first with a semicolon space ("; ")
+#'   separator.
 #'
-#' @details Only one of `mask` or `FUN` may be given.  If
-#'   `FUN` is given, it will be called with two arguments:  a
-#'   data.frame (or similar object) that consists of a single group of
-#'   the data and the full object (e.g. the PKNCAconc object),
-#'   `FUN(current_group, object)`, and it must return a logical
-#'   vector equivalent to `mask` or a character vector with the
-#'   reason text given when data should be excluded or
-#'   `NA_character_` when the data should be included (for the
-#'   current exclusion test).
+#' @details Only one of `mask` or `FUN` may be given.  If `FUN` is given, it
+#'   will be called with two arguments:  a data.frame (or similar object) that
+#'   consists of a single group of the data and the full object (e.g. the
+#'   PKNCAconc object), `FUN(current_group, object)`, and it must return a
+#'   logical vector equivalent to `mask` or a character vector with the reason
+#'   text given when data should be excluded or `NA_character_` when the data
+#'   should be included (for the current exclusion test).
 #' @examples
 #' myconc <- PKNCAconc(data.frame(subject=1,
 #'                                time=0:6,
@@ -116,11 +114,12 @@ exclude.default <- function(object, reason, mask, FUN) {
 #'
 #' This function adds the exclude column to an object.  To change the
 #' exclude value, use the [exclude()] function.
+#'
 #' @param object The object to set the exclude column on.
 #' @param exclude The column name to set as the exclude value.
-#' @param dataname The name of the data.frame within the object to add
-#'   the exclude column to.
-#' @return The object with an exclude column and attribute
+#' @param dataname The name of the data.frame within the object to add the
+#'   exclude column to.
+#' @returns The object with an exclude column and attribute
 setExcludeColumn <- function(object, exclude, dataname="data") {
   add.exclude <- FALSE
   if (missing(exclude)) {
@@ -170,8 +169,8 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
 #' Normalize the exclude column by setting blanks to NA
 #'
 #' @param object The object to extract the exclude column from
-#' @return The exclude vector where `NA` indicates not to exclude
-#'   and anything else indicates to exclude.
+#' @returns The exclude vector where `NA` indicates not to exclude and anything
+#'   else indicates to exclude.
 normalize_exclude <- function(object) {
   dataname <- getDataName(object)
   if (is.null(dataname)) {

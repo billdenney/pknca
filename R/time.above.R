@@ -2,18 +2,17 @@
 #'
 #' Interpolation is performed aligning with `PKNCA.options("auc.method")`.
 #' Extrapolation outside of the measured times is not yet implemented.  The
-#' `method` may be changed by giving a named `method` argument, as
-#' well.
+#' `method` may be changed by giving a named `method` argument, as well.
 #'
-#' For `'lin up/log down'`, if `clast` is above `conc_above` and
-#' there are concentrations BLQ after that, linear down is used to extrapolate
-#' to the BLQ concentration (equivalent to AUCall).
+#' For `'lin up/log down'`, if `clast` is above `conc_above` and there are
+#' concentrations BLQ after that, linear down is used to extrapolate to the BLQ
+#' concentration (equivalent to AUCall).
 #'
 #' @inheritParams pk.calc.auxc
 #' @param conc_above The concentration to be above
 #' @param ... Extra arguments.  Currently, the only extra argument that is used
 #'   is `method` as described in the details section.
-#' @return the time above the given concentration
+#' @returns the time above the given concentration
 #' @export
 pk.calc.time_above <- function(conc, time,
                                conc_above,

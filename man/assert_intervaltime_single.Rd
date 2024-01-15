@@ -2,7 +2,8 @@
 % Please edit documentation in R/assertions.R
 \name{assert_intervaltime_single}
 \alias{assert_intervaltime_single}
-\title{Assert that an interval is accurately defined as an interval, and return the interval}
+\title{Assert that an interval is accurately defined as an interval, and return the
+interval}
 \usage{
 assert_intervaltime_single(interval = NULL, start = NULL, end = NULL)
 }
@@ -18,6 +19,7 @@ integration}
 \code{interval} (or \code{c(start, end)})
 }
 \description{
-Assert that an interval is accurately defined as an interval, and return the interval
+Assert that an interval is accurately defined as an interval, and return the
+interval
 }
 \keyword{Internal}

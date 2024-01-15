@@ -1,23 +1,20 @@
 #' Compute NCA parameters for each interval for each subject.
 #'
-#' The `pk.nca` function computes the NCA parameters from a
-#' `PKNCAdata` object.  All options for the calculation and input data are
-#' set in prior functions (`PKNCAconc`, `PKNCAdose`, and
-#' `PKNCAdata`).  Options for calculations are set either in
-#' `PKNCAdata` or with the current default options in `PKNCA.options`.
+#' The `pk.nca` function computes the NCA parameters from a `PKNCAdata` object.
+#' All options for the calculation and input data are set in prior functions
+#' (`PKNCAconc`, `PKNCAdose`, and `PKNCAdata`).  Options for calculations are
+#' set either in `PKNCAdata` or with the current default options in
+#' `PKNCA.options`.
 #'
 #' When performing calculations, all time results are relative to the start of
 #' the interval.  For example, if an interval starts at 168 hours, ends at 192
-#' hours, and and the maximum concentration is at 169 hours,
-#' `tmax=169-168=1`.
+#' hours, and and the maximum concentration is at 169 hours, `tmax=169-168=1`.
 #'
 #' @param data A PKNCAdata object
-#' @param verbose Indicate, by `message()`, the current state of
-#'   calculation.
-#' @return A `PKNCAresults` object.
-#' @seealso [PKNCAdata()], [PKNCA.options()],
-#'  [summary.PKNCAresults()], [as.data.frame.PKNCAresults()],
-#'  [exclude()]
+#' @param verbose Indicate, by `message()`, the current state of calculation.
+#' @returns A `PKNCAresults` object.
+#' @seealso [PKNCAdata()], [PKNCA.options()], [summary.PKNCAresults()],
+#'   [as.data.frame.PKNCAresults()], [exclude()]
 #' @export
 pk.nca <- function(data, verbose=FALSE) {
   assert_PKNCAdata(data)
@@ -310,46 +307,43 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
 
 #' Compute all PK parameters for a single concentration-time data set
 #'
-#' For one subject/time range, compute all available PK parameters. All
-#' the internal options should be set by [PKNCA.options()]
-#' prior to running.  The only part that changes with a call to this
-#' function is the `conc`entration and `time`.
+#' For one subject/time range, compute all available PK parameters. All the
+#' internal options should be set by [PKNCA.options()] prior to running.  The
+#' only part that changes with a call to this function is the `conc`entration
+#' and `time`.
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams PKNCA.choose.option
 #' @param conc.group All concentrations measured for the group
 #' @param time.group Time of all concentrations measured for the group
 #' @param volume,volume.group The volume (or mass) of the concentration
-#'   measurement for the current interval or all data for the group
-#'   (typically for urine and fecal measurements)
-#' @param duration.conc,duration.conc.group The duration of the
-#'   concentration measurement for the current interval or all data for
-#'   the group (typically for urine and fecal measurements)
-#' @param dose,dose.group Dose amount (may be a scalar or vector) for
-#'   the current interval or all data for the group
-#' @param time.dose,time.dose.group Time of the dose for the current
-#'   interval or all data for the group (must be the same length as
-#'   `dose` or `dose.group`)
+#'   measurement for the current interval or all data for the group (typically
+#'   for urine and fecal measurements)
+#' @param duration.conc,duration.conc.group The duration of the concentration
+#'   measurement for the current interval or all data for the group (typically
+#'   for urine and fecal measurements)
+#' @param dose,dose.group Dose amount (may be a scalar or vector) for the
+#'   current interval or all data for the group
+#' @param time.dose,time.dose.group Time of the dose for the current interval or
+#'   all data for the group (must be the same length as `dose` or `dose.group`)
 #' @param duration.dose,duration.dose.group The duration of the dose
 #'   administration for the current interval or all data for the group
-#'   (typically zero for extravascular and intravascular bolus and
-#'   nonzero for intravascular infusion)
-#' @param route,route.group The route of dosing for the current interval
-#'   or all data for the group
+#'   (typically zero for extravascular and intravascular bolus and nonzero for
+#'   intravascular infusion)
+#' @param route,route.group The route of dosing for the current interval or all
+#'   data for the group
 #' @param impute_method The method to use for imputation as a character string
 #' @param interval One row of an interval definition (see
-#'   [check.interval.specification()] for how to define the
-#'   interval.
-#' @param include_half.life An optional boolean vector of the
-#'   concentration measurements to include in the half-life calculation.
-#'   If given, no half-life point selection will occur.
-#' @param exclude_half.life An optional boolean vector of the
-#'   concentration measurements to exclude from the half-life
-#'   calculation.
+#'   [check.interval.specification()] for how to define the interval.
+#' @param include_half.life An optional boolean vector of the concentration
+#'   measurements to include in the half-life calculation. If given, no
+#'   half-life point selection will occur.
+#' @param exclude_half.life An optional boolean vector of the concentration
+#'   measurements to exclude from the half-life calculation.
 #' @param subject Subject identifiers (used for sparse calculations)
 #' @param sparse Should only sparse calculations be performed (TRUE) or only
 #'   dense calculations (FALSE)?
-#' @return A data frame with the start and end time along with all PK
+#' @returns A data frame with the start and end time along with all PK
 #'   parameters for the `interval`
 #'
 #' @seealso [check.interval.specification()]

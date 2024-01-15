@@ -22,12 +22,11 @@
 #' @param units A data.frame of unit assignments and conversions as created by
 #'   [pknca_units_table()]
 #' @param ... arguments passed to `PKNCAdata.default`
-#' @return A PKNCAdata object with concentration, dose, interval, and
-#'   calculation options stored (note that PKNCAdata objects can also
-#'   have results after a NCA calculations are done to the data).
-#' @details If `data.dose` is not given or is `NA`, then the
-#'   `intervals` must be given.  At least one of `data.dose`
-#'   and `intervals` must be given.
+#' @returns A PKNCAdata object with concentration, dose, interval, and
+#'   calculation options stored (note that PKNCAdata objects can also have
+#'   results after a NCA calculations are done to the data).
+#' @details If `data.dose` is not given or is `NA`, then the `intervals` must be
+#'   given.  At least one of `data.dose` and `intervals` must be given.
 #' @family PKNCA objects
 #' @seealso [choose.auc.intervals()], [pk.nca()], [pknca_units_table()]
 #' @export

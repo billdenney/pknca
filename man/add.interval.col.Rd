@@ -53,11 +53,11 @@ available intervals for calculations)
 Add columns for calculations within PKNCA intervals
 }
 \details{
-The \code{formalsmap} argument enables mapping some alternate formal argument
-names to parameters.  It is used to generalize functions that may use
-multiple similar arguments (such as the variants of mean residence time). The
-names of the list should correspond to function formal parameter names and
-the values should be one of the following:
+The \code{formalsmap} argument enables mapping some alternate formal
+argument names to parameters.  It is used to generalize functions that may
+use multiple similar arguments (such as the variants of mean residence time).
+The names of the list should correspond to function formal parameter names
+and the values should be one of the following:
 
 \itemize{
 \item{For the current interval:}

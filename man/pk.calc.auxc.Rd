@@ -83,14 +83,13 @@ and 'AUCall'.}
 'lin-log', or 'linear')}
 
 \item{conc.blq}{How to handle BLQ values in between the first and last above
-LOQ concentrations. (See \code{\link[=clean.conc.blq]{clean.conc.blq()}} for usage
-instructions.)}
+LOQ concentrations. (See \code{\link[=clean.conc.blq]{clean.conc.blq()}} for usage instructions.)}
 
 \item{conc.na}{How to handle missing concentration values.  (See
 \code{\link[=clean.conc.na]{clean.conc.na()}} for usage instructions.)}
 
-\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}},
-and \code{\link[=clean.conc.na]{clean.conc.na()}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}}, and
+\code{\link[=clean.conc.na]{clean.conc.na()}}?}
 
 \item{fun_linear}{The function to use for integration of the linear part of
 the curve (not required for AUC or AUMC functions)}
@@ -102,8 +101,8 @@ functions)}
 \item{fun_inf}{The function to use for extrapolation from the final
 measurement to infinite time (not required for AUC or AUMC functions.}
 
-\item{...}{For functions other than \code{pk.calc.auxc}, these values are
-passed to \code{pk.calc.auxc}}
+\item{...}{For functions other than \code{pk.calc.auxc}, these values are passed
+to \code{pk.calc.auxc}}
 }
 \value{
 A numeric value for the AU(M)C.

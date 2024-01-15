@@ -25,8 +25,8 @@ and 'AUCall'.}
 \code{PKNCA.options()})}
 }
 \value{
-A character vector of methods for interpolation/extrapolation methods
-that is the same length as \code{conc} which indicates how to
+A character vector of methods for interpolation/extrapolation
+methods that is the same length as \code{conc} which indicates how to
 interpolate/integrate between each of the concentrations (all but the last
 value in the vector) and how to extrapolate after \code{tlast} (the last item in
 the vector).  Possible values in the vector are: 'zero', 'linear', 'log',

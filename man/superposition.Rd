@@ -38,8 +38,8 @@ required to compute \code{lambda.z}.}
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{dose.input}{The dose given to generate the \code{conc} and \code{time} inputs.
-If missing, output doses will be assumed to be equal to the input dose.}
+\item{dose.input}{The dose given to generate the \code{conc} and \code{time} inputs. If
+missing, output doses will be assumed to be equal to the input dose.}
 
 \item{tau}{The dosing interval}
 
@@ -90,9 +90,9 @@ A data frame with columns named "conc" and "time".
 Compute noncompartmental superposition for repeated dosing
 }
 \details{
-The returned superposition times will include all of the following times: 0
-(zero), \code{dose.times}, \verb{time modulo tau} (shifting \code{time} for
-each dose time as well), \code{additional.times}, and \code{tau}.
+The returned superposition times will include all of the following
+times: 0 (zero), \code{dose.times}, \verb{time modulo tau} (shifting \code{time} for each
+dose time as well), \code{additional.times}, and \code{tau}.
 }
 \seealso{
 \code{\link[=interp.extrap.conc]{interp.extrap.conc()}}

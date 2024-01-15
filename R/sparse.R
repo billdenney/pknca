@@ -2,7 +2,7 @@
 #'
 #' @inheritParams assert_conc_time
 #' @param subject Subject identifiers (may be any class; may not be null)
-#' @return A sparse_pk object which is a list of lists.  The inner lists have
+#' @returns A sparse_pk object which is a list of lists.  The inner lists have
 #'   elements named: "time", The time of measurement; "conc", The concentration
 #'   measured; "subject", The subject identifiers.  The object will usually be
 #'   modified by future functions to add more named elements to the inner list.
@@ -39,7 +39,7 @@ as_sparse_pk <- function(conc, time, subject) {
 #' @param sparse_pk A sparse_pk object from [as_sparse_pk()]
 #' @param ... Either a character string (to get that value) or a named vector
 #'   the same length as `sparse_pk` to set the value.
-#' @return Either the attribute value or an updated `sparse_pk` object
+#' @returns Either the attribute value or an updated `sparse_pk` object
 #' @keywords Internal
 sparse_pk_attribute <- function(sparse_pk, ...) {
   args <- list(...)
@@ -58,8 +58,7 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
 #' Calculate the weight for sparse AUC calculation with the linear-trapezoidal
 #' rule
 #'
-#' The weight is used as the \eqn{w_i}{w_i} parameter in
-#' [pk.calc.sparse_auc()]
+#' The weight is used as the \eqn{w_i}{w_i} parameter in [pk.calc.sparse_auc()]
 #'
 #' \deqn{w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}}{2}}{w_i = (d_time[i-1,i] + d_time[i,i+1])/2}
 #' \deqn{\delta_{time,i,i+1} = t_{i+1} - t_i}{d_time = t_[i+1] - t_i, and zero if i < 1 or i > K}
@@ -73,7 +72,7 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
 #' }
 #'
 #' @inheritParams sparse_pk_attribute
-#' @return A numeric vector of weights for sparse AUC calculations the same
+#' @returns A numeric vector of weights for sparse AUC calculations the same
 #'   length as `sparse_pk`
 #' @family Sparse Methods
 #' @export
@@ -98,8 +97,8 @@ sparse_auc_weight_linear <- function(sparse_pk) {
 #' @inheritParams sparse_pk_attribute
 #' @param sparse_mean_method The method used to calculate the sparse mean (see
 #'   details)
-#' @return A vector the same length as `sparse_pk` with the mean
-#'   concentration at each of those times.
+#' @returns A vector the same length as `sparse_pk` with the mean concentration
+#'   at each of those times.
 #' @family Sparse Methods
 #' @export
 sparse_mean <- function(sparse_pk, sparse_mean_method=c("arithmetic mean, <=50% BLQ", "arithmetic mean")) {
@@ -213,9 +212,9 @@ var_sparse_auc <- function(sparse_pk) {
 #' equations 8 and 9 of Nedelman and Jia 1998.
 #'
 #' @inheritParams sparse_pk_attribute
-#' @return A matrix with one row and one column for each element of
-#'   `sparse_pk_attribute`.  The covariances are on the off diagonals, and
-#'   for simplicity of use, it also calculates the variance on the diagonal
+#' @returns A matrix with one row and one column for each element of
+#'   `sparse_pk_attribute`.  The covariances are on the off diagonals, and for
+#'   simplicity of use, it also calculates the variance on the diagonal
 #'   elements.
 #' @keywords Internal
 #' @references
@@ -365,7 +364,7 @@ PKNCA.set.summary(
 #' Is a PKNCA object used for sparse PK?
 #'
 #' @param object The object to see if it includes sparse PK
-#' @return `TRUE` if sparse and `FALSE` if dense (not sparse)
+#' @returns `TRUE` if sparse and `FALSE` if dense (not sparse)
 #' @export
 is_sparse_pk <- function(object) {
   UseMethod("is_sparse_pk")

@@ -3,7 +3,7 @@
 #' @param time_event A vector of times for events
 #' @param time_obs A vector of times for observations
 #' @param units Passed to `base::as.numeric.difftime()`
-#' @return A data.frame with columns for:
+#' @returns A data.frame with columns for:
 #' \itemize{
 #'   \item{event_number_before}{The index of `time_event` that is the last one before `time_obs` or `NA` if none are before.}
 #'   \item{event_number_after}{The index of `time_event` that is the first one after `time_obs` or `NA` if none are after.}

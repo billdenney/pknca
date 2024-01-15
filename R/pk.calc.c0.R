@@ -4,7 +4,7 @@
 #' @param time.dose The time when dosing occurred
 #' @param method The order of methods to test (see details)
 #' @param check Check the `conc` and `time` inputs
-#' @return The estimated concentration at time 0.
+#' @returns The estimated concentration at time 0.
 #'
 #' @details Methods available for interpolation are below, and each
 #' has its own specific function.
@@ -80,8 +80,8 @@ pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
   }
 }
 
-#' @describeIn pk.calc.c0 Use `C0` = `conc[time %in%
-#' time.dose]` if it is nonzero.
+#' @describeIn pk.calc.c0 Use `C0` = `conc[time %in% time.dose]` if it is
+#'   nonzero.
 pk.calc.c0.method.c0 <- function(conc, time, time.dose=0, check=TRUE) {
   if (check) {
     assert_conc_time(conc = conc, time = time)
@@ -111,14 +111,14 @@ pk.calc.c0.method.c1 <- function(conc, time, time.dose=0, check=TRUE) {
   }
 }
 
-#' @describeIn pk.calc.c0 Use `C0` = 0 (typically used for single
-#' dose oral and IV infusion)
+#' @describeIn pk.calc.c0 Use `C0` = 0 (typically used for single dose oral and
+#'   IV infusion)
 pk.calc.c0.method.set0 <- function(conc, time, time.dose=0, check=TRUE) {
   0
 }
 
-#' @describeIn pk.calc.c0 Use `C0` = Cmin (typically used for
-#' multiple dose oral and IV infusion but not IV bolus)
+#' @describeIn pk.calc.c0 Use `C0` = Cmin (typically used for multiple dose oral
+#'   and IV infusion but not IV bolus)
 pk.calc.c0.method.cmin <- function(conc, time, time.dose=0, check=TRUE) {
   pk.calc.cmin(conc, check=check)
 }

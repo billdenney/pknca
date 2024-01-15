@@ -22,9 +22,8 @@ choose.auc.intervals(
 \item{single.dose.aucs}{The AUC specification for single dosing.}
 }
 \value{
-A data frame with columns for \code{start}, \code{end},
-\code{auc.type}, and \code{half.life}.  See
-\code{\link[=check.interval.specification]{check.interval.specification()}} for column definitions.
+A data frame with columns for \code{start}, \code{end}, \code{auc.type}, and
+\code{half.life}.  See \code{\link[=check.interval.specification]{check.interval.specification()}} for column definitions.
 The data frame may have zero rows if no intervals could be found.
 }
 \description{
@@ -43,8 +42,8 @@ calculate the half life after the last dose.
 }
 }
 \seealso{
-\code{\link[=pk.calc.auc]{pk.calc.auc()}}, \code{\link[=pk.calc.aumc]{pk.calc.aumc()}},
-\code{\link[=pk.calc.half.life]{pk.calc.half.life()}}, \code{\link[=PKNCA.options]{PKNCA.options()}}
+\code{\link[=pk.calc.auc]{pk.calc.auc()}}, \code{\link[=pk.calc.aumc]{pk.calc.aumc()}}, \code{\link[=pk.calc.half.life]{pk.calc.half.life()}},
+\code{\link[=PKNCA.options]{PKNCA.options()}}
 
 Other Interval specifications: 
 \code{\link{add.interval.col}()},

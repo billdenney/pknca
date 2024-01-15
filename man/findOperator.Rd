@@ -10,16 +10,14 @@ findOperator(x, op, side)
 \arguments{
 \item{x}{The formula to parse}
 
-\item{op}{The operator to search for (e.g. \code{+}, \code{-},
-\code{*}, \code{/}, ...)}
+\item{op}{The operator to search for (e.g. \code{+}, \code{-}, \code{*}, \code{/}, ...)}
 
-\item{side}{Which side of the operator would you like to see:
-'left', 'right', or 'both'.}
+\item{side}{Which side of the operator would you like to see: 'left',
+'right', or 'both'.}
 }
 \value{
-The side of the operator requested, NA if requesting the
-left side of a unary operator, and NULL if the operator is not
-found.
+The side of the operator requested, NA if requesting the left side
+of a unary operator, and NULL if the operator is not found.
 }
 \description{
 Find the first occurrence of an operator in a formula and return

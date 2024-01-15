@@ -10,15 +10,15 @@ PKNCA.choose.option(name, value = NULL, options = list())
 \arguments{
 \item{name}{The option name requested.}
 
-\item{value}{A value to check for the option (\code{NULL} to choose not to
-check the value).}
+\item{value}{A value to check for the option (\code{NULL} to choose not to check
+the value).}
 
 \item{options}{List of changes to the default PKNCA options (see
 \code{PKNCA.options()})}
 }
 \value{
-The value of the option first from the \code{options} list and if it
-is not there then from the current settings.
+The value of the option first from the \code{options} list and if it is
+not there then from the current settings.
 }
 \description{
 Choose either the value from an option list or the current set value for an

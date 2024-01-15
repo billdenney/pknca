@@ -17,8 +17,8 @@ sparse_mean(
 details)}
 }
 \value{
-A vector the same length as \code{sparse_pk} with the mean
-concentration at each of those times.
+A vector the same length as \code{sparse_pk} with the mean concentration
+at each of those times.
 }
 \description{
 Choices for the method of calculation (the argument \code{sparse_mean_method})

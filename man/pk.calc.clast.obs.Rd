@@ -2,8 +2,8 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.clast.obs}
 \alias{pk.calc.clast.obs}
-\title{Determine the last observed concentration above the limit of
-quantification (LOQ).}
+\title{Determine the last observed concentration above the limit of quantification
+(LOQ).}
 \usage{
 pk.calc.clast.obs(conc, time, check = TRUE)
 }

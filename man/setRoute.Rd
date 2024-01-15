@@ -14,11 +14,10 @@ setRoute(object, ...)
 
 \item{...}{Arguments passed to another setRoute function}
 
-\item{route}{A character string indicating one of the following:  the
-column from the data which indicates the route of administration, a
-scalar indicating the route of administration for all subjects, or
-a vector indicating the route of administration for each dose in
-the dataset.}
+\item{route}{A character string indicating one of the following:  the column
+from the data which indicates the route of administration, a scalar
+indicating the route of administration for all subjects, or a vector
+indicating the route of administration for each dose in the dataset.}
 }
 \value{
 The object with an updated route
