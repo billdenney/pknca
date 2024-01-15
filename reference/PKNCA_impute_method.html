@@ -82,6 +82,8 @@
 <span>  <span class="va">time</span>,</span>
 <span>  <span class="va">start</span>,</span>
 <span>  <span class="va">end</span>,</span>
+<span>  <span class="va">conc.group</span>,</span>
+<span>  <span class="va">time.group</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  max_shift <span class="op">=</span> <span class="cn">NA_real_</span>,</span>
 <span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -115,9 +117,19 @@
 <dd><p>The end time of the interval</p></dd>
 
 
+<dt>conc.group</dt>
+<dd><p>All concentrations measured for the group</p></dd>
+
+
+<dt>time.group</dt>
+<dd><p>Time of all concentrations measured for the group</p></dd>
+
+
 <dt>max_shift</dt>
 <dd><p>The maximum amount of time to shift a concentration forward
-(defaults to 5% of the interval duration, i.e. <code>0.05*(end - start)</code>)</p></dd>
+(defaults to 5% of the interval duration, i.e. <code>0.05*(end - start)</code>, if
+<code>is.finite(end)</code>, and when <code>is.infinite(end)</code>, defaults to 5% of the time
+from start to <code>max(time)</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">
