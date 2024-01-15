@@ -1,4 +1,4 @@
-# Options for use within the code for setting and getting PKNCA default options.
+# Options for use within the code for setting and getting PKNCA default options. ####
 
 .PKNCA.option.check <- list(
   adj.r.squared.factor=function(x, default=FALSE, description=FALSE) {
@@ -239,6 +239,16 @@
       warning("min.hl.r.squared is usually >= 0.9")
     x
   },
+
+  progress = function(x, default = FALSE, description = FALSE) {
+    if (description)
+      return("A value to pass to purrr::pmap(.progress = ) to create a progress bar while running")
+    if (default) {
+      return(TRUE)
+    }
+    x
+  },
+
   tau.choices=function(x, default=FALSE, description=FALSE) {
     if (description)
       return(paste(
@@ -279,6 +289,8 @@
     }
     check.interval.specification(x)
   })
+
+# Functions controlling and modifying options ####
 
 #' Set default options for PKNCA functions
 #'
