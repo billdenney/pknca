@@ -19,7 +19,7 @@ geocv(x, na.rm = FALSE)
 }
 \value{
 The scalar value of the geometric mean, geometric standard deviation,
-  or geometric coefficient of variation.
+or geometric coefficient of variation.
 }
 \description{
 Compute the geometric mean, sd, and CV
@@ -39,5 +39,5 @@ geocv(1:3)
 }
 \references{
 Kirkwood T. B.L. Geometric means and measures of dispersion.
-  Biometrics 1979; 35: 908-909
+Biometrics 1979; 35: 908-909
 }

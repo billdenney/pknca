@@ -1,29 +1,26 @@
-#' Compute the time to steady state using nonlinear, mixed-effects
-#' modeling of trough concentrations.
+#' Compute the time to steady state using nonlinear, mixed-effects modeling of
+#' trough concentrations.
 #'
-#' Trough concentrations are selected as concentrations at the time of
-#' dosing.  An exponential curve is then fit through the data with a
-#' different magnitude by treatment (as a factor) and a random
-#' steady-state concentration and time to stead-state by subject (see
-#' \code{random.effects} argument).
+#' Trough concentrations are selected as concentrations at the time of dosing.
+#' An exponential curve is then fit through the data with a different magnitude
+#' by treatment (as a factor) and a random steady-state concentration and time
+#' to stead-state by subject (see `random.effects` argument).
 #'
-#' @param \dots See \code{\link{pk.tss.data.prep}}
+#' @param \dots See [pk.tss.data.prep()]
 #' @param tss.fraction The fraction of steady-state required for calling
 #'   steady-state
-#' @param output Which types of outputs should be produced?
-#'   \code{population} is the population estimate for time to
-#'   steady-state (from an nlme model), \code{popind} is the individual
-#'   estimate (from an nlme model), \code{individual} fits each
-#'   individual separately with a gnls model (requires more than one
-#'   individual; use \code{single} for one individual), and
-#'   \code{single} fits all the data to a single gnls model.
-#' @param check See \code{\link{pk.tss.data.prep}}.
-#' @param verbose Describe models as they are run, show convergence of
-#'   the model (passed to the nlme function), and additional details
-#'   while running.
+#' @param output Which types of outputs should be produced? `population` is the
+#'   population estimate for time to steady-state (from an nlme model), `popind`
+#'   is the individual estimate (from an nlme model), `individual` fits each
+#'   individual separately with a gnls model (requires more than one individual;
+#'   use `single` for one individual), and `single` fits all the data to a
+#'   single gnls model.
+#' @param check See [pk.tss.data.prep()].
+#' @param verbose Describe models as they are run, show convergence of the model
+#'   (passed to the nlme function), and additional details while running.
 #'
-#' @return A scalar float for the first time when steady-state is
-#'   achieved or \code{NA} if it is not observed.
+#' @returns A scalar float for the first time when steady-state is achieved or
+#'   `NA` if it is not observed.
 #' @family Time to steady-state calculations
 #' @references
 #' Maganti, L., Panebianco, D.L. & Maes, A.L. Evaluation of Methods for
@@ -97,11 +94,11 @@ pk.tss.monoexponential <- function(...,
   ret
 }
 
-#' A helper function to generate the formula and starting values for
-#' the parameters in monoexponential models.
+#' A helper function to generate the formula and starting values for the
+#' parameters in monoexponential models.
 #'
 #' @param data The data used for the model
-#' @return a list with elements for each of the variables
+#' @returns a list with elements for each of the variables
 tss.monoexponential.generate.formula <- function(data) {
   # Setup the correct ctrough.ss by treatment or not.
   if ("treatment" %in% names(data)) {
@@ -154,25 +151,21 @@ tss.monoexponential.generate.formula <- function(data) {
 #' monoexponential time to steady-state.
 #'
 #' This function is not intended to be called directly.  Please use
-#' \code{pk.tss.monoexponential}.
+#' `pk.tss.monoexponential`.
 #'
-#' If no model converges, then the
-#' \code{tss.monoexponential.population} column will be set to NA. If
-#' the best model does not include a random effect for subject on Tss
-#' then the \code{tss.monoexponential.popind} column of the output
-#' will be set to NA.
+#' If no model converges, then the `tss.monoexponential.population` column will
+#' be set to NA. If the best model does not include a random effect for subject
+#' on Tss then the `tss.monoexponential.popind` column of the output will be set
+#' to NA.
 #'
-#' @param data a data frame as prepared by
-#' \code{\link{pk.tss.data.prep}}.  It must contain at least columns
-#' for \code{subject}, \code{time}, \code{conc}, and
-#' \code{tss.constant}.
+#' @param data a data frame as prepared by [pk.tss.data.prep()].  It must
+#'   contain at least columns for `subject`, `time`, `conc`, and `tss.constant`.
 #' @param output a character vector requesting the output types.
 #' @param verbose Show verbose output.
-#' @return A data frame with either one row (if \code{population}
-#' output is provided) or one row per subject (if \code{popind} is
-#' provided).  The columns will be named
-#' \code{tss.monoexponential.population} and/or
-#' \code{tss.monoexponential.popind}.
+#' @returns A data frame with either one row (if `population` output is
+#'   provided) or one row per subject (if `popind` is provided).  The columns
+#'   will be named `tss.monoexponential.population` and/or
+#'   `tss.monoexponential.popind`.
 pk.tss.monoexponential.population <- function(data,
                                               output=c(
                                                 "population",
@@ -298,23 +291,19 @@ pk.tss.monoexponential.population <- function(data,
 #' monoexponential time to steady-state.
 #'
 #' This function is not intended to be called directly.  Please use
-#' \code{pk.tss.monoexponential}.
+#' `pk.tss.monoexponential`.
 #'
-#' If no model converges, then the \code{tss.monoexponential.single}
-#' and/or \code{tss.monoexponential.individual} column will be set to
-#' NA.
+#' If no model converges, then the `tss.monoexponential.single` and/or
+#' `tss.monoexponential.individual` column will be set to NA.
 #'
-#' @param data a data frame as prepared by
-#' \code{\link{pk.tss.data.prep}}.  It must contain at least columns
-#' for \code{subject}, \code{time}, \code{conc}, and
-#' \code{tss.constant}.
+#' @param data a data frame as prepared by [pk.tss.data.prep()].  It must
+#'   contain at least columns for `subject`, `time`, `conc`, and `tss.constant`.
 #' @param output a character vector requesting the output types.
 #' @param verbose Show verbose output.
-#' @return A data frame with either one row (if \code{population}
-#' output is provided) or one row per subject (if \code{popind} is
-#' provided).  The columns will be named
-#' \code{tss.monoexponential.population} and/or
-#' \code{tss.monoexponential.popind}.
+#' @returns A data frame with either one row (if `population` output is
+#'   provided) or one row per subject (if `popind` is provided).  The columns
+#'   will be named `tss.monoexponential.population` and/or
+#'   `tss.monoexponential.popind`.
 #' @importFrom rlang .data
 pk.tss.monoexponential.individual <- function(data,
                                               output=c(

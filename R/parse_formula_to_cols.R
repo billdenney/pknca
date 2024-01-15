@@ -2,13 +2,11 @@
 #' the left, right, or both sides of the operator.
 #'
 #' @param x The formula to parse
-#' @param op The operator to search for (e.g. \code{+}, \code{-},
-#' \code{*}, \code{/}, ...)
-#' @param side Which side of the operator would you like to see:
-#' 'left', 'right', or 'both'.
-#' @return The side of the operator requested, NA if requesting the
-#' left side of a unary operator, and NULL if the operator is not
-#' found.
+#' @param op The operator to search for (e.g. `+`, `-`, `*`, `/`, ...)
+#' @param side Which side of the operator would you like to see: 'left',
+#'   'right', or 'both'.
+#' @returns The side of the operator requested, NA if requesting the left side
+#'   of a unary operator, and NULL if the operator is not found.
 #' @family Formula parsing
 findOperator <- function(x, op, side) {
   side <- match.arg(tolower(side),
@@ -72,7 +70,7 @@ findOperator <- function(x, op, side) {
 #'
 #' @param form the formula (or something coercible into a formula) to extract
 #'   into its parts
-#' @return A list of column names for various formula parts
+#' @returns A list of column names for various formula parts
 #' @keywords Internal
 #' @family Formula parsing
 parse_formula_to_cols <- function(form) {

@@ -11,13 +11,12 @@ getAttributeColumn(object, attr_name, warn_missing = c("attr", "column"))
 
 \item{attr_name}{The name of the attribute to extract}
 
-\item{warn_missing}{Give a warning if the "attr"ibute or "column" is
-missing.  Character vector with zero, one, or both of "attr" and
-"column".}
+\item{warn_missing}{Give a warning if the "attr"ibute or "column" is missing.
+Character vector with zero, one, or both of "attr" and "column".}
 }
 \value{
-The value of the attribute (or \code{NULL} if the attribute
-  is not set or the column does not exist)
+The value of the attribute (or \code{NULL} if the attribute is not set or
+the column does not exist)
 }
 \description{
 Retrieve the value of an attribute column.

@@ -12,7 +12,7 @@ interval}
 }
 \value{
 x The potentially updated data frame with the interval calculation
-  specification.
+specification.
 }
 \description{
 Calculation interval specifications are data frames defining what
@@ -21,9 +21,9 @@ parameters which are not requested may be calculated if it is required for
 (or computed at the same time as) a requested parameter.
 }
 \details{
-\code{start} and \code{end} time must always be given as columns, and the
-\code{start} must be before the \code{end}.  Other columns define the
-parameters to be calculated and the groupings to apply the intervals to.
+\code{start} and \code{end} time must always be given as columns, and the \code{start} must
+be before the \code{end}.  Other columns define the parameters to be calculated
+and the groupings to apply the intervals to.
 }
 \seealso{
 The vignette "Selection of Calculation Intervals"

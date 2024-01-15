@@ -12,11 +12,11 @@ pk.calc.cmin(conc, check = TRUE)
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{check}{Run \code{\link{assert_conc}}?}
+\item{check}{Run \code{\link[=assert_conc]{assert_conc()}}?}
 }
 \value{
-a number for the maximum concentration or NA if all
-concentrations are missing
+a number for the maximum concentration or NA if all concentrations
+are missing
 }
 \description{
 Determine maximum observed PK concentration

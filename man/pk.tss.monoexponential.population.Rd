@@ -12,20 +12,17 @@ pk.tss.monoexponential.population(
 )
 }
 \arguments{
-\item{data}{a data frame as prepared by
-\code{\link{pk.tss.data.prep}}.  It must contain at least columns
-for \code{subject}, \code{time}, \code{conc}, and
-\code{tss.constant}.}
+\item{data}{a data frame as prepared by \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}.  It must
+contain at least columns for \code{subject}, \code{time}, \code{conc}, and \code{tss.constant}.}
 
 \item{output}{a character vector requesting the output types.}
 
 \item{verbose}{Show verbose output.}
 }
 \value{
-A data frame with either one row (if \code{population}
-output is provided) or one row per subject (if \code{popind} is
-provided).  The columns will be named
-\code{tss.monoexponential.population} and/or
+A data frame with either one row (if \code{population} output is
+provided) or one row per subject (if \code{popind} is provided).  The columns
+will be named \code{tss.monoexponential.population} and/or
 \code{tss.monoexponential.popind}.
 }
 \description{
@@ -33,9 +30,8 @@ This function is not intended to be called directly.  Please use
 \code{pk.tss.monoexponential}.
 }
 \details{
-If no model converges, then the
-\code{tss.monoexponential.population} column will be set to NA. If
-the best model does not include a random effect for subject on Tss
-then the \code{tss.monoexponential.popind} column of the output
-will be set to NA.
+If no model converges, then the \code{tss.monoexponential.population} column will
+be set to NA. If the best model does not include a random effect for subject
+on Tss then the \code{tss.monoexponential.popind} column of the output will be set
+to NA.
 }

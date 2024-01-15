@@ -12,26 +12,26 @@ pk.calc.tmax(conc, time, options = list(), first.tmax = NULL, check = TRUE)
 \item{time}{Time of the measurement of the concentrations}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
-\item{first.tmax}{If there is more than time that matches the
-maximum concentration, should the first be considered as Tmax?  If
-not, then the last is considered Tmax.}
+\item{first.tmax}{If there is more than time that matches the maximum
+concentration, should the first be considered as Tmax?  If not, then the
+last is considered Tmax.}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
-the time of the maximum concentration
+The time of the maximum concentration
 }
 \description{
 Input restrictions are:
 \enumerate{
-  \item the \code{conc} and \code{time} must be the same length,
-  \item the \code{time} may have no NAs,
+\item the \code{conc} and \code{time} must be the same length,
+\item the \code{time} may have no NAs,
 }
 \code{NA} will be returned if:
 \enumerate{
-  \item the length of \code{conc} and \code{time} is 0
-  \item all \code{conc} is 0 or \code{NA}
+\item the length of \code{conc} and \code{time} is 0
+\item all \code{conc} is 0 or \code{NA}
 }
 }

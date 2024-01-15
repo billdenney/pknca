@@ -2,8 +2,8 @@
 % Please edit documentation in R/tss.monoexponential.R
 \name{tss.monoexponential.generate.formula}
 \alias{tss.monoexponential.generate.formula}
-\title{A helper function to generate the formula and starting values for
-the parameters in monoexponential models.}
+\title{A helper function to generate the formula and starting values for the
+parameters in monoexponential models.}
 \usage{
 tss.monoexponential.generate.formula(data)
 }
@@ -14,6 +14,6 @@ tss.monoexponential.generate.formula(data)
 a list with elements for each of the variables
 }
 \description{
-A helper function to generate the formula and starting values for
-the parameters in monoexponential models.
+A helper function to generate the formula and starting values for the
+parameters in monoexponential models.
 }

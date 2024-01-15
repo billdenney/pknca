@@ -7,7 +7,7 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #' Add columns for calculations within PKNCA intervals
 #'
 #' @param name The column name as a character string
-#' @param FUN The function to run (as a character string) or \code{NA} if the
+#' @param FUN The function to run (as a character string) or `NA` if the
 #'   parameter is automatically calculated when calculating another parameter.
 #' @param values Valid values for the column
 #' @param depends Character vector of columns that must be run before this
@@ -21,17 +21,16 @@ assign("interval.cols", list(), envir=.PKNCAEnv)
 #'   name is used.)
 #' @param formalsmap A named list mapping parameter names in the function call
 #'   to NCA parameter names.  See the details for information on use of
-#'   \code{formalsmap}.
+#'   `formalsmap`.
 #' @param datatype The type of data used for the calculation
-#' @return NULL (Calling this function has a side effect of changing the
+#' @returns NULL (Calling this function has a side effect of changing the
 #'   available intervals for calculations)
 #'
-#' @details
-#' The \code{formalsmap} argument enables mapping some alternate formal argument
-#' names to parameters.  It is used to generalize functions that may use
-#' multiple similar arguments (such as the variants of mean residence time). The
-#' names of the list should correspond to function formal parameter names and
-#' the values should be one of the following:
+#' @details The `formalsmap` argument enables mapping some alternate formal
+#' argument names to parameters.  It is used to generalize functions that may
+#' use multiple similar arguments (such as the variants of mean residence time).
+#' The names of the list should correspond to function formal parameter names
+#' and the values should be one of the following:
 #'
 #' \itemize{
 #'   \item{For the current interval:}
@@ -222,10 +221,11 @@ sort.interval.cols <- function() {
 }
 
 #' Get the columns that can be used in an interval specification
-#' @return A list with named elements for each parameter.  Each list element
+#'
+#' @returns A list with named elements for each parameter.  Each list element
 #'   contains the parameter definition.
-#' @seealso \code{\link{check.interval.specification}()} and the vignette
-#'   "Selection of Calculation Intervals"
+#' @seealso [check.interval.specification()] and the vignette "Selection of
+#'   Calculation Intervals"
 #' @examples
 #' get.interval.cols()
 #' @family Interval specifications

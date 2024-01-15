@@ -34,6 +34,8 @@ the dosing including dose amount and route.
   warnings.
 * AUCint will now extrapolate the AUC beyond Tlast using logarithmic
   extrapolation, regardless of the method used (fix #203).
+* Imputation will now automatically search for a column named "impute" in the
+  interval definition (fix #257).
 
 ## Bugs fixed
 

@@ -15,8 +15,8 @@ setDuration(object, ...)
 \arguments{
 \item{object}{An object to set a duration on}
 
-\item{duration}{The value to set for the duration or the name of the
-column in the data to use for the duration.}
+\item{duration}{The value to set for the duration or the name of the column
+in the data to use for the duration.}
 
 \item{...}{Arguments passed to another setDuration function}
 

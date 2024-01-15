@@ -9,14 +9,14 @@ pk.calc.count_conc(conc, check = TRUE)
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{check}{Run \code{\link{assert_conc}}?}
+\item{check}{Run \code{\link[=assert_conc]{assert_conc()}}?}
 }
 \value{
 a count of the non-missing concentrations (0 if all concentrations
-  are missing)
+are missing)
 }
 \description{
-`count_conc` is typically used for quality control on the data to ensure that
+\code{count_conc} is typically used for quality control on the data to ensure that
 there are a sufficient number of non-missing samples for a calculation and to
 ensure that data are consistent between individuals.
 }

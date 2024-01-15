@@ -31,7 +31,7 @@ PKNCA_impute_method_start_predose(
 \item{...}{ignored}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{end}{The end time of the interval}
 
@@ -40,7 +40,7 @@ PKNCA_impute_method_start_predose(
 }
 \value{
 A data.frame with one column named conc with imputed concentrations
-  and one column named time with the times.
+and one column named time with the times.
 }
 \description{
 Methods for imputation of data with PKNCA

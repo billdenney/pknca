@@ -47,45 +47,45 @@ to NCA parameter names.  See the details for information on use of
 }
 \value{
 NULL (Calling this function has a side effect of changing the
-  available intervals for calculations)
+available intervals for calculations)
 }
 \description{
 Add columns for calculations within PKNCA intervals
 }
 \details{
-The \code{formalsmap} argument enables mapping some alternate formal argument
-names to parameters.  It is used to generalize functions that may use
-multiple similar arguments (such as the variants of mean residence time). The
-names of the list should correspond to function formal parameter names and
-the values should be one of the following:
+The \code{formalsmap} argument enables mapping some alternate formal
+argument names to parameters.  It is used to generalize functions that may
+use multiple similar arguments (such as the variants of mean residence time).
+The names of the list should correspond to function formal parameter names
+and the values should be one of the following:
 
 \itemize{
-  \item{For the current interval:}
-  \describe{
-    \item{character strings of NCA parameter name}{The value of the parameter calculated for the current interval.}
-    \item{"conc"}{Concentration measurements for the current interval.}
-    \item{"time"}{Times associated with concentration measurements for the current interval (values start at 0 at the beginning of the current interval).}
-    \item{"volume"}{Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).}
-    \item{"duration.conc"}{Durations associated with concentration measurements for the current interval.}
-    \item{"dose"}{Dose amounts assocuated with the current interval.}
-    \item{"time.dose"}{Time of dose start associated with the current interval (values start at 0 at the beginning of the current interval).}
-    \item{"duration.dose"}{Duration of dose (typically infusion duration) for doses in the current interval.}
-    \item{"route"}{Route of dosing for the current interval.}
-    \item{"start"}{Time of interval start.}
-    \item{"end"}{Time of interval end.}
-    \item{"options"}{PKNCA.options governing calculations.}
-  }
-  \item{For the current group:}
-  \describe{
-    \item{"conc.group"}{Concentration measurements for the current group.}
-    \item{"time.group"}{Times associated with concentration measurements for the current group (values start at 0 at the beginning of the current interval).}
-    \item{"volume.group"}{Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).}
-    \item{"duration.conc.group"}{Durations assocuated with concentration measurements for the current group.}
-    \item{"dose.group"}{Dose amounts assocuated with the current group.}
-    \item{"time.dose.group"}{Time of dose start associated with the current group (values start at 0 at the beginning of the current interval).}
-    \item{"duration.dose.group"}{Duration of dose (typically infusion duration) for doses in the current group.}
-    \item{"route.group"}{Route of dosing for the current group.}
-  }
+\item{For the current interval:}
+\describe{
+\item{character strings of NCA parameter name}{The value of the parameter calculated for the current interval.}
+\item{"conc"}{Concentration measurements for the current interval.}
+\item{"time"}{Times associated with concentration measurements for the current interval (values start at 0 at the beginning of the current interval).}
+\item{"volume"}{Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).}
+\item{"duration.conc"}{Durations associated with concentration measurements for the current interval.}
+\item{"dose"}{Dose amounts assocuated with the current interval.}
+\item{"time.dose"}{Time of dose start associated with the current interval (values start at 0 at the beginning of the current interval).}
+\item{"duration.dose"}{Duration of dose (typically infusion duration) for doses in the current interval.}
+\item{"route"}{Route of dosing for the current interval.}
+\item{"start"}{Time of interval start.}
+\item{"end"}{Time of interval end.}
+\item{"options"}{PKNCA.options governing calculations.}
+}
+\item{For the current group:}
+\describe{
+\item{"conc.group"}{Concentration measurements for the current group.}
+\item{"time.group"}{Times associated with concentration measurements for the current group (values start at 0 at the beginning of the current interval).}
+\item{"volume.group"}{Volume associated with concentration measurements for the current interval (typically applies for excretion parameters like urine).}
+\item{"duration.conc.group"}{Durations assocuated with concentration measurements for the current group.}
+\item{"dose.group"}{Dose amounts assocuated with the current group.}
+\item{"time.dose.group"}{Time of dose start associated with the current group (values start at 0 at the beginning of the current interval).}
+\item{"duration.dose.group"}{Duration of dose (typically infusion duration) for doses in the current group.}
+\item{"route.group"}{Route of dosing for the current group.}
+}
 }
 }
 \examples{

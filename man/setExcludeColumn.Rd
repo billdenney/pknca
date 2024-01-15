@@ -11,13 +11,13 @@ setExcludeColumn(object, exclude, dataname = "data")
 
 \item{exclude}{The column name to set as the exclude value.}
 
-\item{dataname}{The name of the data.frame within the object to add
-the exclude column to.}
+\item{dataname}{The name of the data.frame within the object to add the
+exclude column to.}
 }
 \value{
 The object with an exclude column and attribute
 }
 \description{
 This function adds the exclude column to an object.  To change the
-exclude value, use the \code{\link{exclude}} function.
+exclude value, use the \code{\link[=exclude]{exclude()}} function.
 }

@@ -3,18 +3,18 @@
 #' @inheritParams assert_conc_time
 #' @param time.dose The time when dosing occurred
 #' @param method The order of methods to test (see details)
-#' @param check Check the \code{conc} and \code{time} inputs
-#' @return The estimated concentration at time 0.
+#' @param check Check the `conc` and `time` inputs
+#' @returns The estimated concentration at time 0.
 #'
 #' @details Methods available for interpolation are below, and each
 #' has its own specific function.
 #'
 #' \describe{
-#'   \item{\code{c0}}{If the observed \code{conc} at \code{time.dose} is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.}
-#'   \item{\code{logslope}}{Compute the semilog line between the first two measured times, and use that line to extrapolate backward to \code{time.dose}}
-#'   \item{\code{c1}}{Use the first point after \code{time.dose}}
-#'   \item{\code{cmin}}{Set c0 to cmin during the interval.  This method should usually be used for multiple-dose oral data and IV infusion data.}
-#'   \item{\code{set0}}{Set c0 to zero (regardless of any other data).  This method should usually be used first for single-dose oral data.}
+#'   \item{`c0`}{If the observed `conc` at `time.dose` is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.}
+#'   \item{`logslope`}{Compute the semilog line between the first two measured times, and use that line to extrapolate backward to `time.dose`}
+#'   \item{`c1`}{Use the first point after `time.dose`}
+#'   \item{`cmin`}{Set c0 to cmin during the interval.  This method should usually be used for multiple-dose oral data and IV infusion data.}
+#'   \item{`set0`}{Set c0 to zero (regardless of any other data).  This method should usually be used first for single-dose oral data.}
 #' }
 #' @export
 pk.calc.c0 <- function(conc, time, time.dose=0,
@@ -53,8 +53,8 @@ pk.calc.c0 <- function(conc, time, time.dose=0,
 }
 
 #' @describeIn pk.calc.c0 Semilog regress the first and second points
-#' after time.dose.  This method will return \code{NA} if the second
-#' \code{conc} after \code{time.dose} is 0 or greater than the first.
+#' after time.dose.  This method will return `NA` if the second
+#' `conc` after `time.dose` is 0 or greater than the first.
 pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
                                        check=TRUE) {
   if (check) {
@@ -80,8 +80,8 @@ pk.calc.c0.method.logslope <- function(conc, time, time.dose=0,
   }
 }
 
-#' @describeIn pk.calc.c0 Use \code{C0} = \code{conc[time %in%
-#' time.dose]} if it is nonzero.
+#' @describeIn pk.calc.c0 Use `C0` = `conc[time %in% time.dose]` if it is
+#'   nonzero.
 pk.calc.c0.method.c0 <- function(conc, time, time.dose=0, check=TRUE) {
   if (check) {
     assert_conc_time(conc = conc, time = time)
@@ -97,7 +97,7 @@ pk.calc.c0.method.c0 <- function(conc, time, time.dose=0, check=TRUE) {
   }
 }
 
-#' @describeIn pk.calc.c0 Use \code{C0} = \code{C1}.
+#' @describeIn pk.calc.c0 Use `C0` = `C1`.
 pk.calc.c0.method.c1 <- function(conc, time, time.dose=0, check=TRUE) {
   if (check) {
     assert_conc_time(conc = conc, time = time)
@@ -111,14 +111,14 @@ pk.calc.c0.method.c1 <- function(conc, time, time.dose=0, check=TRUE) {
   }
 }
 
-#' @describeIn pk.calc.c0 Use \code{C0} = 0 (typically used for single
-#' dose oral and IV infusion)
+#' @describeIn pk.calc.c0 Use `C0` = 0 (typically used for single dose oral and
+#'   IV infusion)
 pk.calc.c0.method.set0 <- function(conc, time, time.dose=0, check=TRUE) {
   0
 }
 
-#' @describeIn pk.calc.c0 Use \code{C0} = Cmin (typically used for
-#' multiple dose oral and IV infusion but not IV bolus)
+#' @describeIn pk.calc.c0 Use `C0` = Cmin (typically used for multiple dose oral
+#'   and IV infusion but not IV bolus)
 pk.calc.c0.method.cmin <- function(conc, time, time.dose=0, check=TRUE) {
   pk.calc.cmin(conc, check=check)
 }

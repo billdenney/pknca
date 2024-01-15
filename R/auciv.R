@@ -7,17 +7,17 @@
 #' The calculation method takes the following steps:
 #'
 #' \itemize{
-#'   \item{\code{time = 0} must be present in the data with a measured concentration.}
-#'   \item{The AUC between \code{time = 0} and the next time point is calculated (\code{auc_first}).}
-#'   \item{The AUC between \code{time = 0} with \code{c0} and the next time point is calculated (\code{auc_second}).}
-#'   \item{The final AUC is the initial AUC plus the difference between the two AUCs (\code{auc_final <- auc + auc_second - auc_first}).}
+#'   \item{`time = 0` must be present in the data with a measured concentration.}
+#'   \item{The AUC between `time = 0` and the next time point is calculated (`auc_first`).}
+#'   \item{The AUC between `time = 0` with `c0` and the next time point is calculated (`auc_second`).}
+#'   \item{The final AUC is the initial AUC plus the difference between the two AUCs (`auc_final <- auc + auc_second - auc_first`).}
 #' }
 #' @inheritParams pk.calc.auxc
 #' @param c0 The concentration at time 0, typically calculated using
-#'   \code{pk.calc.c0()}
-#' @param auc The AUC calculated using \code{conc} and \code{time} without
-#'   \code{c0} (it may be calculated using any method)
-#' @return \code{pk.calc.auciv}: The AUC calculated using \code{c0}
+#'   `pk.calc.c0()`
+#' @param auc The AUC calculated using `conc` and `time` without `c0` (it may be
+#'   calculated using any method)
+#' @return `pk.calc.auciv`: The AUC calculated using `c0`
 #' @export
 pk.calc.auciv <- function(conc, time, c0, auc, ..., check=TRUE) {
   if (check) {
@@ -106,10 +106,11 @@ PKNCA.set.summary(
   spread=business.geocv
 )
 
-#' @describeIn pk.calc.auciv Calculate the percent back-extrapolated AUC for IV administration
-#' @details The calculation for back-extrapolation is \code{100*(1 - auc/auciv)}.
-#' @param auciv The AUC calculated using \code{c0}
-#' @return \code{pk.calc.auciv_pctbackextrap}: The AUC percent back-extrapolated
+#' @describeIn pk.calc.auciv Calculate the percent back-extrapolated AUC for IV
+#'   administration
+#' @details The calculation for back-extrapolation is `100*(1 - auc/auciv)`.
+#' @param auciv The AUC calculated using `c0`
+#' @returns `pk.calc.auciv_pctbackextrap`: The AUC percent back-extrapolated
 #' @export
 pk.calc.auciv_pbext <- function(auc, auciv) {
   100*(1 - auc/auciv)

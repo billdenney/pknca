@@ -11,18 +11,16 @@ getColumnValueOrNot(data, value, prefix = "X")
 \arguments{
 \item{data}{A data.frame or similar object}
 
-\item{value}{A character string giving the name of a column in the
-\code{data}, a scalar, or a vector the same length as the
-\code{data}}
+\item{value}{A character string giving the name of a column in the \code{data}, a
+scalar, or a vector the same length as the \code{data}}
 
-\item{prefix}{The prefix to use if a column must be added (it will be
-used as the full column name if it is not already in the dataset or
-it will be prepended to the maximum column name if not.)}
+\item{prefix}{The prefix to use if a column must be added (it will be used as
+the full column name if it is not already in the dataset or it will be
+prepended to the maximum column name if not.)}
 }
 \value{
-A list with elements named "data", "name" giving the
-  \code{data} with a column named "name" with the value in that
-  column.
+A list with elements named "data", "name" giving the \code{data} with a
+column named "name" with the value in that column.
 }
 \description{
 Get the value from a column in a data frame if the value is a column

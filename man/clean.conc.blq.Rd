@@ -2,8 +2,7 @@
 % Please edit documentation in R/cleaners.R
 \name{clean.conc.blq}
 \alias{clean.conc.blq}
-\title{Handle BLQ values in the concentration measurements as requested by
-the user.}
+\title{Handle BLQ values in the concentration measurements as requested by the user.}
 \usage{
 clean.conc.blq(
   conc,
@@ -23,49 +22,47 @@ clean.conc.blq(
 \item{\dots}{Additional arguments passed to clean.conc.na}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
-\item{conc.blq}{How to handle a BLQ value that is between above LOQ
-values?  See details for description.}
+\item{conc.blq}{How to handle a BLQ value that is between above LOQ values?
+See details for description.}
 
-\item{conc.na}{How to handle NA concentrations.  (See
-\code{\link{clean.conc.na}})}
+\item{conc.na}{How to handle NA concentrations.  (See \code{\link[=clean.conc.na]{clean.conc.na()}})}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
-The concentration and time measurements (data frame) filtered
-  and cleaned as requested relative to BLQ in the middle.
+The concentration and time measurements (data frame) filtered and
+cleaned as requested relative to BLQ in the middle.
 }
 \description{
-Handle BLQ values in the concentration measurements as requested by
-the user.
+Handle BLQ values in the concentration measurements as requested by the user.
 }
 \details{
-NA concentrations (and their associated times) will be
-  handled as described in \code{\link{clean.conc.na}} before working
-  with the BLQ values.  The method for handling NA concentrations can
-  affect the output of which points are considered BLQ and which are
-  considered "middle".  Values are considered BLQ if they are 0.
+\code{NA} concentrations (and their associated times) will be handled as
+described in \code{\link[=clean.conc.na]{clean.conc.na()}} before working with the BLQ values.  The
+method for handling NA concentrations can affect the output of which points
+are considered BLQ and which are considered "middle".  Values are
+considered BLQ if they are 0.
 
-\code{conc.blq} can be set either a scalar indicating what
-should be done for all BLQ values or a list with elements named
-"first", "middle", and "last" each set to a scalar.
+\code{conc.blq} can be set either a scalar indicating what should be done for
+all BLQ values or a list with elements named "first", "middle", and "last"
+each set to a scalar.
 
 The meaning of each of the list elements is:
 \describe{
-  \item{first}{Values up to the first non-BLQ value.  Note
-    that if all values are BLQ, this includes all values.}
-  \item{middle}{Values that are BLQ between the first and last
-    non-BLQ values.}
-  \item{last}{Values that are BLQ after the last non-BLQ value}
+\item{first}{Values up to the first non-BLQ value.  Note
+that if all values are BLQ, this includes all values.}
+\item{middle}{Values that are BLQ between the first and last
+non-BLQ values.}
+\item{last}{Values that are BLQ after the last non-BLQ value}
 }
 
 The valid settings for each are:
 \describe{
-  \item{"drop"}{Drop the BLQ values}
-  \item{"keep"}{Keep the BLQ values}
-  \item{a number}{Set the BLQ values to that number}
+\item{"drop"}{Drop the BLQ values}
+\item{"keep"}{Keep the BLQ values}
+\item{a number}{Set the BLQ values to that number}
 }
 }
 \seealso{

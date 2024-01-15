@@ -1,45 +1,40 @@
 #' Create a PKNCAdose object
 #'
-#' @param data A data frame with time and the groups defined in
-#'   \code{formula}.
-#' @param formula The formula defining the
-#'   \code{dose.amount~time|groups} where \code{time} is the time of the
-#'   dosing and \code{dose.amount} is the amount administered at that
-#'   time (see Details).
-#' @param route Define the route of administration.  The value may be
-#'   either a column name from the \code{data} (checked first) or a
-#'   character string of either \code{"extravascular"} or
-#'   \code{"intravascular"} (checked second).  If given as a column
-#'   name, then every value of the column must be either
-#'   \code{"extravascular"} or \code{"intravascular"}.
-#' @param rate,duration (optional) for \code{"intravascular"} dosing,
-#'   the rate or duration of dosing.  If given as a character string, it
-#'   is the name of a column from the \code{data}, and if given as a
-#'   number, it is the value for all doses.  Only one may be given, and
-#'   if neither is given, then the dose is assumed to be a bolus
-#'   (\code{duration=0}).  If \code{rate} is given, then the dose amount
-#'   must be given (the left hand side of the \code{formula}).
-#' @param time.nominal (optional) The name of the nominal time column
-#'   (if the main time variable is actual time.  The \code{time.nominal}
-#'   is not used during calculations; it is available to assist with
-#'   data summary and checking.
-#' @param exclude (optional) The name of a column with concentrations to
-#'   exclude from calculations and summarization.  If given, the column
-#'   should have values of \code{NA} or \code{""} for concentrations to
-#'   include and non-empty text for concentrations to exclude.
+#' @param data A data frame with time and the groups defined in `formula`.
+#' @param formula The formula defining the `dose.amount~time|groups` where
+#'   `time` is the time of the dosing and `dose.amount` is the amount
+#'   administered at that time (see Details).
+#' @param route Define the route of administration.  The value may be either a
+#'   column name from the `data` (checked first) or a character string of either
+#'   `"extravascular"` or `"intravascular"` (checked second).  If given as a
+#'   column name, then every value of the column must be either
+#'   `"extravascular"` or `"intravascular"`.
+#' @param rate,duration (optional) for `"intravascular"` dosing, the rate or
+#'   duration of dosing.  If given as a character string, it is the name of a
+#'   column from the `data`, and if given as a number, it is the value for all
+#'   doses.  Only one may be given, and if neither is given, then the dose is
+#'   assumed to be a bolus (`duration=0`).  If `rate` is given, then the dose
+#'   amount must be given (the left hand side of the `formula`).
+#' @param time.nominal (optional) The name of the nominal time column (if the
+#'   main time variable is actual time.  The `time.nominal` is not used during
+#'   calculations; it is available to assist with data summary and checking.
+#' @param exclude (optional) The name of a column with concentrations to exclude
+#'   from calculations and summarization.  If given, the column should have
+#'   values of `NA` or `""` for concentrations to include and non-empty text for
+#'   concentrations to exclude.
 #' @param ... Ignored.
-#' @return A PKNCAconc object that can be used for automated NCA.
-#' @details The \code{formula} for a \code{PKNCAdose} object can be
+#' @returns A PKNCAconc object that can be used for automated NCA.
+#' @details The `formula` for a `PKNCAdose` object can be
 #'   given three ways: one-sided (missing left side), one-sided (missing
 #'   right side), or two-sided.  Each of the three ways can be given
 #'   with or without groups.  When given one-sided missing the left
 #'   side, the left side can either be omitted or can be given as a
-#'   period (\code{.}): \code{~time|treatment+subject} and
-#'   \code{.~time|treatment+subject} are identical, and dose-related NCA
+#'   period (`.`): `~time|treatment+subject` and
+#'   `.~time|treatment+subject` are identical, and dose-related NCA
 #'   parameters will all be reported as not calculable (for example,
 #'   clearance).  When given one-sided missing the right side, the right
-#'   side must be specified as a period (\code{.}):
-#'   \code{dose~.|treatment+subject}, and only a single row may be given
+#'   side must be specified as a period (`.`):
+#'   `dose~.|treatment+subject`, and only a single row may be given
 #'   per group.  When the right side is missing, PKNCA assumes that the
 #'   same dose is given in every interval.  When given as a two-sided
 #'   formula
@@ -155,13 +150,12 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
 #' Set the dosing route
 #'
 #' @param object A PKNCAdose object
-#' @param route A character string indicating one of the following:  the
-#'   column from the data which indicates the route of administration, a
-#'   scalar indicating the route of administration for all subjects, or
-#'   a vector indicating the route of administration for each dose in
-#'   the dataset.
+#' @param route A character string indicating one of the following:  the column
+#'   from the data which indicates the route of administration, a scalar
+#'   indicating the route of administration for all subjects, or a vector
+#'   indicating the route of administration for each dose in the dataset.
 #' @param ... Arguments passed to another setRoute function
-#' @return The object with an updated route
+#' @returns The object with an updated route
 #' @export
 setRoute <- function(object, ...) {
   UseMethod("setRoute")
@@ -191,12 +185,12 @@ setRoute.PKNCAdose <- function(object, route, ...) {
 #' Set the duration of dosing or measurement
 #'
 #' @param object An object to set a duration on
-#' @param duration The value to set for the duration or the name of the
-#'   column in the data to use for the duration.
+#' @param duration The value to set for the duration or the name of the column
+#'   in the data to use for the duration.
 #' @param rate (for PKNCAdose objects only) The rate of infusion
 #' @param dose (for PKNCAdose objects only) The dose amount
 #' @param ... Arguments passed to another setDuration function
-#' @return The object with duration set
+#' @returns The object with duration set
 #' @export
 setDuration <- function(object, ...)
   UseMethod("setDuration")

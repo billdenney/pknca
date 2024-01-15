@@ -10,8 +10,8 @@ normalize_exclude(object)
 \item{object}{The object to extract the exclude column from}
 }
 \value{
-The exclude vector where \code{NA} indicates not to exclude
-  and anything else indicates to exclude.
+The exclude vector where \code{NA} indicates not to exclude and anything
+else indicates to exclude.
 }
 \description{
 Normalize the exclude column by setting blanks to NA

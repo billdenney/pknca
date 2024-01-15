@@ -2,8 +2,7 @@
 % Please edit documentation in R/tss.stepwise.linear.R
 \name{pk.tss.stepwise.linear}
 \alias{pk.tss.stepwise.linear}
-\title{Compute the time to steady state using stepwise test of linear
-trend}
+\title{Compute the time to steady state using stepwise test of linear trend}
 \usage{
 pk.tss.stepwise.linear(
   ...,
@@ -14,39 +13,36 @@ pk.tss.stepwise.linear(
 )
 }
 \arguments{
-\item{\dots}{See \code{\link{pk.tss.data.prep}}}
+\item{\dots}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}}
 
 \item{min.points}{The minimum number of points required for the fit}
 
-\item{level}{The confidence level required for assessment of
-steady-state}
+\item{level}{The confidence level required for assessment of steady-state}
 
-\item{verbose}{Describe models as they are run, show convergence of
-the model (passed to the nlme function), and additional details
-while running.}
+\item{verbose}{Describe models as they are run, show convergence of the model
+(passed to the nlme function), and additional details while running.}
 
-\item{check}{See \code{\link{pk.tss.data.prep}}}
+\item{check}{See \code{\link[=pk.tss.data.prep]{pk.tss.data.prep()}}}
 }
 \value{
-A scalar float for the first time when steady-state is
-achieved or \code{NA} if it is not observed.
+A scalar float for the first time when steady-state is achieved or
+\code{NA} if it is not observed.
 }
 \description{
 A linear slope is fit through the data to find when it becomes
 non-significant.  Note that this is less preferred than the
-\code{pk.tss.monoexponential} due to the fact that with more time
-or more subjects the performance of the test changes (see
-reference).
+\code{pk.tss.monoexponential} due to the fact that with more time or more subjects
+the performance of the test changes (see reference).
 }
 \details{
-The model is fit with a different magnitude by treatment (as a factor,
-if given) and a random slope by subject (if given).  A minimum of
-\code{min.points} is required to fit the model.
+The model is fit with a different magnitude by treatment (as a factor, if
+given) and a random slope by subject (if given).  A minimum of \code{min.points}
+is required to fit the model.
 }
 \references{
 Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
-Estimating Time to Steady State with Examples from Phase 1 Studies.
-AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
+Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS
+Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
 }
 \seealso{
 Other Time to steady-state calculations: 

@@ -12,8 +12,8 @@ pk.calc.swing(cmax, cmin)
 \item{cmin}{The minimum observed concentration}
 }
 \value{
-The swing above the minimum concentration.  If \code{cmin} is zero,
-  then the result is infinity.
+The swing above the minimum concentration.  If \code{cmin} is zero, then
+the result is infinity.
 }
 \description{
 Determine the PK swing

@@ -28,43 +28,41 @@ PKNCAconc(data, ...)
 )
 }
 \arguments{
-\item{data}{A data frame with concentration (or amount for
-urine/feces), time, and the groups defined in \code{formula}.}
+\item{data}{A data frame with concentration (or amount for urine/feces),
+time, and the groups defined in \code{formula}.}
 
 \item{...}{Ignored.}
 
-\item{formula}{The formula defining the
-\code{concentration~time|groups} or \code{amount~time|groups} for
-urine/feces (In the remainder of the documentation, "concentration" will be
-used to describe concentration or amount.)  One special aspect of the
-\code{groups} part of the formula is that the last group is typically
-assumed to be the \code{subject}; see the documentation for the
-\code{subject} argument for exceptions to this assumption.}
+\item{formula}{The formula defining the \code{concentration~time|groups} or
+\code{amount~time|groups} for urine/feces (In the remainder of the
+documentation, "concentration" will be used to describe concentration or
+amount.)  One special aspect of the \code{groups} part of the formula is that
+the last group is typically assumed to be the \code{subject}; see the
+documentation for the \code{subject} argument for exceptions to this assumption.}
 
 \item{subject}{The column indicating the subject number.  If not provided,
 this defaults to the beginning of the inner groups: For example with
-\code{concentration~time|Study+Subject/Analyte}, the inner groups start
-with the first grouping variable before a \code{/}, \code{Subject}.  If
-there is only one grouping variable, it is assumed to be the subject (e.g.
-\code{concentration~time|Subject}), and if there are multiple grouping
-variables without a \code{/}, subject is assumed to be the last one.  For
-single-subject data, it is assigned as \code{NULL}.}
+\code{concentration~time|Study+Subject/Analyte}, the inner groups start with the
+first grouping variable before a \code{/}, \code{Subject}.  If there is only one
+grouping variable, it is assumed to be the subject (e.g.
+\code{concentration~time|Subject}), and if there are multiple grouping variables
+without a \code{/}, subject is assumed to be the last one.  For single-subject
+data, it is assigned as \code{NULL}.}
 
-\item{time.nominal}{(optional) The name of the nominal time column
-(if the main time variable is actual time.  The \code{time.nominal}
-is not used during calculations; it is available to assist with
-data summary and checking.}
+\item{time.nominal}{(optional) The name of the nominal time column (if the
+main time variable is actual time.  The \code{time.nominal} is not used during
+calculations; it is available to assist with data summary and checking.}
 
-\item{exclude}{(optional) The name of a column with concentrations to
-exclude from calculations and summarization.  If given, the column
-should have values of \code{NA} or \code{""} for concentrations to
-include and non-empty text for concentrations to exclude.}
+\item{exclude}{(optional) The name of a column with concentrations to exclude
+from calculations and summarization.  If given, the column should have
+values of \code{NA} or \code{""} for concentrations to include and non-empty text for
+concentrations to exclude.}
 
-\item{duration}{(optional) The duration of collection as is typically
-used for concentration measurements in urine or feces.}
+\item{duration}{(optional) The duration of collection as is typically used
+for concentration measurements in urine or feces.}
 
-\item{volume}{(optional) The volume (or mass) of collection as is
-typically used for urine or feces measurements.}
+\item{volume}{(optional) The volume (or mass) of collection as is typically
+used for urine or feces measurements.}
 
 \item{exclude_half.life, include_half.life}{A character scalar for the column
 name in the dataset of the points to exclude from the half-life calculation

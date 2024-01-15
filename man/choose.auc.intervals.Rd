@@ -17,34 +17,33 @@ choose.auc.intervals(
 \item{time.dosing}{Time of dosing}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{single.dose.aucs}{The AUC specification for single dosing.}
 }
 \value{
-A data frame with columns for \code{start}, \code{end},
-\code{auc.type}, and \code{half.life}.  See
-\code{\link{check.interval.specification}} for column definitions.
+A data frame with columns for \code{start}, \code{end}, \code{auc.type}, and
+\code{half.life}.  See \code{\link[=check.interval.specification]{check.interval.specification()}} for column definitions.
 The data frame may have zero rows if no intervals could be found.
 }
 \description{
 Intervals for AUC are selected by the following metrics:
 \enumerate{
-  \item If only one dose is administered, use the
-        \code{PKNCA.options("single.dose.aucs")}
-  \item If more than one dose is administered, estimate the AUC
-        between any two doses that have PK taken at both of the
-        dosing times and at least one time  between the doses.
-  \item For the final dose of multiple doses, try to determine the
-        dosing interval (\eqn{\tau}) and estimate the AUC in that
-        interval if multiple samples are taken in the interval.
-  \item If there are samples \eqn{> \tau} after the last dose,
-        calculate the half life after the last dose.
- }
+\item If only one dose is administered, use the
+\code{PKNCA.options("single.dose.aucs")}
+\item If more than one dose is administered, estimate the AUC
+between any two doses that have PK taken at both of the
+dosing times and at least one time  between the doses.
+\item For the final dose of multiple doses, try to determine the
+dosing interval (\eqn{\tau}) and estimate the AUC in that
+interval if multiple samples are taken in the interval.
+\item If there are samples \eqn{> \tau} after the last dose,
+calculate the half life after the last dose.
+}
 }
 \seealso{
-\code{\link{pk.calc.auc}}, \code{\link{pk.calc.aumc}},
-\code{\link{pk.calc.half.life}}, \code{\link{PKNCA.options}}
+\code{\link[=pk.calc.auc]{pk.calc.auc()}}, \code{\link[=pk.calc.aumc]{pk.calc.aumc()}}, \code{\link[=pk.calc.half.life]{pk.calc.half.life()}},
+\code{\link[=PKNCA.options]{PKNCA.options()}}
 
 Other Interval specifications: 
 \code{\link{add.interval.col}()},

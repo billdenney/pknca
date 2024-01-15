@@ -12,7 +12,7 @@ roundString(x, digits = 0, sci_range = Inf, sci_sep = "e", si_range)
 
 \item{digits}{integer indicating the number of decimal places}
 
-\item{sci_range}{See help for \code{\link{signifString}} (and you likely want
+\item{sci_range}{See help for \code{\link[=signifString]{signifString()}} (and you likely want
 to round with \code{signifString} if you want to use this argument)}
 
 \item{sci_sep}{The separator to use for scientific notation strings
@@ -30,8 +30,8 @@ applicable.
 }
 \details{
 Values that are not standard numbers like \code{Inf}, \code{NA}, and
-  \code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
+\code{NaN} are returned as \code{"Inf"}, \code{"NA"}, and \code{NaN}.
 }
 \seealso{
-\code{\link{round}}, \code{\link{signifString}}
+\code{\link[=round]{round()}}, \code{\link[=signifString]{signifString()}}
 }

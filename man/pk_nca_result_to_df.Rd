@@ -15,7 +15,7 @@ calculations}
 }
 \value{
 A data.frame with group_info and result combined, warnings filtered
-  out, and results unnested.
+out, and results unnested.
 }
 \description{
 Convert the grouping info and list of results for each group into a results

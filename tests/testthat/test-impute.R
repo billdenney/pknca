@@ -186,6 +186,21 @@ test_that("add_impute_to_intervals", {
   ))
 })
 
+test_that("PKNCAdata moves imputation to the intervals column, as applicable", {
+  d_conc <- generate.conc(nsub = 1, ntreat = 1, time.points = 1:3, nstudies = 1)
+  o_conc <- PKNCAconc(conc~time, data = d_conc)
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = 3, auclast = TRUE))
+  # No imputation creates no imputation instructions
+  expect_equal(o_data$impute, NA_character_)
+
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = 3, auclast = TRUE), impute = "PKNCA_impute_method_start_conc0")
+  expect_equal(o_data$impute, "PKNCA_impute_method_start_conc0")
+  pk.nca(o_data)
+
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = 3, auclast = TRUE), impute = "start_conc0")
+  expect_equal(o_data$impute, "start_conc0")
+})
+
 # Putting it all together
 test_that("pk.nca with imputation", {
   d_conc <- as.data.frame(datasets::Theoph)[!datasets::Theoph$Time == 0, ]
@@ -221,4 +236,30 @@ test_that("pk.nca with imputation", {
   auclast_manualimpute_24.1 <- auclast_manualimpute$PPORRES[auclast_manualimpute$PPTESTCD %in% "auclast" & auclast_manualimpute$end %in% 24.1]
   expect_true(all(is.na(auclast_manualimpute_24)))
   expect_true(!any(is.na(auclast_manualimpute_24.1)))
+})
+
+test_that("start_conc0 imputation works (fix #257)", {
+  d <- data.frame(time=c(0.08, 1, 2, 3, 4),
+                  conc=c(1, 0.5, 0.4, 0.3, 0.2),
+                  subject=1)
+  myconc <- PKNCAconc(data=d, conc~time|subject)
+  mydata <-
+    PKNCAdata(
+      myconc,
+      intervals=
+        data.frame(
+          start=0, end=5,
+          impute="start_conc0",
+          cmax        = TRUE,
+          tmax        = TRUE,
+          aucinf.obs  = TRUE,
+          aucint.last = TRUE,
+          auclast     = TRUE
+        )
+    )
+  suppressMessages(suppressWarnings(
+    myres <- pk.nca(mydata)
+  ))
+  df_myres <- as.data.frame(myres)
+  expect_false(is.na(df_myres$PPORRES[df_myres$PPTESTCD == "auclast"]))
 })

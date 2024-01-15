@@ -10,7 +10,7 @@ concentration, dosing, and interval information.}
 \arguments{
 \item{object}{The PKNCAdata object to summarize.}
 
-\item{...}{arguments passed on to \code{\link{print.PKNCAdata}}}
+\item{...}{arguments passed on to \code{\link[=print.PKNCAdata]{print.PKNCAdata()}}}
 }
 \description{
 Summarize a PKNCAdata object showing important details about the

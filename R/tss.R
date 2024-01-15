@@ -1,5 +1,5 @@
-#' Clean up the time to steady-state parameters and return a data
-#' frame for use by the tss calculators.
+#' Clean up the time to steady-state parameters and return a data frame for use
+#' by the tss calculators.
 #'
 #' @inheritParams assert_conc_time
 #' @inheritParams PKNCA.choose.option
@@ -8,12 +8,12 @@
 #'   to be on the same treatment)
 #' @param subject.dosing Subject number for dosing
 #' @param time.dosing Time of dosing
-#' @param conc.blq See \code{\link{clean.conc.blq}}
-#' @param conc.na See \code{\link{clean.conc.na}}
-#' @param check Run \code{\link{assert_conc_time}}?
+#' @param conc.blq See [clean.conc.blq()]
+#' @param conc.na See [clean.conc.na()]
+#' @param check Run [assert_conc_time()]?
 #' @param \dots Discarded inputs to allow generic calls between tss methods.
-#' @return a data frame with columns for \code{conc}entration,
-#' \code{time}, \code{subject}, and \code{treatment}.
+#' @returns a data frame with columns for `conc`entration, `time`, `subject`,
+#'   and `treatment`.
 pk.tss.data.prep <- function(conc, time, subject, treatment,
                              subject.dosing, time.dosing,
                              options=list(),
@@ -93,13 +93,13 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
 
 #' Compute the time to steady-state (tss)
 #'
-#' @param \dots Passed to \code{\link{pk.tss.monoexponential}} or
-#' \code{\link{pk.tss.stepwise.linear}}.
-#' @param check See \code{\link{pk.tss.data.prep}}
-#' @param type The type of Tss to calculate, either
-#' \code{stepwise.linear} or \code{monoexponential}
-#' @return A data frame with columns as defined from
-#' \code{pk.tss.monoexponential} and/or \code{pk.tss.stepwise.linear}.
+#' @param \dots Passed to [pk.tss.monoexponential()] or
+#'   [pk.tss.stepwise.linear()].
+#' @param check See [pk.tss.data.prep()]
+#' @param type The type of Tss to calculate, either `stepwise.linear` or
+#'   `monoexponential`
+#' @returns A data frame with columns as defined from `pk.tss.monoexponential`
+#'   and/or `pk.tss.stepwise.linear`.
 #' @family Time to steady-state calculations
 #' @export
 pk.tss <- function(...,

@@ -49,11 +49,11 @@ Methods available for interpolation are below, and each
 has its own specific function.
 
 \describe{
-  \item{\code{c0}}{If the observed \code{conc} at \code{time.dose} is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.}
-  \item{\code{logslope}}{Compute the semilog line between the first two measured times, and use that line to extrapolate backward to \code{time.dose}}
-  \item{\code{c1}}{Use the first point after \code{time.dose}}
-  \item{\code{cmin}}{Set c0 to cmin during the interval.  This method should usually be used for multiple-dose oral data and IV infusion data.}
-  \item{\code{set0}}{Set c0 to zero (regardless of any other data).  This method should usually be used first for single-dose oral data.}
+\item{\code{c0}}{If the observed \code{conc} at \code{time.dose} is nonzero, return that.  This method should usually be used first for single-dose IV bolus data in case nominal time zero is measured.}
+\item{\code{logslope}}{Compute the semilog line between the first two measured times, and use that line to extrapolate backward to \code{time.dose}}
+\item{\code{c1}}{Use the first point after \code{time.dose}}
+\item{\code{cmin}}{Set c0 to cmin during the interval.  This method should usually be used for multiple-dose oral data and IV infusion data.}
+\item{\code{set0}}{Set c0 to zero (regardless of any other data).  This method should usually be used first for single-dose oral data.}
 }
 }
 \section{Functions}{
@@ -62,15 +62,15 @@ has its own specific function.
 after time.dose.  This method will return \code{NA} if the second
 \code{conc} after \code{time.dose} is 0 or greater than the first.
 
-\item \code{pk.calc.c0.method.c0()}: Use \code{C0} = \code{conc[time %in%
-time.dose]} if it is nonzero.
+\item \code{pk.calc.c0.method.c0()}: Use \code{C0} = \code{conc[time \%in\% time.dose]} if it is
+nonzero.
 
 \item \code{pk.calc.c0.method.c1()}: Use \code{C0} = \code{C1}.
 
-\item \code{pk.calc.c0.method.set0()}: Use \code{C0} = 0 (typically used for single
-dose oral and IV infusion)
+\item \code{pk.calc.c0.method.set0()}: Use \code{C0} = 0 (typically used for single dose oral and
+IV infusion)
 
-\item \code{pk.calc.c0.method.cmin()}: Use \code{C0} = Cmin (typically used for
-multiple dose oral and IV infusion but not IV bolus)
+\item \code{pk.calc.c0.method.cmin()}: Use \code{C0} = Cmin (typically used for multiple dose oral
+and IV infusion but not IV bolus)
 
 }}

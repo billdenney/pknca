@@ -28,8 +28,8 @@ setAttributeColumn(
 uses \code{attr_name})}
 
 \item{default_value}{The value to fill in the column if the column does not
-exist (the column is filled with \code{NA} if it does not exist and no
-value is provided).}
+exist (the column is filled with \code{NA} if it does not exist and no value is
+provided).}
 
 \item{stop_if_default, warn_if_default, message_if_default}{A character string
 to provide as an error, a warning, or a message to the user if the
@@ -44,5 +44,5 @@ Add an attribute to an object where the attribute is added as a name
 to the names of the object.
 }
 \seealso{
-\code{\link{getAttributeColumn}}
+\code{\link[=getAttributeColumn]{getAttributeColumn()}}
 }

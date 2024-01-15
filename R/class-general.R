@@ -7,7 +7,7 @@ nlme::getGroups
 #'
 #' @param x The object to extract the formula from
 #' @param \dots Unused
-#' @return The vector of the dependent variable from the object.
+#' @returns The vector of the dependent variable from the object.
 #' @family PKNCA object extractors
 #' @export
 getDepVar <- function(x, ...) {
@@ -19,7 +19,7 @@ getDepVar <- function(x, ...) {
 #'
 #' @param x The object to extract the formula from
 #' @param \dots Unused
-#' @return The vector of the independent variable from the object.
+#' @returns The vector of the independent variable from the object.
 #' @family PKNCA object extractors
 #' @export
 getIndepVar <- function(x, ...) {
@@ -31,15 +31,13 @@ getIndepVar <- function(x, ...) {
 #' data.
 #'
 #' @param data A data.frame or similar object
-#' @param value A character string giving the name of a column in the
-#'   \code{data}, a scalar, or a vector the same length as the
-#'   \code{data}
-#' @param prefix The prefix to use if a column must be added (it will be
-#'   used as the full column name if it is not already in the dataset or
-#'   it will be prepended to the maximum column name if not.)
-#' @return A list with elements named "data", "name" giving the
-#'   \code{data} with a column named "name" with the value in that
-#'   column.
+#' @param value A character string giving the name of a column in the `data`, a
+#'   scalar, or a vector the same length as the `data`
+#' @param prefix The prefix to use if a column must be added (it will be used as
+#'   the full column name if it is not already in the dataset or it will be
+#'   prepended to the maximum column name if not.)
+#' @returns A list with elements named "data", "name" giving the `data` with a
+#'   column named "name" with the value in that column.
 getColumnValueOrNot <- function(data, value, prefix="X") {
   col.name <- setdiff(c(prefix, paste(prefix, max(names(data)), sep=".")), names(data))[1]
   if (is.character(value) && length(value) == 1 && (value %in% names(data))) {
@@ -59,8 +57,8 @@ getColumnValueOrNot <- function(data, value, prefix="X") {
 #'
 #' @param object The object to get the data name from.
 #' @family PKNCA object extractors
-#' @return A character scalar with the name of the data object (or NULL
-#'   if the method does not apply).
+#' @return A character scalar with the name of the data object (or `NULL` if the
+#'   method does not apply).
 #' @keywords Internal
 getDataName <- function(object) {
   UseMethod("getDataName")
@@ -77,18 +75,18 @@ getDataName.default <- function(object) {
 #' @param object The object to set the attribute column on.
 #' @param attr_name The attribute name to set
 #' @param col_or_value If this exists as a column in the data, it is used as the
-#'   \code{col_name}.  If not, this becomes the \code{default_value}.
+#'   `col_name`.  If not, this becomes the `default_value`.
 #' @param col_name The name of the column within the dataset to use (if missing,
-#'   uses \code{attr_name})
+#'   uses `attr_name`)
 #' @param default_value The value to fill in the column if the column does not
-#'   exist (the column is filled with \code{NA} if it does not exist and no
-#'   value is provided).
+#'   exist (the column is filled with `NA` if it does not exist and no value is
+#'   provided).
 #' @param stop_if_default,warn_if_default,message_if_default A character string
 #'   to provide as an error, a warning, or a message to the user if the
-#'   \code{default_value} is used.  They are tested in order (if stop, the code
+#'   `default_value` is used.  They are tested in order (if stop, the code
 #'   stops; if warning, the message is ignored; and message last).
-#' @return The object with the attribute column added to the data.
-#' @seealso \code{\link{getAttributeColumn}}
+#' @returns The object with the attribute column added to the data.
+#' @seealso [getAttributeColumn()]
 setAttributeColumn <- function(object, attr_name, col_or_value, col_name, default_value,
                                stop_if_default, warn_if_default, message_if_default) {
   dataname <- getDataName(object)
@@ -153,11 +151,10 @@ setAttributeColumn <- function(object, attr_name, col_or_value, col_name, defaul
 #'
 #' @param object The object to extract the attribute value from.
 #' @param attr_name The name of the attribute to extract
-#' @param warn_missing Give a warning if the "attr"ibute or "column" is
-#'   missing.  Character vector with zero, one, or both of "attr" and
-#'   "column".
-#' @return The value of the attribute (or \code{NULL} if the attribute
-#'   is not set or the column does not exist)
+#' @param warn_missing Give a warning if the "attr"ibute or "column" is missing.
+#'   Character vector with zero, one, or both of "attr" and "column".
+#' @returns The value of the attribute (or `NULL` if the attribute is not set or
+#'   the column does not exist)
 getAttributeColumn <- function(object, attr_name, warn_missing=c("attr", "column")) {
   if (length(setdiff(warn_missing, c("attr", "column")))) {
     stop("warn_missing must have a valid value or be empty")

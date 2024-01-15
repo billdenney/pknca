@@ -4,8 +4,8 @@
 #' (AUMC) for pharmacokinetic (PK) data.  AUC and AUMC are used for many
 #' purposes when analyzing PK in drug development.
 #'
-#' \code{pk.calc.auc.last} is simply a shortcut setting the \code{interval}
-#' parameter to \code{c(0, "last")}.
+#' `pk.calc.auc.last` is simply a shortcut setting the `interval`
+#' parameter to `c(0, "last")`.
 #'
 #' Extrapolation beyond Clast occurs using the half-life and Clast,obs;
 #' Clast,pred is not yet supported.
@@ -22,12 +22,11 @@
 #'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
 #'   provided as clast.pred, AUCinf is AUCinf,pred.
 #' @param conc.blq How to handle BLQ values in between the first and last above
-#'   LOQ concentrations. (See \code{\link{clean.conc.blq}} for usage
-#'   instructions.)
+#'   LOQ concentrations. (See [clean.conc.blq()] for usage instructions.)
 #' @param conc.na How to handle missing concentration values.  (See
-#'   \code{\link{clean.conc.na}} for usage instructions.)
-#' @param check Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
-#'   and \code{\link{clean.conc.na}}?
+#'   [clean.conc.na()] for usage instructions.)
+#' @param check Run [assert_conc_time()], [clean.conc.blq()], and
+#'   [clean.conc.na()]?
 #' @param fun_linear The function to use for integration of the linear part of
 #'   the curve (not required for AUC or AUMC functions)
 #' @param fun_log The function to use for integration of the logarithmic part of
@@ -35,12 +34,12 @@
 #'   functions)
 #' @param fun_inf The function to use for extrapolation from the final
 #'   measurement to infinite time (not required for AUC or AUMC functions.
-#' @param ... For functions other than \code{pk.calc.auxc}, these values are
-#'   passed to \code{pk.calc.auxc}
-#' @return A numeric value for the AU(M)C.
+#' @param ... For functions other than `pk.calc.auxc`, these values are passed
+#'   to `pk.calc.auxc`
+#' @returns A numeric value for the AU(M)C.
 #' @aliases pk.calc.auc pk.calc.aumc pk.calc.auc.last
 #' @family AUC calculations
-#' @seealso \code{\link{clean.conc.blq}}
+#' @seealso [clean.conc.blq()]
 #' @references
 #'
 #' Gabrielsson J, Weiner D.  "Section 2.8.1 Computation methods - Linear

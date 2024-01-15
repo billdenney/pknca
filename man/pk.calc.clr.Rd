@@ -7,8 +7,7 @@
 pk.calc.clr(ae, auc)
 }
 \arguments{
-\item{ae}{The amount excreted in urine (as a numeric scalar or
-vector)}
+\item{ae}{The amount excreted in urine (as a numeric scalar or vector)}
 
 \item{auc}{The area under the curve (as a numeric scalar or vector)}
 }
@@ -21,9 +20,9 @@ Calculate renal clearance
 \details{
 clr is \code{sum(ae)/auc}.
 
-The units for the \code{ae} and \code{auc} should match such
-  that \code{ae/auc} has units of volume/time.
+The units for the \code{ae} and \code{auc} should match such that \code{ae/auc} has
+units of volume/time.
 }
 \seealso{
-\code{\link{pk.calc.ae}}, \code{\link{pk.calc.fe}}
+\code{\link[=pk.calc.ae]{pk.calc.ae()}}, \code{\link[=pk.calc.fe]{pk.calc.fe()}}
 }

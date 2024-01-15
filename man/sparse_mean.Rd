@@ -11,23 +11,23 @@ sparse_mean(
 )
 }
 \arguments{
-\item{sparse_pk}{A sparse_pk object from \code{\link{as_sparse_pk}}}
+\item{sparse_pk}{A sparse_pk object from \code{\link[=as_sparse_pk]{as_sparse_pk()}}}
 
 \item{sparse_mean_method}{The method used to calculate the sparse mean (see
 details)}
 }
 \value{
-A vector the same length as \code{sparse_pk} with the mean
-  concentration at each of those times.
+A vector the same length as \code{sparse_pk} with the mean concentration
+at each of those times.
 }
 \description{
-Choices for the method of calculation (the argument
-\code{sparse_mean_method}) are:
+Choices for the method of calculation (the argument \code{sparse_mean_method})
+are:
 }
 \details{
 \itemize{
-  \item{"arithmetic mean"}{Arithmetic mean (ignoring number of BLQ samples)}
-  \item{"arithmetic mean, <=50\% BLQ"}{If >= 50\% of the measurements are BLQ, zero.  Otherwise, the arithmetic mean of all samples (including the BLQ as zero).}
+\item{"arithmetic mean"}{Arithmetic mean (ignoring number of BLQ samples)}
+\item{"arithmetic mean, <=50\% BLQ"}{If >= 50\% of the measurements are BLQ, zero.  Otherwise, the arithmetic mean of all samples (including the BLQ as zero).}
 }
 }
 \seealso{

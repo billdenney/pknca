@@ -32,7 +32,7 @@ aumcintegrate_inf <- function(conc.last, time.last, lambda.z) {
 #' @param time_out Time when interpolation is requested
 #' @param tlast The time of the last concentration above the lower limit of
 #'   quantification (LOQ)
-#' @return The interpolated or extrapolated value using the correct method
+#' @returns The interpolated or extrapolated value using the correct method
 #' @keywords Internal
 #' @name interp_extrap_conc_method
 NULL
@@ -68,8 +68,8 @@ extrapolate_conc_lambdaz <- function(clast, lambda.z, tlast, time_out) {
 #' @param tlast Time of last concentration above the limit of quantification
 #'   (will be calculated, if not provided)
 #' @keywords Internal
-#' @return A character vector of methods for interpolation/extrapolation methods
-#'   that is the same length as `conc` which indicates how to
+#' @returns A character vector of methods for interpolation/extrapolation
+#'   methods that is the same length as `conc` which indicates how to
 #'   interpolate/integrate between each of the concentrations (all but the last
 #'   value in the vector) and how to extrapolate after `tlast` (the last item in
 #'   the vector).  Possible values in the vector are: 'zero', 'linear', 'log',

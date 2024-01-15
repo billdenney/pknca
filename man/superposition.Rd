@@ -38,15 +38,14 @@ required to compute \code{lambda.z}.}
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{dose.input}{The dose given to generate the \code{conc} and \code{time}
-inputs.  If missing, output doses will be assumed to be equal to the input
-dose.}
+\item{dose.input}{The dose given to generate the \code{conc} and \code{time} inputs. If
+missing, output doses will be assumed to be equal to the input dose.}
 
 \item{tau}{The dosing interval}
 
 \item{dose.times}{The time of dosing within the dosing interval. The
-\code{min(dose.times)} must be >= 0, and the \code{max(dose.times)} must be
-< \code{tau}.  There may be more than one dose times given as a vector.}
+\code{min(dose.times)} must be >= 0, and the \code{max(dose.times)} must be < \code{tau}.
+There may be more than one dose times given as a vector.}
 
 \item{dose.amount}{The doses given for the output.  Linear proportionality
 will be used from the input to output if they are not equal.  The length of
@@ -56,7 +55,7 @@ dose.amount must be either 1 or matching the length of \code{dose.times}.}
 steady-state.}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
 \item{lambda.z}{The elimination rate (in units of inverse time) for
 extrapolation}
@@ -69,8 +68,8 @@ from the half-life).}
 quantification.  This is calculated if not provided.}
 
 \item{additional.times}{Times to include in the final outputs in addition to
-the standard times (see details).  All \code{min(additional.times)} must be
->= 0, and the \code{max(additional.times)} must be <= \code{tau}.}
+the standard times (see details).  All \code{min(additional.times)} must be >=
+0, and the \code{max(additional.times)} must be <= \code{tau}.}
 
 \item{check.blq}{Must the first concentration measurement be below the limit
 of quantification?}
@@ -91,10 +90,10 @@ A data frame with columns named "conc" and "time".
 Compute noncompartmental superposition for repeated dosing
 }
 \details{
-The returned superposition times will include all of the following times: 0
-(zero), \code{dose.times}, \code{time modulo tau} (shifting \code{time} for
-each dose time as well), \code{additional.times}, and \code{tau}.
+The returned superposition times will include all of the following
+times: 0 (zero), \code{dose.times}, \verb{time modulo tau} (shifting \code{time} for each
+dose time as well), \code{additional.times}, and \code{tau}.
 }
 \seealso{
-\code{\link{interp.extrap.conc}}
+\code{\link[=interp.extrap.conc]{interp.extrap.conc()}}
 }

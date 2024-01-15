@@ -14,8 +14,7 @@ pk.calc.ctrough(conc, time, end)
 \item{end}{The end time of the interval}
 }
 \value{
-The concentration when \code{time == end}.  If none
-  match, then \code{NA}
+The concentration when \code{time == end}.  If none match, then \code{NA}
 }
 \description{
 Determine the trough (end of interval) concentration

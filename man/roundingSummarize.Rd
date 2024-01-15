@@ -11,7 +11,7 @@ roundingSummarize(x, name)
 \item{x}{The values to summarize}
 
 \item{name}{The NCA parameter name (matching a parameter name in
-\code{\link{PKNCA.set.summary}})}
+\code{\link[=PKNCA.set.summary]{PKNCA.set.summary()}})}
 }
 \value{
 A string of the rounded value

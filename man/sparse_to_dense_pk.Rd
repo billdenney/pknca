@@ -7,7 +7,7 @@
 sparse_to_dense_pk(sparse_pk)
 }
 \arguments{
-\item{sparse_pk}{A sparse_pk object from \code{\link{as_sparse_pk}}}
+\item{sparse_pk}{A sparse_pk object from \code{\link[=as_sparse_pk]{as_sparse_pk()}}}
 }
 \value{
 A data.frame with names of "conc" and "time"

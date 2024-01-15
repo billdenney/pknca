@@ -5,13 +5,13 @@
 #' parameters which are not requested may be calculated if it is required for
 #' (or computed at the same time as) a requested parameter.
 #'
-#' \code{start} and \code{end} time must always be given as columns, and the
-#' \code{start} must be before the \code{end}.  Other columns define the
-#' parameters to be calculated and the groupings to apply the intervals to.
+#' `start` and `end` time must always be given as columns, and the `start` must
+#' be before the `end`.  Other columns define the parameters to be calculated
+#' and the groupings to apply the intervals to.
 #'
 #' @param x The data frame specifying what to calculate during each time
 #'   interval
-#' @return x The potentially updated data frame with the interval calculation
+#' @returns x The potentially updated data frame with the interval calculation
 #'   specification.
 #'
 #' @family Interval specifications
@@ -165,9 +165,8 @@ get.parameter.deps_helper_searchdeps <- function(current, funmap, all_intervals)
 #' Get all columns that depend on a parameter
 #'
 #' @param x The parameter name (as a character string)
-#' @return A character vector of parameter names that depend on the
-#'   parameter \code{x}.  If none depend on \code{x}, then the result
-#'   will be an empty vector.
+#' @returns A character vector of parameter names that depend on the parameter
+#'   `x`.  If none depend on `x`, then the result will be an empty vector.
 #' @family Interval specifications
 #' @export
 get.parameter.deps <- function(x) {
@@ -184,12 +183,12 @@ get.parameter.deps <- function(x) {
   sort(get.parameter.deps_helper_searchdeps(x, funmap, all_intervals))
 }
 
-#' Take in a single row of an interval specification and return that
-#' row updated with any additional calculations that must be done to
-#' fulfill all dependencies.
+#' Take in a single row of an interval specification and return that row updated
+#' with any additional calculations that must be done to fulfill all
+#' dependencies.
 #'
 #' @param x A data frame with one or more rows of the PKNCA interval
-#' @return The interval specification with additional calculations added where
+#' @returns The interval specification with additional calculations added where
 #'   requested outputs require them.
 #' @family Interval specifications
 check.interval.deps <- function(x) {

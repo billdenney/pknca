@@ -11,7 +11,7 @@ assert_aucmethod(method = c("lin up/log down", "linear", "lin-log"))
 'lin-log', or 'linear')}
 }
 \value{
-`method` or an informative error
+\code{method} or an informative error
 }
 \description{
 Assert that a value is a valid AUC method

@@ -2,9 +2,9 @@
 % Please edit documentation in R/check.intervals.R
 \name{check.interval.deps}
 \alias{check.interval.deps}
-\title{Take in a single row of an interval specification and return that
-row updated with any additional calculations that must be done to
-fulfill all dependencies.}
+\title{Take in a single row of an interval specification and return that row updated
+with any additional calculations that must be done to fulfill all
+dependencies.}
 \usage{
 check.interval.deps(x)
 }
@@ -13,12 +13,12 @@ check.interval.deps(x)
 }
 \value{
 The interval specification with additional calculations added where
-  requested outputs require them.
+requested outputs require them.
 }
 \description{
-Take in a single row of an interval specification and return that
-row updated with any additional calculations that must be done to
-fulfill all dependencies.
+Take in a single row of an interval specification and return that row updated
+with any additional calculations that must be done to fulfill all
+dependencies.
 }
 \seealso{
 Other Interval specifications: 

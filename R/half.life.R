@@ -1,27 +1,27 @@
 #' Compute the half-life and associated parameters
 #'
 #' The terminal elimination half-life is estimated from the final points in the
-#' concentration-time curve using semi-log regression (\code{log(conc)~time})
+#' concentration-time curve using semi-log regression (`log(conc)~time`)
 #' with automated selection of the points for calculation (unless
-#' \code{manually.selected.points} is \code{TRUE}).
+#' `manually.selected.points` is `TRUE`).
 #'
 #' See the "Half-Life Calculation" vignette for more details on the calculation
 #' methods used.
 #'
-#' @details If \code{manually.selected.points} is \code{FALSE} (default), the
+#' @details If `manually.selected.points` is `FALSE` (default), the
 #' half-life is calculated by computing the best fit line for all points at or
-#' after tmax (based on the value of \code{allow.tmax.in.half.life}).  The best
+#' after tmax (based on the value of `allow.tmax.in.half.life`).  The best
 #' half-life is chosen by the following rules in order:
 #'
 #' \itemize{
-#'  \item{At least \code{min.hl.points} points included}
-#'  \item{A \code{lambda.z} > 0 and at the same time the best adjusted r-squared
-#'  (within \code{adj.r.squared.factor})}
+#'  \item{At least `min.hl.points` points included}
+#'  \item{A `lambda.z` > 0 and at the same time the best adjusted r-squared
+#'  (within `adj.r.squared.factor`)}
 #'  \item{The one with the most points included}
 #' }
 #'
-#' If \code{manually.selected.points} is \code{TRUE}, the \code{conc}
-#' and \code{time} data are used as-is without any form of selection for
+#' If `manually.selected.points` is `TRUE`, the `conc`
+#' and `time` data are used as-is without any form of selection for
 #' the best-fit half-life.
 #'
 #' @inheritParams assert_conc_time
@@ -32,20 +32,20 @@
 #' @param tlast Time of last concentration above the limit of
 #'   quantification (will be calculated and included in the return data
 #'   frame if not given)
-#' @param manually.selected.points Have the input points (\code{conc} and
-#'   \code{time}) been manually selected?  The impact of setting this to
-#'   \code{TRUE} is that no selection for the best points will be done.  When
-#'   \code{TRUE}, this option causes the options of \code{adj.r.squared.factor},
-#'   \code{min.hl.points}, and \code{allow.tmax.in.half.life} to be ignored.
+#' @param manually.selected.points Have the input points (`conc` and
+#'   `time`) been manually selected?  The impact of setting this to
+#'   `TRUE` is that no selection for the best points will be done.  When
+#'   `TRUE`, this option causes the options of `adj.r.squared.factor`,
+#'   `min.hl.points`, and `allow.tmax.in.half.life` to be ignored.
 #' @param min.hl.points The minimum number of points that must be
 #'   included to calculate the half-life
 #' @param adj.r.squared.factor The allowance in adjusted r-squared for
 #'   adding another point.
-#' @param conc.blq See \code{\link{clean.conc.blq}}
-#' @param conc.na See \code{\link{clean.conc.na}}
-#' @param check Run \code{\link{assert_conc_time}},
-#'   \code{\link{clean.conc.blq}}, and \code{\link{clean.conc.na}}?
-#' @param first.tmax See \code{\link{pk.calc.tmax}}.
+#' @param conc.blq See [clean.conc.blq()]
+#' @param conc.na See [clean.conc.na()]
+#' @param check Run [assert_conc_time()],
+#'   [clean.conc.blq()], and [clean.conc.na()]?
+#' @param first.tmax See [pk.calc.tmax()].
 #' @param allow.tmax.in.half.life Allow the concentration point for tmax
 #'   to be included in the half-life slope calculation.
 #' @return A data frame with one row and columns for
@@ -266,7 +266,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
 #' @return A data.frame with one row and columns named "r.squared",
 #'   "adj.r.squared", "PROB", "lambda.z", "clast.pred",
 #'   "lambda.z.n.points", "half.life", "span.ratio"
-#' @seealso \code{\link{pk.calc.half.life}}
+#' @seealso [pk.calc.half.life()]
 fit_half_life <- function(data, tlast, conc_units) {
   fit <- stats::.lm.fit(x=cbind(1, data$time), y=data$log_conc)
   # unit handling

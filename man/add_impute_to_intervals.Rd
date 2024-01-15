@@ -11,7 +11,7 @@ add_impute_to_intervals(object)
 }
 \value{
 The PKNCAdata object with an impute column added to the intervals (if
-  it is not already there) and the object$impute set to that column name
+it is not already there) and the object$impute set to that column name
 }
 \description{
 Add the imputation column to the intervals, if it is not already there

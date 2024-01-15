@@ -1,31 +1,26 @@
-#' Compute the time to steady state using stepwise test of linear
-#' trend
+#' Compute the time to steady state using stepwise test of linear trend
 #'
 #' A linear slope is fit through the data to find when it becomes
 #' non-significant.  Note that this is less preferred than the
-#' \code{pk.tss.monoexponential} due to the fact that with more time
-#' or more subjects the performance of the test changes (see
-#' reference).
+#' `pk.tss.monoexponential` due to the fact that with more time or more subjects
+#' the performance of the test changes (see reference).
 #'
-#' The model is fit with a different magnitude by treatment (as a factor,
-#' if given) and a random slope by subject (if given).  A minimum of
-#' \code{min.points} is required to fit the model.
+#' The model is fit with a different magnitude by treatment (as a factor, if
+#' given) and a random slope by subject (if given).  A minimum of `min.points`
+#' is required to fit the model.
 #'
-#' @param \dots See \code{\link{pk.tss.data.prep}}
-#' @param check See \code{\link{pk.tss.data.prep}}
+#' @param \dots See [pk.tss.data.prep()]
+#' @param check See [pk.tss.data.prep()]
 #' @param min.points The minimum number of points required for the fit
-#' @param level The confidence level required for assessment of
-#' steady-state
-#' @param verbose Describe models as they are run, show convergence of
-#' the model (passed to the nlme function), and additional details
-#' while running.
-#' @return A scalar float for the first time when steady-state is
-#' achieved or \code{NA} if it is not observed.
+#' @param level The confidence level required for assessment of steady-state
+#' @param verbose Describe models as they are run, show convergence of the model
+#'   (passed to the nlme function), and additional details while running.
+#' @returns A scalar float for the first time when steady-state is achieved or
+#'   `NA` if it is not observed.
 #' @family Time to steady-state calculations
-#' @references
-#' Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
-#' Estimating Time to Steady State with Examples from Phase 1 Studies.
-#' AAPS Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
+#' @references Maganti L, Panebianco DL, Maes AL.  Evaluation of Methods for
+#' Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS
+#' Journal 10(1):141-7. doi:10.1208/s12248-008-9014-y
 #' @export
 pk.tss.stepwise.linear <- function(...,
                                    min.points=3, level=0.95, verbose=FALSE,

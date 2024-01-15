@@ -22,7 +22,7 @@ test_that("pk.nca", {
   # internals.
   mydata.failure$intervals <- data.frame()
   expect_warning(myresult.failure <- pk.nca(mydata.failure),
-                 regexp="No intervals given; no calculations done.",
+                 regexp="No intervals given; no calculations will be done.",
                  info="An empty result is returned if there are no intervals")
 
   tmpconc <- generate.conc(2, 1, 0:24)

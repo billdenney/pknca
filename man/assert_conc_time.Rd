@@ -15,36 +15,35 @@ assert_conc_time(conc, time, any_missing_conc = TRUE, sorted_time = TRUE)
 \arguments{
 \item{conc}{Measured concentrations}
 
-\item{any_missing_conc}{Are any concentration values allowed to be `NA`?}
+\item{any_missing_conc}{Are any concentration values allowed to be \code{NA}?}
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{sorted_time}{Must the time be unique and monotonically
-increasing?}
+\item{sorted_time}{Must the time be unique and monotonically increasing?}
 }
 \value{
-`conc` or give an informative error
+\code{conc} or give an informative error
 
-`time` or give an informative error
+\code{time} or give an informative error
 
 A data.frame with columns named "conc" and "time" or an informative
-  error
+error
 }
 \description{
 If the concentrations or times are invalid, will provide an error.
 Reasons for being invalid are
 \itemize{
-  \item \code{time} is not a number
-  \item \code{conc} is not a number
-  \item Any \code{time} value is NA
-  \item \code{time} is not monotonically increasing
-  \item \code{conc} and \code{time} are not the same length
+\item \code{time} is not a number
+\item \code{conc} is not a number
+\item Any \code{time} value is NA
+\item \code{time} is not monotonically increasing
+\item \code{conc} and \code{time} are not the same length
 }
 }
 \details{
 Some cases may generate warnings but allow the data to proceed.
 \itemize{
-  \item A negative concentration is often but not always an
-    error; it will generate a warning.
+\item A negative concentration is often but not always an
+error; it will generate a warning.
 }
 }

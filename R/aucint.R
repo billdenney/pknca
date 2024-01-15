@@ -12,20 +12,20 @@
 #' @inheritParams pk.calc.auxc
 #' @inheritParams assert_intervaltime_single
 #' @inheritParams assert_lambdaz
-#' @param clast,clast.obs,clast.pred The last concentration above the
-#'   limit of quantification; this is used for AUCinf calculations.  If
-#'   provided as clast.obs (observed clast value, default), AUCinf is
-#'   AUCinf,obs. If provided as clast.pred, AUCinf is AUCinf,pred.
+#' @param clast,clast.obs,clast.pred The last concentration above the limit of
+#'   quantification; this is used for AUCinf calculations.  If provided as
+#'   clast.obs (observed clast value, default), AUCinf is AUCinf,obs. If
+#'   provided as clast.pred, AUCinf is AUCinf,pred.
 #' @param time.dose,route,duration.dose The time of doses, route of
 #'   administration, and duration of dose used with interpolation and
-#'   extrapolation of concentration data (see
-#'   \code{\link{interp.extrap.conc.dose}}).  If \code{NULL},
-#'   \code{\link{interp.extrap.conc}} will be used instead (assuming
-#'   that no doses affecting concentrations are in the interval).
-#' @param ... Additional arguments passed to \code{pk.calc.auxc} and
-#'   \code{interp.extrap.conc}
+#'   extrapolation of concentration data (see [interp.extrap.conc.dose()]).  If
+#'   `NULL`, [interp.extrap.conc()] will be used instead (assuming that no doses
+#'   affecting concentrations are in the interval).
+#' @param ... Additional arguments passed to `pk.calc.auxc` and
+#'   `interp.extrap.conc`
 #' @family AUC calculations
-#' @seealso \code{\link{PKNCA.options}}, \code{\link{interp.extrap.conc.dose}}
+#' @seealso [PKNCA.options()], [interp.extrap.conc.dose()]
+#' @returns The AUC for an interval of time as a number
 #' @export
 pk.calc.aucint <- function(conc, time,
                            interval=NULL, start=NULL, end=NULL,
@@ -188,8 +188,8 @@ pk.calc.aucint <- function(conc, time,
   ret
 }
 
-#' @describeIn pk.calc.aucint
-#' Interpolate or extrapolate concentrations for AUClast
+#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations for
+#'   AUClast
 #' @export
 pk.calc.aucint.last <- function(conc, time, start=NULL, end=NULL, time.dose, ..., options=list()) {
   if (missing(time.dose))
@@ -201,8 +201,8 @@ pk.calc.aucint.last <- function(conc, time, start=NULL, end=NULL, time.dose, ...
                  ...,
                  auc.type="AUClast")
 }
-#' @describeIn pk.calc.aucint
-#' Interpolate or extrapolate concentrations for AUCall
+#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations for
+#'   AUCall
 #' @export
 pk.calc.aucint.all <- function(conc, time, start=NULL, end=NULL, time.dose, ..., options=list()) {
   if (missing(time.dose))
@@ -214,8 +214,8 @@ pk.calc.aucint.all <- function(conc, time, start=NULL, end=NULL, time.dose, ...,
                  ...,
                  auc.type="AUCall")
 }
-#' @describeIn pk.calc.aucint
-#' Interpolate or extrapolate concentrations for AUCinf.obs
+#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations for
+#'   AUCinf.obs
 #' @export
 pk.calc.aucint.inf.obs <- function(conc, time, start=NULL, end=NULL, time.dose, lambda.z, clast.obs, ..., options=list()) {
   if (missing(time.dose))
@@ -227,8 +227,8 @@ pk.calc.aucint.inf.obs <- function(conc, time, start=NULL, end=NULL, time.dose, 
                  options=options, ...,
                  auc.type="AUCinf")
 }
-#' @describeIn pk.calc.aucint
-#' Interpolate or extrapolate concentrations for AUCinf.pred
+#' @describeIn pk.calc.aucint Interpolate or extrapolate concentrations for
+#'   AUCinf.pred
 #' @export
 pk.calc.aucint.inf.pred <- function(conc, time, start=NULL, end=NULL, time.dose, lambda.z, clast.pred, ..., options=list()) {
   if (missing(time.dose))

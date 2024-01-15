@@ -15,7 +15,7 @@ pk.calc.tfirst(conc, time, check = TRUE)
 
 \item{time}{Time of the measurement of the concentrations}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 }
 \value{
 The time of the last observed concentration measurement

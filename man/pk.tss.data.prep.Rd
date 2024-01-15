@@ -2,8 +2,8 @@
 % Please edit documentation in R/tss.R
 \name{pk.tss.data.prep}
 \alias{pk.tss.data.prep}
-\title{Clean up the time to steady-state parameters and return a data
-frame for use by the tss calculators.}
+\title{Clean up the time to steady-state parameters and return a data frame for use
+by the tss calculators.}
 \usage{
 pk.tss.data.prep(
   conc,
@@ -34,21 +34,21 @@ to be on the same treatment)}
 \item{time.dosing}{Time of dosing}
 
 \item{options}{List of changes to the default PKNCA options (see
-`PKNCA.options()`)}
+\code{PKNCA.options()})}
 
-\item{conc.blq}{See \code{\link{clean.conc.blq}}}
+\item{conc.blq}{See \code{\link[=clean.conc.blq]{clean.conc.blq()}}}
 
-\item{conc.na}{See \code{\link{clean.conc.na}}}
+\item{conc.na}{See \code{\link[=clean.conc.na]{clean.conc.na()}}}
 
-\item{check}{Run \code{\link{assert_conc_time}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}?}
 
 \item{\dots}{Discarded inputs to allow generic calls between tss methods.}
 }
 \value{
-a data frame with columns for \code{conc}entration,
-\code{time}, \code{subject}, and \code{treatment}.
+a data frame with columns for \code{conc}entration, \code{time}, \code{subject},
+and \code{treatment}.
 }
 \description{
-Clean up the time to steady-state parameters and return a data
-frame for use by the tss calculators.
+Clean up the time to steady-state parameters and return a data frame for use
+by the tss calculators.
 }

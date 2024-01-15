@@ -10,7 +10,7 @@ assert_dosetau(tau)
 \item{tau}{The dosing interval}
 }
 \value{
-`tau` or an informative error
+\code{tau} or an informative error
 }
 \description{
 Assert that a value is a dosing interval

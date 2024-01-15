@@ -17,14 +17,14 @@ pk.calc.auciv_pbext(auc, auciv)
 \item{c0}{The concentration at time 0, typically calculated using
 \code{pk.calc.c0()}}
 
-\item{auc}{The AUC calculated using \code{conc} and \code{time} without
-\code{c0} (it may be calculated using any method)}
+\item{auc}{The AUC calculated using \code{conc} and \code{time} without \code{c0} (it may be
+calculated using any method)}
 
-\item{...}{For functions other than \code{pk.calc.auxc}, these values are
-passed to \code{pk.calc.auxc}}
+\item{...}{For functions other than \code{pk.calc.auxc}, these values are passed
+to \code{pk.calc.auxc}}
 
-\item{check}{Run \code{\link{assert_conc_time}}, \code{\link{clean.conc.blq}},
-and \code{\link{clean.conc.na}}?}
+\item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}}, and
+\code{\link[=clean.conc.na]{clean.conc.na()}}?}
 
 \item{auciv}{The AUC calculated using \code{c0}}
 }
@@ -38,22 +38,23 @@ Calculate AUC for intravenous dosing
 }
 \details{
 The AUC for intravenous (IV) dosing extrapolates the AUC back from
-  the first measurement to time 0 using c0 and the AUC calculated by another
-  method (for example the auclast).
+the first measurement to time 0 using c0 and the AUC calculated by another
+method (for example the auclast).
 
 The calculation method takes the following steps:
 
 \itemize{
-  \item{\code{time = 0} must be present in the data with a measured concentration.}
-  \item{The AUC between \code{time = 0} and the next time point is calculated (\code{auc_first}).}
-  \item{The AUC between \code{time = 0} with \code{c0} and the next time point is calculated (\code{auc_second}).}
-  \item{The final AUC is the initial AUC plus the difference between the two AUCs (\code{auc_final <- auc + auc_second - auc_first}).}
+\item{\code{time = 0} must be present in the data with a measured concentration.}
+\item{The AUC between \code{time = 0} and the next time point is calculated (\code{auc_first}).}
+\item{The AUC between \code{time = 0} with \code{c0} and the next time point is calculated (\code{auc_second}).}
+\item{The final AUC is the initial AUC plus the difference between the two AUCs (\code{auc_final <- auc + auc_second - auc_first}).}
 }
 
 The calculation for back-extrapolation is \code{100*(1 - auc/auciv)}.
 }
 \section{Functions}{
 \itemize{
-\item \code{pk.calc.auciv_pbext()}: Calculate the percent back-extrapolated AUC for IV administration
+\item \code{pk.calc.auciv_pbext()}: Calculate the percent back-extrapolated AUC for IV
+administration
 
 }}

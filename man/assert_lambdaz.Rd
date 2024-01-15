@@ -22,7 +22,7 @@ Name of the checked object to print in assertions. Defaults to
 the heuristic implemented in \code{\link[checkmate]{vname}}.}
 }
 \value{
-`lambda.z` or an informative error
+\code{lambda.z} or an informative error
 }
 \description{
 Assert that a lambda.z value is valid

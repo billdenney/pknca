@@ -34,12 +34,11 @@ business.range(x, ...)
 \arguments{
 \item{x}{vector to be passed to the various functions}
 
-\item{...}{Additional arguments to be passed to the underlying
-function.}
+\item{...}{Additional arguments to be passed to the underlying function.}
 }
 \value{
-The value of the various functions or NA if too many values
-are missing
+The value of the various functions or NA if too many values are
+missing
 }
 \description{
 Generate functions to do the named function (e.g. mean) applying
@@ -65,5 +64,5 @@ the business rules.
 
 }}
 \seealso{
-\code{\link{pk.business}()}
+\code{\link[=pk.business]{pk.business()}}
 }

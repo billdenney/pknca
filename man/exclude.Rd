@@ -14,32 +14,30 @@ exclude(object, reason, mask, FUN)
 
 \item{reason}{The reason to add as a reason for exclusion.}
 
-\item{mask}{A logical vector or numeric index of values to exclude
-(see details).}
+\item{mask}{A logical vector or numeric index of values to exclude (see
+details).}
 
-\item{FUN}{A function to operate on the data (one group at a time) to
-select reasons for exclusions (see details).}
+\item{FUN}{A function to operate on the data (one group at a time) to select
+reasons for exclusions (see details).}
 }
 \value{
-The object with updated information in the exclude column.
-  The exclude column will contain the \code{reason} if \code{mask} or
-  \code{FUN} indicate.  If a previous reason for exclusion was given,
-  then subsequent reasons for exclusion will be added to the first
-  with a semicolon space ("; ") separator.
+The object with updated information in the exclude column. The
+exclude column will contain the \code{reason} if \code{mask} or \code{FUN} indicate.  If a
+previous reason for exclusion was given, then subsequent reasons for
+exclusion will be added to the first with a semicolon space ("; ")
+separator.
 }
 \description{
 Exclude data points or results from calculations or summarization.
 }
 \details{
-Only one of \code{mask} or \code{FUN} may be given.  If
-  \code{FUN} is given, it will be called with two arguments:  a
-  data.frame (or similar object) that consists of a single group of
-  the data and the full object (e.g. the PKNCAconc object),
-  \code{FUN(current_group, object)}, and it must return a logical
-  vector equivalent to \code{mask} or a character vector with the
-  reason text given when data should be excluded or
-  \code{NA_character_} when the data should be included (for the
-  current exclusion test).
+Only one of \code{mask} or \code{FUN} may be given.  If \code{FUN} is given, it
+will be called with two arguments:  a data.frame (or similar object) that
+consists of a single group of the data and the full object (e.g. the
+PKNCAconc object), \code{FUN(current_group, object)}, and it must return a
+logical vector equivalent to \code{mask} or a character vector with the reason
+text given when data should be excluded or \code{NA_character_} when the data
+should be included (for the current exclusion test).
 }
 \section{Methods (by class)}{
 \itemize{

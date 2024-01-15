@@ -12,7 +12,7 @@ pk.calc.fe(ae, dose)
 \item{dose}{The dose (as a numeric scalar or vector)}
 }
 \value{
-The fraction of dose excreted.
+The fraction of dose excreted
 }
 \description{
 Calculate fraction excreted (typically in urine or feces)
@@ -20,9 +20,9 @@ Calculate fraction excreted (typically in urine or feces)
 \details{
 fe is \code{sum(ae)/dose}
 
-The units for \code{ae} and \code{dose} should be the same
-  so that \code{ae/dose} is a unitless fraction.
+The units for \code{ae} and \code{dose} should be the same so that \code{ae/dose}
+is a unitless fraction.
 }
 \seealso{
-\code{\link{pk.calc.ae}}, \code{\link{pk.calc.clr}}
+\code{\link[=pk.calc.ae]{pk.calc.ae()}}, \code{\link[=pk.calc.clr]{pk.calc.clr()}}
 }

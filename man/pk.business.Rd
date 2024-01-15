@@ -9,19 +9,19 @@ counting as missing.  The maximum fraction missing comes from
 pk.business(FUN, zero.missing = FALSE, max.missing)
 }
 \arguments{
-\item{FUN}{function to run.  The function is called as \code{FUN(x, ...)}
-with missing values removed.}
+\item{FUN}{function to run.  The function is called as \code{FUN(x, ...)} with
+missing values removed.}
 
-\item{zero.missing}{Are zeros counted as missing?  If \code{TRUE} then
-include them in the missing count.}
+\item{zero.missing}{Are zeros counted as missing?  If \code{TRUE} then include
+them in the missing count.}
 
 \item{max.missing}{The maximum fraction of the data allowed to be missing (a
 number between 0 and 1, inclusive).}
 }
 \value{
 A version of FUN that can be called with parameters that are checked
-  for missingness (and zeros) with missing (and zeros) removed before the
-  call.  If \code{max.missing} is exceeded, then NA is returned.
+for missingness (and zeros) with missing (and zeros) removed before the
+call.  If \code{max.missing} is exceeded, then NA is returned.
 }
 \description{
 Note that all missing values are removed prior to calling the function.

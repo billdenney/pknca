@@ -10,9 +10,8 @@ get.first.model(object)
 \item{object}{the list of (lists of, ...) models}
 }
 \value{
-The first item in the \code{object} that is not a list or
-\code{NA}.  If \code{NA} is passed in or the list (of lists) is all
-\code{NA}, then \code{NA} is returned.
+The first item in the \code{object} that is not a list or \code{NA}.  If \code{NA}
+is passed in or the list (of lists) is all \code{NA}, then \code{NA} is returned.
 }
 \description{
 Get the first model from a list of models

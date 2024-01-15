@@ -4,11 +4,10 @@
 #' @param \dots parameters passed to the underlying AIC function (typically the
 #'   parameter k)
 #' @param assess.best determine which model is the best (by lowest AIC)
-#' @seealso \code{\link{get.best.model}}
-#' @return a data frame with row names matching the names of the list \code{x}
-#'   and columns for degrees of freedom (\code{df}) and \code{AIC}.  If
-#'   \code{assess.best} is true, then there will be another column
-#'   \code{isBest}.
+#' @seealso [get.best.model()]
+#' @returns a data frame with row names matching the names of the list `x` and
+#'   columns for degrees of freedom (`df`) and `AIC`.  If `assess.best` is true,
+#'   then there will be another column `isBest`.
 #' @noRd
 AIC.list <- function(object, ..., assess.best=TRUE) {
   allAICs <-
@@ -65,8 +64,8 @@ AIC.list <- function(object, ..., assess.best=TRUE) {
 #'
 #' @param object the list of models
 #' @param \dots Parameters passed to AIC.list
-#' @return The model which is assessed as best.  If more than one are equal, the
-#'   first is chosen.
+#' @returns The model which is assessed as best.  If more than one are equal,
+#'   the first is chosen.
 #' @export
 get.best.model <- function(object, ...) {
   object[stats::AIC(object, ...)$isBest %in% "Best Model"][[1]]
@@ -75,9 +74,8 @@ get.best.model <- function(object, ...) {
 #' Get the first model from a list of models
 #'
 #' @param object the list of (lists of, ...) models
-#' @return The first item in the \code{object} that is not a list or
-#' \code{NA}.  If \code{NA} is passed in or the list (of lists) is all
-#' \code{NA}, then \code{NA} is returned.
+#' @returns The first item in the `object` that is not a list or `NA`.  If `NA`
+#'   is passed in or the list (of lists) is all `NA`, then `NA` is returned.
 get.first.model <- function(object) {
   ret <- NA
   if (inherits(object, "list")) {

@@ -2,7 +2,7 @@
 #'
 #' @param parameter Parameter to dose normalize
 #' @param dose Dose in units compatible with the area under the curve
-#' @return a number for dose normalized AUC
+#' @returns a number for dose normalized AUC
 #' @examples
 #' pk.calc.dn(90, 10)
 #' @export

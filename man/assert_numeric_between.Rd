@@ -35,14 +35,14 @@ Lower value all elements of \code{x} must be greater than or equal to.}
 \item{upper}{[\code{numeric(1)}]\cr
 Upper value all elements of \code{x} must be lower than or equal to.}
 
-\item{...}{Passed to `checkmate::assert_numeric()`}
+\item{...}{Passed to \code{checkmate::assert_numeric()}}
 
 \item{.var.name}{[\code{character(1)}]\cr
 Name of the checked object to print in assertions. Defaults to
 the heuristic implemented in \code{\link[checkmate]{vname}}.}
 }
 \value{
-`x`
+\code{x}
 }
 \description{
 Confirm that a value is greater than another value

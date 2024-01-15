@@ -1,13 +1,11 @@
 #' Exclude NCA parameters based on examining the parameter set.
 #'
 #' @param min.span.ratio The minimum acceptable span ratio (uses
-#'   \code{PKNCA.options("min.span.ratio")} if not provided).
-#' @param max.aucinf.pext The maximum acceptable percent AUC
-#'   extrapolation (uses \code{PKNCA.options("max.aucinf.pext")} if not
-#'   provided).
-#' @param min.hl.r.squared The minimum acceptable r-squared value for
-#'   half-life (uses \code{PKNCA.options("min.hl.r.squared")} if not
-#'   provided).
+#'   `PKNCA.options("min.span.ratio")` if not provided).
+#' @param max.aucinf.pext The maximum acceptable percent AUC extrapolation (uses
+#'   `PKNCA.options("max.aucinf.pext")` if not provided).
+#' @param min.hl.r.squared The minimum acceptable r-squared value for half-life
+#'   (uses `PKNCA.options("min.hl.r.squared")` if not provided).
 #' @examples
 #' my_conc <- PKNCAconc(data.frame(conc=1.1^(3:0),
 #'                                 time=0:3,
@@ -56,8 +54,8 @@ exclude_nca_span.ratio <- function(min.span.ratio) {
   }
 }
 
-#' @describeIn exclude_nca Exclude based on AUC percent extrapolated
-#'   (both observed and predicted)
+#' @describeIn exclude_nca Exclude based on AUC percent extrapolated (both
+#'   observed and predicted)
 #' @export
 exclude_nca_max.aucinf.pext <-  function(max.aucinf.pext) {
   affected_parameters <-
