@@ -864,18 +864,82 @@ Calculation Intervals"</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cav"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cav$desc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The average concentration during an interval"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The average concentration during an interval (calculated with AUClast)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cav$sparse</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cav$formalsmap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav$formalsmap$auc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "auclast"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cav$depends</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "auclast"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cav$datatype</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "interval"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$FUN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "pk.calc.cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$unit_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "conc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$pretty_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The average concentration during an interval (calculated with AUCint.last)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$sparse</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$formalsmap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$formalsmap$auc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.last"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$depends</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.last"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.last$datatype</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "interval"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$FUN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "pk.calc.cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$unit_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "conc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$pretty_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The average concentration during an interval (calculated with AUCint.all)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$sparse</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$formalsmap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$formalsmap$auc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.all"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$depends</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.all"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.all$datatype</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "interval"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -2989,6 +3053,68 @@ Calculation Intervals"</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cl.last"     "mrt.md.pred"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $vss.md.pred$datatype</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "interval"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$FUN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "pk.calc.cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$unit_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "conc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$pretty_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The average concentration during an interval (calculated with AUCint.inf.obs)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$sparse</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$formalsmap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$formalsmap$auc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.inf.obs"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$depends</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.inf.obs"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.obs$datatype</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "interval"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$FUN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "pk.calc.cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$values</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$unit_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "conc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$pretty_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cav"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The average concentration during an interval (calculated with AUCint.inf.pred)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$sparse</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$formalsmap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$formalsmap$auc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.inf.pred"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$depends</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "aucint.inf.pred"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cav.int.inf.pred$datatype</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "interval"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
