@@ -8,7 +8,7 @@ test_that("PKNCA.options", {
   # A mix of mixxing and extant options only give the missing ones
   expect_error(PKNCA.options("foo", "bar", "tau.choices"),
                regexp="PKNCA.options does not have value\\(s\\) for foo, bar.")
-  
+
   # Single extant options give their default value
   expect_equal(PKNCA.options("min.hl.points"), 3)
 
@@ -42,41 +42,49 @@ test_that("PKNCA.options", {
 
   expect_error(PKNCA.options("adj.r.squared.factor", default=TRUE, check=TRUE),
                regexp="Cannot request both default and check")
-  
+
   expect_error(PKNCA.options(adj.r.squared.factor=0.1, default=TRUE, check=TRUE),
                regexp="Cannot request both default and check")
-  
+
   expect_error(PKNCA.options(adj.r.squared.factor=0.1, max.aucinf.pext=15, check=TRUE),
                regexp="Must give exactly one option to check")
 
   # Confirm that the default state is as expected (setting it first
   # in case the tests are run in a non-default state)
   PKNCA.options(default=TRUE)
-  expect_equal(PKNCA.options(),
-               list(adj.r.squared.factor=0.0001,
-                    max.missing=0.5,
-                    auc.method="lin up/log down",
-                    conc.na="drop",
-                    conc.blq=list(
-                      first="keep",
-                      middle="drop",
-                      last="keep"),
-                    first.tmax=TRUE,
-                    allow.tmax.in.half.life=FALSE,
-                    min.hl.points=3,
-                    min.span.ratio=2,
-                    max.aucinf.pext=20,
-                    min.hl.r.squared=0.9,
-                    tau.choices=NA,
-                    single.dose.aucs=check.interval.specification(
-                      data.frame(
-                        start=0,
-                        end=c(24, Inf),
-                        auclast=c(TRUE, FALSE),
-                        aucinf.obs=c(FALSE, TRUE),
-                        half.life=c(FALSE, TRUE),
-                        tmax=c(FALSE, TRUE),
-                        cmax=c(FALSE, TRUE)))))
+  expect_equal(
+    PKNCA.options(),
+    list(
+      adj.r.squared.factor = 0.0001,
+      max.missing = 0.5,
+      auc.method = "lin up/log down",
+      conc.na = "drop",
+      conc.blq = list(
+        first = "keep",
+        middle = "drop",
+        last = "keep"
+      ),
+      first.tmax = TRUE,
+      allow.tmax.in.half.life = FALSE,
+      min.hl.points = 3,
+      min.span.ratio = 2,
+      max.aucinf.pext = 20,
+      min.hl.r.squared = 0.9,
+      progress = TRUE,
+      tau.choices = NA,
+      single.dose.aucs = check.interval.specification(
+        data.frame(
+          start = 0,
+          end = c(24, Inf),
+          auclast = c(TRUE, FALSE),
+          aucinf.obs = c(FALSE, TRUE),
+          half.life = c(FALSE, TRUE),
+          tmax = c(FALSE, TRUE),
+          cmax = c(FALSE, TRUE)
+        )
+      )
+    )
+  )
 
   # Check all the checks on options
 
@@ -293,7 +301,7 @@ test_that("PKNCA.choose.option", {
                                      foo="bar",
                                      max.aucinf.pext=10)),
                10)
-  
+
   # Manage NULL and the "value" argument
   expect_equal(PKNCA.choose.option("single.dose.aucs"),
                PKNCA.options(name="single.dose.aucs"),
@@ -320,7 +328,7 @@ test_that("PKNCA.set.summary input checking", {
   PKNCA.set.summary(reset=TRUE)
   # Confirm that reset actually resets the summary settings
   expect_equal(PKNCA.set.summary(), list())
-    
+
   # name must already be defined
   expect_error(PKNCA.set.summary("blah"),
                regexp="You must first define the parameter name with add.interval.col")

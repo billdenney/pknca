@@ -41,6 +41,8 @@ the dosing including dose amount and route.
   `time.group` arguments to the imputation functions.  And,
   `PKNCA_impute_method_start_predose()` imputation performs more reasonably when
   the end of the interval is infinite.
+* A progress bar is now available via the `PKNCA.options(progress = )` option
+  (fix #193).
 
 ## Bugs fixed
 

@@ -36,16 +36,17 @@ pk.nca <- function(data, verbose=FALSE) {
     if (verbose) message("Starting dense PK NCA calculations.")
     results_dense <-
       purrr::pmap(
-        .l=list(
-          data_conc=splitdata$data_conc,
-          data_dose=splitdata$data_dose,
-          data_intervals=splitdata$data_intervals
+        .l = list(
+          data_conc = splitdata$data_conc,
+          data_dose = splitdata$data_dose,
+          data_intervals = splitdata$data_intervals
         ),
-        .f=pk.nca.intervals,
-        options=data$options,
-        impute=data$impute,
-        verbose=verbose,
-        sparse=FALSE
+        .f = pk.nca.intervals,
+        options = data$options,
+        impute = data$impute,
+        verbose = verbose,
+        sparse = FALSE,
+        .progress = data$options$progress
       )
     if (verbose) message("Combining completed dense PK calculation results.")
     results <- pk_nca_result_to_df(group_info, results_dense)
