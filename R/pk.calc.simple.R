@@ -975,32 +975,76 @@ PKNCA.set.summary(
 
 #' Calculate the average concentration during an interval.
 #'
-#' @details cav is `auclast/(end-start)`.
+#' @details cav is `auc/(end-start)`.
 #'
-#' @param auclast The area under the curve during the interval
+#' @param auc The area under the curve during the interval
 #' @inheritParams assert_intervaltime_single
 #' @returns The Cav (average concentration during the interval)
 #' @export
-pk.calc.cav <- function(auclast, start, end) {
-  ret <- auclast/(end-start)
+pk.calc.cav <- function(auc, start, end) {
+  ret <- auc/(end-start)
   mask_zero <- is.na(end) | is.na(start) | end == start
   if (any(mask_zero)) {
     ret[mask_zero] <- NA_real_
   }
   ret
 }
-add.interval.col("cav",
-                 FUN="pk.calc.cav",
-                 values=c(FALSE, TRUE),
-                 unit_type="conc",
-                 pretty_name="Cav",
-                 desc="The average concentration during an interval",
-                 depends="auclast")
+add.interval.col(
+  "cav",
+  FUN = "pk.calc.cav",
+  values = c(FALSE, TRUE),
+  unit_type = "conc",
+  pretty_name = "Cav",
+  desc = "The average concentration during an interval (calculated with AUClast)",
+  depends = "auclast",
+  formalsmap = list(auc = "auclast")
+)
+add.interval.col(
+  "cav.int.last",
+  FUN = "pk.calc.cav",
+  values = c(FALSE, TRUE),
+  unit_type = "conc",
+  pretty_name = "Cav",
+  desc = "The average concentration during an interval (calculated with AUCint.last)",
+  depends = "aucint.last",
+  formalsmap = list(auc = "aucint.last"),
+)
+add.interval.col(
+  "cav.int.all",
+  FUN = "pk.calc.cav",
+  values = c(FALSE, TRUE),
+  unit_type = "conc",
+  pretty_name = "Cav",
+  desc = "The average concentration during an interval (calculated with AUCint.all)",
+  depends = "aucint.all",
+  formalsmap = list(auc = "aucint.all"),
+)
+add.interval.col(
+  "cav.int.inf.obs",
+  FUN = "pk.calc.cav",
+  values = c(FALSE, TRUE),
+  unit_type = "conc",
+  pretty_name = "Cav",
+  desc = "The average concentration during an interval (calculated with AUCint.inf.obs)",
+  depends = "aucint.inf.obs",
+  formalsmap = list(auc = "aucint.inf.obs"),
+)
+add.interval.col(
+  "cav.int.inf.pred",
+  FUN = "pk.calc.cav",
+  values = c(FALSE, TRUE),
+  unit_type = "conc",
+  pretty_name = "Cav",
+  desc = "The average concentration during an interval (calculated with AUCint.inf.pred)",
+  depends = "aucint.inf.pred",
+  formalsmap = list(auc = "aucint.inf.pred"),
+)
+
 PKNCA.set.summary(
-  name="cav",
-  description="geometric mean and geometric coefficient of variation",
-  point=business.geomean,
-  spread=business.geocv
+  name = c("cav", "cav.int.last", "cav.int.all", "cav.int.inf.obs", "cav.int.inf.pred"),
+  description = "geometric mean and geometric coefficient of variation",
+  point = business.geomean,
+  spread = business.geocv
 )
 
 #' Determine the trough (end of interval) concentration

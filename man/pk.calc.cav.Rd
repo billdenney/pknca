@@ -4,10 +4,10 @@
 \alias{pk.calc.cav}
 \title{Calculate the average concentration during an interval.}
 \usage{
-pk.calc.cav(auclast, start, end)
+pk.calc.cav(auc, start, end)
 }
 \arguments{
-\item{auclast}{The area under the curve during the interval}
+\item{auc}{The area under the curve during the interval}
 
 \item{start}{The start time of the interval}
 
@@ -20,5 +20,5 @@ The Cav (average concentration during the interval)
 Calculate the average concentration during an interval.
 }
 \details{
-cav is \code{auclast/(end-start)}.
+cav is \code{auc/(end-start)}.
 }

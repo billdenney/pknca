@@ -43,6 +43,8 @@ the dosing including dose amount and route.
   the end of the interval is infinite.
 * A progress bar is now available via the `PKNCA.options(progress = )` option
   (fix #193).
+* Additional versions of average concentration based on AUCint are now available
+  (fix #45).
 
 ## Bugs fixed
 
