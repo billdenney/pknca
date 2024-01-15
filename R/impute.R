@@ -1,3 +1,22 @@
+#' Get the impute function from either the intervals column or from the method
+#'
+#' @param intervals the data.frame of intervals
+#' @param impute the imputation definition
+#' @return The imputation function vector
+get_impute_method <- function(intervals, impute) {
+  stopifnot(length(impute) == 1)
+  checkmate::assert_data_frame(intervals)
+  if (impute %in% names(intervals)) {
+    impute_funs <- intervals[[impute]]
+  } else if (is.na(impute) && "impute" %in% names(intervals)) {
+    impute_funs <- intervals$impute
+  } else {
+    impute_funs <- impute
+  }
+  checkmate::assert_character(impute_funs)
+  impute_funs
+}
+
 #' Add the imputation column to the intervals, if it is not already there
 #'
 #' @param object The PKNCAdata object to impute data within
@@ -70,7 +89,7 @@ PKNCA_impute_method_start_cmin <- function(conc, time, start, end, ..., options 
 #' @describeIn PKNCA_impute_method Shift a predose concentration to become the
 #'   time zero concentration (only if a time zero concentration does not exist)
 #' @param max_shift The maximum amount of time to shift a concentration forward
-#'   (defaults to 5\% of the interval duration, i.e. `0.05*(end - start)`)
+#'   (defaults to 5% of the interval duration, i.e. `0.05*(end - start)`)
 #' @export
 PKNCA_impute_method_start_predose <- function(conc, time, start, end, ..., max_shift = NA_real_, options = list()) {
   ret <- data.frame(conc = conc, time = time)

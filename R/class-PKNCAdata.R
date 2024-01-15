@@ -6,10 +6,11 @@
 #' @inheritParams PKNCA.choose.option
 #' @param data.conc Concentration data as a `PKNCAconc` object or a data frame
 #' @param data.dose Dosing data as a `PKNCAdose` object (see details)
-#' @param impute Methods for imputation.  `NA` for no imputation, a comma-or
-#'   space-separated list of names, or the name of a column in the `intervals`
-#'   data.frame.  See `vignette("v08-data-imputation", package="PKNCA")` for
-#'   more details.
+#' @param impute Methods for imputation.  `NA` for to search for the column
+#'   named "impute" in the intervals or no imputation if that column does not
+#'   exist, a comma-or space-separated list of names, or the name of a column in
+#'   the `intervals` data.frame.  See
+#'   `vignette("v08-data-imputation", package="PKNCA")` for more details.
 #' @param formula.conc Formula for making a `PKNCAconc` object with `data.conc`.
 #'   This must be given if `data.conc` is a data.frame, and it must not be given
 #'   if `data.conc` is a `PKNCAconc` object.

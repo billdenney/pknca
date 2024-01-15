@@ -40,10 +40,11 @@ if \code{data.conc} is a \code{PKNCAconc} object.}
 This must be given if \code{data.dose} is a data.frame, and it must not be given
 if \code{data.dose} is a \code{PKNCAdose} object.}
 
-\item{impute}{Methods for imputation.  \code{NA} for no imputation, a comma-or
-space-separated list of names, or the name of a column in the \code{intervals}
-data.frame.  See \code{vignette("v08-data-imputation", package="PKNCA")} for
-more details.}
+\item{impute}{Methods for imputation.  \code{NA} for to search for the column
+named "impute" in the intervals or no imputation if that column does not
+exist, a comma-or space-separated list of names, or the name of a column in
+the \code{intervals} data.frame.  See
+\code{vignette("v08-data-imputation", package="PKNCA")} for more details.}
 
 \item{intervals}{A data frame with the AUC interval specifications as defined
 in \code{\link[=check.interval.specification]{check.interval.specification()}}.  If missing, this will be

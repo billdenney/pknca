@@ -203,3 +203,16 @@ assert_aucmethod <- function(method = c("lin up/log down", "linear", "lin-log"))
 assert_impute_fun <- function(impute_fun) {
   char_funs <- strsplit(impute_fun, split = "[ ,]")
 }
+
+#' Assert that an object is a PKNCAdata object
+#' @param object The PKNCAdata object
+#' @returns The PKNCAdata object (confirmed to be usable)
+assert_PKNCAdata <- function(object) {
+  if (!inherits(object, "PKNCAdata")) {
+    stop("Must be a PKNCAdata object")
+  }
+  if (nrow(object$intervals) == 0) {
+    warning("No intervals given; no calculations will be done.")
+  }
+  object
+}

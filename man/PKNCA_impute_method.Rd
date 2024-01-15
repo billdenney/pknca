@@ -36,7 +36,7 @@ PKNCA_impute_method_start_predose(
 \item{end}{The end time of the interval}
 
 \item{max_shift}{The maximum amount of time to shift a concentration forward
-(defaults to 5\\% of the interval duration, i.e. \code{0.05*(end - start)})}
+(defaults to 5\% of the interval duration, i.e. \code{0.05*(end - start)})}
 }
 \value{
 A data.frame with one column named conc with imputed concentrations

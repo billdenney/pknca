@@ -18,8 +18,6 @@
 #' @export
 pk.nca <- function(data, verbose=FALSE) {
   assert_PKNCAdata(data)
-  browser()
-  stop()
   results <- data.frame()
   if (nrow(data$intervals) > 0) {
     if (verbose) message("Setting up options")
@@ -190,8 +188,6 @@ any_sparse_dense_in_interval <- function(interval, sparse) {
 #' @return A data.frame with all NCA results
 pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
                              options, impute, verbose=FALSE) {
-  browser()
-  stop()
   if (is.null(data_conc) || (nrow(data_conc) == 0)) {
     # No concentration data; potentially placebo data
     return(rlang::warning_cnd(class="pknca_no_conc_data", message="No concentration data"))
@@ -240,14 +236,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
     } else if (!has_calc_sparse_dense) {
       if (verbose) message("No ", ifelse(sparse, "sparse", "dense"), " calculations requested for an interval")
     } else {
-      browser()
-      stop()
-      impute_method <-
-        if (is.na(impute)) {
-          NA_character_
-        } else {
-          data_intervals[[impute]][i]
-        }
+      impute_method <- get_impute_method(intervals = current_interval, impute = impute)
       args <- list(
         # Interval-level data
         conc=conc_data_interval$conc,
@@ -355,15 +344,13 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
                             impute_method=NA_character_,
                             include_half.life=NULL, exclude_half.life=NULL,
                             subject, sparse, interval, options=list()) {
-  browser()
-  stop()
   if (!is.data.frame(interval)) {
     stop("Please report a bug.  Interval must be a data.frame")
   }
   if (nrow(interval) != 1) {
     stop("Please report a bug.  Interval must be a one-row data.frame")
   }
-  if (!is.na(impute_method)) {
+  if (!all(is.na(impute_method))) {
     impute_funs <- PKNCA_impute_fun_list(impute_method)
     stopifnot(length(impute_funs) == 1)
     impute_data <- data.frame(conc=conc, time=time)
