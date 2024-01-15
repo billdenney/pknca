@@ -23,37 +23,37 @@ test_that("PKNCA_impute_method_start_conc0", {
 test_that("PKNCA_impute_method_start_predose", {
   # No modification if no predose samples
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = 1:3, start = 0, end = 24),
+    PKNCA_impute_method_start_predose(conc = 1:3, time = 1:3, conc.group = 1:3, time.group = 1:3, start = 0, end = 24),
     data.frame(conc = 1:3, time = 1:3)
   )
   # No modification if time 0 is already present
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = 0:2, start = 0, end = 24),
+    PKNCA_impute_method_start_predose(conc = 1:3, time = 0:2, conc.group = 1:3, time.group = 0:2, start = 0, end = 24),
     data.frame(conc = 1:3, time = 0:2)
   )
   # Shift happens when time is within max_shift
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = c(-1, 1:2), start = 0, end = 24),
+    PKNCA_impute_method_start_predose(conc = 2:3, time = 1:2, conc.group = 1:3, time.group = c(-1, 1:2), start = 0, end = 24),
     data.frame(conc = 1:3, time = 0:2)
   )
   # Shift happens when time is equal to max_shift
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = c(-1.2, 1:2), start = 0, end = 24),
+    PKNCA_impute_method_start_predose(conc = 2:3, time = 1:2, conc.group = 1:3, time.group = c(-1.2, 1:2), start = 0, end = 24),
     data.frame(conc = 1:3, time = 0:2)
   )
   # Shift occurs to a new start
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = c(-0.3, 1:2), start = 0.5, end = 24),
+    PKNCA_impute_method_start_predose(conc = 2:3, time = 1:2, conc.group = 1:3, time.group = c(-0.3, 1:2), start = 0.5, end = 24),
     data.frame(conc = 1:3, time = c(0.5, 1:2))
   )
   # Shift does not when time is more than max_shift
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = c(-3, 1:2), start = 0, end = 24),
-    data.frame(conc = 1:3, time = c(-3, 1:2))
+    PKNCA_impute_method_start_predose(conc = 2:3, time = 1:2, conc.group = 1:3, time.group =c(-3, 1:2), start = 0, end = 24),
+    data.frame(conc = 2:3, time = 1:2)
   )
   # max_shift overrides the start/end automation
   expect_equal(
-    PKNCA_impute_method_start_predose(conc = 1:3, time = c(-3, 1:2), max_shift = 3, start = 0, end = 24),
+    PKNCA_impute_method_start_predose(conc = 2:3, time = 1:2, conc.group = 1:3, time.group = c(-3, 1:2), max_shift = 3, start = 0, end = 24),
     data.frame(conc = 1:3, time = 0:2)
   )
 })

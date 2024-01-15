@@ -36,6 +36,9 @@ the dosing including dose amount and route.
   extrapolation, regardless of the method used (fix #203).
 * Imputation will now automatically search for a column named "impute" in the
   interval definition (fix #257).
+* Imputation now can look outside the concentration-time of the interval to the
+  full concentration-time profile for the group with the `conc.group` and
+  `time.group` arguments to the imputation functions.
 
 ## Bugs fixed
 

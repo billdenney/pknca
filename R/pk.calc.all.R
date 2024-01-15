@@ -358,6 +358,8 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       impute_args <- as.list(impute_data)
       impute_args$start <- interval$start[1]
       impute_args$end <- interval$end[1]
+      impute_args$conc.group <- conc.group
+      impute_args$time.group <- time.group
       impute_args$options <- options
       impute_data <- do.call(current_fun_nm, args=impute_args)
     }
