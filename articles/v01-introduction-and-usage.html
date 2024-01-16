@@ -224,6 +224,9 @@ no arguments:</p>
 <span><span class="co">## $allow.tmax.in.half.life</span></span>
 <span><span class="co">## [1] FALSE</span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## $keep_interval_cols</span></span>
+<span><span class="co">## NULL</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## $min.hl.points</span></span>
 <span><span class="co">## [1] 3</span></span>
 <span><span class="co">## </span></span>
@@ -1040,13 +1043,24 @@ intervals, modify them, and put them back.</p>
 <span><span class="va">intervals_manual</span><span class="op">$</span><span class="va">aucinf.obs</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
 <span><span class="va">data_obj</span><span class="op">$</span><span class="va">intervals</span> <span class="op">&lt;-</span> <span class="va">intervals_manual</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="keeping-a-column-from-intervals">Keeping a column from intervals<a class="anchor" aria-label="anchor" href="#keeping-a-column-from-intervals"></a>
+</h3>
+<p>When computing NCA using actual times, grouping by start and end time
+in summaries (see layer) is less helpful because everyone could have
+different start and end times. So, you may keep the interval columns
+using the option <code>"keep_interval_cols"</code> as follows (where
+“dosetype” must be a column name in the intervals):</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdata.html">PKNCAdata</a></span><span class="op">(</span><span class="va">conc_obj</span>, <span class="va">dose_obj</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>keep_interval_cols <span class="op">=</span> <span class="st">"dosetype"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="summarizing-results">Summarizing results<a class="anchor" aria-label="anchor" href="#summarizing-results"></a>
 </h2>
 <p>When NCA has been calculated, you can summarize the results with the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">o_nca</span><span class="op">)</span></span></code></pre></div>
 <p>By default, it will count the number of unique subjects
 (<code>N</code>) in the summary, and when the number of subjects differs
