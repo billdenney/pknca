@@ -367,6 +367,18 @@ intervals_manual$aucinf.obs[1] <- TRUE
 data_obj$intervals <- intervals_manual
 ```
 
+## Keeping a column from intervals
+
+When computing NCA using actual times, grouping by start and end time in
+summaries (see layer) is less helpful because everyone could have different
+start and end times.  So, you may keep the interval columns using the option
+`"keep_interval_cols"` as follows (where "dosetype" must be a column name in the
+intervals):
+
+```{r eval=FALSE}
+data_obj <- PKNCAdata(conc_obj, dose_obj, options = list(keep_interval_cols = "dosetype"))
+```
+
 # Summarizing results
 
 When NCA has been calculated, you can summarize the results with the `summary()`

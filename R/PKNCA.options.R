@@ -166,6 +166,16 @@
     }
     x
   },
+
+  keep_interval_cols = function(x, default = FALSE, description = FALSE) {
+    if (description)
+      return("What additional columns from the intervals should be kept in the results?")
+    if (default)
+      return(NULL)
+    checkmate::assert_names(x)
+    x
+  },
+
   min.hl.points=function(x, default=FALSE, description=FALSE) {
     if (description)
       return("What is the minimum number of points required to calculate half-life?")
