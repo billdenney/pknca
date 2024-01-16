@@ -45,6 +45,9 @@ the dosing including dose amount and route.
   (fix #193).
 * Additional versions of average concentration based on AUCint are now available
   (fix #45).
+* A new option "keep_interval_cols" was added to allow keeping a column from the
+  intervals in the NCA results.  Note that these are not included in the summary
+  groups by default.
 
 ## Bugs fixed
 

@@ -194,7 +194,13 @@ get_summary_PKNCAresults_drop_group <- function(object, drop_group) {
   if (any(c("start", "end") %in% drop_group)) {
     warning("drop.group including start or end may result in incorrect groupings (such as inaccurate comparison of intervals).  Drop these with care.")
   }
-  ret <- unique(setdiff(c("start", "end", names(all_group_cols)), drop_group))
+  ret <-
+    unique(
+      setdiff(
+        c("start", "end", object$data$options$keep_interval_cols, names(all_group_cols)),
+        drop_group
+      )
+    )
   ret
 }
 

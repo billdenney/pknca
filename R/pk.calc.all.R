@@ -285,7 +285,7 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
         rbind(
           ret,
           cbind(
-            current_interval[, c("start", "end")],
+            current_interval[, c("start", "end", options$keep_interval_cols)],
             calculated_interval,
             row.names=NULL
           )

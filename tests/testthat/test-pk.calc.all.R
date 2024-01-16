@@ -638,3 +638,22 @@ test_that("aucint works within pk.calc.all for all zero concentrations with inte
     c(rep(NA_real_, 10), 0)
   )
 })
+
+test_that("The option keep_interval_cols is respected", {
+  d_interval <- data.frame(start = 0, end = 4, cmax = TRUE, foo = "A")
+  d_conctime <- data.frame(conc = c(0, 0, 0, 0), time = 0:3)
+  o_conc <- PKNCAconc(d_conctime, conc~time)
+  o_data <- PKNCAdata(o_conc, intervals = d_interval)
+  suppressWarnings(suppressMessages(
+    o_nca <- pk.nca(o_data)
+  ))
+  expect_false("foo" %in% names(o_nca$result))
+  expect_false("foo" %in% names(summary(o_nca)))
+
+  o_data <- PKNCAdata(o_conc, intervals = d_interval, options = list(keep_interval_cols = "foo"))
+  suppressWarnings(suppressMessages(
+    o_nca <- pk.nca(o_data)
+  ))
+  expect_equal(o_nca$result$foo, "A")
+  expect_true("foo" %in% names(summary(o_nca)))
+})
