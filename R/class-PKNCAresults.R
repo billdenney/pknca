@@ -33,13 +33,42 @@ PKNCAresults <- function(result, data, exclude) {
 #'
 #' @param x The object to extract results from
 #' @param ... Ignored (for compatibility with generic [as.data.frame()])
-#' @param out.format Should the output be 'long' (default) or 'wide'?
-#' @returns A data frame (or usually a tibble) of results
+#' @param out_format Should the output be 'long' (default) or 'wide'?
+#' @param filter_requested Only return rows with parameters that were
+#'   specifically requested?
+#' @param out.format Deprecated in favor of `out_format`
+#' @returns A data.frame (or usually a tibble) of results
 #' @export
-as.data.frame.PKNCAresults <- function(x, ..., out.format=c('long', 'wide')) {
+as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), filter_requested = FALSE, out.format = deprecated()) {
   ret <- x$result
-  out.format <- match.arg(out.format)
-  if (out.format %in% 'wide') {
+  if (lifecycle::is_present(out.format)) {
+    lifecycle::deprecate_warn(
+      when = "0.11.0",
+      what = "PKNCA::as.data.frame.PKNCAresults(out.format = )",
+      with = "PKNCA::as.data.frame.PKNCAresults(out_format = )"
+    )
+    out_format <- out.format
+  }
+  out_format <- match.arg(out_format)
+
+  if (filter_requested) {
+    intervals_long <-
+      tidyr::pivot_longer(
+        x$data$intervals,
+        cols = setdiff(names(get.interval.cols()), c("start", "end")),
+        names_to = "PPTESTCD",
+        values_to = "keep_interval"
+      )
+    intervals_long_filtered <- intervals_long[intervals_long$keep_interval, , drop = FALSE]
+    intervals_long_filtered$keep_interval <- NULL
+    ret <-
+      dplyr::inner_join(
+        ret, intervals_long_filtered,
+        by = intersect(names(ret), names(intervals_long_filtered))
+      )
+  }
+
+  if (out_format %in% 'wide') {
     if ("PPSTRESU" %in% names(ret)) {
       # Use standardized results
       ret$PPTESTCD <- sprintf("%s (%s)", ret$PPTESTCD, ret$PPSTRESU)
