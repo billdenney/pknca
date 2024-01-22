@@ -400,3 +400,15 @@ test_that("getGroups.PKNCAresults", {
     myresult$result[, c("ID", "start")]
   )
 })
+
+test_that("as.data.frame.PKNCAresults can filter for only requested parameters", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  myresult <- pk.nca(mydata)
+
+  expect_equal(nrow(as.data.frame(myresult)), 20)
+  expect_equal(nrow(as.data.frame(myresult, filter_requested = TRUE)), 2)
+})
