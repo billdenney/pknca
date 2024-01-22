@@ -41,6 +41,7 @@ PKNCAresults <- function(result, data, exclude) {
 #' @export
 as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), filter_requested = FALSE, out.format = deprecated()) {
   ret <- x$result
+  # nocov start
   if (lifecycle::is_present(out.format)) {
     lifecycle::deprecate_warn(
       when = "0.11.0",
@@ -49,6 +50,7 @@ as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), f
     )
     out_format <- out.format
   }
+  # nocov end
   out_format <- match.arg(out_format)
 
   if (filter_requested) {

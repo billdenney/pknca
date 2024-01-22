@@ -65,6 +65,7 @@ summary.PKNCAresults <- function(object, ...,
   # Process inputs ####
 
   ## Deprecated inputs ####
+  # nocov start
   if (lifecycle::is_present(drop.group)) {
     lifecycle::deprecate_warn(
       when = "0.11.0",
@@ -97,6 +98,7 @@ summary.PKNCAresults <- function(object, ...,
     )
     not_calculated <- not.calculated.string
   }
+  # nocov end
 
   ## Simple inputs ####
   group_cols <- get_summary_PKNCAresults_drop_group(object = object, drop_group = drop_group)
