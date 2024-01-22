@@ -65,9 +65,10 @@ summary.PKNCAresults <- function(object, ...,
   # Process inputs ####
 
   ## Deprecated inputs ####
+  # nocov start
   if (lifecycle::is_present(drop.group)) {
     lifecycle::deprecate_warn(
-      when = "0.10.3",
+      when = "0.11.0",
       what = "PKNCA::summary.PKNCAresults(drop.group = )",
       with = "PKNCA::summary.PKNCAresults(drop_group = )"
     )
@@ -75,7 +76,7 @@ summary.PKNCAresults <- function(object, ...,
   }
   if (lifecycle::is_present(summarize.n.per.group)) {
     lifecycle::deprecate_warn(
-      when = "0.10.3",
+      when = "0.11.0",
       what = "PKNCA::summary.PKNCAresults(summarize.n.per.group = )",
       with = "PKNCA::summary.PKNCAresults(summarize_n = )"
     )
@@ -83,7 +84,7 @@ summary.PKNCAresults <- function(object, ...,
   }
   if (lifecycle::is_present(not.requested.string)) {
     lifecycle::deprecate_warn(
-      when = "0.10.3",
+      when = "0.11.0",
       what = "PKNCA::summary.PKNCAresults(not.requested.string = )",
       with = "PKNCA::summary.PKNCAresults(not_requested = )"
     )
@@ -91,12 +92,13 @@ summary.PKNCAresults <- function(object, ...,
   }
   if (lifecycle::is_present(not.calculated.string)) {
     lifecycle::deprecate_warn(
-      when = "0.10.3",
+      when = "0.11.0",
       what = "PKNCA::summary.PKNCAresults(not.calculated.string = )",
       with = "PKNCA::summary.PKNCAresults(not_calculated = )"
     )
     not_calculated <- not.calculated.string
   }
+  # nocov end
 
   ## Simple inputs ####
   group_cols <- get_summary_PKNCAresults_drop_group(object = object, drop_group = drop_group)

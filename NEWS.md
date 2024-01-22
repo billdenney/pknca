@@ -48,6 +48,8 @@ the dosing including dose amount and route.
 * A new option "keep_interval_cols" was added to allow keeping a column from the
   intervals in the NCA results.  Note that these are not included in the summary
   groups by default.
+* A new argument "filter_requested" for `as.data.frame.PKNCAresults()` allows
+  you to filter only to requested results from a PKNCAresults object.
 
 ## Bugs fixed
 
