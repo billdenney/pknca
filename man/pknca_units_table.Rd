@@ -4,11 +4,24 @@
 \alias{pknca_units_table}
 \title{Create a unit assignment and conversion table}
 \usage{
-pknca_units_table(concu, doseu, amountu, timeu, conversions = data.frame())
+pknca_units_table(
+  concu,
+  doseu,
+  amountu,
+  timeu,
+  concu_pref = NULL,
+  doseu_pref = NULL,
+  amountu_pref = NULL,
+  timeu_pref = NULL,
+  conversions = data.frame()
+)
 }
 \arguments{
 \item{concu, doseu, amountu, timeu}{Units for concentration, dose, amount, and
-time}
+time in the source data}
+
+\item{concu_pref, doseu_pref, amountu_pref, timeu_pref}{Preferred units for
+reporting; conversions will be automatically generated.}
 
 \item{conversions}{An optional data.frame with columns of c("PPORRESU",
 "PPSTRESU", "conversion_factor") for the original calculation units, the

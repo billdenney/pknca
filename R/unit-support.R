@@ -5,7 +5,9 @@
 #' `NA`.
 #'
 #' @param concu,doseu,amountu,timeu Units for concentration, dose, amount, and
-#'   time
+#'   time in the source data
+#' @param concu_pref,doseu_pref,amountu_pref,timeu_pref Preferred units for
+#'   reporting; conversions will be automatically generated.
 #' @param conversions An optional data.frame with columns of c("PPORRESU",
 #'   "PPSTRESU", "conversion_factor") for the original calculation units, the
 #'   standardized units, and a conversion factor to multiply the initial value
@@ -40,7 +42,9 @@
 #'   )
 #' )
 #' @export
-pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.frame()) {
+pknca_units_table <- function(concu, doseu, amountu, timeu,
+                              concu_pref = NULL, doseu_pref = NULL, amountu_pref = NULL, timeu_pref = NULL,
+                              conversions = data.frame()) {
   # The unit conversions are grouped by the type of inputs required
   ret <-
     rbind(
@@ -53,6 +57,23 @@ pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.fra
       pknca_units_table_conc_time_dose(concu=concu, timeu=timeu, doseu=doseu),
       pknca_units_table_conc_time_amount(concu=concu, timeu=timeu, amountu=amountu)
     )
+  if (any(!is.null(concu_pref), !is.null(doseu_pref), !is.null(amountu_pref), !is.null(timeu_pref))) {
+    if (nrow(conversions) > 0) {
+      stop("'conversions' cannot be given with preferred units")
+    }
+    ret_pref <-
+      pknca_units_table(
+        concu = choose_first(concu_pref, concu),
+        doseu = choose_first(doseu_pref, doseu),
+        amountu = choose_first(amountu_pref, amountu),
+        timeu = choose_first(timeu_pref, timeu)
+      )
+    ret_pref <- dplyr::rename(ret_pref, PPSTRESU = "PPORRESU")
+    conversions <- dplyr::left_join(ret, ret_pref, by = "PPTESTCD")
+    conversions$PPTESTCD <- NULL
+    conversions <- unique(conversions)
+    conversions <- conversions[conversions$PPORRESU != conversions$PPSTRESU, ]
+  }
   # You don't have to define parameters for everything for the parameters to be useful
   # missing_cols <- setdiff(names(get.interval.cols()), c(ret$PPTESTCD, "start", "end"))
   # if (length(missing_cols) > 0) {
@@ -129,6 +150,14 @@ pknca_units_table_unitless <- function() {
       stringsAsFactors=FALSE
     )
   )
+}
+
+choose_first <- function(x, y) {
+  if (!useless(x)) {
+    x
+  } else {
+    y
+  }
 }
 
 useless <- function(x) {

@@ -167,3 +167,38 @@ test_that("allow duplicate PPSTRESU units", {
     pknca_units_table(concu = "ng/mL", doseu = "mg/kg", timeu = "hr", conversions = d_conversion)
   )
 })
+
+test_that("Use preferred units (#197)", {
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      concu_pref = "ug/mL"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "cmax"], 0.001)
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      doseu_pref = "ug/kg"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "cmax.dn"], 0.001)
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      timeu_pref = "day"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "tmax"], 1/24)
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      amountu_pref = "kg"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "clr.obs"], 1e-6)
+
+  expect_error(
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      timeu_pref = "day", conversions = data.frame(A = 1)
+    ),
+    regexp = "'conversions' cannot be given with preferred units"
+  )
+})
