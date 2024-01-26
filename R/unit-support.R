@@ -42,9 +42,6 @@
 #' @export
 pknca_units_table <- function(concu, doseu, amountu, timeu, conversions=data.frame()) {
   # The unit conversions are grouped by the type of inputs required
-  ret_any <-
-    rbind(
-    )
   ret <-
     rbind(
       pknca_units_table_unitless(),
