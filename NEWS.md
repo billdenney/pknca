@@ -50,6 +50,9 @@ the dosing including dose amount and route.
   groups by default.
 * A new argument "filter_requested" for `as.data.frame.PKNCAresults()` allows
   you to filter only to requested results from a PKNCAresults object.
+* `pknca_units_table()` now has four new arguments to allow for simplified
+  automatic conversion from source units to desired reporting units,
+  `concu_pref`, `doseu_pref`, `amountu_pref`, and `timeu_pref` (#197)
 
 ## Bugs fixed
 

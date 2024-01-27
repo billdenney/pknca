@@ -75,13 +75,13 @@ test_that("PKNCAresults generation", {
     info="Conversion of PKNCAresults to a data.frame in long format (default long format)"
   )
   expect_equal(
-    as.data.frame(myresult, out.format="long"),
+    as.data.frame(myresult, out_format="long"),
     verify.result,
     tolerance=0.001,
     info="Conversion of PKNCAresults to a data.frame in long format (specifying long format)"
   )
   expect_equal(
-    as.data.frame(myresult, out.format="wide"),
+    as.data.frame(myresult, out_format="wide"),
     tidyr::spread(verify.result, key="PPTESTCD", value="PPORRES"),
     tolerance=0.001,
     info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)"
@@ -293,10 +293,10 @@ test_that("units work for calculations and summaries with one set of units acros
     c(".", "9.70e-7 [4.29]")
   )
   # Wide conversion works for original and standardized units
-  df_wide_orig <- as.data.frame(myresult_units_orig, out.format="wide")
-  df_wide_std <- as.data.frame(myresult_units_std, out.format="wide")
+  df_wide_orig <- as.data.frame(myresult_units_orig, out_format="wide")
+  df_wide_std <- as.data.frame(myresult_units_std, out_format="wide")
   expect_equal(
-    as.data.frame(myresult, out.format="wide"),
+    as.data.frame(myresult, out_format="wide"),
     # The difference is the addition of units to the column names
     df_wide_orig %>%
       dplyr::rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
