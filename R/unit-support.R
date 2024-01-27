@@ -7,11 +7,13 @@
 #' @param concu,doseu,amountu,timeu Units for concentration, dose, amount, and
 #'   time in the source data
 #' @param concu_pref,doseu_pref,amountu_pref,timeu_pref Preferred units for
-#'   reporting; conversions will be automatically generated.
+#'   reporting; `conversions` will be automatically.
 #' @param conversions An optional data.frame with columns of c("PPORRESU",
 #'   "PPSTRESU", "conversion_factor") for the original calculation units, the
 #'   standardized units, and a conversion factor to multiply the initial value
-#'   by to get a standardized value.
+#'   by to get a standardized value.  This argument overrides any preferred unit
+#'   conversions from `concu_pref`, `doseu_pref`, `amountu_pref`, or
+#'   `timeu_pref`.
 #' @returns A unit conversion table with columns for "PPTESTCD" and "PPORRESU"
 #'   if `conversions` is not given, and adding "PPSTRESU" and
 #'   "conversion_factor" if `conversions` is given.
@@ -41,11 +43,28 @@
 #'     conversion_factor=c(1/138.121, NA, NA)
 #'   )
 #' )
+#'
+#' # This will make all time-related parameters use "day" even though the
+#' # original units are "hr"
+#' pknca_units_table(
+#'   concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+#'   timeu_pref = "day"
+#" )
 #' @export
 pknca_units_table <- function(concu, doseu, amountu, timeu,
                               concu_pref = NULL, doseu_pref = NULL, amountu_pref = NULL, timeu_pref = NULL,
                               conversions = data.frame()) {
   checkmate::assert_data_frame(conversions)
+  if (nrow(conversions) > 0) {
+    checkmate::assert_names(
+      names(conversions),
+      subset.of = c("PPORRESU", "PPSTRESU", "conversion_factor"),
+      must.include = c("PPORRESU", "PPSTRESU")
+    )
+    if (!("conversion_factor" %in% names(conversions))) {
+      conversions$conversion_factor <- NA_real_
+    }
+  }
 
   # The unit conversions are grouped by the type of inputs required
   ret <-
@@ -60,15 +79,8 @@ pknca_units_table <- function(concu, doseu, amountu, timeu,
       pknca_units_table_conc_time_amount(concu=concu, timeu=timeu, amountu=amountu)
     )
 
-  if (!("conversion_factor" %in% names(conversions))) {
-    conversions$conversion_factor[] <- NA_real_
-  }
-
   # Generate preferred units and merge them into `conversions`
   if (any(!is.null(concu_pref), !is.null(doseu_pref), !is.null(amountu_pref), !is.null(timeu_pref))) {
-    if (nrow(conversions) > 0) {
-      stop("'conversions' cannot be given with preferred units")
-    }
     ret_pref <-
       pknca_units_table(
         concu = choose_first(concu_pref, concu),
@@ -77,10 +89,21 @@ pknca_units_table <- function(concu, doseu, amountu, timeu,
         timeu = choose_first(timeu_pref, timeu)
       )
     ret_pref <- dplyr::rename(ret_pref, PPSTRESU = "PPORRESU")
-    conversions <- dplyr::left_join(ret, ret_pref, by = "PPTESTCD")
-    conversions$PPTESTCD <- NULL
-    conversions <- unique(conversions)
-    conversions <- conversions[conversions$PPORRESU != conversions$PPSTRESU, ]
+    conversions_pref <- dplyr::left_join(ret, ret_pref, by = "PPTESTCD")
+    conversions_pref$PPTESTCD <- NULL
+    conversions_pref <- unique(conversions_pref)
+    conversions_pref <- conversions_pref[conversions_pref$PPORRESU != conversions_pref$PPSTRESU, ]
+    conversions_pref$conversion_factor <- NA_real_
+    for (idx in seq_len(nrow(conversions))) {
+      # Use the original conversions argument over `conversions_pref`
+      mask_pref <- conversions_pref$PPORRESU %in% conversions$PPORRESU[idx]
+      if (!any(mask_pref)) {
+        stop("Cannot find PPORRESU match between conversions and preferred unit conversions.  Check PPORRESU values in 'conversions' argument.")
+      }
+      conversions_pref$PPSTRESU[mask_pref] <- conversions$PPSTRESU[idx]
+      conversions_pref$conversion_factor[mask_pref] <- conversions$conversion_factor[idx]
+    }
+    conversions <- conversions_pref
   }
 
   extra_cols <- setdiff(ret$PPTESTCD, names(PKNCA::get.interval.cols()))
