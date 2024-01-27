@@ -49,7 +49,7 @@
 #' pknca_units_table(
 #'   concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
 #'   timeu_pref = "day"
-#" )
+#' )
 #' @export
 pknca_units_table <- function(concu, doseu, amountu, timeu,
                               concu_pref = NULL, doseu_pref = NULL, amountu_pref = NULL, timeu_pref = NULL,

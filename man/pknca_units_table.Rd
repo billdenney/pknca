@@ -71,6 +71,7 @@ pknca_units_table(
 pknca_units_table(
   concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
   timeu_pref = "day"
+)
 }
 \seealso{
 The \code{units} argument for \code{\link[=PKNCAdata]{PKNCAdata()}}
