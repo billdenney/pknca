@@ -79,21 +79,38 @@ If a unit is not given, then all of the units derived from that unit will be
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pknca_units_table</span><span class="op">(</span><span class="va">concu</span>, <span class="va">doseu</span>, <span class="va">amountu</span>, <span class="va">timeu</span>, conversions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pknca_units_table</span><span class="op">(</span></span>
+<span>  <span class="va">concu</span>,</span>
+<span>  <span class="va">doseu</span>,</span>
+<span>  <span class="va">amountu</span>,</span>
+<span>  <span class="va">timeu</span>,</span>
+<span>  concu_pref <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  doseu_pref <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  amountu_pref <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  timeu_pref <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conversions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>concu, doseu, amountu, timeu</dt>
 <dd><p>Units for concentration, dose, amount, and
-time</p></dd>
+time in the source data</p></dd>
+
+
+<dt>concu_pref, doseu_pref, amountu_pref, timeu_pref</dt>
+<dd><p>Preferred units for
+reporting; <code>conversions</code> will be automatically.</p></dd>
 
 
 <dt>conversions</dt>
 <dd><p>An optional data.frame with columns of c("PPORRESU",
 "PPSTRESU", "conversion_factor") for the original calculation units, the
 standardized units, and a conversion factor to multiply the initial value
-by to get a standardized value.</p></dd>
+by to get a standardized value.  This argument overrides any preferred unit
+conversions from <code>concu_pref</code>, <code>doseu_pref</code>, <code>amountu_pref</code>, or
+<code>timeu_pref</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -850,6 +867,251 @@ if <code>conversions</code> is not given, and adding "PPSTRESU" and
 <span class="r-out co"><span class="r-pr">#&gt;</span> 116       1.000000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 117       1.000000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 118       1.000000000</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This will make all time-related parameters use "day" even though the</span></span></span>
+<span class="r-in"><span><span class="co"># original units are "hr"</span></span></span>
+<span class="r-in"><span><span class="fu">pknca_units_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  concu <span class="op">=</span> <span class="st">"ng/mL"</span>, doseu <span class="op">=</span> <span class="st">"mg/kg"</span>, timeu <span class="op">=</span> <span class="st">"hr"</span>, amountu <span class="op">=</span> <span class="st">"mg"</span>,</span></span>
+<span class="r-in"><span>  timeu_pref <span class="op">=</span> <span class="st">"day"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 PPORRESU             PPTESTCD              PPSTRESU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               unitless            r.squared              unitless</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               unitless        adj.r.squared              unitless</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               fraction                    f              fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4               fraction                  ptr              fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5               fraction                   fe              fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6               fraction           span.ratio              fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                      %             deg.fluc                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                      %                swing                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                      %       aucivpbextlast                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                     %        aucivpbextall                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                     %   aucivpbextint.last                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                     %    aucivpbextint.all                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                     %    aucivpbextinf.obs                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                     %   aucivpbextinf.pred                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                     %          aucpext.obs                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                     %         aucpext.pred                     %</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                 count           count_conc                 count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                 count    lambda.z.n.points                 count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                    hr                start                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20                    hr                  end                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                    hr                 tmax                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22                    hr                tlast                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23                    hr               tfirst                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24                    hr             mrt.last                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                    hr          mrt.iv.last                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26                    hr                 tlag                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27                    hr           time_above                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28                    hr            half.life                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                    hr  lambda.z.time.first                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30                    hr       thalf.eff.last                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                    hr    thalf.eff.iv.last                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32                    hr              mrt.obs                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33                    hr             mrt.pred                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34                    hr           mrt.iv.obs                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35                    hr          mrt.iv.pred                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36                    hr           mrt.md.obs                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37                    hr          mrt.md.pred                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38                    hr        thalf.eff.obs                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39                    hr       thalf.eff.pred                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40                    hr     thalf.eff.iv.obs                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41                    hr    thalf.eff.iv.pred                   day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42                  1/hr             lambda.z                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43                  1/hr             kel.last                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44                  1/hr          kel.iv.last                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45                  1/hr              kel.obs                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46                  1/hr             kel.pred                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47                  1/hr           kel.iv.obs                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48                  1/hr          kel.iv.pred                 1/day</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49                 ng/mL                   c0                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50                 ng/mL                 cmax                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51                 ng/mL                 cmin                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52                 ng/mL            clast.obs                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53                 ng/mL                  cav                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54                 ng/mL         cav.int.last                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55                 ng/mL          cav.int.all                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56                 ng/mL              ctrough                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57                 ng/mL               cstart                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58                 ng/mL                 ceoi                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59                 ng/mL           clast.pred                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60                 ng/mL      cav.int.inf.obs                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61                 ng/mL     cav.int.inf.pred                 ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62                    mg                   ae                    mg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63       (ng/mL)/(mg/kg)              cmax.dn       (ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64       (ng/mL)/(mg/kg)              cmin.dn       (ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65       (ng/mL)/(mg/kg)         clast.obs.dn       (ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66       (ng/mL)/(mg/kg)        clast.pred.dn       (ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67       (ng/mL)/(mg/kg)               cav.dn       (ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68       (ng/mL)/(mg/kg)           ctrough.dn       (ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69       (mg/kg)/(ng/mL)             vss.last       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70       (mg/kg)/(ng/mL)          vss.iv.last       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71       (mg/kg)/(ng/mL)               vz.obs       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72       (mg/kg)/(ng/mL)              vz.pred       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73       (mg/kg)/(ng/mL)              vss.obs       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74       (mg/kg)/(ng/mL)             vss.pred       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75       (mg/kg)/(ng/mL)           vss.iv.obs       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76       (mg/kg)/(ng/mL)          vss.iv.pred       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77       (mg/kg)/(ng/mL)           vss.md.obs       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78       (mg/kg)/(ng/mL)          vss.md.pred       (mg/kg)/(ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79              hr*ng/mL              auclast             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80              hr*ng/mL               aucall             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81              hr*ng/mL          aucint.last             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82              hr*ng/mL     aucint.last.dose             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83              hr*ng/mL           aucint.all             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84              hr*ng/mL      aucint.all.dose             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85              hr*ng/mL aucabove.predose.all             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86              hr*ng/mL  aucabove.trough.all             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87              hr*ng/mL       sparse_auclast             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88              hr*ng/mL            aucivlast             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89              hr*ng/mL             aucivall             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90              hr*ng/mL        aucivint.last             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91              hr*ng/mL         aucivint.all             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92              hr*ng/mL           aucinf.obs             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93              hr*ng/mL          aucinf.pred             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94              hr*ng/mL       aucint.inf.obs             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95              hr*ng/mL  aucint.inf.obs.dose             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96              hr*ng/mL      aucint.inf.pred             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97              hr*ng/mL aucint.inf.pred.dose             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98              hr*ng/mL         aucivinf.obs             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99              hr*ng/mL        aucivinf.pred             day*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100           hr^2*ng/mL             aumclast           day^2*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101           hr^2*ng/mL              aumcall           day^2*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102           hr^2*ng/mL          aumcinf.obs           day^2*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103           hr^2*ng/mL         aumcinf.pred           day^2*ng/mL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104   (hr*ng/mL)/(mg/kg)           auclast.dn   (day*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105   (hr*ng/mL)/(mg/kg)            aucall.dn   (day*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106   (hr*ng/mL)/(mg/kg)        aucinf.obs.dn   (day*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107   (hr*ng/mL)/(mg/kg)       aucinf.pred.dn   (day*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108 (hr^2*ng/mL)/(mg/kg)          aumclast.dn (day^2*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109 (hr^2*ng/mL)/(mg/kg)           aumcall.dn (day^2*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110 (hr^2*ng/mL)/(mg/kg)       aumcinf.obs.dn (day^2*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111 (hr^2*ng/mL)/(mg/kg)      aumcinf.pred.dn (day^2*ng/mL)/(mg/kg)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112   (mg/kg)/(hr*ng/mL)              cl.last   (mg/kg)/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113   (mg/kg)/(hr*ng/mL)               cl.all   (mg/kg)/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114   (mg/kg)/(hr*ng/mL)               cl.obs   (mg/kg)/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115   (mg/kg)/(hr*ng/mL)              cl.pred   (mg/kg)/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116        mg/(hr*ng/mL)             clr.last        mg/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117        mg/(hr*ng/mL)              clr.obs        mg/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118        mg/(hr*ng/mL)             clr.pred        mg/(day*ng/mL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     conversion_factor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48       24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78        1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99        0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104       0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105       0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106       0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107       0.041666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111       0.001736111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112      24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113      24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114      24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115      24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116      24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117      24.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118      24.000000000</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
