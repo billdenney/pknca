@@ -197,8 +197,15 @@ test_that("Use preferred units (#197)", {
   expect_error(
     pknca_units_table(
       concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
-      timeu_pref = "day", conversions = data.frame(A = 1)
+      timeu_pref = "day",
+      conversions = data.frame(A = 1)
     ),
     regexp = "'conversions' cannot be given with preferred units"
+  )
+})
+
+test_that("pknca_units_table expected errors", {
+  expect_error(
+    pknca_units_table(conversions = "A")
   )
 })

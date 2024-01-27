@@ -45,6 +45,8 @@
 pknca_units_table <- function(concu, doseu, amountu, timeu,
                               concu_pref = NULL, doseu_pref = NULL, amountu_pref = NULL, timeu_pref = NULL,
                               conversions = data.frame()) {
+  checkmate::assert_data_frame(conversions)
+
   # The unit conversions are grouped by the type of inputs required
   ret <-
     rbind(
@@ -57,6 +59,12 @@ pknca_units_table <- function(concu, doseu, amountu, timeu,
       pknca_units_table_conc_time_dose(concu=concu, timeu=timeu, doseu=doseu),
       pknca_units_table_conc_time_amount(concu=concu, timeu=timeu, amountu=amountu)
     )
+
+  if (!("conversion_factor" %in% names(conversions))) {
+    conversions$conversion_factor[] <- NA_real_
+  }
+
+  # Generate preferred units and merge them into `conversions`
   if (any(!is.null(concu_pref), !is.null(doseu_pref), !is.null(amountu_pref), !is.null(timeu_pref))) {
     if (nrow(conversions) > 0) {
       stop("'conversions' cannot be given with preferred units")
@@ -74,25 +82,20 @@ pknca_units_table <- function(concu, doseu, amountu, timeu,
     conversions <- unique(conversions)
     conversions <- conversions[conversions$PPORRESU != conversions$PPSTRESU, ]
   }
-  # You don't have to define parameters for everything for the parameters to be useful
-  # missing_cols <- setdiff(names(get.interval.cols()), c(ret$PPTESTCD, "start", "end"))
-  # if (length(missing_cols) > 0) {
-  #   stop("The following NCA parameters do not have units defined: ", paste(missing_cols, collapse=", "))
-  # }
+
   extra_cols <- setdiff(ret$PPTESTCD, names(PKNCA::get.interval.cols()))
   if (length(extra_cols) > 0) {
     stop("Please report a bug.  Unknown NCA parameters have units defined: ", paste(extra_cols, collapse=", ")) # nocov
   }
+
+  # Apply conversion factors
   if (nrow(conversions) > 0) {
     stopifnot(!duplicated(conversions$PPORRESU))
     # PPSTRESU may be duplicated because some differing original units may
     # converge (e.g. cmax.dn and vss)
     stopifnot(length(setdiff(names(conversions), c("PPORRESU", "PPSTRESU", "conversion_factor"))) == 0)
-    if (!("conversion_factor" %in% names(conversions))) {
-      if (!requireNamespace("units", quietly=TRUE)) {
-        stop("The units package is required for automatic unit conversion") # nocov
-      }
-      conversions$conversion_factor <- NA_real_
+    if (any(is.na(conversions$conversion_factor)) && !requireNamespace("units", quietly=TRUE)) {
+      stop("The units package is required for automatic unit conversion") # nocov
     }
     for (idx in which(is.na(conversions$conversion_factor))) {
       conversions$conversion_factor[idx] <-
