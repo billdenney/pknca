@@ -167,3 +167,75 @@ test_that("allow duplicate PPSTRESU units", {
     pknca_units_table(concu = "ng/mL", doseu = "mg/kg", timeu = "hr", conversions = d_conversion)
   )
 })
+
+test_that("Use preferred units (#197)", {
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      concu_pref = "ug/mL"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "cmax"], 0.001)
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      doseu_pref = "ug/kg"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "cmax.dn"], 0.001)
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      timeu_pref = "day"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "tmax"], 1/24)
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      amountu_pref = "kg"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "clr.obs"], 1e-6)
+
+  # conversions can override the preferred units parameter
+  prep <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      timeu_pref = "day",
+      conversions = data.frame(PPORRESU = "hr^2*ng/mL", PPSTRESU = "min^2*ng/mL")
+    )
+  prep_no_conversions <-
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      timeu_pref = "day"
+    )
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "tmax"], 1/24)
+  expect_equal(prep$conversion_factor[prep$PPTESTCD == "aumcall"], 3600)
+  expect_equal(prep_no_conversions$conversion_factor[prep_no_conversions$PPTESTCD == "aumcall"], 24^-2)
+
+  expect_error(
+    pknca_units_table(
+      concu = "ng/mL", doseu = "mg/kg", timeu = "hr", amountu = "mg",
+      timeu_pref = "day",
+      conversions = data.frame(PPORRESU = "A", PPSTRESU = "B")
+    ),
+    regexp = "Cannot find PPORRESU match between conversions and preferred unit conversions.  Check PPORRESU values in 'conversions' argument.",
+    fixed = TRUE
+  )
+})
+
+test_that("pknca_units_table expected errors", {
+  expect_error(
+    pknca_units_table(conversions = "A")
+  )
+  expect_error(
+    pknca_units_table(conversions = data.frame(A = 1)),
+    # Generate the error to match (in case its text changes)
+    regexp =
+      attr(
+        try(
+          checkmate::assert_names("A", subset.of = c("PPORRESU", "PPSTRESU", "conversion_factor"), .var.name = "names(conversions)"),
+          silent = TRUE
+        ),
+        "condition"
+      )$message,
+    fixed = TRUE
+  )
+})
