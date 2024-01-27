@@ -92,7 +92,10 @@ pknca_units_table <- function(concu, doseu, amountu, timeu,
     conversions_pref <- dplyr::left_join(ret, ret_pref, by = "PPTESTCD")
     conversions_pref$PPTESTCD <- NULL
     conversions_pref <- unique(conversions_pref)
+    # Drop units that are not converted
     conversions_pref <- conversions_pref[conversions_pref$PPORRESU != conversions_pref$PPSTRESU, ]
+    # Drop units that are not provided
+    conversions_pref <- conversions_pref[!is.na(conversions_pref$PPORRESU), ]
     conversions_pref$conversion_factor <- NA_real_
     for (idx in seq_len(nrow(conversions))) {
       # Use the original conversions argument over `conversions_pref`
@@ -178,11 +181,13 @@ pknca_units_table_unitless <- function() {
   )
 }
 
-choose_first <- function(x, y) {
+choose_first <- function(x, y, .default = NA) {
   if (!useless(x)) {
     x
-  } else {
+  } else if (!useless(y)) {
     y
+  } else {
+    .default
   }
 }
 
