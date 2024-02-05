@@ -219,6 +219,16 @@ test_that("Use preferred units (#197)", {
     regexp = "Cannot find PPORRESU match between conversions and preferred unit conversions.  Check PPORRESU values in 'conversions' argument.",
     fixed = TRUE
   )
+
+  # Not all arguments are required
+  expect_silent(
+    pknca_units_table(
+      concu = "ng/mL",
+      doseu = "mg",
+      timeu = "hr",
+      timeu_pref = "day"
+    )
+  )
 })
 
 test_that("pknca_units_table expected errors", {

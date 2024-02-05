@@ -109,7 +109,7 @@ conc_obj_multi <-
                   check.blq=FALSE),
     conc~time|Subject)
 conc_obj_multi
-dose_obj_multi <- PKNCAdose(expand.grid(Subject=unique(conc_obj_multi$data$Subject),
+dose_obj_multi <- PKNCAdose(expand.grid(Subject=unique(as.data.frame(conc_obj_multi)$Subject),
                                       time=seq(0, 144, by=24)),
                           ~time|Subject)
 dose_obj_multi
