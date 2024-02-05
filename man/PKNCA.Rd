@@ -2,8 +2,8 @@
 % Please edit documentation in R/PKNCA.R
 \docType{package}
 \name{PKNCA}
-\alias{PKNCA}
 \alias{PKNCA-package}
+\alias{PKNCA}
 \title{Compute noncompartmental pharmacokinetics}
 \description{
 Compute pharmacokinetic (PK) noncompartmental analysis (NCA)

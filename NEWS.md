@@ -53,6 +53,10 @@ the dosing including dose amount and route.
 * `pknca_units_table()` now has four new arguments to allow for simplified
   automatic conversion from source units to desired reporting units,
   `concu_pref`, `doseu_pref`, `amountu_pref`, and `timeu_pref` (#197)
+* Extraction of PKNCA objects from within other PKNCA objects is now supported
+  by various `as_PKNCA*` functions like `as_PKNCAconc()` which can be used to
+  extract the concentration data from within a PKNCAdata or PKNCAresults object
+  (#278)
 
 ## Bugs fixed
 

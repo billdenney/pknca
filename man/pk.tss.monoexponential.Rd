@@ -48,7 +48,7 @@ Estimating Time to Steady State with Examples from Phase 1 Studies. AAPS J
 }
 \seealso{
 Other Time to steady-state calculations: 
-\code{\link{pk.tss.stepwise.linear}()},
-\code{\link{pk.tss}()}
+\code{\link{pk.tss}()},
+\code{\link{pk.tss.stepwise.linear}()}
 }
 \concept{Time to steady-state calculations}
