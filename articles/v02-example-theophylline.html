@@ -4536,7 +4536,7 @@ information).</p>
 <span><span class="co">##        1 10.50000 1.12    &lt;NA&gt;     NA        0</span></span>
 <span><span class="co">##        1  9.66000 2.02    &lt;NA&gt;     NA        0</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dose_obj_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>Subject<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">conc_obj_multi</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">Subject</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">dose_obj_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PKNCAdose.html">PKNCAdose</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>Subject<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">conc_obj_multi</span><span class="op">)</span><span class="op">$</span><span class="va">Subject</span><span class="op">)</span>,</span>
 <span>                                      time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">144</span>, by<span class="op">=</span><span class="fl">24</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                          <span class="op">~</span><span class="va">time</span><span class="op">|</span><span class="va">Subject</span><span class="op">)</span></span>
 <span><span class="va">dose_obj_multi</span></span></code></pre></div>
@@ -4813,7 +4813,7 @@ progress.</p>
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "PKNCAresults" "list"        </span></span>
 <span><span class="co">## attr(,"provenance")</span></span>
-<span><span class="co">## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2024-01-27 15:58:08.037569 with R version 4.3.2 (2023-10-31).</span></span></code></pre>
+<span><span class="co">## Provenance hash ee687a520af821aa354fef62aa53cba0 generated on 2024-02-05 15:20:00.458678 with R version 4.3.2 (2023-10-31).</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results_obj</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  start end  N     auclast        cmax</span></span>
