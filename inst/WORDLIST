@@ -99,6 +99,7 @@ dbplyr
 difftime
 doBy
 doi
+dosetype
 dplyr
 dtplyr
 durations
@@ -160,6 +161,7 @@ tibble
 tibbles
 tlast
 tmax
+totdose
 tss
 unforseen
 ungroup
