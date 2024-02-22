@@ -459,3 +459,8 @@ test_that("pk.calc.count_conc", {
   expect_equal(suppressWarnings(pk.calc.count_conc(c())), 0)
   expect_equal(suppressWarnings(pk.calc.count_conc(NA)), 0)
 })
+
+test_that("pk.calc.totdose", {
+  expect_equal(pk.calc.totdose(1), 1)
+  expect_equal(pk.calc.totdose(c(1, 1)), 2)
+})

@@ -1350,3 +1350,26 @@ PKNCA.set.summary(
   point=business.median,
   spread=business.range
 )
+
+#' Extract the dose used for calculations
+#'
+#' @inheritParams pk.calc.cl
+#' @returns The total dose for an interval
+#' @export
+pk.calc.totdose <- function(dose) {
+  sum(dose)
+}
+add.interval.col(
+  "totdose",
+  FUN="pk.calc.totdose",
+  values=c(FALSE, TRUE),
+  unit_type="dose",
+  pretty_name="Total dose",
+  desc="Total dose administered during an interval"
+)
+PKNCA.set.summary(
+  name="totdose",
+  description="median and range",
+  point=business.median,
+  spread=business.range
+)

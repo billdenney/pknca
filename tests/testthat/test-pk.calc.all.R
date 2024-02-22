@@ -657,3 +657,31 @@ test_that("The option keep_interval_cols is respected", {
   expect_equal(o_nca$result$foo, "A")
   expect_true("foo" %in% names(summary(o_nca)))
 })
+
+test_that("dose is calculable", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, totdose = TRUE))
+  myresult <- pk.nca(mydata)
+
+  # One dose in the interval
+  expect_equal(as.data.frame(myresult)$PPORRES, rep(1, 2))
+  expect_equal(as.data.frame(myresult)$PPTESTCD, rep("totdose", 2))
+
+  # Don't give dose data
+  mydata <- PKNCAdata(myconc, intervals = data.frame(start = 0, end = Inf, totdose = TRUE))
+  suppressMessages(myresult <- pk.nca(mydata))
+  expect_equal(as.data.frame(myresult)$PPORRES, rep(NA_real_, 2))
+  expect_equal(as.data.frame(myresult)$PPTESTCD, rep("totdose", 2))
+
+  # Multiple doses in the interval
+  tmpdose_second <- tmpdose
+  tmpdose_second$time <- 1
+  mydose <- PKNCAdose(rbind(tmpdose, tmpdose_second), formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, totdose = TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(as.data.frame(myresult)$PPORRES, rep(2, 2))
+  expect_equal(as.data.frame(myresult)$PPTESTCD, rep("totdose", 2))
+})
