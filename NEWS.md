@@ -57,6 +57,7 @@ the dosing including dose amount and route.
   by various `as_PKNCA*` functions like `as_PKNCAconc()` which can be used to
   extract the concentration data from within a PKNCAdata or PKNCAresults object
   (#278)
+* A new "totdose" parameter gives the total dose administered during an interval
 
 ## Bugs fixed
 
