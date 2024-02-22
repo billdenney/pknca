@@ -258,15 +258,15 @@ no arguments:</p>
 <span><span class="co">##   cav.int.last cav.int.all ctrough cstart   ptr  tlag deg.fluc swing  ceoi</span></span>
 <span><span class="co">## 1        FALSE       FALSE   FALSE  FALSE FALSE FALSE    FALSE FALSE FALSE</span></span>
 <span><span class="co">## 2        FALSE       FALSE   FALSE  FALSE FALSE FALSE    FALSE FALSE FALSE</span></span>
-<span><span class="co">##   aucabove.predose.all aucabove.trough.all count_conc    ae clr.last clr.obs</span></span>
-<span><span class="co">## 1                FALSE               FALSE      FALSE FALSE    FALSE   FALSE</span></span>
-<span><span class="co">## 2                FALSE               FALSE      FALSE FALSE    FALSE   FALSE</span></span>
-<span><span class="co">##   clr.pred    fe sparse_auclast time_above aucivlast aucivall aucivint.last</span></span>
-<span><span class="co">## 1    FALSE FALSE          FALSE      FALSE     FALSE    FALSE         FALSE</span></span>
-<span><span class="co">## 2    FALSE FALSE          FALSE      FALSE     FALSE    FALSE         FALSE</span></span>
-<span><span class="co">##   aucivint.all aucivpbextlast aucivpbextall aucivpbextint.last</span></span>
-<span><span class="co">## 1        FALSE          FALSE         FALSE              FALSE</span></span>
-<span><span class="co">## 2        FALSE          FALSE         FALSE              FALSE</span></span>
+<span><span class="co">##   aucabove.predose.all aucabove.trough.all count_conc totdose    ae clr.last</span></span>
+<span><span class="co">## 1                FALSE               FALSE      FALSE   FALSE FALSE    FALSE</span></span>
+<span><span class="co">## 2                FALSE               FALSE      FALSE   FALSE FALSE    FALSE</span></span>
+<span><span class="co">##   clr.obs clr.pred    fe sparse_auclast time_above aucivlast aucivall</span></span>
+<span><span class="co">## 1   FALSE    FALSE FALSE          FALSE      FALSE     FALSE    FALSE</span></span>
+<span><span class="co">## 2   FALSE    FALSE FALSE          FALSE      FALSE     FALSE    FALSE</span></span>
+<span><span class="co">##   aucivint.last aucivint.all aucivpbextlast aucivpbextall aucivpbextint.last</span></span>
+<span><span class="co">## 1         FALSE        FALSE          FALSE         FALSE              FALSE</span></span>
+<span><span class="co">## 2         FALSE        FALSE          FALSE         FALSE              FALSE</span></span>
 <span><span class="co">##   aucivpbextint.all half.life r.squared adj.r.squared lambda.z</span></span>
 <span><span class="co">## 1             FALSE     FALSE     FALSE         FALSE    FALSE</span></span>
 <span><span class="co">## 2             FALSE      TRUE     FALSE         FALSE    FALSE</span></span>
@@ -531,6 +531,7 @@ dosing data.</p>
 <col width="0%">
 <col width="0%">
 <col width="0%">
+<col width="0%">
 <col width="1%">
 <col width="0%">
 <col width="0%">
@@ -646,6 +647,7 @@ dosing data.</p>
 <th align="left">aucabove.predose.all</th>
 <th align="left">aucabove.trough.all</th>
 <th align="left">count_conc</th>
+<th align="left">totdose</th>
 <th align="left">ae</th>
 <th align="left">clr.last</th>
 <th align="left">clr.obs</th>
@@ -848,6 +850,7 @@ dosing data.</p>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
+<td align="left">FALSE</td>
 </tr>
 <tr class="even">
 <td align="right">0</td>
@@ -864,6 +867,7 @@ dosing data.</p>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 <td align="left">TRUE</td>
+<td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
