@@ -409,3 +409,18 @@ test_that("PKNCAresults summary counts N and n", {
     "auclast, cmax, aucinf.obs: geometric mean and geometric coefficient of variation; tmax: median and range; half.life: arithmetic mean and standard deviation; N: number of subjects; n: number of measurements included in summary"
   )
 })
+
+test_that("summary.PKNCAresults drop_param argument works", {
+  tmpconc <- generate.conc(2, 1, 0:6)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula = conc ~ time | treatment + ID)
+  mydose <- PKNCAdose(tmpdose, formula = dose ~ time | treatment + ID)
+  mydata <- PKNCAdata(myconc, mydose)
+  suppressWarnings(
+    myresult <- pk.nca(mydata)
+  )
+  o_summary <- summary(myresult)
+  expect_true("auclast" %in% names(o_summary))
+  o_summary_noauclast <- summary(myresult, drop_param = "auclast")
+  expect_false("auclast" %in% names(o_summary_noauclast))
+})

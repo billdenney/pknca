@@ -4,6 +4,7 @@
 #'
 #' @param object The results to summarize
 #' @param drop_group Which group(s) should be dropped from the formula?
+#' @param drop_param Which parameters should be excluded from the summary?
 #' @param not_requested A character string to use when a parameter summary was
 #'   not requested for a parameter within an interval.
 #' @param not_calculated A character string to use when a parameter summary was
@@ -53,6 +54,7 @@
 #' @importFrom lifecycle deprecated
 summary.PKNCAresults <- function(object, ...,
                                  drop_group = object$data$conc$columns$subject,
+                                 drop_param = character(),
                                  summarize_n = NA,
                                  not_requested = ".",
                                  not_calculated = "NC",
@@ -116,14 +118,15 @@ summary.PKNCAresults <- function(object, ...,
   # Set excluded rows to NA, give the cleaned data.frame
   raw_results <- summarize_PKNCAresults_clean_exclude(object)
 
-  # Find any parameters that request any summaries
+  # Find any parameters that request any summaries, and exclude ones that are
+  # not requested
   parameter_cols <-
     setdiff(
       intersect(
         names(object$data$intervals),
         names(get.interval.cols())
       ),
-      c("start", "end")
+      c(c("start", "end"), drop_param)
     )
 
   # Extract columns that have been requested by the user for summary in any
@@ -133,7 +136,7 @@ summary.PKNCAresults <- function(object, ...,
       X = object$data$intervals[, parameter_cols, drop = FALSE],
       FUN = any
     )
-  # Then, filter them the the onest that have any "TRUE" values
+  # Then, filter them the the ones that have any "TRUE" values
   result_data_cols_list <- result_data_cols_list[unlist(result_data_cols_list)]
 
   # Prepare for unit management
@@ -392,7 +395,13 @@ summarize_PKNCAresults_group <- function(data, current_group, subject_col, resul
       FUN = any,
       FUN.VALUE = TRUE
     )
-  current_param_all <- names(current_param_prep[current_param_prep])
+  current_param_all <-
+    intersect(
+      names(current_param_prep[current_param_prep]),
+      # This ensures that parameters that were dropped with drop_param
+      # previously are not summarized
+      names(ret)
+    )
 
   footnote_n <- FALSE
   for (current_param in current_param_all) {

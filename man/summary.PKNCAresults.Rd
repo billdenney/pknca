@@ -8,6 +8,7 @@
   object,
   ...,
   drop_group = object$data$conc$columns$subject,
+  drop_param = character(),
   summarize_n = NA,
   not_requested = ".",
   not_calculated = "NC",
@@ -24,6 +25,8 @@
 \item{...}{Ignored.}
 
 \item{drop_group}{Which group(s) should be dropped from the formula?}
+
+\item{drop_param}{Which parameters should be excluded from the summary?}
 
 \item{summarize_n}{Should a column for \code{N} be added (\code{TRUE} or \code{FALSE})?
 \code{NA} means to automatically detect adding \code{N} if the data has a subject
