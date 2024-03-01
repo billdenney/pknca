@@ -58,6 +58,8 @@ the dosing including dose amount and route.
   extract the concentration data from within a PKNCAdata or PKNCAresults object
   (#278)
 * A new "totdose" parameter gives the total dose administered during an interval
+* You may exclude parameters from a summary with the new `drop_param` argument
+  to `summary()` for PKNCAresults objects.
 
 ## Bugs fixed
 
