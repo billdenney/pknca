@@ -1,0 +1,30 @@
+---
+title: "Half-Life Calculation with Tobit Regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Half-Life Calculation with Tobit Regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(PKNCA)
+```
+
+# Half-Life Calculation with Tobit Regression
+
+Typical half-life calculation uses curve-stripping semi-log regression of the
+natural logarithm of the concentration by time.  Based on the use of the
+logarithm of the concentration, concentrations below the limit of quantification
+which are set to zero are ignored.
+
+Tobit regression allows inclusion of the concentrations below the limit of
+quantification in the half-life calculation.  Tobit regression for half-life is
+equivalent to using Beal's M3 method in population pharmacokinetic (PK) models.
