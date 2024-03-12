@@ -7,6 +7,7 @@ articles:
   v03-selection-of-calculation-intervals: v03-selection-of-calculation-intervals.html
   v04-sparse: v04-sparse.html
   v05-auc-calculation-with-PKNCA: v05-auc-calculation-with-PKNCA.html
+  v06-half-life-calculation-tobit: v06-half-life-calculation-tobit.html
   v06-half-life-calculation: v06-half-life-calculation.html
   v07-post-processing: v07-post-processing.html
   v07-unit-conversion: v07-unit-conversion.html
@@ -19,7 +20,7 @@ articles:
   v40-options-for-controlling-PKNCA: v40-options-for-controlling-PKNCA.html
   v60-PKNCA-validation: v60-PKNCA-validation.html
   v80-writing-parameter-functions: v80-writing-parameter-functions.html
-last_built: 2024-03-01T22:37Z
+last_built: 2024-03-12T16:19Z
 urls:
   reference: http://billdenney.github.io/pknca/reference
   article: http://billdenney.github.io/pknca/articles
