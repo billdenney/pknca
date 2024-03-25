@@ -10,6 +10,7 @@ data.frame.}
   ...,
   out_format = c("long", "wide"),
   filter_requested = FALSE,
+  filter_excluded = FALSE,
   out.format = deprecated()
 )
 }
@@ -22,6 +23,8 @@ data.frame.}
 
 \item{filter_requested}{Only return rows with parameters that were
 specifically requested?}
+
+\item{filter_excluded}{Should excluded values be removed?}
 
 \item{out.format}{Deprecated in favor of \code{out_format}}
 }
