@@ -36,11 +36,17 @@ PKNCAresults <- function(result, data, exclude) {
 #' @param out_format Should the output be 'long' (default) or 'wide'?
 #' @param filter_requested Only return rows with parameters that were
 #'   specifically requested?
+#' @param filter_excluded Should excluded values be removed?
 #' @param out.format Deprecated in favor of `out_format`
 #' @returns A data.frame (or usually a tibble) of results
 #' @export
-as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), filter_requested = FALSE, out.format = deprecated()) {
-  ret <- x$result
+as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), filter_requested = FALSE, filter_excluded = FALSE, out.format = deprecated()) {
+  if (!filter_excluded) {
+    ret <- x$result
+  } else {
+    ret <- summarize_PKNCAresults_clean_exclude(x)
+    ret <- ret[is.na(ret[[x$columns$exclude]]), ]
+  }
   # nocov start
   if (lifecycle::is_present(out.format)) {
     lifecycle::deprecate_warn(
