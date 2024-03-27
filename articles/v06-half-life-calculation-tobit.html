@@ -6,12 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="PKNCA">
-<title>Half-Life Calculation with Tobit Regression • PKNCA</title>
+<title>Half-life calculation with Tobit regression • PKNCA</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Half-Life Calculation with Tobit Regression">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Half-life calculation with Tobit regression">
 <meta property="og:description" content="PKNCA">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -46,7 +46,7 @@
     <a class="dropdown-item" href="../articles/v03-selection-of-calculation-intervals.html">Selection of Calculation Intervals</a>
     <a class="dropdown-item" href="../articles/v04-sparse.html">Sparse NCA Calculations</a>
     <a class="dropdown-item" href="../articles/v05-auc-calculation-with-PKNCA.html">AUC Calculation with PKNCA</a>
-    <a class="dropdown-item" href="../articles/v06-half-life-calculation-tobit.html">Half-Life Calculation with Tobit Regression</a>
+    <a class="dropdown-item" href="../articles/v06-half-life-calculation-tobit.html">Half-life calculation with Tobit regression</a>
     <a class="dropdown-item" href="../articles/v06-half-life-calculation.html">Half-Life Calculation</a>
     <a class="dropdown-item" href="../articles/v07-post-processing.html">Post-Processing</a>
     <a class="dropdown-item" href="../articles/v07-unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
@@ -88,7 +88,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Half-Life Calculation with Tobit Regression</h1>
+      <img src="" class="logo" alt=""><h1>Half-life calculation with Tobit regression</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v06-half-life-calculation-tobit.Rmd" class="external-link"><code>vignettes/v06-half-life-calculation-tobit.Rmd</code></a></small>
@@ -97,26 +97,121 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://billdenney.github.io/pknca/" class="external-link">PKNCA</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'PKNCA'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="half-life-calculation-with-tobit-regression">Half-Life Calculation with Tobit Regression<a class="anchor" aria-label="anchor" href="#half-life-calculation-with-tobit-regression"></a>
+<h2 id="half-life-calculation-with-tobit-regression">Half-life calculation with Tobit regression<a class="anchor" aria-label="anchor" href="#half-life-calculation-with-tobit-regression"></a>
 </h2>
+<p>Half-life calculation with Tobit regression allows inclusion of
+concentrations that are below the lower limit of quantification in the
+half-life estimate.</p>
+<div class="section level3">
+<h3 id="comparison-to-semi-log-regression">Comparison to semi-log regression<a class="anchor" aria-label="anchor" href="#comparison-to-semi-log-regression"></a>
+</h3>
 <p>Typical half-life calculation uses curve-stripping semi-log
 regression of the natural logarithm of the concentration by time. Based
 on the use of the logarithm of the concentration, concentrations below
-the limit of quantification which are set to zero are ignored.</p>
+the lower limit of quantification (LLOQ) which are set to zero are
+ignored.</p>
 <p>Tobit regression allows inclusion of the concentrations below the
-limit of quantification in the half-life calculation. Tobit regression
-for half-life is equivalent to using Beal’s M3 method in population
-pharmacokinetic (PK) models.</p>
+LLOQ in the half-life calculation. Tobit regression for half-life is
+equivalent to using Beal’s M3 method in population pharmacokinetic (PK)
+models.</p>
+<p>With Tobit regression, a line is fit using maximum likelihood. For
+points above the LLOQ, the likelihood is based on the probability
+density at the observed concentration. For points below the LLOQ, the
+likelihood is based on the cumulative probability distribution function
+from negative infinity to the limit of quantification.</p>
 </div>
-  </main>
+<div class="section level3">
+<h3 id="automatic-point-selection">Automatic point selection<a class="anchor" aria-label="anchor" href="#automatic-point-selection"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="automatic-point-selection-with-semi-log-regression">Automatic point selection with semi-log regression<a class="anchor" aria-label="anchor" href="#automatic-point-selection-with-semi-log-regression"></a>
+</h3>
+<p>With semi-log regression, the typical method used to automatically
+select concentrations for inclusion in the half-life estimate is to:</p>
+<ol style="list-style-type: decimal">
+<li>Omit all concentrations that are missing.</li>
+<li>Omit all concentrations that are below the LLOQ.</li>
+<li>Estimate the half-life for each set of points from the first
+concentration measure after T<sub>max</sub> to the third measure before
+T<sub>last</sub>.</li>
+<li>Select the best half-life with the following criteria, in order:
+<ol style="list-style-type: decimal">
+<li>The adjusted r-squared must be within a tolerance factor (typically
+0.0001) of the largest adjusted r-squared.</li>
+<li>The <span class="math inline">\(\lambda_z\)</span> value (slope for
+the half-life line) must be positive; in other words, the half-life
+slope must be decreasing.</li>
+<li>If multiple choices of points fit the above criteria, choose the one
+with the most concentration measurements included.</li>
+</ol>
+</li>
+</ol>
+<p>For comparison with PKNCA, note that Phoenix WinNonlin switches the
+order for selection of 4.1 and 4.2 above. So, if the best adjusted
+r-squared is for an increasing slope but there is another adjusted
+r-squared with a decreasing slope, Phoenix will report the
+half-life.</p>
+</div>
+<div class="section level3">
+<h3 id="automatic-point-selection-with-tobit-regression">Automatic point selection with Tobit regression<a class="anchor" aria-label="anchor" href="#automatic-point-selection-with-tobit-regression"></a>
+</h3>
+<p>With Tobit regression, the method is generally similar to the
+semi-log regression with two changes. The first change is that
+concentrations below the LLOQ are retained in the estimate. The second
+change is that the adjusted r-squared is not possible to calculate when
+including points below the LLOQ, so the minimum standard deviation
+estimate is used.</p>
+<p>The selection method below results in effectively the same estimates
+for half-life when all points are above the LLOQ and improved estimates
+for half-life when some points are below the LLOQ. Future research may
+investigate optimization of this method.</p>
+<p>The steps for Tobit regression are:</p>
+<ol style="list-style-type: decimal">
+<li>Omit all concentrations that are missing.</li>
+<li>Estimate the half-life for each set of points from the first
+concentration measure after T<sub>max</sub> to the third measure before
+T<sub>last</sub> while including all points below the LLOQ after
+T<sub>last</sub>.</li>
+<li>Select the best half-life with the following criteria, in order:
+<ol style="list-style-type: decimal">
+<li>The estimated standard deviation of the slope is minimized.</li>
+<li>The <span class="math inline">\(\lambda_z\)</span> value (slope for
+the half-life line) must be positive; in other words, the half-life
+slope must be decreasing.</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+<div class="section level2">
+<h2 id="comparision-of-tobit-and-semi-log-regression">Comparision of Tobit and semi-log regression<a class="anchor" aria-label="anchor" href="#comparision-of-tobit-and-semi-log-regression"></a>
+</h2>
+<p>In almost all scenarios, Tobit regression using the algorithm above
+improves the half-life estimate compared to semi-log regression. In the
+figure below, concentration-time profiles were simulated with 1-, 2-,
+and 3-compartment linear PK models with intravenous or extravascular
+administration and a variety of compartmental model parameters. The true
+half-life was calculated based on the compartmental model parameters.
+Then, the ratio of the estimated to true half-life was calculated.
+Values closer to 1 indicate a better fit and values farther from 1
+indicate a poorer fit.</p>
+<div class="float">
+<img src="v06-half-life-calculation-tobit_figure_1.svg" alt="The empirical cumulative distribution function for ratio of estimated to theoretical half-lives for Tobit regression (aqua line) and semi-log regression (red line) are shown."><div class="figcaption">The empirical cumulative distribution function
+for ratio of estimated to theoretical half-lives for Tobit regression
+(aqua line) and semi-log regression (red line) are shown.</div>
+</div>
+<p>Tobit regression performs universally better than least-squares up to
+the estimated theoretical half-life, and better at &gt;2-fold above the
+theoretical half-life while least-squares performs slightly better
+between the theoretical and 2-fold above. The fact that the Tobit
+regression cumulative distribution function is closer to 1 across the
+range of simulations indicates that Tobit regression provides better
+half-life estimate across a broad range of data.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
