@@ -1,30 +1,109 @@
 ---
-title: "Half-Life Calculation with Tobit Regression"
+title: "Half-life calculation with Tobit regression"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Half-Life Calculation with Tobit Regression}
+  %\VignetteIndexEntry{Half-life calculation with Tobit regression}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r pre-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+```{r setup, include=FALSE}
 library(PKNCA)
 ```
 
-# Half-Life Calculation with Tobit Regression
+# Half-life calculation with Tobit regression
+
+Half-life calculation with Tobit regression allows inclusion of concentrations
+that are below the lower limit of quantification in the half-life estimate.
+
+## Comparison to semi-log regression
 
 Typical half-life calculation uses curve-stripping semi-log regression of the
 natural logarithm of the concentration by time.  Based on the use of the
-logarithm of the concentration, concentrations below the limit of quantification
-which are set to zero are ignored.
+logarithm of the concentration, concentrations below the lower limit of
+quantification (LLOQ) which are set to zero are ignored.
 
-Tobit regression allows inclusion of the concentrations below the limit of
-quantification in the half-life calculation.  Tobit regression for half-life is
-equivalent to using Beal's M3 method in population pharmacokinetic (PK) models.
+Tobit regression allows inclusion of the concentrations below the LLOQ in the
+half-life calculation.  Tobit regression for half-life is equivalent to using
+Beal's M3 method in population pharmacokinetic (PK) models.
+
+With Tobit regression, a line is fit using maximum likelihood.  For points above
+the LLOQ, the likelihood is based on the probability density at the observed
+concentration.  For points below the LLOQ, the likelihood is based on the
+cumulative probability distribution function from negative infinity to the limit
+of quantification.
+
+## Automatic point selection
+
+## Automatic point selection with semi-log regression
+
+With semi-log regression, the typical method used to automatically select
+concentrations for inclusion in the half-life estimate is to:
+
+1. Omit all concentrations that are missing.
+2. Omit all concentrations that are below the LLOQ.
+3. Estimate the half-life for each set of points from the first concentration
+   measure after T~max~ to the third measure before T~last~.
+4. Select the best half-life with the following criteria, in order:
+    1. The adjusted r-squared must be within a tolerance factor (typically
+       0.0001) of the largest adjusted r-squared.
+    2. The $\lambda_z$ value (slope for the half-life line) must be positive;
+       in other words, the half-life slope must be decreasing.
+    3. If multiple choices of points fit the above criteria, choose the one with
+       the most concentration measurements included.
+
+For comparison with PKNCA, note that Phoenix WinNonlin switches the order for
+selection of 4.1 and 4.2 above.  So, if the best adjusted r-squared is for an
+increasing slope but there is another adjusted r-squared with a decreasing
+slope, Phoenix will report the half-life.
+
+## Automatic point selection with Tobit regression
+
+With Tobit regression, the method is generally similar to the semi-log
+regression with two changes.  The first change is that concentrations below the
+LLOQ are retained in the estimate.  The second change is that the adjusted
+r-squared is not possible to calculate when including points below the LLOQ, so
+the minimum standard deviation estimate is used.
+
+The selection method below results in effectively the same estimates for
+half-life when all points are above the LLOQ and improved estimates for
+half-life when some points are below the LLOQ.  Future research may investigate
+optimization of this method.
+
+The steps for Tobit regression are:
+
+1. Omit all concentrations that are missing.
+2. Estimate the half-life for each set of points from the first concentration
+   measure after T~max~ to the third measure before T~last~ while including all
+   points below the LLOQ after T~last~.
+3. Select the best half-life with the following criteria, in order:
+    1. The estimated standard deviation of the slope is minimized.
+    2. The $\lambda_z$ value (slope for the half-life line) must be positive;
+       in other words, the half-life slope must be decreasing.
+
+# Comparision of Tobit and semi-log regression
+
+In almost all scenarios, Tobit regression using the algorithm above improves the
+half-life estimate compared to semi-log regression.  In the figure below,
+concentration-time profiles were simulated with 1-, 2-, and 3-compartment linear
+PK models with intravenous or extravascular administration and a variety of
+compartmental model parameters.  The true half-life was calculated based on the
+compartmental model parameters.  Then, the ratio of the estimated to true
+half-life was calculated.  Values closer to 1 indicate a better fit and values
+farther from 1 indicate a poorer fit.
+
+![The empirical cumulative distribution function for ratio of estimated to theoretical half-lives for Tobit regression (aqua line) and semi-log regression (red line) are shown.](v06-half-life-calculation-tobit_figure_1.svg)
+
+Tobit regression performs universally better than least-squares up to the
+estimated theoretical half-life, and better at >2-fold above the theoretical
+half-life while least-squares performs slightly better between the theoretical
+and 2-fold above.  The fact that the Tobit regression cumulative distribution
+function is closer to 1 across the range of simulations indicates that Tobit
+regression provides better half-life estimate across a broad range of data.
