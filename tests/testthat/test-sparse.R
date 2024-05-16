@@ -6,8 +6,8 @@ test_that("sparse_auc", {
       time = c(0, 0, 0, 1, 1, 1, 6, 6, 6, 2, 2, 2, 10, 10, 10, 4, 4, 4, 24, 24, 24),
       dose = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100)
     )
-  
-  # calculated using the PK library with 
+
+  # calculated using the PK library with
   # v_batch <- PK::auc(data=d_sparse, method="t", design="batch")
   # v_serial <- PK::auc(data=d_sparse, method="t", design="ssd")
   auclast <- 39.4689 # using linear trapezoidal rule
@@ -23,7 +23,7 @@ test_that("sparse_auc", {
   expect_equal(sparse_batch$sparse_auc, auclast)
   expect_equal(sparse_batch$sparse_auc_se, auclast_se_batch)
   expect_equal(sparse_batch$sparse_auc_df, NA_real_)
-  
+
   sparse_serial <- pk.calc.sparse_auc(conc=d_sparse$conc, time=d_sparse$time, subject=seq_len(nrow(d_sparse)))
   expect_equal(sparse_serial$sparse_auc, auclast)
   expect_equal(as.numeric(sparse_serial$sparse_auc_se), auclast_se_serial)
@@ -34,5 +34,11 @@ test_that("sparse_auclast expected errors", {
   expect_error(
     pk.calc.sparse_auclast(auc.type = "foo"),
     class = "pknca_sparse_auclast_change_auclast"
+  )
+})
+
+test_that("sparse_auc_df and sparse_auc_se are in the parameter list (#292)", {
+  expect_true(
+    all(c("sparse_auc_df", "sparse_auc_se") %in% names(get.interval.cols()))
   )
 })

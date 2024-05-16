@@ -361,6 +361,38 @@ PKNCA.set.summary(
   spread=business.geocv
 )
 
+add.interval.col(
+  "sparse_auc_se",
+  FUN=NA,
+  values=c(FALSE, TRUE),
+  unit_type="auc",
+  pretty_name="Sparse AUClast standard error",
+  desc="For sparse PK sampling, the standard error of the area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification",
+  depends="sparse_auclast"
+)
+PKNCA.set.summary(
+  name="sparse_auc_se",
+  description="arithmetic mean and standard deviation",
+  point=business.mean,
+  spread=business.sd
+)
+
+add.interval.col(
+  "sparse_auc_df",
+  FUN=NA,
+  values=c(FALSE, TRUE),
+  unit_type="count",
+  pretty_name="Sparse AUClast degrees of freedom",
+  desc="For sparse PK sampling, the standard error degrees of freedom of the area under the concentration time curve from the beginning of the interval to the last concentration above the limit of quantification",
+  depends="sparse_auclast"
+)
+PKNCA.set.summary(
+  name="sparse_auc_df",
+  description="arithmetic mean and standard deviation",
+  point=business.mean,
+  spread=business.sd
+)
+
 #' Is a PKNCA object used for sparse PK?
 #'
 #' @param object The object to see if it includes sparse PK
