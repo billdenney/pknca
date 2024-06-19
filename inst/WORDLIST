@@ -11,6 +11,7 @@ AUMClast
 Analyte
 BIP
 BLQ
+Beal's
 Biometrics
 Biopharmaceutical
 CDISC
@@ -25,6 +26,7 @@ DL
 DOI
 Dixit
 Durations
+Extrap
 Gabrielsson
 Hadley
 Hsuan
@@ -96,7 +98,6 @@ conc
 ctrough
 customizable
 dbplyr
-difftime
 doBy
 doi
 dosetype
