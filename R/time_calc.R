@@ -4,7 +4,7 @@
 #' @param time_obs A vector of times for observations
 #' @param units Passed to `base::as.numeric.difftime()`
 #' @returns A data.frame with columns for:
-#' \itemize{
+#' \describe{
 #'   \item{event_number_before}{The index of `time_event` that is the last one before `time_obs` or `NA` if none are before.}
 #'   \item{event_number_after}{The index of `time_event` that is the first one after `time_obs` or `NA` if none are after.}
 #'   \item{time_before}{The minimum time that the current `time_obs` is before a `time_event`, 0 if at least one `time_obs == time_event`.}

@@ -44,7 +44,7 @@ The AUC is calculated as:
 
 Where:
 
-\itemize{
+\describe{
 \item{\eqn{AUC}{AUC}}{is the estimated area under the concentration-time curve}
 \item{\eqn{w_i}{w_i}}{is the weight applied to the concentration at time i (related to the time which it affects, see \code{\link[=sparse_auc_weight_linear]{sparse_auc_weight_linear()}})}
 \item{\eqn{\bar{C}_i}{Cbar_i}}{is the average concentration at time i}

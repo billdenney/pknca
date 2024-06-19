@@ -88,7 +88,7 @@ The steps for Tobit regression are:
     2. The $\lambda_z$ value (slope for the half-life line) must be positive;
        in other words, the half-life slope must be decreasing.
 
-# Comparision of Tobit and semi-log regression
+# Comparison of Tobit and semi-log regression
 
 In almost all scenarios, Tobit regression using the algorithm above improves the
 half-life estimate compared to semi-log regression.  In the figure below,

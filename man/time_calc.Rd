@@ -15,7 +15,7 @@ time_calc(time_event, time_obs, units = NULL)
 }
 \value{
 A data.frame with columns for:
-\itemize{
+\describe{
 \item{event_number_before}{The index of \code{time_event} that is the last one before \code{time_obs} or \code{NA} if none are before.}
 \item{event_number_after}{The index of \code{time_event} that is the first one after \code{time_obs} or \code{NA} if none are after.}
 \item{time_before}{The minimum time that the current \code{time_obs} is before a \code{time_event}, 0 if at least one \code{time_obs == time_event}.}
