@@ -4,6 +4,8 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
+# PKNCA 0.11.0.9000
+
 # PKNCA 0.11.0
 
 * PKNCA will now indicate the number of observations included in a summary ("n")
