@@ -23,7 +23,7 @@ The weight is used as the \eqn{w_i}{w_i} parameter in \code{\link[=pk.calc.spars
 
 Where:
 
-\itemize{
+\describe{
 \item{\eqn{w_i}{w_i}}{is the weight at time i}
 \item{\eqn{\delta_{time,i-1,i}}{d_time[i-1,i]} and \eqn{\delta_{time,i,i+1}}{d_time[i,i+1]}}{are the changes between time i-1 and i or i and i+1 (zero outside of the time range)}
 \item{\eqn{t_i}{t_i}}{is the time at time i}

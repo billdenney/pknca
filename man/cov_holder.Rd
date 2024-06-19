@@ -25,7 +25,7 @@ If \eqn{r_{ij} = 0}{r_ij = 0}, then \eqn{\hat{\sigma}_{ij}}{sigma_ij} is
 defined as zero (rather than dividing by zero).
 
 Where:
-\itemize{
+\describe{
 \item{\eqn{\hat{\sigma}_{ij}}{sigma_ij}}{The covariance of times i and j}
 \item{\eqn{r_i}{r_i} and \eqn{r_j}{r_j}}{The number of subjects (usually animals) at times i and j, respectively}
 \item{\eqn{r_{ij}{r_ij}}}{The number of subjects (usually animals) at both times i and j}

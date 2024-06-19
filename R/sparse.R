@@ -65,7 +65,7 @@ sparse_pk_attribute <- function(sparse_pk, ...) {
 #'
 #' Where:
 #'
-#' \itemize{
+#' \describe{
 #'   \item{\eqn{w_i}{w_i}}{is the weight at time i}
 #'   \item{\eqn{\delta_{time,i-1,i}}{d_time[i-1,i]} and \eqn{\delta_{time,i,i+1}}{d_time[i,i+1]}}{are the changes between time i-1 and i or i and i+1 (zero outside of the time range)}
 #'   \item{\eqn{t_i}{t_i}}{is the time at time i}
@@ -89,7 +89,7 @@ sparse_auc_weight_linear <- function(sparse_pk) {
 #' Choices for the method of calculation (the argument `sparse_mean_method`)
 #' are:
 #'
-#' \itemize{
+#' \describe{
 #'   \item{"arithmetic mean"}{Arithmetic mean (ignoring number of BLQ samples)}
 #'   \item{"arithmetic mean, <=50% BLQ"}{If >= 50% of the measurements are BLQ, zero.  Otherwise, the arithmetic mean of all samples (including the BLQ as zero).}
 #' }
@@ -199,7 +199,7 @@ var_sparse_auc <- function(sparse_pk) {
 #' defined as zero (rather than dividing by zero).
 #'
 #' Where:
-#' \itemize{
+#' \describe{
 #'   \item{\eqn{\hat{\sigma}_{ij}}{sigma_ij}}{The covariance of times i and j}
 #'   \item{\eqn{r_i}{r_i} and \eqn{r_j}{r_j}}{The number of subjects (usually animals) at times i and j, respectively}
 #'   \item{\eqn{r_{ij}{r_ij}}}{The number of subjects (usually animals) at both times i and j}
@@ -292,7 +292,7 @@ sparse_to_dense_pk <- function(sparse_pk) {
 #'
 #' Where:
 #'
-#' \itemize{
+#' \describe{
 #'   \item{\eqn{AUC}{AUC}}{is the estimated area under the concentration-time curve}
 #'   \item{\eqn{w_i}{w_i}}{is the weight applied to the concentration at time i (related to the time which it affects, see [sparse_auc_weight_linear()])}
 #'   \item{\eqn{\bar{C}_i}{Cbar_i}}{is the average concentration at time i}
