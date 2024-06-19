@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,10 +125,17 @@ to <code>pk.calc.auxc</code></p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>$$AUC=\sum\limits_{i} w_i \bar{C}_i$$</p>
 <p>Where:</p>
-<ul><li><p>\(AUC\)is the estimated area under the concentration-time curve</p></li>
-<li><p>\(w_i\)is the weight applied to the concentration at time i (related to the time which it affects, see <code><a href="sparse_auc_weight_linear.html">sparse_auc_weight_linear()</a></code>)</p></li>
-<li><p>\(\bar{C}_i\)is the average concentration at time i</p></li>
-</ul></div>
+<dl><dt>\(AUC\)</dt>
+<dd><p>is the estimated area under the concentration-time curve</p></dd>
+
+<dt>\(w_i\)</dt>
+<dd><p>is the weight applied to the concentration at time i (related to the time which it affects, see <code><a href="sparse_auc_weight_linear.html">sparse_auc_weight_linear()</a></code>)</p></dd>
+
+<dt>\(\bar{C}_i\)</dt>
+<dd><p>is the average concentration at time i</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     

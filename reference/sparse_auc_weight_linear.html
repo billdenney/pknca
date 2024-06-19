@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,10 +97,17 @@ length as <code>sparse_pk</code></p>
     <p>$$w_i = \frac{\delta_{time,i-1,i} + \delta_{time,i,i+1}}{2}$$
 $$\delta_{time,i,i+1} = t_{i+1} - t_i$$</p>
 <p>Where:</p>
-<ul><li><p>\(w_i\)is the weight at time i</p></li>
-<li><p>\(\delta_{time,i-1,i}\) and \(\delta_{time,i,i+1}\)are the changes between time i-1 and i or i and i+1 (zero outside of the time range)</p></li>
-<li><p>\(t_i\)is the time at time i</p></li>
-</ul></div>
+<dl><dt>\(w_i\)</dt>
+<dd><p>is the weight at time i</p></dd>
+
+<dt>\(\delta_{time,i-1,i}\) and \(\delta_{time,i,i+1}\)</dt>
+<dd><p>are the changes between time i-1 and i or i and i+1 (zero outside of the time range)</p></dd>
+
+<dt>\(t_i\)</dt>
+<dd><p>is the time at time i</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Sparse Methods: 

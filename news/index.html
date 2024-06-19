@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,60 @@
       <small>Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.11.0" id="pknca-0110">PKNCA 0.11.0<a class="anchor" aria-label="anchor" href="#pknca-0110"></a></h2><p class="text-muted">CRAN release: 2024-06-19</p>
+<ul><li>PKNCA will now indicate the number of observations included in a summary (“n”) when it is not the same as the number of subjects included in the summary (“N”) and the caption will also indicate the definition of “N” and “n”. Note that counting of “n” includes all non-missing values that were not excluded from summarization; this will included all zeros that are e.g. excluded from geometric statistics.
+<ul><li>If <code>n == 1</code>, spread statistics are no longer calculated in the summary.</li>
+</ul></li>
+<li>A new AUC integration method, “lin-log”, has been added using the linear method through tmax and log after tmax, with required exceptions for zeros (fix <a href="https://github.com/billdenney/pknca/issues/23" class="external-link">#23</a>)</li>
+<li>The parameter <code>vd</code> was removed (it was not specific like <code>vz</code> or <code>vss</code>, and it was effectively a duplicate of <code>vz</code>). Use <code>vz</code>, instead.</li>
+<li>The <code>count_conc</code> NCA parameter was added to assist in data quality checking.</li>
+<li>Subject count (“N”) previously counted the number of rows of data, but in unusual circumstances, the number of subjects in an NCA result could be fewer than the number of rows. Now the number of subjects is counted (fix <a href="https://github.com/billdenney/pknca/issues/223" class="external-link">#223</a>).</li>
+<li>Extra column in the <code>intervals</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> will no longer cause an error (fix <a href="https://github.com/billdenney/pknca/issues/238" class="external-link">#238</a>)</li>
+<li>Many new <code>assert_*</code> functions were added to standardize input checking in the style of the <code>checkmate</code> library.</li>
+<li>Interpolation of zero concentrations in the middle of a set of concentrations is now more extensively supported.</li>
+<li>PKNCA has begun the process of deprecating dots in favor of underscores in function and parameter names. Functions with dots instead of underscores should continue to work for the foreseeable future (until version 1.0) with warnings.</li>
+<li>AUCint will now extrapolate the AUC beyond Tlast using logarithmic extrapolation, regardless of the method used (fix <a href="https://github.com/billdenney/pknca/issues/203" class="external-link">#203</a>).</li>
+<li>Imputation will now automatically search for a column named “impute” in the interval definition (fix <a href="https://github.com/billdenney/pknca/issues/257" class="external-link">#257</a>).</li>
+<li>Imputation now can look outside the concentration-time of the interval to the full concentration-time profile for the group with the <code>conc.group</code> and <code>time.group</code> arguments to the imputation functions. And, <code><a href="../reference/PKNCA_impute_method.html">PKNCA_impute_method_start_predose()</a></code> imputation performs more reasonably when the end of the interval is infinite.</li>
+<li>A progress bar is now available via the <code>PKNCA.options(progress = )</code> option (fix <a href="https://github.com/billdenney/pknca/issues/193" class="external-link">#193</a>).</li>
+<li>Additional versions of average concentration based on AUCint are now available (fix <a href="https://github.com/billdenney/pknca/issues/45" class="external-link">#45</a>).</li>
+<li>A new option “keep_interval_cols” was added to allow keeping a column from the intervals in the NCA results. Note that these are not included in the summary groups by default.</li>
+<li>A new argument “filter_requested” for <code><a href="../reference/as.data.frame.PKNCAresults.html">as.data.frame.PKNCAresults()</a></code> allows you to filter only to requested results from a PKNCAresults object.</li>
+<li>
+<code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code> now has four new arguments to allow for simplified automatic conversion from source units to desired reporting units, <code>concu_pref</code>, <code>doseu_pref</code>, <code>amountu_pref</code>, and <code>timeu_pref</code> (<a href="https://github.com/billdenney/pknca/issues/197" class="external-link">#197</a>)</li>
+<li>Extraction of PKNCA objects from within other PKNCA objects is now supported by various <code>as_PKNCA*</code> functions like <code><a href="../reference/as_PKNCAconc.html">as_PKNCAconc()</a></code> which can be used to extract the concentration data from within a PKNCAdata or PKNCAresults object (<a href="https://github.com/billdenney/pknca/issues/278" class="external-link">#278</a>)</li>
+<li>A new “totdose” parameter gives the total dose administered during an interval</li>
+<li>You may exclude parameters from a summary with the new <code>drop_param</code> argument to <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for PKNCAresults objects.</li>
+<li>The <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> method for <code>PKNCAresults</code> objects has a new <code>filter_excluded</code> argument to remove excluded results from the extracted data.frame. The default behavior is to keep the excluded results with the exclude column indicating the reason they were excluded.</li>
+</ul><div class="section level3">
+<h3 id="bugs-fixed-0-11-0">Bugs fixed<a class="anchor" aria-label="anchor" href="#bugs-fixed-0-11-0"></a></h3>
+<ul><li>
+<code>superpostion()</code> and the <code><a href="../reference/interp.extrap.conc.html">interp.extrap.conc()</a></code> family of functions now respect the interpolation and extrapolation types requested rather than using default.</li>
+<li>Concentration extrapolation with <code><a href="../reference/interp.extrap.conc.html">extrapolate.conc()</a></code> using the “AUCall” method now has decreasing instead of increasing concentrations (<a href="https://github.com/billdenney/pknca/issues/249" class="external-link">#249</a>).</li>
+<li>The aucint.inf.obs parameter when calculated with all zero concentrations returns zero and aucint.inf.pred returns <code>NA_real_</code> (<a href="https://github.com/billdenney/pknca/issues/253" class="external-link">#253</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-0-11-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-11-0"></a></h3>
+<ul><li>The arguments <code>interp.method</code> and <code>extrap.method</code> have been replaced with <code>method</code> and <code>auc.type</code> in the <code><a href="../reference/interp.extrap.conc.html">interp.extrap.conc()</a></code> family of functions for consistency with the rest of PKNCA (fix <a href="https://github.com/billdenney/pknca/issues/244" class="external-link">#244</a>)</li>
+<li>The AIC.list() function is no longer exported (it was never intended to be an external function).</li>
+<li>The <code>depends</code> argument to <code><a href="../reference/add.interval.col.html">add.interval.col()</a></code> must either be NULL or a character vector.</li>
+<li>The names of the <code>fun.linear</code>, <code>fun.log</code>, and <code>fun.inf</code> arguments to <code>pk.calc.auxc</code> were changed to use underscores. (If you were using those directly, please reach out as they were intended to be internal arguments, and I would like to know your use case for changing them.)</li>
+<li>
+<code><a href="../reference/defunct.html">check.conc.time()</a></code> is defunct (it was never intended to be an external function). It has been replaced by <code><a href="../reference/assert_conc_time.html">assert_conc()</a></code>, <code><a href="../reference/assert_conc_time.html">assert_time()</a></code> and <code><a href="../reference/assert_conc_time.html">assert_conc_time()</a></code>.</li>
+<li>The clast.obs parameter is now zero when all concentrations are zero (see <a href="https://github.com/billdenney/pknca/issues/253" class="external-link">#253</a> for part of the reason).</li>
+<li>(This is not likely to be important for most users.) The <code>business...</code> functions (e.g. <code><a href="../reference/business.mean.html">business.geomean()</a></code>) now include an attribute in non-<code>NA</code> results with <code>n</code>, the number of values included in the statistic.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-under-the-hood-0-11-0">Changes under the hood<a class="anchor" aria-label="anchor" href="#changes-under-the-hood-0-11-0"></a></h3>
+<ul><li>Multiple changes were made to speed up calculations. These will mainly be noticed when performing NCA on many subjects (for instance, following simulations). None of these should have external effects that users will notice:
+<ul><li>Adding in dependent parameters required for requested parameters is now more efficient (approx 40% time savings)</li>
+<li>Sorting interval dependencies happens less often (approx 5% time savings)</li>
+<li>Determining if a parameter is needed for calculation when looking across all parameters is more efficient (negligible time savings)</li>
+</ul></li>
+<li>An internal change was made to make AUC integration and concentration interpolation simpler and simplify the ability to create new AUC integration or concentration interpolation methods</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.2" id="pknca-0102">PKNCA 0.10.2<a class="anchor" aria-label="anchor" href="#pknca-0102"></a></h2><p class="text-muted">CRAN release: 2023-04-29</p>
 <ul><li>A minor change to <code><a href="../reference/pk.calc.aucpext.html">pk.calc.aucpext()</a></code> was made so that it now returns <code>NA_real_</code> instead of <code>NaN</code>.</li>

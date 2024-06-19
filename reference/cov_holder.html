@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,12 +97,23 @@ elements.</p>
     <p>$$\hat{\sigma}_{ij} = \sum\limits_{k=1}^{r_{ij}}{\frac{\left(x_{ik} - \bar{x}_i\right)\left(x_{jk} - \bar{x}_j\right)}{\left(r_{ij} - 1\right) + \left(1 - \frac{r_{ij}}{r_i}\right)\left(1 - \frac{r_{ij}}{r_j}\right)}}$$</p>
 <p>If \(r_{ij} = 0\), then \(\hat{\sigma}_{ij}\) is
 defined as zero (rather than dividing by zero).</p>
-<p>Where:</p><ul><li><p>\(\hat{\sigma}_{ij}\)The covariance of times i and j</p></li>
-<li><p>\(r_i\) and \(r_j\)The number of subjects (usually animals) at times i and j, respectively</p></li>
-<li><p>\(r_{ij}{r_ij}\)The number of subjects (usually animals) at both times i and j</p></li>
-<li><p>\(x_{ik}\) and \(x_{jk}\)The concentration measured for animal k at times i and j, respectively</p></li>
-<li><p>\(\bar{x}_i\) and \(\bar{x}_j\)The mean of the concentrations at times i and j, respectively</p></li>
-</ul><p>The Cauchy-Schwartz inequality is enforced for covariances to keep
+<p>Where:</p><dl><dt>\(\hat{\sigma}_{ij}\)</dt>
+<dd><p>The covariance of times i and j</p></dd>
+
+<dt>\(r_i\) and \(r_j\)</dt>
+<dd><p>The number of subjects (usually animals) at times i and j, respectively</p></dd>
+
+<dt>\(r_{ij}{r_ij}\)</dt>
+<dd><p>The number of subjects (usually animals) at both times i and j</p></dd>
+
+<dt>\(x_{ik}\) and \(x_{jk}\)</dt>
+<dd><p>The concentration measured for animal k at times i and j, respectively</p></dd>
+
+<dt>\(\bar{x}_i\) and \(\bar{x}_j\)</dt>
+<dd><p>The mean of the concentrations at times i and j, respectively</p></dd>
+
+
+</dl><p>The Cauchy-Schwartz inequality is enforced for covariances to keep
 correlation coefficients between -1 and 1, inclusive, as described in
 equations 8 and 9 of Nedelman and Jia 1998.</p>
     </div>
