@@ -60,6 +60,10 @@ the dosing including dose amount and route.
 * A new "totdose" parameter gives the total dose administered during an interval
 * You may exclude parameters from a summary with the new `drop_param` argument
   to `summary()` for PKNCAresults objects.
+* The `as.data.frame()` method for `PKNCAresults` objects has a new
+  `filter_excluded` argument to remove excluded results from the extracted
+  data.frame.  The default behavior is to keep the excluded results with the
+  exclude column indicating the reason they were excluded.
 
 ## Bugs fixed
 
