@@ -102,15 +102,6 @@ PKNCAconc.data.frame <- function(data, formula, subject,
     time = data[[parsed_form$time]],
     sorted_time = FALSE
   )
-  # Values must be unique (one value per measurement)
-  key_cols <- c(parsed_form$time, unlist(parsed_form$groups))
-  mask_dup <- duplicated(data[,key_cols])
-  if (any(mask_dup)) {
-    stop("Rows that are not unique per group and time (column names: ",
-         paste(key_cols, collapse=", "),
-         ") found within concentration data.  Row numbers: ",
-         paste(seq_along(mask_dup)[mask_dup], collapse=", "))
-  }
   # Assign the subject
   if (missing(subject)) {
     subject <- parsed_form$groups$group_vars[length(parsed_form$groups$group_vars)]
@@ -146,6 +137,11 @@ PKNCAconc.data.frame <- function(data, formula, subject,
   } else {
     ret <- setExcludeColumn(ret, exclude=exclude, dataname=getDataName.PKNCAconc(ret))
   }
+  # Values must be unique (one value per measurement), check after the exclusion
+  # column has been added to the object so that exclusions can be accounted for
+  # in duplicate checking.
+  duplicate_check(object = ret, data_type = "concentration")
+
   if (missing(volume)) {
     ret <- setAttributeColumn(ret, attr_name="volume", default_value=NA_real_)
   } else {

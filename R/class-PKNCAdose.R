@@ -108,13 +108,6 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   if (!all(unlist(parsed_form$groups) %in% names(data))) {
     stop("All of the variables in the groups must be in the data")
   }
-  # Values must be unique (one value per measurement)
-  key_cols <- c(parsed_form$time, unlist(parsed_form$groups))
-  if (any(mask_dup <- duplicated(data[,key_cols])))
-    stop("Rows that are not unique per group and time (column names: ",
-         paste(key_cols, collapse=", "),
-         ") found within dosing data.  Row numbers: ",
-         paste(seq_along(mask_dup)[mask_dup], collapse=", "))
   ret <-
     list(
       data = data,
@@ -127,6 +120,11 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
   } else {
     ret <- setExcludeColumn(ret, exclude=exclude)
   }
+  # Values must be unique (one value per measurement), check after the exclusion
+  # column has been added to the object so that exclusions can be accounted for
+  # in duplicate checking.
+  duplicate_check(object = ret, data_type = "dosing")
+
   mask.indep <- is.na(getIndepVar.PKNCAdose(ret))
   if (any(mask.indep) & !all(mask.indep)) {
     stop("Some but not all values are missing for the independent variable, please see the help for PKNCAdose for how to specify the formula and confirm that your data has dose times for all doses.")
