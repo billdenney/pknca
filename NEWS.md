@@ -6,6 +6,10 @@ the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
 
+* Duplicate data checks now account for excluded rows.  So, if a row is
+  duplicated and all but one of the duplicated rows is excluded, it is not an
+  error.  (#298)
+
 # PKNCA 0.11.0
 
 * PKNCA will now indicate the number of observations included in a summary ("n")

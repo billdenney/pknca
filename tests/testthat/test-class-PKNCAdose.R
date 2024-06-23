@@ -107,9 +107,10 @@ test_that("PKNCAdose", {
   bad.dose.analyte <- unique(tmp.conc.analyte[,c("treatment", "ID", "analyte")])
   bad.dose.analyte$dose <- 1
   bad.dose.analyte$time <- 0
-  expect_error(PKNCAdose(bad.dose.analyte, formula=dose~time|treatment+ID),
-               regexp="Rows that are not unique per group and time",
-               info="Duplicated key rows")
+  expect_error(
+    PKNCAdose(bad.dose.analyte, formula=dose~time|treatment+ID),
+    regexp="Rows that are not unique per group and time"
+  )
 
   expect_equal(
     PKNCAdose(
@@ -455,4 +456,60 @@ test_that("setDuration", {
     duration_example$data$dose/2
   )
   expect_equal(duration_example$columns$duration, "duration")
+})
+
+test_that("Test uniqueness after excluding rows (#298)", {
+  repeated_with_exclusion <-
+    data.frame(
+      dose = 1,
+      time = c(0, 0),
+      id = 1,
+      exclude = c(NA, "duplicate")
+    )
+  expect_error(
+    PKNCAdose(repeated_with_exclusion, formula=dose~time|id),
+    regexp="Rows that are not unique per group and time.*dosing"
+  )
+  expect_s3_class(
+    PKNCAdose(repeated_with_exclusion, formula=dose~time|id, exclude = "exclude"),
+    class = "PKNCAdose"
+  )
+  repeated_with_exclusion_firstrow <-
+    data.frame(
+      dose = 1,
+      time = c(0, 0),
+      id = 1,
+      exclude = c("duplicate", NA)
+    )
+  expect_s3_class(
+    PKNCAdose(repeated_with_exclusion_firstrow, formula=dose~time|id, exclude = "exclude"),
+    class = "PKNCAdose"
+  )
+
+  repeated_with_exclusion_nogroup <-
+    data.frame(
+      dose = 1,
+      time = c(0, 0),
+      id = 1,
+      exclude = c("duplicate", NA)
+    )
+  expect_s3_class(
+    PKNCAdose(repeated_with_exclusion_firstrow, formula=dose~., exclude = "exclude"),
+    class = "PKNCAdose"
+  )
+  expect_s3_class(
+    PKNCAdose(repeated_with_exclusion_firstrow, formula=dose~.|id, exclude = "exclude"),
+    class = "PKNCAdose"
+  )
+  repeated_with_exclusion_row2 <-
+    data.frame(
+      dose = 1,
+      time = c(0, 0),
+      id = 1,
+      exclude = c(NA, "duplicate")
+    )
+  expect_s3_class(
+    PKNCAdose(repeated_with_exclusion_row2, formula=dose~.|id, exclude = "exclude"),
+    class = "PKNCAdose"
+  )
 })

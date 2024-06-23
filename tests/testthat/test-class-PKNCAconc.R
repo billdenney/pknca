@@ -497,3 +497,22 @@ First 6 rows of concentration data:
   3 1.58    1  100    <NA>     NA        0"
   )
 })
+
+test_that("Test uniqueness after excluding rows (#298)", {
+  repeated_with_exclusion <-
+    data.frame(
+      conc = 1,
+      time = c(0, 0),
+      id = 1,
+      exclude = c(NA, "duplicate")
+    )
+
+  expect_error(
+    PKNCAconc(repeated_with_exclusion, conc~time|id),
+    regexp="Rows that are not unique per group and time.*concentration"
+  )
+  expect_s3_class(
+    PKNCAconc(repeated_with_exclusion, conc~time|id, exclude = "exclude"),
+    class = "PKNCAconc"
+  )
+})
