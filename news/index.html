@@ -69,7 +69,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.11.0.9000" id="pknca-01109000">PKNCA 0.11.0.9000<a class="anchor" aria-label="anchor" href="#pknca-01109000"></a></h2>
-</div>
+<ul><li>Duplicate data checks now account for excluded rows. So, if a row is duplicated and all but one of the duplicated rows is excluded, it is not an error. (<a href="https://github.com/billdenney/pknca/issues/298" class="external-link">#298</a>)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.11.0" id="pknca-0110">PKNCA 0.11.0<a class="anchor" aria-label="anchor" href="#pknca-0110"></a></h2><p class="text-muted">CRAN release: 2024-06-19</p>
 <ul><li>PKNCA will now indicate the number of observations included in a summary (“n”) when it is not the same as the number of subjects included in the summary (“N”) and the caption will also indicate the definition of “N” and “n”. Note that counting of “n” includes all non-missing values that were not excluded from summarization; this will included all zeros that are e.g. excluded from geometric statistics.
