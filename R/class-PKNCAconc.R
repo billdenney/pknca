@@ -58,7 +58,7 @@ PKNCAconc.tbl_df <- function(data, ...) {
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
-                                 time.nominal, exclude, duration, volume,
+                                 time.nominal, exclude = NULL, duration, volume,
                                  exclude_half.life, include_half.life, sparse=FALSE, ...) {
   # The data must have... data
   if (nrow(data) == 0) {
@@ -141,11 +141,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
       )
   }
   class(ret) <- c("PKNCAconc", class(ret))
-  if (missing(exclude)) {
-    ret <- setExcludeColumn(ret, dataname=getDataName.PKNCAconc(ret))
-  } else {
-    ret <- setExcludeColumn(ret, exclude=exclude, dataname=getDataName.PKNCAconc(ret))
-  }
+  ret <- setExcludeColumn(ret, exclude = exclude, dataname = getDataName.PKNCAconc(ret))
   if (missing(volume)) {
     ret <- setAttributeColumn(ret, attr_name="volume", default_value=NA_real_)
   } else {

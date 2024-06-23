@@ -57,7 +57,7 @@ PKNCAdose.tbl_df <- function(data, ...) {
 #' @rdname PKNCAdose
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
-                                 time.nominal, exclude, ...) {
+                                 time.nominal, exclude = NULL, ...) {
   # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
@@ -122,11 +122,7 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
       columns = parsed_form
     )
   class(ret) <- c("PKNCAdose", class(ret))
-  if (missing(exclude)) {
-    ret <- setExcludeColumn(ret)
-  } else {
-    ret <- setExcludeColumn(ret, exclude=exclude)
-  }
+  ret <- setExcludeColumn(ret, exclude = exclude)
   mask.indep <- is.na(getIndepVar.PKNCAdose(ret))
   if (any(mask.indep) & !all(mask.indep)) {
     stop("Some but not all values are missing for the independent variable, please see the help for PKNCAdose for how to specify the formula and confirm that your data has dose times for all doses.")

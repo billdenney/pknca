@@ -4,7 +4,7 @@
 \alias{PKNCAresults}
 \title{Generate a PKNCAresults object}
 \usage{
-PKNCAresults(result, data, exclude)
+PKNCAresults(result, data, exclude = NULL)
 }
 \arguments{
 \item{result}{a data frame with NCA calculation results and groups. Each row

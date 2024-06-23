@@ -120,9 +120,9 @@ exclude.default <- function(object, reason, mask, FUN) {
 #' @param dataname The name of the data.frame within the object to add the
 #'   exclude column to.
 #' @returns The object with an exclude column and attribute
-setExcludeColumn <- function(object, exclude, dataname="data") {
+setExcludeColumn <- function(object, exclude = NULL, dataname = "data") {
   add.exclude <- FALSE
-  if (missing(exclude)) {
+  if (missing(exclude) || is.null(exclude)) {
     # Exclude is not provided.
     if ("exclude" %in% names(object$columns)) {
       # If exclude is already given, then do nothing.
@@ -141,7 +141,7 @@ setExcludeColumn <- function(object, exclude, dataname="data") {
     add.exclude <- TRUE
   }
   if (add.exclude) {
-    if (missing(exclude)) {
+    if (missing(exclude) | is.null(exclude)) {
       # Generate the column name
       exclude <-
         setdiff(c("exclude", paste0("exclude.", max(names(object[[dataname]])))),
