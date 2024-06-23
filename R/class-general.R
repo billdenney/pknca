@@ -174,3 +174,35 @@ getAttributeColumn <- function(object, attr_name, warn_missing=c("attr", "column
     object[[dataname]][, columns, drop=FALSE]
   }
 }
+
+#' Check for duplicate values in a dataset
+#'
+#' @param object A PKNCAconc or PKNCAdose object to check for duplicates
+#' @param data_type The name of the type of data for error reporting
+#' @returns `object` unmodified, or an error
+#'
+#' @keywords Internal
+#' @noRd
+duplicate_check <- function(object, data_type) {
+  mask_excluded <- !is.na(object$data[[object$columns$exclude]])
+  mask_dup <- rep(FALSE, nrow(object$data))
+  key_cols <- unique(c(object$columns$time, unlist(object$columns$groups)))
+  if (length(key_cols) == 0) {
+    # If there are no key columns, then there can only be one data row that is
+    # not excluded.
+    mask_dup[!mask_excluded] <- duplicated(mask_dup[!mask_excluded])
+  } else {
+    # In case an excluded row is the first row of the duplicated set, do not
+    # report duplication.
+    mask_dup[!mask_excluded] <- duplicated(object$data[!mask_excluded, key_cols])
+  }
+  if (any(mask_dup)) {
+    stop(
+      "Rows that are not unique per group and time (column names: ",
+      paste(key_cols, collapse=", "),
+      ") found within ", data_type, " data.  Row numbers: ",
+      paste(which(mask_dup), collapse=", ")
+    )
+  }
+  object
+}
