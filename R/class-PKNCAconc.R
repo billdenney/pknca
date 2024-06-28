@@ -58,7 +58,7 @@ PKNCAconc.tbl_df <- function(data, ...) {
 #' @rdname PKNCAconc
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
-                                 time.nominal, exclude, duration, volume,
+                                 time.nominal, exclude = NULL, duration, volume,
                                  exclude_half.life, include_half.life, sparse=FALSE, ...) {
   # The data must have... data
   if (nrow(data) == 0) {
@@ -132,11 +132,7 @@ PKNCAconc.data.frame <- function(data, formula, subject,
       )
   }
   class(ret) <- c("PKNCAconc", class(ret))
-  if (missing(exclude)) {
-    ret <- setExcludeColumn(ret, dataname=getDataName.PKNCAconc(ret))
-  } else {
-    ret <- setExcludeColumn(ret, exclude=exclude, dataname=getDataName.PKNCAconc(ret))
-  }
+  ret <- setExcludeColumn(ret, exclude = exclude, dataname = getDataName.PKNCAconc(ret))
   # Values must be unique (one value per measurement), check after the exclusion
   # column has been added to the object so that exclusions can be accounted for
   # in duplicate checking.

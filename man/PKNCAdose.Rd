@@ -13,7 +13,16 @@ PKNCAdose(data, ...)
 
 \method{PKNCAdose}{tbl_df}(data, ...)
 
-\method{PKNCAdose}{data.frame}(data, formula, route, rate, duration, time.nominal, exclude, ...)
+\method{PKNCAdose}{data.frame}(
+  data,
+  formula,
+  route,
+  rate,
+  duration,
+  time.nominal,
+  exclude = NULL,
+  ...
+)
 }
 \arguments{
 \item{data}{A data frame with time and the groups defined in \code{formula}.}

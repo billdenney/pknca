@@ -4,7 +4,7 @@
 \alias{setExcludeColumn}
 \title{Set the exclude parameter on an object}
 \usage{
-setExcludeColumn(object, exclude, dataname = "data")
+setExcludeColumn(object, exclude = NULL, dataname = "data")
 }
 \arguments{
 \item{object}{The object to set the exclude column on.}

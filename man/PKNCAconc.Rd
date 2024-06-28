@@ -18,7 +18,7 @@ PKNCAconc(data, ...)
   formula,
   subject,
   time.nominal,
-  exclude,
+  exclude = NULL,
   duration,
   volume,
   exclude_half.life,

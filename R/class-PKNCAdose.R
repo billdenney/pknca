@@ -57,7 +57,7 @@ PKNCAdose.tbl_df <- function(data, ...) {
 #' @rdname PKNCAdose
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
-                                 time.nominal, exclude, ...) {
+                                 time.nominal, exclude = NULL, ...) {
   # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
@@ -115,11 +115,7 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
       columns = parsed_form
     )
   class(ret) <- c("PKNCAdose", class(ret))
-  if (missing(exclude)) {
-    ret <- setExcludeColumn(ret)
-  } else {
-    ret <- setExcludeColumn(ret, exclude=exclude)
-  }
+  ret <- setExcludeColumn(ret, exclude = exclude)
   # Values must be unique (one value per measurement), check after the exclusion
   # column has been added to the object so that exclusions can be accounted for
   # in duplicate checking.
