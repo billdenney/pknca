@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("PKNCA_impute_method_start_conc0", {
   # Time 0 is replaced
   expect_equal(

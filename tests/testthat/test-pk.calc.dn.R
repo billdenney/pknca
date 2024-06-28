@@ -7,7 +7,6 @@ test_that("pk.calc.dn", {
 
 test_that("pk.calc.cmax", {
   # Ensure that the formalsmap functionality works within pk.nca
-  source("generate.data.R")
   tmpconc <- generate.conc(2, 2, 0:24)
   tmpdose <- generate.dose(tmpconc)
   tmpconc <- merge(tmpconc, tmpdose[,c("ID", "treatment", "dose")])

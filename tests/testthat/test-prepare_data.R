@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 # prepare_* ####
 
 test_that("prepare_*", {

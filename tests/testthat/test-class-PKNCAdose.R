@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("PKNCAdose", {
   tmp.conc <- generate.conc(nsub=5, ntreat=2, time.points=0:24)
   tmp.conc.analyte <- generate.conc(nsub=5, ntreat=2, time.points=0:24,
