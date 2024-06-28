@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 # based on purrr:::capture_output
 msg_grabber <- function(code) {
   messages <- character()

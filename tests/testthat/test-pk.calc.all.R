@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("pk.nca", {
   # Note that generate.conc sets the random seed, so it doesn't have to happen
   # here.

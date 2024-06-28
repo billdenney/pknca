@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("PKNCAresults object creation", {
   minimal_result <- PKNCAresults(data.frame(a=1), data=list())
   expect_equal(minimal_result$columns$exclude, "exclude")

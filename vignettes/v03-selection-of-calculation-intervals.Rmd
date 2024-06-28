@@ -19,7 +19,7 @@ library(cowplot)
 library(PKNCA)
 library(knitr)
 library(ggplot2)
-source("../tests/testthat/generate.data.R")
+source("../tests/testthat/helper-generate_data.R")
 scale_colour_discrete <- scale_colour_hue
 scale_fill_discrete <- scale_fill_hue
 ```

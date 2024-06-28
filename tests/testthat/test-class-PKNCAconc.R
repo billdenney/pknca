@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("PKNCAconc expected errors", {
   tmp.conc <- generate.conc(nsub=1, ntreat=1, time.points=0:24)
   tmp.conc$foo <- "A"

@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("as_PKNCA*", {
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)

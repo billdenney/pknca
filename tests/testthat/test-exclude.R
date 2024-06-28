@@ -1,5 +1,3 @@
-source("generate.data.R")
-
 test_that("setExcludeColumn", {
   # exclude argument not given
   expect_equal(
