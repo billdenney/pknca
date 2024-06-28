@@ -9,6 +9,8 @@ the dosing including dose amount and route.
 * Duplicate data checks now account for excluded rows.  So, if a row is
   duplicated and all but one of the duplicated rows is excluded, it is not an
   error.  (#298)
+* Removed native pipes (`|>`) so that PKNCA will work with older versions of R
+  (#304).
 
 # PKNCA 0.11.0
 
