@@ -21,7 +21,7 @@ d_conc <-
   filter(!is.na(Concentration))
 
 stopifnot(all(is.na(d_conc$`Animal ID`)))
-d_conc$`Animal ID` <- 1:nrow(d_conc)
+d_conc$`Animal ID` <- seq_len(nrow(d_conc))
 
 o_conc <-
   d_conc %>%
@@ -37,6 +37,6 @@ d_intervals <-
 o_data <-
   PKNCAdata(o_conc, intervals=d_intervals)
 o_nca <- pk.nca(o_data)
-summary(o_nca, drop.group = c())
+summary(o_nca, drop.group = character())
 as.data.frame(as.data.frame(o_nca))
 
