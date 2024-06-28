@@ -263,11 +263,11 @@ get_summary_PKNCAresults_count_N <- function(data, result_group, subject_col, su
     # R CMD Check hack
     N <- NULL
     ret <-
-      data |>
-      dplyr::grouped_df(vars = names(result_group)) |>
+      data %>%
+      dplyr::grouped_df(vars = names(result_group)) %>%
       dplyr::summarize(
         N = length(unique(.data[[subject_col]]))
-      ) |>
+      ) %>%
       dplyr::ungroup()
     # Reorder the return value to be in the same order as the original groups
     key_col <- paste0(max(names(ret)), "X")
