@@ -456,7 +456,7 @@ test_that("pk.calc.aucabove", {
 test_that("pk.calc.count_conc", {
   expect_equal(pk.calc.count_conc(1:5), 5)
   expect_equal(pk.calc.count_conc(c(1:2, NA)), 2)
-  expect_equal(suppressWarnings(pk.calc.count_conc(c())), 0)
+  expect_equal(suppressWarnings(pk.calc.count_conc(numeric())), 0)
   expect_equal(suppressWarnings(pk.calc.count_conc(NA)), 0)
 })
 
