@@ -5,81 +5,65 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="PKNCA">
 <title>PKNCA Validation • PKNCA</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="PKNCA Validation">
-<meta property="og:description" content="PKNCA">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="PKNCA Validation">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0.9000</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/v01-introduction-and-usage.html">Introduction to PKNCA and Usage Instructions</a>
-    <a class="dropdown-item" href="../articles/v02-example-theophylline.html">Computing NCA Parameters for Theophylline</a>
-    <a class="dropdown-item" href="../articles/v03-selection-of-calculation-intervals.html">Selection of Calculation Intervals</a>
-    <a class="dropdown-item" href="../articles/v04-sparse.html">Sparse NCA Calculations</a>
-    <a class="dropdown-item" href="../articles/v05-auc-calculation-with-PKNCA.html">AUC Calculation with PKNCA</a>
-    <a class="dropdown-item" href="../articles/v06-half-life-calculation-tobit.html">Half-life calculation with Tobit regression</a>
-    <a class="dropdown-item" href="../articles/v06-half-life-calculation.html">Half-Life Calculation</a>
-    <a class="dropdown-item" href="../articles/v07-post-processing.html">Post-Processing</a>
-    <a class="dropdown-item" href="../articles/v07-unit-conversion.html">Unit Assignment and Conversion with PKNCA</a>
-    <a class="dropdown-item" href="../articles/v08-data-imputation.html">Data Imputation</a>
-    <a class="dropdown-item" href="../articles/v20-superposition.html">Superposition of Pharmacokinetic Data</a>
-    <a class="dropdown-item" href="../articles/v21-methods-for-dose-aware-interpolation-and-extrapolation.html">Methods Used for Dose-Aware Concentration Interpolation/Extrapolation</a>
-    <a class="dropdown-item" href="../articles/v22-time-to-steady-state.html">Noncompartmental evaluation of time to steady-state</a>
-    <a class="dropdown-item" href="../articles/v23-auc-integration-methods.html">AUC integration methods</a>
-    <a class="dropdown-item" href="../articles/v30-training-session.html">PKNCA Training Sessions</a>
-    <a class="dropdown-item" href="../articles/v40-options-for-controlling-PKNCA.html">Options for Controlling PKNCA</a>
-    <a class="dropdown-item" href="../articles/v60-PKNCA-validation.html">PKNCA Validation</a>
-    <a class="dropdown-item" href="../articles/v80-writing-parameter-functions.html">Writing PKNCA Parameter Functions</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/v01-introduction-and-usage.html">Introduction to PKNCA and Usage Instructions</a></li>
+    <li><a class="dropdown-item" href="../articles/v02-example-theophylline.html">Computing NCA Parameters for Theophylline</a></li>
+    <li><a class="dropdown-item" href="../articles/v03-selection-of-calculation-intervals.html">Selection of Calculation Intervals</a></li>
+    <li><a class="dropdown-item" href="../articles/v04-sparse.html">Sparse NCA Calculations</a></li>
+    <li><a class="dropdown-item" href="../articles/v05-auc-calculation-with-PKNCA.html">AUC Calculation with PKNCA</a></li>
+    <li><a class="dropdown-item" href="../articles/v06-half-life-calculation-tobit.html">Half-life calculation with Tobit regression</a></li>
+    <li><a class="dropdown-item" href="../articles/v06-half-life-calculation.html">Half-Life Calculation</a></li>
+    <li><a class="dropdown-item" href="../articles/v07-post-processing.html">Post-Processing</a></li>
+    <li><a class="dropdown-item" href="../articles/v07-unit-conversion.html">Unit Assignment and Conversion with PKNCA</a></li>
+    <li><a class="dropdown-item" href="../articles/v08-data-imputation.html">Data Imputation</a></li>
+    <li><a class="dropdown-item" href="../articles/v20-superposition.html">Superposition of Pharmacokinetic Data</a></li>
+    <li><a class="dropdown-item" href="../articles/v21-methods-for-dose-aware-interpolation-and-extrapolation.html">Methods Used for Dose-Aware Concentration Interpolation/Extrapolation</a></li>
+    <li><a class="dropdown-item" href="../articles/v22-time-to-steady-state.html">Noncompartmental evaluation of time to steady-state</a></li>
+    <li><a class="dropdown-item" href="../articles/v23-auc-integration-methods.html">AUC integration methods</a></li>
+    <li><a class="dropdown-item" href="../articles/v30-training-session.html">PKNCA Training Sessions</a></li>
+    <li><a class="dropdown-item" href="../articles/v40-options-for-controlling-PKNCA.html">Options for Controlling PKNCA</a></li>
+    <li><a class="dropdown-item" href="../articles/v60-PKNCA-validation.html">PKNCA Validation</a></li>
+    <li><a class="dropdown-item" href="../articles/v80-writing-parameter-functions.html">Writing PKNCA Parameter Functions</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/billdenney/pknca/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/billdenney/pknca/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -88,12 +72,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>PKNCA Validation</h1>
+
+      <h1>PKNCA Validation</h1>
                         <h4 data-toc-skip class="author">Bill
 Denney</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/HEAD/vignettes/v60-PKNCA-validation.Rmd" class="external-link"><code>vignettes/v60-PKNCA-validation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/main/vignettes/v60-PKNCA-validation.Rmd" class="external-link"><code>vignettes/v60-PKNCA-validation.Rmd</code></a></small>
       <div class="d-none name"><code>v60-PKNCA-validation.Rmd</code></div>
     </div>
 
@@ -137,7 +122,7 @@ testing results: Tests were not run because tests are not installed.</p>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "2024-06-28"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "2024-07-31"</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.4.1 (2024-06-14)</span></span>
@@ -161,21 +146,21 @@ testing results: Tests were not run because tests are not installed.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] dplyr_1.1.4       testthat_3.2.1.1  knitr_1.47        PKNCA_0.11.0.9000</span></span>
+<span><span class="co">## [1] dplyr_1.1.4       testthat_3.2.1.1  knitr_1.48        PKNCA_0.11.0.9000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] jsonlite_1.8.8    compiler_4.4.1    brio_1.1.5        tidyselect_1.2.1 </span></span>
-<span><span class="co">##  [5] jquerylib_0.1.4   systemfonts_1.1.0 textshaping_0.4.0 yaml_2.3.8       </span></span>
-<span><span class="co">##  [9] fastmap_1.2.0     lattice_0.22-6    R6_2.5.1          generics_0.1.3   </span></span>
-<span><span class="co">## [13] tibble_3.2.1      desc_1.4.3        bslib_0.7.0       pillar_1.9.0     </span></span>
-<span><span class="co">## [17] rlang_1.1.4       utf8_1.2.4        cachem_1.1.0      xfun_0.45        </span></span>
-<span><span class="co">## [21] fs_1.6.4          sass_0.4.9        memoise_2.0.1     cli_3.6.3        </span></span>
-<span><span class="co">## [25] pkgdown_2.0.9     magrittr_2.0.3    digest_0.6.36     grid_4.4.1       </span></span>
-<span><span class="co">## [29] lifecycle_1.0.4   nlme_3.1-164      vctrs_0.6.5       evaluate_0.24.0  </span></span>
-<span><span class="co">## [33] glue_1.7.0        ragg_1.3.2        fansi_1.0.6       rmarkdown_2.27   </span></span>
-<span><span class="co">## [37] purrr_1.0.2       tools_4.4.1       pkgconfig_2.0.3   htmltools_0.5.8.1</span></span></code></pre>
+<span><span class="co">##  [1] vctrs_0.6.5       nlme_3.1-164      cli_3.6.3         rlang_1.1.4      </span></span>
+<span><span class="co">##  [5] xfun_0.46         generics_0.1.3    textshaping_0.4.0 jsonlite_1.8.8   </span></span>
+<span><span class="co">##  [9] glue_1.7.0        htmltools_0.5.8.1 ragg_1.3.2        sass_0.4.9       </span></span>
+<span><span class="co">## [13] brio_1.1.5        fansi_1.0.6       rmarkdown_2.27    grid_4.4.1       </span></span>
+<span><span class="co">## [17] tibble_3.2.1      evaluate_0.24.0   jquerylib_0.1.4   fastmap_1.2.0    </span></span>
+<span><span class="co">## [21] yaml_2.3.10       lifecycle_1.0.4   compiler_4.4.1    fs_1.6.4         </span></span>
+<span><span class="co">## [25] pkgconfig_2.0.3   lattice_0.22-6    systemfonts_1.1.0 digest_0.6.36    </span></span>
+<span><span class="co">## [29] R6_2.5.1          tidyselect_1.2.1  utf8_1.2.4        pillar_1.9.0     </span></span>
+<span><span class="co">## [33] magrittr_2.0.3    bslib_0.8.0       tools_4.4.1       pkgdown_2.1.0    </span></span>
+<span><span class="co">## [37] cachem_1.1.0      desc_1.4.3</span></span></code></pre>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -186,15 +171,15 @@ testing results: Tests were not run because tests are not installed.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
