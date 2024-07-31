@@ -9,7 +9,7 @@
 #' @family Sparse Methods
 #' @export
 as_sparse_pk <- function(conc, time, subject) {
-  if (is.data.frame(conc) & missing(time) & missing(subject)) {
+  if (is.data.frame(conc) && missing(time) && missing(subject)) {
     time <- conc$time
     subject <- conc$subject
     conc <- conc$conc
