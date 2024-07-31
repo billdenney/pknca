@@ -12,6 +12,10 @@
 #'
 #' If all conc input are zero, then the AU(M)C is zero.
 #'
+#' You probably do not want to call `pk.calc.auxc()`.  Usually, you will call
+#' one of the other functions for calculating AUC like `pk.calc.auc.last()`,
+#' `pk.calc.auc.inf.obs()`, etc.
+#'
 #' @inheritParams assert_conc_time
 #' @inheritParams assert_intervaltime_single
 #' @inheritParams choose_interval_method

@@ -120,6 +120,10 @@ Extrapolation beyond Clast occurs using the half-life and Clast,obs;
 Clast,pred is not yet supported.
 
 If all conc input are zero, then the AU(M)C is zero.
+
+You probably do not want to call \code{pk.calc.auxc()}.  Usually, you will call
+one of the other functions for calculating AUC like \code{pk.calc.auc.last()},
+\code{pk.calc.auc.inf.obs()}, etc.
 }
 \section{Functions}{
 \itemize{
