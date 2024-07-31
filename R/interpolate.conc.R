@@ -276,8 +276,8 @@ extrapolate.conc <- function(conc, time, time.out,
     if (auc.type %in% "aucinf") {
       # If AUCinf is requested, extrapolate using the half-life
       ret <- extrapolate_conc_lambdaz(clast=clast, lambda.z=lambda.z, tlast=tlast, time_out=time.out)
-    } else if (auc.type %in% "auclast" |
-                 (auc.type %in% "aucall" &
+    } else if (auc.type %in% "auclast" ||
+                 (auc.type %in% "aucall" &&
                     tlast == max(data$time))) {
       # If AUClast is requested or AUCall is requested and there are
       # no BLQ at the end, we are already certain that we are after
