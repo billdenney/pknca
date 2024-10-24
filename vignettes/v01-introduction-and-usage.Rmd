@@ -16,12 +16,12 @@ library(PKNCA)
 ```
 
 PKNCA provides functions to complete noncompartmental analysis (NCA)
-for pharmacokinetic (PK) data.  Its intent is to provide a complete
-R-based solution enabling data provenance for NCA including tracking
-data cleaning, enabling calculations, exporting results, and
-reporting.  The library is designed to give a reasonable answer
-without user intervention (load, calculate, and summarize), but it
-allows the user to override the automatic selections at any point.
+for pharmacokinetic (PK) data.  Its intent is to provide a complete 
+R-based solution-enabling data provenance for NCA. This will include 
+the tracking of data cleaning, enabling of calculations, exporting
+of results, and general reporting.  The library is designed to give
+a reasonable answer without user intervention (load, calculate, and summarize),
+but it allows the user to override the automatic selections at any point.
 
 The library design is modular to allow expansion based on needs
 unforseen by the authors including new NCA parameters, novel data
@@ -30,8 +30,7 @@ library will be discussed in a separate vignette.
 
 # Quick Start
 
-The simplest analysis requires concentration and dosing data, then
-five function calls can provide summarized results.  (Please note that this and the other examples in this document are intended to show the typical workflow, but they are not intended to run directly.  For an example to run directly, please see [the theophylline example](v02-example-theophylline.html).)
+The simplest analysis requires concentration and dosing data at a minimum. Given this, it then takes five function calls to provide summarized results.  (Please note that this and the other examples in this document are intended to show the typical workflow, but they are not intended to run directly.  For an example to run directly, please see [the theophylline example](v02-example-theophylline.html).)
 
 ```{r setup_data}
 library(PKNCA)
@@ -263,10 +262,11 @@ intervals <-
   )
 ```
 
-Intervals like the above is sufficient for designs with a single type of
-treatment-- like single doses.  For more complex treatments in a single
-analysis, like the combination of single and multiple doses, include a treatment
-column matching the treatment column name from the concentration data set.  See
+Intervals like the one above are sufficient for designs with a
+single type of treatment– such as single doses.  For more
+complex treatments in a single analysis, like the combination of
+single and multiple doses, include a treatment column matching
+the treatment column name from the concentration data set.  See
 the [Manual Interval Specification](#manual-interval-specification) section
 below for more details.
 
@@ -285,7 +285,7 @@ for the half-life or AUC~inf~ calculations.
 A few functions look at data outside of a single interval, but these functions
 do not look at data outside of a single group, and these functions are typically
 used during preparation for NCA calculations not for the calculations
-themselves.  Functions that look a group as a whole include
+themselves.  Functions that look at a group as a whole include
 `choose.auc.intervals`, `find.tau`, and `pk.tss`.
 
 ## Automatic Interval Determination
