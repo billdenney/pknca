@@ -283,7 +283,7 @@ parameters.</p>
 <p>AUC<sub>0-last</sub> calculates the AUC from time 0 to the last value
 above the limit of quantification, <code>tlast</code> (within PKNCA,
 this is the last value above 0). In the figure below,
-AUC<sub>0-last</sub> integrate the shaded region. Integration after
+AUC<sub>0-last</sub> integrates the shaded region. Integration after
 <code>tlast</code> is 0.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tlast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pk.calc.tlast.html">pk.calc.tlast</a></span><span class="op">(</span>conc<span class="op">=</span><span class="va">my_conc</span><span class="op">$</span><span class="va">conc</span>,</span>
@@ -354,7 +354,7 @@ the observed or half-life predicted concentration at <code>tlast</code>
 AUC<sub>0-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>∞</mi><annotation encoding="application/x-tex">\infty</annotation></semantics></math>,obs</sub>
 and
 AUC~0-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>∞</mi><annotation encoding="application/x-tex">\infty</annotation></semantics></math>,pred$.
-The difference between the tow figures is most evident at time=8 where
+The difference between the two figures is most evident at time=8 where
 there is a discontinuity in integration at <code>tlast</code> due to
 using <code>clast.pred</code> after that point and
 <code>clast.obs</code> before that point. (To illustrate the integration
@@ -652,7 +652,7 @@ illustrated below.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
