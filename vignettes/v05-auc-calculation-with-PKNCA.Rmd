@@ -67,7 +67,7 @@ kable(as.data.frame(results_obj))
 
 # AUC to the Last Value Above the Limit of Quantification (AUC~last~)
 
-AUC~0-last~ calculates the AUC from time 0 to the last value above the limit of quantification, `tlast` (within PKNCA, this is the last value above 0).  In the figure below, AUC~0-last~ integrate the shaded region.  Integration after `tlast` is 0.
+AUC~0-last~ calculates the AUC from time 0 to the last value above the limit of quantification, `tlast` (within PKNCA, this is the last value above 0).  In the figure below, AUC~0-last~ integrates the shaded region.  Integration after `tlast` is 0.
 
 ```{r auclast}
 tlast <- pk.calc.tlast(conc=my_conc$conc,
@@ -120,7 +120,7 @@ ggplot(my_conc,
 
 AUC~0-$\infty$~ is commonly used for single-dose data.  It calculates the AUC~0-last~ and then extrapolates to $\infty$ using the estimated half-life.  Two starting points are used to estimate from `tlast` to $\infty$, the observed or half-life predicted concentration at `tlast` (`clast.obs` and `clast.pred`).
 
-The two figures below illustrate the integration with AUC~0-$\infty$,obs~ and AUC~0-$\infty$,pred$.  The difference between the tow figures is most evident at time=8 where there is a discontinuity in integration at `tlast` due to using `clast.pred` after that point and `clast.obs` before that point.  (To illustrate the integration differences, BLQ indicator shapes have been removed.  BLQ is handled identically to previous figures.)
+The two figures below illustrate the integration with AUC~0-$\infty$,obs~ and AUC~0-$\infty$,pred$.  The difference between the two figures is most evident at time=8 where there is a discontinuity in integration at `tlast` due to using `clast.pred` after that point and `clast.obs` before that point.  (To illustrate the integration differences, BLQ indicator shapes have been removed.  BLQ is handled identically to previous figures.)
 
 ```{r aucinf, fig.width=6}
 # Add one row to illustrate extrapolation beyond observed data

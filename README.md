@@ -18,14 +18,12 @@ The primary and secondary goals of the PKNCA package are to 1) only
 give correct answers to the specific questions being asked and 2)
 automate as much as possible to simplify the task of the analyst. When
 automation would leave ambiguity or make a choice that the analyst may
-have an alternate preference for, it is either not used or is possible
-to override.
+have an alternate preference for, it is either not used, is possible
+to override or raises an error message.
 
 Note that backward compatibility will not be guaranteed until version
 1.0.  Argument and function changes will continue until then.  These
-will be especially noticeable around the inclusion of IV NCA parameters
-and additional specifications of the dosing including dose amount and
-route.
+will be especially noticeable around the inclusion of IV NCA parameters and additional specifications of the drug, which include dose amount and route of administration.
 
 # Citation
 
@@ -78,9 +76,7 @@ To install the development version from GitHub, type the following commands:
     # Summarize the results
     summary(o_results)
 
-More help is available in the function help files, and be sure to look
-at the PKNCA.options function for many choices to make PKNCA conform
-to your company's business rules for calculations and summarization.
+More help is available in the function help files. Be sure to look at the PKNCA.options function for choices on making PKNCA conform to your company’s business rules on calculation and summarization.
 
 # Feature requests
 
