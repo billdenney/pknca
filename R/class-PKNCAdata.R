@@ -226,3 +226,13 @@ print.PKNCAdata <- function(x, ...) {
 summary.PKNCAdata <- function(object, ...) {
   print.PKNCAdata(object, summarize=TRUE, ...)
 }
+
+#' Get the groups
+#'
+#' @param object The object to extract the data from
+#' @param ... Arguments passed to other getGroups functions
+#' @returns A data frame with the (selected) group columns.
+#' @export
+getGroups.PKNCAdata <- function(object, ...) {
+  getGroups(as_PKNCAconc(object), ...)
+}
