@@ -5,7 +5,7 @@ the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
-
+* PKNCA now contains a `getGroups.PKNCAdata` function to capture grouping columns.
 * Duplicate data checks now account for excluded rows.  So, if a row is
   duplicated and all but one of the duplicated rows is excluded, it is not an
   error.  (#298)
