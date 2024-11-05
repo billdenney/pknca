@@ -1,7 +1,7 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/PKNCA)](https://CRAN.R-project.org/package=PKNCA)
 [![R-CMD-check](https://github.com/billdenney/pknca/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/billdenney/pknca/actions/workflows/R-CMD-check.yaml)
-[![Code_Coverage_Badge](https://codecov.io/github/billdenney/pknca/coverage.svg?branch=main)](https://app.codecov.io/github/billdenney/pknca?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/billdenney/pknca/graph/badge.svg)](https://app.codecov.io/gh/billdenney/pknca)
 [![CodeFactor](https://www.codefactor.io/repository/github/billdenney/pknca/badge?style=plastic)](https://www.codefactor.io/repository/github/billdenney/pknca)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2054/badge)](https://bestpractices.coreinfrastructure.org/projects/2054)
 <!-- badges: end -->
