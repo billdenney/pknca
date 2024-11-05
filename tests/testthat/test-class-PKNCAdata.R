@@ -335,3 +335,17 @@ test_that("intervals may be a tibble", {
     as.data.frame(pk.nca(mydata))
   )
 })
+
+test_that("getGroups works", {
+  # Check that it works with grouping [contains only the grouping column(s)]
+  o_conc_group <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+  data_group <- as.data.frame(datasets::Theoph)
+  expected_group <- data.frame(Subject = data_group$Subject)
+    
+  expect_equal(getGroups.PKNCAdata(o_conc_group), expected_group)
+    
+  # Check that it works without groupings as expected [empty]
+  o_conc_nongroup <- PKNCAconc(as.data.frame(datasets::Theoph)[datasets::Theoph$Subject == 1,], conc~Time)
+  
+  expect_equal(names(getGroups.PKNCAdata(o_conc_nongroup)), character(0))
+})
