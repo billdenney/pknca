@@ -38,7 +38,7 @@ assert_intervals <- function(data, intervals) {
   }
   
   allowed_columns <- c(
-    names(PKNCAdata_obj$conc),
+    names(getGroups.PKNCAdata(data)),
     names(get.interval.cols())
   )
   
