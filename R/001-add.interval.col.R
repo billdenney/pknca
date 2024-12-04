@@ -253,3 +253,11 @@ add.interval.col(
   pretty_name="Interval End",
   desc = "Ending time of the interval (potentially infinity)"
 )
+# add.interval.col(
+#   "impute",
+#   FUN = NA,
+#   values = as.character,
+#   unit_type="time",
+#   pretty_name="Interval Imputation",
+#   desc = "Imputation method parameters"
+# )

@@ -15,7 +15,7 @@ set_intervals <- function(data, intervals) {
   
   data$intervals <- valid_intervals
   
-  return(data)
+  data
 }
 
 #'  Assert Intervals
@@ -32,14 +32,31 @@ set_intervals <- function(data, intervals) {
 #' @returns The intervals argument unchanged, or it will raise an error.
 #'   
 #' @export
-assert_intervals <- function(data, intervals) {
+assert_intervals <- function(intervals, data) {
   if (!is.data.frame(intervals)) {
     stop("The 'intervals' argument must be a data frame or a data frame-like object.")
   }
   
+  if (class(data)[1] != "PKNCAdata") {
+    stop("The 'data' argument must be a PKNCAdata object.")
+  }
+  
+  ifelse("keep_interval_cols" %in% names(data$options),
   allowed_columns <- c(
     names(getGroups.PKNCAdata(data)),
-    names(get.interval.cols())
+    names(get.interval.cols()),
+    "conc_above",
+    "time_above",
+    "impute",
+    data$options$keep_interval_cols
+  ),
+    allowed_columns <- c(
+    names(getGroups.PKNCAdata(data)),
+    names(get.interval.cols()),
+    "conc_above",
+    "time_above",
+    "impute"
+  )
   )
   
   invalid_columns <- setdiff(names(intervals), allowed_columns)
@@ -48,5 +65,5 @@ assert_intervals <- function(data, intervals) {
     stop("The following columns in 'intervals' are not allowed: ", paste(invalid_columns, collapse = ", "))
   }
   
-  return(intervals)
+  intervals
 }

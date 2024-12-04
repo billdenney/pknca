@@ -4,12 +4,12 @@
 \alias{assert_intervals}
 \title{Assert Intervals}
 \usage{
-assert_intervals(data, intervals)
+assert_intervals(intervals, data)
 }
 \arguments{
-\item{data}{PKNCAdata object}
-
 \item{intervals}{Proposed intervals}
+
+\item{data}{PKNCAdata object}
 }
 \value{
 The intervals argument unchanged, or it will raise an error.

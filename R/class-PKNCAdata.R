@@ -100,6 +100,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     }
   }
   ret$options <- options
+  
+  # Assign the class and give it all back to the user.
+  class(ret) <- c("PKNCAdata", class(ret))
+  
   # Check the intervals
   if (missing(intervals) & identical(ret$dose, NA)) {
     stop("If data.dose is not given, intervals must be given")
@@ -158,6 +162,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
         cols="data_intervals"
       )
   }
+  ret <- set_intervals(ret, intervals)
   ret$intervals <- check.interval.specification(intervals)
   # Verify that either everything or nothing is using units
   units_interval_start <- inherits(ret$intervals$start, "units")
@@ -179,9 +184,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     checkmate::assert_character(impute, len = 1)
     ret$impute <- impute
   }
-
-  # Assign the class and give it all back to the user.
-  class(ret) <- c("PKNCAdata", class(ret))
+  
   ret
 }
 
