@@ -168,6 +168,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     if (nrow(data) > 0) {
       fit <- fit_half_life(data=data, tlast=ret$tlast, conc_units=conc_units)
       ret[,ret_replacements] <- fit[,ret_replacements]
+      attr(ret, "individual_fits") <- attr(fit, "individual_fit")
     } else {
       warning("No data to manually fit for half-life (all concentrations may be 0 or excluded)")
       ret <-
@@ -192,6 +193,11 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
       )
     half_lives_for_selection <-
       half_lives_for_selection[order(-half_lives_for_selection$lambda.z.time.first), ]
+    ## create empty list to collect individual fits in
+    individual_fits <- purrr::map(
+      .x = half_lives_for_selection$lambda.z.n.points,
+      .f = function(x) { return() }
+    )
     for(i in min.hl.points:nrow(half_lives_for_selection)) {
       # Fit the terminal slopes until the adjusted r-squared value
       # is not improving (or it only gets worse by a small factor).
@@ -207,6 +213,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
           conc_units=conc_units
         )
       half_lives_for_selection[i,names(fit)] <- fit
+      individual_fits[[i]] <- attr(fit, "individual_fit")
     }
     # Find the best model
     mask_best <-
@@ -234,6 +241,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     if (any(mask_best)) {
       # Put in all the computed values
       ret[,ret_replacements] <- half_lives_for_selection[mask_best, ret_replacements]
+      attr(ret, "individual_fits") <- individual_fits[[which(mask_best)]]
     }
   } else {
     attr(ret, "exclude") <-
@@ -269,6 +277,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
 #' @seealso [pk.calc.half.life()]
 fit_half_life <- function(data, tlast, conc_units) {
   fit <- stats::.lm.fit(x=cbind(1, data$time), y=data$log_conc)
+  data$log_prediction <- data$log_conc - fit$residuals
   # unit handling
   # if (inherits(tlast, "units")) {
   #   time_units <- units(tlast)
@@ -306,6 +315,10 @@ fit_half_life <- function(data, tlast, conc_units) {
     )
   ret$half.life <- log(2)/ret$lambda.z
   ret$span.ratio <- (max(data$time) - min(data$time))/ret$half.life
+  attr(ret, "individual_fit") <- list(
+    data = data,
+    coefficients = fit$coefficients
+  )
   ret
 }
 

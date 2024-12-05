@@ -131,6 +131,17 @@ pk_nca_result_to_df <- function(group_info, result) {
     results <- tidyr::unnest(ret_nowarning, cols="data_result")
     rownames(results) <- NULL
   }
+  ## extract individual fit data and coefficients, and add subject info
+  attr(results, "individual_fits") <- purrr::pmap(
+    .l = list(result, split(group_info, 1:nrow(group_info))),
+    .f = function(x, info) { 
+      tmp <- attr(x, "individual_fits")
+      list(
+        data = cbind(info, tmp$data),
+        coefficients = tmp$coefficients
+      )
+    }
+  )
   results
 }
 
@@ -290,6 +301,10 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
             row.names=NULL
           )
         )
+      if(!is.null(attr(calculated_interval, "individual_fits"))) {
+        attr(ret, "individual_fits") <- 
+          attr(calculated_interval, "individual_fits")
+      }
     }
   }
   ret
@@ -369,6 +384,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   }
   # Prepare the return value using SDTM names
   ret <- data.frame(PPTESTCD=NA, PPORRES=NA)[-1,]
+  individual_fits <- NULL
   # Determine exactly what needs to be calculated in what order. Start with the
   # interval specification and find any dependencies that are not listed for
   # calculation.  Then loop over the calculations in order confirming what needs
@@ -518,6 +534,9 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         #   }
         # }
         tmp_testcd <- names(tmp_result)
+        if(!is.null(attr(tmp_result, "individual_fits"))) {
+          individual_fits <- attr(tmp_result, "individual_fits")
+        }
         tmp_result <- unlist(tmp_result, use.names=FALSE, recursive=FALSE)
       } else {
         # if (uses_units) {
@@ -542,5 +561,6 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       ret <- rbind(ret, single_result)
     }
   }
+  attr(ret, "individual_fits") <- individual_fits
   ret
 }
