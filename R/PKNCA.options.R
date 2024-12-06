@@ -110,12 +110,12 @@
       x
     }
     if (is.list(x)) {
-      extra.names <- setdiff(names(x), c("first", "last", "middle"))
-      missing.names <- setdiff(c("first", "last", "middle"), names(x))
+      extra.names <- setdiff(names(x), c("first", "last", "middle", "before.tmax", "after.tmax"))
+      missing.names <- setdiff(c("first", "last", "middle", "before.tmax", "after.tmax"), names(x))
       if (length(extra.names) != 0)
-        stop("When given as a list, conc.blq must only have elements named 'first', 'middle', and 'last'.")
+        stop("When given as a list, conc.blq must only have elements named 'first', 'middle','last', 'before.tmax' and 'after.tmax'.")
       if (length(missing.names) != 0)
-        stop("When given as a list, conc.blq must include elements named 'first', 'middle', and 'last'.")
+        stop("When given as a list, conc.blq must include elements named 'first', 'middle','last', 'before.tmax' and 'after.tmax'.")
       # After the names are confirmed, confirm each value.
       x <- lapply(x, check.element)
     } else {
@@ -548,3 +548,4 @@ PKNCA.set.summary <- function(name, description, point, spread,
   assign("summary", current, envir=.PKNCAEnv)
   invisible(current)
 }
+

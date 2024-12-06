@@ -54,7 +54,7 @@ clean.conc.na <- function(conc, time, ...,
 #'   considered BLQ if they are 0.
 #'
 #'   `conc.blq` can be set either a scalar indicating what should be done for
-#'   all BLQ values or a list with elements named "first", "middle", and "last"
+#'   all BLQ values or a list with elements named "first", "middle", "last", "before.tmax" and "after.tmax"
 #'   each set to a scalar.
 #'
 #' The meaning of each of the list elements is:
@@ -64,6 +64,8 @@ clean.conc.na <- function(conc, time, ...,
 #'   \item{middle}{Values that are BLQ between the first and last
 #'     non-BLQ values.}
 #'   \item{last}{Values that are BLQ after the last non-BLQ value}
+#'   \item{before.tmax}{Values that are BLQ before the time at first maximum concentration}
+#'   \item{after.tmax}{Values that are BLQ after the time at first maximum concentration}
 #' }
 #'
 #' The valid settings for each are:
@@ -91,9 +93,10 @@ clean.conc.blq <- function(conc, time,
   # If all data has been excluded, then don't do anything
   if (nrow(ret) > 0) {
     tfirst <- pk.calc.tfirst(ret$conc, ret$time, check=FALSE)
+    tmax <- pk.calc.tmax(ret$conc, ret$time, check=FALSE)
     if (is.na(tfirst)) {
       # All measurements are BLQ; so apply the "first" BLQ rule to
-      # everyting.
+      # everything.
       tfirst <- max(ret$time)
       tlast <- tfirst + 1
     } else {
@@ -102,7 +105,7 @@ clean.conc.blq <- function(conc, time,
     }
     # For each of the first, middle, and last, do the right thing to
     # the values in that set.
-    for (n in c("first", "middle", "last")) {
+    for (n in c("first", "middle", "last", "before.tmax", "after.tmax")) {
       # Set the mask to apply the rule to
       if (n == "first") {
         mask <- (ret$time <= tfirst &
@@ -113,6 +116,12 @@ clean.conc.blq <- function(conc, time,
                      ret$conc %in% 0)
       } else if (n == "last") {
         mask <- (tlast <= ret$time &
+                   ret$conc %in% 0)
+      } else if (n == "before.tmax") {
+        mask <- (ret$time < tmax &
+                   ret$conc %in% 0)
+      } else if (n == "after.tmax") {
+        mask <- (tmax <= ret$time &
                    ret$conc %in% 0)
       } else {
         stop("There is a bug in cleaning the conc.blq with position names") # nocov
