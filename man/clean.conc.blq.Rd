@@ -46,7 +46,7 @@ are considered BLQ and which are considered "middle".  Values are
 considered BLQ if they are 0.
 
 \code{conc.blq} can be set either a scalar indicating what should be done for
-all BLQ values or a list with elements named "first", "middle", and "last"
+all BLQ values or a list with elements named "first", "middle", "last", "before.tmax" and "after.tmax"
 each set to a scalar.
 
 The meaning of each of the list elements is:
@@ -56,12 +56,14 @@ that if all values are BLQ, this includes all values.}
 \item{middle}{Values that are BLQ between the first and last
 non-BLQ values.}
 \item{last}{Values that are BLQ after the last non-BLQ value}
+\item{before.tmax}{Values that are BLQ before the time at first maximum concentration}
+\item{after.tmax}{Values that are BLQ after the time at first maximum concentration}
 }
 
 The valid settings for each are:
 \describe{
 \item{"drop"}{Drop the BLQ values}
-\item{"keep"}{Keep the BLQ values}
+\item{"keep"}{Keep the BLQ values. Default setting}
 \item{a number}{Set the BLQ values to that number}
 }
 }
