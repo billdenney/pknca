@@ -63,7 +63,7 @@ non-BLQ values.}
 The valid settings for each are:
 \describe{
 \item{"drop"}{Drop the BLQ values}
-\item{"keep"}{Keep the BLQ values}
+\item{"keep"}{Keep the BLQ values. Default setting}
 \item{a number}{Set the BLQ values to that number}
 }
 }

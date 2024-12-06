@@ -115,7 +115,7 @@
       if (length(extra.names) != 0)
         stop("When given as a list, conc.blq must only have elements named 'first', 'middle','last', 'before.tmax' and 'after.tmax'.")
       if (length(missing.names) != 0)
-        stop("When given as a list, conc.blq must include elements named 'first', 'middle','last', 'before.tmax' and 'after.tmax'.")
+        x[missing.names] = "keep"
       # After the names are confirmed, confirm each value.
       x <- lapply(x, check.element)
     } else {
