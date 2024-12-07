@@ -49,6 +49,7 @@
 <url><loc>http://billdenney.github.io/pknca/reference/assert_aucmethod.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/assert_conc_time.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/assert_dosetau.html</loc></url>
+<url><loc>http://billdenney.github.io/pknca/reference/assert_intervals.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/assert_intervaltime_single.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/assert_lambdaz.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/assert_number_between.html</loc></url>
@@ -156,6 +157,7 @@
 <url><loc>http://billdenney.github.io/pknca/reference/setDuration.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/setExcludeColumn.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/setRoute.html</loc></url>
+<url><loc>http://billdenney.github.io/pknca/reference/set_intervals.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/signifString.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/sort.interval.cols.html</loc></url>
 <url><loc>http://billdenney.github.io/pknca/reference/sparse_auc_weight_linear.html</loc></url>
