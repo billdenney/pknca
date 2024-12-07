@@ -37,27 +37,20 @@ assert_intervals <- function(intervals, data) {
     stop("The 'intervals' argument must be a data frame or a data frame-like object.")
   }
   
-  if (class(data)[1] != "PKNCAdata") {
+  if (!inherits(data, "PKNCAdata")) {
     stop("The 'data' argument must be a PKNCAdata object.")
   }
   
-  ifelse("keep_interval_cols" %in% names(data$options),
-  allowed_columns <- c(
-    names(getGroups.PKNCAdata(data)),
-    names(get.interval.cols()),
-    "conc_above",
-    "time_above",
-    "impute",
-    data$options$keep_interval_cols
-  ),
-    allowed_columns <- c(
-    names(getGroups.PKNCAdata(data)),
-    names(get.interval.cols()),
-    "conc_above",
-    "time_above",
-    "impute"
-  )
-  )
+  allowed_columns <-
+    c(
+      names(getGroups.PKNCAdata(data)),
+      names(get.interval.cols()),
+      "conc_above",
+      "time_above",
+      "impute",
+      # If not used, data$options$keep_interval_cols will be NULL
+      data$options$keep_interval_cols
+    )
   
   invalid_columns <- setdiff(names(intervals), allowed_columns)
   

@@ -5,6 +5,8 @@ the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
+* PKNCA will now give an error when there are unexpected interval columns.
+  The `keep_interval_cols` option can be used to mitigate this error.
 * PKNCA will now make verifications on the `intervals` object within the
   creation of PKNCAdata. This will return errors, or create the `PKNCAdata`
   object as intended when no errors are present. Some of the verifications include

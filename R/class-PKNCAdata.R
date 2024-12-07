@@ -162,7 +162,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
         cols="data_intervals"
       )
   }
-  ret <- set_intervals(ret, intervals)
+  ret <- set_intervals(data = ret, intervals = intervals)
   ret$intervals <- check.interval.specification(intervals)
   # Verify that either everything or nothing is using units
   units_interval_start <- inherits(ret$intervals$start, "units")
