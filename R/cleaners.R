@@ -93,21 +93,26 @@ clean.conc.blq <- function(conc, time,
   # If all data has been excluded, then don't do anything
   if (nrow(ret) > 0) {
     tfirst <- pk.calc.tfirst(ret$conc, ret$time, check=FALSE)
+    tlast <- pk.calc.tlast(ret$conc, ret$time, check=FALSE)
     tmax <- pk.calc.tmax(ret$conc, ret$time, check=FALSE)
-    if (is.na(tfirst)) {
-      # All measurements are BLQ; so apply the "first" BLQ rule to
-      # everything.
+    
+    # If all measurements are BLQ
+    if (all(ret$conc == 0)){
+      # Apply "first" BLQ rule to everything for tfirst/tlast
       tfirst <- max(ret$time)
       tlast <- tfirst + 1
-    } else {
-      # There is at least one above LOQ concentration
-      tlast <- pk.calc.tlast(ret$conc, ret$time, check=FALSE)
+      
+      # Apply "before.tmax" BLQ rule to everything for tmax
+      tmax <- max(ret$time)
     }
-    # For each of the first, middle, and last, do the right thing to
-    # the values in that set.
-    for (n in names(conc.blq)) {
+    
+    # Depending on the specified argument perform the corresponding action
+    for (i in seq_len(length(conc.blq))) {
       # Set the mask to apply the rule to
-      if (n == "first") {
+      n <- names(conc.blq)[i]
+      if (is.null(n) & length(conc.blq) == 1) {
+        mask <- (ret$conc %in% 0)
+      } else if (n == "first") {
         mask <- (ret$time <= tfirst &
                    ret$conc %in% 0)
       } else if (n == "middle") {
@@ -127,12 +132,8 @@ clean.conc.blq <- function(conc, time,
         stop("There is a bug in cleaning the conc.blq with position names") # nocov
       }
       # Choose the rule to apply
-      this_rule <-
-        if (is.list(conc.blq)) {
-          conc.blq[[n]]
-        } else {
-          conc.blq
-        }
+      this_rule <- unname(conc.blq)[[i]]
+
       if (this_rule %in% "keep") {
         # Do nothing
       } else if (this_rule %in% "drop") {
