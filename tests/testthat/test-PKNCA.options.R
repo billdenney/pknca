@@ -170,18 +170,48 @@ test_that("PKNCA.options", {
                regexp="conc.blq must be a scalar")
   expect_error(PKNCA.options(conc.blq=NA, check=TRUE),
                regexp="conc.blq must not be NA")
-
+  
   # Confirm that list-style input also works
   expect_equal(PKNCA.options(conc.blq=list(first="drop", middle=5, last="keep"),
                              check=TRUE),
                list(first="drop", middle=5, last="keep"))
   expect_error(PKNCA.options(conc.blq=list(first="drop", middle=5, last="keep",
-                               foo=5),
+                                           foo=5),
                              check=TRUE),
-               regexp="When given as a list, conc.blq must only have elements named 'first', 'middle', and 'last'.")
+               regexp="When given as a list, conc.blq must only have elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
   expect_error(PKNCA.options(conc.blq=list(first="drop", middle=5),
                              check=TRUE),
-               regexp="When given as a list, conc.blq must include elements named 'first', 'middle', and 'last'.")
+               regexp="When given as a list, conc.blq must include all elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
+
+  # Confirm that before.tmax and after.tmax must be specified together
+  expect_error(PKNCA.options(conc.blq=list(after.tmax="drop"), check=TRUE),
+               regexp="When given as a list, conc.blq must include all elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
+  
+  # Confirm that before.tmax and after.tmax work correctly
+  expect_equal(PKNCA.options(conc.blq=list(before.tmax="drop", after.tmax="keep"),
+                             check=TRUE),
+               list(before.tmax="drop", after.tmax="keep"))
+  
+  # Confirm that first/middle/last and before.tmax/after.tmax cannot be mixed and need to be complete
+  names_tmax <- c("before.tmax", "after.tmax")
+  names_tlast <- c("first", "middle", "last")
+  all_combinations <- unlist(lapply(1:length(c(names_tlast, names_tmax)), function(x) combn(c(names_tlast, names_tmax), x, simplify = FALSE)), recursive = FALSE)
+  for (i in seq_along(all_combinations)) {
+    conc.blq.i <- as.list(setNames(rep(0, length(all_combinations[[i]])), all_combinations[[i]]))
+    are.names.mixed <- any(names_tmax %in% all_combinations[[i]]) && any(names_tlast %in% all_combinations[[i]])
+    are.names.incomplete_tmax <- any(names_tmax %in% all_combinations[[i]]) && !all(names_tmax %in% all_combinations[[i]])
+    are.names.incomplete_tlast <- any(names_tlast %in% all_combinations[[i]]) && !all(names_tlast %in% all_combinations[[i]])
+    
+    if (are.names.mixed) {
+      # Lists with mixed names for both BLQ strategies should provide an error
+      expect_error(PKNCA.options(conc.blq=conc.blq.i, check=TRUE),
+                   regexp="When given as a list, prevent mixing arguments of different BLQ strategies\\.")
+    } else if (are.names.incomplete_tmax || are.names.incomplete_tlast) {
+      # Lists with missing names for either BLQ strategy should provide an error
+      expect_error(PKNCA.options(conc.blq=conc.blq.i, check=TRUE),
+                   regexp="When given as a list, conc.blq must include all elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
+    }
+  }
 
   # first.tmax
   expect_equal(PKNCA.options(first.tmax=FALSE, check=TRUE),
@@ -435,3 +465,4 @@ test_that("PKNCA.options fails when setting defaults and another option simultan
     fixed=TRUE
   )
 })
+
