@@ -195,7 +195,7 @@ test_that("PKNCA.options", {
   # Confirm that first/middle/last and before.tmax/after.tmax cannot be mixed and need to be complete
   names_tmax <- c("before.tmax", "after.tmax")
   names_tlast <- c("first", "middle", "last")
-  all_combinations <- unlist(lapply(1:length(c(names_tlast, names_tmax)), function(x) combn(c(names_tlast, names_tmax), x, simplify = FALSE)), recursive = FALSE)
+  all_combinations <- unlist(lapply(seq_along(c(names_tlast, names_tmax)), function(x) combn(c(names_tlast, names_tmax), x, simplify = FALSE)), recursive = FALSE)
   for (i in seq_along(all_combinations)) {
     conc.blq.i <- as.list(setNames(rep(0, length(all_combinations[[i]])), all_combinations[[i]]))
     are.names.mixed <- any(names_tmax %in% all_combinations[[i]]) && any(names_tlast %in% all_combinations[[i]])

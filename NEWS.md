@@ -5,6 +5,7 @@ the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
+* PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
 * PKNCA now contains a `getGroups.PKNCAdata` function to capture grouping columns.
 * Duplicate data checks now account for excluded rows.  So, if a row is
   duplicated and all but one of the duplicated rows is excluded, it is not an
@@ -14,7 +15,6 @@ the dosing including dose amount and route.
 
 # PKNCA 0.11.0
 
-* PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`, `after.tmax`)
 * PKNCA will now indicate the number of observations included in a summary ("n")
   when it is not the same as the number of subjects included in the summary
   ("N") and the caption will also indicate the definition of "N" and "n".  Note
