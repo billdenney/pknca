@@ -54,7 +54,7 @@ clean.conc.na <- function(conc, time, ...,
 #'   considered BLQ if they are 0.
 #'
 #'   `conc.blq` can be set either a scalar indicating what should be done for
-#'   all BLQ values or a list with elements named "first", "middle", "last", "before.tmax" and "after.tmax"
+#'   all BLQ values or a list with elements either named "first", "middle" and "last" or "before.tmax" and "after.tmax"
 #'   each set to a scalar.
 #'
 #' The meaning of each of the list elements is:
@@ -71,7 +71,7 @@ clean.conc.na <- function(conc, time, ...,
 #' The valid settings for each are:
 #' \describe{
 #'   \item{"drop"}{Drop the BLQ values}
-#'   \item{"keep"}{Keep the BLQ values. Default setting}
+#'   \item{"keep"}{Keep the BLQ values}
 #'   \item{a number}{Set the BLQ values to that number}
 #' }
 #'
@@ -105,7 +105,7 @@ clean.conc.blq <- function(conc, time,
     }
     # For each of the first, middle, and last, do the right thing to
     # the values in that set.
-    for (n in c("first", "middle", "last", "before.tmax", "after.tmax")) {
+    for (n in names(conc.blq)) {
       # Set the mask to apply the rule to
       if (n == "first") {
         mask <- (ret$time <= tfirst &

@@ -46,7 +46,7 @@ are considered BLQ and which are considered "middle".  Values are
 considered BLQ if they are 0.
 
 \code{conc.blq} can be set either a scalar indicating what should be done for
-all BLQ values or a list with elements named "first", "middle", "last", "before.tmax" and "after.tmax"
+all BLQ values or a list with elements either named "first", "middle" and "last" or "before.tmax" and "after.tmax"
 each set to a scalar.
 
 The meaning of each of the list elements is:
@@ -63,7 +63,7 @@ non-BLQ values.}
 The valid settings for each are:
 \describe{
 \item{"drop"}{Drop the BLQ values}
-\item{"keep"}{Keep the BLQ values. Default setting}
+\item{"keep"}{Keep the BLQ values}
 \item{a number}{Set the BLQ values to that number}
 }
 }

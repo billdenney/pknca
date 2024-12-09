@@ -110,12 +110,19 @@
       x
     }
     if (is.list(x)) {
-      extra.names <- setdiff(names(x), c("first", "last", "middle", "before.tmax", "after.tmax"))
-      missing.names <- setdiff(c("first", "last", "middle", "before.tmax", "after.tmax"), names(x))
+      tfirst_names <- c("first", "last", "middle")
+      tmax_names <- c("before.tmax", "after.tmax")
+      
+      are.names.mixed <- any(names(x) %in% tfirst_names) & any(names(x) %in% tmax_names)
+      extra.names <- setdiff(names(x), c(tfirst_names, tmax_names))
+      missing.names <- if (any(names(x) %in% tfirst_names)) setdiff(tfirst_names, names(x)) else setdiff(tmax_names, names(x))
+      if (are.names.mixed)
+        stop("When given as a list, prevent mixing arguments of different BLQ strategies. 
+             Either define 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
       if (length(extra.names) != 0)
-        stop("When given as a list, conc.blq must only have elements named 'first', 'middle','last', 'before.tmax' and 'after.tmax'.")
+        stop("When given as a list, conc.blq must only have elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
       if (length(missing.names) != 0)
-        x[missing.names] = "keep"
+        stop("When given as a list, conc.blq must include all elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
       # After the names are confirmed, confirm each value.
       x <- lapply(x, check.element)
     } else {
