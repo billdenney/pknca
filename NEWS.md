@@ -5,7 +5,14 @@ the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
+
 * PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
+* PKNCA will now give an error when there are unexpected interval columns.
+  The `keep_interval_cols` option can be used to mitigate this error.
+* PKNCA will now make verifications on the `intervals` object within the
+  creation of PKNCAdata. This will return errors, or create the `PKNCAdata`
+  object as intended when no errors are present. Some of the verifications include
+  checking of intended column naming and ensuring the correct data type.
 * PKNCA now contains a `getGroups.PKNCAdata` function to capture grouping columns.
 * Duplicate data checks now account for excluded rows.  So, if a row is
   duplicated and all but one of the duplicated rows is excluded, it is not an

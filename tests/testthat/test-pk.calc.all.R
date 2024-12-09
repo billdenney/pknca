@@ -587,7 +587,7 @@ test_that("calculate with sparse data", {
   # Correct detection of mixed doses within a sparse dose group when there are no groups
 })
 
-test_that("Unexpected interval columns do not cause an error (#238)", {
+test_that("Unexpected interval columns now not cause an error (#238)", {
   d_conc <-
     data.frame(
       ID = 1L,
@@ -598,8 +598,9 @@ test_that("Unexpected interval columns do not cause an error (#238)", {
   d_intervals <- data.frame(start = 0, end = 6, cmax = TRUE, aucinf = TRUE)
   o_conc <- PKNCAconc(d_conc, formula = conc~time|ID)
   o_dose <- PKNCAdose(d_dose, formula = dose~.)
-  o_data <- PKNCAdata(o_conc, o_dose, intervals = d_intervals)
-  expect_s3_class(pk.nca(o_data), "PKNCAresults")
+  expect_error(PKNCAdata(o_conc, o_dose, intervals = d_intervals),
+               "The following columns in 'intervals' are not allowed:"
+  )
 })
 
 test_that("aucint works within pk.calc.all for all zero concentrations with interpolated or extrapolated concentrations", {
@@ -641,12 +642,8 @@ test_that("The option keep_interval_cols is respected", {
   d_interval <- data.frame(start = 0, end = 4, cmax = TRUE, foo = "A")
   d_conctime <- data.frame(conc = c(0, 0, 0, 0), time = 0:3)
   o_conc <- PKNCAconc(d_conctime, conc~time)
-  o_data <- PKNCAdata(o_conc, intervals = d_interval)
-  suppressWarnings(suppressMessages(
-    o_nca <- pk.nca(o_data)
-  ))
-  expect_false("foo" %in% names(o_nca$result))
-  expect_false("foo" %in% names(summary(o_nca)))
+ expect_error(PKNCAdata(o_conc, intervals = d_interval),
+              "The following columns in 'intervals' are not allowed:")
 
   o_data <- PKNCAdata(o_conc, intervals = d_interval, options = list(keep_interval_cols = "foo"))
   suppressWarnings(suppressMessages(
