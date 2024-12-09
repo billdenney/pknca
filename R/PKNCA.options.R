@@ -116,6 +116,7 @@
       are.names.mixed <- any(names(x) %in% tfirst_names) & any(names(x) %in% tmax_names)
       extra.names <- setdiff(names(x), c(tfirst_names, tmax_names))
       missing.names <- if (any(names(x) %in% tfirst_names)) setdiff(tfirst_names, names(x)) else setdiff(tmax_names, names(x))
+      duplicated.names <- names(x)[duplicated(names(x))]
       if (are.names.mixed)
         stop("When given as a list, prevent mixing arguments of different BLQ strategies. 
              Either define 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
@@ -123,6 +124,8 @@
         stop("When given as a list, conc.blq must only have elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
       if (length(missing.names) != 0)
         stop("When given as a list, conc.blq must include all elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
+      if (length(duplicated.names) != 0)
+        stop("When given as a list, conc.blq should not have duplicated names")
       # After the names are confirmed, confirm each value.
       x <- lapply(x, check.element)
     } else {
