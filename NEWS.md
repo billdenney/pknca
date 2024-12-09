@@ -14,6 +14,7 @@ the dosing including dose amount and route.
 
 # PKNCA 0.11.0
 
+* PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`, `after.tmax`)
 * PKNCA will now indicate the number of observations included in a summary ("n")
   when it is not the same as the number of subjects included in the summary
   ("N") and the caption will also indicate the definition of "N" and "n".  Note
