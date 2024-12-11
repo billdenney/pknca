@@ -24,11 +24,15 @@ pk.calc.c0 <- function(conc, time, time.dose=0,
   if (check) {
     assert_conc_time(conc = conc, time = time)
   }
-  if (length(time.dose) != 1)
+  if (length(time.dose) != 1) {
     stop("time.dose must be a scalar")
-  if (!is.numeric(time.dose) | is.factor(time.dose))
+  } else if (!is.numeric(time.dose) | is.factor(time.dose)) {
     stop("time.dose must be a number")
-  if (time.dose > max(time)) {
+  }
+  if (is.na(time.dose)) {
+    warning("time.dose is NA")
+    return(NA)
+  } else if (time.dose > max(time)) {
     warning("time.dose is after all available data")
     return(NA)
   }
