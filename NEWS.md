@@ -5,6 +5,7 @@ the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
+
 * PKNCA will now give an error when there are unexpected interval columns.
   The `keep_interval_cols` option can be used to mitigate this error.
 * PKNCA will now make verifications on the `intervals` object within the
@@ -17,6 +18,7 @@ the dosing including dose amount and route.
   error.  (#298)
 * Removed native pipes (`|>`) so that PKNCA will work with older versions of R
   (#304).
+* Missing dosing times to `pk.calc.c0()` will not cause an error (#344)
 
 # PKNCA 0.11.0
 
