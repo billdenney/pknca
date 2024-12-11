@@ -19,6 +19,7 @@ the dosing including dose amount and route.
   error.  (#298)
 * Removed native pipes (`|>`) so that PKNCA will work with older versions of R
   (#304).
+* Missing dosing times to `pk.calc.c0()` will not cause an error (#344)
 
 # PKNCA 0.11.0
 

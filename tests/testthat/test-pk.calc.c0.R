@@ -11,6 +11,10 @@ test_that("pk.calc.c0", {
   expect_error(pk.calc.c0(5:1, 0:4, method="blah"),
                regexp="should be one of",
                info="method must be valid")
+  expect_warning(
+    pk.calc.c0(conc = 0:3, time = 0:3, time.dose = NA_real_),
+    regexp = "time.dose is NA"
+  )
   expect_warning(pk.calc.c0(5:1, 0:4, time.dose=30),
                  regexp="time.dose is after all available data")
 
