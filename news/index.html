@@ -55,7 +55,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.11.0.9000" id="pknca-01109000">PKNCA 0.11.0.9000<a class="anchor" aria-label="anchor" href="#pknca-01109000"></a></h2>
-<ul><li>PKNCA will now give an error when there are unexpected interval columns. The <code>keep_interval_cols</code> option can be used to mitigate this error.</li>
+<ul><li>PKNCA options can now use <code>tmax</code> as a reference for BLQ handling by using new names in the <code>conc.blq</code> argument (<code>before.tmax</code>,<code>after.tmax</code>)</li>
+<li>PKNCA will now give an error when there are unexpected interval columns. The <code>keep_interval_cols</code> option can be used to mitigate this error.</li>
 <li>PKNCA will now make verifications on the <code>intervals</code> object within the creation of PKNCAdata. This will return errors, or create the <code>PKNCAdata</code> object as intended when no errors are present. Some of the verifications include checking of intended column naming and ensuring the correct data type.</li>
 <li>PKNCA now contains a <code>getGroups.PKNCAdata</code> function to capture grouping columns.</li>
 <li>Duplicate data checks now account for excluded rows. So, if a row is duplicated and all but one of the duplicated rows is excluded, it is not an error. (<a href="https://github.com/billdenney/pknca/issues/298" class="external-link">#298</a>)</li>

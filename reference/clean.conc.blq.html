@@ -118,7 +118,7 @@ method for handling NA concentrations can affect the output of which points
 are considered BLQ and which are considered "middle".  Values are
 considered BLQ if they are 0.</p>
 <p><code>conc.blq</code> can be set either a scalar indicating what should be done for
-all BLQ values or a list with elements named "first", "middle", and "last"
+all BLQ values or a list with elements either named "first", "middle" and "last" or "before.tmax" and "after.tmax"
 each set to a scalar.</p>
 <p>The meaning of each of the list elements is:</p><dl><dt>first</dt>
 <dd><p>Values up to the first non-BLQ value.  Note
@@ -130,6 +130,12 @@ non-BLQ values.</p></dd>
 
 <dt>last</dt>
 <dd><p>Values that are BLQ after the last non-BLQ value</p></dd>
+
+<dt>before.tmax</dt>
+<dd><p>Values that are BLQ before the time at first maximum concentration</p></dd>
+
+<dt>after.tmax</dt>
+<dd><p>Values that are BLQ after the time at first maximum concentration</p></dd>
 
 
 </dl><p>The valid settings for each are:</p><dl><dt>"drop"</dt>
