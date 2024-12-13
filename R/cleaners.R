@@ -95,39 +95,33 @@ clean.conc.blq <- function(conc, time,
     tfirst <- pk.calc.tfirst(ret$conc, ret$time, check=FALSE)
     tlast <- pk.calc.tlast(ret$conc, ret$time, check=FALSE)
     tmax <- pk.calc.tmax(ret$conc, ret$time, check=FALSE)
-    
+
     # If all measurements are BLQ
     if (all(ret$conc == 0)){
       # Apply "first" BLQ rule to everything for tfirst/tlast
       tfirst <- max(ret$time)
       tlast <- tfirst + 1
-      
+
       # Apply "before.tmax" BLQ rule to everything for tmax
       tmax <- max(ret$time)
     }
-    
+
     # Depending on the specified argument perform the corresponding action
     for (i in seq_len(length(conc.blq))) {
       # Set the mask to apply the rule to
-      n <- names(conc.blq)[i]
-      if (is.null(n) & length(conc.blq) == 1) {
-        mask <- (ret$conc %in% 0)
-      } else if (n == "first") {
-        mask <- (ret$time <= tfirst &
-                   ret$conc %in% 0)
-      } else if (n == "middle") {
-        mask <- (tfirst < ret$time &
-                   ret$time < tlast &
-                     ret$conc %in% 0)
-      } else if (n == "last") {
-        mask <- (tlast <= ret$time &
-                   ret$conc %in% 0)
-      } else if (n == "before.tmax") {
-        mask <- (ret$time < tmax &
-                   ret$conc %in% 0)
-      } else if (n == "after.tmax") {
-        mask <- (tmax <= ret$time &
-                   ret$conc %in% 0)
+      time_type <- names(conc.blq)[i]
+      if (is.null(time_type) & length(conc.blq) == 1) {
+        mask <- ret$conc %in% 0
+      } else if (time_type == "first") {
+        mask <- ret$time <= tfirst & ret$conc %in% 0
+      } else if (time_type == "middle") {
+        mask <- tfirst < ret$time & ret$time < tlast & ret$conc %in% 0
+      } else if (time_type == "last") {
+        mask <- tlast <= ret$time & ret$conc %in% 0
+      } else if (time_type == "before.tmax") {
+        mask <- ret$time < tmax & ret$conc %in% 0
+      } else if (time_type == "after.tmax") {
+        mask <- tmax <= ret$time & ret$conc %in% 0
       } else {
         stop("There is a bug in cleaning the conc.blq with position names") # nocov
       }
