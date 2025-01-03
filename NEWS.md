@@ -6,6 +6,7 @@ the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
 
+* New default PKNCA impute start methods for C1 and IV bolus logslope to add for intervals without a start concentration
 * PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
 * PKNCA will now give an error when there are unexpected interval columns.
   The `keep_interval_cols` option can be used to mitigate this error.
