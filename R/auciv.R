@@ -13,6 +13,7 @@
 #'   \item{The final AUC is the initial AUC plus the difference between the two AUCs (`auc_final <- auc + auc_second - auc_first`).}
 #' }
 #' @inheritParams pk.calc.auxc
+#' @inheritParams PKNCA.choose.option
 #' @param c0 The concentration at time 0, typically calculated using
 #'   `pk.calc.c0()`
 #' @param auc The AUC calculated using `conc` and `time` without `c0` (it may be
