@@ -120,6 +120,46 @@ PKNCA_impute_method_start_predose <- function(conc, time, start, end, conc.group
   ret
 }
 
+#' @describeIn PKNCA_impute_method Imputes based on a logarithmic slope on the
+#'   first points a time zero concentration (usually in IV bolus at dose time)
+#' @export
+PKNCA_impute_method_start_logslope <- function(conc, time, start, end, ..., options = list()) { # nolint
+
+  ret <- data.frame(conc = conc, time = time)
+  mask_start <- time %in% start
+  if (!any(mask_start)) {
+    all_concs <- conc[time >= start  &  time <= end]
+    all_times <- time[time >= start  &  time <= end]
+    if (!all(is.na(all_concs))) {
+      c0 <- PKNCA::pk.calc.c0(all_concs, all_times, method = "logslope")
+      if (!is.na(c0)) {
+        ret <- rbind(ret, data.frame(time = start, conc = c0))
+        ret <- ret[order(ret$time), ]
+      }
+    }
+  }
+  ret
+}
+
+#' @describeIn PKNCA_impute_method Shift the following concentration to a start
+#'   to become the time zero concentration (rarely used; non-monodecay IV bolus)
+#' @return A data frame with imputed start concentration.
+#' @export
+PKNCA_impute_method_start_c1 <- function(conc, time, start, end, ..., options = list()) { # nolint
+  ret <- data.frame(conc = conc, time = time)
+  mask_start <- time %in% start
+  if (!any(mask_start)) {
+    all_concs <- conc[time >= start  &  time <= end]
+    all_times <- time[time >= start  &  time <= end]
+    if (!all(is.na(all_concs))) {
+      c1 <- all_concs[which.min(all_times)]
+      ret <- rbind(ret, data.frame(time = start, conc = c1))
+      ret <- ret[order(ret$time), ]
+    }
+  }
+  ret
+}
+
 #' Separate out a vector of PKNCA imputation methods into a list of functions
 #'
 #' An error will be raised if the functions are not found.
