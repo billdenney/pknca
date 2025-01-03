@@ -19,14 +19,21 @@
 #'   calculated using any method)
 #' @return `pk.calc.auciv`: The AUC calculated using `c0`
 #' @export
-pk.calc.auciv <- function(conc, time, c0, auc, ..., check=TRUE) {
+pk.calc.auciv <- function(conc, time, c0, auc, ..., options = list(), check=TRUE) {
   if (check) {
     assert_conc_time(conc = conc, time = time)
+    data <-
+      clean.conc.blq(
+        conc, time,
+        options = options,
+        check=FALSE
+      )
+  } else {
+    data <- data.frame(conc = conc, time = time)
   }
   if (!(0 %in% time)) {
     return(structure(NA_real_, exclude="No time 0 in data"))
   }
-  data <- data.frame(conc, time)
   auc_first <- pk.calc.auc.last(conc = data$conc[1:2], time = data$time[1:2], ..., check=FALSE)
   auc_second <- pk.calc.auc.last(conc = c(c0, data$conc[2]), time = data$time[1:2], ..., check=FALSE)
   auc_final <- auc + auc_second - auc_first

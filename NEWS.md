@@ -25,6 +25,8 @@ the dosing including dose amount and route.
 * PKNCA will now give an error when there are unexpected interval columns.
   The `keep_interval_cols` option can be used to mitigate this error.
 * `NA` results from calculating `c0` will now add an exclusion reason.
+* AUC for intravenous dosing (all the `auciv*` parameters) now more robustly
+  calculate `c0`.
 
 # PKNCA 0.11.0
 
