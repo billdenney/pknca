@@ -25,3 +25,12 @@ test_that("NA data are removed from concentrations for calculation of AUCiv (#35
   o_data_353alt <- PKNCAdata(o_conc_353alt, o_dose, intervals = d_intervals)
   o_nca_353alt <- pk.nca(o_data_353alt)
 })
+
+test_that("missing dose information does not cause NA time (#353)", {
+  d_iv_nodose <- data.frame(conc = c(4, 2, 1, 0.45), time = c(5, 15, 30, 60))
+  d_intervals <- data.frame(start = 0, end = Inf, aucivinf.obs = TRUE)
+  o_conc_nodose <- PKNCAconc(data = d_iv_nodose, conc~time)
+  o_data_nodose <- PKNCAdata(o_conc_nodose, intervals = d_intervals, impute = "start_conc0")
+  o_nca_nodose <- pk.nca(o_data_nodose)
+  as.data.frame(o_nca_nodose)
+})
