@@ -20,9 +20,6 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
                              conc.blq=NULL,
                              conc.na=NULL,
                              check=TRUE, ...) {
-  # Check inputs
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     # When subject and time are not given, then monotonicity tests for
     # time are not required.
@@ -37,22 +34,37 @@ pk.tss.data.prep <- function(conc, time, subject, treatment,
   }
   if (!missing(subject)) {
     if (!missing(treatment)) {
-      ret <- clean.conc.blq(conc=conc, time=time, subject, treatment,
-                            conc.blq=conc.blq, conc.na=conc.na,
-                            check=FALSE)
+      ret <-
+        clean.conc.blq(
+          conc = conc, time = time,
+          conc.blq = conc.blq, conc.na = conc.na, options = options,
+          check = FALSE,
+          subject, treatment
+        )
     } else {
-      ret <- clean.conc.blq(conc=conc, time=time, subject,
-                            conc.blq=conc.blq, conc.na=conc.na,
-                            check=FALSE)
+      ret <-
+        clean.conc.blq(
+          conc = conc, time = time,
+          conc.blq = conc.blq, conc.na = conc.na, options = options,
+          check = FALSE,
+          subject
+        )
     }
   } else if (missing(treatment)) {
-    ret <- clean.conc.blq(conc=conc, time=time,
-                          conc.blq=conc.blq, conc.na=conc.na,
-                          check=FALSE)
+    ret <-
+      clean.conc.blq(
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na, options = options,
+        check = FALSE
+      )
   } else {
-    ret <- clean.conc.blq(conc=conc, time=time, treatment,
-                          conc.blq=conc.blq, conc.na=conc.na,
-                          check=FALSE)
+    ret <-
+      clean.conc.blq(
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na, options = options,
+        check = FALSE,
+        treatment
+      )
   }
   if (missing(subject.dosing)) {
     # Shrink the data to just the predose data

@@ -43,16 +43,13 @@ pk.calc.aucint <- function(conc, time,
                            options=list()) {
   # Check inputs
   method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
-        conc, time,
-        conc.blq=conc.blq,
-        conc.na=conc.na,
-        check=FALSE
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na, options = options,
+        check = FALSE
       )
   } else {
     data <- data.frame(conc, time)
