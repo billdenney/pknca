@@ -228,3 +228,19 @@ assert_unit_col <- function(col_name, data) {
   }
   col_name
 }
+
+#' Assert that a value may be a single unit
+#'
+#' The function does not verify that it is a real unit like "ng/mL" only that it
+#' is a single character string.
+#'
+#' @param unit The character string to test for usability as a unit
+#' @returns `unit` (or an error)
+assert_unit_value <- function(unit) {
+  if (length(unit) != 1) {
+    stop("`unit` must be a single value")
+  } else if (!is.character(unit)) {
+    stop("`unit` must be a character string")
+  }
+  unit
+}

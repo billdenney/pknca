@@ -135,3 +135,15 @@ test_that("assert_unit_col", {
     fixed = TRUE
   )
 })
+
+test_that("assert_unit_value", {
+  expect_equal(assert_unit_value("A"), "A")
+  expect_error(
+    assert_unit_value(c("A", "B")),
+    regexp = "`unit` must be a single value"
+  )
+  expect_error(
+    assert_unit_value(1),
+    regexp = "`unit` must be a character string"
+  )
+})
