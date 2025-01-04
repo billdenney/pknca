@@ -231,6 +231,10 @@ assert_unit_col <- function(unit, data) {
 #' The function does not verify that it is a real unit like "ng/mL" only that it
 #' is a single character string.
 assert_unit_value <- function(unit) {
+  if (is.null(unit)) {
+    return(unit)
+  }
+
   if (length(unit) != 1) {
     stop("`unit` must be a single value")
   } else if (!is.character(unit)) {
@@ -247,9 +251,6 @@ assert_unit_value <- function(unit) {
 #' @returns `unit` with an attribute of "unit_type" that is either "column" or
 #'   "value", or `NULL` if `is.null(unit)`
 assert_unit <- function(unit, data) {
-  if (is.null(unit)) {
-    return(unit)
-  }
   unit_col <- try(assert_unit_col(unit = unit, data = data), silent = TRUE)
   unit_value <- try(assert_unit_value(unit = unit), silent = TRUE)
   if (!inherits(unit_col, "try-error")) {

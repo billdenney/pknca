@@ -138,6 +138,7 @@ test_that("assert_unit_col", {
 
 test_that("assert_unit_value", {
   expect_equal(assert_unit_value("A"), structure("A", unit_type = "value"))
+  expect_null(assert_unit_value(NULL))
   expect_error(
     assert_unit_value(c("A", "B")),
     regexp = "`unit` must be a single value"

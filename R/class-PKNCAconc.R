@@ -56,10 +56,16 @@ PKNCAconc.tbl_df <- function(data, ...) {
 }
 
 #' @rdname PKNCAconc
+#' @param concu,amountu,timeu Either unit values (e.g. "ng/mL") or column names
+#'   within the data where units are provided.
+#' @param concu_pref,amountu_pref,timeu_pref Preferred units for reporting (not
+#'   column names)
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
                                  time.nominal, exclude = NULL, duration, volume,
-                                 exclude_half.life, include_half.life, sparse=FALSE, ...) {
+                                 exclude_half.life, include_half.life, sparse = FALSE, ...,
+                                 concu = NULL, amountu = NULL, timeu = NULL,
+                                 concu_pref = NULL, amountu_pref = NULL, timeu_pref = NULL) {
   # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
@@ -169,6 +175,52 @@ PKNCAconc.data.frame <- function(data, formula, subject,
                          attr_name="include_half.life",
                          col_name=include_half.life)
   }
+
+  # Unit handling
+  all_units <-
+    list(
+      concu = assert_unit(concu, ret$data),
+      amountu = assert_unit(amountu, ret$data),
+      timeu = assert_unit(timeu, ret$data),
+      concu_pref = assert_unit_value(concu_pref),
+      amountu_pref = assert_unit_value(amountu_pref),
+      timeu_pref = assert_unit_value(timeu_pref)
+    )
+
+  ret$units <- list()
+  for (col_units in c("concu", "amountu", "timeu")) {
+    current_unit_type <- attr(all_units[[col_units]], "unit_type")
+    if (is.null(current_unit_type)) {
+      # do nothing
+    } else if (current_unit_type %in% "column") {
+      ret <-
+        setAttributeColumn(
+          object = ret,
+          attr_name = col_units,
+          col_name = all_units[[col_units]]
+        )
+    } else if (current_unit_type %in% "value") {
+      ret$units[[col_units]] <- all_units[[col_units]]
+    } else {
+      stop(paste("Please report a bug. Unit setting for", col_units)) # nocov
+    }
+  }
+  for (pref_units in c("concu_pref", "amountu_pref", "timeu_pref")) {
+    current_unit_type <- attr(all_units[[pref_units]], "unit_type")
+    if (is.null(current_unit_type)) {
+      # do nothing
+    } else if (current_unit_type %in% "value") {
+      # you can only set preferred units if you set original units
+      original_unit_col <- gsub(x = pref_units, pattern = "_pref", replacement = "")
+      if (!(original_unit_col %in% c(names(ret$columns), names(ret$units)))) {
+        stop("Preferred units may not be set unless original units are set: ", pref_units)
+      }
+      ret$units[[pref_units]] <- all_units[[pref_units]]
+    } else {
+      stop(paste("Please report a bug. Preferred unit setting for", pref_units)) # nocov
+    }
+  }
+
   ret
 }
 
