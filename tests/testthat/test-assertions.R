@@ -109,41 +109,58 @@ test_that("assert_PKNCAdata", {
 test_that("assert_unit_col", {
   d <- data.frame(A = 1, B = "C")
   expect_equal(
-    assert_unit_col(col_name = "B", data = d),
-    "B"
+    assert_unit_col(unit = "B", data = d),
+    structure("B", unit_type = "column")
   )
   expect_error(
-    assert_unit_col(col_name = 1:2),
-    regexp = "The unit `col_name` must be a single value"
+    assert_unit_col(unit = 1:2),
+    regexp = "`unit` must be a single value"
   )
   expect_error(
-    assert_unit_col(col_name = 1),
-    regexp = "The unit `col_name` must be a character string"
+    assert_unit_col(unit = 1),
+    regexp = "`unit` must be a character string"
   )
   expect_error(
-    assert_unit_col(col_name = "D", data = "A"),
+    assert_unit_col(unit = "D", data = "A"),
     regexp = "`data` must be a data.frame"
   )
   expect_error(
-    assert_unit_col(col_name = "D", data = d),
-    regexp = "`col_name` (D) must be a column name in the data",
+    assert_unit_col(unit = "D", data = d),
+    regexp = "`unit` (D) must be a column name in the data",
     fixed = TRUE
   )
   expect_error(
-    assert_unit_col(col_name = "A", data = d),
-    regexp = "`col_name` (A) must contain character data",
+    assert_unit_col(unit = "A", data = d),
+    regexp = "`unit` (A) must contain character data",
     fixed = TRUE
   )
 })
 
 test_that("assert_unit_value", {
-  expect_equal(assert_unit_value("A"), "A")
+  expect_equal(assert_unit_value("A"), structure("A", unit_type = "value"))
   expect_error(
     assert_unit_value(c("A", "B")),
     regexp = "`unit` must be a single value"
   )
   expect_error(
     assert_unit_value(1),
+    regexp = "`unit` must be a character string"
+  )
+})
+
+test_that("assert_unit", {
+  d <- data.frame(A = 1, B = "C")
+
+  expect_equal(
+    assert_unit(unit = "B", data = d),
+    structure("B", unit_type = "column")
+  )
+  expect_equal(
+    assert_unit(unit = "C", data = d),
+    structure("C", unit_type = "value")
+  )
+  expect_error(
+    assert_unit(unit = 1, data = d),
     regexp = "`unit` must be a character string"
   )
 })

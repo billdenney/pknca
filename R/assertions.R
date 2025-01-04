@@ -209,38 +209,53 @@ assert_PKNCAdata <- function(object) {
   object
 }
 
-#' Assert that a column name contains a character string (that could be a unit specification)
-#'
-#' @param col_name The column name
-#' @param data The data.frame that contains a column named `col_name`
-#' @returns `col_name` (or an error)
-assert_unit_col <- function(col_name, data) {
-  if (length(col_name) != 1) {
-    stop("The unit `col_name` must be a single value")
-  } else if (!is.character(col_name)) {
-    stop("The unit `col_name` must be a character string")
+#' @describeIn assert_unit Assert that a column name contains a character string
+#'   (that could be a unit specification)
+assert_unit_col <- function(unit, data) {
+  if (length(unit) != 1) {
+    stop("`unit` must be a single value")
+  } else if (!is.character(unit)) {
+    stop("`unit` must be a character string")
   } else if (!is.data.frame(data)) {
     stop("`data` must be a data.frame")
-  } else if (!(col_name %in% names(data))) {
-    stop("`col_name` (", col_name, ") must be a column name in the data")
-  } else if (!is.character(data[[col_name]])) {
-    stop("`col_name` (", col_name, ") must contain character data")
+  } else if (!(unit %in% names(data))) {
+    stop("`unit` (", unit, ") must be a column name in the data")
+  } else if (!is.character(data[[unit]])) {
+    stop("`unit` (", unit, ") must contain character data")
   }
-  col_name
+  structure(unit, unit_type = "column")
 }
 
-#' Assert that a value may be a single unit
+#' @describeIn assert_unit Assert that a value may be a single unit
 #'
 #' The function does not verify that it is a real unit like "ng/mL" only that it
 #' is a single character string.
-#'
-#' @param unit The character string to test for usability as a unit
-#' @returns `unit` (or an error)
 assert_unit_value <- function(unit) {
   if (length(unit) != 1) {
     stop("`unit` must be a single value")
   } else if (!is.character(unit)) {
     stop("`unit` must be a character string")
   }
-  unit
+  structure(unit, unit_type = "value")
+}
+
+#' Assert that a value may either be a column name in the data (first) or a
+#' single unit value (second)
+#'
+#' @param unit The column name or unit value
+#' @param data The data.frame that contains a column named `unit`
+#' @returns `unit` with an attribute of "unit_type" that is either "column" or
+#'   "value"
+assert_unit <- function(unit, data) {
+  unit_col <- try(assert_unit_col(unit = unit, data = data), silent = TRUE)
+  unit_value <- try(assert_unit_value(unit = unit), silent = TRUE)
+  if (!inherits(unit_col, "try-error")) {
+    unit_col
+  } else if (!inherits(unit_value, "try-error")) {
+    unit_value
+  } else {
+    # Re-raise the unit_col error. That is better than unit_value since it is
+    # stricter.
+    stop(unit_col, call. = FALSE)
+  }
 }
