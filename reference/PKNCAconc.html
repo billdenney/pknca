@@ -80,7 +80,13 @@
 <span>  <span class="va">exclude_half.life</span>,</span>
 <span>  <span class="va">include_half.life</span>,</span>
 <span>  sparse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  concu <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  amountu <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  timeu <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  concu_pref <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  amountu_pref <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  timeu_pref <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -153,6 +159,16 @@ Calculation" vignette for more details on the use of these arguments.</p></dd>
 <dd><p>Are the concentration-time data sparse PK (commonly used in
 small nonclinical species or with terminal or difficult sampling) or dense
 PK (commonly used in clinical studies or larger nonclinical species)?</p></dd>
+
+
+<dt id="arg-concu-amountu-timeu">concu, amountu, timeu<a class="anchor" aria-label="anchor" href="#arg-concu-amountu-timeu"></a></dt>
+<dd><p>Either unit values (e.g. "ng/mL") or column names
+within the data where units are provided.</p></dd>
+
+
+<dt id="arg-concu-pref-amountu-pref-timeu-pref">concu_pref, amountu_pref, timeu_pref<a class="anchor" aria-label="anchor" href="#arg-concu-pref-amountu-pref-timeu-pref"></a></dt>
+<dd><p>Preferred units for reporting (not
+column names)</p></dd>
 
 </dl></div>
     <div class="section level2">

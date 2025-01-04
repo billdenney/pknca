@@ -77,7 +77,9 @@
 <span>  <span class="va">duration</span>,</span>
 <span>  <span class="va">time.nominal</span>,</span>
 <span>  exclude <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  doseu <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  doseu_pref <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -127,6 +129,15 @@ calculations; it is available to assist with data summary and checking.</p></dd>
 from calculations and summarization.  If given, the column should have
 values of <code>NA</code> or <code>""</code> for concentrations to include and non-empty text for
 concentrations to exclude.</p></dd>
+
+
+<dt id="arg-doseu">doseu<a class="anchor" aria-label="anchor" href="#arg-doseu"></a></dt>
+<dd><p>Either unit values (e.g. "mg") or column names within the data
+where units are provided.</p></dd>
+
+
+<dt id="arg-doseu-pref">doseu_pref<a class="anchor" aria-label="anchor" href="#arg-doseu-pref"></a></dt>
+<dd><p>Preferred units for reporting (not column names)</p></dd>
 
 </dl></div>
     <div class="section level2">
