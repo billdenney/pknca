@@ -34,6 +34,8 @@ pk.calc.auciv <- function(conc, time, c0, auc, ..., options = list(), check=TRUE
   }
   if (!(0 %in% time)) {
     return(structure(NA_real_, exclude="No time 0 in data"))
+  } else if (is.na(c0)) {
+    return(structure(NA_real_, exclude="c0 is not calculated"))
   }
   auc_first <- pk.calc.auc.last(conc = data$conc[1:2], time = data$time[1:2], ..., check=FALSE)
   auc_second <- pk.calc.auc.last(conc = c(c0, data$conc[2]), time = data$time[1:2], ..., check=FALSE)
