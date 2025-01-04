@@ -6,9 +6,8 @@ the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
 
-* PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
-* PKNCA will now give an error when there are unexpected interval columns.
-  The `keep_interval_cols` option can be used to mitigate this error.
+* PKNCA options can now use `tmax` as a reference for BLQ handling by using new
+  names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
 * PKNCA will now make verifications on the `intervals` object within the
   creation of PKNCAdata. This will return errors, or create the `PKNCAdata`
   object as intended when no errors are present. Some of the verifications include
@@ -20,6 +19,14 @@ the dosing including dose amount and route.
 * Removed native pipes (`|>`) so that PKNCA will work with older versions of R
   (#304).
 * Missing dosing times to `pk.calc.c0()` will not cause an error (#344)
+
+## Breaking changes
+
+* PKNCA will now give an error when there are unexpected interval columns.
+  The `keep_interval_cols` option can be used to mitigate this error.
+* `NA` results from calculating `c0` will now add an exclusion reason.
+* AUC for intravenous dosing (all the `auciv*` parameters) now more robustly
+  calculate `c0` and does not raise an error when `is.na(c0)` (#353).
 
 # PKNCA 0.11.0
 
