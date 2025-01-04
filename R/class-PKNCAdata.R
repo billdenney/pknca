@@ -100,10 +100,10 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     }
   }
   ret$options <- options
-  
+
   # Assign the class and give it all back to the user.
   class(ret) <- c("PKNCAdata", class(ret))
-  
+
   # Check the intervals
   if (missing(intervals) & identical(ret$dose, NA)) {
     stop("If data.dose is not given, intervals must be given")
@@ -169,7 +169,35 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   units_interval_end <- inherits(ret$intervals$end, "units")
 
   # Insert the unit conversion table
-  if (!missing(units)) {
+  if (missing(units)) {
+    # What unit types are recognized?
+    possible_units <-
+      setdiff(
+        grep(x = names(formals(pknca_units_table)), pattern = "_", invert = TRUE, value = TRUE),
+        "conversions"
+      )
+    possible_units_pref <- paste0(possible_units, "_pref")
+    # Accumulate available units
+    conc_units_values <- ret$conc$units
+    conc_units_cols <- ret$conc$columns[names(ret$conc$columns) %in% possible_units]
+
+    unit_args <- conc_units_values
+    for (nm in names(conc_units_cols)) {
+      unit_args[[nm]] <- unique(na.omit(ret$conc$data[[conc_units_cols[[nm]]]]))
+    }
+
+    if (!identical(ret$dose, NA)) {
+      unit_args <- append(unit_args, ret$dose$units)
+      dose_units_cols <- ret$dose$columns[names(ret$dose$columns) %in% possible_units]
+      for (nm in names(dose_units_cols)) {
+        unit_args[[nm]] <- unique(na.omit(ret$dose$data[[dose_units_cols[[nm]]]]))
+      }
+    }
+    # If there are any units to set, set them here
+    if (length(unit_args) > 0) {
+      ret$units <- do.call(pknca_units_table, args = unit_args)
+    }
+  } else {
     stopifnot("`units` must be a data.frame"=is.data.frame(units))
     stopifnot(
       "`units` data.frame must have at least names 'PPTESTCD' and 'PPORRESU'"=
@@ -184,7 +212,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     checkmate::assert_character(impute, len = 1)
     ret$impute <- impute
   }
-  
+
   ret
 }
 
@@ -232,7 +260,7 @@ summary.PKNCAdata <- function(object, ...) {
 
 #' Get the groups (right hand side after the `|` from a PKNCA
 #' object).
-#' 
+#'
 #' @rdname getGroups.PKNCAconc
 #' @param object The object to extract the data from
 #' @param ... Arguments passed to other getGroups functions
