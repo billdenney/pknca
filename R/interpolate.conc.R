@@ -73,17 +73,17 @@
 #' @seealso [pk.calc.clast.obs()], [pk.calc.half.life()], [pk.calc.c0()]
 #' @export
 interp.extrap.conc <- function(conc, time, time.out,
-                               lambda.z=NA,
-                               clast=pk.calc.clast.obs(conc, time),
-                               options=list(),
+                               lambda.z = NA,
+                               clast = pk.calc.clast.obs(conc, time),
+                               options = list(),
                                method = NULL,
                                auc.type = "AUCinf",
                                interp.method,
                                extrap.method,
                                ...,
-                               conc.blq=NULL,
-                               conc.na=NULL,
-                               check=TRUE) {
+                               conc.blq = NULL,
+                               conc.na = NULL,
+                               check = TRUE) {
   # Defunct inputs
   if (!missing(interp.method)) {
     .Defunct(msg = "the `interp.method` has been replaced by the `method` argument for consistency with the rest of PKNCA") # nocov
@@ -93,15 +93,13 @@ interp.extrap.conc <- function(conc, time, time.out,
 
   # Check inputs
   method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     assert_conc_time(conc = conc, time = time)
     data <-
       clean.conc.blq(
-        conc, time,
-        conc.blq=conc.blq,
-        conc.na=conc.na,
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na,
+        options = options,
         check=FALSE
       )
   } else {
@@ -167,8 +165,6 @@ interpolate.conc <- function(conc, time, time.out,
     tolower(PKNCA.choose.option(
       name="auc.method", value=method, options=options
     ))
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     assert_conc_time(conc, time)
     data <-
@@ -176,6 +172,7 @@ interpolate.conc <- function(conc, time, time.out,
         conc=conc, time=time,
         conc.blq=conc.blq,
         conc.na=conc.na,
+        options = options,
         check=FALSE
       )
   } else {
@@ -247,15 +244,14 @@ extrapolate.conc <- function(conc, time, time.out,
     .Defunct(msg = "the `extrap.method` has been replaced by the `auc.type` argument for consistency with the rest of PKNCA") # nocov
   }
   assert_lambdaz(lambda.z)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
     assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
-        conc=conc, time=time,
-        conc.na=conc.na,
-        check=FALSE
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na,
+        options = options,
+        check = FALSE
       )
   } else {
     data <- data.frame(conc, time)
@@ -330,22 +326,23 @@ event_choices_interp.extrap.conc.dose <-
 #'   without interpolating or extrapolating beyond doses.
 #' @export
 interp.extrap.conc.dose <- function(conc, time,
-                                    time.dose, route.dose="extravascular", duration.dose=NA,
-                                    time.out, out.after=FALSE,
-                                    options=list(),
-                                    conc.blq=NULL,
-                                    conc.na=NULL,
+                                    time.dose, route.dose = "extravascular", duration.dose = NA,
+                                    time.out, out.after = FALSE,
+                                    options = list(),
+                                    conc.blq = NULL,
+                                    conc.na = NULL,
                                     ...,
-                                    check=TRUE) {
+                                    check = TRUE) {
   # Check inputs
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
   if (check) {
     assert_conc_time(conc = conc, time = time)
     data_conc <-
-      clean.conc.blq(conc, time,
-                     conc.blq=conc.blq, conc.na=conc.na,
-                     check=FALSE)
+      clean.conc.blq(
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na,
+        options = options,
+        check=FALSE
+      )
   } else {
     data_conc <- data.frame(conc, time)
   }
