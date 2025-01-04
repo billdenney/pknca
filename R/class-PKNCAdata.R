@@ -195,6 +195,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
     }
     # If there are any units to set, set them here
     if (length(unit_args) > 0) {
+      unit_args <- lapply(X = unit_args, FUN = drop_attributes)
       ret$units <- do.call(pknca_units_table, args = unit_args)
     }
   } else {
@@ -214,6 +215,11 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   }
 
   ret
+}
+
+drop_attributes <- function(x) {
+  attributes(x) <- NULL
+  x
 }
 
 #' @rdname is_sparse_pk
