@@ -208,3 +208,23 @@ assert_PKNCAdata <- function(object) {
   }
   object
 }
+
+#' Assert that a column name contains a character string (that could be a unit specification)
+#'
+#' @param col_name The column name
+#' @param data The data.frame that contains a column named `col_name`
+#' @returns `col_name` (or an error)
+assert_unit_col <- function(col_name, data) {
+  if (length(col_name) != 1) {
+    stop("The unit `col_name` must be a single value")
+  } else if (!is.character(col_name)) {
+    stop("The unit `col_name` must be a character string")
+  } else if (!is.data.frame(data)) {
+    stop("`data` must be a data.frame")
+  } else if (!(col_name %in% names(data))) {
+    stop("`col_name` (", col_name, ") must be a column name in the data")
+  } else if (!is.character(data[[col_name]])) {
+    stop("`col_name` (", col_name, ") must contain character data")
+  }
+  col_name
+}

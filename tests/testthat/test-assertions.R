@@ -105,3 +105,33 @@ test_that("assert_PKNCAdata", {
     regexp = "Must be a PKNCAdata object"
   )
 })
+
+test_that("assert_unit_col", {
+  d <- data.frame(A = 1, B = "C")
+  expect_equal(
+    assert_unit_col(col_name = "B", data = d),
+    "B"
+  )
+  expect_error(
+    assert_unit_col(col_name = 1:2),
+    regexp = "The unit `col_name` must be a single value"
+  )
+  expect_error(
+    assert_unit_col(col_name = 1),
+    regexp = "The unit `col_name` must be a character string"
+  )
+  expect_error(
+    assert_unit_col(col_name = "D", data = "A"),
+    regexp = "`data` must be a data.frame"
+  )
+  expect_error(
+    assert_unit_col(col_name = "D", data = d),
+    regexp = "`col_name` (D) must be a column name in the data",
+    fixed = TRUE
+  )
+  expect_error(
+    assert_unit_col(col_name = "A", data = d),
+    regexp = "`col_name` (A) must contain character data",
+    fixed = TRUE
+  )
+})
