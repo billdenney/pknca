@@ -20,7 +20,7 @@ assert_unit(unit, data)
 }
 \value{
 \code{unit} with an attribute of "unit_type" that is either "column" or
-"value"
+"value", or \code{NULL} if \code{is.null(unit)}
 }
 \description{
 Assert that a value may either be a column name in the data (first) or a

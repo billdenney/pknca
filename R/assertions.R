@@ -245,8 +245,11 @@ assert_unit_value <- function(unit) {
 #' @param unit The column name or unit value
 #' @param data The data.frame that contains a column named `unit`
 #' @returns `unit` with an attribute of "unit_type" that is either "column" or
-#'   "value"
+#'   "value", or `NULL` if `is.null(unit)`
 assert_unit <- function(unit, data) {
+  if (is.null(unit)) {
+    return(unit)
+  }
   unit_col <- try(assert_unit_col(unit = unit, data = data), silent = TRUE)
   unit_value <- try(assert_unit_value(unit = unit), silent = TRUE)
   if (!inherits(unit_col, "try-error")) {

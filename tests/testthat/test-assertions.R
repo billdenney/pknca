@@ -151,6 +151,7 @@ test_that("assert_unit_value", {
 test_that("assert_unit", {
   d <- data.frame(A = 1, B = "C")
 
+  expect_null(assert_unit(NULL, data = d))
   expect_equal(
     assert_unit(unit = "B", data = d),
     structure("B", unit_type = "column")
