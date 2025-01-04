@@ -71,8 +71,7 @@ pk.calc.aucint <- function(conc, time,
     tlast <- pk.calc.tlast(conc=data$conc, time=data$time)
     clast_obs <- pk.calc.clast.obs(conc=data$conc, time=data$time)
     if (is.na(clast)) {
-      # All concentrations are NA
-      return(structure(NA_real_, exclude = "clast is NA"))
+      stop("Please report a bug. clast is NA") # nocov
     } else if (clast != clast_obs & interval[2] > tlast) {
       # If using clast.pred, we need to doubly calculate at tlast.
       conc_clast <- clast
