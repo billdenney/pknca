@@ -55,9 +55,13 @@ PKNCAdose.tbl_df <- function(data, ...) {
 }
 
 #' @rdname PKNCAdose
+#' @param doseu Either unit values (e.g. "mg") or column names within the data
+#'   where units are provided.
+#' @param doseu_pref Preferred units for reporting (not column names)
 #' @export
 PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
-                                 time.nominal, exclude = NULL, ...) {
+                                 time.nominal, exclude = NULL, ...,
+                                 doseu = NULL, doseu_pref = NULL) {
   # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
@@ -138,6 +142,15 @@ PKNCAdose.data.frame <- function(data, formula, route, rate, duration,
                          attr_name="time.nominal",
                          col_name=time.nominal)
   }
+
+  # Unit handling
+  ret <-
+    pknca_set_units(
+      ret,
+      units_orig = list(doseu = doseu),
+      units_pref = list(doseu_pref = doseu_pref)
+    )
+
   ret
 }
 

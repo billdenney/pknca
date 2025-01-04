@@ -206,3 +206,55 @@ duplicate_check <- function(object, data_type) {
   }
   object
 }
+
+#' Set units for a PKNCAconc or PKNCAdose object
+#'
+#' @param object a PKNCAconc or PKNCAdose object
+#' @param units_orig unit specification that may be columns or values
+#' @param units_pref unit specification that must be values
+#' @returns The object with the units columns definitions optionally added an a
+#'   "units" value list added.
+#' @noRd
+pknca_set_units <- function(object, units_orig = list(), units_pref = list()) {
+  all_units <-
+    list(
+      orig = lapply(X = units_orig, FUN = assert_unit, data = object$data),
+      pref = lapply(X = units_pref, FUN = assert_unit_value)
+    )
+
+  object$units <- list()
+  for (col_units in names(all_units$orig)) {
+    current_unit_type <- attr(all_units$orig[[col_units]], "unit_type")
+    if (is.null(current_unit_type)) {
+      # do nothing
+    } else if (current_unit_type %in% "column") {
+      object <-
+        setAttributeColumn(
+          object = object,
+          attr_name = col_units,
+          col_name = all_units$orig[[col_units]]
+        )
+    } else if (current_unit_type %in% "value") {
+      object$units[[col_units]] <- all_units$orig[[col_units]]
+    } else {
+      stop(paste("Please report a bug. Unit setting for", col_units)) # nocov
+    }
+  }
+  for (pref_units in names(all_units$pref)) {
+    current_unit_type <- attr(all_units$pref[[pref_units]], "unit_type")
+    if (is.null(current_unit_type)) {
+      # do nothing
+    } else if (current_unit_type %in% "value") {
+      # you can only set preferred units if you set original units
+      original_unit_col <- gsub(x = pref_units, pattern = "_pref", replacement = "")
+      if (!(original_unit_col %in% c(names(object$columns), names(object$units)))) {
+        stop("Preferred units may not be set unless original units are set: ", pref_units)
+      }
+      object$units[[pref_units]] <- all_units$pref[[pref_units]]
+    } else {
+      stop(paste("Please report a bug. Preferred unit setting for", pref_units)) # nocov
+    }
+  }
+
+  object
+}

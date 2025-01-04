@@ -24,7 +24,13 @@ PKNCAconc(data, ...)
   exclude_half.life,
   include_half.life,
   sparse = FALSE,
-  ...
+  ...,
+  concu = NULL,
+  amountu = NULL,
+  timeu = NULL,
+  concu_pref = NULL,
+  amountu_pref = NULL,
+  timeu_pref = NULL
 )
 }
 \arguments{
@@ -74,6 +80,12 @@ Calculation" vignette for more details on the use of these arguments.}
 \item{sparse}{Are the concentration-time data sparse PK (commonly used in
 small nonclinical species or with terminal or difficult sampling) or dense
 PK (commonly used in clinical studies or larger nonclinical species)?}
+
+\item{concu, amountu, timeu}{Either unit values (e.g. "ng/mL") or column names
+within the data where units are provided.}
+
+\item{concu_pref, amountu_pref, timeu_pref}{Preferred units for reporting (not
+column names)}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.
