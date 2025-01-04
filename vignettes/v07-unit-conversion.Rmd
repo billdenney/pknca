@@ -15,7 +15,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(PKNCA)
+suppressPackageStartupMessages(
+  library(PKNCA)
+)
 ```
 
 # Introduction
@@ -56,7 +58,7 @@ summary(o_nca)
 It is also possible to specify the units without them coming from columns in the
 data.
 
-```{r create-conc-dose-obj-auto-direct}
+```{r create-auto-direct}
 d_conc <- as.data.frame(datasets::Theoph)
 d_dose <- datasets::Theoph[datasets::Theoph$Time == 0, c("Dose", "Time", "Subject")]
 o_conc <- PKNCAconc(d_conc, conc~Time|Subject, concu = "mg/L", timeu = "hr")
@@ -70,7 +72,7 @@ And, you can perform automatic unit conversions as long as the unit conversions
 are defined without more information (e.g. convert between mass or time units).
 For more complex conversions, see the information below.
 
-```{r create-conc-dose-obj-auto-direct}
+```{r create-auto-direct-pref}
 d_conc <- as.data.frame(datasets::Theoph)
 d_dose <- datasets::Theoph[datasets::Theoph$Time == 0, c("Dose", "Time", "Subject")]
 o_conc <- PKNCAconc(d_conc, conc~Time|Subject, concu = "mg/L", timeu = "hr", concu_pref = "ug/L", timeu_pref = "day")
