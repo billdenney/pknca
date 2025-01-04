@@ -60,7 +60,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pk.calc.auciv</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">c0</span>, <span class="va">auc</span>, <span class="va">...</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pk.calc.auciv</span><span class="op">(</span><span class="va">conc</span>, <span class="va">time</span>, <span class="va">c0</span>, <span class="va">auc</span>, <span class="va">...</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pk.calc.auciv_pbext</span><span class="op">(</span><span class="va">auc</span>, <span class="va">auciv</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -90,6 +90,11 @@ calculated using any method)</p></dd>
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>For functions other than <code>pk.calc.auxc</code>, these values are passed
 to <code>pk.calc.auxc</code></p></dd>
+
+
+<dt id="arg-options">options<a class="anchor" aria-label="anchor" href="#arg-options"></a></dt>
+<dd><p>List of changes to the default PKNCA options (see
+<code><a href="PKNCA.options.html">PKNCA.options()</a></code>)</p></dd>
 
 
 <dt id="arg-check">check<a class="anchor" aria-label="anchor" href="#arg-check"></a></dt>
