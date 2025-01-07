@@ -106,6 +106,25 @@ test_that("assert_PKNCAdata", {
   )
 })
 
+test_that("element_find", {
+  values5<-c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE)
+  values10<-c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE)
+  expect_equal(
+    element_find(values5),
+    element_find(values10)
+  )
+  
+  expect_equal(
+    element_find(values5),
+    "Elements 1, 2, 3, 4, 5"
+  )
+  
+  expect_equal(
+    element_find(values10),
+    "Elements 1, 2, 3, 4, 5"
+  )
+})
+
 test_that("assert_unit_col", {
   d <- data.frame(A = 1, B = "C")
   expect_equal(
