@@ -8,6 +8,11 @@ test_that("pk.calc.auciv", {
     pk.calc.auciv(conc = 0:5, time = 0:5, c0 = 1, auc = 2.75),
     2.75 + 1 - 0.5
   )
+  expect_equal(
+    # No verifications are made on the data
+    pk.calc.auciv(conc = 0:5, time = 0:5, c0 = 1, auc = 2.75, check=FALSE),
+    2.75 + 1 - 0.5
+  )
 })
 
 test_that("pk.calc.auciv_pbext", {
