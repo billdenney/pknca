@@ -15,16 +15,109 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(PKNCA)
+suppressPackageStartupMessages(
+  library(PKNCA)
+)
 ```
 
 # Introduction
 
-PKNCA can assign and convert units for reporting.
+PKNCA can assign and convert units for reporting. There are two ways to provide
+units to PKNCA: via the `units` argument to `PKNCAdata()` or by specifying units
+with `PKNCAconc()` and/or `PKNCAdose()`. If you provide the units argument to
+`PKNCAdata()`, units given to `PKNCAconc()` or `PKNCAdose()` are ignored.
+
+# Examples of each way to add units
+
+## Steps to add units to an NCA analysis from the data
+
+For more details on parts of this NCA calculation example unrelated to units, see the [theophylline example vignette](v02-example-theophylline.html).
+
+Provide the units for concentration (`concu`), time (`timeu`), and amount
+(`amountu`) to the `PKNCAconc()` function and for dose (`doseu`) to the
+`PKNCAdose()` function.
+
+```{r create-conc-dose-obj-auto}
+d_conc <- as.data.frame(datasets::Theoph)
+d_conc$concu_col <- "mg/L"
+d_conc$timeu_col <- "hr"
+d_dose <- datasets::Theoph[datasets::Theoph$Time == 0, c("Dose", "Time", "Subject")]
+d_dose$doseu_col <- "mg/kg"
+o_conc <- PKNCAconc(d_conc, conc~Time|Subject, concu = "concu_col", timeu = "timeu_col")
+o_dose <- PKNCAdose(d_dose, Dose~Time|Subject, doseu = "doseu_col")
+```
+
+Then, create the data object the same way as typical. Results will have units.
+
+```{r create-data-obj-auto}
+o_data <- PKNCAdata(o_conc, o_dose)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+```
+
+It is also possible to specify the units without them coming from columns in the
+data.
+
+```{r create-auto-direct}
+d_conc <- as.data.frame(datasets::Theoph)
+d_dose <- datasets::Theoph[datasets::Theoph$Time == 0, c("Dose", "Time", "Subject")]
+o_conc <- PKNCAconc(d_conc, conc~Time|Subject, concu = "mg/L", timeu = "hr")
+o_dose <- PKNCAdose(d_dose, Dose~Time|Subject, doseu = "mg/kg")
+o_data <- PKNCAdata(o_conc, o_dose)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+```
+
+And, you can perform automatic unit conversions as long as the unit conversions
+are defined without more information (e.g. convert between mass or time units).
+For more complex conversions, see the information below.
+
+```{r create-auto-direct-pref}
+d_conc <- as.data.frame(datasets::Theoph)
+d_dose <- datasets::Theoph[datasets::Theoph$Time == 0, c("Dose", "Time", "Subject")]
+o_conc <- PKNCAconc(d_conc, conc~Time|Subject, concu = "mg/L", timeu = "hr", concu_pref = "ug/L", timeu_pref = "day")
+o_dose <- PKNCAdose(d_dose, Dose~Time|Subject, doseu = "mg/kg")
+o_data <- PKNCAdata(o_conc, o_dose)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+```
+
+## Steps to manually add units to an NCA analysis
+
+For more details on parts of this NCA calculation example unrelated to units, see the [theophylline example vignette](v02-example-theophylline.html).
+
+```{r create-conc-dose-obj}
+o_conc <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+d_dose <- datasets::Theoph[datasets::Theoph$Time == 0, c("Dose", "Time", "Subject")]
+o_dose <- PKNCAdose(d_dose, Dose~Time|Subject)
+```
+
+The difference from a calculation without units comes when setting up the `PKNCAdata` object.  You will add the units with the `units` argument.  
+
+Since no urine or other similar collection is performed, the `amountu` argument is omitted for `pknca_units_table()`.
+
+```{r create-data-obj}
+d_units <-
+  pknca_units_table(
+    concu="mg/L", doseu="mg/kg", timeu="hr",
+    # use molar units for concentrations and AUCs
+    conversions=
+      data.frame(
+        PPORRESU=c("(mg/kg)/(hr*mg/L)", "(mg/kg)/(mg/L)", "mg/L", "hr*mg/L"),
+        PPSTRESU=c("L/hr/kg", "L/kg", "mmol/L", "hr*mmol/L"),
+        conversion_factor=c(NA, NA, 1/180.164, 1/180.164)
+      )
+  )
+
+o_data <- PKNCAdata(o_conc, o_dose, units=d_units)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
+```
 
 # Prepare a Unit Assignment and Conversion Table
 
-A unit assignment and conversion table can be generated as a data.frame to use with the `pknca_units_table()` function or manually.
+A unit assignment and conversion table can be generated as a data.frame to use
+with the `pknca_units_table()` function or manually.
 
 The simplest method each of the types of units for inputs and automatically generates the units for each NCA parameter.
 
@@ -69,39 +162,6 @@ d_units_clean_manual <-
   )
 # Show a selection of the units generated
 d_units_clean_manual[d_units_clean_manual$PPTESTCD %in% c("cmax", "tmax", "auclast", "cl.obs", "vd.obs"), ]
-```
-
-# The Basic Steps to Add Units to an NCA Analysis
-
-For more details on parts of this NCA calculation example unrelated to units, see the [theophylline example vignette](v02-example-theophylline.html).
-
-```{r create-conc-dose-obj}
-conc_obj <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
-d_dose <- unique(datasets::Theoph[datasets::Theoph$Time == 0,
-                                  c("Dose", "Time", "Subject")])
-dose_obj <- PKNCAdose(d_dose, Dose~Time|Subject)
-```
-
-The difference from a calculation without units comes when setting up the `PKNCAdata` object.  You will add the units with the `units` argument.  
-
-Since no urine or other similar collection is performed, the `amountu` argument is omitted for `pknca_units_table()`.
-
-```{r create-data-obj}
-d_units <-
-  pknca_units_table(
-    concu="mg/L", doseu="mg/kg", timeu="hr",
-    # use molar units for concentrations and AUCs
-    conversions=
-      data.frame(
-        PPORRESU=c("(mg/kg)/(hr*mg/L)", "(mg/kg)/(mg/L)", "mg/L", "hr*mg/L"),
-        PPSTRESU=c("L/hr/kg", "L/kg", "mmol/L", "hr*mmol/L"),
-        conversion_factor=c(NA, NA, 1/180.164, 1/180.164)
-      )
-  )
-
-data_obj <- PKNCAdata(conc_obj, dose_obj, units=d_units)
-result_obj <- pk.nca(data_obj)
-summary(result_obj)
 ```
 
 # How do I add different unit conversions for different analytes?
@@ -160,9 +220,9 @@ d_units <- rbind(d_units_theoph, d_units_caffeine)
 Now, calculate adding the different units per analyte to the data object.
 
 ```{r different-units-calc}
-conc_obj <- PKNCAconc(d_conc, conc~Time|Subject/Analyte)
-dose_obj <- PKNCAdose(d_dose, Dose~Time|Subject)
-data_obj <- PKNCAdata(conc_obj, dose_obj, units=d_units)
-result_obj <- pk.nca(data_obj)
-summary(result_obj)
+o_conc <- PKNCAconc(d_conc, conc~Time|Subject/Analyte)
+o_dose <- PKNCAdose(d_dose, Dose~Time|Subject)
+o_data <- PKNCAdata(o_conc, o_dose, units=d_units)
+o_nca <- pk.nca(o_data)
+summary(o_nca)
 ```

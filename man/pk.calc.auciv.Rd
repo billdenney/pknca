@@ -5,7 +5,7 @@
 \alias{pk.calc.auciv_pbext}
 \title{Calculate AUC for intravenous dosing}
 \usage{
-pk.calc.auciv(conc, time, c0, auc, ..., check = TRUE)
+pk.calc.auciv(conc, time, c0, auc, ..., options = list(), check = TRUE)
 
 pk.calc.auciv_pbext(auc, auciv)
 }
@@ -22,6 +22,9 @@ calculated using any method)}
 
 \item{...}{For functions other than \code{pk.calc.auxc}, these values are passed
 to \code{pk.calc.auxc}}
+
+\item{options}{List of changes to the default PKNCA options (see
+\code{PKNCA.options()})}
 
 \item{check}{Run \code{\link[=assert_conc_time]{assert_conc_time()}}, \code{\link[=clean.conc.blq]{clean.conc.blq()}}, and
 \code{\link[=clean.conc.na]{clean.conc.na()}}?}

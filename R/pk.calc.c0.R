@@ -31,10 +31,10 @@ pk.calc.c0 <- function(conc, time, time.dose=0,
   }
   if (is.na(time.dose)) {
     warning("time.dose is NA")
-    return(NA)
+    return(structure(NA_real_, exclude = "dose time is missing"))
   } else if (time.dose > max(time)) {
     warning("time.dose is after all available data")
-    return(NA)
+    return(structure(NA_real_, exclude = "dose time is after all available concentration data"))
   }
   method <- match.arg(method, several.ok=TRUE)
   # Find the value

@@ -21,7 +21,9 @@ PKNCAdose(data, ...)
   duration,
   time.nominal,
   exclude = NULL,
-  ...
+  ...,
+  doseu = NULL,
+  doseu_pref = NULL
 )
 }
 \arguments{
@@ -54,6 +56,11 @@ calculations; it is available to assist with data summary and checking.}
 from calculations and summarization.  If given, the column should have
 values of \code{NA} or \code{""} for concentrations to include and non-empty text for
 concentrations to exclude.}
+
+\item{doseu}{Either unit values (e.g. "mg") or column names within the data
+where units are provided.}
+
+\item{doseu_pref}{Preferred units for reporting (not column names)}
 }
 \value{
 A PKNCAconc object that can be used for automated NCA.

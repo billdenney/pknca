@@ -105,6 +105,13 @@ test_that("pknca_units_table", {
     ),
     regexp="cannot convert ng/mL into mol/L"
   )
+  expect_error(
+    pknca_units_table(
+      concu=c("ng/mL", "umol/L"), doseu="mg/kg", amountu="mg", timeu="hr",
+      conversions=data.frame(PPORRESU="ng/mL", PPSTRESU="mol/L")
+    ),
+    regexp = "Only one unit may be provided at a time: ng/mL, umol/L"
+  )
 })
 
 test_that("pknca_units_add_paren", {

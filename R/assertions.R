@@ -208,3 +208,58 @@ assert_PKNCAdata <- function(object) {
   }
   object
 }
+
+#' @describeIn assert_unit Assert that a column name contains a character string
+#'   (that could be a unit specification)
+assert_unit_col <- function(unit, data) {
+  if (length(unit) != 1) {
+    stop("`unit` must be a single value")
+  } else if (!is.character(unit)) {
+    stop("`unit` must be a character string")
+  } else if (!is.data.frame(data)) {
+    stop("`data` must be a data.frame")
+  } else if (!(unit %in% names(data))) {
+    stop("`unit` (", unit, ") must be a column name in the data")
+  } else if (!is.character(data[[unit]])) {
+    stop("`unit` (", unit, ") must contain character data")
+  }
+  structure(unit, unit_type = "column")
+}
+
+#' @describeIn assert_unit Assert that a value may be a single unit
+#'
+#' The function does not verify that it is a real unit like "ng/mL" only that it
+#' is a single character string.
+assert_unit_value <- function(unit) {
+  if (is.null(unit)) {
+    return(unit)
+  }
+
+  if (length(unit) != 1) {
+    stop("`unit` must be a single value")
+  } else if (!is.character(unit)) {
+    stop("`unit` must be a character string")
+  }
+  structure(unit, unit_type = "value")
+}
+
+#' Assert that a value may either be a column name in the data (first) or a
+#' single unit value (second)
+#'
+#' @param unit The column name or unit value
+#' @param data The data.frame that contains a column named `unit`
+#' @returns `unit` with an attribute of "unit_type" that is either "column" or
+#'   "value", or `NULL` if `is.null(unit)`
+assert_unit <- function(unit, data) {
+  unit_col <- try(assert_unit_col(unit = unit, data = data), silent = TRUE)
+  unit_value <- try(assert_unit_value(unit = unit), silent = TRUE)
+  if (!inherits(unit_col, "try-error")) {
+    unit_col
+  } else if (!inherits(unit_value, "try-error")) {
+    unit_value
+  } else {
+    # Re-raise the unit_col error. That is better than unit_value since it is
+    # stricter.
+    stop(unit_col, call. = FALSE)
+  }
+}

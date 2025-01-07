@@ -12,11 +12,21 @@ test_that("pk.calc.c0", {
                regexp="should be one of",
                info="method must be valid")
   expect_warning(
-    pk.calc.c0(conc = 0:3, time = 0:3, time.dose = NA_real_),
+    c0_na_time_dose <- pk.calc.c0(conc = 0:3, time = 0:3, time.dose = NA_real_),
     regexp = "time.dose is NA"
   )
-  expect_warning(pk.calc.c0(5:1, 0:4, time.dose=30),
-                 regexp="time.dose is after all available data")
+  expect_equal(
+    c0_na_time_dose,
+    structure(NA_real_, exclude = "dose time is missing")
+  )
+  expect_warning(
+    c0_late_time_dose <- pk.calc.c0(5:1, 0:4, time.dose=30),
+    regexp="time.dose is after all available data"
+  )
+  expect_equal(
+    c0_late_time_dose,
+    structure(NA_real_, exclude = "dose time is after all available concentration data")
+  )
 
   # Simple calculations
   expect_equal(pk.calc.c0(1:5, 0:4), 1,
