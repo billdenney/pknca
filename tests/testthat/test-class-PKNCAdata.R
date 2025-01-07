@@ -148,6 +148,9 @@ test_that("print.PKNCAdata", {
               intervals=data.frame(start=0, end=24, aucinf.obs=TRUE),
               options=list(min.hl.r.squared=0.95))
   obj.data.dose <- PKNCAdata(obj.conc, data.dose=obj.dose)
+  obj.data.units <- PKNCAdata(obj.conc,
+                               intervals=data.frame(start=0, end=24, aucinf.obs=TRUE))
+  obj.data.units$units <- "mg"
 
   expect_output(print.PKNCAdata(obj.data.nodose),
                 regexp="Formula for concentration:
@@ -217,6 +220,25 @@ Options changed from default are:
 $min.hl.r.squared
 [1] 0.95",
                 info="Generic print.PKNCAdata works with no dosing and with options changed")
+  expect_output(print.PKNCAdata(obj.data.units),
+                regexp="Formula for concentration:
+ conc ~ time | treatment + ID
+With 2 subjects defined in the 'ID' column.
+Nominal time column is not specified.
+
+First 6 rows of concentration data:
+ treatment ID time      conc exclude
+     Trt 1  1    0 0.0000000    <NA>
+     Trt 1  1    1 0.7052248    <NA>
+     Trt 1  1    2 0.7144320    <NA>
+     Trt 1  1    3 0.8596094    <NA>
+     Trt 1  1    4 0.9998126    <NA>
+     Trt 1  1    5 0.7651474    <NA>
+No dosing information.
+With units
+With 1 rows of interval specifications.
+No options are set differently than default.",
+                info="Generic print.PKNCAdata works with no dosing")
 })
 
 test_that("summary.PKNCAdata", {
