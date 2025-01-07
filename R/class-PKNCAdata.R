@@ -183,14 +183,14 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
 
     unit_args <- conc_units_values
     for (nm in names(conc_units_cols)) {
-      unit_args[[nm]] <- unique(na.omit(ret$conc$data[[conc_units_cols[[nm]]]]))
+      unit_args[[nm]] <- unique(stats::na.omit((ret$conc$data[[conc_units_cols[[nm]]]]))
     }
 
     if (!identical(ret$dose, NA)) {
       unit_args <- append(unit_args, ret$dose$units)
       dose_units_cols <- ret$dose$columns[names(ret$dose$columns) %in% possible_units]
       for (nm in names(dose_units_cols)) {
-        unit_args[[nm]] <- unique(na.omit(ret$dose$data[[dose_units_cols[[nm]]]]))
+        unit_args[[nm]] <- unique(stats::na.omit((ret$dose$data[[dose_units_cols[[nm]]]]))
       }
     }
     # If there are any units to set, set them here
