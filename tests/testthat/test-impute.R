@@ -270,3 +270,10 @@ test_that("start_conc0 imputation works (fix #257)", {
   df_myres <- as.data.frame(myres)
   expect_false(is.na(df_myres$PPORRES[df_myres$PPTESTCD == "auclast"]))
 })
+
+test_that("PKNCA_impute_fun_list", {
+  PKNCA_impute_method_character <- "A"
+  expect_error(PKNCA_impute_fun_list("character"),
+               regexp = "The following imputation functions were not found: PKNCA_impute_method_character"
+  )
+})
