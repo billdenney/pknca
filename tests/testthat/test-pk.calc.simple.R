@@ -428,6 +428,11 @@ test_that("pk.calc.aucabove", {
     pk.calc.aucabove(conc = c(0:5, 1), time = 0:6, conc_above = 2),
     pk.calc.auc.all(conc = c(0, 0, 0, 1:3, 0), time = 0:6)
   )
+  
+  expect_equal(
+  pk.calc.aucabove(conc = c(0:5, 1), time = 0:6, conc_above = NA_real_),
+  structure(NA_real_, exclude = "Missing concentration to be above")
+  )
 
   # Confirm that it works through NCA calculations
   d_conc <- data.frame(conc = c(2, 1:5, 3), time = 0:6)
@@ -463,4 +468,14 @@ test_that("pk.calc.count_conc", {
 test_that("pk.calc.totdose", {
   expect_equal(pk.calc.totdose(1), 1)
   expect_equal(pk.calc.totdose(c(1, 1)), 2)
+})
+
+test_that("pk.calc.cstart", {
+  expect_equal(pk.calc.cstart(1:5, 0:4, 0), 1)
+  expect_equal(pk.calc.cstart(1:5, 0:4, 1), 2)
+  expect_equal(pk.calc.cstart(1:5, 0:4, 1.5), NA_real_)
+  expect_error(
+    pk.calc.cstart(1:5, c(0, 0:3), 0),
+    regexp = "Assertion on 'time' failed: Contains duplicated values, position 2."
+  )
 })
