@@ -27,6 +27,9 @@ test_that("PKNCAdose", {
   expect_error(PKNCAdose(tmp.dose, formula=dose~time|treatmenta+ID),
                regexp="All of the variables in the groups must be in the data",
                info="All formula parameters must be in the data (groups)")
+  expect_error(PKNCAdose(tmp.dose, formula=dosea~time|treatment/ID),
+               regexp="formula for PKNCAdose may not include a slash",
+               info="The formula string must not contain any slashes")
 
   # Number of variables
   expect_error(PKNCAdose(tmp.dose, formula=dose+ID~time|treatment+ID),

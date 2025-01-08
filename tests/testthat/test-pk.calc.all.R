@@ -293,6 +293,22 @@ test_that("pk.calc.all with duration.dose required", {
                info="duration.dose is used when requested")
 })
 
+test_that("pk.calc.all with duration.conc required", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  tmpconc$duration_conc <- 0.1
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID, duration="duration_conc")
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID, route="intravascular")
+  mydata <- PKNCAdata(myconc, mydose,
+                      intervals=data.frame(start=0, end=24,
+                                           mrt.iv.last=TRUE))
+  myresult <- pk.nca(mydata)
+  expect_equal(myresult$result$PPORRES[myresult$result$PPTESTCD %in% "mrt.iv.last"],
+               c(10.41263, 10.17515),
+               tolerance=1e-5,
+               info="duration.conc is used when requested")
+})
+
 test_that("half life inclusion and exclusion", {
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
