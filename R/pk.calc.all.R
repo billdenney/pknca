@@ -376,9 +376,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   all_intervals <- get.interval.cols()
   # Set the dose to NA if its length is zero
   if (length(dose) == 0) {
-    dose <- NA
-    time.dose <- NA
-    duration.dose <- NA
+    stop("Please report a bug. Length of dose should not be zero.")
   }
   # Make sure that we calculate all of the dependencies.  Do this in
   # reverse order for dependencies of dependencies.
@@ -462,16 +460,16 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
         } else {
           # Give an error if there is not a default argument.
           if (inherits(formals(get(all_intervals[[n]]$FUN))[[arg_formal]], "name")) {
-            arg_text <-
+            arg_text <- # nocov start
               if (arg_formal == arg_mapped) {
                 sprintf("'%s'", arg_formal)
               } else {
                 sprintf("'%s' mapped to '%s'", arg_formal, arg_mapped)
               }
-            stop(sprintf( # nocov
-              "Cannot find argument %s for NCA function '%s'", # nocov
-              arg_text, all_intervals[[n]]$FUN) # nocov
-            ) # nocov
+            stop(sprintf(
+              "Cannot find argument %s for NCA function '%s'",
+              arg_text, all_intervals[[n]]$FUN)
+            ) # nocov end
           }
         }
       }
