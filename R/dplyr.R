@@ -32,7 +32,7 @@ join_maker_PKNCA <- function(join_fun) {
     dataname <- getDataName(x)
     x[[dataname]] <- join_fun(x=x[[dataname]], y=y, by = by, copy = copy, suffix = suffix, ..., keep = keep)
     x
-  }
+  } # nocov
 }
 filter_PKNCA <- function(.data, ..., .preserve=FALSE) {
   dataname <- getDataName(.data)
