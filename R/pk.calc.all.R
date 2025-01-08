@@ -376,7 +376,7 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
   all_intervals <- get.interval.cols()
   # Set the dose to NA if its length is zero
   if (length(dose) == 0) {
-    stop("Please report a bug. Length of dose should not be zero.")
+    stop("Please report a bug. Length of dose should not be zero.") # nocov
   }
   # Make sure that we calculate all of the dependencies.  Do this in
   # reverse order for dependencies of dependencies.
