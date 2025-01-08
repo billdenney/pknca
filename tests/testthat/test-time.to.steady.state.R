@@ -750,3 +750,9 @@ test_that("tss Monoexponential no models converged", {
   expect_warning(pk.tss.monoexponential.population(data = bad_data, output = "population"),
   regexp = "No population model for monoexponential Tss converged, no results given")
 })
+
+test_that("tss Monoexponential no models converged with verbose = TRUE", {
+  bad_data <- data.frame(subject=rep(1:2, each = 4), time=0, conc=0, tss.constant=0.9)
+  expect_warning(pk.tss.monoexponential.population(data = bad_data, output = "population", verbose = TRUE),
+                 regexp = "No population model for monoexponential Tss converged, no results given")
+})
