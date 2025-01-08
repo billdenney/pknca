@@ -364,7 +364,7 @@ pk.tss.monoexponential.individual <- function(data,
       } else if ("subject" %in% names(data)) {
         dplyr::grouped_df(data, vars="subject")
       } else {
-        stop("Subject must be specified to have subject-level fitting")
+        stop("Please report a bug. Subject must be specified to have subject-level fitting") # nocov
       }
     ret_sub <-
       dplyr::summarize(
