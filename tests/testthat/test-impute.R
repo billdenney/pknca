@@ -122,6 +122,21 @@ test_that("PKNCA_impute_method_start_logslope", {
     data.frame(conc = c(3, 3, 1), time = 1:3),
     ignore_attr = TRUE
   )
+  # All concentrations are NA -> does not change
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(NA, NA, NA), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(NA, NA, NA), time = 1:3)
+  )
+  # All times are NA -> does not change
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = 1:3, time = c(NA, NA, NA), start = 0, end = 3),
+    data.frame(conc = 1:3, time = c(NA, NA, NA))
+  )
+  # All concentrations are 0 -> does not change
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(0, 0, 0), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(0, 0, 0), time = 1:3)
+  )
 })
 
 test_that("PKNCA_impute_method_start_c1", {
@@ -140,6 +155,23 @@ test_that("PKNCA_impute_method_start_c1", {
   expect_equal(
     PKNCA_impute_method_start_c1(conc = 1:3, time = c(-1, 1:2), start = 0, end = 2),
     data.frame(conc = c(1, 2, 2:3), time = c(-1, 0, 1:2)),
+    ignore_attr = TRUE
+  )
+  # All concentrations are NA
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = c(NA, NA, NA), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(NA, NA, NA, NA), time = 0:3),
+    ignore_attr = TRUE
+  )
+  # All times are NA
+  expect_error(
+    PKNCA_impute_method_start_c1(conc = 1:3, time = c(NA, NA, NA), start = 0, end = 3),
+    "Assertion on 'time' failed: Contains missing values"
+  )
+  # All concentrations are 0
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = c(0, 0, 0), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(0, 0, 0, 0), time = 0:3),
     ignore_attr = TRUE
   )
 })
