@@ -43,16 +43,13 @@ pk.calc.aucint <- function(conc, time,
                            options=list()) {
   # Check inputs
   method <- PKNCA.choose.option(name="auc.method", value=method, options=options)
-  conc.blq <- PKNCA.choose.option(name="conc.blq", value=conc.blq, options=options)
-  conc.na <- PKNCA.choose.option(name="conc.na", value=conc.na, options=options)
   if (check) {
     assert_conc_time(conc, time)
     data <-
       clean.conc.blq(
-        conc, time,
-        conc.blq=conc.blq,
-        conc.na=conc.na,
-        check=FALSE
+        conc = conc, time = time,
+        conc.blq = conc.blq, conc.na = conc.na, options = options,
+        check = FALSE
       )
   } else {
     data <- data.frame(conc, time)
@@ -74,8 +71,7 @@ pk.calc.aucint <- function(conc, time,
     tlast <- pk.calc.tlast(conc=data$conc, time=data$time)
     clast_obs <- pk.calc.clast.obs(conc=data$conc, time=data$time)
     if (is.na(clast)) {
-      # All concentrations are NA
-      return(structure(NA_real_, exclude = "clast is NA"))
+      stop("Please report a bug. clast is NA") # nocov
     } else if (clast != clast_obs & interval[2] > tlast) {
       # If using clast.pred, we need to doubly calculate at tlast.
       conc_clast <- clast

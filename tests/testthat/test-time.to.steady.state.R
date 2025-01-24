@@ -456,6 +456,36 @@ test_that("pk.tss.monoexponential", {
   )
 })
 
+test_that("pk.tss.monoexponential without treatment", {
+  tmpdata <- generate.data()
+    expect_equal(
+      pk.tss.monoexponential(
+        conc=tmpdata$conc,
+        time=tmpdata$time,
+        subject=tmpdata$subject,
+        time.dosing=0:14,
+        verbose=FALSE
+      ),
+      data.frame(
+        subject=factor(as.character(c(1, 10, 2:9))),
+        tss.monoexponential.population=4.561580,
+        tss.monoexponential.popind=c(
+          5.028357, 4.672555, 4.536178,
+          4.295758, 4.660561, 4.158700,
+          4.940674, 4.507900, 3.676531,
+          5.138583),
+        tss.monoexponential.individual=c(
+          5.87784329336254, 4.71066285661623, 4.51882509145954,
+          3.91269286106442, 4.74475071729459, 3.99341726779716,
+          5.08737230904342, 4.50068650719192, 3.4876172020751,
+          5.35051537086801),
+        tss.monoexponential.single=4.56067603534,
+        stringsAsFactors=FALSE
+      ),
+      tolerance=1e-4
+    )
+})
+
 test_that("pk.tss.monoexponential corner case tests", {
   tmpdata <- generate.data()
   # population output, only
@@ -691,4 +721,38 @@ test_that("pk.tss.monoexponential with single-subject data", {
     data.frame(tss.monoexponential.single=22.53),
     tolerance=0.001
   )
+})
+
+test_that("verbose being TRUE", {
+  d_prep <- datasets::Theoph[datasets::Theoph$Subject %in% 2, ]
+  dose_times <- seq(0, 96-1, by=6)
+  d_multidose <-
+    superposition(
+      conc=d_prep$conc,
+      time=d_prep$Time,
+      tau=96, # 48 hours
+      n.tau=1, # One tau interval (0 to 48 hours)
+      dose.times=dose_times
+    )
+  expect_equal(
+    pk.tss.monoexponential(
+      conc=d_multidose$conc, time=d_multidose$time, subject=rep(1, nrow(d_multidose)),
+      time.dosing=dose_times, subject.dosing=rep(1, length(dose_times)),
+      output="single", verbose = TRUE
+    ),
+    data.frame(tss.monoexponential.single=22.53),
+    tolerance=0.001
+  )
+})
+
+test_that("tss Monoexponential no models converged", {
+  bad_data <- data.frame(subject=rep(1:2, each = 4), time=0, conc=0, tss.constant=0.9)
+  expect_warning(pk.tss.monoexponential.population(data = bad_data, output = "population"),
+  regexp = "No population model for monoexponential Tss converged, no results given")
+})
+
+test_that("tss Monoexponential no models converged with verbose = TRUE", {
+  bad_data <- data.frame(subject=rep(1:2, each = 4), time=0, conc=0, tss.constant=0.9)
+  expect_warning(pk.tss.monoexponential.population(data = bad_data, output = "population", verbose = TRUE),
+                 regexp = "No population model for monoexponential Tss converged, no results given")
 })

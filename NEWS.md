@@ -6,14 +6,28 @@ the dosing including dose amount and route.
 
 # PKNCA 0.11.0.9000
 
-* New default PKNCA impute start methods for C1 and IV bolus logslope to add for intervals without a start concentration
-* PKNCA options can now use `tmax` as a reference for BLQ handling by using new names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
+## Breaking changes
+
 * PKNCA will now give an error when there are unexpected interval columns.
   The `keep_interval_cols` option can be used to mitigate this error.
-* PKNCA will now make verifications on the `intervals` object within the
-  creation of PKNCAdata. This will return errors, or create the `PKNCAdata`
-  object as intended when no errors are present. Some of the verifications include
-  checking of intended column naming and ensuring the correct data type.
+* `NA` results from calculating `c0` will now add an exclusion reason.
+* AUC for intravenous dosing (all the `auciv*` parameters) now more robustly
+  calculate `c0` and does not raise an error when `is.na(c0)` (#353).
+
+## New Features
+
+* `PKNCAconc()` and `PKNCAdose()` can now accept unit specifications as either
+  column names or units to use (#336).
+* New default PKNCA impute start methods for C1 and IV bolus logslope to add for 
+  intervals without a start concentration
+* PKNCA options can now use `tmax` as a reference for BLQ handling by using new
+  names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
+
+# Minor changes (unlikely to affect PKNCA use)
+
+* PKNCA will now verify the `intervals` data.frame when creating PKNCAdata. The
+  checking includes confirming intended column naming and ensuring the correct
+  data types.
 * PKNCA now contains a `getGroups.PKNCAdata` function to capture grouping columns.
 * Duplicate data checks now account for excluded rows.  So, if a row is
   duplicated and all but one of the duplicated rows is excluded, it is not an

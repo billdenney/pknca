@@ -167,3 +167,10 @@ test_that("max_na and min_na", {
     info="zero_length/na.rm combinations are respected (NOT made zero length)"
   )
 })
+
+test_that("zero_len_summary", {
+  testing_function <- zero_len_summary(mean)
+  expect_equal(testing_function(1:5), 3)
+  expect_equal(testing_function(1:5, na.rm = TRUE), 3)
+  expect_equal(testing_function(), NA)
+})

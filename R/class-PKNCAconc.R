@@ -56,10 +56,16 @@ PKNCAconc.tbl_df <- function(data, ...) {
 }
 
 #' @rdname PKNCAconc
+#' @param concu,amountu,timeu Either unit values (e.g. "ng/mL") or column names
+#'   within the data where units are provided.
+#' @param concu_pref,amountu_pref,timeu_pref Preferred units for reporting (not
+#'   column names)
 #' @export
 PKNCAconc.data.frame <- function(data, formula, subject,
                                  time.nominal, exclude = NULL, duration, volume,
-                                 exclude_half.life, include_half.life, sparse=FALSE, ...) {
+                                 exclude_half.life, include_half.life, sparse = FALSE, ...,
+                                 concu = NULL, amountu = NULL, timeu = NULL,
+                                 concu_pref = NULL, amountu_pref = NULL, timeu_pref = NULL) {
   # The data must have... data
   if (nrow(data) == 0) {
     stop("data must have at least one row.")
@@ -169,6 +175,14 @@ PKNCAconc.data.frame <- function(data, formula, subject,
                          attr_name="include_half.life",
                          col_name=include_half.life)
   }
+
+  # Unit handling
+  ret <-
+    pknca_set_units(
+      ret,
+      units_orig = list(concu = concu, amountu = amountu, timeu = timeu),
+      units_pref = list(concu_pref = concu_pref, amountu_pref = amountu_pref, timeu_pref = timeu_pref)
+    )
   ret
 }
 

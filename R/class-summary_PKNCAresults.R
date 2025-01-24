@@ -285,9 +285,7 @@ get_summary_PKNCAresults_count_N <- function(data, result_group, subject_col, su
 
     ret$N <- as.character(ret$N)
     if (any(is.na(ret$N))) {
-      # If N is requested, but it is not provided, then it should be set to not
-      # calculated.
-      ret$N[is.na(ret$N)] <- not_calculated
+      stop("Please report a bug. If N is requested, but it is not provided, then it should be set to not calculated.") # nocov
     }
   } else {
     ret <- result_group

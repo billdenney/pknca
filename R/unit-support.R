@@ -193,7 +193,12 @@ choose_first <- function(x, y, .default = NA) {
 }
 
 useless <- function(x) {
-  missing(x) || is.null(x) || is.na(x)
+  if (missing(x)) {
+    return(TRUE)
+  } else if (length(x) > 1) {
+    stop("Only one unit may be provided at a time: ", paste(x, collapse = ", "))
+  }
+  is.null(x) || is.na(x)
 }
 
 pknca_units_table_time <- function(timeu) {

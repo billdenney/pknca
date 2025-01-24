@@ -64,6 +64,11 @@ test_that("add.interval.col", {
     regexp="desc must be a character string",
     info="interval column description must be a character scalar"
   )
+  expect_error(
+    add.interval.col(name="a", FUN=NA, depends = 1, unit_type="conc", pretty_name="a", datatype="interval", desc=1),
+    regexp="'depends' must be NULL or a character vector",
+    info="depends column must be a NULL or a character string"
+  )
   
   expect_error(
     add.interval.col(name="a", FUN="this function does not exist", unit_type="conc", pretty_name="foo", datatype="interval", desc="test addition"),
