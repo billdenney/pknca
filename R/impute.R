@@ -121,7 +121,9 @@ PKNCA_impute_method_start_predose <- function(conc, time, start, end, conc.group
 }
 
 #' @describeIn PKNCA_impute_method Imputes based on a logarithmic slope on the
-#'   first points a time zero concentration (usually in IV bolus at dose time)
+#'   first points at time zero concentration (usually in IV bolus at dose time).
+#'   If this imputation is used for NCA calculations, back-extrapolation percent
+#'   will not be calculated or will be calculated as zero.
 #' @export
 PKNCA_impute_method_start_logslope <- function(conc, time, start, end, ..., options = list()) { # nolint
 
@@ -131,7 +133,9 @@ PKNCA_impute_method_start_logslope <- function(conc, time, start, end, ..., opti
     all_concs <- conc[time >= start  &  time <= end]
     all_times <- time[time >= start  &  time <= end]
     if (!all(is.na(all_concs))) {
-      c0 <- PKNCA::pk.calc.c0(all_concs, all_times, method = "logslope")
+      c0 <- pk.calc.c0.method.logslope(conc = all_concs,
+                                       time = all_times,
+                                       time.dose = start)
       if (!is.na(c0)) {
         ret <- rbind(ret, data.frame(time = start, conc = c0))
         ret <- ret[order(ret$time), ]
@@ -142,20 +146,23 @@ PKNCA_impute_method_start_logslope <- function(conc, time, start, end, ..., opti
 }
 
 #' @describeIn PKNCA_impute_method Shift the following concentration to a start
-#'   to become the time zero concentration (rarely used; non-monodecay IV bolus)
+#'   to become the time zero concentration (rarely used; non-monodecay IV bolus).
+#'   If this imputation is used for NCA calculations, back-extrapolation percent
+#'   will not be calculated or will be calculated as zero.
 #' @return A data frame with imputed start concentration.
 #' @export
 PKNCA_impute_method_start_c1 <- function(conc, time, start, end, ..., options = list()) { # nolint
   ret <- data.frame(conc = conc, time = time)
   mask_start <- time %in% start
   if (!any(mask_start)) {
+    assert_conc_time(conc, time)
     all_concs <- conc[time >= start  &  time <= end]
     all_times <- time[time >= start  &  time <= end]
-    if (!all(is.na(all_concs))) {
-      c1 <- all_concs[which.min(all_times)]
-      ret <- rbind(ret, data.frame(time = start, conc = c1))
-      ret <- ret[order(ret$time), ]
-    }
+    c1 <- pk.calc.c0.method.c1(conc = all_concs,
+                               time = all_times,
+                               time.dose = start)
+    ret <- rbind(ret, data.frame(time = start, conc = c1))
+    ret <- ret[order(ret$time), ]
   }
   ret
 }
