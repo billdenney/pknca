@@ -1337,18 +1337,14 @@ pk.calc.count_conc <- function(conc, check=TRUE) {
   sum(!is.na(conc))
 }
 # Add the column to the interval specification
-add.interval.col("count_conc",
-                 FUN="pk.calc.count_conc",
-                 values=c(FALSE, TRUE),
-                 unit_type="count",
-                 pretty_name="Concentration count",
-                 desc="Number of non-missing concentrations for an interval",
-                 depends=NULL)
-PKNCA.set.summary(
-  name="count_conc",
-  description="median and range",
-  point=business.median,
-  spread=business.range
+add.interval.col(
+  "count_conc",
+  FUN = "pk.calc.count_conc",
+  values = c(FALSE, TRUE),
+  unit_type = "count",
+  pretty_name = "Concentration count",
+  desc = "Number of non-missing concentrations for an interval",
+  depends = NULL
 )
 
 #' @describeIn pk.calc.count_conc Count the number of concentration measurements
@@ -1375,7 +1371,7 @@ add.interval.col(
   depends=NULL
 )
 PKNCA.set.summary(
-  name="count_conc",
+  name=c("count_conc", "count_conc_measured"),
   description="median and range",
   point=business.median,
   spread=business.range
