@@ -114,11 +114,8 @@ exclude_nca_conc_count_measured <-  function(min_count, exclude_param_pattern = 
         FUN = get.parameter.deps
       )
     )))
-  missing_count <- missing(min_count)
+  force(min_count)
   function(x, ...) {
-    if (missing_count) {
-      min_count <- PKNCA.options("min_count_measured")
-    }
     ret <- rep(NA_character_, nrow(x))
     if (!is.na(min_count)) {
       idx_count <- which(x$PPTESTCD %in% "count_conc_measured")
