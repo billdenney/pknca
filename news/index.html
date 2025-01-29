@@ -68,7 +68,7 @@
 <ul><li>
 <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> and <code><a href="../reference/PKNCAdose.html">PKNCAdose()</a></code> can now accept unit specifications as either column names or units to use (<a href="https://github.com/billdenney/pknca/issues/336" class="external-link">#336</a>).</li>
 <li>PKNCA options can now use <code>tmax</code> as a reference for BLQ handling by using new names in the <code>conc.blq</code> argument (<code>before.tmax</code>,<code>after.tmax</code>)</li>
-<li>A new parameter <code>count_conc_measured</code> was added to enable quality checks, typically on AUC measurements. An associated exclusion function, <code><a href="../reference/exclude_nca.html">exclude_nca_conc_count_measured()</a></code> was also added.</li>
+<li>A new parameter <code>count_conc_measured</code> was added to enable quality checks, typically on AUC measurements. An associated exclusion function, <code><a href="../reference/exclude_nca.html">exclude_nca_count_conc_measured()</a></code> was also added.</li>
 <li>The <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> arguments of <code>include_half.life</code> and <code>exclude_half.life</code> now allow <code>NA</code> values. If all values are <code>NA</code>, then no inclusion or exclusion is applied (the interval is treated as-is, like the argument had not been given). If some values are <code>NA</code> for the interval, those are treated as <code>FALSE</code>.</li>
 </ul></div>
 </div>
