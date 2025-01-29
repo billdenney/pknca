@@ -333,6 +333,53 @@ test_that("half life inclusion and exclusion", {
   expect_false(identical(myresult$result, myresult_incl$result))
 })
 
+test_that("include_half.life and exclude_half.life work with NAs treated as missing for all NA and as FALSE for partial NA (#372)", {
+  # Partial NA include_hl is used
+  d_conc_incl <- data.frame(conc = c(1, 0.6, 0.3, 0.25, 0.15, 0.1), time = 0:5, include_hl = c(FALSE, NA, TRUE, TRUE, TRUE, TRUE))
+  o_conc_incl <- PKNCAconc(d_conc_incl, conc~time, include_half.life = "include_hl")
+  o_data_incl <- PKNCAdata(o_conc_incl, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  suppressMessages(o_nca_incl <- pk.nca(o_data_incl))
+  expect_equal(as.data.frame(o_nca_incl, out_format = "wide")$half.life, 1.820879, tolerance = 0.00001)
+
+  # All FALSE include_hl is used
+  d_conc_false <- data.frame(conc = c(1, 0.6, 0.3, 0.25, 0.15, 0.1), time = 0:5, include_hl = FALSE)
+  o_conc_false <- PKNCAconc(d_conc_false, conc~time, include_half.life = "include_hl")
+  o_data_false <- PKNCAdata(o_conc_false, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  suppressWarnings(suppressMessages(o_nca_false <- pk.nca(o_data_false)))
+  d_nca_false <- as.data.frame(o_nca_false)
+  expect_equal(d_nca_false$PPORRES[d_nca_false$PPTESTCD %in% "half.life"], NA_real_)
+
+  # All NA include_hl is ignored
+  d_conc <- data.frame(conc = c(1, 0.6, 0.3, 0.25, 0.15, 0.1), time = 0:5, include_hl = NA)
+  o_conc <- PKNCAconc(d_conc, conc~time, include_half.life = "include_hl")
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  suppressMessages(o_nca <- pk.nca(o_data))
+  expect_equal(as.data.frame(o_nca, out_format = "wide")$half.life, 1.512942, tolerance = 0.00001)
+
+  # Partial NA include_hl is used
+  d_conc_excl <- data.frame(conc = c(1, 0.6, 0.3, 0.25, 0.15, 0.1), time = 0:5, exclude_hl = c(FALSE, NA, TRUE, TRUE, TRUE, TRUE))
+  o_conc_excl <- PKNCAconc(d_conc_excl, conc~time, exclude_half.life = "exclude_hl")
+  o_data_excl <- PKNCAdata(o_conc_excl, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  suppressWarnings(suppressMessages(o_nca_excl <- pk.nca(o_data_excl)))
+  d_nca_excl <- as.data.frame(o_nca_excl)
+  expect_equal(d_nca_excl$PPORRES[d_nca_excl$PPTESTCD %in% "half.life"], NA_real_)
+
+  # All NA exclude_hl is ignored
+  d_conc <- data.frame(conc = c(1, 0.6, 0.3, 0.25, 0.15, 0.1), time = 0:5, exclude_hl = NA)
+  o_conc <- PKNCAconc(d_conc, conc~time, exclude_half.life = "exclude_hl")
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  suppressMessages(o_nca <- pk.nca(o_data))
+  expect_equal(as.data.frame(o_nca, out_format = "wide")$half.life, 1.512942, tolerance = 0.00001)
+
+  # All FALSE exclude_hl is used
+  d_conc_false <- data.frame(conc = c(1, 0.6, 0.3, 0.25, 0.15, 0.1), time = 0:5, exclude_hl = FALSE)
+  o_conc_false <- PKNCAconc(d_conc_false, conc~time, exclude_half.life = "exclude_hl")
+  o_data_false <- PKNCAdata(o_conc_false, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  suppressWarnings(suppressMessages(o_nca_false <- pk.nca(o_data_false)))
+  d_nca_false <- as.data.frame(o_nca_false)
+  expect_equal(d_nca_false$PPORRES[d_nca_false$PPTESTCD %in% "half.life"], 1.512942, tolerance = 0.00001)
+})
+
 test_that("No interval requested (e.g. for placebo)", {
   tmpconc <- generate.conc(2, 1, 0:24)
   tmpdose <- generate.dose(tmpconc)
