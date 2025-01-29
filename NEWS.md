@@ -24,7 +24,7 @@ the dosing including dose amount and route.
   names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
 * A new parameter `count_conc_measured` was added to enable quality checks,
   typically on AUC measurements. An associated exclusion function,
-  `exclude_nca_conc_count_measured()` was also added.
+  `exclude_nca_count_conc_measured()` was also added.
 * The `PKNCAconc()` arguments of `include_half.life` and `exclude_half.life` now
   allow `NA` values. If all values are `NA`, then no inclusion or exclusion is
   applied (the interval is treated as-is, like the argument had not been given).

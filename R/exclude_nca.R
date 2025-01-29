@@ -96,7 +96,7 @@ exclude_nca_max.aucinf.pext <-  function(max.aucinf.pext) {
 #' @param exclude_param_pattern Character vector of regular expression patterns
 #'   to exclude
 #' @export
-exclude_nca_conc_count_measured <-  function(min_count, exclude_param_pattern = c("^aucall", "^aucinf", "^aucint", "^auciv", "^auclast", "^aumc", "^sparse_auc")) {
+exclude_nca_count_conc_measured <-  function(min_count, exclude_param_pattern = c("^aucall", "^aucinf", "^aucint", "^auciv", "^auclast", "^aumc", "^sparse_auc")) {
   all_parameters <- names(PKNCA::get.interval.cols())
   affected_parameters_base <-
     sort(unique(unlist(
