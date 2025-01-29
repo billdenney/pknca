@@ -205,6 +205,12 @@ fit with the most points included.</li>
 <div class="section level2">
 <h2 id="manual-point-selection">Manual Point Selection<a class="anchor" aria-label="anchor" href="#manual-point-selection"></a>
 </h2>
+<p>For both exclusion and inclusion methods below, the same
+<code>NA</code> handling rules apply on a per-interval basis. If all
+values are <code>NA</code>, then no inclusion or exclusion is applied
+(the interval is treated as-is, like the argument had not been given).
+If some values are <code>NA</code> for the interval, those are treated
+as <code>FALSE</code>.</p>
 <div class="section level3">
 <h3 id="exclusion-of-specific-points-with-curve-stripping">Exclusion of Specific Points with Curve Stripping<a class="anchor" aria-label="anchor" href="#exclusion-of-specific-points-with-curve-stripping"></a>
 </h3>
