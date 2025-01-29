@@ -475,13 +475,15 @@ pk.nca.interval <- function(conc, time, volume, duration.conc,
       }
       # Apply manual inclusion and exclusion
       if (n %in% "half.life") {
-        if (!is.null(include_half.life)) {
-          call_args$conc <- call_args$conc[include_half.life]
-          call_args$time <- call_args$time[include_half.life]
+        if (!is.null(include_half.life) && !all(is.na(include_half.life))) {
+          include_tf <- include_half.life %in% TRUE
+          call_args$conc <- call_args$conc[include_tf]
+          call_args$time <- call_args$time[include_tf]
           call_args$manually.selected.points <- TRUE
-        } else if (!is.null(exclude_half.life)) {
-          call_args$conc <- call_args$conc[!exclude_half.life]
-          call_args$time <- call_args$time[!exclude_half.life]
+        } else if (!is.null(exclude_half.life) && !all(is.na(exclude_half.life))) {
+          exclude_tf <- exclude_half.life %in% TRUE
+          call_args$conc <- call_args$conc[!exclude_tf]
+          call_args$time <- call_args$time[!exclude_tf]
         }
       }
       # Do the calculation

@@ -23,6 +23,10 @@ the dosing including dose amount and route.
 * A new parameter `count_conc_measured` was added to enable quality checks,
   typically on AUC measurements. An associated exclusion function,
   `exclude_nca_conc_count_measured()` was also added.
+* The `PKNCAconc()` arguments of `include_half.life` and `exclude_half.life` now
+  allow `NA` values. If all values are `NA`, then no inclusion or exclusion is
+  applied (the interval is treated as-is, like the argument had not been given).
+  If some values are `NA` for the interval, those are treated as `FALSE`.
 
 # Minor changes (unlikely to affect PKNCA use)
 

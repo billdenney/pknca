@@ -81,6 +81,12 @@ as.data.frame(result_obj)
 
 # Manual Point Selection
 
+For both exclusion and inclusion methods below, the same `NA` handling rules
+apply on a per-interval basis. If all values are `NA`, then no inclusion or
+exclusion is applied (the interval is treated as-is, like the argument had not
+been given). If some values are `NA` for the interval, those are treated as
+`FALSE`.
+
 ## Exclusion of Specific Points with Curve Stripping
 
 In some cases, specific points will be known outliers, or there may be another reason to exclude specific points.  And, with those points excluded, the half-life should be calculated using the normal curve stripping methods described above.
