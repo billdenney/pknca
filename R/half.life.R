@@ -168,6 +168,9 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     if (nrow(data) > 0) {
       fit <- fit_half_life(data=data, tlast=ret$tlast, conc_units=conc_units)
       ret[,ret_replacements] <- fit[,ret_replacements]
+      if (ret$half.life <= 0) {
+        attr(ret, "exclude") <- "Negative half-life estimated with manually-selected points"
+      }
     } else {
       warning("No data to manually fit for half-life (all concentrations may be 0 or excluded)")
       ret <-

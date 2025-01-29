@@ -18,7 +18,7 @@ test_that("pk.calc.half.life", {
                       allow.tmax.in.half.life=TRUE,
                       adj.r.squared.factor=0.0001,
                       check=FALSE)$half.life
-                 
+
   expect_equal(v2, 1)
 
   # Ensure that min.hl.points is respected
@@ -56,7 +56,7 @@ test_that("pk.calc.half.life", {
                                    check=FALSE)$half.life,
                  1.000346,
                  tolerance=0.00001))
-  
+
 
   # Make sure that when tmax and tlast are given that they are
   # automatically included and not recalculated
@@ -171,6 +171,25 @@ test_that("half-life manual point selection", {
   )
   expect_true(all(is.na(unlist(manual_blq))),
               info="All BLQ with manual point selection gives all NA results")
+
+  excluded_result <-
+    data.frame(
+      lambda.z = -log(2),
+      r.squared = 1,
+      adj.r.squared = 1,
+      lambda.z.time.first = 1L,
+      lambda.z.n.points = 3L,
+      clast.pred = 8,
+      half.life = -1,
+      span.ratio = -2,
+      tmax = 3L,
+      tlast = 3L
+    )
+  attr(excluded_result, "exclude") <- "Negative half-life estimated with manually-selected points"
+  expect_equal(
+    pk.calc.half.life(conc = 2^(1:3), time = 1:3, manually.selected.points = TRUE),
+    excluded_result
+  )
 })
 
 test_that("two-point half-life succeeds (fix #114)", {
