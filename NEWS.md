@@ -13,6 +13,8 @@ the dosing including dose amount and route.
 * `NA` results from calculating `c0` will now add an exclusion reason.
 * AUC for intravenous dosing (all the `auciv*` parameters) now more robustly
   calculate `c0` and does not raise an error when `is.na(c0)` (#353).
+* Manual calculation of half.life no longer allows negative half-live values
+  (#373).
 
 ## New Features
 
