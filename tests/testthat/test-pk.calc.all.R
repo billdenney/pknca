@@ -743,3 +743,18 @@ test_that("dose is calculable", {
   expect_equal(as.data.frame(myresult)$PPORRES, rep(2, 2))
   expect_equal(as.data.frame(myresult)$PPTESTCD, rep("totdose", 2))
 })
+
+test_that("all parameters can be calculated (#367)", {
+  d_conc <- data.frame(conc = 2^(0:-5), time = 0:5)
+
+  o_conc <- PKNCAconc(d_conc, conc~time)
+  all_param_names <- names(get.interval.cols())
+  all_params <-
+    as.data.frame(
+      setNames(as.list(rep(TRUE, length(all_param_names))), all_param_names)
+    )
+  all_params$start <- 0
+  all_params$end <- Inf
+  o_data <- PKNCAdata(o_conc, intervals = all_params)
+  expect_error(o_nca <- pk.nca(o_data), NA)
+})
