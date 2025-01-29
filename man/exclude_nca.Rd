@@ -4,12 +4,19 @@
 \alias{exclude_nca}
 \alias{exclude_nca_span.ratio}
 \alias{exclude_nca_max.aucinf.pext}
+\alias{exclude_nca_conc_count_measured}
 \alias{exclude_nca_min.hl.r.squared}
 \title{Exclude NCA parameters based on examining the parameter set.}
 \usage{
 exclude_nca_span.ratio(min.span.ratio)
 
 exclude_nca_max.aucinf.pext(max.aucinf.pext)
+
+exclude_nca_conc_count_measured(
+  min_count,
+  exclude_param_pattern = c("^aucall", "^aucinf", "^aucint", "^auciv", "^auclast",
+    "^aumc", "^sparse_auc")
+)
 
 exclude_nca_min.hl.r.squared(min.hl.r.squared)
 }
@@ -19,6 +26,11 @@ exclude_nca_min.hl.r.squared(min.hl.r.squared)
 
 \item{max.aucinf.pext}{The maximum acceptable percent AUC extrapolation (uses
 \code{PKNCA.options("max.aucinf.pext")} if not provided).}
+
+\item{min_count}{Minimum number of measured concentrations}
+
+\item{exclude_param_pattern}{Character vector of regular expression patterns
+to exclude}
 
 \item{min.hl.r.squared}{The minimum acceptable r-squared value for half-life
 (uses \code{PKNCA.options("min.hl.r.squared")} if not provided).}
@@ -32,6 +44,9 @@ Exclude NCA parameters based on examining the parameter set.
 
 \item \code{exclude_nca_max.aucinf.pext()}: Exclude based on AUC percent extrapolated (both
 observed and predicted)
+
+\item \code{exclude_nca_conc_count_measured()}: Exclude AUC measurements based on count of
+concentrations measured and not below the lower limit of quantification
 
 \item \code{exclude_nca_min.hl.r.squared()}: Exclude based on half-life r-squared
 

@@ -20,6 +20,9 @@ the dosing including dose amount and route.
   column names or units to use (#336).
 * PKNCA options can now use `tmax` as a reference for BLQ handling by using new
   names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
+* A new parameter `count_conc_measured` was added to enable quality checks,
+  typically on AUC measurements. An associated exclusion function,
+  `exclude_nca_conc_count_measured()` was also added.
 
 # Minor changes (unlikely to affect PKNCA use)
 

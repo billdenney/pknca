@@ -90,6 +90,54 @@ exclude_nca_max.aucinf.pext <-  function(max.aucinf.pext) {
   }
 }
 
+#' @describeIn exclude_nca Exclude AUC measurements based on count of
+#'   concentrations measured and not below the lower limit of quantification
+#' @param min_count Minimum number of measured concentrations
+#' @param exclude_param_pattern Character vector of regular expression patterns
+#'   to exclude
+#' @export
+exclude_nca_conc_count_measured <-  function(min_count, exclude_param_pattern = c("^aucall", "^aucinf", "^aucint", "^auciv", "^auclast", "^aumc", "^sparse_auc")) {
+  all_parameters <- names(PKNCA::get.interval.cols())
+  affected_parameters_base <-
+    sort(unique(unlist(
+      lapply(
+        X = exclude_param_pattern,
+        FUN = grep,
+        x = all_parameters,
+        value = TRUE
+      )
+    )))
+  affected_parameters <-
+    sort(unique(unlist(
+      lapply(
+        X = affected_parameters_base,
+        FUN = get.parameter.deps
+      )
+    )))
+  force(min_count)
+  function(x, ...) {
+    ret <- rep(NA_character_, nrow(x))
+    if (!is.na(min_count)) {
+      idx_count <- which(x$PPTESTCD %in% "count_conc_measured")
+      if (length(idx_count) == 0) {
+        # Do nothing, it wasn't calculated
+      } else if (length(idx_count) == 1) {
+        current_count <- x$PPORRES[idx_count]
+        drop_count <-
+          !is.na(current_count) &
+          current_count < min_count
+        if (drop_count) {
+          ret[x$PPTESTCD %in% affected_parameters] <-
+            sprintf("Number of measured concentrations is < %g", min_count)
+        }
+      } else { # nocov
+        stop("Should not see more than one count_conc_measured (please report this as a bug)") # nocov
+      }
+    }
+    ret
+  }
+}
+
 #' @describeIn exclude_nca Exclude based on half-life r-squared
 #' @export
 exclude_nca_min.hl.r.squared <- function(min.hl.r.squared) {

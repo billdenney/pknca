@@ -1320,32 +1320,58 @@ PKNCA.set.summary(
 
 #' Count the number of concentration measurements in an interval
 #'
-#' `count_conc` is typically used for quality control on the data to ensure that
-#' there are a sufficient number of non-missing samples for a calculation and to
-#' ensure that data are consistent between individuals.
+#' `count_conc` and `count_conc_measured` are typically used for quality control
+#' on the data to ensure that there are a sufficient number of non-missing
+#' samples for a calculation and to ensure that data are consistent between
+#' individuals.
 #'
 #' @inheritParams pk.calc.cmax
 #' @returns a count of the non-missing concentrations (0 if all concentrations
 #'   are missing)
 #' @family NCA parameters for concentrations during the intervals
 #' @export
-pk.calc.count_conc <- function(conc,
-                         check=TRUE) {
+pk.calc.count_conc <- function(conc, check=TRUE) {
   if (check) {
     assert_conc(conc)
   }
   sum(!is.na(conc))
 }
 # Add the column to the interval specification
-add.interval.col("count_conc",
-                 FUN="pk.calc.count_conc",
-                 values=c(FALSE, TRUE),
-                 unit_type="count",
-                 pretty_name="Concentration count",
-                 desc="Number of non-missing concentrations for a subject",
-                 depends=NULL)
+add.interval.col(
+  "count_conc",
+  FUN = "pk.calc.count_conc",
+  values = c(FALSE, TRUE),
+  unit_type = "count",
+  pretty_name = "Concentration count",
+  desc = "Number of non-missing concentrations for an interval",
+  depends = NULL
+)
+
+#' @describeIn pk.calc.count_conc Count the number of concentration measurements
+#'   that are not missing, above, or below the limit of quantification in an
+#'   interval
+#'
+#' @returns a count of the non-missing, measured (not below or above the limit
+#'   of quantification) concentrations (0 if all concentrations are missing)
+#' @export
+pk.calc.count_conc_measured <- function(conc, check=TRUE) {
+  if (check) {
+    assert_conc(conc)
+  }
+  sum(!is.na(conc) & is.finite(conc) & conc > 0)
+}
+# Add the column to the interval specification
+add.interval.col(
+  "count_conc_measured",
+  FUN="pk.calc.count_conc_measured",
+  values=c(FALSE, TRUE),
+  unit_type="count",
+  pretty_name="Measured concentration count",
+  desc="Number of measured and non BLQ/ALQ concentrations for an interval",
+  depends=NULL
+)
 PKNCA.set.summary(
-  name="count_conc",
+  name=c("count_conc", "count_conc_measured"),
   description="median and range",
   point=business.median,
   spread=business.range

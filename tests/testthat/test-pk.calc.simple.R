@@ -428,7 +428,7 @@ test_that("pk.calc.aucabove", {
     pk.calc.aucabove(conc = c(0:5, 1), time = 0:6, conc_above = 2),
     pk.calc.auc.all(conc = c(0, 0, 0, 1:3, 0), time = 0:6)
   )
-  
+
   expect_equal(
   pk.calc.aucabove(conc = c(0:5, 1), time = 0:6, conc_above = NA_real_),
   structure(NA_real_, exclude = "Missing concentration to be above")
@@ -461,8 +461,19 @@ test_that("pk.calc.aucabove", {
 test_that("pk.calc.count_conc", {
   expect_equal(pk.calc.count_conc(1:5), 5)
   expect_equal(pk.calc.count_conc(c(1:2, NA)), 2)
+  expect_equal(pk.calc.count_conc(c(1:2, NA, 0)), 3)
   expect_equal(suppressWarnings(pk.calc.count_conc(numeric())), 0)
   expect_equal(suppressWarnings(pk.calc.count_conc(NA)), 0)
+})
+
+test_that("pk.calc.count_conc_measured", {
+  expect_equal(pk.calc.count_conc_measured(1:5), 5)
+  expect_equal(pk.calc.count_conc_measured(c(1:2, NA)), 2)
+  # including BLQ
+  expect_equal(pk.calc.count_conc_measured(c(1:2, NA, 0)), 2)
+  # Other
+  expect_equal(suppressWarnings(pk.calc.count_conc_measured(numeric())), 0)
+  expect_equal(suppressWarnings(pk.calc.count_conc_measured(NA)), 0)
 })
 
 test_that("pk.calc.totdose", {

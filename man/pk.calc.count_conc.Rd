@@ -2,9 +2,12 @@
 % Please edit documentation in R/pk.calc.simple.R
 \name{pk.calc.count_conc}
 \alias{pk.calc.count_conc}
+\alias{pk.calc.count_conc_measured}
 \title{Count the number of concentration measurements in an interval}
 \usage{
 pk.calc.count_conc(conc, check = TRUE)
+
+pk.calc.count_conc_measured(conc, check = TRUE)
 }
 \arguments{
 \item{conc}{Measured concentrations}
@@ -14,12 +17,23 @@ pk.calc.count_conc(conc, check = TRUE)
 \value{
 a count of the non-missing concentrations (0 if all concentrations
 are missing)
+
+a count of the non-missing, measured (not below or above the limit
+of quantification) concentrations (0 if all concentrations are missing)
 }
 \description{
-\code{count_conc} is typically used for quality control on the data to ensure that
-there are a sufficient number of non-missing samples for a calculation and to
-ensure that data are consistent between individuals.
+\code{count_conc} and \code{count_conc_measured} are typically used for quality control
+on the data to ensure that there are a sufficient number of non-missing
+samples for a calculation and to ensure that data are consistent between
+individuals.
 }
+\section{Functions}{
+\itemize{
+\item \code{pk.calc.count_conc_measured()}: Count the number of concentration measurements
+that are not missing, above, or below the limit of quantification in an
+interval
+
+}}
 \seealso{
 Other NCA parameters for concentrations during the intervals: 
 \code{\link{pk.calc.clast.obs}()},
