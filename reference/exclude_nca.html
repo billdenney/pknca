@@ -64,6 +64,12 @@
 <span></span>
 <span><span class="fu">exclude_nca_max.aucinf.pext</span><span class="op">(</span><span class="va">max.aucinf.pext</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">exclude_nca_conc_count_measured</span><span class="op">(</span></span>
+<span>  <span class="va">min_count</span>,</span>
+<span>  exclude_param_pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"^aucall"</span>, <span class="st">"^aucinf"</span>, <span class="st">"^aucint"</span>, <span class="st">"^auciv"</span>, <span class="st">"^auclast"</span>,</span>
+<span>    <span class="st">"^aumc"</span>, <span class="st">"^sparse_auc"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">exclude_nca_min.hl.r.squared</span><span class="op">(</span><span class="va">min.hl.r.squared</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -81,6 +87,15 @@
 <code>PKNCA.options("max.aucinf.pext")</code> if not provided).</p></dd>
 
 
+<dt id="arg-min-count">min_count<a class="anchor" aria-label="anchor" href="#arg-min-count"></a></dt>
+<dd><p>Minimum number of measured concentrations</p></dd>
+
+
+<dt id="arg-exclude-param-pattern">exclude_param_pattern<a class="anchor" aria-label="anchor" href="#arg-exclude-param-pattern"></a></dt>
+<dd><p>Character vector of regular expression patterns
+to exclude</p></dd>
+
+
 <dt id="arg-min-hl-r-squared">min.hl.r.squared<a class="anchor" aria-label="anchor" href="#arg-min-hl-r-squared"></a></dt>
 <dd><p>The minimum acceptable r-squared value for half-life
 (uses <code>PKNCA.options("min.hl.r.squared")</code> if not provided).</p></dd>
@@ -92,6 +107,8 @@
 <ul><li><p><code>exclude_nca_span.ratio()</code>: Exclude based on span.ratio</p></li>
 <li><p><code>exclude_nca_max.aucinf.pext()</code>: Exclude based on AUC percent extrapolated (both
 observed and predicted)</p></li>
+<li><p><code>exclude_nca_conc_count_measured()</code>: Exclude AUC measurements based on count of
+concentrations measured and not below the lower limit of quantification</p></li>
 <li><p><code>exclude_nca_min.hl.r.squared()</code>: Exclude based on half-life r-squared</p></li>
 </ul></div>
     <div class="section level2">

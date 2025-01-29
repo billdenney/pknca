@@ -225,10 +225,10 @@ automatically generates the units for each NCA parameter.</p>
 <span><span class="co"># Show a selection of the units generated</span></span>
 <span><span class="va">d_units_auto</span><span class="op">[</span><span class="va">d_units_auto</span><span class="op">$</span><span class="va">PPTESTCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cmax"</span>, <span class="st">"tmax"</span>, <span class="st">"auclast"</span>, <span class="st">"cl.obs"</span>, <span class="st">"vd.obs"</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;          PPORRESU PPTESTCD</span></span>
-<span><span class="co">#&gt; 22             hr     tmax</span></span>
-<span><span class="co">#&gt; 51          ng/mL     cmax</span></span>
-<span><span class="co">#&gt; 81       hr*ng/mL  auclast</span></span>
-<span><span class="co">#&gt; 117 mg/(hr*ng/mL)   cl.obs</span></span></code></pre></div>
+<span><span class="co">#&gt; 23             hr     tmax</span></span>
+<span><span class="co">#&gt; 52          ng/mL     cmax</span></span>
+<span><span class="co">#&gt; 82       hr*ng/mL  auclast</span></span>
+<span><span class="co">#&gt; 118 mg/(hr*ng/mL)   cl.obs</span></span></code></pre></div>
 <p>As you see above, the default units table has a column for the
 <code>PPTESTCD</code> indicating the parameter. And, the column
 <code>PPORRESU</code> indicates what the default units are.</p>
@@ -252,10 +252,10 @@ moles.</p>
 <span><span class="co"># Show a selection of the units generated</span></span>
 <span><span class="va">d_units_clean</span><span class="op">[</span><span class="va">d_units_clean</span><span class="op">$</span><span class="va">PPTESTCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cmax"</span>, <span class="st">"tmax"</span>, <span class="st">"auclast"</span>, <span class="st">"cl.obs"</span>, <span class="st">"vd.obs"</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;          PPORRESU PPTESTCD PPSTRESU conversion_factor</span></span>
-<span><span class="co">#&gt; 22             hr     tmax      day      4.166667e-02</span></span>
-<span><span class="co">#&gt; 51          ng/mL     cmax    ng/mL      1.000000e+00</span></span>
-<span><span class="co">#&gt; 81       hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span></span>
-<span><span class="co">#&gt; 117 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></span></code></pre></div>
+<span><span class="co">#&gt; 23             hr     tmax      day      4.166667e-02</span></span>
+<span><span class="co">#&gt; 52          ng/mL     cmax    ng/mL      1.000000e+00</span></span>
+<span><span class="co">#&gt; 82       hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span></span>
+<span><span class="co">#&gt; 118 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></span></code></pre></div>
 <p>Now, the units are much cleaner to look at.</p>
 <p>To do a conversion that is not possible directly with the
 <code>units</code> library, you can add the conversion factor manually
@@ -279,10 +279,10 @@ not specify that conversion; all conversions must be specified.</p>
 <span><span class="co"># Show a selection of the units generated</span></span>
 <span><span class="va">d_units_clean_manual</span><span class="op">[</span><span class="va">d_units_clean_manual</span><span class="op">$</span><span class="va">PPTESTCD</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cmax"</span>, <span class="st">"tmax"</span>, <span class="st">"auclast"</span>, <span class="st">"cl.obs"</span>, <span class="st">"vd.obs"</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;          PPORRESU PPTESTCD PPSTRESU conversion_factor</span></span>
-<span><span class="co">#&gt; 22             hr     tmax      day      4.166667e-02</span></span>
-<span><span class="co">#&gt; 51          ng/mL     cmax   nmol/L      8.130081e+00</span></span>
-<span><span class="co">#&gt; 81       hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span></span>
-<span><span class="co">#&gt; 117 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></span></code></pre></div>
+<span><span class="co">#&gt; 23             hr     tmax      day      4.166667e-02</span></span>
+<span><span class="co">#&gt; 52          ng/mL     cmax   nmol/L      8.130081e+00</span></span>
+<span><span class="co">#&gt; 82       hr*ng/mL  auclast hr*ng/mL      1.000000e+00</span></span>
+<span><span class="co">#&gt; 118 mg/(hr*ng/mL)   cl.obs     L/hr      1.000000e+03</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="how-do-i-add-different-unit-conversions-for-different-analytes">How do I add different unit conversions for different analytes?<a class="anchor" aria-label="anchor" href="#how-do-i-add-different-unit-conversions-for-different-analytes"></a>
