@@ -128,3 +128,10 @@ getGroups.PKNCAresults <- function(object,
     }
   data[, grpnames, drop=FALSE]
 }
+
+#' @describeIn group_vars.PKNCAconc Get group_vars for a PKNCAresults object
+#'   from the PKNCAconc object within
+#' @exportS3Method dplyr::group_vars
+group_vars.PKNCAresults <- function(x) {
+  group_vars.PKNCAconc(as_PKNCAconc(x))
+}
