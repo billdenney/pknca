@@ -50,7 +50,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Get grouping variables for a PKNCA object</h1>
-      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/main/R/class-PKNCAconc.R" class="external-link"><code>R/class-PKNCAconc.R</code></a>, <a href="https://github.com/billdenney/pknca/blob/main/R/class-PKNCAdose.R" class="external-link"><code>R/class-PKNCAdose.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/billdenney/pknca/blob/main/R/class-PKNCAconc.R" class="external-link"><code>R/class-PKNCAconc.R</code></a>, <a href="https://github.com/billdenney/pknca/blob/main/R/class-PKNCAdata.R" class="external-link"><code>R/class-PKNCAdata.R</code></a>, <a href="https://github.com/billdenney/pknca/blob/main/R/class-PKNCAdose.R" class="external-link"><code>R/class-PKNCAdose.R</code></a>, and 1 more</small>
       <div class="d-none name"><code>group_vars.PKNCAconc.Rd</code></div>
     </div>
 
@@ -63,7 +63,13 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'PKNCAconc'</span></span>
 <span><span class="fu">group_vars</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for class 'PKNCAdata'</span></span>
+<span><span class="fu">group_vars</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'PKNCAdose'</span></span>
+<span><span class="fu">group_vars</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'PKNCAresults'</span></span>
 <span><span class="fu">group_vars</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,7 +88,11 @@
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
 
-<ul><li><p><code>group_vars(PKNCAdose)</code>: Get group_vars for a PKNCAdose object</p></li>
+<ul><li><p><code>group_vars(PKNCAdata)</code>: Get group_vars for a PKNCAdata object
+from the PKNCAconc object within</p></li>
+<li><p><code>group_vars(PKNCAdose)</code>: Get group_vars for a PKNCAdose object</p></li>
+<li><p><code>group_vars(PKNCAresults)</code>: Get group_vars for a PKNCAresults object
+from the PKNCAconc object within</p></li>
 </ul></div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
