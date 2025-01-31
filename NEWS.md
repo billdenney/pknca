@@ -20,6 +20,8 @@ the dosing including dose amount and route.
 
 * `PKNCAconc()` and `PKNCAdose()` can now accept unit specifications as either
   column names or units to use (#336).
+* New default PKNCA impute start methods for C1 and IV bolus logslope to add for 
+  intervals without a start concentration
 * PKNCA options can now use `tmax` as a reference for BLQ handling by using new
   names in the `conc.blq` argument (`before.tmax`,`after.tmax`)
 * A new parameter `count_conc_measured` was added to enable quality checks,
