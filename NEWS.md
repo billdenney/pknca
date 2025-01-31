@@ -29,6 +29,7 @@ the dosing including dose amount and route.
   allow `NA` values. If all values are `NA`, then no inclusion or exclusion is
   applied (the interval is treated as-is, like the argument had not been given).
   If some values are `NA` for the interval, those are treated as `FALSE`.
+* `group_vars()` methods were added for `PKNCAdata` and `PKNCAresults` objects.
 
 # Minor changes (unlikely to affect PKNCA use)
 

@@ -358,20 +358,6 @@ test_that("intervals may be a tibble", {
   )
 })
 
-test_that("getGroups works", {
-  # Check that it works with grouping [contains only the grouping column(s)]
-  o_conc_group <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
-  data_group <- as.data.frame(datasets::Theoph)
-  expected_group <- data.frame(Subject = data_group$Subject)
-
-  expect_equal(getGroups.PKNCAdata(o_conc_group), expected_group)
-
-  # Check that it works without groupings as expected [empty]
-  o_conc_nongroup <- PKNCAconc(as.data.frame(datasets::Theoph)[datasets::Theoph$Subject == 1,], conc~Time)
-
-  expect_equal(names(getGroups.PKNCAdata(o_conc_nongroup)), character(0))
-})
-
 test_that("PKNCAdata units (#336)", {
   # Typical use
   d_conc <- data.frame(conc = 1, time = 0, concu_x = "A", timeu_x = "B", amountu_x = "C")
@@ -411,4 +397,33 @@ test_that("PKNCAdata units (#336)", {
     PKNCAdata(o_conc, o_dose),
     regexp = "Only one unit may be provided at a time: A, C"
   )
+})
+
+test_that("getGroups works", {
+  # Check that it works with grouping [contains only the grouping column(s)]
+  o_conc_group <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+  data_group <- as.data.frame(datasets::Theoph)
+  expected_group <- data.frame(Subject = data_group$Subject)
+  o_data_group <- PKNCAdata(o_conc_group, intervals = data.frame(start = 0, end = 1, cmax = TRUE))
+  expect_equal(getGroups(o_data_group), expected_group)
+
+  # Check that it works without groupings as expected [empty]
+  o_conc_nongroup <- PKNCAconc(as.data.frame(datasets::Theoph)[datasets::Theoph$Subject == 1,], conc~Time)
+  o_data_nogroup <- PKNCAdata(o_conc_nongroup, intervals = data.frame(start = 0, end = 1, cmax = TRUE))
+
+  # It should be an empty data.frame with 11 rows
+  expect_equal(getGroups(o_data_nogroup), data.frame(A = 1:11)[, -1])
+})
+
+test_that("group_vars.PKNCAdata", {
+  o_conc_group <- PKNCAconc(as.data.frame(datasets::Theoph), conc~Time|Subject)
+  o_data_group <- PKNCAdata(o_conc_group, intervals = data.frame(start = 0, end = 1, cmax = TRUE))
+
+  expect_equal(dplyr::group_vars(o_data_group), "Subject")
+
+  # Check that it works without groupings as expected [empty]
+  o_conc_nongroup <- PKNCAconc(as.data.frame(datasets::Theoph)[datasets::Theoph$Subject == 1,], conc~Time)
+  o_data_nogroup <- PKNCAdata(o_conc_nongroup, intervals = data.frame(start = 0, end = 1, cmax = TRUE))
+
+  expect_equal(dplyr::group_vars(o_data_nogroup), character(0))
 })

@@ -275,3 +275,10 @@ summary.PKNCAdata <- function(object, ...) {
 getGroups.PKNCAdata <- function(object, ...) {
   getGroups(as_PKNCAconc(object), ...)
 }
+
+#' @describeIn group_vars.PKNCAconc Get group_vars for a PKNCAdata object
+#'   from the PKNCAconc object within
+#' @exportS3Method dplyr::group_vars
+group_vars.PKNCAdata <- function(x) {
+  group_vars.PKNCAconc(as_PKNCAconc(x))
+}
