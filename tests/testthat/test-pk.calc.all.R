@@ -743,3 +743,18 @@ test_that("dose is calculable", {
   expect_equal(as.data.frame(myresult)$PPORRES, rep(2, 2))
   expect_equal(as.data.frame(myresult)$PPTESTCD, rep("totdose", 2))
 })
+
+test_that("do not give rbind error when interval columns have attributes (#381)", {
+  o_conc <- PKNCAconc(data = data.frame(conc = 1, time = 0), conc~time)
+  d_interval <- data.frame(start = 0, end = Inf, cmax = TRUE)
+
+  d_interval <- data.frame(start = 0, end = Inf, cmax = TRUE, tmax = TRUE)
+  attr(d_interval$start, "label") <- "start"
+  o_data <- PKNCAdata(o_conc, intervals = d_interval)
+  suppressMessages(o_nca <- pk.nca(o_data))
+  # interval attributes are preserved
+  expect_equal(
+    attributes(as.data.frame(o_nca)$start),
+    list(label = "start")
+  )
+})

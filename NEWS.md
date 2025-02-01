@@ -30,6 +30,8 @@ the dosing including dose amount and route.
   applied (the interval is treated as-is, like the argument had not been given).
   If some values are `NA` for the interval, those are treated as `FALSE`.
 * `group_vars()` methods were added for `PKNCAdata` and `PKNCAresults` objects.
+* If intervals have attributes on the columns, there will no longer be an error
+  during parameter calculation, and the attributes are preserved (#381)
 
 # Minor changes (unlikely to affect PKNCA use)
 
