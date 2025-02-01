@@ -60,9 +60,9 @@ pk.calc.aucint <- function(conc, time,
   interval <- assert_intervaltime_single(interval = interval, start = start, end = end)
   missing_times <-
     if (is.infinite(interval[2])) {
-      setdiff(c(interval[1], time.dose), data$time)
+      setdiff(c(interval[1], time.dose), c(data$time, NA))
     } else {
-      setdiff(c(interval, time.dose), data$time)
+      setdiff(c(interval, time.dose), c(data$time, NA))
     }
   # Handle the potential double-calculation (before/after tlast) with AUCinf
   conc_clast <- NULL
