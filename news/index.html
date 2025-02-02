@@ -72,6 +72,7 @@
 <li>The <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> arguments of <code>include_half.life</code> and <code>exclude_half.life</code> now allow <code>NA</code> values. If all values are <code>NA</code>, then no inclusion or exclusion is applied (the interval is treated as-is, like the argument had not been given). If some values are <code>NA</code> for the interval, those are treated as <code>FALSE</code>.</li>
 <li>
 <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars()</a></code> methods were added for <code>PKNCAdata</code> and <code>PKNCAresults</code> objects.</li>
+<li>If intervals have attributes on the columns, there will no longer be an error during parameter calculation, and the attributes are preserved (<a href="https://github.com/billdenney/pknca/issues/381" class="external-link">#381</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
