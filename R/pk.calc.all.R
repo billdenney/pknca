@@ -281,15 +281,18 @@ pk.nca.intervals <- function(data_conc, data_dose, data_intervals, sparse,
           }
         )
       # Add all the new data into the output
-      ret <-
-        rbind(
-          ret,
-          cbind(
-            current_interval[, c("start", "end", options$keep_interval_cols)],
-            calculated_interval,
-            row.names=NULL
-          )
+      new_ret <-
+        cbind(
+          # The rep(1, ...) is to fix #381 where attributes on an interval
+          # column cause cbind to fail
+          current_interval[
+            rep(1, nrow(calculated_interval)),
+            c("start", "end", options$keep_interval_cols)
+          ],
+          calculated_interval,
+          row.names=NULL
         )
+      ret <- rbind(ret, new_ret)
     }
   }
   ret
