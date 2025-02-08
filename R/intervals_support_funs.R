@@ -33,7 +33,7 @@
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_remove_impute function
-#' o_data <- interval_remove_impute(data = o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = list(analyte = "Analyte1"))
+#' o_data <- interval_remove_impute(data = o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
 #'
 #' # Print updated intervals
 #' print("Updated intervals:")
@@ -90,25 +90,27 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
     return(data)
   }
 
-  # Identify the targeted intervals to which the action is applied
-  mask_target_rows <- intervals %>%
-    mutate(
-      is.in.groups = if (!is.null(target_groups)) rowSums(across(all_of(names(target_groups)), ~ . %in% target_groups)) == length(target_groups) else TRUE,
-      is.in.params = rowSums(across(any_of(target_params), ~ . == TRUE)) > 0,
-      is.in.impute = grepl(
-        pattern = paste0(".*(", paste0(target_impute, collapse = ")|("), ").*"),
-        .data[[impute_col]]
-      ),
-      target_rows = is.in.groups & is.in.params & is.in.impute
-    ) %>%
-    pull(target_rows)
+  # Identify the targeted intervals based on the groups
+  if (!is.null(target_groups)) {
+    target_intervals <- inner_join(intervals, target_groups, by = names(target_groups))
+  } else {
+    target_intervals <- intervals
+  }
+  
+  # Identify the targeted intervals based on the impute method and parameters
+  target_intervals <- target_intervals %>%
+    filter(rowSums(across(any_of(target_params), ~ . == TRUE)) > 0) %>%
+    filter(grepl(
+      pattern = paste0(".*(", paste0(target_impute, collapse = ")|("), ").*"),
+      .data[[impute_col]]
+    ))
 
-  # Create the new version intervals for the target parameters
-  new_intervals_without_impute <- intervals %>%
-    filter(mask_target_rows) %>%
+  # Create the new version intervals only for the target parameters
+  new_intervals_without_impute <- target_intervals %>%
     mutate(across(any_of(param_cols), ~FALSE)) %>%
     mutate(across(any_of(target_params), ~TRUE)) %>%
     rowwise() %>%
+    # Eliminate the target impute method from the impute column
     mutate(!!impute_col := paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
       collapse = ","
     )) %>%
@@ -116,11 +118,10 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
     ungroup() %>%
     as.data.frame()
 
-  # Make parameters FALSE in target intervals
-  intervals[mask_target_rows, target_params] <- FALSE
-
-  # Combine and remove intervals where all logical parameter columns are FALSE
-  intervals <- rbind(intervals, new_intervals_without_impute) %>%
+  # Make parameters FALSE in original intervals and join the new ones
+  intervals <- intervals %>%
+    anti_join(target_intervals, by = names(intervals)) %>%
+    bind_rows(new_intervals_without_impute) %>%
     filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
 
   # Depending on the input return the corresponding updated object
