@@ -179,7 +179,7 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 #' print(o_data$intervals)
 #'
 #' @export
-interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL) {
+interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE) {
   # Validate the input
   if (missing(data) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
@@ -248,8 +248,14 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
     rowwise() %>%
     mutate(!!impute_col := {
       impute_methods <- unlist(strsplit(ifelse(is.na(.data[[impute_col]]), "", .data[[impute_col]]), ","))
-      impute_methods <- append(impute_methods, target_impute, after)
-      paste(unique(impute_methods[impute_methods != ""]), collapse = ",")
+      if (!allow_duplication && target_impute %in% impute_methods) {
+        # If duplication is not allowed, do not add the impute method if it already exists
+        .data[[impute_col]]
+      } else {
+        # Add the impute method after the specified position
+        impute_methods <- append(impute_methods, target_impute, after)
+        paste(impute_methods[impute_methods != ""], collapse = ",")
+      }
     }) %>%
     ungroup() %>%
     as.data.frame()
