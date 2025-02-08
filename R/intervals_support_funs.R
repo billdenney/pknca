@@ -2,6 +2,7 @@
 #'
 #' @inheritParams interval_add_impute
 #' @param target_impute A character string specifying the imputation method to be removed.
+#' @param target_groups A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
 #' @return A modified PKNCAdata object with the specified imputation methods removed from the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
@@ -45,7 +46,7 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   if (missing(data) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
   }
-
+  
   if (is.data.frame(data)) {
     intervals <- data
   } else if ("intervals" %in% names(data) && "PKNCAdata" %in% class(data)) {
@@ -53,15 +54,15 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   } else {
     stop("'data' must be a PKNCAdata object with 'intervals' and 'data' components or a data frame of intervals.")
   }
-
+  
   if (!is.character(target_impute)) {
     stop("'target_impute' must be a character string.")
   }
-
+  
   # Get all parameter column names in the PKNCAdata object
   all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
   param_cols <- intersect(names(intervals), all_param_options)
-
+  
   # Handle target_params
   if (is.null(target_params)) {
     # Take all parameter columns present with at least one TRUE value
@@ -74,7 +75,7 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
       target_params <- intersect(target_params, param_cols)
     }
   }
-
+  
   # Determine the name of the impute column
   impute_col <- if (!is.null(impute_column)) {
     if (!impute_column %in% colnames(intervals)) {
@@ -86,10 +87,10 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   } else if ("impute" %in% colnames(intervals)) {
     "impute"
   } else {
-    warning("The 'intervals' object does not contain an impute default/custom column. No imputation to remove.")
+    warning("The 'intervals' object does not contain the impute default/custom column. No imputation to remove.")
     return(data)
   }
-
+  
   # Identify the targeted intervals based on the groups
   if (!is.null(target_groups)) {
     target_intervals <- inner_join(intervals, target_groups, by = names(target_groups))
@@ -104,7 +105,7 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
       pattern = paste0(".*(", paste0(target_impute, collapse = ")|("), ").*"),
       .data[[impute_col]]
     ))
-
+  
   # Create the new version intervals only for the target parameters
   new_intervals_without_impute <- target_intervals %>%
     mutate(across(any_of(param_cols), ~FALSE)) %>%
@@ -112,18 +113,18 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
     rowwise() %>%
     # Eliminate the target impute method from the impute column
     mutate(!!impute_col := paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
-      collapse = ","
+                                  collapse = ","
     )) %>%
     mutate(!!impute_col := ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]])) %>%
     ungroup() %>%
     as.data.frame()
-
+  
   # Make parameters FALSE in original intervals and join the new ones
   intervals <- intervals %>%
     anti_join(target_intervals, by = names(intervals)) %>%
     bind_rows(new_intervals_without_impute) %>%
     filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
-
+  
   # Depending on the input return the corresponding updated object
   if (is.data.frame(data)) {
     intervals
@@ -135,11 +136,12 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 
 #' Add specified imputation methods to the intervals in a PKNCAdata object.
 #'
-#' @param data A PKNCAdata object containing the intervals and data components.
+#' @param data A PKNCAdata object containing the intervals and data components, or a data frame of intervals.
 #' @param target_impute A character string specifying the imputation method to be added.
 #' @param after Numeric value specifying the position after which the imputation method should be added (optional). First is 0, last Inf. If missing, the imputation method is added at the end (Inf).
 #' @param target_params A character vector specifying the parameters to be targeted (optional). If missing, all TRUE in the intervals are taken.
-#' @param target_groups A named list specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
+#' @param target_groups A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
+#' @param impute_column A character string specifying the name of the impute column (optional). If missing, the default name "impute" is used.
 #' @return A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
@@ -170,45 +172,49 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_add_impute function
-#' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = list(ANALYTE = "Analyte1", ROUTE = "intravascular"))
+#' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(ANALYTE = "Analyte1", ROUTE = "intravascular"))
 #'
 #' # Print updated intervals
 #' print("Updated intervals:")
 #' print(o_data$intervals)
 #'
 #' @export
-interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL) {
+interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL) {
   # Validate the input
   if (missing(data) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
   }
-
-  if (!("intervals" %in% names(data)) || !("PKNCAdata" %in% class(data))) {
-    stop("'data' object must be a PKNCAdata object with 'intervals' and 'data' components.")
+  
+  if (is.data.frame(data)) {
+    intervals <- data
+  } else if ("intervals" %in% names(data) && "PKNCAdata" %in% class(data)) {
+    intervals <- data$intervals
+  } else {
+    stop("'data' must be a PKNCAdata object with 'intervals' and 'data' components or a data frame of intervals.")
   }
-
+  
   if (!is.character(target_impute)) {
     stop("'target_impute' must be a character string.")
   }
-
+  
   # Get all parameter column names in the PKNCAdata object
   all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
-  logical_cols <- names(which(colSums(data$intervals[sapply(data$intervals, is.logical)]) > 1))
+  logical_cols <- names(which(colSums(intervals[sapply(intervals, is.logical)]) > 1))
   param_cols <- intersect(logical_cols, all_param_options)
-
+  
   # Handle target_params
   if (is.null(target_params)) {
-    # Take all logical columns in data$intervals that are known parameters
+    # Take all logical columns in intervals that are known parameters
     target_params <- param_cols
   } else {
-    # Check that all target_params are logical columns in data$intervals and known parameters
+    # Check that all target_params are logical columns in intervals and known parameters
     missing_params <- setdiff(target_params, logical_cols)
     if (length(missing_params) > 0) {
       stop("The following target_params are not interval columns and/or known PKNCA parameters: ", paste(missing_params, collapse = ", "))
       target_params <- intersect(target_params, param_cols)
     }
   }
-
+  
   # Determine the name of the impute column
   impute_col <- if (!is.null(impute_column)) {
     if (!impute_column %in% colnames(intervals)) {
@@ -223,19 +229,20 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
     intervals$impute <- NA_character_
     "impute"
   }
-
-  # Identify the targeted intervals to which the action is applied
-  mask_target_rows <- data$intervals %>%
-    mutate(
-      is.in.groups = if (!is.null(target_groups)) rowSums(across(all_of(names(target_groups)), ~ . %in% target_groups)) == length(target_groups) else TRUE,
-      is.in.params = rowSums(across(any_of(target_params), ~ . == TRUE)) > 0,
-      target_rows = is.in.groups & is.in.params
-    ) %>%
-    pull(target_rows)
-
+  
+  # Identify the targeted intervals based on the groups
+  if (!is.null(target_groups)) {
+    target_intervals <- inner_join(intervals, target_groups, by = names(target_groups))
+  } else {
+    target_intervals <- intervals
+  }
+  
+  # Identify the targeted intervals based on the parameters
+  target_intervals <- target_intervals %>%
+    filter(rowSums(across(any_of(target_params), ~ . == TRUE)) > 0)
+  
   # Add the imputation method to the targeted intervals
-  new_intervals_with_impute <- data$intervals %>%
-    filter(mask_target_rows) %>%
+  new_intervals_with_impute <- target_intervals %>%
     mutate(across(any_of(param_cols), ~FALSE)) %>%
     mutate(across(any_of(target_params), ~TRUE)) %>%
     rowwise() %>%
@@ -244,14 +251,20 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
       impute_methods <- append(impute_methods, target_impute, after)
       paste(unique(impute_methods[impute_methods != ""]), collapse = ",")
     }) %>%
+    ungroup() %>%
     as.data.frame()
-
-    # Set to FALSE all target parameters in the target intervals
-    data$intervals[mask_target_rows, target_params] <- FALSE
-
-    # Combine and remove intervals where all logical parameter columns are FALSE
-    data$intervals <- rbind(data$intervals, new_intervals_with_impute) %>%
-      filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
-
-  return(data)
+  
+  # Make parameters FALSE in original intervals and join the new ones
+  intervals <- intervals %>%
+    anti_join(target_intervals, by = names(intervals)) %>%
+    bind_rows(new_intervals_with_impute) %>%
+    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
+  
+  # Depending on the input return the corresponding updated object
+  if (is.data.frame(data)) {
+    intervals
+  } else {
+    data$intervals <- intervals
+    data
+  }
 }
