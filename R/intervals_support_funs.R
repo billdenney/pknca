@@ -1,17 +1,13 @@
-# Load necessary library
-library(dplyr)
-
 #' Remove specified imputation methods from the intervals in a PKNCAdata object.
 #'
-#' @param data A PKNCAdata object containing the intervals and data components.
+#' @inheritParams interval_add_impute
 #' @param target_impute A character string specifying the imputation method to be removed.
-#' @param target_params A character vector specifying the parameters to be targeted (optional). If missing, all TRUE in the intervals are taken.
-#' @param target_groups A named list specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
 #' @return A modified PKNCAdata object with the specified imputation methods removed from the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
 #'   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
 #'   time = rep(0:5, 2),
+#'   ID = rep(1:2, each = 6),
 #'   analyte = rep(c("Analyte1", "Analyte2"), each = 6),
 #'   include_hl = c(FALSE, NA, TRUE, TRUE, TRUE, TRUE, FALSE, NA, TRUE, TRUE, TRUE, TRUE)
 #' )
@@ -19,26 +15,25 @@ library(dplyr)
 #' d_dose <- data.frame(
 #'   dose = c(100, 200),
 #'   time = c(0, 0),
-#'   treatment = c("A", "B"),
 #'   ID = c(1, 2)
 #' )
 #'
-#' o_conc <- PKNCAconc(d_conc, conc ~ time | analyte, include_half.life = "include_hl")
-#' o_dose <- PKNCAdose(d_dose, dose ~ time | treatment + ID)
+#' o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte)
+#' o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 #'
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
-#'   end = c(24, 48, Inf),
+#'   end = c(3, 5, Inf),
 #'   half.life = c(TRUE, FALSE, TRUE),
+#'   cmax = c(TRUE, TRUE, TRUE),
 #'   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
-#'   ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
-#'   ROUTE = c("intravascular", "oral", "intravascular")
+#'   analyte = c("Analyte1", "Analyte2", "Analyte1")
 #' )
 #'
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_remove_impute function
-#' o_data <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = list(ANALYTE = "Analyte1", ROUTE = "intravascular"))
+#' o_data <- interval_remove_impute(data = o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = list(analyte = "Analyte1"))
 #'
 #' # Print updated intervals
 #' print("Updated intervals:")
@@ -69,10 +64,10 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 
   # Handle target_params
   if (is.null(target_params)) {
-    # Take all logical columns in intervals that are known parameters
-    target_params <- param_cols
+    # Take all parameter columns present with at least one TRUE value
+    target_params <- param_cols[colSums(intervals[param_cols]) > 0]
   } else {
-    # Check that all target_params are logical columns in intervals and known parameters
+    # Check that all target_params are present in the intervals
     missing_params <- setdiff(target_params, param_cols)
     if (length(missing_params) > 0) {
       stop("The following target_params are not interval columns and/or known PKNCA parameters: ", paste(missing_params, collapse = ", "))
@@ -91,7 +86,8 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   } else if ("impute" %in% colnames(intervals)) {
     "impute"
   } else {
-    stop("The 'intervals' object must contain an impute column either defined in the PKNCAdata object or called `impute`.")
+    warning("The 'intervals' object does not contain an impute default/custom column. No imputation to remove.")
+    return(data)
   }
 
   # Identify the targeted intervals to which the action is applied
@@ -127,15 +123,15 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   intervals <- rbind(intervals, new_intervals_without_impute) %>%
     filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
 
+  # Depending on the input return the corresponding updated object
   if (is.data.frame(data)) {
-    return(intervals)
+    intervals
   } else {
     data$intervals <- intervals
-    return(data)
+    data
   }
 }
 
-# Now create an alternative function that adds imputations to the intervals
 #' Add specified imputation methods to the intervals in a PKNCAdata object.
 #'
 #' @param data A PKNCAdata object containing the intervals and data components.
@@ -155,7 +151,6 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 #' d_dose <- data.frame(
 #'   dose = c(100, 200),
 #'   time = c(0, 0),
-#'   treatment = c("A", "B"),
 #'   ID = c(1, 2)
 #' )
 #'
@@ -224,7 +219,8 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
   } else if ("impute" %in% colnames(intervals)) {
     "impute"
   } else {
-    stop("The 'data' object must contain an impute column either defined as PKNCAdata$impute or otherwise the intervals default column name `impute`.")
+    intervals$impute <- NA_character_
+    "impute"
   }
 
   # Identify the targeted intervals to which the action is applied
