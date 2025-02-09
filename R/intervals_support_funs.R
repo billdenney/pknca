@@ -24,8 +24,8 @@
 #'   ID = c(1, 2)
 #' )
 #'
-#' o_conc <- PKNCAconc(d_conc, conc ~ time | analyte, include_half.life = "include_hl")
-#' o_dose <- PKNCAdose(d_dose, dose ~ time | treatment + ID)
+#' o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte)
+#' o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 #'
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
@@ -39,7 +39,7 @@
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_add_impute function
-#' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(ANALYTE = "Analyte1", ROUTE = "intravascular"))
+#' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
 #' @export
 interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
   if (missing(data) || missing(target_impute)) {
