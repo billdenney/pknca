@@ -40,10 +40,8 @@ test_that("interval_remove_impute throws an error for non-character target_imput
 })
 
 test_that("interval_remove_impute throws an error when input data is a non PKNCAdata object or has no intervals", {
-  expect_error(interval_remove_impute(o_data$conc, target_impute = "start_conc0"), "'data' must be a PKNCAdata object with 'intervals' and 'data' components or a data frame of intervals.")
-  o_data_no_intervals <- PKNCAdata(o_conc, o_dose)
-  o_data_no_intervals$intervals <- NULL
-  expect_error(interval_remove_impute(o_data_no_intervals, target_impute = "start_conc0"), "'data' must be a PKNCAdata object with 'intervals' and 'data' components or a data frame of intervals.")
+  expect_error(interval_remove_impute(o_data$conc, target_impute = "start_conc0"), "The 'data' object must be a PKNCAdata object or a data frame")
+  expect_no_error(interval_remove_impute(data = o_data, target_impute = "start_conc0"))
 })
 
 test_that("interval_remove_impute throws an error for unknown target_params", {
@@ -80,7 +78,7 @@ test_that("interval_remove_impute handles missing impute column by not modifying
   result <- interval_remove_impute(o_data_no_impute, target_impute = "start_conc0")
   expect_equal(result, o_data_no_impute)
   expect_warning(interval_remove_impute(o_data_no_impute, target_impute = "start_conc0"),
-                 "No default impute column identified.  No impute methods to remove. If there is an impute column, please specify it in argument 'impute_column'")
+                 "No default impute column identified. No impute methods to remove. If there is an impute column, please specify it in argument 'impute_column'")
 })
 
 # Test intervals for expected outputs with different inputs
@@ -174,10 +172,8 @@ test_that("interval_add_impute throws an error for non-character target_impute",
 })
 
 test_that("interval_add_impute throws an error when input data is a non PKNCAdata object or has no intervals", {
-  expect_error(interval_add_impute(o_data$conc, target_impute = "start_conc0"), "'data' must be a PKNCAdata object with 'intervals' and 'data' components or a data frame of intervals.")
-  o_data_no_intervals <- PKNCAdata(o_conc, o_dose)
-  o_data_no_intervals$intervals <- NULL
-  expect_error(interval_add_impute(o_data_no_intervals, target_impute = "start_conc0"), "'data' must be a PKNCAdata object with 'intervals' and 'data' components or a data frame of intervals.")
+  expect_error(interval_add_impute(o_data$conc, target_impute = "start_conc0"), "The 'data' object must be a PKNCAdata object or a data frame")
+  expect_no_error(interval_add_impute(data = o_data, target_impute = "start_conc0"))
 })
 
 test_that("interval_add_impute throws an error for unknown target_params", {
@@ -251,7 +247,7 @@ test_that("interval_add_impute handles allow_duplication correctly", {
   
   # When allow_duplication is FALSE, intervals with already the same impute method do not add it
   result1 <- interval_add_impute(o_data, target_impute = "start_conc0", allow_duplication = FALSE)
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
+  expect_equal(result1$intervals %>% select(ANALYTE, half.life, cmax, impute),
                data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
