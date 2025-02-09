@@ -3,6 +3,8 @@
 #' @inheritParams interval_add_impute
 #' @param target_impute A character string specifying the imputation method to be removed.
 #' @param target_groups A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
+#' @param impute_column A character string specifying the name of the impute column (optional). If missing, the default name "impute" is used.
+#' @param new_rows_after_original A boolean specifying whether the new rows should be added after the original rows (optional). Default is TRUE.
 #' @return A modified PKNCAdata object with the specified imputation methods removed from the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
@@ -36,17 +38,14 @@
 #' # Apply interval_remove_impute function
 #' o_data <- interval_remove_impute(data = o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
 #'
-#' # Print updated intervals
-#' print("Updated intervals:")
-#' print(o_data$intervals)
-#'
 #' @export
-interval_remove_impute <- function(data, target_impute, target_params = NULL, target_groups = NULL, impute_column = NULL) {
+interval_remove_impute <- function(data, target_impute, target_params = NULL, target_groups = NULL, impute_column = NULL, new_rows_after_original = TRUE) {
   # Validate the input
   if (missing(data) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
   }
   
+  # Determine if data is a PKNCAdata object or a data frame of intervals
   if (is.data.frame(data)) {
     intervals <- data
   } else if ("intervals" %in% names(data) && "PKNCAdata" %in% class(data)) {
@@ -58,6 +57,9 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   if (!is.character(target_impute)) {
     stop("'target_impute' must be a character string.")
   }
+  
+  # Add an index column to preserve the original order
+  intervals <- intervals %>% mutate(index = row_number())
   
   # Get all parameter column names in the PKNCAdata object
   all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
@@ -83,11 +85,11 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
     }
     impute_column
   } else if ("PKNCAdata" %in% class(data) && !is.na(data$impute)) {
-    intervals$impute
+    data$impute
   } else if ("impute" %in% colnames(intervals)) {
     "impute"
   } else {
-    warning("The 'intervals' object does not contain the impute default/custom column. No imputation to remove.")
+    warning("No default impute column identified.  No impute methods to remove. If there is an impute column, please specify it in argument 'impute_column'")
     return(data)
   }
   
@@ -117,13 +119,22 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
     )) %>%
     mutate(!!impute_col := ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]])) %>%
     ungroup() %>%
+    # Make sure the class of the impute_col remains the same
+    mutate(!!impute_col := as.character(.data[[impute_col]])) %>%
     as.data.frame()
+  
+  # Eliminate from the old intervals the target parameters
+  old_intervals_with_impute <- target_intervals %>%
+    mutate(across(any_of(target_params), ~FALSE)) %>%
+    mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index))
   
   # Make parameters FALSE in original intervals and join the new ones
   intervals <- intervals %>%
     anti_join(target_intervals, by = names(intervals)) %>%
-    bind_rows(new_intervals_without_impute) %>%
-    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
+    bind_rows(old_intervals_with_impute, new_intervals_without_impute) %>%
+    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0) %>%
+    arrange(index) %>%
+    select(-index)
   
   # Depending on the input return the corresponding updated object
   if (is.data.frame(data)) {
@@ -142,11 +153,14 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 #' @param target_params A character vector specifying the parameters to be targeted (optional). If missing, all TRUE in the intervals are taken.
 #' @param target_groups A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
 #' @param impute_column A character string specifying the name of the impute column (optional). If missing, the default name "impute" is used.
+#' @param allow_duplication A boolean specifying whether to allow creating duplicates of the target_impute in the impute column (optional). Default is TRUE.
+#' @param new_rows_after_original A boolean specifying whether the new rows should be added after the original rows (optional). Default is TRUE.
 #' @return A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
 #'   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
 #'   time = rep(0:5, 2),
+#'   ID = rep(1:2, each = 6),
 #'   analyte = rep(c("Analyte1", "Analyte2"), each = 6),
 #'   include_hl = c(FALSE, NA, TRUE, TRUE, TRUE, TRUE, FALSE, NA, TRUE, TRUE, TRUE, TRUE)
 #' )
@@ -162,11 +176,11 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 #'
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
-#'   end = c(24, 48, Inf),
+#'   end = c(3, 5, Inf),
 #'   half.life = c(TRUE, FALSE, TRUE),
+#'   cmax = c(TRUE, TRUE, TRUE),
 #'   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
-#'   ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
-#'   ROUTE = c("intravascular", "oral", "intravascular")
+#'   analyte = c("Analyte1", "Analyte2", "Analyte1")
 #' )
 #'
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
@@ -174,17 +188,14 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
 #' # Apply interval_add_impute function
 #' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(ANALYTE = "Analyte1", ROUTE = "intravascular"))
 #'
-#' # Print updated intervals
-#' print("Updated intervals:")
-#' print(o_data$intervals)
-#'
 #' @export
-interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE) {
+interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
   # Validate the input
   if (missing(data) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
   }
   
+  # Determine if data is a PKNCAdata object or a data frame of intervals
   if (is.data.frame(data)) {
     intervals <- data
   } else if ("intervals" %in% names(data) && "PKNCAdata" %in% class(data)) {
@@ -196,6 +207,9 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
   if (!is.character(target_impute)) {
     stop("'target_impute' must be a character string.")
   }
+  
+  # Add an index column to preserve the original order
+  intervals <- intervals %>% mutate(index = row_number())
   
   # Get all parameter column names in the PKNCAdata object
   all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
@@ -260,11 +274,18 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
     ungroup() %>%
     as.data.frame()
   
+  # Eliminate from the old intervals the target parameters
+  old_intervals_without_impute <- target_intervals %>%
+    mutate(across(any_of(target_params), ~FALSE)) %>%
+    mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index))
+  
   # Make parameters FALSE in original intervals and join the new ones
   intervals <- intervals %>%
     anti_join(target_intervals, by = names(intervals)) %>%
-    bind_rows(new_intervals_with_impute) %>%
-    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0)
+    bind_rows(old_intervals_without_impute, new_intervals_with_impute) %>%
+    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0) %>%
+    arrange(index) %>%
+    select(-index)
   
   # Depending on the input return the corresponding updated object
   if (is.data.frame(data)) {
