@@ -59,7 +59,7 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   }
   
   # Add an index column to preserve the original order
-  intervals <- intervals %>% mutate(index = row_number())
+  intervals <- dplyr::mutate(intervals, index = dplyr::row_number())
   
   # Get all parameter column names in the PKNCAdata object
   all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
@@ -95,46 +95,46 @@ interval_remove_impute <- function(data, target_impute, target_params = NULL, ta
   
   # Identify the targeted intervals based on the groups
   if (!is.null(target_groups)) {
-    target_intervals <- inner_join(intervals, target_groups, by = names(target_groups))
+    target_intervals <- dplyr::inner_join(intervals, target_groups, by = names(target_groups))
   } else {
     target_intervals <- intervals
   }
   
   # Identify the targeted intervals based on the impute method and parameters
   target_intervals <- target_intervals %>%
-    filter(rowSums(across(any_of(target_params), ~ . == TRUE)) > 0) %>%
-    filter(grepl(
+    dplyr::filter(rowSums(dplyr::across(dplyr::any_of(target_params), ~ . == TRUE)) > 0) %>%
+    dplyr::filter(grepl(
       pattern = paste0(".*(", paste0(target_impute, collapse = ")|("), ").*"),
       .data[[impute_col]]
     ))
   
   # Create the new version intervals only for the target parameters
   new_intervals_without_impute <- target_intervals %>%
-    mutate(across(any_of(param_cols), ~FALSE)) %>%
-    mutate(across(any_of(target_params), ~TRUE)) %>%
-    rowwise() %>%
+    dplyr::mutate(dplyr::across(dplyr::any_of(param_cols), ~FALSE)) %>%
+    dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~TRUE)) %>%
+    dplyr::rowwise() %>%
     # Eliminate the target impute method from the impute column
-    mutate(!!impute_col := paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
-                                  collapse = ","
+    dplyr::mutate(!!impute_col := paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
+                                         collapse = ","
     )) %>%
-    mutate(!!impute_col := ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]])) %>%
-    ungroup() %>%
+    dplyr::mutate(!!impute_col := ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]])) %>%
+    dplyr::ungroup() %>%
     # Make sure the class of the impute_col remains the same
-    mutate(!!impute_col := as.character(.data[[impute_col]])) %>%
+    dplyr::mutate(!!impute_col := as.character(.data[[impute_col]])) %>%
     as.data.frame()
   
   # Eliminate from the old intervals the target parameters
   old_intervals_with_impute <- target_intervals %>%
-    mutate(across(any_of(target_params), ~FALSE)) %>%
-    mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index))
+    dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~FALSE)) %>%
+    dplyr::mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index))
   
   # Make parameters FALSE in original intervals and join the new ones
   intervals <- intervals %>%
-    anti_join(target_intervals, by = names(intervals)) %>%
-    bind_rows(old_intervals_with_impute, new_intervals_without_impute) %>%
-    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0) %>%
-    arrange(index) %>%
-    select(-index)
+    dplyr::anti_join(target_intervals, by = names(intervals)) %>%
+    dplyr::bind_rows(old_intervals_with_impute, new_intervals_without_impute) %>%
+    dplyr::filter(rowSums(dplyr::across(dplyr::any_of(param_cols), as.numeric)) > 0) %>%
+    dplyr::arrange(index) %>%
+    dplyr::select(-index)
   
   # Depending on the input return the corresponding updated object
   if (is.data.frame(data)) {
@@ -209,7 +209,7 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
   }
   
   # Add an index column to preserve the original order
-  intervals <- intervals %>% mutate(index = row_number())
+  intervals <- dplyr::mutate(intervals, index = dplyr::row_number())
   
   # Get all parameter column names in the PKNCAdata object
   all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
@@ -246,21 +246,21 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
   
   # Identify the targeted intervals based on the groups
   if (!is.null(target_groups)) {
-    target_intervals <- inner_join(intervals, target_groups, by = names(target_groups))
+    target_intervals <- dplyr::inner_join(intervals, target_groups, by = names(target_groups))
   } else {
     target_intervals <- intervals
   }
   
   # Identify the targeted intervals based on the parameters
   target_intervals <- target_intervals %>%
-    filter(rowSums(across(any_of(target_params), ~ . == TRUE)) > 0)
+    dplyr::filter(rowSums(dplyr::across(dplyr::any_of(target_params), ~ . == TRUE)) > 0)
   
   # Add the imputation method to the targeted intervals
   new_intervals_with_impute <- target_intervals %>%
-    mutate(across(any_of(param_cols), ~FALSE)) %>%
-    mutate(across(any_of(target_params), ~TRUE)) %>%
-    rowwise() %>%
-    mutate(!!impute_col := {
+    dplyr::mutate(dplyr::across(dplyr::any_of(param_cols), ~FALSE)) %>%
+    dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~TRUE)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(!!impute_col := {
       impute_methods <- unlist(strsplit(ifelse(is.na(.data[[impute_col]]), "", .data[[impute_col]]), ","))
       if (!allow_duplication && target_impute %in% impute_methods) {
         # If duplication is not allowed, do not add the impute method if it already exists
@@ -271,21 +271,21 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
         paste(impute_methods[impute_methods != ""], collapse = ",")
       }
     }) %>%
-    ungroup() %>%
-    mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index)) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index)) %>%
     as.data.frame()
   
   # Eliminate from the old intervals the target parameters
   old_intervals_without_impute <- target_intervals %>%
-    mutate(across(any_of(target_params), ~FALSE))
+    dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~FALSE))
   
   # Make parameters FALSE in original intervals and join the new ones
   intervals <- intervals %>%
-    anti_join(target_intervals, by = names(intervals)) %>%
-    bind_rows(old_intervals_without_impute, new_intervals_with_impute) %>%
-    filter(rowSums(across(any_of(param_cols), as.numeric)) > 0) %>%
-    arrange(index) %>%
-    select(-index)
+    dplyr::anti_join(target_intervals, by = names(intervals)) %>%
+    dplyr::bind_rows(old_intervals_without_impute, new_intervals_with_impute) %>%
+    dplyr::filter(rowSums(dplyr::across(dplyr::any_of(param_cols), as.numeric)) > 0) %>%
+    dplyr::arrange(index) %>%
+    dplyr::select(-index)
   
   # Depending on the input return the corresponding updated object
   if (is.data.frame(data)) {
