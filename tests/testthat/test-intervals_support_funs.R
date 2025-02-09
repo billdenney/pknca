@@ -46,7 +46,7 @@ test_that("interval_add_impute throws an error when input data is a non PKNCAdat
 })
 
 test_that("interval_add_impute throws an error for unknown target_params", {
-  expect_error(interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("unknown_param")), 
+  expect_error(interval_add_impute(o_data, target_impute = "start_conc0", target_params = "unknown_param"), 
                "The following target_params are not interval columns and/or known PKNCA parameters: unknown_param")
 })
 
@@ -83,7 +83,7 @@ test_that("interval_add_impute with no optional parameters uses all relevant cas
 })
 
 test_that("interval_add_impute handles specified target_params correctly", {
-  result <- interval_add_impute(o_data, target_impute = "new_impute", target_params = c("half.life"))
+  result <- interval_add_impute(o_data, target_impute = "new_impute", target_params = "half.life")
   expect_equal(result$intervals %>% filter(half.life) %>% select(ANALYTE, half.life, impute),
                data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
@@ -146,8 +146,8 @@ test_that("interval_add_impute handles correctly argument new_rows_after_origina
                                      "start_predose,new_impute", 
                                      "start_conc0", 
                                      "start_conc0,new_impute"))
-               )
-
+  )
+  
   
   # When false the new rows are added at the end of the data frame
   result2 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = FALSE)
@@ -161,7 +161,7 @@ test_that("interval_add_impute handles correctly argument new_rows_after_origina
                                      "start_conc0,start_predose,new_impute", 
                                      "start_predose,new_impute", 
                                      "start_conc0,new_impute"))
-               )
+  )
 })
 
 
@@ -184,7 +184,7 @@ test_that("interval_remove_impute throws an error when input data is a non PKNCA
 })
 
 test_that("interval_remove_impute throws an error for unknown target_params", {
-  expect_error(interval_remove_impute(o_data, target_impute = "start_conc0", target_params = c("unknown_param")), 
+  expect_error(interval_remove_impute(o_data, target_impute = "start_conc0", target_params = "unknown_param"), 
                "The following target_params are not interval columns and/or known PKNCA parameters: unknown_param")
 })
 
@@ -232,7 +232,7 @@ test_that("interval_remove_impute with no optional parameters uses all relevant 
 })
 
 test_that("interval_remove_impute handles specified target_params correctly", {
-  result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"))
+  result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = "half.life")
   # half.life has no start_conc0 imputations
   expect_equal(result$intervals %>% filter(half.life) %>% select(ANALYTE, half.life, impute),
                data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
