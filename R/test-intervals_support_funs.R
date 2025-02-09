@@ -1,10 +1,3 @@
-library(testthat)
-library(PKNCA)
-library(dplyr)
-
-# Source the function file if it's not already in the environment
-# source("path/to/your/function_file.R")
-
 # Create sample data for testing
 d_conc <- data.frame(
   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
@@ -274,3 +267,34 @@ test_that("interval_add_impute handles allow_duplication correctly", {
   
 })
 
+test_that("interval_add_impute handles correctly argument new_rows_after_original", {
+  
+  # When true the new rows are added after the original rows
+  result1 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = TRUE)
+  expect_equal(result1$intervals %>% select(ANALYTE, half.life, cmax, impute),
+               data.frame(ANALYTE = c("Analyte1", "Analyte1", "Analyte2", "Analyte2", "Analyte1", "Analyte1"),
+                          half.life = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
+                          cmax = c(FALSE, TRUE, FALSE, TRUE, FALSE, TRUE),
+                          impute = c("start_conc0,start_predose", 
+                                     "start_conc0,start_predose,new_impute", 
+                                     "start_predose", 
+                                     "start_predose,new_impute", 
+                                     "start_conc0", 
+                                     "start_conc0,new_impute"))
+               )
+
+  
+  # When false the new rows are added at the end of the data frame
+  result2 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = FALSE)
+  expect_equal(result2$intervals %>% select(ANALYTE, half.life, cmax, impute),
+               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1", "Analyte1", "Analyte2", "Analyte1"),
+                          half.life = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE),
+                          cmax = c(FALSE, FALSE, FALSE, TRUE, TRUE, TRUE),
+                          impute = c("start_conc0,start_predose", 
+                                     "start_predose", 
+                                     "start_conc0", 
+                                     "start_conc0,start_predose,new_impute", 
+                                     "start_predose,new_impute", 
+                                     "start_conc0,new_impute"))
+               )
+})
