@@ -272,12 +272,12 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
       }
     }) %>%
     ungroup() %>%
+    mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index)) %>%
     as.data.frame()
   
   # Eliminate from the old intervals the target parameters
   old_intervals_without_impute <- target_intervals %>%
-    mutate(across(any_of(target_params), ~FALSE)) %>%
-    mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index))
+    mutate(across(any_of(target_params), ~FALSE))
   
   # Make parameters FALSE in original intervals and join the new ones
   intervals <- intervals %>%
