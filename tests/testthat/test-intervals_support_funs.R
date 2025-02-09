@@ -19,7 +19,7 @@ intervals <- data.frame(
   half.life = c(TRUE, TRUE, TRUE),
   cmax = c(TRUE, TRUE, TRUE),
   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
-  ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  analyte = c("Analyte1", "Analyte2", "Analyte1"),
   ID = c(1, 2, 1)
 )
 
@@ -55,8 +55,8 @@ test_that("interval_add_impute handles impute column with different names", {
   o_data_changed_impute_name$impute <- "impute_col"
   o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% rename(impute_col = impute)
   result <- interval_add_impute(o_data_changed_impute_name, target_impute = "new_impute")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute_col),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute_col),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute_col = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
@@ -66,8 +66,8 @@ test_that("interval_add_impute handles impute column with NA values correctly", 
   o_data_with_na_impute <- o_data
   o_data_with_na_impute$intervals <- o_data_with_na_impute$intervals %>% mutate(impute = NA_character_)
   result <- interval_add_impute(o_data_with_na_impute, target_impute = "new_impute")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("new_impute", "new_impute", "new_impute")))
@@ -75,8 +75,8 @@ test_that("interval_add_impute handles impute column with NA values correctly", 
 
 test_that("interval_add_impute with no optional parameters uses all relevant cases, with new intervals below", {
   result <- interval_add_impute(o_data, target_impute = "new_impute")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
@@ -84,29 +84,29 @@ test_that("interval_add_impute with no optional parameters uses all relevant cas
 
 test_that("interval_add_impute handles specified target_params correctly", {
   result <- interval_add_impute(o_data, target_impute = "new_impute", target_params = "half.life")
-  expect_equal(result$intervals %>% filter(half.life) %>% select(ANALYTE, half.life, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% filter(half.life) %>% select(analyte, half.life, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           impute = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
-  expect_equal(result$intervals %>% filter(cmax) %>% select(ANALYTE, cmax, impute),
-               o_data$intervals %>% filter(cmax) %>% select(ANALYTE, cmax, impute))
+  expect_equal(result$intervals %>% filter(cmax) %>% select(analyte, cmax, impute),
+               o_data$intervals %>% filter(cmax) %>% select(analyte, cmax, impute))
 })
 
 test_that("interval_add_impute handles target_groups correctly", {
-  result <- interval_add_impute(o_data, target_impute = "new_impute", target_groups = data.frame(ANALYTE = "Analyte1"))
-  expect_equal(result$intervals %>% filter(ANALYTE == "Analyte1") %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte1"),
+  result <- interval_add_impute(o_data, target_impute = "new_impute", target_groups = data.frame(analyte = "Analyte1"))
+  expect_equal(result$intervals %>% filter(analyte == "Analyte1") %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte1"),
                           half.life = c(TRUE, TRUE),
                           cmax = c(TRUE, TRUE),
                           impute = c("start_conc0,start_predose,new_impute", "start_conc0,new_impute")))
-  expect_equal(result$intervals %>% filter(ANALYTE == "Analyte2") %>% select(ANALYTE, half.life, cmax, impute),
-               o_data$intervals %>% filter(ANALYTE == "Analyte2") %>% select(ANALYTE, half.life, cmax, impute))
+  expect_equal(result$intervals %>% filter(analyte == "Analyte2") %>% select(analyte, half.life, cmax, impute),
+               o_data$intervals %>% filter(analyte == "Analyte2") %>% select(analyte, half.life, cmax, impute))
 })
 
 test_that("interval_add_impute handles multiple target_params correctly", {
   result <- interval_add_impute(o_data, target_impute = "new_impute", target_params = c("half.life", "cmax"))
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
@@ -116,16 +116,16 @@ test_that("interval_add_impute handles allow_duplication correctly", {
   
   # When allow_duplication is FALSE, intervals with already the same impute method do not add it
   result1 <- interval_add_impute(o_data, target_impute = "start_conc0", allow_duplication = FALSE)
-  expect_equal(result1$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result1$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_conc0,start_predose", "start_predose,start_conc0", "start_conc0")))
   
   # When allow_duplication is TRUE, intervals with already the same impute method add it
   result2 <- interval_add_impute(o_data, target_impute = "start_conc0", allow_duplication = TRUE)
-  expect_equal(result2$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result2$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_conc0,start_predose,start_conc0", "start_predose,start_conc0", "start_conc0,start_conc0")))
@@ -136,8 +136,8 @@ test_that("interval_add_impute handles correctly argument new_rows_after_origina
   
   # When true the new rows are added after the original rows
   result1 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = TRUE)
-  expect_equal(result1$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte1", "Analyte2", "Analyte2", "Analyte1", "Analyte1"),
+  expect_equal(result1$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte1", "Analyte2", "Analyte2", "Analyte1", "Analyte1"),
                           half.life = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
                           cmax = c(FALSE, TRUE, FALSE, TRUE, FALSE, TRUE),
                           impute = c("start_conc0,start_predose", 
@@ -151,8 +151,8 @@ test_that("interval_add_impute handles correctly argument new_rows_after_origina
   
   # When false the new rows are added at the end of the data frame
   result2 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = FALSE)
-  expect_equal(result2$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1", "Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result2$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE),
                           cmax = c(FALSE, FALSE, FALSE, TRUE, TRUE, TRUE),
                           impute = c("start_conc0,start_predose", 
@@ -193,8 +193,8 @@ test_that("interval_remove_impute handles impute column with different names", {
   o_data_changed_impute_name$impute <- "impute_col"
   o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% rename(impute_col = impute)
   result <- interval_remove_impute(o_data_changed_impute_name, target_impute = "start_conc0")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute_col),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute_col),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute_col = c("start_predose", "start_predose", NA)))
@@ -204,8 +204,8 @@ test_that("interval_remove_impute handles impute column with NA values correctly
   o_data_with_na_impute <- o_data
   o_data_with_na_impute$intervals <- o_data_with_na_impute$intervals %>% mutate(impute = NA_character_)
   result <- interval_remove_impute(o_data_with_na_impute, target_impute = "start_conc0")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c(NA_character_, NA_character_, NA_character_)))
@@ -224,8 +224,8 @@ test_that("interval_remove_impute handles missing impute column by not modifying
 
 test_that("interval_remove_impute with no optional parameters uses all relevant cases, with new intervals below", {
   result <- interval_remove_impute(o_data, target_impute = "start_conc0")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_predose", "start_predose", NA)))
@@ -234,33 +234,33 @@ test_that("interval_remove_impute with no optional parameters uses all relevant 
 test_that("interval_remove_impute handles specified target_params correctly", {
   result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = "half.life")
   # half.life has no start_conc0 imputations
-  expect_equal(result$intervals %>% filter(half.life) %>% select(ANALYTE, half.life, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% filter(half.life) %>% select(analyte, half.life, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           impute = c("start_predose", "start_predose", NA)))
   # cmax has the same exact imputations as before
-  expect_equal(result$intervals %>% filter(cmax) %>% select(ANALYTE, cmax, impute),
-               o_data$intervals %>% filter(cmax) %>% select(ANALYTE, cmax, impute))
+  expect_equal(result$intervals %>% filter(cmax) %>% select(analyte, cmax, impute),
+               o_data$intervals %>% filter(cmax) %>% select(analyte, cmax, impute))
 })
 
 test_that("interval_remove_impute handles target_groups correctly", {
-  result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_groups = data.frame(ANALYTE = "Analyte1"))
+  result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_groups = data.frame(analyte = "Analyte1"))
   # Analyte1 has no start_conc0 imputations
-  expect_equal(result$intervals %>% filter(ANALYTE == "Analyte1") %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte1"),
+  expect_equal(result$intervals %>% filter(analyte == "Analyte1") %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte1"),
                           half.life = c(TRUE, TRUE),
                           cmax = c(TRUE, TRUE),
                           impute = c("start_predose", NA_character_)))  
   
   # Analyte2 has the same exact imputations as before
-  expect_equal(result$intervals %>% filter(ANALYTE == "Analyte2") %>% select(ANALYTE, half.life, cmax, impute),
-               o_data$intervals %>% filter(ANALYTE == "Analyte2") %>% select(ANALYTE, half.life, cmax, impute))
+  expect_equal(result$intervals %>% filter(analyte == "Analyte2") %>% select(analyte, half.life, cmax, impute),
+               o_data$intervals %>% filter(analyte == "Analyte2") %>% select(analyte, half.life, cmax, impute))
 })
 
 test_that("interval_remove_impute handles multiple target_params correctly", {
   result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = c("half.life", "cmax"))
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_predose", "start_predose", NA)))
@@ -270,8 +270,8 @@ test_that("interval_remove_impute handles with specificity impute character meth
   o_data_multiple_imputes <- o_data
   o_data_multiple_imputes$intervals <- o_data_multiple_imputes$intervals %>% mutate(impute = "start_conc0,start_predose")
   result <- interval_remove_impute(o_data_multiple_imputes, target_impute = "start_conc0")
-  expect_equal(result$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1"),
+  expect_equal(result$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
                           half.life = c(TRUE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE),
                           impute = c("start_predose", "start_predose", "start_predose")))
@@ -282,16 +282,16 @@ test_that("interval_remove_impute handles correctly argument new_rows_after_orig
   
   # When true the new rows are added after the original rows
   result1 <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = "cmax", new_rows_after_original = TRUE)
-  expect_equal(result1$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte1", "Analyte2", "Analyte1", "Analyte1"),
+  expect_equal(result1$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte1", "Analyte2", "Analyte1", "Analyte1"),
                           half.life = c(FALSE, TRUE, TRUE, FALSE, TRUE),
                           cmax = c(TRUE, FALSE, TRUE, TRUE, FALSE),
                           impute = c("start_predose", "start_conc0,start_predose", "start_predose", NA, "start_conc0")))
   
   # When false the new rows are added at the end of the data frame
   result2 <- interval_remove_impute(o_data, target_impute = "start_conc0", target_params = "cmax", new_rows_after_original = FALSE)
-  expect_equal(result2$intervals %>% select(ANALYTE, half.life, cmax, impute),
-               data.frame(ANALYTE = c("Analyte1", "Analyte2", "Analyte1", "Analyte1", "Analyte1"),
+  expect_equal(result2$intervals %>% select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte1", "Analyte1"),
                           half.life = c(FALSE, TRUE, FALSE, TRUE, TRUE),
                           cmax = c(TRUE, TRUE, TRUE, FALSE, FALSE),
                           impute = c("start_predose", "start_predose", NA, "start_conc0,start_predose", "start_conc0")))
