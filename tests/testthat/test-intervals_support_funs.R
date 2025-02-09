@@ -214,7 +214,7 @@ test_that("interval_remove_impute handles impute column with NA values correctly
 test_that("interval_remove_impute handles missing impute column by not modifying the dataset and warns the user", {
   o_data_no_impute <- o_data
   o_data_no_impute$intervals <- o_data_no_impute$intervals %>% dplyr::select(-impute)
-  result <- interval_remove_impute(o_data_no_impute, target_impute = "start_conc0")
+  result <- suppressWarnings(interval_remove_impute(o_data_no_impute, target_impute = "start_conc0"))
   expect_equal(result, o_data_no_impute)
   expect_warning(interval_remove_impute(o_data_no_impute, target_impute = "start_conc0"),
                  "No default impute column identified. No impute methods to remove. If there is an impute column, please specify it in argument 'impute_column'")
