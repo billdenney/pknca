@@ -212,7 +212,7 @@ interval_add_impute <- function(data, target_impute, after = Inf, target_params 
   intervals <- dplyr::mutate(intervals, index = dplyr::row_number())
   
   # Get all parameter column names in the PKNCAdata object
-  all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
+  all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
   logical_cols <- names(which(colSums(intervals[sapply(intervals, is.logical)]) > 1))
   param_cols <- intersect(logical_cols, all_param_options)
   
