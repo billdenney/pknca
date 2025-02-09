@@ -2,7 +2,7 @@
 % Please edit documentation in R/intervals_support_funs.R
 \name{interval_add_impute}
 \alias{interval_add_impute}
-\title{Add specified imputation methods to the intervals in a PKNCAdata object.}
+\title{Add specified imputation methods to the intervals in a PKNCAdata or data.frame object.}
 \usage{
 interval_add_impute(
   data,
@@ -20,23 +20,29 @@ interval_add_impute(
 
 \item{target_impute}{A character string specifying the imputation method to be added.}
 
-\item{after}{Numeric value specifying the position after which the imputation method should be added (optional). First is 0, last Inf. If missing, the imputation method is added at the end (Inf).}
+\item{after}{Numeric value specifying the position after which the imputation method should be added (optional).
+First is 0, last Inf. If missing, the imputation method is added at the end (Inf).}
 
-\item{target_params}{A character vector specifying the parameters to be targeted (optional). If missing, all TRUE in the intervals are taken.}
+\item{target_params}{A character vector specifying the parameters to be targeted (optional).
+If missing, all TRUE in the intervals are taken.}
 
-\item{target_groups}{A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.}
+\item{target_groups}{A data frame specifying the intervals to be targeted (optional).
+If missing, all relevant groups are considered.}
 
-\item{impute_column}{A character string specifying the name of the impute column (optional). If missing, the default name "impute" is used.}
+\item{impute_column}{A character string specifying the name of the impute column (optional).
+If missing, the default name "impute" is used.}
 
-\item{allow_duplication}{A boolean specifying whether to allow creating duplicates of the target_impute in the impute column (optional). Default is TRUE.}
+\item{allow_duplication}{A boolean specifying whether to allow creating duplicates of the target_impute
+in the impute column (optional). Default is TRUE.}
 
-\item{new_rows_after_original}{A boolean specifying whether the new rows should be added after the original rows (optional). Default is TRUE.}
+\item{new_rows_after_original}{A boolean specifying whether the new rows should be added after the original rows
+(optional). Default is TRUE.}
 }
 \value{
 A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
 }
 \description{
-Add specified imputation methods to the intervals in a PKNCAdata object.
+Add specified imputation methods to the intervals in a PKNCAdata or data.frame object.
 }
 \examples{
 d_conc <- data.frame(
@@ -53,8 +59,8 @@ d_dose <- data.frame(
   ID = c(1, 2)
 )
 
-o_conc <- PKNCAconc(d_conc, conc ~ time | analyte, include_half.life = "include_hl")
-o_dose <- PKNCAdose(d_dose, dose ~ time | treatment + ID)
+o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte)
+o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 
 intervals <- data.frame(
   start = c(0, 0, 0),
@@ -68,5 +74,5 @@ intervals <- data.frame(
 o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 
 # Apply interval_add_impute function
-o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(ANALYTE = "Analyte1", ROUTE = "intravascular"))
+o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
 }

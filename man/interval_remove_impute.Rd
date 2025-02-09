@@ -2,7 +2,7 @@
 % Please edit documentation in R/intervals_support_funs.R
 \name{interval_remove_impute}
 \alias{interval_remove_impute}
-\title{Remove specified imputation methods from the intervals in a PKNCAdata object.}
+\title{Remove specified imputation methods from the intervals in a PKNCAdata or data.frame object.}
 \usage{
 interval_remove_impute(
   data,
@@ -18,19 +18,23 @@ interval_remove_impute(
 
 \item{target_impute}{A character string specifying the imputation method to be removed.}
 
-\item{target_params}{A character vector specifying the parameters to be targeted (optional). If missing, all TRUE in the intervals are taken.}
+\item{target_params}{A character vector specifying the parameters to be targeted (optional).
+If missing, all TRUE in the intervals are taken.}
 
-\item{target_groups}{A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.}
+\item{target_groups}{A data frame specifying the intervals to be targeted (optional).
+If missing, all relevant groups are considered.}
 
-\item{impute_column}{A character string specifying the name of the impute column (optional). If missing, the default name "impute" is used.}
+\item{impute_column}{A character string specifying the name of the impute column (optional).
+If missing, the default name "impute" is used.}
 
-\item{new_rows_after_original}{A boolean specifying whether the new rows should be added after the original rows (optional). Default is TRUE.}
+\item{new_rows_after_original}{A boolean specifying whether the new rows should be added after the original rows
+(optional). Default is TRUE.}
 }
 \value{
-A modified PKNCAdata object with the specified imputation methods removed from the targeted intervals.
+A modified object with the specified imputation methods removed from the targeted intervals.
 }
 \description{
-Remove specified imputation methods from the intervals in a PKNCAdata object.
+Remove specified imputation methods from the intervals in a PKNCAdata or data.frame object.
 }
 \examples{
 d_conc <- data.frame(

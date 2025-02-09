@@ -1,13 +1,19 @@
-#' Add specified imputation methods to the intervals in a PKNCAdata object.
+#' Add specified imputation methods to the intervals in a PKNCAdata or data.frame object.
 #'
 #' @param data A PKNCAdata object containing the intervals and data components, or a data frame of intervals.
 #' @param target_impute A character string specifying the imputation method to be added.
-#' @param after Numeric value specifying the position after which the imputation method should be added (optional). First is 0, last Inf. If missing, the imputation method is added at the end (Inf).
-#' @param target_params A character vector specifying the parameters to be targeted (optional). If missing, all TRUE in the intervals are taken.
-#' @param target_groups A data frame specifying the intervals to be targeted (optional). If missing, all relevant groups are considered.
-#' @param impute_column A character string specifying the name of the impute column (optional). If missing, the default name "impute" is used.
-#' @param allow_duplication A boolean specifying whether to allow creating duplicates of the target_impute in the impute column (optional). Default is TRUE.
-#' @param new_rows_after_original A boolean specifying whether the new rows should be added after the original rows (optional). Default is TRUE.
+#' @param after Numeric value specifying the position after which the imputation method should be added (optional). 
+#' First is 0, last Inf. If missing, the imputation method is added at the end (Inf).
+#' @param target_params A character vector specifying the parameters to be targeted (optional). 
+#' If missing, all TRUE in the intervals are taken.
+#' @param target_groups A data frame specifying the intervals to be targeted (optional). 
+#' If missing, all relevant groups are considered.
+#' @param impute_column A character string specifying the name of the impute column (optional). 
+#' If missing, the default name "impute" is used.
+#' @param allow_duplication A boolean specifying whether to allow creating duplicates of the target_impute 
+#' in the impute column (optional). Default is TRUE.
+#' @param new_rows_after_original A boolean specifying whether the new rows should be added after the original rows 
+#' (optional). Default is TRUE.
 #' @return A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
@@ -116,7 +122,7 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf, tar
     dplyr::mutate(dplyr::across(dplyr::any_of(param_cols), ~FALSE)) %>%
     dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~TRUE)) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(!!impute_col := {
+    dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~{
       impute_methods <- unlist(strsplit(ifelse(is.na(.data[[impute_col]]), "", .data[[impute_col]]), ","))
       if (!allow_duplication && target_impute %in% impute_methods) {
         # If duplication is not allowed, do not add the impute method if it already exists
@@ -126,7 +132,7 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf, tar
         impute_methods <- append(impute_methods, target_impute, after)
         paste(impute_methods[impute_methods != ""], collapse = ",")
       }
-    }) %>%
+    })) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index)) %>%
     as.data.frame()
@@ -147,11 +153,11 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf, tar
 }
 
 
-#' Remove specified imputation methods from the intervals in a PKNCAdata object.
+#' Remove specified imputation methods from the intervals in a PKNCAdata or data.frame object.
 #'
 #' @inheritParams interval_add_impute
 #' @param target_impute A character string specifying the imputation method to be removed.
-#' @return A modified PKNCAdata object with the specified imputation methods removed from the targeted intervals.
+#' @return A modified object with the specified imputation methods removed from the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
 #'   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
@@ -263,13 +269,13 @@ interval_remove_impute.data.frame <- function(data, target_impute, target_params
     dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~TRUE)) %>%
     dplyr::rowwise() %>%
     # Eliminate the target impute method from the impute column
-    dplyr::mutate(!!impute_col := paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
+    dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~ paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
                                          collapse = ","
-    )) %>%
-    dplyr::mutate(!!impute_col := ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]])) %>%
+    ))) %>%
+    dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~ ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]]))) %>%
     dplyr::ungroup() %>%
     # Make sure the class of the impute_col remains the same
-    dplyr::mutate(!!impute_col := as.character(.data[[impute_col]])) %>%
+    dplyr::mutate(dplyr::across(any_of(impute_col), ~ as.character(.data[[impute_col]]))) %>%
     as.data.frame()
   
   # Eliminate from the old intervals the target parameters
