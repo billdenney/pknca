@@ -53,7 +53,7 @@ test_that("interval_add_impute throws an error for unknown target_params", {
 test_that("interval_add_impute handles impute column with different names", {
   o_data_changed_impute_name <- o_data
   o_data_changed_impute_name$impute <- "impute_col"
-  o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% rename(impute_col = impute)
+  o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% dplyr::rename(impute_col = impute)
   result <- interval_add_impute(o_data_changed_impute_name, target_impute = "new_impute")
   expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute_col),
                data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
@@ -64,7 +64,7 @@ test_that("interval_add_impute handles impute column with different names", {
 
 test_that("interval_add_impute handles impute column with NA values correctly", {
   o_data_with_na_impute <- o_data
-  o_data_with_na_impute$intervals <- o_data_with_na_impute$intervals %>% mutate(impute = NA_character_)
+  o_data_with_na_impute$intervals <- o_data_with_na_impute$intervals %>% dplyr::mutate(impute = NA_character_)
   result <- interval_add_impute(o_data_with_na_impute, target_impute = "new_impute")
   expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
                data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
@@ -191,7 +191,7 @@ test_that("interval_remove_impute throws an error for unknown target_params", {
 test_that("interval_remove_impute handles impute column with different names", {
   o_data_changed_impute_name <- o_data
   o_data_changed_impute_name$impute <- "impute_col"
-  o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% rename(impute_col = impute)
+  o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% dplyr::rename(impute_col = impute)
   result <- interval_remove_impute(o_data_changed_impute_name, target_impute = "start_conc0")
   expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute_col),
                data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
@@ -202,7 +202,7 @@ test_that("interval_remove_impute handles impute column with different names", {
 
 test_that("interval_remove_impute handles impute column with NA values correctly", {
   o_data_with_na_impute <- o_data
-  o_data_with_na_impute$intervals <- o_data_with_na_impute$intervals %>% mutate(impute = NA_character_)
+  o_data_with_na_impute$intervals <- o_data_with_na_impute$intervals %>% dplyr::mutate(impute = NA_character_)
   result <- interval_remove_impute(o_data_with_na_impute, target_impute = "start_conc0")
   expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
                data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
@@ -268,7 +268,7 @@ test_that("interval_remove_impute handles multiple target_params correctly", {
 
 test_that("interval_remove_impute handles with specificity impute character method with multiple imputes", {
   o_data_multiple_imputes <- o_data
-  o_data_multiple_imputes$intervals <- o_data_multiple_imputes$intervals %>% mutate(impute = "start_conc0,start_predose")
+  o_data_multiple_imputes$intervals <- o_data_multiple_imputes$intervals %>% dplyr::mutate(impute = "start_conc0,start_predose")
   result <- interval_remove_impute(o_data_multiple_imputes, target_impute = "start_conc0")
   expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
                data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
