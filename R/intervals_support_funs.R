@@ -47,23 +47,15 @@
 #' # Apply interval_add_impute function
 #' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
 #' @export
-interval_add_impute <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
-  if (missing(data) || missing(target_impute)) {
-    stop("Both 'data' and 'target_impute' must be provided.")
-  }
-  if (!inherits(data, "PKNCAdata") && !is.data.frame(data)) {
-    stop("The 'data' object must be a PKNCAdata object or a data frame.")
-  }
-  if (!is.character(target_impute)) {
-    stop("'target_impute' must be a character string.")
-  }
+interval_add_impute <- function(data, ...) {
   UseMethod("interval_add_impute")
 }
 
 #' @export
 interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
-  if (is.null(impute_column) && !is.na(data$impute)) {
-    impute_column <- data$impute
+  if (!"impute" %in% names(data$intervals) && !is.na(data$impute)) {
+    data$intervals$impute <- data$impute
+    data$impute <- NA_character_
   }
   data$intervals <- interval_add_impute(data$intervals, target_impute, after, target_params, target_groups, impute_column, allow_duplication, new_rows_after_original)
   data
@@ -71,10 +63,17 @@ interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, targ
 
 #' @export
 interval_add_impute.data.frame <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
-  
+
+  if (missing(data) || missing(target_impute)) {
+    stop("Both 'data' and 'target_impute' must be provided.")
+  }
+  if (!is.character(target_impute)) {
+    stop("'target_impute' must be a character string.")
+  }
+
   # Add an index column to preserve the original order
   data <- dplyr::mutate(data, index = dplyr::row_number())
-  
+
   # Get all parameter column names in the data frame
   all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
   logical_cols <- names(which(colSums(data[sapply(data, is.logical)]) > 1))
@@ -119,8 +118,7 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf, tar
   
   # Add the imputation method to the targeted intervals
   new_intervals_with_impute <- target_intervals %>%
-    dplyr::mutate(dplyr::across(dplyr::any_of(param_cols), ~FALSE)) %>%
-    dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~TRUE)) %>%
+    dplyr::mutate(dplyr::across(dplyr::any_of(setdiff(param_cols, target_params)), ~FALSE)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~{
       impute_methods <- unlist(strsplit(ifelse(is.na(.data[[impute_col]]), "", .data[[impute_col]]), ","))

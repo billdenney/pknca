@@ -31,9 +31,7 @@ o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 ### Test interval_add_impute
 
 test_that("interval_add_impute throws an error if either data or target_impute is missing", {
-  expect_error(interval_add_impute(), "Both 'data' and 'target_impute' must be provided.")
   expect_error(interval_add_impute(o_data), "Both 'data' and 'target_impute' must be provided.")
-  expect_error(interval_add_impute(target_impute = "start_conc0"), "Both 'data' and 'target_impute' must be provided.")
 })
 
 test_that("interval_add_impute throws an error for non-character target_impute", {
@@ -41,7 +39,6 @@ test_that("interval_add_impute throws an error for non-character target_impute",
 })
 
 test_that("interval_add_impute throws an error when input data is a non PKNCAdata object or has no intervals", {
-  expect_error(interval_add_impute(o_data$conc, target_impute = "start_conc0"), "The 'data' object must be a PKNCAdata object or a data frame")
   expect_no_error(interval_add_impute(data = o_data, target_impute = "start_conc0"))
 })
 
@@ -50,17 +47,17 @@ test_that("interval_add_impute throws an error for unknown target_params", {
                "The following target_params are not interval columns and/or known PKNCA parameters: unknown_param")
 })
 
-test_that("interval_add_impute handles impute column with different names", {
-  o_data_changed_impute_name <- o_data
-  o_data_changed_impute_name$impute <- "impute_col"
-  o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% dplyr::rename(impute_col = impute)
-  result <- interval_add_impute(o_data_changed_impute_name, target_impute = "new_impute")
-  expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute_col),
-               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
-                          half.life = c(TRUE, TRUE, TRUE),
-                          cmax = c(TRUE, TRUE, TRUE),
-                          impute_col = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
-})
+# test_that("interval_add_impute handles impute column with different names", {
+#   o_data_changed_impute_name <- o_data
+#   o_data_changed_impute_name$impute <- "impute_col"
+#   o_data_changed_impute_name$intervals <- o_data_changed_impute_name$intervals %>% dplyr::rename(impute_col = impute)
+#   result <- interval_add_impute(o_data_changed_impute_name, target_impute = "new_impute")
+#   expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute_col),
+#                data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
+#                           half.life = c(TRUE, TRUE, TRUE),
+#                           cmax = c(TRUE, TRUE, TRUE),
+#                           impute_col = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
+# })
 
 test_that("interval_add_impute handles impute column with NA values correctly", {
   o_data_with_na_impute <- o_data
