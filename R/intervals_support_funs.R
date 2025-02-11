@@ -10,10 +10,8 @@
 #' If missing, all relevant groups are considered.
 #' @param impute_column A character string specifying the name of the impute column (optional). 
 #' If missing, the default name "impute" is used.
-#' @param allow_duplication A boolean specifying whether to allow creating duplicates of the target_impute 
-#' in the impute column (optional). Default is TRUE.
-#' @param new_rows_after_original A boolean specifying whether the new rows should be added after the original rows 
-#' (optional). Default is TRUE.
+#' @details. If already present the target_impute method will be added substituting the existing one. All new intervals 
+#' created will be added right after their original ones.
 #' @return A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
@@ -47,109 +45,97 @@
 #' # Apply interval_add_impute function
 #' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
 #' @export
-interval_add_impute <- function(data, ...) {
-  UseMethod("interval_add_impute")
+interval_add_impute <- function(data, target_impute, ...) {
+  UseMethod("interval_add_impute", data)
 }
 
 #' @export
-interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
-  if (!"impute" %in% names(data$intervals) && !is.na(data$impute)) {
+interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL) {
+  # If the impute column is not present, add it to the intervals
+  if (!"impute" %in% names(data$intervals) && !is.null(data$impute)) {
     data$intervals$impute <- data$impute
     data$impute <- NA_character_
+  } else if (class(data$intervals$impute) != "character") {
+    stop("The 'impute' column in the intervals must be a character column.")
   }
-  data$intervals <- interval_add_impute(data$intervals, target_impute, after, target_params, target_groups, impute_column, allow_duplication, new_rows_after_original)
+  data$intervals <- interval_add_impute.data.frame(data$intervals, target_impute, after, target_params, target_groups)
   data
 }
 
-#' @export
-interval_add_impute.data.frame <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, impute_column = NULL, allow_duplication = TRUE, new_rows_after_original = TRUE) {
+# Helper function to process impute methods
+add_impute_method <- Vectorize(function(impute_col_value, target_impute, after) {
+  impute_methods <- unlist(strsplit(ifelse(is.na(impute_col_value), "", impute_col_value), "[ ,]+")) |>
+    setdiff(target_impute) |>
+    append(target_impute, after) |>
+    paste(collapse = ",")
+}, vectorize.args = "impute_col_value", USE.NAMES = FALSE)
 
-  if (missing(data) || missing(target_impute)) {
+#' @export
+interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf, target_params = NULL, target_groups = NULL) {
+  # Validate inputs
+  if (missing(intervals) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
   }
   if (!is.character(target_impute)) {
     stop("'target_impute' must be a character string.")
   }
-
-  # Add an index column to preserve the original order
-  data <- dplyr::mutate(data, index = dplyr::row_number())
-
-  # Get all parameter column names in the data frame
-  all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
-  logical_cols <- names(which(colSums(data[sapply(data, is.logical)]) > 1))
-  param_cols <- intersect(logical_cols, all_param_options)
   
-  # Handle target_params
+  # Ensure the impute column exists and is a character column
+  if (!"impute" %in% colnames(intervals)) {
+    intervals$impute <- NA_character_
+  } else if (!is.character(intervals$impute)) {
+    stop("The 'impute' column in the data frame must be a character column.")
+  }
+  
+  # Add an index column to preserve the original order
+  index_colname <- make.unique(c("index", names(intervals)))[1]
+  intervals[[index_colname]] <- 1:nrow(intervals)
+  
+  # Get all parameter column names in the data frame
+  all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
+  param_cols <- intersect(names(intervals), all_param_options)
+  
+  # If missing, define the target parameters as all parameter columns. Filter based on at least one TRUE value.
   if (is.null(target_params)) {
-    # Take all logical columns in data that are known parameters
     target_params <- param_cols
   } else {
-    # Check that all target_params are logical columns in data and known parameters
-    missing_params <- setdiff(target_params, logical_cols)
-    if (length(missing_params) > 0) {
-      stop("The following target_params are not interval columns and/or known PKNCA parameters: ", paste(missing_params, collapse = ", "))
-      target_params <- intersect(target_params, param_cols)
-    }
+    checkmate::assert_subset(target_params, choices = all_param_options, empty.ok = TRUE)
   }
+  target_param_rows <- rowSums(!is.na(replace(intervals[, target_params, drop = FALSE], FALSE, NA))) > 0
   
-  # Determine the name of the impute column
-  impute_col <- if (!is.null(impute_column)) {
-    if (!impute_column %in% colnames(data)) {
-      stop("The 'data' object does not contain the specified impute column.")
-    }
-    impute_column
-  } else if ("impute" %in% colnames(data)) {
-    "impute"
-  } else {
-    data$impute <- NA_character_
-    "impute"
-  }
-  
-  # Identify the targeted intervals based on the groups
+  # If missing, define the target groups as all intervals. Filter based on a perfect row match.
   if (!is.null(target_groups)) {
-    target_intervals <- dplyr::inner_join(data, target_groups, by = names(target_groups))
+    target_group_rows <- do.call(paste0, intervals[, names(target_groups), drop = FALSE]) %in% do.call(paste0, target_groups)
   } else {
-    target_intervals <- data
+    target_group_rows <- rep(TRUE, nrow(intervals))
   }
   
-  # Identify the targeted intervals based on the parameters
-  target_intervals <- target_intervals %>%
-    dplyr::filter(rowSums(dplyr::across(dplyr::any_of(target_params), ~ . == TRUE)) > 0)
+  # Combine the two conditions to get the final targeted rows (filter for intervals)
+  target_rows <- target_group_rows & target_param_rows
   
-  # Add the imputation method to the targeted intervals
-  new_intervals_with_impute <- target_intervals %>%
-    dplyr::mutate(dplyr::across(dplyr::any_of(setdiff(param_cols, target_params)), ~FALSE)) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~{
-      impute_methods <- unlist(strsplit(ifelse(is.na(.data[[impute_col]]), "", .data[[impute_col]]), ","))
-      if (!allow_duplication && target_impute %in% impute_methods) {
-        # If duplication is not allowed, do not add the impute method if it already exists
-        .data[[impute_col]]
-      } else {
-        # Add the impute method after the specified position
-        impute_methods <- append(impute_methods, target_impute, after)
-        paste(impute_methods[impute_methods != ""], collapse = ",")
-      }
-    })) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(index = if (new_rows_after_original) index + 0.5 else index + max(index)) %>%
-    as.data.frame()
+  # Create new intervals for the target parameters including the impute method and indexed right after the original intervals
+  new_intervals <- intervals[target_rows, ]
+  new_intervals[, setdiff(param_cols, target_params)] <- NA
+  new_intervals[["impute"]] <- add_impute_method(new_intervals[["impute"]], target_impute, after)
+  new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
   
-  # Eliminate from the old intervals the target parameters
-  old_intervals_without_impute <- target_intervals %>%
-    dplyr::mutate(dplyr::across(dplyr::any_of(target_params), ~FALSE))
+  # Keep the original intervals without the target parameters and without the impute method
+  original_intervals <- intervals[target_rows, ]
+  original_intervals[, target_params] <- NA
   
-  # Make parameters FALSE in original intervals and join the new ones
-  data <- data %>%
-    dplyr::anti_join(target_intervals, by = names(data)) %>%
-    dplyr::bind_rows(old_intervals_without_impute, new_intervals_with_impute) %>%
-    dplyr::filter(rowSums(dplyr::across(dplyr::any_of(param_cols), as.numeric)) > 0) %>%
-    dplyr::arrange(index) %>%
-    dplyr::select(-index)
+  # Combine non-modified intervals, new intervals, and original intervals
+  intervals <- rbind(intervals[!target_rows, ], original_intervals, new_intervals)
   
-  data
+  # Filter rows where all row values for param_cols are NA or FALSE
+  param_data <- intervals[, param_cols, drop = FALSE]
+  rows_no_params <- rowSums(!is.na(replace(param_data, param_data == FALSE, NA))) == 0
+  intervals <- intervals[!rows_no_params, , drop = FALSE]
+  
+  # Order the data by the index column and then remove it
+  intervals <- intervals[order(intervals[, index_colname]), ]
+  rownames(intervals) <- 1:nrow(intervals)
+  intervals[, !names(intervals) %in% index_colname]
 }
-
 
 #' Remove specified imputation methods from the intervals in a PKNCAdata or data.frame object.
 #'
@@ -268,7 +254,7 @@ interval_remove_impute.data.frame <- function(data, target_impute, target_params
     dplyr::rowwise() %>%
     # Eliminate the target impute method from the impute column
     dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~ paste0(setdiff(unlist(strsplit(.data[[impute_col]], ",")), target_impute),
-                                         collapse = ","
+                                                                    collapse = ","
     ))) %>%
     dplyr::mutate(dplyr::across(dplyr::any_of(impute_col), ~ ifelse(.data[[impute_col]] == "", NA_character_, .data[[impute_col]]))) %>%
     dplyr::ungroup() %>%
@@ -291,3 +277,6 @@ interval_remove_impute.data.frame <- function(data, target_impute, target_params
   
   data
 }
+
+
+
