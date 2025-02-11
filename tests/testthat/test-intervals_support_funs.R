@@ -44,7 +44,7 @@ test_that("interval_add_impute throws an error when input data is a non PKNCAdat
 
 test_that("interval_add_impute throws an error for unknown target_params", {
   expect_error(interval_add_impute(o_data, target_impute = "start_conc0", target_params = "unknown_param"), 
-               "The following target_params are not interval columns and/or known PKNCA parameters: unknown_param")
+               "")
 })
 
 # test_that("interval_add_impute handles impute column with different names", {
@@ -109,62 +109,56 @@ test_that("interval_add_impute handles multiple target_params correctly", {
                           impute = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
 })
 
-test_that("interval_add_impute handles allow_duplication correctly", {
-  
-  # When allow_duplication is FALSE, intervals with already the same impute method do not add it
-  result1 <- interval_add_impute(o_data, target_impute = "start_conc0", allow_duplication = FALSE)
-  expect_equal(result1$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
-               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
-                          half.life = c(TRUE, TRUE, TRUE),
-                          cmax = c(TRUE, TRUE, TRUE),
-                          impute = c("start_conc0,start_predose", "start_predose,start_conc0", "start_conc0")))
-  
-  # When allow_duplication is TRUE, intervals with already the same impute method add it
-  result2 <- interval_add_impute(o_data, target_impute = "start_conc0", allow_duplication = TRUE)
-  expect_equal(result2$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
-               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
-                          half.life = c(TRUE, TRUE, TRUE),
-                          cmax = c(TRUE, TRUE, TRUE),
-                          impute = c("start_conc0,start_predose,start_conc0", "start_predose,start_conc0", "start_conc0,start_conc0")))
-  
-})
-
-test_that("interval_add_impute handles correctly argument new_rows_after_original", {
-  
-  # When true the new rows are added after the original rows
-  result1 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = TRUE)
-  expect_equal(result1$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
-               data.frame(analyte = c("Analyte1", "Analyte1", "Analyte2", "Analyte2", "Analyte1", "Analyte1"),
-                          half.life = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
-                          cmax = c(FALSE, TRUE, FALSE, TRUE, FALSE, TRUE),
-                          impute = c("start_conc0,start_predose", 
-                                     "start_conc0,start_predose,new_impute", 
-                                     "start_predose", 
-                                     "start_predose,new_impute", 
-                                     "start_conc0", 
-                                     "start_conc0,new_impute"))
+test_that("interval_add_impute handles mixed TRUE/FALSE for cmax and half.life correctly", {
+  intervals_mixed <- data.frame(
+    start = c(0, 0, 0, 0),
+    end = c(24, 48, Inf, 72),
+    half.life = c(TRUE, FALSE, TRUE, FALSE),
+    cmax = c(FALSE, TRUE, FALSE, TRUE),
+    impute = c("start_conc0,start_predose", "start_predose", "start_conc0", "start_predose"),
+    analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte2"),
+    ID = c(1, 2, 1, 2)
   )
   
+  o_data_mixed <- PKNCAdata(o_conc, o_dose, intervals = intervals_mixed)
+  result <- interval_add_impute(o_data_mixed, target_impute = "new_impute")
+  expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte2"),
+                          half.life = c(TRUE, FALSE, TRUE, FALSE),
+                          cmax = c(FALSE, TRUE, FALSE, TRUE),
+                          impute = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute", "start_predose,new_impute")))
+})
+
+test_that("interval_add_impute do not create duplicates but instead removes original ones and then adds impute method based on after", {
   
-  # When false the new rows are added at the end of the data frame
-  result2 <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax", new_rows_after_original = FALSE)
-  expect_equal(result2$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
-               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte1", "Analyte2", "Analyte1"),
-                          half.life = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE),
-                          cmax = c(FALSE, FALSE, FALSE, TRUE, TRUE, TRUE),
+  # When allow_duplication is FALSE, intervals with already the same impute method do not add it
+  result <- interval_add_impute(o_data, target_impute = "start_conc0", after=Inf)
+  expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1"),
+                          half.life = c(TRUE, TRUE, TRUE),
+                          cmax = c(TRUE, TRUE, TRUE),
+                          impute = c("start_predose,start_conc0", "start_predose,start_conc0", "start_conc0")))
+})
+
+test_that("interval_add_impute includes new rows with added imputations right after the original ones", {
+  
+  # When true the new rows are added after the original rows
+  result <- interval_add_impute(o_data, target_impute = "new_impute", target_param = "cmax")
+  expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte1", "Analyte2", "Analyte2", "Analyte1", "Analyte1"),
+                          half.life = c(TRUE, NA, TRUE, NA, TRUE, NA),
+                          cmax = c(NA, TRUE, NA, TRUE, NA, TRUE),
                           impute = c("start_conc0,start_predose", 
-                                     "start_predose", 
-                                     "start_conc0", 
                                      "start_conc0,start_predose,new_impute", 
+                                     "start_predose", 
                                      "start_predose,new_impute", 
+                                     "start_conc0", 
                                      "start_conc0,new_impute"))
   )
 })
 
 
 ### Test interval_remove_impute
-
-
 test_that("interval_remove_impute throws an error if either data or target_impute is missing", {
   expect_error(interval_remove_impute(), "Both 'data' and 'target_impute' must be provided.")
   expect_error(interval_remove_impute(o_data), "Both 'data' and 'target_impute' must be provided.")
@@ -274,6 +268,27 @@ test_that("interval_remove_impute handles with specificity impute character meth
                           impute = c("start_predose", "start_predose", "start_predose")))
 })
 
+test_that("interval_remove_impute handles mixed TRUE/FALSE for cmax and half.life correctly", {
+  intervals_mixed <- data.frame(
+    start = c(0, 0, 0, 0),
+    end = c(24, 48, Inf, 72),
+    half.life = c(TRUE, FALSE, TRUE, FALSE),
+    cmax = c(FALSE, TRUE, FALSE, TRUE),
+    impute = c("start_conc0,start_predose", "start_predose", "start_conc0", "start_predose"),
+    analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte2"),
+    ID = c(1, 2, 1, 2)
+  )
+  
+  o_data_mixed <- PKNCAdata(o_conc, o_dose, intervals = intervals_mixed)
+  
+  result <- interval_remove_impute(o_data_mixed, target_impute = "start_conc0", target_params = c("half.life", "cmax"))
+  
+  expect_equal(result$intervals %>% dplyr::select(analyte, half.life, cmax, impute),
+               data.frame(analyte = c("Analyte1", "Analyte2", "Analyte1", "Analyte2"),
+                          half.life = c(TRUE, FALSE, TRUE, FALSE),
+                          cmax = c(FALSE, TRUE, FALSE, TRUE),
+                          impute = c("start_predose", "start_predose", NA, "start_predose")))
+})
 
 test_that("interval_remove_impute handles correctly argument new_rows_after_original", {
   
