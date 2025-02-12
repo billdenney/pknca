@@ -69,13 +69,17 @@ interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, targ
 #' @param after Numeric value specifying the position after which the imputation method should be added.
 #' @return A character string or vector with the added impute method.
 #' @keywords internal
-add_impute_method <- Vectorize(function(impute_col_value, target_impute, after) {
-  impute_methods <- unlist(strsplit(ifelse(is.na(impute_col_value), "", impute_col_value), "[ ,]+")) |>
-    setdiff(target_impute) |>
-    append(target_impute, after) |>
-    paste(collapse = ",")
-}, vectorize.args = "impute_col_value", USE.NAMES = FALSE)
-
+add_impute_method <- function(impute_vals, target_impute, after) {
+  # Make sure the character vector has length
+  if (length(impute_vals) == 0) return(impute_vals)
+  
+  # Remove the impute from the other methods in each value
+  impute_vals <- ifelse(is.na(impute_vals), "", impute_vals)
+  strsplit(impute_vals, split = "[ ,]+") |>
+    lapply(FUN = setdiff, target_impute) |>
+    vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
+    vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
+}
 #' @export
 interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf, target_params = NULL, target_groups = NULL) {
   # Validate inputs
@@ -207,17 +211,21 @@ interval_remove_impute.PKNCAdata <- function(data, target_impute, target_params 
 #'
 #' This is an internal helper function used to remove an impute method from the impute column.
 #'
-#' @param impute_col_value The current value of the impute column.
+#' @param impute_vals Character vector of impute methods.
 #' @param target_impute The imputation method to be removed.
 #' @return A character string or vector without the specified impute method.
 #' @details Resulting empty string values are replaced with NA_character_.
 #' @keywords internal
-remove_impute_method <- Vectorize(function(impute_col_value, target_impute, after) {
-  impute_methods <- unlist(strsplit(ifelse(is.na(impute_col_value), "", impute_col_value), "[ ,]+")) |>
-    setdiff(target_impute) |>
-    paste(collapse = ",")
-  if (impute_methods == "") NA_character_ else impute_methods
-}, vectorize.args = "impute_col_value", USE.NAMES = FALSE)
+remove_impute_method <- function(impute_vals, target_impute){
+  # Make sure the character vector has length
+  if (length(impute_vals) == 0) return(impute_vals)
+  
+  # Remove the impute from the other methods in each value
+  impute_vals <- ifelse(is.na(impute_vals), "", impute_vals)
+  strsplit(impute_vals, split = "[ ,]+") |>
+    lapply(FUN = setdiff, target_impute) |>
+    vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
+}
 
 #' @export
 interval_remove_impute.data.frame <- function(intervals, target_impute, target_params = NULL, target_groups = NULL) {
