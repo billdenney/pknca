@@ -77,7 +77,7 @@ add_impute_method <- function(impute_vals, target_impute, after) {
   impute_vals <- ifelse(is.na(impute_vals), "", impute_vals)
   strsplit(impute_vals, split = "[ ,]+") |>
     lapply(FUN = setdiff, target_impute) |>
-    vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
+    lapply(FUN = append, values = target_impute, after = after) |>
     vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
 }
 #' @export
@@ -99,7 +99,7 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
 
   # Add an index column to preserve the original order
   index_colname <- make.unique(c("index", names(intervals)))[1]
-  intervals[[index_colname]] <- 1:nrow(intervals)
+  intervals[[index_colname]] <- seq_len(nrow(intervals))
 
   # Get all parameter column names in the data frame
   all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
@@ -142,7 +142,7 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
 
   # Order the intervals by the index column and then remove it
   intervals <- intervals[order(intervals[, index_colname]), ]
-  rownames(intervals) <- 1:nrow(intervals)
+  rownames(intervals) <- seq_len(nrow(intervals))
   intervals[, !names(intervals) %in% index_colname]
 }
 
