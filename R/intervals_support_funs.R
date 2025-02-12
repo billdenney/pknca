@@ -16,8 +16,7 @@
 #'   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
 #'   time = rep(0:5, 2),
 #'   ID = rep(1:2, each = 6),
-#'   analyte = rep(c("Analyte1", "Analyte2"), each = 6),
-#'   include_hl = c(FALSE, NA, TRUE, TRUE, TRUE, TRUE, FALSE, NA, TRUE, TRUE, TRUE, TRUE)
+#'   analyte = rep(c("Analyte1", "Analyte2"), each = 6)
 #' )
 #'
 #' d_dose <- data.frame(
@@ -41,9 +40,12 @@
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_add_impute function
-#' o_data <- interval_add_impute(o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
+#' o_data <- interval_add_impute(o_data, 
+#'                               target_impute = "start_conc0",
+#'                               target_params = "half.life",
+#'                               target_groups = data.frame(analyte = "Analyte1"))
 #' @export
-interval_add_impute <- function(data, target_impute, ...) {
+interval_add_impute <- function(data, ...) {
   UseMethod("interval_add_impute", data)
 }
 
@@ -53,7 +55,7 @@ interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, targ
   if (!"impute" %in% names(data$intervals) && !is.null(data$impute)) {
     data$intervals$impute <- data$impute
     data$impute <- NA_character_
-  } else if (class(data$intervals$impute) != "character") {
+  } else if (!is.character(data$intervals$impute)) {
     stop("The 'impute' column in the intervals must be a character column.")
   }
   data$intervals <- interval_add_impute.data.frame(data$intervals, target_impute, after, target_params, target_groups)
@@ -64,7 +66,7 @@ interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, targ
 #'
 #' This is an internal helper function used to add an impute method to the impute column.
 #'
-#' @param impute_col_value The current value of the impute column.
+#' @param impute_vals Character vector of impute methods.
 #' @param target_impute The imputation method to be added.
 #' @param after Numeric value specifying the position after which the imputation method should be added.
 #' @return A character string or vector with the added impute method.
@@ -156,7 +158,7 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
 #'   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
 #'   time = rep(0:5, 2),
 #'   ID = rep(1:2, each = 6),
-#'   analyte = rep(c("Analyte1", "Analyte2"), each = 6),
+#'   analyte = rep(c("Analyte1", "Analyte2"), each = 6)
 #' )
 #'
 #' d_dose <- data.frame(
@@ -179,7 +181,10 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_remove_impute function
-#' o_data <- interval_remove_impute(data = o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
+#' o_data <- interval_remove_impute(data = o_data,
+#'                                  target_impute = "start_conc0",
+#'                                  target_params = c("half.life"),
+#'                                  target_groups = data.frame(analyte = "Analyte1"))
 #' @export
 interval_remove_impute <- function(data, ...) {
   UseMethod("interval_remove_impute", data)

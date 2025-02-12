@@ -7,11 +7,11 @@
 add_impute_method(impute_vals, target_impute, after)
 }
 \arguments{
+\item{impute_vals}{Character vector of impute methods.}
+
 \item{target_impute}{The imputation method to be added.}
 
 \item{after}{Numeric value specifying the position after which the imputation method should be added.}
-
-\item{impute_col_value}{The current value of the impute column.}
 }
 \value{
 A character string or vector with the added impute method.

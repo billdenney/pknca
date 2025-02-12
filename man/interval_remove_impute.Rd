@@ -22,7 +22,7 @@ d_conc <- data.frame(
   conc = c(1, 0.6, 0.2, 0.1, 0.9, 0.4, 1.2, 0.8, 0.3, 0.2, 1.1, 0.5),
   time = rep(0:5, 2),
   ID = rep(1:2, each = 6),
-  analyte = rep(c("Analyte1", "Analyte2"), each = 6),
+  analyte = rep(c("Analyte1", "Analyte2"), each = 6)
 )
 
 d_dose <- data.frame(
@@ -45,5 +45,8 @@ intervals <- data.frame(
 o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 
 # Apply interval_remove_impute function
-o_data <- interval_remove_impute(data = o_data, target_impute = "start_conc0", target_params = c("half.life"), target_groups = data.frame(analyte = "Analyte1"))
+o_data <- interval_remove_impute(data = o_data,
+                                 target_impute = "start_conc0",
+                                 target_params = c("half.life"),
+                                 target_groups = data.frame(analyte = "Analyte1"))
 }
