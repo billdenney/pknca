@@ -4,16 +4,7 @@
 \alias{interval_add_impute}
 \title{Add specified imputation methods to the intervals in a PKNCAdata or data.frame object.}
 \usage{
-interval_add_impute(
-  data,
-  target_impute,
-  after = Inf,
-  target_params = NULL,
-  target_groups = NULL,
-  impute_column = NULL,
-  allow_duplication = TRUE,
-  new_rows_after_original = TRUE
-)
+interval_add_impute(data, target_impute, ...)
 }
 \arguments{
 \item{data}{A PKNCAdata object containing the intervals and data components, or a data frame of intervals.}
@@ -28,21 +19,16 @@ If missing, all TRUE in the intervals are taken.}
 
 \item{target_groups}{A data frame specifying the intervals to be targeted (optional).
 If missing, all relevant groups are considered.}
-
-\item{impute_column}{A character string specifying the name of the impute column (optional).
-If missing, the default name "impute" is used.}
-
-\item{allow_duplication}{A boolean specifying whether to allow creating duplicates of the target_impute
-in the impute column (optional). Default is TRUE.}
-
-\item{new_rows_after_original}{A boolean specifying whether the new rows should be added after the original rows
-(optional). Default is TRUE.}
 }
 \value{
 A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
 }
 \description{
 Add specified imputation methods to the intervals in a PKNCAdata or data.frame object.
+}
+\details{
+. If already present the target_impute method will be added substituting the existing one. All new intervals
+created will be added right after their original ones.
 }
 \examples{
 d_conc <- data.frame(

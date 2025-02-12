@@ -2,39 +2,20 @@
 % Please edit documentation in R/intervals_support_funs.R
 \name{interval_remove_impute}
 \alias{interval_remove_impute}
-\title{Remove specified imputation methods from the intervals in a PKNCAdata or data.frame object.}
+\title{Remove specified imputation methods from the intervals in a PKNCAdata or data.frame (intervals) object.}
 \usage{
-interval_remove_impute(
-  data,
-  target_impute,
-  target_params = NULL,
-  target_groups = NULL,
-  impute_column = NULL,
-  new_rows_after_original = TRUE
-)
+interval_remove_impute(data, ...)
 }
 \arguments{
 \item{data}{A PKNCAdata object containing the intervals and data components, or a data frame of intervals.}
 
-\item{target_impute}{A character string specifying the imputation method to be removed.}
-
-\item{target_params}{A character vector specifying the parameters to be targeted (optional).
-If missing, all TRUE in the intervals are taken.}
-
-\item{target_groups}{A data frame specifying the intervals to be targeted (optional).
-If missing, all relevant groups are considered.}
-
-\item{impute_column}{A character string specifying the name of the impute column (optional).
-If missing, the default name "impute" is used.}
-
-\item{new_rows_after_original}{A boolean specifying whether the new rows should be added after the original rows
-(optional). Default is TRUE.}
+\item{target_impute}{A character string specifying the imputation method to remove.}
 }
 \value{
 A modified object with the specified imputation methods removed from the targeted intervals.
 }
 \description{
-Remove specified imputation methods from the intervals in a PKNCAdata or data.frame object.
+Remove specified imputation methods from the intervals in a PKNCAdata or data.frame (intervals) object.
 }
 \examples{
 d_conc <- data.frame(
@@ -42,7 +23,6 @@ d_conc <- data.frame(
   time = rep(0:5, 2),
   ID = rep(1:2, each = 6),
   analyte = rep(c("Analyte1", "Analyte2"), each = 6),
-  include_hl = c(FALSE, NA, TRUE, TRUE, TRUE, TRUE, FALSE, NA, TRUE, TRUE, TRUE, TRUE)
 )
 
 d_dose <- data.frame(
@@ -57,7 +37,6 @@ o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 intervals <- data.frame(
   start = c(0, 0, 0),
   end = c(3, 5, Inf),
-  half.life = c(TRUE, FALSE, TRUE),
   cmax = c(TRUE, TRUE, TRUE),
   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
   analyte = c("Analyte1", "Analyte2", "Analyte1")
