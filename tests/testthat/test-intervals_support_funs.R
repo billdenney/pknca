@@ -57,6 +57,13 @@ test_that("interval_add_impute handles impute column with NA values correctly", 
                           impute = c("new_impute", "new_impute", "new_impute")))
 })
 
+test_that("interval_add_impute reports an error to the user when the impute column is not a character", {
+  o_data_not_character_impute <- o_data
+  o_data_not_character_impute$intervals$impute <- 1
+  expect_error(interval_add_impute(o_data_not_character_impute, target_impute = "new_impute"),
+                 "The 'impute' column in the intervals data.frame must be a character column.")
+})
+
 test_that("interval_add_impute handles missing impute column by creating it with NA_character_ and then adding the impute without warning", {
   o_data_no_impute <- o_data
   o_data_no_impute$intervals <- o_data_no_impute$intervals[, !names(o_data_no_impute$intervals) %in% "impute"]
@@ -210,6 +217,13 @@ test_that("interval_remove_impute handles impute column with NA values correctly
                           impute = c(NA_character_, NA_character_, NA_character_)))
 })
 
+test_that("interval_remove_impute reports an error to the user when the impute column is not a character", {
+  o_data_not_character_impute <- o_data
+  o_data_not_character_impute$intervals$impute <- 1
+  expect_error(interval_remove_impute(o_data_not_character_impute, target_impute = "start_conc0"),
+               "The 'impute' column in the intervals data.frame must be a character column.")
+})
+
 test_that("interval_remove_impute handles missing impute column & global impute by not modifying the dataset and warns the user", {
   o_data_no_impute <- o_data
   o_data_no_impute$intervals <- o_data_no_impute$intervals[, !names(o_data_no_impute$intervals) %in% "impute"]
@@ -355,4 +369,13 @@ test_that("interval_add_impute and interval_remove_impute are inverses of each o
   result_add <- interval_add_impute(o_data, target_impute = "new_impute")
   result_remove <- interval_remove_impute(result_add, target_impute = "new_impute")
   expect_equal(result_remove, o_data)
+})
+
+# Specific tests for helper functions
+test_that("add_impute_method do not crush when impute_vals is empty, but returns the empty vector", {
+  expect_equal(add_impute_method(c(), "new_impute"), c())
+})
+
+test_that("remove_impute_method do not crush when impute_vals is empty, but returns the empty vector", {
+  expect_equal(remove_impute_method(c(), "new_impute"), c())
 })
