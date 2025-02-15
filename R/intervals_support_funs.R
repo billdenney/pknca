@@ -8,6 +8,7 @@
 #' If missing, all TRUE in the intervals are taken.
 #' @param target_groups A data frame specifying the intervals to be targeted (optional). 
 #' If missing, all relevant groups are considered.
+#' @param ... arguments passed to `interval_add_impute`.
 #' @details. If already present the target_impute method will be added substituting the existing one. All new intervals 
 #' created will be added right after their original ones.
 #' @return A modified PKNCAdata object with the specified imputation methods added to the targeted intervals.
@@ -50,7 +51,7 @@ interval_add_impute <- function(data, ...) {
 }
 
 #' @export
-interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL) {
+interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, target_params = NULL, target_groups = NULL, ...) {
   # If the impute column is not present, add it to the intervals
   if (!"impute" %in% names(data$intervals) && !is.null(data$impute)) {
     data$intervals$impute <- data$impute
@@ -81,7 +82,7 @@ add_impute_method <- function(impute_vals, target_impute, after) {
     vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
 }
 #' @export
-interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf, target_params = NULL, target_groups = NULL) {
+interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf, target_params = NULL, target_groups = NULL, ...) {
   # Validate inputs
   if (missing(intervals) || missing(target_impute)) {
     stop("Both 'data' and 'target_impute' must be provided.")
@@ -168,6 +169,7 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
 #'
 #' @inheritParams interval_add_impute
 #' @param target_impute A character string specifying the imputation method to remove.
+#' @param ... arguments passed to `interval_remove_impute`.
 #' @return A modified object with the specified imputation methods removed from the targeted intervals.
 #' @examples
 #' d_conc <- data.frame(
@@ -261,7 +263,8 @@ interval_remove_impute.data.frame <- function(intervals, target_impute, target_p
 
   # Ensure the impute column exists and is a character column
   if (!"impute" %in% colnames(intervals)) {
-    intervals$impute <- NA_character_
+    warning("No default impute column identified. No impute methods to remove")
+    return(intervals)
   } else if (!is.character(intervals$impute)) {
     stop("The 'impute' column in the intervals data.frame must be a character column.")
   }

@@ -9,6 +9,8 @@ interval_add_impute(data, ...)
 \arguments{
 \item{data}{A PKNCAdata object containing the intervals and data components, or a data frame of intervals.}
 
+\item{...}{arguments passed to \code{interval_add_impute}.}
+
 \item{target_impute}{A character string specifying the imputation method to be added.}
 
 \item{after}{Numeric value specifying the position after which the imputation method should be added (optional).

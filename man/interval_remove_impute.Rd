@@ -9,6 +9,8 @@ interval_remove_impute(data, ...)
 \arguments{
 \item{data}{A PKNCAdata object containing the intervals and data components, or a data frame of intervals.}
 
+\item{...}{arguments passed to \code{interval_remove_impute}.}
+
 \item{target_impute}{A character string specifying the imputation method to remove.}
 }
 \value{
