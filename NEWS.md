@@ -35,7 +35,7 @@ the dosing including dose amount and route.
 * New functions are available to simplify the modification of intervals: 
   `intervals_add_impute()`, `intervals_remove_impute()`
 
-# Minor changes (unlikely to affect PKNCA use)
+## Minor changes (unlikely to affect PKNCA use)
 
 * PKNCA will now verify the `intervals` data.frame when creating PKNCAdata. The
   checking includes confirming intended column naming and ensuring the correct
