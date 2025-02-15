@@ -32,8 +32,10 @@ the dosing including dose amount and route.
 * `group_vars()` methods were added for `PKNCAdata` and `PKNCAresults` objects.
 * If intervals have attributes on the columns, there will no longer be an error
   during parameter calculation, and the attributes are preserved (#381)
+* New functions are available to simplify the modification of intervals: 
+  `intervals_add_impute()`, `intervals_remove_impute()`
 
-# Minor changes (unlikely to affect PKNCA use)
+## Minor changes (unlikely to affect PKNCA use)
 
 * PKNCA will now verify the `intervals` data.frame when creating PKNCAdata. The
   checking includes confirming intended column naming and ensuring the correct
