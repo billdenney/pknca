@@ -66,9 +66,11 @@ test_that("interval_add_impute reports an error to the user when the impute colu
 
 test_that("interval_add_impute handles missing impute column by creating it with NA_character_ and then adding the impute without warning", {
   o_data_no_impute <- o_data
-  o_data_no_impute$intervals <- o_data_no_impute$intervals[, !names(o_data_no_impute$intervals) %in% "impute"]
-  result <- suppressWarnings(interval_add_impute(o_data_no_impute, target_impute = "new_impute"))
-  expect_equal(result$intervals, transform(o_data_no_impute$intervals, impute = "new_impute"))
+  o_data_no_impute$intervals$impute <- NULL
+  result_PKNCAdata <- interval_add_impute(o_data_no_impute, target_impute = "new_impute")
+  expect_equal(result_PKNCAdata$intervals, transform(o_data_no_impute$intervals, impute = "new_impute"))
+  result_data.frame <- interval_add_impute(o_data_no_impute$intervals, target_impute = "new_impute")
+  expect_equal(result_data.frame, transform(o_data_no_impute$intervals, impute = "new_impute"))
 })
 
 test_that("interval_add_impute with no optional parameters uses all relevant cases, with new intervals below", {
@@ -111,12 +113,12 @@ test_that("interval_add_impute handles multiple target_params correctly", {
 })
 
 test_that("interval_add_impute makes no changes and warns when no matching intervals are found", {
-  result <- suppressWarnings(interval_remove_impute(o_data, 
+  result <- suppressWarnings(interval_remove_impute(o_data,
                                                     target_impute = "start_conc0",
                                                     target_groups = data.frame(analyte = "Analyte3")))
   expect_equal(result, o_data)
-  
-  expect_warning(interval_remove_impute(o_data, 
+
+  expect_warning(interval_remove_impute(o_data,
                                         target_impute = "start_conc0",
                                         target_groups = data.frame(analyte = "Analyte3")),
                  "No intervals found with the specified target parameters, groups and/or impute method. No changes made.")
@@ -157,15 +159,15 @@ test_that("interval_add_impute includes new rows with added imputations right af
                data.frame(analyte = c("Analyte1", "Analyte1", "Analyte2", "Analyte2", "Analyte1", "Analyte1"),
                           half.life = c(TRUE, NA, TRUE, NA, TRUE, NA),
                           cmax = c(NA, TRUE, NA, TRUE, NA, TRUE),
-                          impute = c("start_conc0,start_predose", 
-                                     "start_conc0,start_predose,new_impute", 
-                                     "start_predose", 
-                                     "start_predose,new_impute", 
-                                     "start_conc0", 
+                          impute = c("start_conc0,start_predose",
+                                     "start_conc0,start_predose,new_impute",
+                                     "start_predose",
+                                     "start_predose,new_impute",
+                                     "start_conc0",
                                      "start_conc0,new_impute")))
 })
 
-test_that("interval_add_impute do not add a new interval row when a non-target parameter and a target parameter share the target impute at the after position",{
+test_that("interval_add_impute do not add a new interval row when a non-target parameter and a target parameter share the target impute at the after position", {
   intervals_mixed <- data.frame(
     start = c(0, 0),
     end = c(24, 48),
@@ -228,13 +230,17 @@ test_that("interval_remove_impute handles missing impute column & global impute 
   o_data_no_impute <- o_data
   o_data_no_impute$intervals <- o_data_no_impute$intervals[, !names(o_data_no_impute$intervals) %in% "impute"]
   o_data_no_impute$impute <- NA_character_
-  result <- suppressWarnings(interval_remove_impute(o_data_no_impute, target_impute = "start_conc0"))
-  expect_equal(result, o_data_no_impute)
+  result_PKNCAdata <- suppressWarnings(interval_remove_impute(o_data_no_impute, target_impute = "start_conc0"))
+  expect_equal(result_PKNCAdata, o_data_no_impute)
+  result_data.frame <- suppressWarnings(interval_remove_impute(o_data_no_impute$intervals, target_impute = "start_conc0"))
+  expect_equal(result_data.frame, o_data_no_impute$intervals)
   expect_warning(interval_remove_impute(o_data_no_impute, target_impute = "start_conc0"),
                  "No default impute column or global method identified. No impute methods to remove")
+  expect_warning(interval_remove_impute(o_data_no_impute$intervals, target_impute = "start_conc0"),
+                 "No default impute column identified. No impute methods to remove")
 })
 
-test_that("interval_remove_impute handles missing impute column, using global impute when possible in the best way", {
+test_that("interval_remove_impute.PKNCAdata handles missing impute column, using global impute when possible in the best way", {
   o_data_no_impute <- o_data
   o_data_no_impute$intervals <- o_data_no_impute$intervals[, !names(o_data_no_impute$intervals) %in% "impute"]
   o_data_no_impute$impute <- "start_conc0, start_predose"
@@ -373,9 +379,9 @@ test_that("interval_add_impute and interval_remove_impute are inverses of each o
 
 # Specific tests for helper functions
 test_that("add_impute_method do not crush when impute_vals is empty, but returns the empty vector", {
-  expect_equal(add_impute_method(c(), "new_impute"), c())
+  expect_equal(add_impute_method(character(), "new_impute"), character())
 })
 
 test_that("remove_impute_method do not crush when impute_vals is empty, but returns the empty vector", {
-  expect_equal(remove_impute_method(c(), "new_impute"), c())
+  expect_equal(remove_impute_method(character(), "new_impute"), character())
 })
