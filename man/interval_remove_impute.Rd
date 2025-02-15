@@ -37,6 +37,7 @@ o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 intervals <- data.frame(
   start = c(0, 0, 0),
   end = c(3, 5, Inf),
+  half.life = c(TRUE, FALSE, TRUE),
   cmax = c(TRUE, TRUE, TRUE),
   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
   analyte = c("Analyte1", "Analyte2", "Analyte1")
@@ -47,6 +48,6 @@ o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 # Apply interval_remove_impute function
 o_data <- interval_remove_impute(data = o_data,
                                  target_impute = "start_conc0",
-                                 target_params = c("half.life"),
+                                 target_params = "half.life",
                                  target_groups = data.frame(analyte = "Analyte1"))
 }
