@@ -18,7 +18,7 @@
 #'   ID = rep(1:2, each = 6),
 #'   analyte = rep(c("Analyte1", "Analyte2"), each = 6)
 #' )
-#'
+
 #' d_dose <- data.frame(
 #'   dose = c(100, 200),
 #'   time = c(0, 0),
@@ -31,7 +31,7 @@
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
 #'   end = c(3, 5, Inf),
-#'   half.life = c(TRUE, FALSE, TRUE),
+#'   half.life = c(TRUE, TRUE, TRUE),
 #'   cmax = c(TRUE, TRUE, TRUE),
 #'   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
 #'   analyte = c("Analyte1", "Analyte2", "Analyte1")
@@ -40,7 +40,7 @@
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_add_impute function
-#' o_data <- interval_add_impute(o_data, 
+#' o_data <- interval_add_impute(o_data,
 #'                               target_impute = "start_conc0",
 #'                               target_params = "half.life",
 #'                               target_groups = data.frame(analyte = "Analyte1"))
@@ -124,14 +124,32 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
   ## 2. The target parameters (at least one calculated: not-FALSE/not-NA)
   target_params_data <- intervals[, target_params, drop = FALSE]
   target_rows <- target_rows & (rowSums(!is.na(replace(target_params_data, target_params_data == FALSE, NA))) > 0)
-  
-  # Create for the target parameters new intervals with the new impute method. Index them to be after the original intervals.
-  new_intervals <- intervals[target_rows, ]
-  new_intervals[, setdiff(param_cols, target_params)] <- NA
-  new_intervals[["impute"]] <- add_impute_method(new_intervals[["impute"]], target_impute, after)
-  new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
+  ## 3. The target impute method is not already present and correctly positioned
+  after_vals <- lapply(strsplit(intervals$impute, "[ ,]+"), function(x) {
+    after.x <- which(x == target_impute)
+    if (length(after.x) == 0) return(NA)
+    if (after.x == length(x)) Inf else after.x
+  }) |> unlist()
+  target_rows <- target_rows & (after_vals != after | is.na(after_vals))
 
-  # Remove the target parameters from the original target intervals
+  new_intervals <- intervals[target_rows, ]
+
+  # If no target intervals are found, nothing to change
+  if (nrow(new_intervals) == 0) {
+    warning("No intervals found with the specified target parameters, groups, and/or after-change needed. No changes made.")
+    return(intervals[, !names(intervals) %in% index_colname])
+    
+    # If target intervals are found...
+  } else {
+    # The new imputation should not be used non-target parameters
+    new_intervals[, setdiff(param_cols, target_params)] <- NA
+    
+    # Index the new intervals to be after the original ones
+    new_intervals[["impute"]] <- add_impute_method(new_intervals[["impute"]], target_impute, after)
+    new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
+  }
+
+  # Remove the target parameters calculation from the original target intervals
   intervals[target_rows, target_params] <- NA
 
   # Combine the new and original intervals
@@ -160,30 +178,31 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
 #'   ID = rep(1:2, each = 6),
 #'   analyte = rep(c("Analyte1", "Analyte2"), each = 6)
 #' )
-#'
+#' 
 #' d_dose <- data.frame(
 #'   dose = c(100, 200),
 #'   time = c(0, 0),
 #'   ID = c(1, 2)
 #' )
-#'
+#' 
 #' o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte)
 #' o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
-#'
+#' 
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
 #'   end = c(3, 5, Inf),
+#'   half.life = c(TRUE, FALSE, TRUE),
 #'   cmax = c(TRUE, TRUE, TRUE),
 #'   impute = c("start_conc0,start_predose", "start_predose", "start_conc0"),
 #'   analyte = c("Analyte1", "Analyte2", "Analyte1")
 #' )
-#'
+#' 
 #' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
-#'
+#' 
 #' # Apply interval_remove_impute function
 #' o_data <- interval_remove_impute(data = o_data,
 #'                                  target_impute = "start_conc0",
-#'                                  target_params = c("half.life"),
+#'                                  target_params = "half.life",
 #'                                  target_groups = data.frame(analyte = "Analyte1"))
 #' @export
 interval_remove_impute <- function(data, ...) {
@@ -276,14 +295,24 @@ interval_remove_impute.data.frame <- function(intervals, target_impute, target_p
   target_rows <- target_rows & (rowSums(!is.na(replace(target_params_data, target_params_data == FALSE, NA))) > 0)
   ## 3. The target impute method to be removed (contained in the string)
   target_rows <- target_rows & grepl(target_impute, intervals$impute, fixed = TRUE)
-
-  # Create new intervals for the target parameters excluding the impute method (and indexed after the original intervals)
   new_intervals <- intervals[target_rows, ]
-  new_intervals[, setdiff(param_cols, target_params)] <- NA
-  new_intervals[["impute"]] <- remove_impute_method(new_intervals[["impute"]], target_impute)
-  new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
+  
+  # If no target intervals are found, nothing to change
+  if (nrow(new_intervals) == 0) {
+    warning("No intervals found with the specified target parameters, groups and/or impute method. No changes made.")
+    return(intervals[, !names(intervals) %in% index_colname])
 
-  # Remove the target parameters from the original target intervals
+  # If target intervals are found...
+  } else {
+    # The new imputation should not involve non-target parameters
+    new_intervals[, setdiff(param_cols, target_params)] <- NA
+    
+    # Index the new intervals to be after the original ones
+    new_intervals[["impute"]] <- remove_impute_method(new_intervals[["impute"]], target_impute)
+    new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
+  }
+
+  # Remove the target parameters calculation from the original target intervals
   intervals[target_rows, target_params] <- NA
 
   # Combine the new and original intervals

@@ -27,7 +27,6 @@ o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte, include_half.life = "inc
 o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 
-
 ### Test interval_add_impute
 
 test_that("interval_add_impute throws an error if either data or target_impute is missing", {
@@ -104,6 +103,18 @@ test_that("interval_add_impute handles multiple target_params correctly", {
                           impute = c("start_conc0,start_predose,new_impute", "start_predose,new_impute", "start_conc0,new_impute")))
 })
 
+test_that("interval_add_impute makes no changes and warns when no matching intervals are found", {
+  result <- suppressWarnings(interval_remove_impute(o_data, 
+                                                    target_impute = "start_conc0",
+                                                    target_groups = data.frame(analyte = "Analyte3")))
+  expect_equal(result, o_data)
+  
+  expect_warning(interval_remove_impute(o_data, 
+                                        target_impute = "start_conc0",
+                                        target_groups = data.frame(analyte = "Analyte3")),
+                 "No intervals found with the specified target parameters, groups and/or impute method. No changes made.")
+})
+
 test_that("interval_add_impute handles mixed TRUE/FALSE for cmax and half.life correctly", {
   intervals_mixed <- data.frame(
     start = c(0, 0, 0, 0),
@@ -147,6 +158,28 @@ test_that("interval_add_impute includes new rows with added imputations right af
                                      "start_conc0,new_impute")))
 })
 
+test_that("interval_add_impute do not add a new interval row when a non-target parameter and a target parameter share the target impute at the after position",{
+  intervals_mixed <- data.frame(
+    start = c(0, 0),
+    end = c(24, 48),
+    half.life = c(TRUE, TRUE),
+    cmax = c(TRUE, TRUE),
+    impute = c("start_conc0,start_predose", "start_predose"),
+    analyte = c("Analyte1", "Analyte2"),
+    ID = 1
+  )
+  
+  o_data_mixed <- PKNCAdata(o_conc, o_dose, intervals = intervals_mixed)
+  result <- suppressWarnings(interval_add_impute(o_data_mixed,
+                                                 target_impute = "start_predose",
+                                                 target_param = "cmax",
+                                                 after = Inf))
+  expect_equal(result$intervals[, c("analyte", "half.life", "cmax", "impute")],
+               data.frame(analyte = c("Analyte1", "Analyte2"),
+                          half.life = c(TRUE, TRUE),
+                          cmax = c(TRUE, TRUE),
+                          impute = c("start_conc0,start_predose", "start_predose")))
+})
 
 ### Test interval_remove_impute
 test_that("interval_remove_impute throws an error if either data or target_impute is missing", {
@@ -249,6 +282,18 @@ test_that("interval_remove_impute handles multiple target_params correctly", {
                           impute = c("start_predose", "start_predose", "")))
 })
 
+test_that("interval_remove_impute makes no changes and warns when no matching intervals are found", {
+  result <- suppressWarnings(interval_remove_impute(o_data, 
+                                                    target_impute = "start_conc0",
+                                                    target_groups = data.frame(analyte = "Analyte3")))
+  expect_equal(result, o_data)
+  
+  expect_warning(interval_remove_impute(o_data, 
+                                        target_impute = "start_conc0",
+                                        target_groups = data.frame(analyte = "Analyte3")),
+                 "No intervals found with the specified target parameters, groups and/or impute method. No changes made.")
+})
+
 test_that("interval_remove_impute handles with specificity impute character method with multiple imputes", {
   o_data_multiple_imputes <- o_data
   o_data_multiple_imputes$intervals$impute <- "start_conc0,start_predose"
@@ -293,7 +338,7 @@ test_that("interval_remove_impute removes properly all target_impute even if a m
                           impute = c("start_predose", "start_predose", "start_predose")))
 })
 
-test_that("interval_add_impute includes new rows with added imputations right after the original ones", {
+test_that("interval_remove_impute includes new rows with added imputations right after the original ones", {
   result <- interval_remove_impute(o_data, target_impute = "start_conc0", target_param = "cmax")
   expect_equal(result$intervals[, c("analyte", "half.life", "cmax", "impute")],
                data.frame(analyte = c("Analyte1", "Analyte1", "Analyte2", "Analyte1", "Analyte1"),
@@ -306,3 +351,8 @@ test_that("interval_add_impute includes new rows with added imputations right af
                                      "")))
 })
 
+test_that("interval_add_impute and interval_remove_impute are inverses of each other", {
+  result_add <- interval_add_impute(o_data, target_impute = "new_impute")
+  result_remove <- interval_remove_impute(result_add, target_impute = "new_impute")
+  expect_equal(result_remove, o_data)
+})
