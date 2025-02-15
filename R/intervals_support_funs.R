@@ -55,8 +55,6 @@ interval_add_impute.PKNCAdata <- function(data, target_impute, after = Inf, targ
   if (!"impute" %in% names(data$intervals) && !is.null(data$impute)) {
     data$intervals$impute <- data$impute
     data$impute <- NA_character_
-  } else if (!is.character(data$intervals$impute)) {
-    stop("The 'impute' column in the intervals must be a character column.")
   }
   data$intervals <- interval_add_impute.data.frame(data$intervals, target_impute, after, target_params, target_groups)
   data
@@ -96,7 +94,7 @@ interval_add_impute.data.frame <- function(intervals, target_impute, after = Inf
   if (!"impute" %in% colnames(intervals)) {
     intervals$impute <- NA_character_
   } else if (!is.character(intervals$impute)) {
-    stop("The 'impute' column in the data frame must be a character column.")
+    stop("The 'impute' column in the intervals data.frame must be a character column.")
   }
 
   # Add an index column to preserve the original order
@@ -265,7 +263,7 @@ interval_remove_impute.data.frame <- function(intervals, target_impute, target_p
   if (!"impute" %in% colnames(intervals)) {
     intervals$impute <- NA_character_
   } else if (!is.character(intervals$impute)) {
-    stop("The 'impute' column in the data frame must be a character column.")
+    stop("The 'impute' column in the intervals data.frame must be a character column.")
   }
 
   # Add an index column to preserve the original order
