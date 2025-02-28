@@ -15,7 +15,12 @@
 #' @family PKNCA objects
 #' @export
 PKNCAresults <- function(result, data, exclude = NULL) {
-  result <- pknca_unit_conversion(result = result, units = data$units)
+  result <-
+    pknca_unit_conversion(
+      result = result,
+      units = data$units,
+      allow_partial_missing_units = data$options$allow_partial_missing_units
+    )
   # Add all the parts into the object
   ret <- list(result=result,
               data=data)
