@@ -73,6 +73,7 @@
 <li>
 <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars()</a></code> methods were added for <code>PKNCAdata</code> and <code>PKNCAresults</code> objects.</li>
 <li>If intervals have attributes on the columns, there will no longer be an error during parameter calculation, and the attributes are preserved (<a href="https://github.com/billdenney/pknca/issues/381" class="external-link">#381</a>)</li>
+<li>When adding units, if some but not all units are provided, then an error will be raised. This error can be converted to a warning using the option <code>allow_partial_missing_units = TRUE</code>. (<a href="https://github.com/billdenney/pknca/issues/398" class="external-link">#398</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
