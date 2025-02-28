@@ -417,3 +417,78 @@ PKNCA.set.summary(
   point=business.geomean,
   spread=business.geocv
 )
+
+#' Determine which concentrations were used for half-life calculation
+#'
+#' @param object A PKNCAresults object
+#' @returns A logical vector with `TRUE` if the point was used for half-life,
+#'   `FALSE` if it was not used for half-life but the half-life was calculated
+#'   for the interval, and `NA` if half-life was not calculated for the
+#'   interval. If a row is excluded from all calculations, it is set to `NA` as
+#'   well.
+#' @examples
+#' o_conc <- PKNCAconc(Theoph, conc~Time|Subject)
+#' o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+#' o_nca <- pk.nca(o_data)
+#' get_halflife_points(o_nca)
+#' @export
+get_halflife_points <- function(object) {
+  # Insert a ROWID column so that we can reconstruct the order at the end
+  rowid_col <- paste0(max(names(as.data.frame(as_PKNCAconc(object)))), "ROWID")
+  object$data$conc$data[[rowid_col]] <- seq_len(nrow(object$data$conc$data))
+
+  # Find the concentrations and results that go together
+  splitdata <- full_join_PKNCAdata(as_PKNCAdata(object), extra_conc_cols = rowid_col)
+  splitresults_prep <- as.data.frame(object)
+  splitresults <-
+    tidyr::nest(
+      splitresults_prep,
+      data_results = !c(intersect(names(splitresults_prep), names(splitdata)), "start", "end")
+    )
+  base_results <-
+    dplyr::inner_join(
+      splitdata, splitresults,
+      by = intersect(names(splitdata), names(splitresults))
+    )
+
+  ret <- rep(NA, nrow(as.data.frame(as_PKNCAconc(object))))
+  for (idx in seq_len(nrow(base_results))) {
+    ret_current <-
+      get_halflife_points_single(
+        conc = base_results$data_conc[[idx]],
+        results = base_results$data_results[[idx]],
+        rowid_col = rowid_col
+      )
+    if (any(!is.na(ret[ret_current$rowid]))) {
+      stop(
+        "More than one half-life calculation was attempted on the following rows: ",
+        paste(ret_current$rowid, collapse = ", ")
+      )
+    }
+    ret[ret_current$rowid] <- ret_current$hl_used
+  }
+  ret
+}
+
+# Get the half-life points for a single interval
+get_halflife_points_single <- function(conc, results, rowid_col) {
+  # "include_half.life" and "exclude_half.life" columns are present in conc, if
+  # they apply. That comes from `full_join_PKNCAdata()`
+  ret <- data.frame(hl_used = NA, rowid = conc[[rowid_col]])
+  if ("half.life" %in% results$PPTESTCD) {
+    if ("include_half.life" %in% names(conc) && !all(is.na(conc$include_half.life))) {
+      ret$hl_used <- conc$include_half.life %in% TRUE
+    } else {
+      time_first <- results$PPORRES[results$PPTESTCD %in% "lambda.z.time.first"]
+      time_last <- results$PPORRES[results$PPTESTCD %in% "tlast"]
+      excluded <-
+        if ("exclude_half.life" %in% names(conc)) {
+          conc$exclude_half.life %in% TRUE
+        } else {
+          FALSE
+        }
+      ret$hl_used <- (time_first <= conc$time) & (conc$time <= time_last) & !excluded
+    }
+  }
+  ret
+}
