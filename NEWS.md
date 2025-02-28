@@ -35,6 +35,8 @@ the dosing including dose amount and route.
 * When adding units, if some but not all units are provided, then an error will
   be raised. This error can be converted to a warning using the option
   `allow_partial_missing_units = TRUE`. (#398)
+* A new function `get_halflife_points()` lets users know which points were used
+  for half-life calculation. (#387)
 
 # Minor changes (unlikely to affect PKNCA use)
 
