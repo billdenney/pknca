@@ -83,7 +83,8 @@ test_that("PKNCA.options", {
           tmax = c(FALSE, TRUE),
           cmax = c(FALSE, TRUE)
         )
-      )
+      ),
+      allow_partial_missing_units = FALSE
     )
   )
 
@@ -170,7 +171,7 @@ test_that("PKNCA.options", {
                regexp="conc.blq must be a scalar")
   expect_error(PKNCA.options(conc.blq=NA, check=TRUE),
                regexp="conc.blq must not be NA")
-  
+
   # Confirm that list-style input also works
   expect_equal(PKNCA.options(conc.blq=list(first="drop", middle=5, last="keep"),
                              check=TRUE),
@@ -186,12 +187,12 @@ test_that("PKNCA.options", {
   # Confirm that before.tmax and after.tmax must be specified together
   expect_error(PKNCA.options(conc.blq=list(after.tmax="drop"), check=TRUE),
                regexp="When given as a list, conc.blq must include all elements named 'first', 'middle' and 'last' or 'before.tmax' and 'after.tmax'.")
-  
+
   # Confirm that before.tmax and after.tmax work correctly
   expect_equal(PKNCA.options(conc.blq=list(before.tmax="drop", after.tmax="keep"),
                              check=TRUE),
                list(before.tmax="drop", after.tmax="keep"))
-  
+
   # Confirm that first/middle/last and before.tmax/after.tmax cannot be mixed and need to be complete
   names_tmax <- c("before.tmax", "after.tmax")
   names_tlast <- c("first", "middle", "last")
@@ -201,7 +202,7 @@ test_that("PKNCA.options", {
     are.names.mixed <- any(names_tmax %in% all_combinations[[i]]) && any(names_tlast %in% all_combinations[[i]])
     are.names.incomplete_tmax <- any(names_tmax %in% all_combinations[[i]]) && !all(names_tmax %in% all_combinations[[i]])
     are.names.incomplete_tlast <- any(names_tlast %in% all_combinations[[i]]) && !all(names_tlast %in% all_combinations[[i]])
-    
+
     if (are.names.mixed) {
       # Lists with mixed names for both BLQ strategies should provide an error
       expect_error(PKNCA.options(conc.blq=conc.blq.i, check=TRUE),

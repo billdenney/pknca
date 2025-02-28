@@ -361,28 +361,28 @@ test_that("intervals may be a tibble", {
 test_that("PKNCAdata units (#336)", {
   # Typical use
   d_conc <- data.frame(conc = 1, time = 0, concu_x = "A", timeu_x = "B", amountu_x = "C")
-  d_dose <- data.frame(dose = 1, time = 0, doseu_x = "B")
+  d_dose <- data.frame(dose = 1, time = 0, doseu_x = "D")
 
-  o_conc <- PKNCAconc(data = d_conc, conc~time, concu = "concu_x")
+  o_conc <- PKNCAconc(data = d_conc, conc~time, concu = "concu_x", timeu = "timeu_x")
   o_dose <- PKNCAdose(data = d_dose, dose~time, doseu = "doseu_x")
   o_data <- PKNCAdata(o_conc, o_dose)
   expect_equal(
     o_data$units,
-    pknca_units_table(concu = "A", doseu = "B")
+    pknca_units_table(concu = "A", doseu = "D", timeu = "B")
   )
   suppressWarnings(o_nca <- pk.nca(o_data))
   expect_true("Cmax (A)" %in% names(summary(o_nca)))
 
   # NA unit values are ignored
   d_conc <- data.frame(conc = 1, time = 0:1, concu_x = c("A", NA), timeu_x = "B", amountu_x = "C")
-  d_dose <- data.frame(dose = 1, time = 0, doseu_x = "B")
+  d_dose <- data.frame(dose = 1, time = 0, doseu_x = "D")
 
-  o_conc <- PKNCAconc(data = d_conc, conc~time, concu = "concu_x")
+  o_conc <- PKNCAconc(data = d_conc, conc~time, concu = "concu_x", timeu = "timeu_x")
   o_dose <- PKNCAdose(data = d_dose, dose~time, doseu = "doseu_x")
   o_data <- PKNCAdata(o_conc, o_dose)
   expect_equal(
     o_data$units,
-    pknca_units_table(concu = "A", doseu = "B")
+    pknca_units_table(concu = "A", doseu = "D", timeu = "B")
   )
   suppressWarnings(o_nca <- pk.nca(o_data))
   expect_true("Cmax (A)" %in% names(summary(o_nca)))
