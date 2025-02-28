@@ -12,7 +12,7 @@
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose, extra_cols_conc = c()) {
+full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose, extra_cols_conc = character()) {
   stopifnot(inherits(x=o_conc, what="PKNCAconc"))
   if (identical(o_dose, NA)) {
     message("No dose information provided, calculations requiring dose will return NA.")
@@ -43,7 +43,7 @@ full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose, extra_cols_conc = c())
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-full_join_PKNCAdata <- function(x, extra_conc_cols = c()) {
+full_join_PKNCAdata <- function(x, extra_conc_cols = character()) {
   conc_dose <- full_join_PKNCAconc_PKNCAdose(o_conc = x$conc, o_dose = x$dose, extra_cols_conc = extra_conc_cols)
   n_i <-
     prepare_PKNCAintervals(
@@ -127,7 +127,7 @@ prepare_PKNCAconc_sparse <- function(.dat, needed_cols, group_cols_selected) {
   ret
 }
 
-prepare_PKNCAconc <- function(.dat, extra_cols = c()) {
+prepare_PKNCAconc <- function(.dat, extra_cols = character()) {
   # Remove rows to be excluded from all calculations
   # Drop unnecessary column names
   needed_cols <-
