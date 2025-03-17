@@ -437,3 +437,19 @@ test_that("as.data.frame.PKNCAresults can filter to remove excluded parameters",
   expect_equal(nrow(as.data.frame(myresult)), 20)
   expect_equal(nrow(as.data.frame(myresult, filter_excluded = TRUE)), 12)
 })
+
+test_that("as.data.frame.PKNCAresults can filter for only requested parameters and be wide simultaneously", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, cmax = TRUE, half.life = TRUE))
+  myresult <- pk.nca(mydata)
+
+  expect_equal(nrow(as.data.frame(myresult)), 22)
+  expect_equal(nrow(as.data.frame(myresult, filter_requested = TRUE)), 4)
+  expect_named(
+    as.data.frame(myresult, filter_requested = TRUE, out_format = "wide"),
+    c("treatment", "ID", "start", "end", "exclude", "cmax", "half.life")
+  )
+})
