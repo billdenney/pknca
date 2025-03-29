@@ -185,7 +185,7 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf,
     # If target intervals are found...
   } else {
     # The new imputation should not be used non-target parameters
-    new_intervals[, setdiff(param_cols, target_params)] <- FALSE
+    new_intervals[, setdiff(param_cols, target_params)] <- NA
     
     # Index the new intervals to be after the original ones
     new_intervals[["impute"]] <- add_impute_method(new_intervals[["impute"]], target_impute, after)
@@ -193,7 +193,7 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf,
   }
   
   # Remove the target parameters calculation from the original target intervals
-  data[target_rows, target_params] <- FALSE
+  data[target_rows, target_params] <- NA
   
   # Combine the new and original intervals
   data <- rbind(data, new_intervals)
@@ -263,7 +263,7 @@ interval_remove_impute.data.frame <- function(data,
     # If target intervals are found...
   } else {
     # The new imputation should not involve non-target parameters
-    new_intervals[, setdiff(param_cols, target_params)] <- FALSE
+    new_intervals[, setdiff(param_cols, target_params)] <- NA
     
     # Index the new intervals to be after the original ones
     new_intervals[["impute"]] <- remove_impute_method(new_intervals[["impute"]], target_impute)
@@ -271,7 +271,7 @@ interval_remove_impute.data.frame <- function(data,
   }
   
   # Remove the target parameters calculation from the original target intervals
-  data[target_rows, target_params] <- FALSE
+  data[target_rows, target_params] <- NA
   
   # Combine the new and original intervals
   data <- rbind(data, new_intervals)
