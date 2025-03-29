@@ -2,22 +2,22 @@
 % Please edit documentation in R/intervals_support_funs.R
 \name{interval_remove_impute}
 \alias{interval_remove_impute}
-\title{Remove specified imputation methods from the intervals in a PKNCAdata or data.frame (intervals) object.}
+\title{Remove specified imputation from the intervals in a PKNCAdata or data.frame (intervals) object.}
 \usage{
-interval_remove_impute(data, ...)
+interval_remove_impute(data, target_impute, ...)
 }
 \arguments{
-\item{data}{A PKNCAdata object containing the intervals and data components, or a data frame of intervals.}
-
-\item{...}{arguments passed to \code{interval_remove_impute}.}
+\item{data}{A PKNCAdata object containing the intervals data frame, or a data frame of intervals.}
 
 \item{target_impute}{A character string specifying the imputation method to remove.}
+
+\item{...}{arguments passed to \code{interval_remove_impute}.}
 }
 \value{
-A modified object with the specified imputation methods removed from the targeted intervals.
+A modified object with the specified imputations removed from the targeted intervals.
 }
 \description{
-Remove specified imputation methods from the intervals in a PKNCAdata or data.frame (intervals) object.
+Remove specified imputation from the intervals in a PKNCAdata or data.frame (intervals) object.
 }
 \examples{
 d_conc <- data.frame(

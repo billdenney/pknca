@@ -11,7 +11,7 @@ add_impute_method(impute_vals, target_impute, after)
 
 \item{target_impute}{The imputation method to be added.}
 
-\item{after}{Numeric value specifying the position after which the imputation method should be added.}
+\item{after}{Numeric value specifying the index position in which to add the impute.}
 }
 \value{
 A character string or vector with the added impute method.
