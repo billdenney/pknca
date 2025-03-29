@@ -26,8 +26,8 @@
 #'   ID = c(1, 2)
 #' )
 #'
-#' o_conc <- PKNCA::PKNCAconc(d_conc, conc ~ time | ID / analyte)
-#' o_dose <- PKNCA::PKNCAdose(d_dose, dose ~ time | ID)
+#' o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte)
+#' o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 #'
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
@@ -38,7 +38,7 @@
 #'   analyte = c("Analyte1", "Analyte2", "Analyte1")
 #' )
 #'
-#' o_data <- PKNCA::PKNCAdata(o_conc, o_dose, intervals = intervals)
+#' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_add_impute function
 #' o_data <- interval_add_impute(o_data,
@@ -70,8 +70,8 @@ interval_add_impute <- function(data, target_impute, after, target_params, targe
 #'   ID = c(1, 2)
 #' )
 #'
-#' o_conc <- PKNCA::PKNCAconc(d_conc, conc ~ time | ID / analyte)
-#' o_dose <- PKNCA::PKNCAdose(d_dose, dose ~ time | ID)
+#' o_conc <- PKNCAconc(d_conc, conc ~ time | ID / analyte)
+#' o_dose <- PKNCAdose(d_dose, dose ~ time | ID)
 #'
 #' intervals <- data.frame(
 #'   start = c(0, 0, 0),
@@ -82,7 +82,7 @@ interval_add_impute <- function(data, target_impute, after, target_params, targe
 #'   analyte = c("Analyte1", "Analyte2", "Analyte1")
 #' )
 #'
-#' o_data <- PKNCA::PKNCAdata(o_conc, o_dose, intervals = intervals)
+#' o_data <- PKNCAdata(o_conc, o_dose, intervals = intervals)
 #'
 #' # Apply interval_remove_impute function
 #' o_data <- interval_remove_impute(data = o_data,
@@ -162,7 +162,7 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf,
   data[[index_colname]] <- seq_len(nrow(data))
   
   # Get all parameter column names in the data frame
-  all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
+  all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
   param_cols <- intersect(names(data), all_param_options)
   
   # If missing, define target parameters as all parameter columns with at least one TRUE.
@@ -240,7 +240,7 @@ interval_remove_impute.data.frame <- function(data,
   data[[index_colname]] <- seq_len(nrow(data))
   
   # Get all parameter column names in the data frame
-  all_param_options <- setdiff(names(PKNCA::get.interval.cols()), c("start", "end"))
+  all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
   param_cols <- intersect(names(data), all_param_options)
   
   # Handle target_params
