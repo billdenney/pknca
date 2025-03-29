@@ -117,19 +117,19 @@ interval_remove_impute.PKNCAdata <- function(data, target_impute, target_params 
       warning("No default impute column or global method identified. No impute methods to remove")
       return(data)
     }
-    
+
     # b & c. If there is a global impute..
     if (is.null(target_params) && is.null(target_groups)) {
       # b. and user changes apply to all intervals, just remove global impute
       data$impute <- remove_impute_method(data$impute, target_impute)
       return(data)
     }
-    
+
     # c. but user changes are specific (target_params or target_groups), creates an impute column
     data$intervals$impute <- data$impute
     data$impute <- NA_character_
   }
-  
+
   data$intervals <- interval_remove_impute.data.frame(data$intervals, target_impute,
                                                       target_params, target_groups)
   data
@@ -149,60 +149,60 @@ interval_add_impute.data.frame <- function(data, target_impute, after = Inf,
     warning("No impute method specified. No changes made.")
     return(data)
   }
-  
+
   # Ensure the impute column exists and is a character column
   if (!"impute" %in% colnames(data)) {
     data$impute <- NA_character_
   } else if (!is.character(data$impute)) {
     stop("The 'impute' column in the intervals data.frame must be a character column.")
   }
-  
+
   # Add an index column to preserve the original order
   index_colname <- make.unique(c("index", names(data)))[1]
   data[[index_colname]] <- seq_len(nrow(data))
-  
+
   # Get all parameter column names in the data frame
   all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
   param_cols <- intersect(names(data), all_param_options)
-  
+
   # If missing, define target parameters as all parameter columns with at least one TRUE.
   if (is.null(target_params)) {
     target_params <- param_cols
   }
-  
+
   assert_subset(target_params, all_param_options)
-  
+
   # Identify the target interval rows based on:
   target_rows <- identify_target_rows(data, target_impute, target_params, target_groups, after)
   new_intervals <- data[target_rows, ]
-  
+
   # If no target intervals are found, nothing to change
   if (nrow(new_intervals) == 0) {
     warning("No intervals found with the specified target parameters,",
             " groups, and/or after-change needed. No changes made.")
     return(data[, !names(data) %in% index_colname])
-    
+
     # If target intervals are found...
   } else {
     # The new imputation should not be used non-target parameters
     new_intervals[, setdiff(param_cols, target_params)] <- NA
-    
+
     # Index the new intervals to be after the original ones
     new_intervals[["impute"]] <- add_impute_method(new_intervals[["impute"]], target_impute, after)
     new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
   }
-  
+
   # Remove the target parameters calculation from the original target intervals
   data[target_rows, target_params] <- NA
-  
+
   # Combine the new and original intervals
   data <- rbind(data, new_intervals)
-  
+
   # Filter rows where all row values for param_cols are NA or FALSE
   param_data <- data[, param_cols, drop = FALSE]
   rows_no_params <- rowSums(replace(param_data, is.na(param_data), FALSE)) == 0
   data <- data[!rows_no_params, , drop = FALSE]
-  
+
   # Order the intervals by the index column and then remove it
   data <- data[order(data[[index_colname]]), ]
   rownames(data) <- seq_len(nrow(data))
@@ -226,7 +226,7 @@ interval_remove_impute.data.frame <- function(data,
     warning("No impute method specified. No changes made.")
     return(data)
   }
-  
+
   # Ensure the impute column exists and is a character column
   if (!"impute" %in% colnames(data)) {
     warning("No default impute column identified. No impute methods to remove")
@@ -234,53 +234,53 @@ interval_remove_impute.data.frame <- function(data,
   } else if (!is.character(data$impute)) {
     stop("The 'impute' column in the intervals data.frame must be a character column.")
   }
-  
+
   # Add an index column to preserve the original order
   index_colname <- make.unique(c("index", names(data)))[1]
   data[[index_colname]] <- seq_len(nrow(data))
-  
+
   # Get all parameter column names in the data frame
   all_param_options <- setdiff(names(get.interval.cols()), c("start", "end"))
   param_cols <- intersect(names(data), all_param_options)
-  
+
   # Handle target_params
   if (is.null(target_params)) {
     target_params <- param_cols
   }
-  
+
   assert_subset(target_params, all_param_options)
-  
+
   # Identify the interval rows that need to be changed
   target_rows <- identify_target_rows(data, target_impute, target_params, target_groups)
   new_intervals <- data[target_rows, ]
-  
+
   # If no target intervals are found, nothing to change
   if (nrow(new_intervals) == 0) {
     warning(paste0("No intervals found with the specified target parameters,",
                    " groups and/or impute method. No changes made."))
     return(data[, !names(data) %in% index_colname])
-    
+
     # If target intervals are found...
   } else {
     # The new imputation should not involve non-target parameters
     new_intervals[, setdiff(param_cols, target_params)] <- NA
-    
+
     # Index the new intervals to be after the original ones
     new_intervals[["impute"]] <- remove_impute_method(new_intervals[["impute"]], target_impute)
     new_intervals[[index_colname]] <- new_intervals[[index_colname]] + 0.5
   }
-  
+
   # Remove the target parameters calculation from the original target intervals
   data[target_rows, target_params] <- NA
-  
+
   # Combine the new and original intervals
   data <- rbind(data, new_intervals)
-  
+
   # Filter rows where all row values for param_cols are NA/FALSE
   param_data <- data[, param_cols, drop = FALSE]
   rows_no_params <- rowSums(replace(param_data, is.na(param_data), FALSE)) == 0
   data <- data[!rows_no_params, , drop = FALSE]
-  
+
   # Order the intervals by the index column and then remove it
   data <- data[order(data[[index_colname]]), ]
   rownames(data) <- seq_len(nrow(data))
@@ -299,7 +299,7 @@ interval_remove_impute.data.frame <- function(data,
 add_impute_method <- function(impute_vals, target_impute, after) {
   # Make sure the character vector has length
   if (length(impute_vals) == 0) return(impute_vals)
-  
+
   # Remove the impute from the other methods in each value
   impute_vals <- ifelse(is.na(impute_vals), "", impute_vals)
   strsplit(impute_vals, split = "[ ,]+") |>
@@ -320,13 +320,13 @@ add_impute_method <- function(impute_vals, target_impute, after) {
 remove_impute_method <- function(impute_vals, target_impute) {
   # Make sure the character vector has length
   if (length(impute_vals) == 0) return(impute_vals)
-  
+
   # Remove the impute from the other methods in each value
   impute_vals <- ifelse(is.na(impute_vals), "", impute_vals)
   impute_vals <- strsplit(impute_vals, split = "[ ,]+") |>
     lapply(FUN = setdiff, target_impute) |>
     vapply(FUN = paste, collapse = ",", FUN.VALUE = "")
-  
+
   # Replace empty strings with NA_character_
   ifelse(impute_vals == "", NA_character_, impute_vals)
 }
@@ -353,11 +353,11 @@ identify_target_rows <- function(data, target_impute, target_params, target_grou
       rep(TRUE, nrow(data))
     }
   }
-  
+
   ## 2. The target parameters (at least one calculated: not-FALSE/not-NA)
   target_params_data <- data[, target_params, drop = FALSE]
   is_target_param <- rowSums(replace(target_params_data, is.na(target_params_data), FALSE)) > 0
-  
+
   ## 3. The target impute method is not present and correctly positioned (if after is provided)
   if (!is.null(after)) {
     after_vals <- sapply(strsplit(data$impute, "[ ,]+"), \(x) {
@@ -369,7 +369,7 @@ identify_target_rows <- function(data, target_impute, target_params, target_grou
   } else {
     is_after <- grepl(target_impute, data$impute, fixed = TRUE)
   }
-  
+
   is_target_group & is_target_param & is_after
 }
 
