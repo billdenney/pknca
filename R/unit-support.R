@@ -387,9 +387,11 @@ pknca_units_add_paren <- function(unit) {
 #'
 #' @param result The results data.frame
 #' @param units The unit conversion table
+#' @param allow_partial_missing_units Should missing units be allowed for some
+#'   but not all parameters?
 #' @returns The result table with units converted
 #' @keywords Internal
-pknca_unit_conversion <- function(result, units) {
+pknca_unit_conversion <- function(result, units, allow_partial_missing_units = FALSE) {
   ret <- result
   if (!is.null(units)) {
     ret <-
@@ -397,6 +399,19 @@ pknca_unit_conversion <- function(result, units) {
         ret, units,
         by=intersect(names(ret), names(units))
       )
+    mask_missing_units <- is.na(ret$PPORRESU)
+    if (any(mask_missing_units)) {
+      msg_missing <-
+        paste(
+          "Units are provided for some but not all parameters; missing for:",
+          paste(sort(unique(ret$PPTESTCD[mask_missing_units])), collapse = ", ")
+        )
+      if (allow_partial_missing_units) {
+        warning(msg_missing)
+      } else {
+        stop(msg_missing, "\nThis error can be converted to a warning using `PKNCA.options(allow_partial_missing_units = TRUE)`")
+      }
+    }
     if ("conversion_factor" %in% names(units)) {
       ret$PPSTRES <- ret$PPORRES * ret$conversion_factor
       # Drop the conversion factor column, since it shouldn't be in the output.

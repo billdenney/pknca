@@ -4,12 +4,15 @@
 \alias{pknca_unit_conversion}
 \title{Perform unit conversion (if possible) on PKNCA results}
 \usage{
-pknca_unit_conversion(result, units)
+pknca_unit_conversion(result, units, allow_partial_missing_units = FALSE)
 }
 \arguments{
 \item{result}{The results data.frame}
 
 \item{units}{The unit conversion table}
+
+\item{allow_partial_missing_units}{Should missing units be allowed for some
+but not all parameters?}
 }
 \value{
 The result table with units converted
