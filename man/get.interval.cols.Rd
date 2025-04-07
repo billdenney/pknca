@@ -4,7 +4,10 @@
 \alias{get.interval.cols}
 \title{Get the columns that can be used in an interval specification}
 \usage{
-get.interval.cols()
+get.interval.cols(out_format = c("list", "sdtm_map"))
+}
+\arguments{
+\item{format}{description}
 }
 \value{
 A list with named elements for each parameter.  Each list element

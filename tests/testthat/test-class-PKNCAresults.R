@@ -453,3 +453,14 @@ test_that("as.data.frame.PKNCAresults can filter for only requested parameters a
     c("treatment", "ID", "start", "end", "exclude", "cmax", "half.life")
   )
 })
+
+test_that("as.data.frame.PKNCAresults can generate SDTM data", {
+  tmpconc <- generate.conc(2, 1, 0:24)
+  tmpdose <- generate.dose(tmpconc)
+  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
+  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, cmax = TRUE, half.life = TRUE))
+  myresult <- pk.nca(mydata)
+
+  d_sdtm <- as.data.frame(myresult, out_format = "sdtm")
+})

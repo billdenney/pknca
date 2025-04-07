@@ -223,17 +223,34 @@ sort.interval.cols <- function() {
 
 #' Get the columns that can be used in an interval specification
 #'
-#' @returns A list with named elements for each parameter.  Each list element
-#'   contains the parameter definition.
+#' @param out_format What output format should be provided?
+#' @returns If `out_format = "list"`, a list with named elements for each
+#'   parameter. Each list element contains the parameter definition. If
+#'   `out_format = "sdtm_map"`, a data.frame with the PKNCA PPTESTCD_PKNCA, and
+#'   the SDTM PPTEST and PPTESTCD.
 #' @seealso [check.interval.specification()] and the vignette "Selection of
 #'   Calculation Intervals"
 #' @examples
 #' get.interval.cols()
 #' @family Interval specifications
 #' @export
-get.interval.cols <- function() {
+get.interval.cols <- function(out_format = c("list", "sdtm_map")) {
+  out_format <- match.arg(out_format)
   sort.interval.cols()
-  get("interval.cols", envir=.PKNCAEnv)
+  ret <- get("interval.cols", envir=.PKNCAEnv)
+  if (out_format == "sdtm_map") {
+    browser()
+    stop()
+    ret_df <-
+      data.frame(
+        PPTESTCD_PKNCA = names(ret)
+      )
+  } else if (out_format == "list") {
+    # do nothing
+  } else {
+    stop("Please report a bug: unknown out_format, ", out_format) # nocov
+  }
+  ret
 }
 
 # Add the start and end interval columns

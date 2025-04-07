@@ -41,7 +41,7 @@ PKNCAresults <- function(result, data, exclude = NULL) {
 #' @param out.format Deprecated in favor of `out_format`
 #' @returns A data.frame (or usually a tibble) of results
 #' @export
-as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), filter_requested = FALSE, filter_excluded = FALSE, out.format = deprecated()) {
+as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide', 'sdtm'), filter_requested = FALSE, filter_excluded = FALSE, out.format = deprecated()) {
   if (!filter_excluded) {
     ret <- x$result
   } else {
@@ -77,7 +77,7 @@ as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), f
       )
   }
 
-  if (out_format %in% 'wide') {
+  if (out_format %in% "wide") {
     if ("PPSTRESU" %in% names(ret)) {
       # Use standardized results
       ret$PPTESTCD <- sprintf("%s (%s)", ret$PPTESTCD, ret$PPSTRESU)
@@ -91,6 +91,17 @@ as.data.frame.PKNCAresults <- function(x, ..., out_format = c('long', 'wide'), f
     # conversion columns to allow spread to work.
     ret <- ret[, setdiff(names(ret), c("PPSTRES", "PPSTRESU", "PPORRESU"))]
     ret <- tidyr::spread(ret, key="PPTESTCD", value="PPORRES")
+  } else if (out_format %in% "sdtm") {
+    browser()
+    stop()
+    # Group names are assumed to be handled by the user
+    ret <-
+      dplyr::rename(
+        ret,
+        PPTESTCD_pknca = .data$PPTESTCD
+      )
+    names(ret)[names(ret) %in% x$columns$exclude] <- "REASEX"
+    ret <- dplyr::left_join(ret, get.interval.cols(out_format = "sdtm_map"))
   }
   ret
 }

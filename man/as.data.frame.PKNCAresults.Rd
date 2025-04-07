@@ -8,7 +8,7 @@ data.frame.}
 \method{as.data.frame}{PKNCAresults}(
   x,
   ...,
-  out_format = c("long", "wide"),
+  out_format = c("long", "wide", "sdtm"),
   filter_requested = FALSE,
   filter_excluded = FALSE,
   out.format = deprecated()
