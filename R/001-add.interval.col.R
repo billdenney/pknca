@@ -243,7 +243,8 @@ get.interval.cols <- function(out_format = c("list", "sdtm_map")) {
     stop()
     ret_df <-
       data.frame(
-        PPTESTCD_PKNCA = names(ret)
+        PPTESTCD_PKNCA = names(ret),
+        PPTESTCD = vapply(X = ret, FUN = function(x) x$SDTM_PPTESTCD
       )
   } else if (out_format == "list") {
     # do nothing
