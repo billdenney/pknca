@@ -219,3 +219,94 @@ test_that("two-point half-life succeeds (fix #114)", {
     class = "pknca_adjr2_2points"
   )
 })
+
+test_that("get_halflife_points", {
+  o_conc <- PKNCAconc(Theoph, conc~Time|Subject)
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_nca <- pk.nca(o_data)
+  hl_points <- suppressMessages(get_halflife_points(o_nca))
+
+  # Visualize the results
+  # d_all <- Theoph
+  # d_all$hl_points <- hl_points
+  # ggplot(d_all, aes(x = Time, y = conc, colour = hl_points, groups = Subject)) +
+  #   geom_point() + geom_line()
+  expect_equal(
+    hl_points,
+    c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,
+      TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+      TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+      FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
+      FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
+      FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE,
+      FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE,
+      FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE,
+      FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
+      FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,
+      TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+      FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+      FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
+      FALSE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  )
+
+  # Setup for the remaining tests
+  d_conc <- as.data.frame(Theoph[Theoph$Subject %in% Theoph$Subject[1], ])
+  d_conc$incl <- c(FALSE, TRUE, rep(NA, 8), TRUE)
+  d_conc$excl_txt <- c(NA, "x", rep(NA, 8), "x")
+  d_conc$excl <- c(NA, TRUE, rep(NA, 6), TRUE, FALSE, TRUE)
+
+  # No modification
+  o_conc <- PKNCAconc(d_conc, conc~Time|Subject)
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_nca <- suppressMessages(suppressWarnings(pk.nca(o_data)))
+  expect_equal(
+    suppressMessages(get_halflife_points(o_nca)),
+    c(rep(FALSE, 8), rep(TRUE, 3))
+  )
+
+  # Test include_half.life
+  o_conc <- PKNCAconc(d_conc, conc~Time|Subject, include_half.life = "incl")
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_nca <- suppressMessages(suppressWarnings(pk.nca(o_data)))
+  expect_equal(
+    suppressMessages(get_halflife_points(o_nca)),
+    c(FALSE, TRUE, rep(FALSE, 8), TRUE)
+  )
+
+  # Test exclude
+  o_conc <- PKNCAconc(d_conc, conc~Time|Subject, exclude = "excl_txt")
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_nca <- suppressMessages(pk.nca(o_data))
+  expect_equal(
+    suppressMessages(get_halflife_points(o_nca)),
+    # NA values indicate that the point was excluded from all calculations
+    c(FALSE, NA, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, NA)
+  )
+
+  # Test exclude_half.life
+  o_conc <- PKNCAconc(d_conc, conc~Time|Subject, exclude_half.life = "excl")
+  o_data <- PKNCAdata(o_conc, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_nca <- suppressMessages(pk.nca(o_data))
+  expect_equal(
+    suppressMessages(get_halflife_points(o_nca)),
+    # NA values indicate that the point was excluded from all calculations
+    c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE)
+  )
+
+  # Multiple, overlapping half-life calculations gives an error
+  o_conc <- PKNCAconc(d_conc, conc~Time|Subject)
+  o_data <-
+    PKNCAdata(
+      o_conc,
+      intervals =
+        data.frame(
+          start = 0, end = c(24, Inf),
+          half.life = TRUE
+        )
+    )
+  o_nca <- suppressMessages(suppressWarnings(pk.nca(o_data)))
+  expect_error(
+    suppressMessages(get_halflife_points(o_nca)),
+    regexp = "More than one half-life calculation was attempted on the following rows: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11"
+  )
+})

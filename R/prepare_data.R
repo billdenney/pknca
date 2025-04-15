@@ -5,13 +5,14 @@
 #'
 #' @param o_conc a PKNCAconc object
 #' @param o_dose a PKNCAdose object or `NA`
+#' @param extra_cols_conc Additional columns to include in the concentration data
 #' @returns A tibble with columns for the groups, "data_conc" (the concentration
 #'   data), and "data_dose" (the dosing data).  If `is.na(o_dose)`, "data_dose"
 #'   will be `NA`.
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose) {
+full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose, extra_cols_conc = character()) {
   stopifnot(inherits(x=o_conc, what="PKNCAconc"))
   if (identical(o_dose, NA)) {
     message("No dose information provided, calculations requiring dose will return NA.")
@@ -20,7 +21,7 @@ full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose) {
     stopifnot(inherits(x=o_dose, what="PKNCAdose"))
     n_dose <- prepare_PKNCAdose(o_dose, sparse=is_sparse_pk(o_conc), subject_col=o_conc$columns$subject)
   }
-  n_conc <- prepare_PKNCAconc(o_conc)
+  n_conc <- prepare_PKNCAconc(o_conc, extra_cols = extra_cols_conc)
   shared_groups <- intersect(names(n_conc), names(n_dose))
   if (length(shared_groups) > 0) {
     dplyr::full_join(n_conc, n_dose, by=shared_groups)
@@ -35,14 +36,15 @@ full_join_PKNCAconc_PKNCAdose <- function(o_conc, o_dose) {
 #' semantics.
 #'
 #' @param x The PKNCAdata object
+#' @inheritParams full_join_PKNCAconc_PKNCAdose
 #' @returns A tibble with columns the grouping variables, "data_conc" for
 #'   concentration data, "data_dose" for dosing data, and "data_intervals" for
 #'   intervals data.
 #' @family Combine PKNCA objects
 #' @keywords Internal
 #' @noRd
-full_join_PKNCAdata <- function(x) {
-  conc_dose <- full_join_PKNCAconc_PKNCAdose(o_conc = x$conc, o_dose = x$dose)
+full_join_PKNCAdata <- function(x, extra_conc_cols = character()) {
+  conc_dose <- full_join_PKNCAconc_PKNCAdose(o_conc = x$conc, o_dose = x$dose, extra_cols_conc = extra_conc_cols)
   n_i <-
     prepare_PKNCAintervals(
       .dat=x$intervals,
@@ -125,7 +127,7 @@ prepare_PKNCAconc_sparse <- function(.dat, needed_cols, group_cols_selected) {
   ret
 }
 
-prepare_PKNCAconc <- function(.dat) {
+prepare_PKNCAconc <- function(.dat, extra_cols = character()) {
   # Remove rows to be excluded from all calculations
   # Drop unnecessary column names
   needed_cols <-
@@ -137,6 +139,7 @@ prepare_PKNCAconc <- function(.dat) {
       include_half.life=.dat$columns$include_half.life,
       exclude_half.life=.dat$columns$exclude_half.life
     )
+  needed_cols <- append(needed_cols, stats::setNames(nm = extra_cols))
   data_name <- getDataName(.dat)
   group_cols_selected <- unlist(.dat$columns$groups)
   if (is_sparse_pk(.dat)) {
