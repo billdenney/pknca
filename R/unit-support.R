@@ -102,7 +102,15 @@ pknca_units_table <- function(concu, doseu, amountu, timeu,
       # Use the original conversions argument over `conversions_pref`
       mask_pref <- conversions_pref$PPORRESU %in% conversions$PPORRESU[idx]
       if (!any(mask_pref)) {
-        stop("Cannot find PPORRESU match between conversions and preferred unit conversions.  Check PPORRESU values in 'conversions' argument.")
+        stop(
+          paste(
+            sprintf(
+              "Cannot find PPORRESU match between conversions and preferred unit conversions (%s).",
+              paste0('"', unique(conversions_pref$PPORRESU[!mask_pref]), '"', collapse = ", ")
+            ),
+            "Check PPORRESU values in 'conversions' argument."
+          )
+        )
       }
       conversions_pref$PPSTRESU[mask_pref] <- conversions$PPSTRESU[idx]
       conversions_pref$conversion_factor[mask_pref] <- conversions$conversion_factor[idx]
@@ -391,7 +399,26 @@ pknca_units_add_paren <- function(unit) {
 #'   but not all parameters?
 #' @returns The result table with units converted
 #' @keywords Internal
-pknca_unit_conversion <- function(result, units, allow_partial_missing_units = FALSE) {
+#' @export
+pknca_unit_conversion <- function(result, units = NULL, allow_partial_missing_units = FALSE) {
+  UseMethod("pknca_unit_conversion")
+}
+
+#' @describeIn pknca_unit_conversion Convert PKNCA units for a data.frame
+#' @export
+pknca_unit_conversion.PKNCAresults <- function(result, units = NULL, allow_partial_missing_units = FALSE) {
+  result$result <-
+    pknca_unit_conversion(
+      result$result,
+      units = units,
+      allow_partial_missing_units = allow_partial_missing_units
+    )
+  result
+}
+
+#' @describeIn pknca_unit_conversion Convert PKNCA units for a data.frame
+#' @export
+pknca_unit_conversion.data.frame <- function(result, units = NULL, allow_partial_missing_units = FALSE) {
   ret <- result
   if (!is.null(units)) {
     ret <-
