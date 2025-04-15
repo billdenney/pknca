@@ -22,9 +22,9 @@ exclude_nca_count_conc_measured(
 
 exclude_nca_min.hl.r.squared(min.hl.r.squared)
 
-exclude_nca_tmax_early(x, ..., tmax_early = 0)
+exclude_nca_tmax_early(tmax_early = 0)
 
-exclude_nca_tmax_0(x, ...)
+exclude_nca_tmax_0(...)
 }
 \arguments{
 \item{min.span.ratio}{The minimum acceptable span ratio (uses
@@ -40,6 +40,9 @@ to exclude}
 
 \item{min.hl.r.squared}{The minimum acceptable r-squared value for half-life
 (uses \code{PKNCA.options("min.hl.r.squared")} if not provided).}
+
+\item{tmax_early}{The time for Tmax which is considered too early to be a
+valid NCA result}
 }
 \description{
 Exclude NCA parameters based on examining the parameter set.
