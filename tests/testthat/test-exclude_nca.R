@@ -90,4 +90,10 @@ test_that("exclude_nca_tmax_early", {
     as.data.frame(my_result_exclude_0)$exclude,
     rep("Tmax is <=0 (likely missed dose, insufficient PK samples, or PK sample swap)", nrow(as.data.frame(my_result_exclude_0)))
   )
+  # This should never happen in real code
+  expect_error(
+    exclude_nca_tmax_early()(data.frame(PPTESTCD = "tmax", PPORRES = 1:2)),
+    regexp = "Should not see more than one tmax (please report this as a bug)",
+    fixed = TRUE
+  )
 })
