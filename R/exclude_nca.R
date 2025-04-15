@@ -195,6 +195,6 @@ exclude_nca_tmax_early <- function(tmax_early = 0) {
 #' @describeIn exclude_nca Exclude based on implausibly early Tmax (special case
 #'   for `tmax_early = 0`)
 #' @export
-exclude_nca_tmax_0 <- function(...) {
+exclude_nca_tmax_0 <- function() {
   exclude_nca_tmax_early()
 }

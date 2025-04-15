@@ -24,7 +24,7 @@ exclude_nca_min.hl.r.squared(min.hl.r.squared)
 
 exclude_nca_tmax_early(tmax_early = 0)
 
-exclude_nca_tmax_0(...)
+exclude_nca_tmax_0()
 }
 \arguments{
 \item{min.span.ratio}{The minimum acceptable span ratio (uses
