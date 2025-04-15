@@ -176,7 +176,7 @@ exclude_nca_min.hl.r.squared <- function(min.hl.r.squared) {
 #' @export
 exclude_nca_tmax_early <- function(tmax_early = 0) {
   force(tmax_early)
-  function(x) {
+  function(x, ...) {
     ret <- rep(NA_character_, nrow(x))
     idx_tmax <- which(x$PPTESTCD %in% "tmax")
     if (length(idx_tmax) == 1) {
