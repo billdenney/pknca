@@ -83,11 +83,11 @@ test_that("exclude_nca_tmax_early", {
   my_result_exclude_1 <- exclude(my_result, FUN = exclude_nca_tmax_early(tmax_early = 1))
   expect_equal(
     as.data.frame(my_result_exclude_1)$exclude,
-    rep("Tmax is <=1 (likely missed dose, insufficient PK samples, or PK sample swap)", nrow(as.data.frame(my_result_exclude)))
+    rep("Tmax is <=1 (likely missed dose, insufficient PK samples, or PK sample swap)", nrow(as.data.frame(my_result_exclude_1)))
   )
   my_result_exclude_0 <- exclude(my_result, FUN = exclude_nca_tmax_0())
   expect_equal(
     as.data.frame(my_result_exclude_0)$exclude,
-    rep("Tmax is <=0 (likely missed dose, insufficient PK samples, or PK sample swap)", nrow(as.data.frame(my_result_exclude)))
+    rep("Tmax is <=0 (likely missed dose, insufficient PK samples, or PK sample swap)", nrow(as.data.frame(my_result_exclude_0)))
   )
 })
