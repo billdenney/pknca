@@ -4,7 +4,7 @@ will continue until then.  These will be especially noticeable around
 the inclusion of IV NCA parameters and additional specifications of
 the dosing including dose amount and route.
 
-# PKNCA 0.11.0.9000
+# PKNCA 0.12.0
 
 ## Breaking changes
 
