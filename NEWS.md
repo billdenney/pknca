@@ -38,7 +38,7 @@ the dosing including dose amount and route.
 * A new function `get_halflife_points()` lets users know which points were used
   for half-life calculation. (#387)
 
-# Minor changes (unlikely to affect PKNCA use)
+# Minor changes unlikely to affect PKNCA use
 
 * PKNCA will now verify the `intervals` data.frame when creating PKNCAdata. The
   checking includes confirming intended column naming and ensuring the correct
