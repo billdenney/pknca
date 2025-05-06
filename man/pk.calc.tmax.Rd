@@ -35,3 +35,7 @@ Input restrictions are:
 \item all \code{conc} is 0 or \code{NA}
 }
 }
+\examples{
+conc_data <- Theoph[Theoph$Subject == 1,]
+pk.calc.tmax(conc = conc_data$conc, time = conc_data$Time)
+}

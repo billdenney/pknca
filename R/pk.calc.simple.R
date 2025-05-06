@@ -54,6 +54,9 @@ PKNCA.set.summary(
 #' @describeIn pk.calc.cmax Determine the minimum observed PK
 #'   concentration
 #' @family NCA parameters for concentrations during the intervals
+#' @examples
+#' conc_data <- Theoph[Theoph$Subject == 1,]
+#' pk.calc.cmin(conc_data$conc)
 #' @export
 pk.calc.cmin <- function(conc, check=TRUE) {
   if (check) {
@@ -100,6 +103,9 @@ PKNCA.set.summary(
 #'   last is considered Tmax.
 #' @param check Run [assert_conc_time()]?
 #' @returns The time of the maximum concentration
+#' @examples
+#' conc_data <- Theoph[Theoph$Subject == 1,]
+#' pk.calc.tmax(conc = conc_data$conc, time = conc_data$Time)
 #' @export
 pk.calc.tmax <- function(conc, time,
                          options=list(),
