@@ -27,6 +27,10 @@ Determine maximum observed PK concentration
 concentration
 
 }}
+\examples{
+conc_data <- Theoph[Theoph$Subject == 1,]
+pk.calc.cmin(conc_data$conc)
+}
 \seealso{
 Other NCA parameters for concentrations during the intervals: 
 \code{\link{pk.calc.clast.obs}()},
