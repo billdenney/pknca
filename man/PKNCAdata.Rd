@@ -21,7 +21,7 @@ PKNCAdata(data.conc, data.dose, ...)
   formula.dose,
   impute = NA_character_,
   intervals,
-  units,
+  units = NULL,
   options = list()
 )
 }
