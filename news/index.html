@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.12.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,9 +54,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.11.0.9000" id="pknca-01109000">PKNCA 0.11.0.9000<a class="anchor" aria-label="anchor" href="#pknca-01109000"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.12.0" id="pknca-0120">PKNCA 0.12.0<a class="anchor" aria-label="anchor" href="#pknca-0120"></a></h2>
 <div class="section level3">
-<h3 id="breaking-changes-0-11-0-9000">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-11-0-9000"></a></h3>
+<h3 id="breaking-changes-0-12-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-12-0"></a></h3>
 <ul><li>PKNCA will now give an error when there are unexpected interval columns. The <code>keep_interval_cols</code> option can be used to mitigate this error.</li>
 <li>
 <code>NA</code> results from calculating <code>c0</code> will now add an exclusion reason.</li>
@@ -64,7 +64,7 @@
 <li>Manual calculation of half.life no longer allows negative half-live values (<a href="https://github.com/billdenney/pknca/issues/373" class="external-link">#373</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-0-11-0-9000">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-11-0-9000"></a></h3>
+<h3 id="new-features-0-12-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-12-0"></a></h3>
 <ul><li>
 <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> and <code><a href="../reference/PKNCAdose.html">PKNCAdose()</a></code> can now accept unit specifications as either column names or units to use (<a href="https://github.com/billdenney/pknca/issues/336" class="external-link">#336</a>).</li>
 <li>PKNCA options can now use <code>tmax</code> as a reference for BLQ handling by using new names in the <code>conc.blq</code> argument (<code>before.tmax</code>,<code>after.tmax</code>)</li>
@@ -75,6 +75,14 @@
 <li>If intervals have attributes on the columns, there will no longer be an error during parameter calculation, and the attributes are preserved (<a href="https://github.com/billdenney/pknca/issues/381" class="external-link">#381</a>)</li>
 <li>When adding units, if some but not all units are provided, then an error will be raised. This error can be converted to a warning using the option <code>allow_partial_missing_units = TRUE</code>. (<a href="https://github.com/billdenney/pknca/issues/398" class="external-link">#398</a>)</li>
 <li>A new function <code><a href="../reference/get_halflife_points.html">get_halflife_points()</a></code> lets users know which points were used for half-life calculation. (<a href="https://github.com/billdenney/pknca/issues/387" class="external-link">#387</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-unlikely-to-affect-pknca-use-0-12-0">Minor changes (unlikely to affect PKNCA use)<a class="anchor" aria-label="anchor" href="#minor-changes-unlikely-to-affect-pknca-use-0-12-0"></a></h3>
+<ul><li>PKNCA will now verify the <code>intervals</code> data.frame when creating PKNCAdata. The checking includes confirming intended column naming and ensuring the correct data types.</li>
+<li>PKNCA now contains a <code>getGroups.PKNCAdata</code> function to capture grouping columns.</li>
+<li>Duplicate data checks now account for excluded rows. So, if a row is duplicated and all but one of the duplicated rows is excluded, it is not an error. (<a href="https://github.com/billdenney/pknca/issues/298" class="external-link">#298</a>)</li>
+<li>Removed native pipes (<code>|&gt;</code>) so that PKNCA will work with older versions of R (<a href="https://github.com/billdenney/pknca/issues/304" class="external-link">#304</a>).</li>
+<li>Missing dosing times to <code><a href="../reference/pk.calc.c0.html">pk.calc.c0()</a></code> will not cause an error (<a href="https://github.com/billdenney/pknca/issues/344" class="external-link">#344</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
