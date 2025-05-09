@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PKNCA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.12.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.12.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/billdenney/pknca/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/humanpred/pknca/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -50,7 +50,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/billdenney/pknca/blob/v0.12.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/humanpred/pknca/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -60,29 +60,29 @@
 <ul><li>PKNCA will now give an error when there are unexpected interval columns. The <code>keep_interval_cols</code> option can be used to mitigate this error.</li>
 <li>
 <code>NA</code> results from calculating <code>c0</code> will now add an exclusion reason.</li>
-<li>AUC for intravenous dosing (all the <code>auciv*</code> parameters) now more robustly calculate <code>c0</code> and does not raise an error when <code>is.na(c0)</code> (<a href="https://github.com/billdenney/pknca/issues/353" class="external-link">#353</a>).</li>
-<li>Manual calculation of half.life no longer allows negative half-live values (<a href="https://github.com/billdenney/pknca/issues/373" class="external-link">#373</a>).</li>
+<li>AUC for intravenous dosing (all the <code>auciv*</code> parameters) now more robustly calculate <code>c0</code> and does not raise an error when <code>is.na(c0)</code> (<a href="https://github.com/humanpred/pknca/issues/353" class="external-link">#353</a>).</li>
+<li>Manual calculation of half.life no longer allows negative half-live values (<a href="https://github.com/humanpred/pknca/issues/373" class="external-link">#373</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-12-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-12-0"></a></h3>
 <ul><li>
-<code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> and <code><a href="../reference/PKNCAdose.html">PKNCAdose()</a></code> can now accept unit specifications as either column names or units to use (<a href="https://github.com/billdenney/pknca/issues/336" class="external-link">#336</a>).</li>
+<code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> and <code><a href="../reference/PKNCAdose.html">PKNCAdose()</a></code> can now accept unit specifications as either column names or units to use (<a href="https://github.com/humanpred/pknca/issues/336" class="external-link">#336</a>).</li>
 <li>PKNCA options can now use <code>tmax</code> as a reference for BLQ handling by using new names in the <code>conc.blq</code> argument (<code>before.tmax</code>,<code>after.tmax</code>)</li>
 <li>A new parameter <code>count_conc_measured</code> was added to enable quality checks, typically on AUC measurements. An associated exclusion function, <code><a href="../reference/exclude_nca.html">exclude_nca_count_conc_measured()</a></code> was also added.</li>
 <li>The <code><a href="../reference/PKNCAconc.html">PKNCAconc()</a></code> arguments of <code>include_half.life</code> and <code>exclude_half.life</code> now allow <code>NA</code> values. If all values are <code>NA</code>, then no inclusion or exclusion is applied (the interval is treated as-is, like the argument had not been given). If some values are <code>NA</code> for the interval, those are treated as <code>FALSE</code>.</li>
 <li>
 <code><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars()</a></code> methods were added for <code>PKNCAdata</code> and <code>PKNCAresults</code> objects.</li>
-<li>If intervals have attributes on the columns, there will no longer be an error during parameter calculation, and the attributes are preserved (<a href="https://github.com/billdenney/pknca/issues/381" class="external-link">#381</a>)</li>
-<li>When adding units, if some but not all units are provided, then an error will be raised. This error can be converted to a warning using the option <code>allow_partial_missing_units = TRUE</code>. (<a href="https://github.com/billdenney/pknca/issues/398" class="external-link">#398</a>)</li>
-<li>A new function <code><a href="../reference/get_halflife_points.html">get_halflife_points()</a></code> lets users know which points were used for half-life calculation. (<a href="https://github.com/billdenney/pknca/issues/387" class="external-link">#387</a>)</li>
+<li>If intervals have attributes on the columns, there will no longer be an error during parameter calculation, and the attributes are preserved (<a href="https://github.com/humanpred/pknca/issues/381" class="external-link">#381</a>)</li>
+<li>When adding units, if some but not all units are provided, then an error will be raised. This error can be converted to a warning using the option <code>allow_partial_missing_units = TRUE</code>. (<a href="https://github.com/humanpred/pknca/issues/398" class="external-link">#398</a>)</li>
+<li>A new function <code><a href="../reference/get_halflife_points.html">get_halflife_points()</a></code> lets users know which points were used for half-life calculation. (<a href="https://github.com/humanpred/pknca/issues/387" class="external-link">#387</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-unlikely-to-affect-pknca-use-0-12-0">Minor changes (unlikely to affect PKNCA use)<a class="anchor" aria-label="anchor" href="#minor-changes-unlikely-to-affect-pknca-use-0-12-0"></a></h3>
 <ul><li>PKNCA will now verify the <code>intervals</code> data.frame when creating PKNCAdata. The checking includes confirming intended column naming and ensuring the correct data types.</li>
 <li>PKNCA now contains a <code>getGroups.PKNCAdata</code> function to capture grouping columns.</li>
-<li>Duplicate data checks now account for excluded rows. So, if a row is duplicated and all but one of the duplicated rows is excluded, it is not an error. (<a href="https://github.com/billdenney/pknca/issues/298" class="external-link">#298</a>)</li>
-<li>Removed native pipes (<code>|&gt;</code>) so that PKNCA will work with older versions of R (<a href="https://github.com/billdenney/pknca/issues/304" class="external-link">#304</a>).</li>
-<li>Missing dosing times to <code><a href="../reference/pk.calc.c0.html">pk.calc.c0()</a></code> will not cause an error (<a href="https://github.com/billdenney/pknca/issues/344" class="external-link">#344</a>)</li>
+<li>Duplicate data checks now account for excluded rows. So, if a row is duplicated and all but one of the duplicated rows is excluded, it is not an error. (<a href="https://github.com/humanpred/pknca/issues/298" class="external-link">#298</a>)</li>
+<li>Removed native pipes (<code>|&gt;</code>) so that PKNCA will work with older versions of R (<a href="https://github.com/humanpred/pknca/issues/304" class="external-link">#304</a>).</li>
+<li>Missing dosing times to <code><a href="../reference/pk.calc.c0.html">pk.calc.c0()</a></code> will not cause an error (<a href="https://github.com/humanpred/pknca/issues/344" class="external-link">#344</a>)</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -90,24 +90,24 @@
 <ul><li>PKNCA will now indicate the number of observations included in a summary (“n”) when it is not the same as the number of subjects included in the summary (“N”) and the caption will also indicate the definition of “N” and “n”. Note that counting of “n” includes all non-missing values that were not excluded from summarization; this will included all zeros that are e.g. excluded from geometric statistics.
 <ul><li>If <code>n == 1</code>, spread statistics are no longer calculated in the summary.</li>
 </ul></li>
-<li>A new AUC integration method, “lin-log”, has been added using the linear method through tmax and log after tmax, with required exceptions for zeros (fix <a href="https://github.com/billdenney/pknca/issues/23" class="external-link">#23</a>)</li>
+<li>A new AUC integration method, “lin-log”, has been added using the linear method through tmax and log after tmax, with required exceptions for zeros (fix <a href="https://github.com/humanpred/pknca/issues/23" class="external-link">#23</a>)</li>
 <li>The parameter <code>vd</code> was removed (it was not specific like <code>vz</code> or <code>vss</code>, and it was effectively a duplicate of <code>vz</code>). Use <code>vz</code>, instead.</li>
 <li>The <code>count_conc</code> NCA parameter was added to assist in data quality checking.</li>
-<li>Subject count (“N”) previously counted the number of rows of data, but in unusual circumstances, the number of subjects in an NCA result could be fewer than the number of rows. Now the number of subjects is counted (fix <a href="https://github.com/billdenney/pknca/issues/223" class="external-link">#223</a>).</li>
-<li>Extra column in the <code>intervals</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> will no longer cause an error (fix <a href="https://github.com/billdenney/pknca/issues/238" class="external-link">#238</a>)</li>
+<li>Subject count (“N”) previously counted the number of rows of data, but in unusual circumstances, the number of subjects in an NCA result could be fewer than the number of rows. Now the number of subjects is counted (fix <a href="https://github.com/humanpred/pknca/issues/223" class="external-link">#223</a>).</li>
+<li>Extra column in the <code>intervals</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> will no longer cause an error (fix <a href="https://github.com/humanpred/pknca/issues/238" class="external-link">#238</a>)</li>
 <li>Many new <code>assert_*</code> functions were added to standardize input checking in the style of the <code>checkmate</code> library.</li>
 <li>Interpolation of zero concentrations in the middle of a set of concentrations is now more extensively supported.</li>
 <li>PKNCA has begun the process of deprecating dots in favor of underscores in function and parameter names. Functions with dots instead of underscores should continue to work for the foreseeable future (until version 1.0) with warnings.</li>
-<li>AUCint will now extrapolate the AUC beyond Tlast using logarithmic extrapolation, regardless of the method used (fix <a href="https://github.com/billdenney/pknca/issues/203" class="external-link">#203</a>).</li>
-<li>Imputation will now automatically search for a column named “impute” in the interval definition (fix <a href="https://github.com/billdenney/pknca/issues/257" class="external-link">#257</a>).</li>
+<li>AUCint will now extrapolate the AUC beyond Tlast using logarithmic extrapolation, regardless of the method used (fix <a href="https://github.com/humanpred/pknca/issues/203" class="external-link">#203</a>).</li>
+<li>Imputation will now automatically search for a column named “impute” in the interval definition (fix <a href="https://github.com/humanpred/pknca/issues/257" class="external-link">#257</a>).</li>
 <li>Imputation now can look outside the concentration-time of the interval to the full concentration-time profile for the group with the <code>conc.group</code> and <code>time.group</code> arguments to the imputation functions. And, <code><a href="../reference/PKNCA_impute_method.html">PKNCA_impute_method_start_predose()</a></code> imputation performs more reasonably when the end of the interval is infinite.</li>
-<li>A progress bar is now available via the <code>PKNCA.options(progress = )</code> option (fix <a href="https://github.com/billdenney/pknca/issues/193" class="external-link">#193</a>).</li>
-<li>Additional versions of average concentration based on AUCint are now available (fix <a href="https://github.com/billdenney/pknca/issues/45" class="external-link">#45</a>).</li>
+<li>A progress bar is now available via the <code>PKNCA.options(progress = )</code> option (fix <a href="https://github.com/humanpred/pknca/issues/193" class="external-link">#193</a>).</li>
+<li>Additional versions of average concentration based on AUCint are now available (fix <a href="https://github.com/humanpred/pknca/issues/45" class="external-link">#45</a>).</li>
 <li>A new option “keep_interval_cols” was added to allow keeping a column from the intervals in the NCA results. Note that these are not included in the summary groups by default.</li>
 <li>A new argument “filter_requested” for <code><a href="../reference/as.data.frame.PKNCAresults.html">as.data.frame.PKNCAresults()</a></code> allows you to filter only to requested results from a PKNCAresults object.</li>
 <li>
-<code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code> now has four new arguments to allow for simplified automatic conversion from source units to desired reporting units, <code>concu_pref</code>, <code>doseu_pref</code>, <code>amountu_pref</code>, and <code>timeu_pref</code> (<a href="https://github.com/billdenney/pknca/issues/197" class="external-link">#197</a>)</li>
-<li>Extraction of PKNCA objects from within other PKNCA objects is now supported by various <code>as_PKNCA*</code> functions like <code><a href="../reference/as_PKNCAconc.html">as_PKNCAconc()</a></code> which can be used to extract the concentration data from within a PKNCAdata or PKNCAresults object (<a href="https://github.com/billdenney/pknca/issues/278" class="external-link">#278</a>)</li>
+<code><a href="../reference/pknca_units_table.html">pknca_units_table()</a></code> now has four new arguments to allow for simplified automatic conversion from source units to desired reporting units, <code>concu_pref</code>, <code>doseu_pref</code>, <code>amountu_pref</code>, and <code>timeu_pref</code> (<a href="https://github.com/humanpred/pknca/issues/197" class="external-link">#197</a>)</li>
+<li>Extraction of PKNCA objects from within other PKNCA objects is now supported by various <code>as_PKNCA*</code> functions like <code><a href="../reference/as_PKNCAconc.html">as_PKNCAconc()</a></code> which can be used to extract the concentration data from within a PKNCAdata or PKNCAresults object (<a href="https://github.com/humanpred/pknca/issues/278" class="external-link">#278</a>)</li>
 <li>A new “totdose” parameter gives the total dose administered during an interval</li>
 <li>You may exclude parameters from a summary with the new <code>drop_param</code> argument to <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for PKNCAresults objects.</li>
 <li>The <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> method for <code>PKNCAresults</code> objects has a new <code>filter_excluded</code> argument to remove excluded results from the extracted data.frame. The default behavior is to keep the excluded results with the exclude column indicating the reason they were excluded.</li>
@@ -115,18 +115,18 @@
 <h3 id="bugs-fixed-0-11-0">Bugs fixed<a class="anchor" aria-label="anchor" href="#bugs-fixed-0-11-0"></a></h3>
 <ul><li>
 <code>superpostion()</code> and the <code><a href="../reference/interp.extrap.conc.html">interp.extrap.conc()</a></code> family of functions now respect the interpolation and extrapolation types requested rather than using default.</li>
-<li>Concentration extrapolation with <code><a href="../reference/interp.extrap.conc.html">extrapolate.conc()</a></code> using the “AUCall” method now has decreasing instead of increasing concentrations (<a href="https://github.com/billdenney/pknca/issues/249" class="external-link">#249</a>).</li>
-<li>The aucint.inf.obs parameter when calculated with all zero concentrations returns zero and aucint.inf.pred returns <code>NA_real_</code> (<a href="https://github.com/billdenney/pknca/issues/253" class="external-link">#253</a>)</li>
+<li>Concentration extrapolation with <code><a href="../reference/interp.extrap.conc.html">extrapolate.conc()</a></code> using the “AUCall” method now has decreasing instead of increasing concentrations (<a href="https://github.com/humanpred/pknca/issues/249" class="external-link">#249</a>).</li>
+<li>The aucint.inf.obs parameter when calculated with all zero concentrations returns zero and aucint.inf.pred returns <code>NA_real_</code> (<a href="https://github.com/humanpred/pknca/issues/253" class="external-link">#253</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-11-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-11-0"></a></h3>
-<ul><li>The arguments <code>interp.method</code> and <code>extrap.method</code> have been replaced with <code>method</code> and <code>auc.type</code> in the <code><a href="../reference/interp.extrap.conc.html">interp.extrap.conc()</a></code> family of functions for consistency with the rest of PKNCA (fix <a href="https://github.com/billdenney/pknca/issues/244" class="external-link">#244</a>)</li>
+<ul><li>The arguments <code>interp.method</code> and <code>extrap.method</code> have been replaced with <code>method</code> and <code>auc.type</code> in the <code><a href="../reference/interp.extrap.conc.html">interp.extrap.conc()</a></code> family of functions for consistency with the rest of PKNCA (fix <a href="https://github.com/humanpred/pknca/issues/244" class="external-link">#244</a>)</li>
 <li>The AIC.list() function is no longer exported (it was never intended to be an external function).</li>
 <li>The <code>depends</code> argument to <code><a href="../reference/add.interval.col.html">add.interval.col()</a></code> must either be NULL or a character vector.</li>
 <li>The names of the <code>fun.linear</code>, <code>fun.log</code>, and <code>fun.inf</code> arguments to <code>pk.calc.auxc</code> were changed to use underscores. (If you were using those directly, please reach out as they were intended to be internal arguments, and I would like to know your use case for changing them.)</li>
 <li>
 <code><a href="../reference/defunct.html">check.conc.time()</a></code> is defunct (it was never intended to be an external function). It has been replaced by <code><a href="../reference/assert_conc_time.html">assert_conc()</a></code>, <code><a href="../reference/assert_conc_time.html">assert_time()</a></code> and <code><a href="../reference/assert_conc_time.html">assert_conc_time()</a></code>.</li>
-<li>The clast.obs parameter is now zero when all concentrations are zero (see <a href="https://github.com/billdenney/pknca/issues/253" class="external-link">#253</a> for part of the reason).</li>
+<li>The clast.obs parameter is now zero when all concentrations are zero (see <a href="https://github.com/humanpred/pknca/issues/253" class="external-link">#253</a> for part of the reason).</li>
 <li>(This is not likely to be important for most users.) The <code>business...</code> functions (e.g. <code><a href="../reference/business.mean.html">business.geomean()</a></code>) now include an attribute in non-<code>NA</code> results with <code>n</code>, the number of values included in the statistic.</li>
 </ul></div>
 <div class="section level3">
@@ -148,14 +148,14 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.1" id="pknca-0101">PKNCA 0.10.1<a class="anchor" aria-label="anchor" href="#pknca-0101"></a></h2><p class="text-muted">CRAN release: 2023-01-11</p>
 <ul><li>A new parameter <code>aucabove.trough.all</code> was added to calculate the NCA above the trough concentration.</li>
-<li>Testing updates were made to work with dplyr version 1.1.0 (fix <a href="https://github.com/billdenney/pknca/issues/198" class="external-link">#198</a>)</li>
+<li>Testing updates were made to work with dplyr version 1.1.0 (fix <a href="https://github.com/humanpred/pknca/issues/198" class="external-link">#198</a>)</li>
 <li>Internal changes to how columns are identified were made, and the parseFormula function was subsequently removed (parseFormula was never intended for external use).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.0" id="pknca-0100">PKNCA 0.10.0<a class="anchor" aria-label="anchor" href="#pknca-0100"></a></h2><p class="text-muted">CRAN release: 2022-10-16</p>
 <div class="section level3">
 <h3 id="bugs-fixed-0-10-0">Bugs Fixed<a class="anchor" aria-label="anchor" href="#bugs-fixed-0-10-0"></a></h3>
-<ul><li>When calculating AUC with only a single concentration measurement, NA is now returned instead of 0. (fix <a href="https://github.com/billdenney/pknca/issues/176" class="external-link">#176</a>)</li>
+<ul><li>When calculating AUC with only a single concentration measurement, NA is now returned instead of 0. (fix <a href="https://github.com/humanpred/pknca/issues/176" class="external-link">#176</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-10-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-10-0"></a></h3>
@@ -194,12 +194,12 @@
 <ul><li>The internals of how PKNCA performs calculations had a significant update. The only user-visible change should be that PKNCA does not perform parallel computations as of this version. Parallel computation is planned to return in the near future.
 <ul><li>Breaking change: As part of this change, the split methods for PKNCAconc and PKNCAdose objects were removed along with the merge.splitList function.</li>
 </ul></li>
-<li>Single-subject (ungrouped) analysis works without creating a dummy group (<a href="https://github.com/billdenney/pknca/issues/74" class="external-link">#74</a>)</li>
-<li>PKNCAconc objects are checked earlier for valid data (<a href="https://github.com/billdenney/pknca/issues/154" class="external-link">#154</a>)</li>
+<li>Single-subject (ungrouped) analysis works without creating a dummy group (<a href="https://github.com/humanpred/pknca/issues/74" class="external-link">#74</a>)</li>
+<li>PKNCAconc objects are checked earlier for valid data (<a href="https://github.com/humanpred/pknca/issues/154" class="external-link">#154</a>)</li>
 <li>Add time_above parameter to calculate time above a given concentration.</li>
-<li>Fix numeric BLQ replacement when the value is a number and different values are given for first, middle, and last (related to <a href="https://github.com/billdenney/pknca/issues/145" class="external-link">#145</a>). This only affects datasets where BLQ is being replaced with a nonzero value (not a common scenario).</li>
-<li>Fix issue where intervals could not be tibbles (<a href="https://github.com/billdenney/pknca/issues/141" class="external-link">#141</a>)</li>
-<li>Fix minor issue where only the first exclusion reason would show in the exclusion column and other reasons would be ignored (<a href="https://github.com/billdenney/pknca/issues/113" class="external-link">#113</a>). Note that the impact of this bug is minimal as the result would have been excluded from summaries for the first reason found, but if there were multiple reasons for exclusion the subsequent reasons would not be recorded.</li>
+<li>Fix numeric BLQ replacement when the value is a number and different values are given for first, middle, and last (related to <a href="https://github.com/humanpred/pknca/issues/145" class="external-link">#145</a>). This only affects datasets where BLQ is being replaced with a nonzero value (not a common scenario).</li>
+<li>Fix issue where intervals could not be tibbles (<a href="https://github.com/humanpred/pknca/issues/141" class="external-link">#141</a>)</li>
+<li>Fix minor issue where only the first exclusion reason would show in the exclusion column and other reasons would be ignored (<a href="https://github.com/humanpred/pknca/issues/113" class="external-link">#113</a>). Note that the impact of this bug is minimal as the result would have been excluded from summaries for the first reason found, but if there were multiple reasons for exclusion the subsequent reasons would not be recorded.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.4" id="pknca-094">PKNCA 0.9.4<a class="anchor" aria-label="anchor" href="#pknca-094"></a></h2><p class="text-muted">CRAN release: 2020-06-01</p>
@@ -215,8 +215,8 @@
 <ul><li>New feature: the <code><a href="../reference/time_calc.html">time_calc()</a></code> function will help convert time values to be relative to events (such as calculating time after and before doses)</li>
 <li>Fix issue summarizing results when “start” and “end” are dropped and there are multiple interval rows matched for a single group.</li>
 <li>Enable exclusions to be prevented when the input arguments suggest exclusion, but the parameter calculating function may be aware of better information about exclusion.</li>
-<li>Ensure that exclusions are maintained if an earlier parameter is excluded during the initial parameter calculations (Fix <a href="https://github.com/billdenney/pknca/issues/112" class="external-link">#112</a>).</li>
-<li>Two-point half-life calculation works and adjusted r-squared gives a warning instead of an error with 2 points (Fix <a href="https://github.com/billdenney/pknca/issues/114" class="external-link">#114</a>).</li>
+<li>Ensure that exclusions are maintained if an earlier parameter is excluded during the initial parameter calculations (Fix <a href="https://github.com/humanpred/pknca/issues/112" class="external-link">#112</a>).</li>
+<li>Two-point half-life calculation works and adjusted r-squared gives a warning instead of an error with 2 points (Fix <a href="https://github.com/humanpred/pknca/issues/114" class="external-link">#114</a>).</li>
 <li>Half-life calculation time was decreased by using <code><a href="https://rdrr.io/r/stats/lmfit.html" class="external-link">.lm.fit()</a></code> instead of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> decreasing time for a full NCA run by ~30% (and half-life by ~50%).</li>
 <li>For R version 4.0, much more care was taken not to create factors from strings unless required (see <a href="https://developer.r-project.org/Blog/public/2020/02/16/stringsasfactors/index.html" class="external-link uri">https://developer.r-project.org/Blog/public/2020/02/16/stringsasfactors/index.html</a>)</li>
 </ul></div>
@@ -226,23 +226,23 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0" id="pknca-090">PKNCA 0.9.0<a class="anchor" aria-label="anchor" href="#pknca-090"></a></h2>
-<ul><li>Breaking Change: <code>plot.PKNCAconc()</code> was moved to the pknca.reporting package (<a href="https://github.com/billdenney/pknca.reporting" class="external-link uri">https://github.com/billdenney/pknca.reporting</a>)</li>
+<ul><li>Breaking Change: <code>plot.PKNCAconc()</code> was moved to the pknca.reporting package (<a href="https://github.com/humanpred/pknca.reporting" class="external-link uri">https://github.com/humanpred/pknca.reporting</a>)</li>
 <li>Breaking Change: <code><a href="../reference/summary.PKNCAresults.html">summary.PKNCAresults()</a></code> now provides a caption including the summary method for each parameter. If you change summary functions using <code><a href="../reference/PKNCA.set.summary.html">PKNCA.set.summary()</a></code>, you must now use the <code>description</code> option to set the description of the summary.</li>
-<li>Breaking Change: ptr now accurately uses ctrough instead of cmin (fix <a href="https://github.com/billdenney/pknca/issues/106" class="external-link">#106</a>)</li>
-<li>Issue fixed where aucint* calculations now respect BLQ and NA rules like other calculations. (<a href="https://github.com/billdenney/pknca/issues/104" class="external-link">#104</a>)</li>
-<li>When half.life is not calculated due to insufficient number of points (default &lt; 3), an exclusion reason is added. (<a href="https://github.com/billdenney/pknca/issues/102" class="external-link">#102</a>)</li>
-<li>tibbles now work as the interval argument for <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> (fix <a href="https://github.com/billdenney/pknca/issues/72" class="external-link">#72</a>)</li>
+<li>Breaking Change: ptr now accurately uses ctrough instead of cmin (fix <a href="https://github.com/humanpred/pknca/issues/106" class="external-link">#106</a>)</li>
+<li>Issue fixed where aucint* calculations now respect BLQ and NA rules like other calculations. (<a href="https://github.com/humanpred/pknca/issues/104" class="external-link">#104</a>)</li>
+<li>When half.life is not calculated due to insufficient number of points (default &lt; 3), an exclusion reason is added. (<a href="https://github.com/humanpred/pknca/issues/102" class="external-link">#102</a>)</li>
+<li>tibbles now work as the interval argument for <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> (fix <a href="https://github.com/humanpred/pknca/issues/72" class="external-link">#72</a>)</li>
 <li>Issue fixed with summarization of data that has exclusions. Exclusions are now correctly handled as missing instead of never calculated.</li>
 <li>parseFormula now internally uses NULL for no-group formula definitions.</li>
 <li>signifString and roundString now have sci_range (deprecating si_range) and sci_sep arguments.</li>
 <li>Documentation is improved, especially around the selection of parameters for intervals.</li>
-<li>Multiple dose data with a single concentration measurement no longer generates an error (fixes <a href="https://github.com/billdenney/pknca/issues/84" class="external-link">#84</a>).</li>
+<li>Multiple dose data with a single concentration measurement no longer generates an error (fixes <a href="https://github.com/humanpred/pknca/issues/84" class="external-link">#84</a>).</li>
 <li>The “start” and “end” columns may now be dropped from the summary of <code>PKNCAresults</code> objects.</li>
 <li>
 <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> is more restrictive on unknown arguments issuing an error when unknown arguments are present.</li>
 <li>
-<code>intervals</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> may now be a tibble (fixes <a href="https://github.com/billdenney/pknca/issues/72" class="external-link">#72</a>).</li>
-<li>Documentation has been extensively updated (fixes <a href="https://github.com/billdenney/pknca/issues/81" class="external-link">#81</a>).</li>
+<code>intervals</code> argument to <code><a href="../reference/PKNCAdata.html">PKNCAdata()</a></code> may now be a tibble (fixes <a href="https://github.com/humanpred/pknca/issues/72" class="external-link">#72</a>).</li>
+<li>Documentation has been extensively updated (fixes <a href="https://github.com/humanpred/pknca/issues/81" class="external-link">#81</a>).</li>
 <li>CRAN changes: Vignettes now better respect not loading suggested packages. Tests are now more permissive in timing.</li>
 </ul></div>
     <div class="section level2">
@@ -251,7 +251,7 @@
 <li>Added dose-count within interval (to warn of multiple doses within an interval)</li>
 <li>Various documentation updates</li>
 <li>signifString and roundString now by default use scientific notation for values &gt;=1e6 and &lt;=1e-6</li>
-<li>Fix bug in option handling within <code>pk.nca</code> (Fix <a href="https://github.com/billdenney/pknca/issues/68" class="external-link">#68</a>)</li>
+<li>Fix bug in option handling within <code>pk.nca</code> (Fix <a href="https://github.com/humanpred/pknca/issues/68" class="external-link">#68</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.4" id="pknca-084">PKNCA 0.8.4<a class="anchor" aria-label="anchor" href="#pknca-084"></a></h2><p class="text-muted">CRAN release: 2018-01-03</p>
@@ -267,13 +267,13 @@
 <li><p>Corrected issue where time to steady-state with a single estimate may have given more than one estimated time to steady-state.</p></li>
 <li><p>Corrected issue with exclude handling where now a blank string is also accepted as included (not excluded).</p></li>
 <li><p>PKNCAconc now accepts a “volume” argument and pk.nca can now calculate urine/feces-related parameters (fe, ae, clr)</p></li>
-<li><p>exclude_nca* functions added (Fixes issue <a href="https://github.com/billdenney/pknca/issues/20" class="external-link">#20</a>)</p></li>
-<li><p>Add manual half-life point selection (Fixes issue <a href="https://github.com/billdenney/pknca/issues/18" class="external-link">#18</a>)</p></li>
-<li><p>Improved summary settings (Fixes issue <a href="https://github.com/billdenney/pknca/issues/54" class="external-link">#54</a>)</p></li>
+<li><p>exclude_nca* functions added (Fixes issue <a href="https://github.com/humanpred/pknca/issues/20" class="external-link">#20</a>)</p></li>
+<li><p>Add manual half-life point selection (Fixes issue <a href="https://github.com/humanpred/pknca/issues/18" class="external-link">#18</a>)</p></li>
+<li><p>Improved summary settings (Fixes issue <a href="https://github.com/humanpred/pknca/issues/54" class="external-link">#54</a>)</p></li>
 <li><p>Add parameters for Ceoi and intravenous MRT</p></li>
 <li><p>Updated vignettes to improve clarity</p></li>
-<li><p>Added dose-normalized PK parameters (Fixes issue <a href="https://github.com/billdenney/pknca/issues/41" class="external-link">#41</a>)</p></li>
-<li><p>Added checks to confirm that concentration and time are numeric (Fixes feature request <a href="https://github.com/billdenney/pknca/issues/40" class="external-link">#40</a>)</p></li>
+<li><p>Added dose-normalized PK parameters (Fixes issue <a href="https://github.com/humanpred/pknca/issues/41" class="external-link">#41</a>)</p></li>
+<li><p>Added checks to confirm that concentration and time are numeric (Fixes feature request <a href="https://github.com/humanpred/pknca/issues/40" class="external-link">#40</a>)</p></li>
 <li><p>Improved test coverage</p></li>
 </ul></div>
     <div class="section level2">
@@ -305,19 +305,19 @@
 <h2 class="pkg-version" data-toc-text="0.7" id="pknca-07">PKNCA 0.7<a class="anchor" aria-label="anchor" href="#pknca-07"></a></h2><p class="text-muted">CRAN release: 2016-04-01</p>
 <ul><li>Features added
 <ul><li>Additional PK parameters to support IV dosing added</li>
-<li>Fix <a href="https://github.com/billdenney/pknca/issues/11" class="external-link">#11</a>, Intervals can be specified manually, and will apply across appropriate parts of the grouping variables</li>
+<li>Fix <a href="https://github.com/humanpred/pknca/issues/11" class="external-link">#11</a>, Intervals can be specified manually, and will apply across appropriate parts of the grouping variables</li>
 <li>Enable dose and dose.time as parameters to NCA calculations</li>
 <li>More NCA parameters are calculated, especially related to IV dosing</li>
-<li>Fix <a href="https://github.com/billdenney/pknca/issues/8" class="external-link">#8</a>, Reporting times for time-based parameters are now within the current interval rather than since first dose (e.g. Tmax on day 14 should be between 0 and 24 not 2<em>7</em>24+c(0, 24))</li>
+<li>Fix <a href="https://github.com/humanpred/pknca/issues/8" class="external-link">#8</a>, Reporting times for time-based parameters are now within the current interval rather than since first dose (e.g. Tmax on day 14 should be between 0 and 24 not 2<em>7</em>24+c(0, 24))</li>
 <li>Added several vignettes</li>
 </ul></li>
 <li>Bugs fixed
 <ul><li>Dosing without concentration is probably placebo; warn and continue</li>
-<li>Fix <a href="https://github.com/billdenney/pknca/issues/6" class="external-link">#6</a>, make merge.splitByData work with more than one dosing level</li>
+<li>Fix <a href="https://github.com/humanpred/pknca/issues/6" class="external-link">#6</a>, make merge.splitByData work with more than one dosing level</li>
 <li>Export some generic classes that were not previously exported to simplify their use</li>
 <li>Superposition extensions when lambda.z cannot be calculated</li>
 <li>Significance rounding into character strings works when the rounding moves up one order of magnitude.</li>
-<li>Fix <a href="https://github.com/billdenney/pknca/issues/9" class="external-link">#9</a>, summarization of parameters that are not calculated show not calculated instead of missing.</li>
+<li>Fix <a href="https://github.com/humanpred/pknca/issues/9" class="external-link">#9</a>, summarization of parameters that are not calculated show not calculated instead of missing.</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
