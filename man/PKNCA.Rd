@@ -39,10 +39,10 @@ as.data.frame(my.results)
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://billdenney.github.io/pknca/}
-  \item \url{https://github.com/billdenney/pknca}
-  \item \url{http://billdenney.github.io/pknca/}
-  \item Report bugs at \url{https://github.com/billdenney/pknca/issues}
+  \item \url{https://humanpred.github.io/pknca/}
+  \item \url{https://github.com/humanpred/pknca}
+  \item \url{http://humanpred.github.io/pknca/}
+  \item Report bugs at \url{https://github.com/humanpred/pknca/issues}
 }
 
 }

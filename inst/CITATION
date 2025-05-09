@@ -10,5 +10,5 @@ bibentry(bibtype="Article",
          volume="42",
          number="1",
          issn="1573-8744",
-         url="https://github.com/billdenney/pknca",
+         url="https://github.com/humanpred/pknca",
          note=sprintf("R package version %s", meta$Version))

@@ -290,7 +290,7 @@ the dosing including dose amount and route.
 # PKNCA 0.9.0
 
 * Breaking Change: `plot.PKNCAconc()` was moved to the pknca.reporting package
-  (https://github.com/billdenney/pknca.reporting)
+  (https://github.com/humanpred/pknca.reporting)
 * Breaking Change: `summary.PKNCAresults()` now provides a caption
   including the summary method for each parameter.  If you change
   summary functions using `PKNCA.set.summary()`, you must now use the
