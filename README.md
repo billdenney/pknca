@@ -1,8 +1,8 @@
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/PKNCA)](https://CRAN.R-project.org/package=PKNCA)
-[![R-CMD-check](https://github.com/billdenney/pknca/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/billdenney/pknca/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/billdenney/pknca/graph/badge.svg)](https://app.codecov.io/gh/billdenney/pknca)
-[![CodeFactor](https://www.codefactor.io/repository/github/billdenney/pknca/badge?style=plastic)](https://www.codefactor.io/repository/github/billdenney/pknca)
+[![R-CMD-check](https://github.com/humanpred/pknca/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/humanpred/pknca/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/humanpred/pknca/graph/badge.svg)](https://app.codecov.io/gh/humanpred/pknca)
+[![CodeFactor](https://www.codefactor.io/repository/github/humanpred/pknca/badge?style=plastic)](https://www.codefactor.io/repository/github/humanpred/pknca)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2054/badge)](https://bestpractices.coreinfrastructure.org/projects/2054)
 <!-- badges: end -->
 
@@ -35,7 +35,7 @@ Denney W, Duvvuri S and Buckeridge C (2015). "Simple, Automatic
 Noncompartmental Analysis: The PKNCA R Package." _Journal of
 Pharmacokinetics and Pharmacodynamics_, *42*(1), pp. 11-107,S65. ISSN
 1573-8744, doi: 10.1007/s10928-015-9432-2, <URL:
-https://github.com/billdenney/pknca>.
+https://github.com/humanpred/pknca>.
 
 # Installation
 
@@ -51,7 +51,7 @@ install it and its dependencies using the following command:
 To install the development version from GitHub, type the following commands:
 
     install.packages("remotes")
-    remotes::install_github("billdenney/pknca")
+    remotes::install_github("humanpred/pknca")
 
 # Calculating parameters
 
@@ -81,5 +81,5 @@ More help is available in the function help files. Be sure to look at the PKNCA.
 # Feature requests
 
 Please use the github issues page
-(https://github.com/billdenney/pknca/issues) to make feature requests
+(https://github.com/humanpred/pknca/issues) to make feature requests
 and bug reports.

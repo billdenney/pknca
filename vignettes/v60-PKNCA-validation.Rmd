@@ -32,7 +32,7 @@ To run the tests, the package must be installed with its tests:
     * `install.packages(pkgs="PKNCA", INSTALL_opts="--install-tests", type="source")`
 * To install from GitHub:
     * `library(devtools)`
-    * `install_github("billdenney/pknca", INSTALL_opts="--install-tests")`
+    * `install_github("humanpred/pknca", INSTALL_opts="--install-tests")`
 
 Testing and validation that results match in a local environment compared to the original environment is an important part of confirmation that a package works as expected.
 

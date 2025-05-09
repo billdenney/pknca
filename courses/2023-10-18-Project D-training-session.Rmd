@@ -622,7 +622,7 @@ Intervals have columns for:
 
 * `start` and `end` times for the interval,
 * groups matching any level of grouping; intervals apply by a merge/join with the groups
-* parameters to calculate (`TRUE` means to calculate it; `FALSE` means don't).  The full list of available parameters is in the [selection of calculation intervals vignette](http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1).
+* parameters to calculate (`TRUE` means to calculate it; `FALSE` means don't).  The full list of available parameters is in the [selection of calculation intervals vignette](http://humanpred.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1).
     * You only have to specify the parameter you want, not all parameters.
 
 ## Define your intervals: example
@@ -842,7 +842,7 @@ With an interval start and end of 0 and 24 (and the last measurement time just a
 
 PKNCA has an extensive testing and validation suite built-in.  To run the
 testing and validation suite of tests with a full report generated, see the
-[PKNCA Validation](http://billdenney.github.io/pknca/articles/v60-PKNCA-validation.html)
+[PKNCA Validation](http://humanpred.github.io/pknca/articles/v60-PKNCA-validation.html)
 vignette.
 
 # Hands-on workshops
@@ -1079,7 +1079,7 @@ CDISC has one set of names, but they are not precise (e.g. AUCINT doesn't tell t
 
 PKNCA tries to be everything to everyone (in terms of parameters calculated), and it simultaneously tries to be precise.  That yields many parameters.
 
-See the Selection of Calculation Intervals vignette in the [Parameters Available for Calculation in an Interval section](http://billdenney.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1) for all available parameters.
+See the Selection of Calculation Intervals vignette in the [Parameters Available for Calculation in an Interval section](http://humanpred.github.io/pknca/articles/Selection-of-Calculation-Intervals.html#parameters-available-for-calculation-in-an-interval-1) for all available parameters.
 
 ## When are intervals (partly) ignored? {.smaller}
 
@@ -1276,7 +1276,7 @@ pander::pander(as.data.frame(o_nca))
 ## Units (especially clearance)
 
 PKNCA supports units with the `pknca_units_table()` function.  See the
-[Unit Assignment and Conversion with PKNCA](http://billdenney.github.io/pknca/articles/v07-unit-conversion.html)
+[Unit Assignment and Conversion with PKNCA](http://humanpred.github.io/pknca/articles/v07-unit-conversion.html)
 vignette for more information.
 
 When units are not specified, The most common place where that becomes an issue
@@ -1299,7 +1299,7 @@ use different AUC parameters such as `"aucivlast"` instead of `"auclast"`.
 ## Combined, multi-subject data (e.g. sparse animal sampling)
 
 Sparse NCA calculations are supported in PKNCA.  See the
-[Sparse NCA Calculations](http://billdenney.github.io/pknca/articles/v04-sparse.html)
+[Sparse NCA Calculations](http://humanpred.github.io/pknca/articles/v04-sparse.html)
 vignette for more information.
 
 # Limitations
