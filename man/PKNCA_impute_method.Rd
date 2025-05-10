@@ -5,6 +5,8 @@
 \alias{PKNCA_impute_method_start_conc0}
 \alias{PKNCA_impute_method_start_cmin}
 \alias{PKNCA_impute_method_start_predose}
+\alias{PKNCA_impute_method_start_logslope}
+\alias{PKNCA_impute_method_start_c1}
 \title{Methods for imputation of data with PKNCA}
 \usage{
 PKNCA_impute_method_start_conc0(conc, time, start = 0, ..., options = list())
@@ -22,6 +24,17 @@ PKNCA_impute_method_start_predose(
   max_shift = NA_real_,
   options = list()
 )
+
+PKNCA_impute_method_start_logslope(
+  conc,
+  time,
+  start,
+  end,
+  ...,
+  options = list()
+)
+
+PKNCA_impute_method_start_c1(conc, time, start, end, ..., options = list())
 }
 \arguments{
 \item{conc}{Measured concentrations}
@@ -49,6 +62,8 @@ from start to \code{max(time)})}
 \value{
 A data.frame with one column named conc with imputed concentrations
 and one column named time with the times.
+
+A data frame with imputed start concentration.
 }
 \description{
 Methods for imputation of data with PKNCA
@@ -64,5 +79,11 @@ the interval at the start time (usually used with multiple-dose data)
 
 \item \code{PKNCA_impute_method_start_predose()}: Shift a predose concentration to become the
 time zero concentration (only if a time zero concentration does not exist)
+
+\item \code{PKNCA_impute_method_start_logslope()}: Imputes based on a logarithmic slope on the
+first points a time zero concentration (usually in IV bolus at dose time)
+
+\item \code{PKNCA_impute_method_start_c1()}: Shift the following concentration to a start
+to become the time zero concentration (rarely used; non-monodecay IV bolus)
 
 }}

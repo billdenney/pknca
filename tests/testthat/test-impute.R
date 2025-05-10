@@ -92,6 +92,90 @@ test_that("PKNCA_impute_method_start_cmin", {
 
 })
 
+test_that("PKNCA_impute_method_start_logslope", {
+  # No imputation when start is in the data
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = 3:1, time = 0:2, start = 0, end = 2),
+    data.frame(conc = 3:1, time = 0:2)
+  )
+  # Impute when start is not in the data
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = 3:1, time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(4.5, 3:1), time = 0:3),
+    ignore_attr = TRUE
+  )
+  # Data outside the interval are ignored (before interval)
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(0, 2:1), time = c(-1, 1:2), start = 0, end = 2),
+    data.frame(conc = c(0, 4, 2:1), time = c(-1, 0, 1:2)),
+    ignore_attr = TRUE
+  )
+  # No modification if no C1 -> C2 decline in samples
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(1, 1, 1), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(1, 1, 1), time = 1:3),
+    ignore_attr = TRUE
+  )
+  # No modification if C1 = C2 in samples
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(3, 3, 1), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(3, 3, 1), time = 1:3),
+    ignore_attr = TRUE
+  )
+  # All concentrations are NA -> does not change
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(NA, NA, NA), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(NA, NA, NA), time = 1:3)
+  )
+  # All times are NA -> does not change
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = 1:3, time = c(NA, NA, NA), start = 0, end = 3),
+    data.frame(conc = 1:3, time = c(NA, NA, NA))
+  )
+  # All concentrations are 0 -> does not change
+  expect_equal(
+    PKNCA_impute_method_start_logslope(conc = c(0, 0, 0), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(0, 0, 0), time = 1:3)
+  )
+})
+
+test_that("PKNCA_impute_method_start_c1", {
+  # No imputation when start is in the data
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = 1:3, time = 0:2, start = 0, end = 2),
+    data.frame(conc = 1:3, time = 0:2)
+  )
+  # Impute when start is not in the data
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = 1:3, time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(1, 1:3), time = 0:3),
+    ignore_attr = TRUE
+  )
+  # Data outside the interval are ignored (before interval)
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = 1:3, time = c(-1, 1:2), start = 0, end = 2),
+    data.frame(conc = c(1, 2, 2:3), time = c(-1, 0, 1:2)),
+    ignore_attr = TRUE
+  )
+  # All concentrations are NA
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = c(NA, NA, NA), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(NA, NA, NA, NA), time = 0:3),
+    ignore_attr = TRUE
+  )
+  # All times are NA
+  expect_error(
+    PKNCA_impute_method_start_c1(conc = 1:3, time = c(NA, NA, NA), start = 0, end = 3),
+    "Assertion on 'time' failed: Contains missing values"
+  )
+  # All concentrations are 0
+  expect_equal(
+    PKNCA_impute_method_start_c1(conc = c(0, 0, 0), time = 1:3, start = 0, end = 3),
+    data.frame(conc = c(0, 0, 0, 0), time = 0:3),
+    ignore_attr = TRUE
+  )
+})
+
 test_that("PKNCA_impute_fun_list", {
   expect_equal(
     PKNCA_impute_fun_list(NA_character_),

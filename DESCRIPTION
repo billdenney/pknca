@@ -5,7 +5,9 @@ Version: 0.12.0.9000
 Authors@R: c(
     person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre"), comment=c(ORCID="0000-0002-5759-428X")),
     person("Clare", "Buckeridge", email="clare.buckeridge@pfizer.com", role="aut"),
-    person("Sridhar", "Duvvuri", role="ctb"))
+    person("Sridhar", "Duvvuri", role="ctb"),
+    person("Gerardo Jose", "Rodriguez", , "gerardo.jrac@gmail.com", role = "aut", comment = c(ORCID = "0000-0003-1413-0060"))
+    )
 Imports:
     checkmate,
     dplyr (>= 0.5.0),
