@@ -823,7 +823,7 @@ With an interval start and end of 0 and 24 (and the last measurement time just a
 
 * **AUC~int~** looks at the points in the interval, and if there is no measurement at the interval end time, interpolates or extrapolates to the interval end time (the AUClast and AUCint color in the figure)
 
-## AUC considerations with PKNCA (2/3) {.columns-2}
+## AUC considerations with PKNCA (3/3) {.columns-2}
 
 ```{r warning=FALSE, out.width="100%"}
 p_auc_calcs
