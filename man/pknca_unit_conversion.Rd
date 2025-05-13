@@ -2,9 +2,27 @@
 % Please edit documentation in R/unit-support.R
 \name{pknca_unit_conversion}
 \alias{pknca_unit_conversion}
+\alias{pknca_unit_conversion.PKNCAresults}
+\alias{pknca_unit_conversion.data.frame}
 \title{Perform unit conversion (if possible) on PKNCA results}
 \usage{
-pknca_unit_conversion(result, units, allow_partial_missing_units = FALSE)
+pknca_unit_conversion(
+  result,
+  units = NULL,
+  allow_partial_missing_units = FALSE
+)
+
+\method{pknca_unit_conversion}{PKNCAresults}(
+  result,
+  units = NULL,
+  allow_partial_missing_units = FALSE
+)
+
+\method{pknca_unit_conversion}{data.frame}(
+  result,
+  units = NULL,
+  allow_partial_missing_units = FALSE
+)
 }
 \arguments{
 \item{result}{The results data.frame}
@@ -20,4 +38,11 @@ The result table with units converted
 \description{
 Perform unit conversion (if possible) on PKNCA results
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{pknca_unit_conversion(PKNCAresults)}: Convert PKNCA units for a data.frame
+
+\item \code{pknca_unit_conversion(data.frame)}: Convert PKNCA units for a data.frame
+
+}}
 \keyword{Internal}
