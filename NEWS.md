@@ -8,7 +8,10 @@ the dosing including dose amount and route.
 
 ## New Features
 
-* New assertion functions were created to ensure that an object is the correct type (fix #328)
+* It is now possible to update an existing analysis when data changes but other
+  NCA settings stay the same (fix #417)
+* New assertion functions were created to ensure that an object is the correct
+  type (fix #328)
 
 # PKNCA 0.12.0
 
