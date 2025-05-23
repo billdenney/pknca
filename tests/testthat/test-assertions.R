@@ -147,7 +147,7 @@ test_that("element_find", {
 })
 
 test_that("assert_unit_col", {
-  d <- results.frame(A = 1, B = "C")
+  d <- data.frame(A = 1, B = "C")
   expect_equal(
     assert_unit_col(unit = "B", data = d),
     structure("B", unit_type = "column")
