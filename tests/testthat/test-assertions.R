@@ -99,10 +99,31 @@ test_that("assert_lambdaz", {
   )
 })
 
+test_that("assert_PKNCAconc", {
+  expect_error(
+    assert_PKNCAconc("A"),
+    regexp = "Must be a PKNCAconc object"
+  )
+})
+
 test_that("assert_PKNCAdata", {
   expect_error(
     assert_PKNCAdata("A"),
     regexp = "Must be a PKNCAdata object"
+  )
+})
+
+test_that("assert_PKNCAdose", {
+  expect_error(
+    assert_PKNCAdose("A"),
+    regexp = "Must be a PKNCAdose object"
+  )
+})
+
+test_that("assert_PKNCAresults", {
+  expect_error(
+    assert_PKNCAresults("A"),
+    regexp = "Must be a PKNCAresults object"
   )
 })
 
@@ -113,12 +134,12 @@ test_that("element_find", {
     element_find(values5),
     element_find(values10)
   )
-  
+
   expect_equal(
     element_find(values5),
     "Elements 1, 2, 3, 4, 5"
   )
-  
+
   expect_equal(
     element_find(values10),
     "Elements 1, 2, 3, 4, 5"
@@ -126,7 +147,7 @@ test_that("element_find", {
 })
 
 test_that("assert_unit_col", {
-  d <- data.frame(A = 1, B = "C")
+  d <- results.frame(A = 1, B = "C")
   expect_equal(
     assert_unit_col(unit = "B", data = d),
     structure("B", unit_type = "column")

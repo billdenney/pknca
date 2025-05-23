@@ -2,16 +2,34 @@
 % Please edit documentation in R/assertions.R
 \name{assert_PKNCAdata}
 \alias{assert_PKNCAdata}
+\alias{assert_PKNCAresults}
+\alias{assert_PKNCAconc}
+\alias{assert_PKNCAdose}
 \title{Assert that an object is a PKNCAdata object}
 \usage{
 assert_PKNCAdata(object)
+
+assert_PKNCAresults(object)
+
+assert_PKNCAconc(object)
+
+assert_PKNCAdose(object)
 }
 \arguments{
-\item{object}{The PKNCAdata object}
+\item{object}{The PKNCAdose object}
 }
 \value{
-The PKNCAdata object (confirmed to be usable)
+The object
 }
 \description{
 Assert that an object is a PKNCAdata object
 }
+\section{Functions}{
+\itemize{
+\item \code{assert_PKNCAresults()}: Assert that an object is a PKNCAresults object
+
+\item \code{assert_PKNCAconc()}: Assert that an object is a PKNCAconc object
+
+\item \code{assert_PKNCAdose()}: Assert that an object is a PKNCAdose object
+
+}}

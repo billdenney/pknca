@@ -198,13 +198,43 @@ assert_aucmethod <- function(method = c("lin up/log down", "linear", "lin-log"))
 
 #' Assert that an object is a PKNCAdata object
 #' @param object The PKNCAdata object
-#' @returns The PKNCAdata object (confirmed to be usable)
+#' @returns The object
 assert_PKNCAdata <- function(object) {
   if (!inherits(object, "PKNCAdata")) {
     stop("Must be a PKNCAdata object")
   }
   if (nrow(object$intervals) == 0) {
     warning("No intervals given; no calculations will be done.")
+  }
+  object
+}
+
+#' @describeIn assert_PKNCAdata Assert that an object is a PKNCAresults object
+#' @param object The PKNCAresults object
+#' @export
+assert_PKNCAresults <- function(object) {
+  if (!inherits(object, "PKNCAresults")) {
+    stop("Must be a PKNCAresults object")
+  }
+  object
+}
+
+#' @describeIn assert_PKNCAdata Assert that an object is a PKNCAconc object
+#' @param object The PKNCAconc object
+#' @export
+assert_PKNCAconc <- function(object) {
+  if (!inherits(object, "PKNCAconc")) {
+    stop("Must be a PKNCAconc object")
+  }
+  object
+}
+
+#' @describeIn assert_PKNCAdata Assert that an object is a PKNCAdose object
+#' @param object The PKNCAdose object
+#' @export
+assert_PKNCAdose <- function(object) {
+  if (!inherits(object, "PKNCAdose")) {
+    stop("Must be a PKNCAdose object")
   }
   object
 }
