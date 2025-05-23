@@ -8,27 +8,27 @@ test_that("PKNCAresults object creation", {
 test_that("PKNCAresults generation", {
   # Note that generate.conc sets the random seed, so it doesn't have
   # to happen here.
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose)
-  myresult <- pk.nca(mydata)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose)
+  o_result <- pk.nca(o_data)
 
   expect_equal(
-    names(myresult),
+    names(o_result),
     c("result", "data", "columns"),
     info="Make sure that the result has the expected names (and only the expected names) in it."
   )
   expect_true(
-    checkProvenance(myresult),
+    checkProvenance(o_result),
     info="Provenance exists and can be confirmed on results"
   )
 
-  # Test each of the pieces for myresult for accuracy
+  # Test each of the pieces for o_result for accuracy
   expect_equal(
-    myresult$data, {
-      tmp <- mydata
+    o_result$data, {
+      tmp <- o_data
       # The options should be the default options after the
       # calculations are done.
       tmp$options <- PKNCA.options()
@@ -59,7 +59,7 @@ test_that("PKNCAresults generation", {
       exclude=NA_character_
     )
   expect_equal(
-    myresult$result,
+    o_result$result,
     verify.result,
     tolerance=0.001,
     info="The specific order of the levels isn't important-- the fact that they are factors and that the set doesn't change is important."
@@ -67,40 +67,40 @@ test_that("PKNCAresults generation", {
 
   # Test conversion to a data.frame
   expect_equal(
-    as.data.frame(myresult),
+    as.data.frame(o_result),
     verify.result,
     tolerance=0.001,
     info="Conversion of PKNCAresults to a data.frame in long format (default long format)"
   )
   expect_equal(
-    as.data.frame(myresult, out_format="long"),
+    as.data.frame(o_result, out_format="long"),
     verify.result,
     tolerance=0.001,
     info="Conversion of PKNCAresults to a data.frame in long format (specifying long format)"
   )
   expect_equal(
-    as.data.frame(myresult, out_format="wide"),
+    as.data.frame(o_result, out_format="wide"),
     tidyr::spread(verify.result, key="PPTESTCD", value="PPORRES"),
     tolerance=0.001,
     info="Conversion of PKNCAresults to a data.frame in wide format (specifying wide format)"
   )
 
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose, intervals=data.frame(start=0, end=12, aucint.inf.obs=TRUE))
-  myresult <- pk.nca(mydata)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose, intervals=data.frame(start=0, end=12, aucint.inf.obs=TRUE))
+  o_result <- pk.nca(o_data)
 
-  tmpconc12 <- tmpconc
-  tmpconc12$time <- tmpconc$time + 12
-  tmpdose12 <- generate.dose(tmpconc12)
-  myconc12 <- PKNCAconc(tmpconc12, formula=conc~time|treatment+ID)
-  mydose12 <- PKNCAdose(tmpdose12, formula=dose~time|treatment+ID)
-  mydata12 <- PKNCAdata(myconc12, mydose12, intervals=data.frame(start=12, end=24, aucint.inf.obs=TRUE))
-  myresult12 <- pk.nca(mydata12)
-  comparison_orig <- as.data.frame(myresult)
-  comparison_12 <- as.data.frame(myresult12)
+  d_conc12 <- d_conc
+  d_conc12$time <- d_conc$time + 12
+  d_dose12 <- generate.dose(d_conc12)
+  o_conc12 <- PKNCAconc(d_conc12, formula=conc~time|treatment+ID)
+  o_dose12 <- PKNCAdose(d_dose12, formula=dose~time|treatment+ID)
+  o_data12 <- PKNCAdata(o_conc12, o_dose12, intervals=data.frame(start=12, end=24, aucint.inf.obs=TRUE))
+  o_result12 <- pk.nca(o_data12)
+  comparison_orig <- as.data.frame(o_result)
+  comparison_12 <- as.data.frame(o_result12)
   expect_equal(
     comparison_orig$PPORRES[comparison_orig$PPTESTCD %in% "aucint.inf.obs"],
     comparison_12$PPORRES[comparison_12$PPTESTCD %in% "aucint.inf.obs"],
@@ -109,20 +109,20 @@ test_that("PKNCAresults generation", {
 })
 
 test_that("PKNCAresults has exclude, when applicable", {
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpconc$conc[tmpconc$ID %in% 2] <- 0
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_conc$conc[d_conc$ID %in% 2] <- 0
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose)
   # Not capturing the warning due to R bug
   # https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17122
-  #expect_warning(myresult <- pk.nca(mydata),
+  #expect_warning(o_result <- pk.nca(o_data),
   #               regexp="Too few points for half-life calculation")
-  suppressWarnings(myresult <- pk.nca(mydata))
-  myresult_df <- as.data.frame(myresult)
+  suppressWarnings(o_result <- pk.nca(o_data))
+  o_result_df <- as.data.frame(o_result)
   expect_true(
-    all(myresult_df$PPTESTCD %in%
+    all(o_result_df$PPTESTCD %in%
           c(
             "adj.r.squared", "aucinf.obs", "auclast", "clast.obs",
             "clast.pred", "cmax", "half.life", "lambda.z", "lambda.z.n.points",
@@ -133,9 +133,9 @@ test_that("PKNCAresults has exclude, when applicable", {
   )
   expect_equal(
     unique(
-      myresult_df$exclude[
-        myresult_df$ID == 2 &
-          myresult_df$PPTESTCD %in%
+      o_result_df$exclude[
+        o_result_df$ID == 2 &
+          o_result_df$PPTESTCD %in%
           c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
             "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
         ]
@@ -145,9 +145,9 @@ test_that("PKNCAresults has exclude, when applicable", {
   )
   expect_equal(
     unique(
-      myresult_df$exclude[
-        !(myresult_df$ID == 2 &
-            myresult_df$PPTESTCD %in%
+      o_result_df$exclude[
+        !(o_result_df$ID == 2 &
+            o_result_df$PPTESTCD %in%
             c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
               "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
         )
@@ -159,14 +159,14 @@ test_that("PKNCAresults has exclude, when applicable", {
 })
 
 test_that("ptr works as a parameter", {
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
   myinterval <- data.frame(start=0, end=24, ptr=TRUE)
-  mydata <- PKNCAdata(myconc, mydose, intervals=myinterval)
-  myresult <- pk.nca(mydata)
-  ptr_result <- as.data.frame(myresult)
+  o_data <- PKNCAdata(o_conc, o_dose, intervals=myinterval)
+  o_result <- pk.nca(o_data)
+  ptr_result <- as.data.frame(o_result)
   expect_equal(
     ptr_result$PPORRES[ptr_result$PPTESTCD %in% "ptr"],
     c(2.9055, 2.9885),
@@ -252,12 +252,12 @@ test_that("single subject, ungrouped data works (#74)", {
 })
 
 test_that("units work for calculations and summaries with one set of units across all analytes", {
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose)
-  myresult <- pk.nca(mydata)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose)
+  o_result <- pk.nca(o_data)
 
   d_units_orig <- pknca_units_table(concu="ng/mL", doseu="mg", amountu="mg", timeu="hr")
   d_units_std <-
@@ -265,36 +265,36 @@ test_that("units work for calculations and summaries with one set of units acros
       concu="ng/mL", doseu="mg", amountu="mg", timeu="hr",
       conversions=data.frame(PPORRESU="ng/mL", PPSTRESU="mg/mL")
     )
-  mydata_orig <- PKNCAdata(myconc, mydose, units=d_units_orig)
-  myresult_units_orig <- pk.nca(mydata_orig)
-  mydata_std <- PKNCAdata(myconc, mydose, units=d_units_std)
-  myresult_units_std <- pk.nca(mydata_std)
+  o_data_orig <- PKNCAdata(o_conc, o_dose, units=d_units_orig)
+  o_result_units_orig <- pk.nca(o_data_orig)
+  o_data_std <- PKNCAdata(o_conc, o_dose, units=d_units_std)
+  o_result_units_std <- pk.nca(o_data_std)
 
   # Summaries are the same except for the column names
   expect_equal(
-    unname(summary(myresult)),
-    unname(summary(myresult_units_orig)),
+    unname(summary(o_result)),
+    unname(summary(o_result_units_orig)),
     # The caption attribute will differ
     ignore_attr = TRUE
   )
   expect_equal(
-    summary(myresult_units_orig) %>% dplyr::select(-`Cmax (ng/mL)`),
-    summary(myresult_units_std) %>% dplyr::select(-`Cmax (mg/mL)`)
+    summary(o_result_units_orig) %>% dplyr::select(-`Cmax (ng/mL)`),
+    summary(o_result_units_std) %>% dplyr::select(-`Cmax (mg/mL)`)
   )
   # The units are converted to standard units, if requested
   expect_equal(
-    summary(myresult_units_orig)$`Cmax (ng/mL)`,
+    summary(o_result_units_orig)$`Cmax (ng/mL)`,
     c(".", "0.970 [4.29]")
   )
   expect_equal(
-    summary(myresult_units_std)$`Cmax (mg/mL)`,
+    summary(o_result_units_std)$`Cmax (mg/mL)`,
     c(".", "9.70e-7 [4.29]")
   )
   # Wide conversion works for original and standardized units
-  df_wide_orig <- as.data.frame(myresult_units_orig, out_format="wide")
-  df_wide_std <- as.data.frame(myresult_units_std, out_format="wide")
+  df_wide_orig <- as.data.frame(o_result_units_orig, out_format="wide")
+  df_wide_std <- as.data.frame(o_result_units_std, out_format="wide")
   expect_equal(
-    as.data.frame(myresult, out_format="wide"),
+    as.data.frame(o_result, out_format="wide"),
     # The difference is the addition of units to the column names
     df_wide_orig %>%
       dplyr::rename_with(.fn=gsub, pattern=" \\(.*$", replacement="")
@@ -318,17 +318,17 @@ test_that("units work for calculations and summaries with one set of units acros
 })
 
 test_that("units work for calculations and summaries with one set of units across all analytes", {
-  tmpconc1 <- generate.conc(2, 1, 0:24)
-  tmpconc1$analyte <- "drug1"
-  tmpconc2 <- tmpconc1
-  tmpconc2$analyte <- "drug2"
-  tmpconc <- rbind(tmpconc1, tmpconc2)
+  d_conc1 <- generate.conc(2, 1, 0:24)
+  d_conc1$analyte <- "drug1"
+  d_conc2 <- d_conc1
+  d_conc2$analyte <- "drug2"
+  d_conc <- rbind(d_conc1, d_conc2)
 
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID/analyte)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose)
-  myresult <- pk.nca(mydata)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID/analyte)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose)
+  o_result <- pk.nca(o_data)
 
   d_units_std1 <-
     pknca_units_table(
@@ -343,59 +343,59 @@ test_that("units work for calculations and summaries with one set of units acros
     )
   d_units_std2$analyte <- "drug2"
   d_units_std <- rbind(d_units_std1, d_units_std2)
-  mydata_std <- PKNCAdata(myconc, mydose, units=d_units_std)
-  myresult_units_std <- pk.nca(mydata_std)
-  summary_myresult_units_std <- summary(myresult_units_std)
+  o_data_std <- PKNCAdata(o_conc, o_dose, units=d_units_std)
+  o_result_units_std <- pk.nca(o_data_std)
+  summary_o_result_units_std <- summary(o_result_units_std)
   # Everything is the same between analytes except for "cmax"
-  for (nm in setdiff(names(summary_myresult_units_std), c("analyte", "Cmax"))) {
+  for (nm in setdiff(names(summary_o_result_units_std), c("analyte", "Cmax"))) {
     expect_equal(
-      summary_myresult_units_std[[nm]][1:2],
-      summary_myresult_units_std[[nm]][3:4]
+      summary_o_result_units_std[[nm]][1:2],
+      summary_o_result_units_std[[nm]][3:4]
     )
   }
   # Different units in the same column are shown in the cell
   expect_equal(
-    summary_myresult_units_std$Cmax,
+    summary_o_result_units_std$Cmax,
     c(".", "9.70e-7 [4.29] mg/mL", ".", "1.94 [4.29] mmol/L")
   )
 
   # I can't think of a way to trigger this error without explicit manipulation.
-  myresult_units_manipulated <- myresult_units_std
-  myresult_units_manipulated$result$PPSTRESU[myresult_units_manipulated$result$PPTESTCD %in% "auclast"][1] <- "foo"
+  o_result_units_manipulated <- o_result_units_std
+  o_result_units_manipulated$result$PPSTRESU[o_result_units_manipulated$result$PPTESTCD %in% "auclast"][1] <- "foo"
   expect_error(
-    summary(myresult_units_manipulated),
+    summary(o_result_units_manipulated),
     regexp="Multiple units cannot be summarized together.  For auclast, trying to combine: foo, hr*ng/mL",
     fixed=TRUE
   )
 })
 
 test_that("getGroups.PKNCAresults", {
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose)
-  myresult <- pk.nca(mydata)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose)
+  o_result <- pk.nca(o_data)
 
   expect_equal(
-    getGroups(myresult, level="treatment"),
-    myresult$result[, "treatment", drop=FALSE]
+    getGroups(o_result, level="treatment"),
+    o_result$result[, "treatment", drop=FALSE]
   )
   expect_equal(
-    getGroups(myresult, level=factor("treatment")),
-    myresult$result[, "treatment", drop=FALSE]
+    getGroups(o_result, level=factor("treatment")),
+    o_result$result[, "treatment", drop=FALSE]
   )
   expect_error(
-    getGroups(myresult, level="foo"),
+    getGroups(o_result, level="foo"),
     regexp="Not all levels are listed in the group names.  Missing levels are: foo"
   )
   expect_equal(
-    getGroups(myresult, level=2),
-    myresult$result[, c("treatment", "ID")]
+    getGroups(o_result, level=2),
+    o_result$result[, c("treatment", "ID")]
   )
   expect_equal(
-    getGroups(myresult, level=2:3),
-    myresult$result[, c("ID", "start")]
+    getGroups(o_result, level=2:3),
+    o_result$result[, c("ID", "start")]
   )
 })
 
@@ -415,25 +415,25 @@ test_that("group_vars.PKNCAresult", {
 })
 
 test_that("as.data.frame.PKNCAresults can filter for only requested parameters", {
-  tmpconc <- generate.conc(2, 1, 0:24)
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
-  myresult <- pk.nca(mydata)
+  d_conc <- generate.conc(2, 1, 0:24)
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_result <- pk.nca(o_data)
 
-  expect_equal(nrow(as.data.frame(myresult)), 20)
-  expect_equal(nrow(as.data.frame(myresult, filter_requested = TRUE)), 2)
+  expect_equal(nrow(as.data.frame(o_result)), 20)
+  expect_equal(nrow(as.data.frame(o_result, filter_requested = TRUE)), 2)
 })
 
 test_that("as.data.frame.PKNCAresults can filter to remove excluded parameters", {
-  tmpconc <- generate.conc(2, 1, c(0, 2, 6, 12, 24))
-  tmpdose <- generate.dose(tmpconc)
-  myconc <- PKNCAconc(tmpconc, formula=conc~time|treatment+ID)
-  mydose <- PKNCAdose(tmpdose, formula=dose~time|treatment+ID)
-  mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
-  myresult <- exclude(pk.nca(mydata), FUN = exclude_nca_span.ratio(1))
+  d_conc <- generate.conc(2, 1, c(0, 2, 6, 12, 24))
+  d_dose <- generate.dose(d_conc)
+  o_conc <- PKNCAconc(d_conc, formula=conc~time|treatment+ID)
+  o_dose <- PKNCAdose(d_dose, formula=dose~time|treatment+ID)
+  o_data <- PKNCAdata(o_conc, o_dose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
+  o_result <- exclude(pk.nca(o_data), FUN = exclude_nca_span.ratio(1))
 
-  expect_equal(nrow(as.data.frame(myresult)), 20)
-  expect_equal(nrow(as.data.frame(myresult, filter_excluded = TRUE)), 12)
+  expect_equal(nrow(as.data.frame(o_result)), 20)
+  expect_equal(nrow(as.data.frame(o_result, filter_excluded = TRUE)), 12)
 })
