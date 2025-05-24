@@ -54,7 +54,7 @@ PKNCAdata.PKNCAdose <- function(data.conc, data.dose, ...) {
 PKNCAdata.default <- function(data.conc, data.dose, ...,
                               formula.conc, formula.dose,
                               impute = NA_character_,
-                              intervals, units, options=list()) {
+                              intervals, units = NULL, options=list()) {
   if (length(list(...))) {
     stop("Unknown argument provided to PKNCAdata.  All arguments other than `data.conc` and `data.dose` must be named.")
   }
@@ -169,7 +169,7 @@ PKNCAdata.default <- function(data.conc, data.dose, ...,
   units_interval_end <- inherits(ret$intervals$end, "units")
 
   # Insert the unit conversion table
-  if (missing(units)) {
+  if (is.null(units)) {
     # What unit types are recognized?
     possible_units <-
       setdiff(
