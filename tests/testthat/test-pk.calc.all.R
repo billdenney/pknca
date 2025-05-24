@@ -46,22 +46,22 @@ test_that("pk.nca", {
   verify.result <-
     tibble::tibble(
       treatment="Trt 1",
-      ID=rep(c(1, 2), each=14),
+      ID=rep(c(1, 2), each=15),
       start=0,
-      end=c(24, rep(Inf, 13),
-            24, rep(Inf, 13)),
+      end=c(24, rep(Inf, 14),
+            24, rep(Inf, 14)),
       PPTESTCD=rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
                      "lambda.z", "r.squared", "adj.r.squared",
-                     "lambda.z.time.first", "lambda.z.n.points",
-                     "clast.pred", "half.life", "span.ratio",
-                     "aucinf.obs"),
+                     "lambda.z.time.first", "lambda.z.time.last",
+                     "lambda.z.n.points", "clast.pred", "half.life",
+                     "span.ratio", "aucinf.obs"),
                    times=2),
       PPORRES=c(13.54, 0.9998, 4.000, 24.00, 0.3441,
-                0.04297, 0.9072, 0.9021, 5.000,
+                0.04297, 0.9072, 0.9021, 5.000, 24.00,
                 20.00, 0.3356, 16.13, 1.178,
                 21.55, 14.03, 0.9410, 2.000,
                 24.00, 0.3148, 0.05689, 0.9000, 0.8944,
-                5.000, 20.00, 0.3011, 12.18,
+                5.000, 24.00, 20.00, 0.3011, 12.18,
                 1.560, 19.56),
       exclude=NA_character_
     )
@@ -697,7 +697,7 @@ test_that("aucint works within pk.calc.all for all zero concentrations with inte
   ))
   expect_equal(
     as.data.frame(o_nca)$PPORRES,
-    c(rep(NA_real_, 10), 0)
+    c(rep(NA_real_, 11), 0)
   )
 })
 
