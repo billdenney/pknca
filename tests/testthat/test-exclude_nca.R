@@ -18,20 +18,20 @@ test_that("exclude_nca", {
   my_result_excluded <- exclude(my_result, FUN=exclude_nca_span.ratio())
   expect_equal(as.data.frame(my_result_excluded)$exclude,
                c(rep(NA_character_, 4),
-                 rep("Span ratio < 2", 10)))
+                 rep("Span ratio < 2", 11)))
   my_result_excluded <- exclude(my_result, FUN=exclude_nca_span.ratio(1))
   expect_equal(as.data.frame(my_result_excluded)$exclude,
                c(rep(NA_character_, 4),
-                 rep("Span ratio < 1", 10)))
+                 rep("Span ratio < 1", 11)))
 
   my_result_excluded <- exclude(my_result, FUN=exclude_nca_min.hl.r.squared())
   expect_equal(as.data.frame(my_result_excluded)$exclude,
                c(rep(NA_character_, 4),
-                 rep("Half-life r-squared < 0.9", 10)))
+                 rep("Half-life r-squared < 0.9", 11)))
   my_result_excluded <- exclude(my_result, FUN=exclude_nca_min.hl.r.squared(0.95))
   expect_equal(as.data.frame(my_result_excluded)$exclude,
                c(rep(NA_character_, 4),
-                 rep("Half-life r-squared < 0.95", 10)))
+                 rep("Half-life r-squared < 0.95", 11)))
 
   my_data <- PKNCAdata(my_conc, intervals=data.frame(start=0, end=Inf, cmax=TRUE))
   suppressMessages(
@@ -56,17 +56,17 @@ test_that("exclude_nca_count_conc_measured", {
   )
   expect_equal(
     as.data.frame(my_result)$exclude,
-    rep(NA_character_, 15)
+    rep(NA_character_, 16)
   )
   my_result_exclude5 <- exclude(my_result, FUN = exclude_nca_count_conc_measured(min_count = 5))
   expect_equal(
     as.data.frame(my_result_exclude5)$exclude,
-    rep(NA_character_, 15)
+    rep(NA_character_, 16)
   )
   my_result_exclude10 <- exclude(my_result, FUN = exclude_nca_count_conc_measured(min_count = 10))
   expect_equal(
     as.data.frame(my_result_exclude10)$exclude,
-    c("Number of measured concentrations is < 10", rep(NA_character_, 12), rep("Number of measured concentrations is < 10", 2))
+    c("Number of measured concentrations is < 10", rep(NA_character_, 13), rep("Number of measured concentrations is < 10", 2))
   )
 })
 

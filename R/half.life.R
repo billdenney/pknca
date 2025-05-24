@@ -58,6 +58,7 @@
 #'   \item{adj.r.squared}{adjusted coefficient of determination}
 #'   \item{lambda.z}{elimination rate}
 #'   \item{lambda.z.time.first}{first time for half-life calculation}
+#'   \item{lambda.z.time.last}{last time for half-life calculation}
 #'   \item{lambda.z.n.points}{number of points in half-life calculation}
 #'   \item{clast.pred}{Concentration at tlast as predicted by the half-life
 #'     line}
@@ -132,6 +133,8 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     adj.r.squared=NA,
     # First time point used in the slope estimation (for plotting later)
     lambda.z.time.first=NA,
+    # Last time point used in the slope estimation (for plotting later)
+    lambda.z.time.last=NA,
     # Number of points in the half-life estimate
     lambda.z.n.points=NA,
     # Concentration at Tlast predicted by the half-life
@@ -142,7 +145,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
     span.ratio=NA)
   ret_replacements <-
     c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
-      "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
+      "lambda.z.time.last", "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
   if (missing(tmax)) {
     ret$tmax <-
       pk.calc.tmax(
@@ -189,6 +192,7 @@ pk.calc.half.life <- function(conc, time, tmax, tlast,
         lambda.z=-Inf,
         lambda.z.n.points=NA_integer_,
         lambda.z.time.first=dfK$time,
+        lambda.z.time.last=dfK$time,
         log_conc=dfK$log_conc,
         span.ratio=NA_real_,
         half.life=NA_real_
@@ -305,6 +309,7 @@ fit_half_life <- function(data, tlast, conc_units) {
       lambda.z=lambda_z,
       clast.pred=clast_pred,
       lambda.z.time.first=min(data$time, na.rm=TRUE),
+      lambda.z.time.last=max(data$time, na.rm=TRUE),
       lambda.z.n.points=nrow(data)
     )
   ret$half.life <- log(2)/ret$lambda.z
@@ -374,6 +379,19 @@ add.interval.col("lambda.z.time.first",
                  depends="half.life")
 PKNCA.set.summary(
   name="lambda.z.time.first",
+  description="median and range",
+  point=business.median,
+  spread=business.range
+)
+add.interval.col("lambda.z.time.last",
+                 FUN=NA,
+                 values=c(FALSE, TRUE),
+                 unit_type="time",
+                 pretty_name="Last time for $\\lambda_z$",
+                 desc="The last time point used for the calculation of half-life",
+                 depends="half.life")
+PKNCA.set.summary(
+  name="lambda.z.time.last",
   description="median and range",
   point=business.median,
   spread=business.range

@@ -39,23 +39,22 @@ test_that("PKNCAresults generation", {
   verify.result <-
     tibble::tibble(
       treatment="Trt 1",
-      ID=as.integer(rep(c(1, 2), each=14)),
+      ID=as.integer(rep(c(1, 2), each=15)),
       start=0,
-      end=c(24, rep(Inf, 13),
-            24, rep(Inf, 13)),
+      end=c(24, rep(Inf, 14),
+            24, rep(Inf, 14)),
       PPTESTCD=rep(c("auclast", "cmax", "tmax", "tlast", "clast.obs",
                      "lambda.z", "r.squared", "adj.r.squared",
-                     "lambda.z.time.first", "lambda.z.n.points",
-                     "clast.pred", "half.life", "span.ratio",
-                     "aucinf.obs"),
+                     "lambda.z.time.first", "lambda.z.time.last", "lambda.z.n.points",
+                     "clast.pred", "half.life", "span.ratio", "aucinf.obs"),
                    times=2),
       PPORRES=c(13.54, 0.9998, 4.000, 24.00, 0.3441,
-                0.04297, 0.9072, 0.9021, 5.000,
+                0.04297, 0.9072, 0.9021, 5.000, 24.00,
                 20.00, 0.3356, 16.13, 1.178,
                 21.55, 14.03, 0.9410, 2.000,
-                24.00, 0.3148, 0.05689, 0.9000, 0.8944,
-                5.000, 20.00, 0.3011, 12.18,
-                1.560, 19.56),
+                24.00, 0.3148, 0.05689, 0.9000,
+                0.8944, 5.000, 24.00, 20.00, 0.3011,
+                12.18, 1.560, 19.56),
       exclude=NA_character_
     )
   expect_equal(
@@ -126,7 +125,8 @@ test_that("PKNCAresults has exclude, when applicable", {
           c(
             "adj.r.squared", "aucinf.obs", "auclast", "clast.obs",
             "clast.pred", "cmax", "half.life", "lambda.z", "lambda.z.n.points",
-            "lambda.z.time.first", "r.squared", "span.ratio", "tlast", "tmax"
+            "lambda.z.time.first", "lambda.z.time.last", "r.squared",
+            "span.ratio", "tlast", "tmax"
           )
     ),
     info="verify that only expected results are present"
@@ -136,8 +136,11 @@ test_that("PKNCAresults has exclude, when applicable", {
       myresult_df$exclude[
         myresult_df$ID == 2 &
           myresult_df$PPTESTCD %in%
-          c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
-            "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
+          c(
+            "lambda.z", "r.squared", "adj.r.squared",
+            "lambda.z.time.first", "lambda.z.time.last",
+            "lambda.z.n.points", "clast.pred", "half.life", "span.ratio"
+          )
         ]
     ),
     "Too few points for half-life calculation (min.hl.points=3 with only 0 points)",
@@ -149,7 +152,7 @@ test_that("PKNCAresults has exclude, when applicable", {
         !(myresult_df$ID == 2 &
             myresult_df$PPTESTCD %in%
             c("lambda.z", "r.squared", "adj.r.squared", "lambda.z.time.first",
-              "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
+              "lambda.z.time.last", "lambda.z.n.points", "clast.pred", "half.life", "span.ratio")
         )
         ]
     ),
@@ -422,7 +425,7 @@ test_that("as.data.frame.PKNCAresults can filter for only requested parameters",
   mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
   myresult <- pk.nca(mydata)
 
-  expect_equal(nrow(as.data.frame(myresult)), 20)
+  expect_equal(nrow(as.data.frame(myresult)), 22)
   expect_equal(nrow(as.data.frame(myresult, filter_requested = TRUE)), 2)
 })
 
@@ -434,6 +437,6 @@ test_that("as.data.frame.PKNCAresults can filter to remove excluded parameters",
   mydata <- PKNCAdata(myconc, mydose, intervals = data.frame(start = 0, end = Inf, half.life = TRUE))
   myresult <- exclude(pk.nca(mydata), FUN = exclude_nca_span.ratio(1))
 
-  expect_equal(nrow(as.data.frame(myresult)), 20)
-  expect_equal(nrow(as.data.frame(myresult, filter_excluded = TRUE)), 12)
+  expect_equal(nrow(as.data.frame(myresult)), 22)
+  expect_equal(nrow(as.data.frame(myresult, filter_excluded = TRUE)), 13)
 })
