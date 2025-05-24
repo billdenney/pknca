@@ -15,6 +15,7 @@ the dosing including dose amount and route.
   calculate `c0` and does not raise an error when `is.na(c0)` (#353).
 * Manual calculation of half.life no longer allows negative half-live values
   (#373).
+* pk.calc.half.life() now returns also lambda.z.time.last, the last time point used for terminal slope estimation.
 
 ## New Features
 

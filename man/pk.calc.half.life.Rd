@@ -70,6 +70,7 @@ included if not given as an input)}
 \item{adj.r.squared}{adjusted coefficient of determination}
 \item{lambda.z}{elimination rate}
 \item{lambda.z.time.first}{first time for half-life calculation}
+\item{lambda.z.time.last}{last time for half-life calculation}
 \item{lambda.z.n.points}{number of points in half-life calculation}
 \item{clast.pred}{Concentration at tlast as predicted by the half-life
 line}
